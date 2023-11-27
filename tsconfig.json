@@ -1,0 +1,17 @@
+{
+  "extends": "ts-config-single-spa",
+  "compilerOptions": {
+    "target": "ES2015",
+    "lib": ["DOM", "ESNext"],
+    "jsx": "react-jsx",
+    "declarationDir": "dist",
+    "paths": {
+      "@app/*": ["./src/*"]
+    },
+    "typeRoots": ["node_modules/@types", "src/index.d.ts", "src/types"],
+    "skipLibCheck": true
+  },
+  "files": ["src/Sterling-investment-management.tsx"],
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.test*", "src/assets/**"]
+}

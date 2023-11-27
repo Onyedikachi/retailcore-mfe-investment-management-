@@ -1,0 +1,16 @@
+{
+  "extends": [
+    "ts-react-important-stuff",
+    "react-important-stuff",
+    "plugin:prettier/recommended"
+  ],
+  "parser": "@babel/eslint-parser",
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {
+        "no-undef": "off"
+      }
+    }
+  ]
+}

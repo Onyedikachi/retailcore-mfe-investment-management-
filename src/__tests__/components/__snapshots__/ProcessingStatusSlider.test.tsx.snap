@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProcessingStatusSlider matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-[60px] pt-[40px] pb-[40px] "
+  >
+    <p
+      class="text-[#636363] text-lg font-semibold"
+    >
+      Processing Status:
+    </p>
+    <div
+      class="w-full  mt-6 "
+    >
+      <div
+        class="px-4 pb-2 flex items-center gap-x-[1px]"
+      >
+        <img
+          alt="sliderLogo"
+          class=""
+          data-testid="firstRangeDisabled"
+          src=""
+        />
+        <div
+          class="flex-1 bg-[#D9D9D9] h-[10px]"
+        />
+        <img
+          alt="sliderLogo"
+          class=""
+          data-testid="secondRangeDisabled"
+          src=""
+        />
+      </div>
+      <div
+        class="flex justify-between mt-2"
+      >
+        <div
+          class="break-word text-[#636363] text-xs font-medium "
+          data-testid="label1"
+        >
+          Pending submission
+        </div>
+        <div
+          class="break-word text-[#636363] text-xs font-medium "
+          data-testid="label2"
+        >
+          Approved
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

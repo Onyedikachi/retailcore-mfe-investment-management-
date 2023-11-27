@@ -1,0 +1,278 @@
+{
+  "response": {
+    "getInvestmentResponse": {
+      "succeeded": true,
+      "msg": "Investment found",
+      "data": {
+        "name": "Barbadof",
+        "code": "B071",
+        "description": "gergerg",
+        "status": "A",
+        "locationref": null,
+        "islocked": false,
+        "created_by_investmentid": "00000000-0000-0000-0000-000000000000",
+        "treated_by": null,
+        "treated_by_id": null,
+        "treated_by_investment_id": null,
+        "number": "10",
+        "streetname": "lagos street",
+        "city": "Lagosf",
+        "state": "Taraba",
+        "lga": "Gashaka",
+        "country": "Nigeria",
+        "postalcode": "1342535",
+        "id": "fa2922ff-a9d6-402b-9f56-2ef67a75ea92",
+        "created_by": "Admin AppQuest",
+        "created_by_id": "53eb7dc0-81ba-40ed-a4af-50fabe394360",
+        "created_at": "2023-09-06T17:55:12.695562Z",
+        "updated_at": "2023-09-06T17:55:12.691905Z",
+        "deleted": false,
+        "deleted_by_id": null,
+        "deleted_at": null
+      },
+      "status": 200
+    },
+    "getInvestmentesResponse": {
+      "succeeded": true,
+      "Msg": "success",
+      "data": {
+        "count": 14,
+        "next": null,
+        "previous": null,
+        "results": [
+          {
+            "id": "9d79aed6-689b-438b-83a0-f46e507d0a15",
+            "name": "Bingo Updatedhh",
+            "code": "BING196",
+            "description": "bingingh",
+            "status": "A",
+            "created_at": "2023-08-10T00:36:52.028686Z",
+            "updated_at": "2023-08-10T00:36:52.028690Z"
+          },
+          {
+            "id": "7cc63ddd-6041-48af-aa49-96091828777c",
+            "name": "Investment Success",
+            "code": "SUCC157",
+            "description": "This is a test investment creation",
+            "status": "A",
+            "created_at": "2023-08-09T12:00:40.189464Z",
+            "updated_at": "2023-08-09T12:00:40.189480Z"
+          }
+        ]
+      }
+    },
+    "investmentsAnalyticsResponse": {
+      "succeeded": true,
+      "Msg": "Success",
+      "data": {
+        "I": 3,
+        "A": 12,
+        "All": 15
+      }
+    },
+    "requestAnalyticsResponse": {
+      "succeeded": true,
+      "Msg": "Success",
+      "data": {
+        "P": 9,
+        "R": 12,
+        "D": 3,
+        "A": 18,
+        "All": 42
+      }
+    },
+    "getRequestsResponse": {
+      "succeeded": true,
+      "Msg": "success",
+      "data": {
+        "count": 42,
+        "next": "http://retailcore-investments-management-api.dev.bepeerless.co/v1/requests?page=2",
+        "previous": null,
+        "results": [
+          {
+            "id": "2ea57c39-be1b-4e8c-8a7b-01a0c34c51fc",
+            "description": "Creation of Investment zee",
+            "created_by": "Admin Retailcore",
+            "created_by_id": "3ae782c6-5af0-403b-a9c5-1f3ce4dd9f3f",
+            "treated_by": null,
+            "treated_by_id": null,
+            "request_type": "CREATE",
+            "status": "P",
+            "reason": null,
+            "investments": [
+              {
+                "id": "dfc8205d-98c0-4d90-94d8-2586de7ce028",
+                "created_by": "Admin Retailcore",
+                "created_by_id": "3ae782c6-5af0-403b-a9c5-1f3ce4dd9f3f",
+                "created_at": "2023-08-10T08:19:59.319336Z",
+                "updated_at": "2023-08-10T08:19:59.319353Z",
+                "name": "Investment zee",
+                "code": "BRAN561",
+                "description": "testing more investment creation",
+                "status": "P"
+              }
+            ],
+            "meta": null,
+            "created_at": "2023-08-10T08:19:59.326480Z",
+            "updated_at": "2023-08-10T08:19:59.326494Z"
+          },
+          {
+            "id": "422dc6dd-77ab-4ea8-a333-101cd290c4c6",
+            "description": "Creation of Bingo Updatedhh and Investment techhh",
+            "created_by": "Admin Retailcore",
+            "created_by_id": "3ae782c6-5af0-403b-a9c5-1f3ce4dd9f3f",
+            "treated_by": "Admin Retailcore",
+            "treated_by_id": "3ae782c6-5af0-403b-a9c5-1f3ce4dd9f3f",
+            "request_type": "BULK_CREATE",
+            "status": "A",
+            "reason": null,
+            "investments": [
+              {
+                "id": "9d79aed6-689b-438b-83a0-f46e507d0a15",
+                "created_by": "Admin Retailcore",
+                "created_by_id": "3ae782c6-5af0-403b-a9c5-1f3ce4dd9f3f",
+                "created_at": "2023-08-10T00:36:52.028686Z",
+                "updated_at": "2023-08-10T00:36:52.028690Z",
+                "name": "Bingo Updatedhh",
+                "code": "BING196",
+                "description": "bingingh",
+                "status": "A"
+              },
+              {
+                "id": "114bec07-616b-442a-8f6f-f481be4b8425",
+                "created_by": "Admin Retailcore",
+                "created_by_id": "3ae782c6-5af0-403b-a9c5-1f3ce4dd9f3f",
+                "created_at": "2023-08-10T00:36:52.028650Z",
+                "updated_at": "2023-08-10T00:36:52.028666Z",
+                "name": "Investment techhh",
+                "code": "TECH121",
+                "description": "testing orange",
+                "status": "A"
+              }
+            ],
+            "meta": null,
+            "created_at": "2023-08-10T00:36:52.034348Z",
+            "updated_at": "2023-08-10T00:37:20.274269Z"
+          },
+          {
+            "id": "bbdaa8cc-8e1d-4eae-9612-e0c07adad35b",
+            "description": "Modification of Bingo newly updated again",
+            "created_by": "Admin Retailcore",
+            "created_by_id": "3ae782c6-5af0-403b-a9c5-1f3ce4dd9f3f",
+            "treated_by": null,
+            "treated_by_id": null,
+            "request_type": "CHANGE",
+            "status": "D",
+            "reason": null,
+            "investments": [
+              {
+                "id": "06578cc3-77d3-47dc-9be0-6ae971512dc8",
+                "created_by": "Admin Retailcore",
+                "created_by_id": "3ae782c6-5af0-403b-a9c5-1f3ce4dd9f3f",
+                "created_at": "2023-08-09T12:14:33.339792Z",
+                "updated_at": "2023-08-09T12:14:33.339796Z",
+                "name": "Bingo newly updated again",
+                "code": "BING338",
+                "description": "binging",
+                "status": "A"
+              }
+            ],
+            "meta": {
+              "name": "Bingo newly updated again",
+              "description": "binging"
+            },
+            "created_at": "2023-08-09T21:07:39.509051Z",
+            "updated_at": "2023-08-10T08:22:38.725039Z"
+          },
+          {
+            "id": "6ea79017-4a3a-4e54-8810-45e649841045",
+            "description": "Creation of Test Investment B Update again",
+            "created_by": "Admin Retailcore",
+            "created_by_id": "3ae782c6-5af0-403b-a9c5-1f3ce4dd9f3f",
+            "treated_by": null,
+            "treated_by_id": null,
+            "request_type": "CREATE",
+            "status": "P",
+            "reason": null,
+            "investments": [
+              {
+                "id": "039e131b-f299-4a8c-abc4-19b07da6105d",
+                "created_by": "Admin Retailcore",
+                "created_by_id": "3ae782c6-5af0-403b-a9c5-1f3ce4dd9f3f",
+                "created_at": "2023-08-09T17:24:59.238447Z",
+                "updated_at": "2023-08-09T17:35:54.532656Z",
+                "name": "Test Investment B Update again",
+                "code": "TEST547",
+                "description": "Investment b description update again",
+                "status": "P"
+              }
+            ],
+            "meta": null,
+            "created_at": "2023-08-09T17:24:59.249030Z",
+            "updated_at": "2023-08-09T17:35:54.543624Z"
+          },
+          {
+            "id": "9fd01dcb-3b77-4680-a1d8-d9b75d18b7c3",
+            "description": "Modification of Bingo newly updated again",
+            "created_by": "Admin Retailcore",
+            "created_by_id": "3ae782c6-5af0-403b-a9c5-1f3ce4dd9f3f",
+            "treated_by": "Admin Retailcore",
+            "treated_by_id": "3ae782c6-5af0-403b-a9c5-1f3ce4dd9f3f",
+            "request_type": "CHANGE",
+            "status": "A",
+            "reason": null,
+            "investments": [
+              {
+                "id": "06578cc3-77d3-47dc-9be0-6ae971512dc8",
+                "created_by": "Admin Retailcore",
+                "created_by_id": "3ae782c6-5af0-403b-a9c5-1f3ce4dd9f3f",
+                "created_at": "2023-08-09T12:14:33.339792Z",
+                "updated_at": "2023-08-09T12:14:33.339796Z",
+                "name": "Bingo newly updated again",
+                "code": "BING338",
+                "description": "binging",
+                "status": "A"
+              }
+            ],
+            "meta": {
+              "name": "Bingo newly updated again",
+              "description": "binging"
+            },
+            "created_at": "2023-08-09T16:53:37.320336Z",
+            "updated_at": "2023-08-10T08:23:59.057426Z"
+          },
+          {
+            "id": "b8ecdde2-6134-4975-ac64-42aa28e2dcc1",
+            "description": "Modification of Bingo newly updated again",
+            "created_by": "Admin Retailcore",
+            "created_by_id": "3ae782c6-5af0-403b-a9c5-1f3ce4dd9f3f",
+            "treated_by": null,
+            "treated_by_id": null,
+            "request_type": "CHANGE",
+            "status": "P",
+            "reason": null,
+            "investments": [
+              {
+                "id": "06578cc3-77d3-47dc-9be0-6ae971512dc8",
+                "created_by": "Admin Retailcore",
+                "created_by_id": "3ae782c6-5af0-403b-a9c5-1f3ce4dd9f3f",
+                "created_at": "2023-08-09T12:14:33.339792Z",
+                "updated_at": "2023-08-09T12:14:33.339796Z",
+                "name": "Bingo newly updated again",
+                "code": "BING338",
+                "description": "binging",
+                "status": "A"
+              }
+            ],
+            "meta": {
+              "name": "Bingo newly updated again",
+              "description": "binging"
+            },
+            "created_at": "2023-08-09T15:25:52.547352Z",
+            "updated_at": "2023-08-09T15:25:52.547362Z"
+          }
+        ]
+      }
+    }
+  }
+}

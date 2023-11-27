@@ -1,0 +1,27 @@
+module.exports = "";
+export let ProviderValue = {
+  isChecker: false,
+  selected: {
+    id: 1,
+    text: "created by me",
+    value: "created by me",
+  },
+  setSelected: jest.fn(),
+  setIsChecker: jest.fn(),
+  category: "all branches",
+  setCategory: jest.fn(),
+  setStatus: jest.fn(),
+  status: "",
+  dateData: "",
+  setDateData: jest.fn(),
+  search: "",
+  setSearch: jest.fn(),
+  type: "",
+  setType: jest.fn(),
+  initiator: "",
+  setInitiator: jest.fn(),
+  setDuration: jest.fn(),
+  duration: "",
+  isRefreshing: false,
+  setRefreshing: jest.fn(),
+};

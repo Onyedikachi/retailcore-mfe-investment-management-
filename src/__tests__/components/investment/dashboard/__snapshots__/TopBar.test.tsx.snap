@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TopBar matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="bg-white px-8 py-[52px] w-full border border-[#E5E9EB] min-h-[198px] flex gap-x-9 items-center border-t-0"
+  >
+    <h1
+      class="text-[#636363] text-5xl font-bold"
+    >
+      Branch Management
+    </h1>
+  </div>
+</DocumentFragment>
+`;

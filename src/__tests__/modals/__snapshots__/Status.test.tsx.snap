@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Failed Modal matches snapshot 1`] = `
+<DocumentFragment>
+  <div>
+      
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Prompt Modal matches snapshot 1`] = `
+<DocumentFragment>
+  <div />
+</DocumentFragment>
+`;
+
+exports[`Success Modal matches snapshot 1`] = `
+<DocumentFragment>
+  <div />
+</DocumentFragment>
+`;
