@@ -1,3 +1,4 @@
+import React from "react";
 import { formStepItem } from "@app/types/index";
 
 type FormStepComponentPropType = {
@@ -6,15 +7,24 @@ type FormStepComponentPropType = {
 };
 
 export default function FormStepComponent({
-  formStepItems,
-  step,
+  formStepItems = [
+    {
+      id: 1,
+      label: "",
+      index: 1,
+    },
+  ],
+  step = 1,
 }: FormStepComponentPropType) {
   return (
     <div className="flex bg-white justify-center py-4">
       {/* //item */}
       {formStepItems.map((item) => (
         <div className="flex flex-col items-center w-[140px]">
-          {item.index == step ? (
+          {item.index == step ||
+          (step < item.index && item.index == formStepItems[0].index) ||
+          (step > item.index &&
+            item.index == formStepItems[formStepItems.length - 1].index) ? (
             <div>
               <svg
                 width="16"
@@ -44,26 +54,48 @@ export default function FormStepComponent({
           ) : (
             <div className="bg-transparent h-[15px] w-[15px]"></div>
           )}
+
+          {/* step icon */}
+          {/* {
+            item.id
+          } */}
           <div className="w-full mb-[13px] flex  items-center">
             <div
               className={`${
                 item.index === formStepItems[0].index ? "" : "bg-[#AAAAAA]"
               } h-[1px] w-full`}
             ></div>
-            {item.index < step && (
-              <div className="rounded-full h-[33px] w-[33px] flex items-center justify-center border border-[#AAAAAA] bg-[#636363] p-1">
-                <div className="bg-white rounded-full h-[22.69px] w-[22.69px] flex items-center justify-center border border-[#AAAAAA]">
-                  <span className="text-[#636363]">{item.index}</span>
+
+            {item.index < step &&
+              (step > formStepItems.length &&
+              item.index === formStepItems.length ? (
+                <div className="rounded-full h-[33px] w-[33px] flex items-center justify-center border border-[#AAAAAA] bg-[#2FB755] p-1">
+                  <div className="bg-white rounded-full h-[22.69px] w-[22.69px] flex items-center justify-center border border-[#AAAAAA]">
+                    <span className="text-[#2FB755]">{item.index}</span>
+                  </div>
                 </div>
-              </div>
-            )}
-            {item.index > step && (
-              <div className="bg-white rounded-full h-[33px] w-[33px] flex items-center justify-center border border-[#AAAAAA] p-1">
-                <div className="bg-white rounded-full h-[22.69px] w-[22.69px] flex items-center justify-center border border-[#AAAAAA]">
-                  <span className="text-[#636363]">{item.index}</span>
+              ) : (
+                <div className="bg-[#636363] rounded-full h-[33px] w-[33px] flex items-center justify-center border border-[#AAAAAA]  p-1">
+                  <div className="bg-white rounded-full h-[22.69px] w-[22.69px] flex items-center justify-center border border-[#AAAAAA]">
+                    <span className="text-[#636363]">{item.index}</span>
+                  </div>
                 </div>
-              </div>
-            )}
+              ))}
+            {item.index > step &&
+              (step < formStepItems[0].index &&
+              item.index === formStepItems[0].index ? (
+                <div className="rounded-full h-[33px] w-[33px] flex items-center justify-center border border-[#AAAAAA] bg-[#2FB755] p-1">
+                  <div className="bg-white rounded-full h-[22.69px] w-[22.69px] flex items-center justify-center border border-[#AAAAAA]">
+                    <span className="text-[#2FB755]">{item.index}</span>
+                  </div>
+                </div>
+              ) : (
+                <div className="bg-white rounded-full h-[33px] w-[33px] flex items-center justify-center border border-[#AAAAAA] p-1">
+                  <div className="bg-white rounded-full h-[22.69px] w-[22.69px] flex items-center justify-center border border-[#AAAAAA]">
+                    <span className="text-[#636363]">{item.index}</span>
+                  </div>
+                </div>
+              ))}
             {item.index == step && (
               <div className="rounded-full h-[33px] w-[33px] flex items-center justify-center border border-[#AAAAAA] bg-[#2FB755] p-1">
                 <div className="bg-white rounded-full h-[22.69px] w-[22.69px] flex items-center justify-center border border-[#AAAAAA]">
@@ -79,6 +111,8 @@ export default function FormStepComponent({
               } h-[1px] w-full `}
             ></div>
           </div>
+
+          {/* Step label */}
           <div className="w-full px-4 text-center">
             <span className="uppercase text-center text-[#636363] leaqding-[13px] text-sm font-normal ">
               {item.label}
