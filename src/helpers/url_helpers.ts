@@ -7,13 +7,13 @@ const urls = {
   REQUESTS: "/requests",
   REQUEST_ACTIVITIES: "/requests/activities",
 
-  // Branches
+  // Productes
   INVESTMENT: "/branch",
 
   // Validate
   VALIDATE_NAME: "/validate-name",
   VALIDATE_ADDRESS: "/validate-address",
-  GET_TEMPLATE: "/Branch/template"
+  GET_TEMPLATE: "/Product/template"
 };
 
 export default urls;

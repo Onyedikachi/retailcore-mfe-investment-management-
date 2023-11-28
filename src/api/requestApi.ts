@@ -103,7 +103,7 @@ export const requestApi = createApi({
         };
       },
     }),
-    updateBranchRequest: builder.mutation<any, any>({
+    updateProductRequest: builder.mutation<any, any>({
       query: (data) => {
         return {
           url: `${urls.REQUESTS}/edit/${data.id}`,
@@ -112,7 +112,7 @@ export const requestApi = createApi({
         };
       },
     }),
-    updateBulkBranchRequest: builder.mutation<any, any>({
+    updateBulkProductRequest: builder.mutation<any, any>({
       query: (data) => {
         return {
           url: `${urls.REQUESTS}/edit-bulk/${data.id}`,
@@ -136,6 +136,6 @@ export const {
   useApproveRequestMutation,
   useRejectRequestMutation,
   useDeleteRequestMutation,
-  useUpdateBranchRequestMutation,
-  useUpdateBulkBranchRequestMutation,
+  useUpdateProductRequestMutation,
+  useUpdateBulkProductRequestMutation,
 } = requestApi;

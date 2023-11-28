@@ -1,14 +1,14 @@
 import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect"; // Import this for additional matchers
-import BranchSearch, { classNames } from "../../components/BranchSearch";
+import ProductSearch, { classNames } from "../../components/ProductSearch";
 import userEvent from "@testing-library/user-event";
 
 describe("search input", () => {
   it("calls setSearchTerm function with debounce on input change", async () => {
     const setSearchTerm = jest.fn();
     const { getByPlaceholderText } = render(
-      <BranchSearch
+      <ProductSearch
         placeholder={"Search by branch name or code"}
         options={[
           {
@@ -77,19 +77,19 @@ const options = [
   { id: 2, name: "Option 2" },
 ];
 
-describe("BranchSearch", () => {
+describe("ProductSearch", () => {
   it("renders without crashing", () => {
-    render(<BranchSearch options={options} placeholder={""} />);
+    render(<ProductSearch options={options} placeholder={""} />);
     expect(screen.getByRole("combobox")).toBeInTheDocument();
   });
 
   it("shows placeholder text", () => {
-    render(<BranchSearch placeholder="Select..." options={options} />);
+    render(<ProductSearch placeholder="Select..." options={options} />);
     expect(screen.getByPlaceholderText("Select...")).toBeInTheDocument();
   });
 
   it("filters options by search query", () => {
-    render(<BranchSearch options={options} placeholder={""} />);
+    render(<ProductSearch options={options} placeholder={""} />);
 
     userEvent.type(screen.getByTestId("input"), "option 1");
 
@@ -100,7 +100,7 @@ describe("BranchSearch", () => {
  
 });
 
-describe('BranchSearch', () => {
+describe('ProductSearch', () => {
   const mockOptions = [
     { id: 1, name: 'Option 1' },
     { id: 2, name: 'Option 2' },
@@ -109,7 +109,7 @@ describe('BranchSearch', () => {
 
   it('renders the component with placeholder', () => {
     render(
-      <BranchSearch
+      <ProductSearch
         placeholder="Select an option"
         options={mockOptions}
         handleOptions={jest.fn()}
@@ -122,7 +122,7 @@ describe('BranchSearch', () => {
 
   it('displays options when typing in the input', () => {
     render(
-      <BranchSearch
+      <ProductSearch
         placeholder="Select an option"
         options={mockOptions}
 
@@ -143,7 +143,7 @@ describe('BranchSearch', () => {
 
   it('applies the correct class when an option is active', () => {
     render(
-      <BranchSearch
+      <ProductSearch
         placeholder="Select an option"
         options={mockOptions}
         handleOptions={jest.fn()}
@@ -162,7 +162,7 @@ describe('BranchSearch', () => {
 
   it('applies the correct class when an option is selected', () => {
     render(
-      <BranchSearch
+      <ProductSearch
         placeholder="Select an option"
         options={mockOptions}
         handleOptions={jest.fn()}

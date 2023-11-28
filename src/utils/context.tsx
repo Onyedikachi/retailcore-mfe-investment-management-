@@ -31,10 +31,10 @@ interface branchDeactivationContextProps {
 }
 
 interface ISummaryContextProps {
-  // branchesList: Array<any>;
+  // productsList: Array<any>;
   branch?: any;
-  bulkBranchData?: any;
-  setBulkBranchData?: (e: any) => void;
+  bulkProductData?: any;
+  setBulkProductData?: (e: any) => void;
   requestData?: any;
   bulkQueryFetching?: boolean;
   formData?: any;
@@ -76,7 +76,7 @@ export const InvestmentContext = createContext<ContextProps>({
   setRole: () => {},
 });
 
-export const BranchDeactivationContext =
+export const ProductDeactivationContext =
   createContext<branchDeactivationContextProps>({
     stage: null,
     setStage: () => {},
@@ -84,10 +84,10 @@ export const BranchDeactivationContext =
 
 export const SummaryContextProps = createContext<ISummaryContextProps>({
   branch: null,
-  setBulkBranchData: () => {},
+  setBulkProductData: () => {},
   requestData: null,
   bulkQueryFetching: false,
-  bulkBranchData: null,
+  bulkProductData: null,
   formData: null,
   uploadData: [],
 });

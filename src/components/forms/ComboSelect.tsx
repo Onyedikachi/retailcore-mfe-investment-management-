@@ -7,8 +7,8 @@ import Checkbox from "./Checkbox";
 const options = [
   {
     id: 1,
-    name: "Branch 1",
-    value: "Branch 1",
+    name: "Product 1",
+    value: "Product 1",
     branchMembers: [
       { id: 1, name: "John Snow", value: "John Snow" },
       { id: 2, name: "Jamie Lanister", value: "Jamie Lanister" },
@@ -17,14 +17,14 @@ const options = [
   },
   {
     id: 2,
-    name: "Branch 2",
-    value: "Branch 2",
+    name: "Product 2",
+    value: "Product 2",
     branchMembers: [{ id: 4, name: "Jamie Lanister", value: "Jamie Lanister" }],
   },
   {
     id: 3,
-    name: "Branch 3",
-    value: "Branch 3",
+    name: "Product 3",
+    value: "Product 3",
     branchMembers: [
       { id: 8, name: "Cersie Lanister", value: "Cersie Lanister" },
     ],
@@ -68,42 +68,42 @@ export function handleMemberToggle(
   selectedOptions
 ) {
   // Get index of the branch to update
-  const branchIndex = getBranchIndex(selectedOptions, branchId);
+  const branchIndex = getProductIndex(selectedOptions, branchId);
 
   if (branchIndex === -1) {
-    // Branch not found - add new branch with member
-    const newBranch = createBranch(branchId, [memberId]);
-    return addNewBranch(selectedOptions, newBranch);
+    // Product not found - add new branch with member
+    const newProduct = createProduct(branchId, [memberId]);
+    return addNewProduct(selectedOptions, newProduct);
   } else {
-    // Branch found - update members
+    // Product found - update members
 
     const branchToUpdate = selectedOptions[branchIndex];
 
     if (branchContainsMember(branchToUpdate, memberId)) {
       // Member already selected, remove member
-      return removeMemberFromBranch(selectedOptions, branchIndex, memberId);
+      return removeMemberFromProduct(selectedOptions, branchIndex, memberId);
     } else {
       // Member not selected, add member
-      return addMemberToBranch(selectedOptions, branchIndex, memberId);
+      return addMemberToProduct(selectedOptions, branchIndex, memberId);
     }
   }
 }
 
 // Helper functions
 
-export function getBranchIndex(branches, branchId) {
-  return branches.findIndex((t) => t.branch === branchId);
+export function getProductIndex(products, branchId) {
+  return products.findIndex((t) => t.branch === branchId);
 }
 
-export function createBranch(id, members) {
+export function createProduct(id, members) {
   return {
     branch: id,
     members,
   };
 }
 
-export function addNewBranch(branches, newBranch) {
-  return [...branches, newBranch];
+export function addNewProduct(products, newProduct) {
+  return [...products, newProduct];
 }
 
 export function branchContainsMember(branch, memberId) {
@@ -112,39 +112,39 @@ export function branchContainsMember(branch, memberId) {
 
 /**
  * Adds a member to a branch in the selected options array
- * @param {Array} branches
+ * @param {Array} products
  * @param {number} branchIndex
  * @param {string} memberId
- * @returns {Array} updated branches array
+ * @returns {Array} updated products array
  */
-export function addMemberToBranch(branches, branchIndex, memberId) {
-  const branchToUpdate = branches[branchIndex];
+export function addMemberToProduct(products, branchIndex, memberId) {
+  const branchToUpdate = products[branchIndex];
 
-  const updatedBranch = {
+  const updatedProduct = {
     ...branchToUpdate,
     members: [...branchToUpdate.members, memberId],
   };
 
   return [
-    ...branches.slice(0, branchIndex),
-    updatedBranch,
-    ...branches.slice(branchIndex + 1),
+    ...products.slice(0, branchIndex),
+    updatedProduct,
+    ...products.slice(branchIndex + 1),
   ];
 }
 
 /**
  * Removes a member from a branch in the selected options array
- * @param {Array} branches
+ * @param {Array} products
  * @param {number} branchIndex
  * @param {string} memberId
- * @returns {Array} updated branches array
+ * @returns {Array} updated products array
  */
-export function removeMemberFromBranch(branches, branchIndex, memberId) {
-  const branchToUpdate = branches[branchIndex];
+export function removeMemberFromProduct(products, branchIndex, memberId) {
+  const branchToUpdate = products[branchIndex];
 
   const updatedMembers = branchToUpdate.members.filter((id) => id !== memberId);
 
-  const updatedBranch = {
+  const updatedProduct = {
     ...branchToUpdate,
     members: updatedMembers,
   };
@@ -152,15 +152,15 @@ export function removeMemberFromBranch(branches, branchIndex, memberId) {
   if (updatedMembers.length === 0) {
     // Last member removed, remove branch
     return [
-      ...branches.slice(0, branchIndex),
-      ...branches.slice(branchIndex + 1),
+      ...products.slice(0, branchIndex),
+      ...products.slice(branchIndex + 1),
     ];
   } else {
     // Update branch in place
     return [
-      ...branches.slice(0, branchIndex),
-      updatedBranch,
-      ...branches.slice(branchIndex + 1),
+      ...products.slice(0, branchIndex),
+      updatedProduct,
+      ...products.slice(branchIndex + 1),
     ];
   }
 }

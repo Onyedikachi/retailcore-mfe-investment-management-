@@ -55,7 +55,7 @@
 
 // export function handleViewNav(item: any, navigate) {
 //   if (item.request_type === "BULK_CREATE") {
-//     const routeState = "Bulk Branch Creation Review";
+//     const routeState = "Bulk Product Creation Review";
 //     navigate(
 //       `/branch-management/bulk-branch-creation-view/summary/${item.id}/view?status=show`,
 //       { state: routeState }
@@ -63,7 +63,7 @@
 //     return;
 //   }
 //   if (item.request_type === "CREATE") {
-//     const routeState = "Branch Creation Review";
+//     const routeState = "Product Creation Review";
 //     navigate(
 //       `/branch-management/branch-creation-view/summary/${item.id}/view`,
 //       {
@@ -127,7 +127,7 @@
 //           : "request_modify"
 //       }/${item?.request_type === "BULK_CREATE" ? "bulk" : "single"}/${
 //         item?.id
-//       }/${item?.branches[0]?.id}?type=${e.toLowerCase() === "modify" ? "issue" : "draft"}&branchId=${item?.branches[0]?.id}`
+//       }/${item?.products[0]?.id}?type=${e.toLowerCase() === "modify" ? "issue" : "draft"}&branchId=${item?.products[0]?.id}`
 //     );
 //   }
 // }
@@ -167,7 +167,7 @@
 //     navigate(
 //       `/branch-management/request/modify/${
 //         detail?.request_type === "BULK_CREATE" ? "bulk" : "single"
-//       }/${detail?.id}/${detail?.branches[0]?.id}?type=pending`
+//       }/${detail?.id}/${detail?.products[0]?.id}?type=pending`
 //     );
 //   }
 // }
@@ -183,7 +183,7 @@
 // }): React.JSX.Element {
 //   interface RequestDataProps {
 //     [x: string]: any;
-//     branches: any;
+//     products: any;
 //     name: any;
 //     id: any;
 //     request: string;

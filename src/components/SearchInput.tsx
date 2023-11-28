@@ -37,16 +37,16 @@ export default function SearchInput({
 
   return (
     <div
-      className={`border-b border-[#AAAAAA]  flex items-center relative bg-transparent
-       ${fullW ? "" : "max-w-[300px]"} ${
+      className={`border-b border-[#AAAAAA]  flex items-center relative bg-transparent shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]
+       ${fullW ? "" : "max-w-[340px]"} ${
         hideBorder
           ? ""
           : "after:content-[''] after:w-1 after:h-[80%] after:absolute after:border-r after:right-[-15px] after:top-1/2 after:translate-y-[-50%] after:border-[#E5E9EB]"
       }`}
     >
-      <span className="w-8 h-8 flex items-center justify-center">
+      <button className="w-8 h-8 p-1 flex items-center justify-center">
         <FaSearch className="text-[#48535B]" />
-      </span>
+      </button>
       <div className="relative group flex-1">
         <input
           onChange={(e) =>
@@ -59,7 +59,7 @@ export default function SearchInput({
             isTruncated
               ? "text-transparent group-hover:text-[#48535B] focus:text-[#48535B] hover:appearance-none"
               : "text-[#48535B]"
-          } ${fullW ? "w-full" : "w-[294px]"}`}
+          } ${fullW ? "w-full" : "w-[280px]"}`}
         />
         {isTruncated && (
           <span className="peer-focus:text-transparent group-hover:text-transparent text-[#48535B] block max-w-[180px] truncate absolute top-1 left-1">

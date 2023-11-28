@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { ExportToCsv } from "export-to-csv";
 import { HiRefresh, HiDownload } from "react-icons/hi";
-// import { RequestTable, BranchTable } from "./tables";
+// import { RequestTable, ProductTable } from "./tables";
 import { StatusCategoryType } from "../../../constants/enums";
 import moment from "moment";
 import {
@@ -22,7 +22,7 @@ interface RequestDataProps {
   "updated on": string;
 }
 
-interface BranchDataProps {
+interface ProductDataProps {
   "branch name": string;
   "branch code": string;
   status: string;
@@ -54,7 +54,7 @@ export function handleDownload(downloadData, isChecker, csvExporter, category) {
 
     const branchData = downloadData.map((i) => {
       // @ts-ignore
-      let obj: BranchDataProps = {
+      let obj: ProductDataProps = {
         "branch name": i?.name || "",
         "branch code": i?.code || "",
         status: handleUserView(i?.status, isChecker),
@@ -85,8 +85,8 @@ export default function TableComponent() {
     decimalSeparator: ".",
     showLabels: true,
     showTitle: false,
-    title: "Branch management",
-    filename: StatusCategoryType?.AllBranches ? "branches" : "requests",
+    title: "Product management",
+    filename: StatusCategoryType?.AllProductes ? "products" : "requests",
     useTextFile: false,
     useBom: true,
     useKeysAsHeaders: true,
@@ -101,9 +101,9 @@ export default function TableComponent() {
       decimalSeparator: ".",
       showLabels: true,
       showTitle: false,
-      title: "Branch management",
+      title: "Product management",
       filename:
-        category === StatusCategoryType?.AllBranches ? "branches" : "requests",
+        category === StatusCategoryType?.AllProductes ? "products" : "requests",
       useTextFile: false,
       useBom: true,
       useKeysAsHeaders: true,
@@ -130,7 +130,7 @@ export default function TableComponent() {
         <div>
           {/* download button  */}{" "}
           {((permissions?.includes("VIEW_ALL_BRANCH_RECORDS") &&
-            category === StatusCategoryType?.AllBranches) ||
+            category === StatusCategoryType?.AllProductes) ||
             (permissions?.includes("VIEW_ALL_BRANCH_REQUESTS") &&
               category === StatusCategoryType?.Requests)) && (
             <button
@@ -148,9 +148,9 @@ export default function TableComponent() {
 
       {/* main table  */}
 
-      {/* {category === StatusCategoryType?.AllBranches ? (
+      {/* {category === StatusCategoryType?.AllProductes ? (
         <div data-testid="branch-table" className="h-full">
-          <BranchTable
+          <ProductTable
             refresh={refresh}
             setRefresh={setRefresh}
             setDownloadData={setDownloadData}

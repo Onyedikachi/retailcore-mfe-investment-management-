@@ -1,7 +1,7 @@
 export const StatusCategories = [
   {
     id: 1,
-    type: "all branches",
+    type: "all products",
   },
   {
     id: 2,
@@ -82,7 +82,7 @@ export const CheckerStatusRequests = [
   },
 ];
 
-export const BranchOptions = [
+export const ProductOptions = [
   {
     id: 1,
     text: "Created by me",

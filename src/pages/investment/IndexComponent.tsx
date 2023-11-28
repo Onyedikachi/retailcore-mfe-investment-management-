@@ -23,7 +23,7 @@ export function handleToggle(selected, setIsChecker, setHideCreate) {
 }
 export default function IndexComponent() {
   const [category, setCategory] = useState<string>(
-    StatusCategoryType?.AllBranches
+    StatusCategoryType?.AllProductes
   );
 
   const [selected, setSelected] = useState<any>("");
@@ -95,7 +95,7 @@ export default function IndexComponent() {
         <TopBar />
         <div className="px-8 flex gap-x-5 w-full flex-1 py-7">
           <div className="flex flex-col gap-y-7 w-calc overflow-auto">
-            {/* <StatusCard /> */}
+            <StatusCard data={[]} requests={[]} />
 
             <div className="bg-white px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16">
               {" "}
