@@ -30,7 +30,7 @@ describe("downloadUsingFetch", () => {
     await downloadUsingFetch();
 
     expect(mockFetch).toHaveBeenCalledWith(
-      "https://dev2-retailcore-teams-management-api.dev.bepeerless.co/v1/Branch/template"
+      "https://dev2-retailcore-teams-management-api.dev.bepeerless.co/v1/Product/template"
     );
 
     expect(mockResponse.blob).toHaveBeenCalled();

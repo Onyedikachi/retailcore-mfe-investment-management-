@@ -8,7 +8,7 @@ export let ProviderValue = {
   },
   setSelected: jest.fn(),
   setIsChecker: jest.fn(),
-  category: "all branches",
+  category: "all products",
   setCategory: jest.fn(),
   setStatus: jest.fn(),
   status: "",

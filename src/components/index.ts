@@ -8,4 +8,4 @@ export { default as TopBar } from "./TopBar";
 export { default as StatusCard } from "./StatusCard";
 export { default as TableComponent } from "./investment/dashboard/TableComponent";
 export { default as QuickLinks } from "./QuickLinks";
-export { default as BranchSearch } from "./BranchSearch";
+export { default as ProductSearch } from "./ProductSearch";

@@ -7,9 +7,9 @@ export const FormSchema = yup
       .string()
       .matches(
         branchNameRegex,
-        "Branch name can only contain alphabets, numbers, and space characters"
+        "Product name can only contain alphabets, numbers, and space characters"
       )
-      .required("Branch name is required")
+      .required("Product name is required")
       .min(3)
       .max(50, "Maximum of 50 chars"),
     description: yup.string().nullable(),

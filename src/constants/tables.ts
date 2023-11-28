@@ -1,6 +1,6 @@
 export const isChecker: boolean = true;
 
-export const BranchTableHeaders: { hasFilter: boolean; text: string }[] = [
+export const ProductTableHeaders: { hasFilter: boolean; text: string }[] = [
   { hasFilter: false, text: "branch name" },
   { hasFilter: false, text: "branch code" },
   { hasFilter: false, text: "location" },
@@ -9,7 +9,7 @@ export const BranchTableHeaders: { hasFilter: boolean; text: string }[] = [
   { hasFilter: true, text: "updated on" },
   { hasFilter: false, text: "" },
 ];
-export const BulkBranchHeaders: { hasFilter: boolean; text: string }[] = [
+export const BulkProductHeaders: { hasFilter: boolean; text: string }[] = [
   { hasFilter: false, text: "s/n" },
   { hasFilter: false, text: "branch name" },
   { hasFilter: false, text: "generated branch code" },
@@ -344,108 +344,108 @@ export const LastRequestReviewStatus = [
     status: "A",
     type: "single",
     request_type: "CREATE",
-    text: "Branch creation approved",
+    text: "Product creation approved",
   },
   {
     status: "R",
     type: "single",
     request_type: "CREATE",
-    text: "Branch creation rejected",
+    text: "Product creation rejected",
   },
   {
     status: "P",
     type: "both",
     request_type: "CREATE",
-    text: "Branch creation awaiting approval",
+    text: "Product creation awaiting approval",
   },
   {
     status: "A",
     type: "bulk",
     request_type: "BULK_CREATE",
-    text: "Bulk Branch creation approved",
+    text: "Bulk Product creation approved",
   },
   {
     status: "R",
     type: "bulk",
     request_type: "BULK_CREATE",
-    text: "Bulk Branch creation rejected",
+    text: "Bulk Product creation rejected",
   },
   {
     status: "P",
     type: "bulk",
     request_type: "BULK_CREATE",
-    text: "Bulk Branch awaiting approval",
+    text: "Bulk Product awaiting approval",
   },
   {
     status: "A",
     type: "both",
     request_type: "BULK_CREATE",
-    text: "Branch creation approved",
+    text: "Product creation approved",
   },
   {
     status: "P",
     type: "both",
     request_type: "BULK_CREATE",
-    text: "Branch creation awaiting approval",
+    text: "Product creation awaiting approval",
   },
   {
     status: "R",
     type: "both",
     request_type: "CHANGE",
-    text: "Branch modification rejected",
+    text: "Product modification rejected",
   },
   {
     status: "P",
     type: "both",
     request_type: "CHANGE",
-    text: "Branch modification awaiting approval",
+    text: "Product modification awaiting approval",
   },
   {
     status: "R",
     type: "both",
     request_type: "CHANGE",
-    text: "Branch modification rejected",
+    text: "Product modification rejected",
   },
   {
     status: "A",
     type: "both",
     request_type: "CHANGE",
-    text: "Branch modification approved",
+    text: "Product modification approved",
   },
   {
     status: "R",
     type: "both",
     request_type: "DEACTIVATE",
-    text: "Branch deactivation rejected",
+    text: "Product deactivation rejected",
   },
   {
     status: "P",
     type: "both",
     request_type: "DEACTIVATE",
-    text: "Branch deactivation pending",
+    text: "Product deactivation pending",
   },
   {
     status: "A",
     type: "both",
     request_type: "DEACTIVATE",
-    text: "Branch deactivation approved",
+    text: "Product deactivation approved",
   },
   {
     status: "R",
     type: "both",
     request_type: "REACTIVATE",
-    text: "Branch reactivation rejected",
+    text: "Product reactivation rejected",
   },
   {
     status: "P",
     type: "both",
     request_type: "REACTIVATE",
-    text: "Branch reactivation pending approval",
+    text: "Product reactivation pending approval",
   },
   {
     status: "A",
     type: "both",
     request_type: "REACTIVATE",
-    text: "Branch reactivation approved",
+    text: "Product reactivation approved",
   },
 ];

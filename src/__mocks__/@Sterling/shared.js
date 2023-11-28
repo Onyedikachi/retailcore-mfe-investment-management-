@@ -5,17 +5,17 @@ export const auth$ = {
   })),
 };
 export const AppConfig = {
-  branch: "https://retailcore-branches-management-api.dev.bepeerless.co/v1",
+  branch: "https://retailcore-investment-management-api.dev.bepeerless.co/v1",
 };
 
 export const getToken = jest.fn();
 export const isTokenValid = jest.fn();
 export const usePermission = jest.fn();
 
-export const BranchData = [
+export const ProductData = [
   {
     id: 1,
-    branchName: "Branch Royal",
+    branchName: "Product Royal",
     branchCode: "TM-01",
     description: "Leading with excellent customer se...",
     state: 1,
@@ -23,7 +23,7 @@ export const BranchData = [
   },
   {
     id: 2,
-    branchName: "Branch Sunshine",
+    branchName: "Product Sunshine",
     branchCode: "TM-02",
     description: "Leading with excellent customer se...",
     state: 0,
@@ -31,7 +31,7 @@ export const BranchData = [
   },
   {
     id: 3,
-    branchName: "Branch Pride",
+    branchName: "Product Pride",
     branchCode: "TM-03",
     description: "Leading with excellent customer se...",
     state: 1,

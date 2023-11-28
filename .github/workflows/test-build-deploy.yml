@@ -4,14 +4,14 @@ concurrency:
 on:
   pull_request:
       types: [opened, synchronize, reopened, closed]
-      branches:
+      products:
         - dev
         - dev2
         - qa
         - staging
         - main
   push:
-    branches:
+    products:
       - dev
       - qa
       - staging
