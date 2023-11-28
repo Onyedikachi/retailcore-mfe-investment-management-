@@ -4,8 +4,9 @@ import { Link } from "react-router-dom";
 import Button from "./Button";
 import { InvestmentContext, AppContext } from "../utils/context";
 import { StatusCategoryType } from "@app/constants/enums";
-import CasadingDropdown from "../components/ui/CasadingDropdown";
-// import CascadingMenu from "../components/ui/CascadingMenu";
+
+import CreateButton from "./CreateButton";
+
 
 export default function TopBar() {
   const { isChecker, category } = useContext(InvestmentContext);
@@ -77,7 +78,16 @@ export default function TopBar() {
         }
       />
 
-      {/* <CascadingMenu /> */}
+
+      <CreateButton>
+        <Button className="bg-sterling-red-800">
+          <span className="p-[5px]">
+            <HiPlus fontSize={14} />
+          </span>{" "}
+          Create new product
+        </Button>
+      </CreateButton>
+
     </div>
   );
 }
