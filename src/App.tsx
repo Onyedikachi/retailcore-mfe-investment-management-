@@ -12,7 +12,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route
-            path="/investment"
+            path="/investment-management"
             element={<Layout data-testid="outlet" />}
           >
             <Route index element={<InvestmentManagement />} />
