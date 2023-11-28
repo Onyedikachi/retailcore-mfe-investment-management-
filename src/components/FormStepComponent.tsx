@@ -2,8 +2,8 @@ import React from "react";
 import { formStepItem } from "@app/types/index";
 
 type FormStepComponentPropType = {
-  step: number;
-  formStepItems: formStepItem[];
+  step?: number;
+  formStepItems?: formStepItem[];
 };
 
 export default function FormStepComponent({
