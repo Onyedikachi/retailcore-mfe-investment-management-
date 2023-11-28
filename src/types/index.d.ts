@@ -41,7 +41,7 @@ export interface StatusCardProps {
 }
 
 export enum StatusCategoryType {
-  AllBranches = "all branches",
+  AllProductes = "all products",
   Requests = "requests",
   // Add other category types here
 }

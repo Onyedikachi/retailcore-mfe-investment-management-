@@ -8,13 +8,13 @@ import {
   CheckerStatusRequests,
   StatusRequests,
   StatusCategories,
-  BranchOptions,
+  ProductOptions,
   RequestOptions,
 } from "@app/constants";
 import { useSearchParams } from "react-router-dom";
 // import { useGetRequestAnalyticsQuery } from "@app/api/requestApi";
 
-export function filterAllBranchesOptions(): any[] {
+export function filterAllProductesOptions(): any[] {
   return StatusTypes;
 }
 
@@ -28,8 +28,8 @@ export function filterDefaultOptions(): any[] {
 
 // Main sorting function
 export function sortOptions(category: string, isChecker: boolean): any[] {
-  if (category === StatusCategoryType.AllBranches) {
-    return filterAllBranchesOptions();
+  if (category === StatusCategoryType.AllProductes) {
+    return filterAllProductesOptions();
   }
 
   if (isChecker) {
@@ -153,19 +153,19 @@ export function handleActiveType(activeType, setStatus) {
 export function handlePermission(
   setFilteredRequestOptions,
   permissions,
-  BranchOptions,
+  ProductOptions,
   RequestOptions,
-  setFilteredBranchOptions
+  setFilteredProductOptions
 ) {
   if (!permissions?.length) return;
   if (
     permissions?.includes("VIEW_ALL_BRANCH_RECORDS") ||
     permissions?.includes("APPROVE_BRANCH_REQUESTS")
   ) {
-    setFilteredBranchOptions(BranchOptions);
+    setFilteredProductOptions(ProductOptions);
   } else {
-    setFilteredBranchOptions(
-      BranchOptions.map((i: any) => {
+    setFilteredProductOptions(
+      ProductOptions.map((i: any) => {
         if (i.value === "created_by_anyone") {
           i.disabled = true;
         }
@@ -195,19 +195,19 @@ export function handlePermission(
     );
   }
 }
-export default function StatusCard(): React.JSX.Element {
+export default function StatusCard({data, requests}: any): React.JSX.Element {
   // const { permissions } = useContext(AppContext);
   const [searchParams] = useSearchParams();
   const queryCategory = searchParams.get("category");
   const [activeType, setActiveType] = useState<string | undefined>("all");
-  const [branchFilter, setBranchFilter] = useState<string | undefined>(
+  const [productFilter, setProductFilter] = useState<string | undefined>(
     "created_by_me"
   );
   const [requestFilter, setRequestFilter] = useState<string | undefined>(
     "created_by_me"
   );
-  const [filteredBranchOptions, setFilteredBranchOptions] =
-    useState(BranchOptions);
+  const [filteredProductOptions, setFilteredProductOptions] =
+    useState(ProductOptions);
   const [filteredRequestOptions, setFilteredRequestOptions] =
     useState(RequestOptions);
   const {
@@ -222,12 +222,12 @@ export default function StatusCard(): React.JSX.Element {
   } = useContext(InvestmentContext);
   const { permissions } = useContext(AppContext);
 
-  const { data, refetch: branchRefetch } = useGetBranchAnalyticsQuery({
-    filter_by: branchFilter,
-  });
+  // const { data, refetch: productRefetch } = useGetProductAnalyticsQuery({
+  //   filter_by: productFilter,
+  // });
 
-  const { data: requests, refetch: requestRefetch } =
-    useGetRequestAnalyticsQuery({ filter_by: requestFilter });
+  // const { data: requests, refetch: requestRefetch } =
+  //   useGetRequestAnalyticsQuery({ filter_by: requestFilter });
 
   // Get select value
   function handleSelected(value: any) {
@@ -236,12 +236,12 @@ export default function StatusCard(): React.JSX.Element {
   }
 
   useEffect(() => {
-    if (category === StatusCategoryType.AllBranches) {
-      setBranchFilter(selected?.value);
-      branchRefetch();
+    if (category === StatusCategoryType.AllProductes) {
+      setProductFilter(selected?.value);
+      // productRefetch();
     } else {
       setRequestFilter(selected?.value);
-      requestRefetch();
+      // requestRefetch();
     }
   }, [selected?.value, category]);
 
@@ -263,17 +263,17 @@ export default function StatusCard(): React.JSX.Element {
   }, [selected]);
 
   useEffect(() => {
-    branchRefetch();
-    requestRefetch();
+    // productRefetch();
+    // requestRefetch();
   }, [isRefreshing]);
 
   useEffect(() => {
     handlePermission(
       setFilteredRequestOptions,
       permissions,
-      BranchOptions,
+      ProductOptions,
       RequestOptions,
-      setFilteredBranchOptions
+      setFilteredProductOptions
     );
   }, [permissions, category]);
   return (
@@ -297,7 +297,7 @@ export default function StatusCard(): React.JSX.Element {
               isActive={activeType === item.type}
               setActiveType={setActiveType}
               analyticsData={
-                category === StatusCategoryType.AllBranches ? data : requests
+                category === StatusCategoryType.AllProductes ? data : requests
               }
             />
           ))}
@@ -305,8 +305,8 @@ export default function StatusCard(): React.JSX.Element {
         <div>
           <Select
             options={
-              category === StatusCategoryType?.AllBranches
-                ? filteredBranchOptions
+              category === StatusCategoryType?.AllProductes
+                ? filteredProductOptions
                 : filteredRequestOptions
             }
             handleSelected={(value: any) => handleSelected(value)}
@@ -316,7 +316,7 @@ export default function StatusCard(): React.JSX.Element {
     </div>
   );
 }
-function useGetBranchAnalyticsQuery(arg0: { filter_by: string }): {
+function useGetProductAnalyticsQuery(arg0: { filter_by: string }): {
   data: any;
   refetch: any;
 } {
