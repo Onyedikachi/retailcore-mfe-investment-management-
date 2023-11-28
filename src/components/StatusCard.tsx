@@ -12,7 +12,7 @@ import {
   RequestOptions,
 } from "@app/constants";
 import { useSearchParams } from "react-router-dom";
-import { useGetRequestAnalyticsQuery } from "@app/api/requestApi";
+// import { useGetRequestAnalyticsQuery } from "@app/api/requestApi";
 
 export function filterAllBranchesOptions(): any[] {
   return StatusTypes;
@@ -316,7 +316,16 @@ export default function StatusCard(): React.JSX.Element {
     </div>
   );
 }
-function useGetBranchAnalyticsQuery(arg0: { filter_by: string; }): { data: any; refetch: any; } {
+function useGetBranchAnalyticsQuery(arg0: { filter_by: string }): {
+  data: any;
+  refetch: any;
+} {
   throw new Error("Function not implemented.");
 }
 
+function useGetRequestAnalyticsQuery(arg0: { filter_by: string }): {
+  data: any;
+  refetch: any;
+} {
+  throw new Error("Function not implemented.");
+}

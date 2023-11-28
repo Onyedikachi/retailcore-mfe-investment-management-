@@ -11,7 +11,7 @@ export default function TopBar() {
 
   return (
     <div className="bg-white px-8 py-[52px] w-full border border-[#E5E9EB] min-h-[198px] flex gap-x-9 items-center border-t-0">
-      <h1 className="text-[#636363] text-5xl font-bold">Branch Management</h1>
+      <h1 className="text-[#636363] text-5xl font-bold">Product Factory</h1>
 
       {!isChecker &&
         category === StatusCategoryType.AllBranches &&
@@ -21,7 +21,7 @@ export default function TopBar() {
               <span className="p-[5px]">
                 <HiPlus fontSize={14} />
               </span>{" "}
-              Create new branch
+              Create new product
             </Button>
           </Link>
         )}
