@@ -50,3 +50,9 @@ export enum StatusItemType {
   Type = "type",
   Request = "request",
 }
+
+export interface formStepItem {
+  id: number;
+  label: string;
+  index: number;
+}
