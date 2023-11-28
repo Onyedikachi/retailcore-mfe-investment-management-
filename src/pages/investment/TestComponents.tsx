@@ -1,6 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
-import FormStepComponent from "../../components/ui/FormStepComponent";
+import FormStepComponent from "@app/components/FormStepComponent";
 
 export default function TestComponent() {
   const [step, setStep] = useState(2);
