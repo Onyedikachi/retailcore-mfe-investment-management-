@@ -1,5 +1,5 @@
 export enum StatusCategoryType {
-  AllProductes = "all products",
+  AllProducts = "all products",
   Requests = "requests",
   // Add other category types here
 }

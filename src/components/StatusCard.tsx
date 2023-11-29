@@ -14,7 +14,7 @@ import {
 import { useSearchParams } from "react-router-dom";
 // import { useGetRequestAnalyticsQuery } from "@app/api/requestApi";
 
-export function filterAllProductesOptions(): any[] {
+export function filterAllProductsOptions(): any[] {
   return StatusTypes;
 }
 
@@ -28,8 +28,8 @@ export function filterDefaultOptions(): any[] {
 
 // Main sorting function
 export function sortOptions(category: string, isChecker: boolean): any[] {
-  if (category === StatusCategoryType.AllProductes) {
-    return filterAllProductesOptions();
+  if (category === StatusCategoryType.AllProducts) {
+    return filterAllProductsOptions();
   }
 
   if (isChecker) {
@@ -195,7 +195,11 @@ export function handlePermission(
     );
   }
 }
-export default function StatusCard({data, requests}: any): React.JSX.Element {
+export default function StatusCard({
+  data,
+  requests,
+  handleChange,
+}: any): React.JSX.Element {
   // const { permissions } = useContext(AppContext);
   const [searchParams] = useSearchParams();
   const queryCategory = searchParams.get("category");
@@ -234,9 +238,8 @@ export default function StatusCard({data, requests}: any): React.JSX.Element {
     setSelected(value);
     return value;
   }
-
   useEffect(() => {
-    if (category === StatusCategoryType.AllProductes) {
+    if (category === StatusCategoryType.AllProducts) {
       setProductFilter(selected?.value);
       // productRefetch();
     } else {
@@ -244,6 +247,10 @@ export default function StatusCard({data, requests}: any): React.JSX.Element {
       // requestRefetch();
     }
   }, [selected?.value, category]);
+
+  useEffect(() => {
+    handleChange(selected?.value, category, activeType);
+  }, [selected?.value, category, activeType]);
 
   useEffect(() => {
     queryCategory && setCategory(queryCategory);
@@ -258,6 +265,7 @@ export default function StatusCard({data, requests}: any): React.JSX.Element {
       setActiveType("all");
     }
   }, [status]);
+
   useEffect(() => {
     setActiveType("all");
   }, [selected]);
@@ -297,7 +305,7 @@ export default function StatusCard({data, requests}: any): React.JSX.Element {
               isActive={activeType === item.type}
               setActiveType={setActiveType}
               analyticsData={
-                category === StatusCategoryType.AllProductes ? data : requests
+                category === StatusCategoryType.AllProducts ? data : requests
               }
             />
           ))}
@@ -305,7 +313,7 @@ export default function StatusCard({data, requests}: any): React.JSX.Element {
         <div>
           <Select
             options={
-              category === StatusCategoryType?.AllProductes
+              category === StatusCategoryType?.AllProducts
                 ? filteredProductOptions
                 : filteredRequestOptions
             }
@@ -315,17 +323,4 @@ export default function StatusCard({data, requests}: any): React.JSX.Element {
       </div>
     </div>
   );
-}
-function useGetProductAnalyticsQuery(arg0: { filter_by: string }): {
-  data: any;
-  refetch: any;
-} {
-  throw new Error("Function not implemented.");
-}
-
-function useGetRequestAnalyticsQuery(arg0: { filter_by: string }): {
-  data: any;
-  refetch: any;
-} {
-  throw new Error("Function not implemented.");
 }

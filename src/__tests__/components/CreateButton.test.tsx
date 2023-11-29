@@ -21,8 +21,15 @@ describe("closeButton", () => {
     const setSecondActive = jest.fn();
     const setThirdActive = jest.fn();
     const setFourthActive = jest.fn();
+    const setFirstActive = jest.fn();
 
-    closeButton(setIsOpen, setSecondActive, setThirdActive, setFourthActive);
+    closeButton(
+      setIsOpen,
+      setSecondActive,
+      setThirdActive,
+      setFourthActive,
+      setFirstActive
+    );
 
     expect(setIsOpen).toHaveBeenCalledWith(false);
   });
@@ -33,12 +40,20 @@ describe("closeButton", () => {
     const setSecondActive = jest.fn();
     const setThirdActive = jest.fn();
     const setFourthActive = jest.fn();
+    const setFirstActive = jest.fn();
 
-    closeButton(setIsOpen, setSecondActive, setThirdActive, setFourthActive);
+    closeButton(
+      setIsOpen,
+      setSecondActive,
+      setThirdActive,
+      setFourthActive,
+      setFirstActive
+    );
 
     expect(setSecondActive).toHaveBeenCalledWith("");
     expect(setThirdActive).toHaveBeenCalledWith("");
     expect(setFourthActive).toHaveBeenCalledWith("");
+    expect(setFirstActive).toHaveBeenCalledWith("");
   });
 
   // Function has no return value
@@ -47,12 +62,14 @@ describe("closeButton", () => {
     const setSecondActive = jest.fn();
     const setThirdActive = jest.fn();
     const setFourthActive = jest.fn();
+    const setFirstActive = jest.fn();
 
     const result = closeButton(
       setIsOpen,
       setSecondActive,
       setThirdActive,
-      setFourthActive
+      setFourthActive,
+      setFirstActive
     );
 
     expect(result).toBeUndefined();
@@ -64,9 +81,15 @@ describe("closeButton", () => {
     const setSecondActive = jest.fn();
     const setThirdActive = jest.fn();
     const setFourthActive = jest.fn();
-
+    const setFirstActive = jest.fn();
     expect(() =>
-      closeButton(setIsOpen, setSecondActive, setThirdActive, setFourthActive)
+      closeButton(
+        setIsOpen,
+        setSecondActive,
+        setThirdActive,
+        setFourthActive,
+        setFirstActive
+      )
     ).not.toThrow();
   });
 
@@ -76,9 +99,15 @@ describe("closeButton", () => {
     const setSecondActive = jest.fn();
     const setThirdActive = jest.fn();
     const setFourthActive = jest.fn();
-
+    const setFirstActive = jest.fn();
     expect(() =>
-      closeButton(setIsOpen, setSecondActive, setThirdActive, setFourthActive)
+      closeButton(
+        setIsOpen,
+        setSecondActive,
+        setThirdActive,
+        setFourthActive,
+        setFirstActive
+      )
     ).not.toThrow();
   });
 });
@@ -103,7 +132,6 @@ describe("goToUrl", () => {
 
     expect(navigate).not.toHaveBeenCalled();
   });
-
 
   // navigate function is not a function, throws an error
   it("should throw an error when navigate function is not a function", () => {
@@ -133,7 +161,6 @@ describe("CreateButton", () => {
 
   // Clicking on the button opens the dropdown menu
   it("should open the dropdown menu when the button is clicked", () => {
-  
     jest.mock("../../components/CreateButton", () => ({
       ...jest.requireActual("../../components/CreateButton"),
       goToUrl: jest.fn((url, navigate) => {
@@ -167,7 +194,7 @@ describe("CreateButton", () => {
     render(<CreateButton children={<button>Button</button>} />);
     fireEvent.click(screen.getByText("Button"));
     fireEvent.click(document);
-    console.log(screen)
+    console.log(screen);
     // expect(screen.getByText("Credit")).not.toBeInTheDocument();
     // expect(screen.getByText("Deposit")).not.toBeInTheDocument();
     // expect(screen.getByText("Investment")).not.toBeInTheDocument();

@@ -86,7 +86,7 @@ export default function TableComponent() {
     showLabels: true,
     showTitle: false,
     title: "Product management",
-    filename: StatusCategoryType?.AllProductes ? "products" : "requests",
+    filename: StatusCategoryType?.AllProducts ? "products" : "requests",
     useTextFile: false,
     useBom: true,
     useKeysAsHeaders: true,
@@ -103,7 +103,7 @@ export default function TableComponent() {
       showTitle: false,
       title: "Product management",
       filename:
-        category === StatusCategoryType?.AllProductes ? "products" : "requests",
+        category === StatusCategoryType?.AllProducts ? "products" : "requests",
       useTextFile: false,
       useBom: true,
       useKeysAsHeaders: true,
@@ -129,10 +129,10 @@ export default function TableComponent() {
         </div>{" "}
         <div>
           {/* download button  */}{" "}
-          {((permissions?.includes("VIEW_ALL_BRANCH_RECORDS") &&
-            category === StatusCategoryType?.AllProductes) ||
+          {/* {((permissions?.includes("VIEW_ALL_BRANCH_RECORDS") &&
+            category === StatusCategoryType?.AllProducts) ||
             (permissions?.includes("VIEW_ALL_BRANCH_REQUESTS") &&
-              category === StatusCategoryType?.Requests)) && (
+              category === StatusCategoryType?.Requests)) && ( */}
             <button
               onClick={() =>
                 handleDownload(downloadData, isChecker, csvExporter, category)
@@ -142,13 +142,13 @@ export default function TableComponent() {
             >
               <HiDownload className="text-lg" /> Download
             </button>
-          )}
+           {/* )} */}
         </div>
       </div>
 
       {/* main table  */}
 
-      {/* {category === StatusCategoryType?.AllProductes ? (
+      {/* {category === StatusCategoryType?.AllProducts ? (
         <div data-testid="branch-table" className="h-full">
           <ProductTable
             refresh={refresh}

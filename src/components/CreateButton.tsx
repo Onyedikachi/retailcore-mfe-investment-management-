@@ -7,9 +7,11 @@ export function closeButton(
   setIsOpen,
   setSecondActive,
   setFourthActive,
-  setThirdActive
+  setThirdActive,
+  setFirstActive
 ) {
   setIsOpen(false);
+  setFirstActive("")
   setSecondActive("");
   setThirdActive("");
   setFourthActive("");
@@ -168,7 +170,8 @@ export default function CreateButton({ children }) {
             setIsOpen,
             setSecondActive,
             setFourthActive,
-            setThirdActive
+            setThirdActive,
+            setFirstActive
           )
         }
       >

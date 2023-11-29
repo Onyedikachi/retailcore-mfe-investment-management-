@@ -21,9 +21,21 @@ export function handleToggle(selected, setIsChecker, setHideCreate) {
     setHideCreate(false);
   }
 }
+
+export const handleChange = (selected, category,activeType) => {
+  console.log("🚀 ~ file: IndexComponent.tsx:26 ~ handleChange ~ activeType:", activeType)
+  console.log(
+    "🚀 ~ file: IndexComponent.tsx:26 ~ consthandleChange ~ category:",
+    category
+  );
+  console.log(
+    "🚀 ~ file: IndexComponent.tsx:26 ~ consthandleChange ~ selected:",
+    selected
+  );
+};
 export default function IndexComponent() {
   const [category, setCategory] = useState<string>(
-    StatusCategoryType?.AllProductes
+    StatusCategoryType?.AllProducts
   );
 
   const [selected, setSelected] = useState<any>("");
@@ -95,7 +107,7 @@ export default function IndexComponent() {
         <TopBar />
         <div className="px-8 flex gap-x-5 w-full flex-1 py-7">
           <div className="flex flex-col gap-y-7 w-calc overflow-auto">
-            <StatusCard data={[]} requests={[]} />
+            <StatusCard data={[]} requests={[]} handleChange={handleChange} />
 
             <div className="bg-white px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16">
               {" "}
