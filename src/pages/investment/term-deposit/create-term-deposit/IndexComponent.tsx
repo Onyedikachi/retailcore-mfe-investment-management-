@@ -4,8 +4,11 @@ import {
   Loader,
   Button,
   FormStepComponent,
-  ProductInformationForm,
 } from "@app/components";
+import {
+  ProductInformation,
+  CustomerEligibilityCriteria,
+} from "@app/components/pages/term-deposit/forms";
 import { termDepositFormSteps } from "@app/constants";
 export default function CreateTermDeposit() {
   const step = 1;
@@ -33,6 +36,23 @@ export default function CreateTermDeposit() {
     lifeCycle: "",
     currency: "",
   });
+
+  // let component;
+
+  // switch (step) {
+  //   case 1:
+  //     component = <ProductInformation formData={productInformationFormData} />;
+  //     break;
+  //   case 2:
+  //     component = <CustomerEligibilityCriteria />;
+  //     break;
+  //   case 3:
+  //     component = <ProductInformation formData={productInformationFormData} />;
+  //     break;
+  //     break;
+  //   default:
+  //     component = <div>Default Component</div>;
+  // }
   return (
     <div className="flex flex-col min-h-[100vh] ">
       <div className="px-[37px] py-[11px] bg-white">
@@ -50,7 +70,7 @@ export default function CreateTermDeposit() {
             />
           </div>
           <div className=" bg-[#ffffff] border border-[#EEEEEE] rounded-[10px] px-[87px] pt-[100px] pb-[43px] ">
-            <ProductInformationForm formData={productInformationFormData} />
+            <ProductInformation formData={productInformationFormData} />
           </div>
         </div>
       </div>
