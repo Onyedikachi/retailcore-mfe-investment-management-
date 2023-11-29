@@ -194,7 +194,7 @@ export const termDepositFormSteps = [
   },
   {
     id: 3,
-    label: "Pricing CConfiguration",
+    label: "Pricing Configuration",
     index: 3,
   },
   {
