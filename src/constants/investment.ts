@@ -199,12 +199,63 @@ export const termDepositFormSteps = [
   },
   {
     id: 4,
-    label: "Early & part  liquidity setup",
+    label: "Early & part liquidity setup",
     index: 4,
   },
   {
     id: 5,
-    label: "Acccounting entries and events",
+    label: "Accounting entries and events",
     index: 5,
+  },
+];
+
+export const partLiquidationPenaltyOptions = [
+  {
+    id: "0",
+    text: "None",
+    value: "None",
+  },
+  {
+    id: "1",
+    text: "Forfeit all accrued interest",
+    value: "Forfeit all accrued interest",
+  },
+  {
+    id: "2",
+    text: "Forfeit a portiom of accrued interest",
+    value: "Forfeit a portiom of  accrued interest",
+  },
+  {
+    id: "3",
+    text: "Recalculate accrued interest",
+    value: "Recalculate accrued interest",
+  },
+  {
+    id: "4",
+    text: "Take a charge",
+    value: "Take a charge",
+  },
+];
+
+export const daysOptions = [
+  {
+    id: "1",
+    text: "1 Day",
+    value: "1",
+  },
+  {
+    id: "2",
+    text: "2 Days",
+    value: "2",
+  },
+  {
+    id: "3",
+    text: "3 Days",
+    value: "3",
+  },
+  {
+    id: "4",
+    text: "4 Days",
+    value: "4",
   },
 ];

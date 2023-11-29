@@ -6,3 +6,4 @@ export { default as MultiSelect } from "./MultiSelect";
 export { default as Select } from "./Select";
 export { default as CustomComboSelect } from "./CustomComboSelect";
 export { default as BorderlessSelect } from "./BorderlessSelect";
+export { default as CustomInput } from "./CustomInput";

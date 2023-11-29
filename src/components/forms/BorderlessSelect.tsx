@@ -1,12 +1,13 @@
 import { Fragment, useEffect, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { FaChevronDown } from "react-icons/fa";
-import { SelectProps } from "@app/types";
+import { BorderlessSelectProps } from "@app/types";
 
 export default function Select({
   options,
   handleSelected,
-}: SelectProps): React.JSX.Element {
+  labelName,
+}: BorderlessSelectProps): React.JSX.Element {
   const [selected, setSelected] = useState(options[0]);
 
   useEffect(() => {
@@ -19,7 +20,12 @@ export default function Select({
   }, [options]);
 
   return (
-    <div role="combobox" className="min-w-[150px] ">
+    <div role="combobox" className={` min-w-full`}>
+      <div>
+        <label className="  text-base font-semibold text-[#636363]">
+          {labelName}
+        </label>
+      </div>
       <Listbox value={selected} onChange={setSelected}>
         <div className="relative mt-1">
           <Listbox.Button className="relative w-full cursor-pointer  bg-white py-1 pl-2 pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm">
