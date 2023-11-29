@@ -23,7 +23,7 @@ export const routes = [
     component: lazy(
       () =>
         import(
-          "../pages/investment/create-investment/create-term-deposit/IndexComponent"
+          "../pages/investment/term-deposit/create-term-deposit/IndexComponent"
         )
     ),
   },
