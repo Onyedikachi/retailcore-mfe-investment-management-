@@ -180,7 +180,7 @@ export const colorState = {
   rejected: "bg-[#FFD4D2] text-[#9F1F17]",
   draft: "bg-[#E5E5EA] text-[#1E0A3C]",
 };
-export const branchNameRegex = /^[A-Za-z0-9\s]+$/;
+export const productNameRegex = /^[A-Za-z0-9\s]+$/;
 export const termDepositFormSteps = [
   {
     id: 1,

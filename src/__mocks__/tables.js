@@ -1,8 +1,8 @@
 export const ProductData = [
   {
     id: 1,
-    branchName: "Product Royal",
-    branchCode: "TM-01",
+    productName: "Product Royal",
+    productCode: "TM-01",
     description: "Leading with excellent customer search for the item",
     state: "active",
     updatedOn: new Date(),
@@ -11,8 +11,8 @@ export const ProductData = [
   },
   {
     id: 2,
-    branchName: "Product Sunshine",
-    branchCode: "TM-02",
+    productName: "Product Sunshine",
+    productCode: "TM-02",
     description: "Leading with excellent customer  search for the item",
     state: "inactive",
     updatedOn: new Date(),
@@ -21,8 +21,8 @@ export const ProductData = [
   },
   {
     id: 3,
-    branchName: "Product Pride",
-    branchCode: "TM-03",
+    productName: "Product Pride",
+    productCode: "TM-03",
     description: "Leading with excellent customer  search for the item",
     state: "active",
     updatedOn: new Date(),
@@ -133,8 +133,8 @@ export const RequestData = [
 export const BulkValidation = [
   {
     id: 1,
-    branchName: "Product Pride",
-    branchCode: "TM-03",
+    productName: "Product Pride",
+    productCode: "TM-03",
     description: "Creation of Product Royal",
     type: "Creation",
     initiator: "John wick",
@@ -143,8 +143,8 @@ export const BulkValidation = [
   },
   {
     id: 2,
-    branchName: "Product Pride",
-    branchCode: "TM-03",
+    productName: "Product Pride",
+    productCode: "TM-03",
     description: "Creation of Product Royal",
     type: "Creation",
     initiator: "John wick",
@@ -153,8 +153,8 @@ export const BulkValidation = [
   },
   {
     id: 3,
-    branchName: "Product Pride",
-    branchCode: "TM-03",
+    productName: "Product Pride",
+    productCode: "TM-03",
     description: "Creation of Product Royal",
     type: "Creation",
     initiator: "John wick",
@@ -163,8 +163,8 @@ export const BulkValidation = [
   },
   {
     id: 4,
-    branchName: "Product Pride",
-    branchCode: "TM-03",
+    productName: "Product Pride",
+    productCode: "TM-03",
     description: "Creation of Product Royal",
     type: "Creation",
     initiator: "John wick",
@@ -173,8 +173,8 @@ export const BulkValidation = [
   },
   {
     id: 5,
-    branchName: "Product Pride",
-    branchCode: "TM-03",
+    productName: "Product Pride",
+    productCode: "TM-03",
     description: "Creation of Product Royal",
     type: "Creation",
     initiator: "John wick",
@@ -186,8 +186,8 @@ export const BulkValidation = [
 export const BulkValidationSummary = [
   {
     id: 1,
-    branchName: "Product Pride",
-    branchCode: "TM-03",
+    productName: "Product Pride",
+    productCode: "TM-03",
     description: "Creation of Product Royal",
 
     updatedOn: new Date(),
@@ -198,27 +198,27 @@ export const ProductStructureData = [
   {
     id: 1,
     name: "Okoro Ifeanyi",
-    detail: ["cpc cso initiator", "branch teller initiator", "it admin"],
+    detail: ["cpc cso initiator", "product teller initiator", "it admin"],
   },
   {
     id: 2,
     name: "Okoro Ifeanyi",
-    detail: ["cpc cso initiator", "branch teller initiator", "it admin"],
+    detail: ["cpc cso initiator", "product teller initiator", "it admin"],
   },
   {
     id: 3,
     name: "Okoro Ifeanyi",
-    detail: ["cpc cso initiator", "branch teller initiator", "it admin"],
+    detail: ["cpc cso initiator", "product teller initiator", "it admin"],
   },
   {
     id: 4,
     name: "Okoro Ifeanyi",
-    detail: ["cpc cso initiator", "branch teller initiator", "it admin"],
+    detail: ["cpc cso initiator", "product teller initiator", "it admin"],
   },
   {
     id: 5,
     name: "Okoro Ifeanyi",
-    detail: ["cpc cso initiator", "branch teller initiator", "it admin"],
+    detail: ["cpc cso initiator", "product teller initiator", "it admin"],
   },
 ];
 

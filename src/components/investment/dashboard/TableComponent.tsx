@@ -23,8 +23,8 @@ interface RequestDataProps {
 }
 
 interface ProductDataProps {
-  "branch name": string;
-  "branch code": string;
+  "product name": string;
+  "product code": string;
   status: string;
   "updated on": string;
 }
@@ -52,11 +52,11 @@ export function handleDownload(downloadData, isChecker, csvExporter, category) {
       return obj;
     });
 
-    const branchData = downloadData.map((i) => {
+    const productData = downloadData.map((i) => {
       // @ts-ignore
       let obj: ProductDataProps = {
-        "branch name": i?.name || "",
-        "branch code": i?.code || "",
+        "product name": i?.name || "",
+        "product code": i?.code || "",
         status: handleUserView(i?.status, isChecker),
         "updated on": moment(i.updated_at).format("lll"),
       };
@@ -66,7 +66,7 @@ export function handleDownload(downloadData, isChecker, csvExporter, category) {
     csvExporter.generateCsv(
       category === StatusCategoryType.Requests
         ? ucObjectKeys(requestData)
-        : ucObjectKeys(branchData)
+        : ucObjectKeys(productData)
     );
   } catch (err) {
     throw "Input must be an array of objects";
@@ -149,7 +149,7 @@ export default function TableComponent() {
       {/* main table  */}
 
       {/* {category === StatusCategoryType?.AllProducts ? (
-        <div data-testid="branch-table" className="h-full">
+        <div data-testid="product-table" className="h-full">
           <ProductTable
             refresh={refresh}
             setRefresh={setRefresh}

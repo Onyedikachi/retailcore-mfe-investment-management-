@@ -33,13 +33,13 @@ export function Success({
         </div>
         <p className="font-normal text-2xl">{text}</p>
         <div className="flex justify-between items-center gap-x-[6px]">
-          {location?.pathname === "/branch-management" ? (
+          {location?.pathname === "/investment-management" ? (
             <Button
               onClick={() =>
                 role === "superadmin" ||
                 location?.search === "?category=requests"
                   ? navigate(0)
-                  : navigate("/branch-management?category=requests")
+                  : navigate("/investment-management?category=requests")
               }
               type="button"
               data-testid="close-btn"
@@ -53,7 +53,7 @@ export function Success({
               onClick={() =>
                 location?.search === "?category=requests"
                   ? navigate(0)
-                  : navigate("/branch-management?category=requests")
+                  : navigate("/investment-management?category=requests")
               }
               type="button"
               data-testid="dashboard-link"
@@ -121,7 +121,7 @@ export function Failed({
             </div>
           )}
           <div>
-            {location?.pathname === "/branch-management" ? (
+            {location?.pathname === "/investment-management" ? (
               <Button
                 onClick={() => navigate(0)}
                 type="button"
@@ -136,7 +136,7 @@ export function Failed({
                 onClick={() =>
                   location?.search === "?category=requests"
                     ? navigate(0)
-                    : navigate("/branch-management?category=requests")
+                    : navigate("/investment-management?category=requests")
                 }
                 type="button"
                 data-testid="dashboard-link"
@@ -201,7 +201,7 @@ export function Prompt({
             canProceed ? "justify-between" : "justify-center"
           } w-full flex  items-center gap-x-[6px]`}
         >
-          {location?.pathname === "/branch-management" ? (
+          {location?.pathname === "/investment-management" ? (
             <Button
               onClick={() => setIsOpen(false)}
               type="button"
@@ -216,7 +216,7 @@ export function Prompt({
               onClick={() =>
                 location?.search === "?category=requests"
                   ? navigate(0)
-                  : navigate("/branch-management?category=requests")
+                  : navigate("/investment-management?category=requests")
               }
               type="button"
               data-testid="dashboard-link"

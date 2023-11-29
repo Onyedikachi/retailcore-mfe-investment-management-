@@ -8,7 +8,7 @@ const urls = {
   REQUEST_ACTIVITIES: "/requests/activities",
 
   // Productes
-  INVESTMENT: "/branch",
+  INVESTMENT: "/product",
 
   // Validate
   VALIDATE_NAME: "/validate-name",

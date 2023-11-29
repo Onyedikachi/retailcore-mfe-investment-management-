@@ -9,7 +9,7 @@ describe("search input", () => {
     const setSearchTerm = jest.fn();
     const { getByPlaceholderText } = render(
       <ProductSearch
-        placeholder={"Search by branch name or code"}
+        placeholder={"Search by name or code"}
         options={[
           {
             name: "Option",
@@ -19,7 +19,7 @@ describe("search input", () => {
       />
     );
 
-    const inputElement = getByPlaceholderText("Search by branch name or code");
+    const inputElement = getByPlaceholderText("Search by name or code");
 
     fireEvent.change(inputElement, { target: { value: "test" } });
   });

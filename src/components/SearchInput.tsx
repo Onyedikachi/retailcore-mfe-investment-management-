@@ -15,7 +15,7 @@ export const handleInputChange = (
 
 export default function SearchInput({
   setSearchTerm,
-  placeholder = "Search by branch name or code",
+  placeholder = "Search by  name or code",
   hideBorder = false,
   fullW = false,
   isTruncated = false,

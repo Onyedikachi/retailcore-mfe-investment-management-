@@ -34,10 +34,10 @@ describe("SearchInput", () => {
     // Assert
     expect(screen.getByTestId("search")).toBeInTheDocument();
     expect(
-      screen.getByPlaceholderText("Search by branch name or code")
+      screen.getByPlaceholderText("Search by product name or code")
     ).toBeInTheDocument();
     expect(
-      screen.getByPlaceholderText("Search by branch name or code")
+      screen.getByPlaceholderText("Search by product name or code")
     ).toHaveValue("");
   });
 
@@ -57,7 +57,7 @@ describe("SearchInput", () => {
     // Act
     render(<SearchInput setSearchTerm={setSearchTerm} />);
 
-    const input = screen.getByPlaceholderText("Search by branch name or code");
+    const input = screen.getByPlaceholderText("Search by product name or code");
     fireEvent.change(input, { target: { value: "test" } });
 
     // Assert
@@ -72,7 +72,7 @@ describe("SearchInput", () => {
     // Act
     render(<SearchInput setSearchTerm={setSearchTerm} isTruncated={true} />);
 
-    const input = screen.getByPlaceholderText("Search by branch name or code");
+    const input = screen.getByPlaceholderText("Search by product name or code");
     fireEvent.change(input, { target: { value: "test" } });
 
     // Assert

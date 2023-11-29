@@ -1,8 +1,8 @@
 export const isChecker: boolean = true;
 
 export const ProductTableHeaders: { hasFilter: boolean; text: string }[] = [
-  { hasFilter: false, text: "branch name" },
-  { hasFilter: false, text: "branch code" },
+  { hasFilter: false, text: "product name" },
+  { hasFilter: false, text: "product code" },
   { hasFilter: false, text: "location" },
   { hasFilter: false, text: "description" },
   { hasFilter: true, text: "state" },
@@ -11,8 +11,8 @@ export const ProductTableHeaders: { hasFilter: boolean; text: string }[] = [
 ];
 export const BulkProductHeaders: { hasFilter: boolean; text: string }[] = [
   { hasFilter: false, text: "s/n" },
-  { hasFilter: false, text: "branch name" },
-  { hasFilter: false, text: "generated branch code" },
+  { hasFilter: false, text: "product name" },
+  { hasFilter: false, text: "generated product code" },
   // { hasFilter: false, text: "location" },
   { hasFilter: true, text: "status" },
   { hasFilter: false, text: "status description" },
@@ -24,8 +24,8 @@ export const BulkValidationTableHeaders: {
   text: string;
 }[] = [
   { hasFilter: false, text: "S/N" },
-  { hasFilter: false, text: "branch name" },
-  { hasFilter: false, text: "branch code" },
+  { hasFilter: false, text: "product name" },
+  { hasFilter: false, text: "product code" },
   { hasFilter: false, text: "location" },
   { hasFilter: true, text: "status" },
   { hasFilter: false, text: "status description" },
@@ -38,10 +38,10 @@ export const BulkValidationSummaryTableHeaders: {
   text: string;
 }[] = [
   { hasFilter: false, text: "S/N" },
-  { hasFilter: false, text: "branch name" },
-  { hasFilter: false, text: "branch code" },
+  { hasFilter: false, text: "product name" },
+  { hasFilter: false, text: "product code" },
   { hasFilter: false, text: "location" },
-  { hasFilter: false, text: "branch description" },
+  { hasFilter: false, text: "product description" },
   { hasFilter: false, text: "" },
 ];
 

@@ -105,7 +105,9 @@ export default function CustomerEligibilityCriteria() {
           </span>
         </div>
       </div>
-      <div>{/* <SelectedRequirementsTable /> */}</div>
+      <div>
+        <SelectedRequirementsTable />
+      </div>
     </div>
   );
 }
