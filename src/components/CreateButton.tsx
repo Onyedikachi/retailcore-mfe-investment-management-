@@ -129,7 +129,7 @@ export default function CreateButton({ children }) {
           title: "Term deposits",
           key: "term-deposits",
           isUrl: true,
-          url: "term-deposit",
+          url: "create-term-deposit",
         },
         {
           title: "Treasury Bill",
