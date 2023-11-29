@@ -17,10 +17,10 @@ export default function FormStepComponent({
   step = 1,
 }: FormStepComponentPropType) {
   return (
-    <div className="flex bg-white justify-center py-4">
+    <div className="flex bg-white justify-center ">
       {/* //item */}
       {formStepItems.map((item) => (
-        <div className="flex flex-col items-center w-[140px]">
+        <div className="flex flex-col items-center w-[172px]">
           {item.index == step ||
           (step < item.index && item.index == formStepItems[0].index) ||
           (step > item.index &&
@@ -114,7 +114,7 @@ export default function FormStepComponent({
 
           {/* Step label */}
           <div className="w-full px-4 text-center">
-            <span className="uppercase text-center text-[#636363] leaqding-[13px] text-sm font-normal ">
+            <span className="uppercase text-center text-[#636363] leading-[1px] text-xs font-normal ">
               {item.label}
             </span>
           </div>

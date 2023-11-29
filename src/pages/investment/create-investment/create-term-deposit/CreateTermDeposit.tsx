@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Breadcrumbs,
   Loader,
@@ -6,7 +6,9 @@ import {
   FormStepComponent,
   ProductInformationForm,
 } from "@app/components";
+import { termDepositFormSteps } from "@app/constants";
 export default function CreateTermDeposit() {
+  const step = 1;
   const links = [
     {
       id: 1,
@@ -24,6 +26,13 @@ export default function CreateTermDeposit() {
       url: "#",
     },
   ];
+  const productInformationFormData = useState({
+    name: "",
+    slogan: "",
+    description: "",
+    lifeCycle: "",
+    currency: "",
+  });
   return (
     <div className="flex flex-col min-h-[100vh] ">
       <div className="px-[37px] py-[11px] bg-white">
@@ -34,9 +43,14 @@ export default function CreateTermDeposit() {
       </div>
       <div className="h-full px-[37px] py-[30px] bg-[#F7F7F7]">
         <div className=" bg-[#ffffff] rounded-md px-[100px] pt-[54px] pb-[49px] ">
-          <FormStepComponent />
+          <div className="pb-[49px] ">
+            <FormStepComponent
+              formStepItems={termDepositFormSteps}
+              step={step}
+            />
+          </div>
           <div className=" bg-[#ffffff] border border-[#EEEEEE] rounded-[10px] px-[87px] pt-[100px] pb-[43px] ">
-            <div>stuff</div>
+            <ProductInformationForm formData={productInformationFormData} />
           </div>
         </div>
       </div>

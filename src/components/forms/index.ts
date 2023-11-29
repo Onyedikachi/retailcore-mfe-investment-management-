@@ -5,3 +5,4 @@ export { default as FormUpload } from "./FormUpload";
 export { default as MultiSelect } from "./MultiSelect";
 export { default as Select } from "./Select";
 export { default as CustomComboSelect } from "./CustomComboSelect";
+export { default as BorderlessSelect } from "./BorderlessSelect";

@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { branchNameRegex } from "./branch";
+import { branchNameRegex } from "./investment";
 
 export const FormSchema = yup
   .object({
