@@ -15,6 +15,18 @@ export const routes = [
     exact: true,
     component: lazy(() => import("../pages/investment/TestComponents")),
   },
+
+  {
+    path: paths.CREATE_TERM_DEPOSIT,
+    name: "Create Term Deposit",
+    exact: true,
+    component: lazy(
+      () =>
+        import(
+          "../pages/investment/create-investment/create-term-deposit/IndexComponent"
+        )
+    ),
+  },
 ];
 
 export default routes;
