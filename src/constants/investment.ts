@@ -194,17 +194,17 @@ export const termDepositFormSteps = [
   },
   {
     id: 3,
-    label: "Pricing CConfiguration",
+    label: "Pricing Configuration",
     index: 3,
   },
   {
     id: 4,
-    label: "Early & part  liquidity setup",
+    label: "Early & part liquidity setup",
     index: 4,
   },
   {
     id: 5,
-    label: "Acccounting entries and events",
+    label: "Accounting entries and events",
     index: 5,
   },
 ];
