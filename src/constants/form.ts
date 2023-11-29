@@ -1,12 +1,12 @@
 import * as yup from "yup";
-import { branchNameRegex } from "./investment";
+import { productNameRegex } from "./investment";
 
 export const FormSchema = yup
   .object({
     name: yup
       .string()
       .matches(
-        branchNameRegex,
+        productNameRegex,
         "Product name can only contain alphabets, numbers, and space characters"
       )
       .required("Product name is required")

@@ -54,10 +54,10 @@ describe("Success Modal", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("can close modal pathname: /branch-management", async () => {
+  it("can close modal pathname: /product-management", async () => {
     jest
       .spyOn(require("react-router-dom"), "useLocation")
-      .mockReturnValue({ pathname: "/branch-management" });
+      .mockReturnValue({ pathname: "/product-management" });
 
     const setIsOpen = jest.fn();
     const { findByTestId } = render(
@@ -67,7 +67,7 @@ describe("Success Modal", () => {
     fireEvent.click(closebtn);
     // expect(window.location.reload).toHaveBeen();
   });
-  it("can close modal pathname !== /branch-management", async () => {
+  it("can close modal pathname !== /product-management", async () => {
     jest
       .spyOn(require("react-router-dom"), "useLocation")
       .mockReturnValue({ pathname: "/" });
@@ -124,10 +124,10 @@ describe("Prompt Modal", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("can close modal pathname: /branch-management", async () => {
+  it("can close modal pathname: /product-management", async () => {
     jest
       .spyOn(require("react-router-dom"), "useLocation")
-      .mockReturnValue({ pathname: "/branch-management" });
+      .mockReturnValue({ pathname: "/product-management" });
 
     const setIsOpen = jest.fn();
     const { findByTestId } = render(
@@ -138,7 +138,7 @@ describe("Prompt Modal", () => {
     expect(setIsOpen).toHaveBeenCalled();
   });
 
-  it("can close modal pathname !== /branch-management", async () => {
+  it("can close modal pathname !== /product-management", async () => {
     jest
       .spyOn(require("react-router-dom"), "useLocation")
       .mockReturnValue({ pathname: "/" });
@@ -197,10 +197,10 @@ describe("Failed Modal", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("can close modal pathname: /branch-management", async () => {
+  it("can close modal pathname: /product-management", async () => {
     jest
       .spyOn(require("react-router-dom"), "useLocation")
-      .mockReturnValue({ pathname: "/branch-management" });
+      .mockReturnValue({ pathname: "/product-management" });
 
     const setIsOpen = jest.fn();
     const { findByTestId } = render(
@@ -221,7 +221,7 @@ describe("Failed Modal", () => {
   });
 
 
-  it("can close modal pathname !== /branch-management", async () => {
+  it("can close modal pathname !== /product-management", async () => {
     jest
       .spyOn(require("react-router-dom"), "useLocation")
       .mockReturnValue({ pathname: "/" });

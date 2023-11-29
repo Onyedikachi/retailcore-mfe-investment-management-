@@ -11,7 +11,7 @@ export default function QuickLinks() {
       count: 1,
       name: "Product management",
       category: "ProductManagement",
-      link: "branch-management",
+      link: "product-management",
     },
   ];
   // const { data, isLoading, isFetching } = useGetLinksQuery();

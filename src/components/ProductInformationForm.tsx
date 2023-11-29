@@ -62,7 +62,7 @@ export default function ProductInformationForm({ formData }) {
         </label>
         <div className="w-full flex flex-col gap-2">
           <textarea
-            data-testid="branch-description"
+            data-testid="product-description"
             placeholder="Enter description"
             defaultValue={formData?.description}
             className="min-h-[150px] w-full rounded-md border border-[#8F8F8F] focus:outline-none px-3 py-[11px] placeholder:text-[#BCBBBB] resize-none"
