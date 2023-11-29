@@ -29,7 +29,7 @@ describe("FormStepComponent", () => {
     const wrapper = shallow(
       <FormStepComponent formStepItems={formStepItems} step={1} />
     );
-    expect(wrapper.find(".flex.flex-col.items-center.w-[140px]").length).toBe(
+    expect(wrapper.find(".flex.flex-col.items-center.w-[172px]").length).toBe(
       formStepItems.length
     );
   });
@@ -43,7 +43,7 @@ describe("FormStepComponent", () => {
       expect(
         wrapper
           .find(
-            ".uppercase.text-center.text-[#636363].leaqding-[13px].text-sm.font-normal"
+            ".uppercase.text-center.text-[#636363].leading-[1px].text-sm.font-normal"
           )
           .at(index)
           .text()
@@ -66,7 +66,7 @@ describe("FormStepComponent", () => {
   // Handles empty formStepItems array
   it("should handle empty formStepItems array and render default form step item", () => {
     const wrapper = shallow(<FormStepComponent />);
-    expect(wrapper.find(".flex.flex-col.items-center.w-[140px]").length).toBe(
+    expect(wrapper.find(".flex.flex-col.items-center.w-[172px]").length).toBe(
       1
     );
   });
@@ -89,13 +89,13 @@ describe("FormStepComponent", () => {
     const wrapper = shallow(
       <FormStepComponent formStepItems={formStepItems} step={step} />
     );
-    expect(wrapper.find(".flex.flex-col.items-center.w-[140px]").length).toBe(
+    expect(wrapper.find(".flex.flex-col.items-center.w-[172px]").length).toBe(
       1
     );
     expect(
       wrapper
         .find(
-          ".uppercase.text-center.text-[#636363].leaqding-[13px].text-sm.font-normal"
+          ".uppercase.text-center.text-[#636363].leading-[1px].text-sm.font-normal"
         )
         .text()
     ).toBe(formStepItems[formStepItems.length - 1].label);
@@ -122,13 +122,13 @@ describe("FormStepComponent", () => {
     const wrapper = shallow(
       <FormStepComponent formStepItems={formStepItems} step={step} />
     );
-    expect(wrapper.find(".flex.flex-col.items-center.w-[140px]").length).toBe(
+    expect(wrapper.find(".flex.flex-col.items-center.w-[172px]").length).toBe(
       1
     );
     expect(
       wrapper
         .find(
-          ".uppercase.text-center.text-[#636363].leaqding-[13px].text-sm.font-normal"
+          ".uppercase.text-center.text-[#636363].leading-[1px].text-sm.font-normal"
         )
         .text()
     ).toBe(formStepItems[0].label);
