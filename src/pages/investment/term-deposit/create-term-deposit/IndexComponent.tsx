@@ -23,7 +23,7 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
 }
 
 export default function CreateTermDeposit() {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(4);
   const links = [
     {
       id: 1,
