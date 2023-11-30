@@ -21,6 +21,11 @@ export interface SelectProps {
   options: array;
   handleSelected: (value) => void;
 }
+export interface BorderlessSelectProps {
+  options: array;
+  handleSelected: (value) => void;
+  labelName: string;
+}
 
 export interface ActiveFilterProps {}
 

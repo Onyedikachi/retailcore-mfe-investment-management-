@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { RiErrorWarningFill } from "react-icons/ri";
 import { FaCheckCircle } from "react-icons/fa";
 import { AiOutlineLoading } from "react-icons/ai";
 import { BorderlessSelect, DateSelect } from "@app/components/forms";
-export default function ProductInformation({ formData }) {
+import { useForm } from "react-hook-form";
+export function handleName(watchName, formData, setFormData) {
+  setFormData({ ...formData, name: watchName });
+  console.log(formData);
+}
+
+export default function ProductInformation({ formData, setFormData }) {
+  const [currentProductName, setCurrentProductName] = useState("");
+
   return (
     <div className="">
       <div className="mb-6 flex flex-col gap-[1px]">
@@ -16,7 +24,9 @@ export default function ProductInformation({ formData }) {
             <input
               data-testid="investment-name"
               className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB] `}
-              onChange={(e) => e.target.value}
+              onChange={(e) =>
+                handleName(e.target.value, formData, setFormData)
+              }
               placeholder="Enter Name"
               // maxLength={defaultLength}
               defaultValue={formData?.name}
@@ -41,7 +51,9 @@ export default function ProductInformation({ formData }) {
             <input
               data-testid="investment-slogan"
               className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB] `}
-              onChange={(e) => e.target.value}
+              onChange={(e) =>
+                setFormData({ ...formData, slogan: e.target.value })
+              }
               placeholder="Enter a slogan"
               // maxLength={defaultLength}
               defaultValue={formData?.slogan}
@@ -64,6 +76,9 @@ export default function ProductInformation({ formData }) {
           <textarea
             data-testid="branch-description"
             placeholder="Enter description"
+            onChange={(e) =>
+              setFormData({ ...formData, desccription: e.target.value })
+            }
             defaultValue={formData?.description}
             className="min-h-[150px] w-full rounded-md border border-[#8F8F8F] focus:outline-none px-3 py-[11px] placeholder:text-[#BCBBBB] resize-none"
           />
@@ -92,11 +107,9 @@ export default function ProductInformation({ formData }) {
         </div>
 
         <div className="flex flex-col gap">
-          <label className="w-[300px] pt-[10px] text-base font-semibold text-[#636363]">
-            Product Currency
-          </label>
-          <div className="max-w-[300px]">
+          <div className="w-[300px]">
             <BorderlessSelect
+              labelName={"Product Currency"}
               handleSelected={() => {}}
               options={[
                 {

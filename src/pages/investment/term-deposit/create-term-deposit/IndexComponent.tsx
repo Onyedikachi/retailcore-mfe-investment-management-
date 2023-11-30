@@ -8,10 +8,22 @@ import {
 import {
   ProductInformation,
   CustomerEligibilityCriteria,
+  AccountingEntriesAndEvents,
+  LiquiditySetup,
+  PricingConfig,
 } from "@app/components/pages/term-deposit/forms";
 import { termDepositFormSteps } from "@app/constants";
+
+export function handleNext(step, setStep, termDepositFormSteps) {
+  step < termDepositFormSteps.length ? setStep(step + 1) : () => {};
+}
+
+export function handlePrev(step, setStep, termDepositFormSteps) {
+  step > termDepositFormSteps[0].index ? setStep(step - 1) : () => {};
+}
+
 export default function CreateTermDeposit() {
-  const step = 1;
+  const [step, setStep] = useState(4);
   const links = [
     {
       id: 1,
@@ -29,7 +41,8 @@ export default function CreateTermDeposit() {
       url: "#",
     },
   ];
-  const productInformationFormData = useState({
+
+  const [productInformationFormData, setProductInformationFormData] = useState({
     name: "",
     slogan: "",
     description: "",
@@ -37,22 +50,38 @@ export default function CreateTermDeposit() {
     currency: "",
   });
 
-  // let component;
+  let component;
 
-  // switch (step) {
-  //   case 1:
-  //     component = <ProductInformation formData={productInformationFormData} />;
-  //     break;
-  //   case 2:
-  //     component = <CustomerEligibilityCriteria />;
-  //     break;
-  //   case 3:
-  //     component = <ProductInformation formData={productInformationFormData} />;
-  //     break;
-  //     break;
-  //   default:
-  //     component = <div>Default Component</div>;
-  // }
+  switch (step) {
+    case 1:
+      component = (
+        <ProductInformation
+          formData={productInformationFormData}
+          setFormData={setProductInformationFormData}
+        />
+      );
+      break;
+    case 2:
+      component = <CustomerEligibilityCriteria />;
+      break;
+    case 3:
+      component = <PricingConfig />;
+      break;
+    case 4:
+      component = <LiquiditySetup />;
+      break;
+    case 5:
+      component = <AccountingEntriesAndEvents />;
+      break;
+
+    default:
+      component = (
+        <ProductInformation
+          formData={productInformationFormData}
+          setFormData={setProductInformationFormData}
+        />
+      );
+  }
   return (
     <div className="flex flex-col min-h-[100vh] ">
       <div className="px-[37px] py-[11px] bg-white">
@@ -70,7 +99,39 @@ export default function CreateTermDeposit() {
             />
           </div>
           <div className=" bg-[#ffffff] border border-[#EEEEEE] rounded-[10px] px-[87px] pt-[100px] pb-[43px] ">
-            <ProductInformation formData={productInformationFormData} />
+            {component}
+
+            <div className="h-px w-full bg-[#CCCCCC] mb-12 mt-16"></div>
+
+            <div className="flex mb-[70px]  justify-between">
+              <Button
+                onClick={() => handlePrev(step, setStep, termDepositFormSteps)}
+                className="text-gray-500 px-10 py-1 font-medium text-base bg-white border border-[#D8DAE5] leading-[24px] disabled:bg-transparent"
+              >
+                Previous
+              </Button>
+              <div className="flex justify-end gap-6">
+                <Button
+                  onClick={() =>
+                    handleNext(step, setStep, termDepositFormSteps)
+                  }
+                  className="text-gray-500 px-10 py-1 font-medium text-base bg-white border border-[#D8DAE5] leading-[24px] disabled:bg-transparent"
+                >
+                  Save As Draft
+                </Button>
+
+                <Button
+                  onClick={() =>
+                    handleNext(step, setStep, termDepositFormSteps)
+                  }
+                  className={
+                    "bg-sterling-red-800 rounded-lg px-10 py-1 font-medium text-base"
+                  }
+                >
+                  Next
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
