@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { RiErrorWarningFill } from "react-icons/ri";
 import { FaCheckCircle } from "react-icons/fa";
 import { AiOutlineLoading } from "react-icons/ai";
+import { FormDate } from "@app/components/forms";
 import { BorderlessSelect, DateSelect } from "@app/components/forms";
 import { useForm } from "react-hook-form";
 export function handleName(watchName, formData, setFormData) {
@@ -90,23 +91,15 @@ export default function ProductInformation({ formData, setFormData }) {
           <label className="w-[300px] pt-[10px] text-base font-semibold text-[#636363]">
             Product Life Cycle
           </label>
-          {/* <div className="max-w-[300px]">
-            <BorderlessSelect
-              handleSelected={() => {}}
-              options={[
-                {
-                  id: 1,
-                  text: "NGN",
-                  value: "NGN",
-                },
-              ]}
-            />
-          </div> */}
 
-          <DateSelect onChangeDate={() => {}} children={<div>Date</div>} />
+          <div className="flex ">
+            <FormDate />
+            -
+            <FormDate />
+          </div>
         </div>
 
-        <div className="flex flex-col gap">
+        <div className="flex items-end gap">
           <div className="w-[300px]">
             <BorderlessSelect
               labelName={"Product Currency"}
