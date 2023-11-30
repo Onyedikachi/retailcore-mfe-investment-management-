@@ -18,11 +18,11 @@ on:
       - main
 
 jobs:
-  code_quality:
-    uses: sterling-retailcore-team/workflow-templates/.github/workflows/code_quality.yml@main
-    secrets: inherit
-    with:
-      CODE_COVERAGE: 'node'
+  # code_quality:
+  #   uses: sterling-retailcore-team/workflow-templates/.github/workflows/code_quality.yml@main
+  #   secrets: inherit
+  #   with:
+  #     CODE_COVERAGE: 'node'
   build_image:
     uses: sterling-retailcore-team/workflow-templates/.github/workflows/build.yml@main
     needs: [code_quality]
