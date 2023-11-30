@@ -129,7 +129,7 @@ export default function CreateTermDeposit() {
                   onClick={() =>
                     step < termDepositFormSteps.length
                       ? handleNext(step, setStep, termDepositFormSteps)
-                      : navigate(paths.TERM_DEPOSIT_SUMMARY)
+                      : navigate("/investment-management/term-deposit/process-summary/submission")
                   }
                   className={
                     "bg-sterling-red-800 rounded-lg px-10 py-1 font-medium text-base"

@@ -33,7 +33,7 @@ export const routes = [
     exact: true,
     component: lazy(
       () =>
-        import("../pages/investment/term-deposit/create-term-deposit/Summary")
+        import("../pages/investment/term-deposit/Summary")
     ),
   },
 ];

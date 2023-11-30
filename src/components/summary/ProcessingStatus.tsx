@@ -3,14 +3,14 @@ import SliderLogo from "@app/assets/images/SliderLogo.png";
 interface RangeSliderProps {
   rangeLabels: Array<string>;
   isDisabled?: boolean;
-  firstRangeDisabled?: boolean;
-  secondRangeDisabled?: boolean;
+  leftClass?: string;
+  rightClass?: string;
 }
 export default function ProcessingStatusSlider({
   rangeLabels,
   isDisabled,
-  firstRangeDisabled,
-  secondRangeDisabled,
+  leftClass,
+  rightClass,
 }: RangeSliderProps) {
   return (
     <div className=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-[60px] pt-[40px] pb-[40px] ">
@@ -21,31 +21,27 @@ export default function ProcessingStatusSlider({
             src={SliderLogo}
             alt="sliderLogo"
             data-testid="firstRangeDisabled"
-            className={firstRangeDisabled ? "opacity-40" : ""}
+            className={leftClass}
           />
           <div className="flex-1 bg-[#D9D9D9] h-[10px]" />
           <img
             src={SliderLogo}
             alt="sliderLogo"
             data-testid="secondRangeDisabled"
-            className={secondRangeDisabled ? "opacity-40" : ""}
+            className={rightClass}
           />
         </div>
 
         <div className="flex justify-between mt-2">
           <div
             data-testid="label1"
-            className={`break-word text-[#636363] text-xs font-medium ${
-              firstRangeDisabled ? "opacity-40" : ""
-            }`}
+            className={`break-word text-[#636363] text-xs font-medium ${leftClass}`}
           >
             {rangeLabels[0]}
           </div>
           <div
             data-testid="label2"
-            className={`break-word text-[#636363] text-xs font-medium ${
-              secondRangeDisabled ? "opacity-40" : ""
-            }`}
+            className={`break-word text-[#636363] text-xs font-medium ${rightClass}`}
           >
             {rangeLabels[1]}
           </div>

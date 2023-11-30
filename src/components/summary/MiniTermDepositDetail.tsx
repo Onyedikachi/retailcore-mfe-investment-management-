@@ -3,22 +3,7 @@ import { useState, useEffect } from "react";
 export default function MiniTermDepositDetail({ detail, oldData }: any) {
   const [isNewDescription, setDescription] = useState(false);
 
-  //   useEffect(() => {
-  //     if (
-  //       oldData &&
-  //       (oldData?.number !== detail?.number ||
-  //         oldData?.streetname !== detail?.streetname ||
-  //         oldData?.city !== detail?.city ||
-  //         oldData?.state !== detail?.state ||
-  //         oldData?.postalcode !== detail?.postalcode ||
-  //         oldData?.country !== detail?.country)
-  //     ) {
-  //       setDescription(true);
-  //     } else {
-  //       setDescription(false);
-  //     }
-  //   }, [oldData, detail]);
-
+ 
   return (
     <div className="flex flex-col">
       <p className="text-[#636363] text-[18px] font-semibold mb-[62px]">
