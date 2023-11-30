@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { paths } from "@app/routes/paths";
+
 import {
   Breadcrumbs,
   Loader,
@@ -23,7 +26,9 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
 }
 
 export default function CreateTermDeposit() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(3);
+  const navigate = useNavigate();
+
   const links = [
     {
       id: 1,
@@ -122,7 +127,9 @@ export default function CreateTermDeposit() {
 
                 <Button
                   onClick={() =>
-                    handleNext(step, setStep, termDepositFormSteps)
+                    step < termDepositFormSteps.length
+                      ? handleNext(step, setStep, termDepositFormSteps)
+                      : navigate(paths.TERM_DEPOSIT_SUMMARY)
                   }
                   className={
                     "bg-sterling-red-800 rounded-lg px-10 py-1 font-medium text-base"
