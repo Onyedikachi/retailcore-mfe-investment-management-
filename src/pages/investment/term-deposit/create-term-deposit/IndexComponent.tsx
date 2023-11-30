@@ -26,7 +26,7 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
 }
 
 export default function CreateTermDeposit() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(3);
   const navigate = useNavigate();
 
   const links = [

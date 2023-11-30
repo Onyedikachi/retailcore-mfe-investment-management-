@@ -24,6 +24,9 @@ export default function MiniTermDepositDetail({ detail, oldData }: any) {
       <p className="text-[#636363] text-[18px] font-semibold mb-[62px]">
         Term Deposit Product Details
       </p>
+      <p className="text-[#636363] text-[16px] font-medium mb-[27px]">
+        Product Information
+      </p>
       <div className="grid grid-cols-1 gap-[25px] px-12">
         <div className=" flex gap-[54px]">
           <div className="w-[300px]   text-base font-medium text-[#636363]">
