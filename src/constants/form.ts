@@ -37,9 +37,9 @@ export const ProductInformationFormSchema = yup
       .required("Product name is required")
       .min(3)
       .max(50, "Maximum of 50 chars"),
-    slogan: yup.string(),
-    description: yup.string().nullable(),
-    productLifeCycle: yup.string().required(),
-    currency: yup.string().nullable(),
+    slogan: yup.string().max(160, "Maximum of 160 chars"),
+    description: yup.string().required("Product description is required"),
+    productLifeCycle: yup.string(),
+    currency: yup.string(),
   })
   .required();

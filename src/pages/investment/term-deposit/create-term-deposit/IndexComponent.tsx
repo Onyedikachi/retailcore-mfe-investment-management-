@@ -35,6 +35,8 @@ export default function CreateTermDeposit() {
   });
   const [isDisabled, setDisabled] = useState<boolean>(true);
   const [step, setStep] = useState(1);
+  // const [formRef, setFormRef] = useState("");
+
   const navigate = useNavigate();
 
   const links = [
@@ -55,7 +57,14 @@ export default function CreateTermDeposit() {
     },
   ];
 
+  function handleNav() {
+    step < termDepositFormSteps.length
+      ? handleNext(step, setStep, termDepositFormSteps)
+      : navigate(paths.TERM_DEPOSIT_SUMMARY);
+  }
+
   let component;
+  let formRef;
 
   switch (step) {
     case 1:
@@ -66,6 +75,7 @@ export default function CreateTermDeposit() {
           setDisabled={setDisabled}
         />
       );
+      formRef = "productform";
       break;
     case 2:
       component = <CustomerEligibilityCriteria />;
@@ -128,11 +138,9 @@ export default function CreateTermDeposit() {
                 </Button>
 
                 <Button
-                  onClick={() =>
-                    step < termDepositFormSteps.length
-                      ? handleNext(step, setStep, termDepositFormSteps)
-                      : navigate(paths.TERM_DEPOSIT_SUMMARY)
-                  }
+                  type="submit"
+                  form={formRef}
+                  onClick={() => {}}
                   className={
                     "bg-sterling-red-800 rounded-lg px-10 py-1 font-medium text-base"
                   }
