@@ -1,6 +1,6 @@
 import { DropDownOptions, creationMap } from "@app/constants";
 
-export function handleDropdown(status: string, type: string, permissions: any) {
+export function handleDropdown(status: string, type: string, permissions?: any) {
   if (!status || !type) return [];
 
   //returns table options depending on whether its creation or activation
@@ -16,7 +16,7 @@ export function handleDropdown(status: string, type: string, permissions: any) {
 
   if (!selectedType) return [];
 
-  if (permissions?.includes("CREATE_BRANCH")) {
+  if (permissions?.includes("CREATE_PRODUCT")) {
     return selectedType[status];
   } else {
     return selectedType[status].filter((i) => i.text.toLowerCase() === "view");

@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect"; // Import this for additional matchers
-import ActivityLog from "../../components/ActivityLog";
+import ActivityLog from "../../components/summary/ActivityLog";
 
 test("renders the ActivityLog component with loading state", () => {
   const { getByText } = render(

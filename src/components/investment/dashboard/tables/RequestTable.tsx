@@ -106,17 +106,17 @@
 //     );
 //   }
 //   if (e.toLowerCase() === "withdraw & delete request") {
-//     setConfirmText(Prompts.BRANCH_WITHDRAW_DELETE);
+//     setConfirmText(Prompts.PRODUCT_WITHDRAW_DELETE);
 
 //     setIsConfirmOpen(true);
 //   }
 //   if (e.toLowerCase() === "delete request") {
-//     setConfirmText(Prompts.BRANCH_DELETE);
+//     setConfirmText(Prompts.PRODUCT_DELETE);
 
 //     setIsConfirmOpen(true);
 //   }
 //   if (e.toLowerCase() === "withdraw & modify") {
-//     setConfirmText(Prompts.BRANCH_WITHDRAW_MODIFY);
+//     setConfirmText(Prompts.PRODUCT_WITHDRAW_MODIFY);
 //     setIsConfirmOpen(true);
 //   }
 //   if (e.toLowerCase() === "continue request" || e.toLowerCase() === "modify") {
@@ -139,8 +139,8 @@
 // ) {
 //   setSuccessText(
 //     role === "superadmin"
-//       ? Messages.BRANCH_DEACTIVATE_SUCCESS
-//       : Messages.ADMIN_BRANCH_DEACTIVATE_SUCCESS
+//       ? Messages.PRODUCT_DEACTIVATE_SUCCESS
+//       : Messages.ADMIN_PRODUCT_DEACTIVATE_SUCCESS
 //   );
 //   setIsDeactivationOpen(false);
 //   setIsSuccessOpen(true);
@@ -157,11 +157,11 @@
 //   if (statType === "withdraw & delete request") {
 //     deleteRequest(detail?.id);
 
-//     setSuccessText(Messages.BRANCH_WITHDRAW_DELETE_SUCCESS);
+//     setSuccessText(Messages.PRODUCT_WITHDRAW_DELETE_SUCCESS);
 //   }
 //   if (statType === "delete request") {
 //     deleteRequest(detail?.id);
-//     setSuccessText(Messages.BRANCH_DELETE_SUCCESS);
+//     setSuccessText(Messages.PRODUCT_DELETE_SUCCESS);
 //   }
 //   if (statType === "withdraw & modify") {
 //     navigate(
@@ -351,10 +351,10 @@
 //     if (deleteIsError) {
 //       statType === "delete request"
 //         ? setFailedText(
-//             `${Messages.BRANCH_DELETE_FAILED} ${detail?.description} request`
+//             `${Messages.PRODUCT_DELETE_FAILED} ${detail?.description} request`
 //           )
 //         : setFailedText(
-//             `${Messages.BRANCH_WITHDRAW_DELETE_FAILED} ${detail?.description} request`
+//             `${Messages.PRODUCT_WITHDRAW_DELETE_FAILED} ${detail?.description} request`
 //           );
 //       setFailedSubtext(deleteError?.message?.Msg);
 //       setFailed(true);

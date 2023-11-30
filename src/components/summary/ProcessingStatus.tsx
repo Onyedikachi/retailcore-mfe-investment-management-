@@ -1,5 +1,5 @@
 import React from "react";
-import SliderLogo from "../assets/images/SliderLogo.png";
+import SliderLogo from "@app/assets/images/SliderLogo.png";
 interface RangeSliderProps {
   rangeLabels: Array<string>;
   isDisabled?: boolean;

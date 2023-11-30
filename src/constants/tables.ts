@@ -113,7 +113,7 @@ export const DropDownOptions: any = {
         },
         {
           id: "",
-          text: "Delete Request",
+          text: "Delete Draft",
           icon: "FaTrash",
         },
       ],
@@ -188,6 +188,11 @@ export const DropDownOptions: any = {
       id: "",
       text: "Modify",
       icon: "FaEdit",
+    },
+    {
+      id: "",
+      text: "Clone",
+      icon: "FaClone",
     },
     {
       id: "",
@@ -281,7 +286,7 @@ export const TypeFilterOptions: any[] = [
   },
   {
     id: 2,
-    name: "change",
+    name: "modification",
     value: "CHANGE",
   },
   {
@@ -294,11 +299,25 @@ export const TypeFilterOptions: any[] = [
     name: "reactivation",
     value: "REACTIVATE",
   },
+];
+
+export const productFilterOptions: any[] = [
   {
-    id: 5,
-    name: "bulk creation",
-    value: "BULK_CREATE",
+    id: 1,
+    name: "Term Deposit",
+    value: "CREATE",
   },
+  {
+    id: 2,
+    name: "Commercial Paper",
+    value: "CHANGE",
+  },
+  {
+    id: 3,
+    name: "Treasury Bills",
+    value: "DEACTIVATE",
+  },
+
 ];
 
 export const DateFilterOptions: any[] = [

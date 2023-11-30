@@ -76,14 +76,14 @@
 //     );
 //   } else {
 //     let options = DropDownOptions[setOptionsByStatus(status)];
-//     if (!permissions?.includes("CREATE_BRANCH")) {
+//     if (!permissions?.includes("CREATE_PRODUCT")) {
 //       options = options.filter(
 //         (i: any) =>
 //           i.text.toLowerCase() !== "deactivate" &&
 //           i.text.toLowerCase() !== "activate"
 //       );
 //     }
-//     if (!permissions?.includes("CREATE_BRANCH")) {
+//     if (!permissions?.includes("CREATE_PRODUCT")) {
 //       options = options.filter((i: any) => i.text.toLowerCase() !== "modify");
 //     }
 //     return options;
@@ -148,7 +148,7 @@
 //     setIsConfirmOpen(true);
 //   }
 //   if (e.toLowerCase() === "activate") {
-//     setConfirmText(Prompts.BRANCH_ACTIVATE);
+//     setConfirmText(Prompts.PRODUCT_ACTIVATE);
 //     setIsConfirmOpen(true);
 //   }
 //   if (e.toLowerCase() === "view") {
@@ -156,7 +156,7 @@
 //   }
 
 //   if (e.toLowerCase() === "modify") {
-//     setConfirmText(Prompts.BRANCH_MODIFY);
+//     setConfirmText(Prompts.PRODUCT_MODIFY);
 //     setIsConfirmOpen(true);
 //   }
 // };
@@ -331,8 +331,8 @@
 //     if (ActivateProductIsSuccess) {
 //       setSuccessText(
 //         role === "superadmin"
-//           ? Messages.BRANCH_ACTIVATE_SUCCESS
-//           : Messages.ADMIN_BRANCH_ACTIVATE_SUCCESS
+//           ? Messages.PRODUCT_ACTIVATE_SUCCESS
+//           : Messages.ADMIN_PRODUCT_ACTIVATE_SUCCESS
 //       );
 //       setIsSuccessOpen(true);
 //       fetchData(1);
@@ -340,8 +340,8 @@
 //     if (DeactivateProductIsSuccess) {
 //       setSuccessText(
 //         role === "superadmin"
-//           ? Messages.BRANCH_DEACTIVATE_SUCCESS
-//           : Messages.ADMIN_BRANCH_DEACTIVATE_SUCCESS
+//           ? Messages.PRODUCT_DEACTIVATE_SUCCESS
+//           : Messages.ADMIN_PRODUCT_DEACTIVATE_SUCCESS
 //       );
 //       setIsDeactivationOpen(false);
 //       setIsSuccessOpen(true);
@@ -353,16 +353,16 @@
 //       ActivateProductIsError &&
 //         setFailedText(
 //           role === "superadmin"
-//             ? Messages.BRANCH_ACTIVATE_FAILED
-//             : Messages.ADMIN_BRANCH_ACTIVATE_FAILED
+//             ? Messages.PRODUCT_ACTIVATE_FAILED
+//             : Messages.ADMIN_PRODUCT_ACTIVATE_FAILED
 //         );
 //       DeactivateProductIsError &&
 //         setFailedSubtext(DeactivateProductError?.message?.Msg);
 //       DeactivateProductIsError &&
 //         setFailedText(
 //           role === "superadmin"
-//             ? Messages.BRANCH_DEACTIVATE_FAILED
-//             : Messages.ADMIN_BRANCH_DEACTIVATE_FAILED
+//             ? Messages.PRODUCT_DEACTIVATE_FAILED
+//             : Messages.ADMIN_PRODUCT_DEACTIVATE_FAILED
 //         );
 //       setFailed(true);
 //     }

@@ -86,6 +86,7 @@ interface FailedProps {
   setIsOpen: (isOpen: boolean) => void;
   canClose?: boolean;
   canRetry?: boolean;
+  canProceed?: boolean;
 }
 export function Failed({
   text,
@@ -94,6 +95,7 @@ export function Failed({
   setIsOpen,
   canClose = false,
   canRetry = false,
+  canProceed = false
 }: FailedProps): React.JSX.Element {
   const navigate = useNavigate();
   const location = useLocation();
@@ -105,21 +107,7 @@ export function Failed({
         </div>
         <p className="font-normal text-2xl">{text}</p>
         <p className="font-normal text-base mb-[26px]">{subtext}</p>
-        <div className="flex justify-between items-center gap-x-10">
-          {canRetry && (
-            <div>
-              {" "}
-              <Button
-                onClick={() => setIsOpen(false)}
-                type="button"
-                data-testid="close-btn"
-                className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-1 text-[#667085] outline-none"
-              >
-                <IoIosRefresh className="text-[#636363] text-4xl" /> Click to
-                retry
-              </Button>
-            </div>
-          )}
+        <div className={`flex  items-center gap-x-10 w-full ${!canProceed && !canRetry?"justify-center":"justify-between"}`}>
           <div>
             {location?.pathname === "/investment-management" ? (
               <Button
@@ -147,6 +135,33 @@ export function Failed({
               </Button>
             )}
           </div>
+          {canRetry && (
+            <div>
+              {" "}
+              <Button
+                onClick={() => setIsOpen(false)}
+                type="button"
+                data-testid="close-btn"
+                className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-1 text-[#CF2A2A] underline outline-none"
+              >
+                Click to retry
+              </Button>
+            </div>
+          )}
+           {canProceed && (
+            <div>
+              {" "}
+              <Button
+                onClick={() => setIsOpen(false)}
+                type="button"
+                data-testid="close-btn"
+                className="flex gap-x-1 items-center text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-1 text-[#667085] outline-none"
+              >
+                Proceed
+                <FaAngleRight className="text-[#CF2A2A] text-2xl" />
+              </Button>
+            </div>
+          )}
         </div>
         {canClose && (
           <button
@@ -173,7 +188,7 @@ interface PromptProps {
   canClose?: boolean;
 }
 
-export function Prompt({
+export function Prompt({ 
   heading,
   text1,
   text2,

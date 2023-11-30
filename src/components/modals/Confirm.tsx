@@ -43,8 +43,8 @@ export default function Confirm({
             type="button"
             data-testid="cancel-btn-2"
             onClick={() => {
-              setIsOpen(false);
-              onCancel?.();
+             
+              onCancel();
             }}
             className="rounded-lg text-base font-medium py-[5px] h-[44px] bg-white border border-[#D8DAE5] text-[#667085] w-full px-10"
           >
@@ -54,7 +54,7 @@ export default function Confirm({
             type="button"
             data-testid="submit-btn"
             onClick={() => {
-              setIsOpen(false);
+             
               onConfirm();
             }}
             className="rounded-lg text-base font-medium py-[5px] h-[44px] bg-sterling-red-800 border border-sterling-red-800 text-white w-full px-10"
