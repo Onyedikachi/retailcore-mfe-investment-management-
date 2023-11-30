@@ -18,11 +18,11 @@ on:
       - main
 
 jobs:
-  # code_quality:
-  #   uses: sterling-retailcore-team/workflow-templates/.github/workflows/code_quality.yml@main
-  #   secrets: inherit
-  #   with:
-  #     CODE_COVERAGE: 'node'
+  code_quality:
+    uses: sterling-retailcore-team/workflow-templates/.github/workflows/code_quality.yml@main
+    secrets: inherit
+    with:
+      CODE_COVERAGE: 'node'
   build_image:
     uses: sterling-retailcore-team/workflow-templates/.github/workflows/build.yml@main
     needs: [code_quality]
@@ -39,6 +39,8 @@ jobs:
       USE_VARIANT_BUILDTIME_ARGS: false # toggle to use buildtime variables for variants
       VARIANT_DOCKERFILE_NAME: '' # name of the variant dockerfile
       VARIANT_CONTAINER_NAME: '' # provide a name for the container variant if building one
+      MFE_CUSTOM_BUILD_SCRIPT: ''
+      MFE: true
     secrets:
       BUILDTIME_ARGS: '' # if using buildtime variables, specify secrets in this format "${{ secrets.example }}"
       VARIANT_BUILDTIME_ARGS: '' # if using buildtime variables for the variant, specify secrets in this format "${{ secrets.example }}"
@@ -54,6 +56,8 @@ jobs:
       GITHUB_EVENT_NAME: ${GITHUB_EVENT_NAME}
       DEPLOY_VARIANT_CONTAINER: false # toggle to deploy a variant
       VARIANT_CONTAINER_NAME: '' # provide a name for the container variant if deploying one
+      MFE: true
+      MFE_PACKAGE_NAME: 'investment-management'
     secrets: inherit
     needs: build_image
     if: |
