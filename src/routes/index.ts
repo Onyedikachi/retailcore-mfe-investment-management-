@@ -27,6 +27,15 @@ export const routes = [
         )
     ),
   },
+  {
+    path: paths.TERM_DEPOSIT_SUMMARY,
+    name: "Term Deposit Summary",
+    exact: true,
+    component: lazy(
+      () =>
+        import("../pages/investment/term-deposit/create-term-deposit/Summary")
+    ),
+  },
 ];
 
 export default routes;

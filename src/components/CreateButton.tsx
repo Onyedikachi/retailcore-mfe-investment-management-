@@ -11,7 +11,7 @@ export function closeButton(
   setFirstActive
 ) {
   setIsOpen(false);
-  setFirstActive("")
+  setFirstActive("");
   setSecondActive("");
   setThirdActive("");
   setFourthActive("");
@@ -131,7 +131,7 @@ export default function CreateButton({ children }) {
           title: "Term deposits",
           key: "term-deposits",
           isUrl: true,
-          url: "create-term-deposit",
+          url: "term-deposit/create",
         },
         {
           title: "Treasury Bill",
