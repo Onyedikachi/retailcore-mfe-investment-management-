@@ -26,7 +26,15 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
 }
 
 export default function CreateTermDeposit() {
-  const [step, setStep] = useState(3);
+  const [productInformationFormData, setProductInformationFormData] = useState({
+    name: "",
+    slogan: "",
+    description: "",
+    lifeCycle: "",
+    currency: "",
+  });
+  const [isDisabled, setDisabled] = useState<boolean>(true);
+  const [step, setStep] = useState(1);
   const navigate = useNavigate();
 
   const links = [
@@ -47,14 +55,6 @@ export default function CreateTermDeposit() {
     },
   ];
 
-  const [productInformationFormData, setProductInformationFormData] = useState({
-    name: "",
-    slogan: "",
-    description: "",
-    lifeCycle: "",
-    currency: "",
-  });
-
   let component;
 
   switch (step) {
@@ -63,6 +63,7 @@ export default function CreateTermDeposit() {
         <ProductInformation
           formData={productInformationFormData}
           setFormData={setProductInformationFormData}
+          setDisabled={setDisabled}
         />
       );
       break;
@@ -84,6 +85,7 @@ export default function CreateTermDeposit() {
         <ProductInformation
           formData={productInformationFormData}
           setFormData={setProductInformationFormData}
+          setDisabled={setDisabled}
         />
       );
   }

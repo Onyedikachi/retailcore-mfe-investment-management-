@@ -13,3 +13,11 @@ export interface ICreateInvestment {
   description: string;
   draft: boolean;
 }
+
+export interface IProductInformation {
+  name: string;
+  slogan: string;
+  description: string;
+  lifeCycle: string;
+  currency: string;
+}
