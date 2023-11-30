@@ -7,6 +7,7 @@ import ModalLayout from "./Layout";
 import Button from "../Button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AppContext } from "@app/utils";
+import { IoChevronForward } from "react-icons/io5";
 
 interface SuccessProps {
   text: string;
@@ -158,7 +159,7 @@ export function Failed({
                 className="flex gap-x-1 items-center text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-1 text-[#667085] outline-none"
               >
                 Proceed
-                <FaAngleRight className="text-[#CF2A2A] text-2xl" />
+                <IoChevronForward className="text-[#CF2A2A] text-2xl" />
               </Button>
             </div>
           )}
