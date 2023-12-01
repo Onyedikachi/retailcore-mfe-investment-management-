@@ -194,7 +194,7 @@ describe("CreateButton", () => {
     render(<CreateButton children={<button>Button</button>} />);
     fireEvent.click(screen.getByText("Button"));
     fireEvent.click(document);
-    console.log(screen);
+
     // expect(screen.getByText("Credit")).not.toBeInTheDocument();
     // expect(screen.getByText("Deposit")).not.toBeInTheDocument();
     // expect(screen.getByText("Investment")).not.toBeInTheDocument();

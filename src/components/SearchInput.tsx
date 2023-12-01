@@ -19,7 +19,7 @@ export function closeBox(setInputValue) {
 }
 export default function SearchInput({
   setSearchTerm,
-  placeholder = "Search by  name or code",
+  placeholder = "Search by product name or code",
   hideBorder = false,
   fullW = false,
   isTruncated = false,

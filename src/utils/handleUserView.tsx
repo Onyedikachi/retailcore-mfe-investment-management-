@@ -1,14 +1,14 @@
-export function handleUserView(value: any, checker) {
+export function handleUserView(value: string, checker) {
   switch (value) {
-    case 1:
+    case "P":
       return !checker ? "in-review" : "pending";
-    case 0:
+    case "D":
       return "draft";
-    case 2:
+    case "A":
       return "approved";
-    case 3:
+    case "I":
       return !checker ? "in-issue" : "rejected";
-    case 3:
+    case "R":
       return !checker ? "in-issue" : "rejected";
     default:
       return value;

@@ -13,7 +13,13 @@ import {
 } from "@app/utils";
 import SearchInput from "@app/components/SearchInput";
 import Table from "@app/components/table";
-import { ActiveFilterOptions, DropDownOptions, StatusFilterOptions, TypeFilterOptions, productFilterOptions } from "@app/constants";
+import {
+  ActiveFilterOptions,
+  DropDownOptions,
+  StatusFilterOptions,
+  TypeFilterOptions,
+  productFilterOptions,
+} from "@app/constants";
 
 interface RequestDataProps {
   request: string;
@@ -37,8 +43,8 @@ export const handleDropdown = (
   DropDownOptions,
   setOptionsByStatus,
   locked = false,
-  permissions = []
-): string[] => {
+  permissions: string[] = []
+) => {
   if (locked)
     return DropDownOptions[setOptionsByStatus(status)].filter(
       (i: any) => i.text.toLowerCase() === "view"
@@ -422,7 +428,6 @@ export default function TableComponent() {
         </div>{" "}
         <div>
           {/* download button  */}{" "}
-         
           <button
             onClick={() =>
               handleDownload(downloadData, isChecker, csvExporter, category)
@@ -432,7 +437,6 @@ export default function TableComponent() {
           >
             <HiDownload className="text-lg" /> Download
           </button>
-        
         </div>
       </div>
 

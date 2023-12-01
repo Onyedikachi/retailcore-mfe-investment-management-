@@ -38,7 +38,7 @@ interface TableProps {
   type?: string;
 }
 
-export const setOptionsByStatus = (status) => {
+export const setOptionsByStatus = (status: any) => {
   switch (status) {
     case "P":
       return "inactive";
@@ -50,6 +50,8 @@ export const setOptionsByStatus = (status) => {
       return "inactive";
     case "I":
       return "inactive";
+    default:
+      return status;
   }
 };
 // Extract Dropdown component for reusability
@@ -65,7 +67,7 @@ export const handleProductsDropdown = (
   isChecker,
   DropDownOptions,
   locked = false,
-  permissions = []
+  permissions: string[] = []
 ): any => {
   if (locked)
     return DropDownOptions[setOptionsByStatus(status)]?.filter(
@@ -74,7 +76,7 @@ export const handleProductsDropdown = (
 
   if (!status) return [];
   if (isChecker) {
-    return DropDownOptions[setOptionsByStatus(status)].filter(
+    return DropDownOptions[setOptionsByStatus(status)]?.filter(
       (i: any) => i.text.toLowerCase() === "view"
     );
   } else {
@@ -92,23 +94,6 @@ export const handleProductsDropdown = (
     return options;
   }
 };
-
-export function handleStatusView(value: string) {
-  switch (value) {
-    case "P":
-      return "inactive";
-    case "D":
-      return "inactive";
-    case "R":
-      return "inactive";
-    case "A":
-      return "active";
-    case "I":
-      return "inactive";
-    default:
-      return value;
-  }
-}
 
 export const TextCellContent = ({ value }) => (
   <span className="relative">
@@ -186,10 +171,7 @@ export default function TableComponent<TableProps>({
   const [failedText, setFailedText] = useState("");
   const [isDetailOpen, setDetailOpen] = useState(false);
 
-  function getdata(item, key) {
-    console.log("🚀 ~ file: index.tsx:104 ~ getdata ~ key:", key);
-    console.log("🚀 ~ file: index.tsx:104 ~ getdata ~ item:", item);
-  }
+  function getdata(item, key) {}
   const handleAction = (action, items) => {
     dropDownClick(action, items);
     setSubText("");
@@ -388,7 +370,7 @@ export default function TableComponent<TableProps>({
         />
       )}
       <Loader
-        isOpen={false}
+        isOpen={isLoading}
         text="Submitting"
         setIsOpen={function (e: any): void {
           throw new Error("Function not implemented.");

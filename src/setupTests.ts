@@ -3,6 +3,11 @@ import "whatwg-fetch";
 import { server } from "./__mocks__/api/apiServer";
 import { linkApi, investmentApi } from "@app/api";
 import { store } from "@app/config/store";
+// setupTests.js
+import { configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
+configure({ adapter: new Adapter() });
 
 const mockstore = store();
 
