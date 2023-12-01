@@ -46,6 +46,22 @@ export const ProductInformationFormSchema = yup
 
 export const CustomerEligibilityCriteriaSchema = yup
   .object({
-    category: yup.string().required("Product currency is required"),
+    category: yup.string(),
+  })
+  .required();
+
+export const pricingConfigSchema = yup
+  .object({
+    category: yup.string(),
+  })
+  .required();
+export const liquiditySetup = yup
+  .object({
+    category: yup.string(),
+  })
+  .required();
+export const entriesAndEventsSchema = yup
+  .object({
+    category: yup.string(),
   })
   .required();
