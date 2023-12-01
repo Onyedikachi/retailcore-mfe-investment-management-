@@ -138,9 +138,10 @@ export default function CreateTermDeposit() {
                 </Button>
 
                 <Button
+
                   type="submit"
                   form={formRef}
-                  onClick={() => {}}
+
                   className={
                     "bg-sterling-red-800 rounded-lg px-10 py-1 font-medium text-base"
                   }

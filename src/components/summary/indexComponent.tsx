@@ -5,6 +5,7 @@ import {
   ActivityLog,
   Actions,
   MiniTermDepositDetail,
+  ProductDetail,
 } from "@app/components/summary";
 import { Breadcrumbs, Loader, Button } from "@app/components";
 export function Container({ children }) {
@@ -14,41 +15,8 @@ export function Container({ children }) {
     </div>
   );
 }
-export default function Summary() {
-  const links = [
-    {
-      id: 1,
-      title: "Product Factory",
-      url: "/product/factory/dashboard/deposit",
-    },
-    {
-      id: 2,
-      title: "Investment",
-      url: paths.INVESTMENT_DASHBOARD,
-    },
-    {
-      id: 3,
-      title: "New Term Deposit Product",
-      url: paths.CREATE_TERM_DEPOSIT,
-    },
-    {
-      id: 4,
-      title: "Process summary",
-      url: "#",
-    },
-  ];
-
-  const staticDetails = {
-    name: "Term deposit 1",
-    slogan: "We deposit",
-    description: "We really deposit",
-    currency: "NGN",
-    tenure: "12 years",
-    productLifeCycle: "",
-  };
-
-  const [state, setState] = useState();
-
+export default function Summary({ links, details, statusLabels, activities }: any) {
+ 
   return (
     <div className="flex flex-col min-h-[100vh] ">
       <div className="px-[37px] py-[11px] bg-white">
@@ -60,23 +28,21 @@ export default function Summary() {
       <div className="w-full flex gap-6 h-full px-[37px] py-[30px] bg-[#F7F7F7]">
         <div className="flex-1   bg-[#ffffff] rounded-md px-[100px] pt-[54px] pb-[49px] flex flex-col gap-5">
           <div className="max-h-[600px] overflow-y-auto flex flex-col gap-5">
-            <ProcessingStatusSlider
-              secondRangeDisabled
-              rangeLabels={["Pending submission", "Approved"]}
-            />
+            <ProcessingStatusSlider rangeLabels={statusLabels} />
 
             <Container>
-              <MiniTermDepositDetail
-                detail={staticDetails}
-                oldData={staticDetails}
-              />
+              <ProductDetail detail={details} previousDetail={details} />
             </Container>
           </div>
 
           <Actions />
         </div>
 
-        <ActivityLog isFetching={false} isLoading={false} activities={[]} />
+        <ActivityLog
+          isFetching={false}
+          isLoading={false}
+          activities={activities}
+        />
       </div>
     </div>
   );

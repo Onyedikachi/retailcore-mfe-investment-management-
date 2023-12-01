@@ -81,6 +81,79 @@ export enum Prompts {
   PRODUCT_DEACTIVATION_REJECT = "Do you want to reject product deactivation",
   PRODUCT_ACTIVATION_APPROVE = "Do you want to approve product activation",
   PRODUCT_ACTIVATION_REJECT = "Do you want to reject product activation",
-  PRODUCT_DEACTIVATE_SUBTEXT ="This product will no longer be available for assignment to customers after deactivation"
+  PRODUCT_DEACTIVATE_SUBTEXT = "This product will no longer be available for assignment to customers after deactivation",
 }
 
+export enum ProductType {
+  TermDeposit = 0,
+  TreasureBilly = 1,
+  CommercialPaper = 2,
+}
+
+export enum ProductState {
+  Pending = 0,
+  Inactive = 1,
+  Active = 2,
+}
+
+export enum CustomerCategory {
+  Individual = 0,
+  Corporate = 1,
+}
+
+export enum InterestRateRangeType {
+  VaryByPrincipal = 0,
+  VaryByTenor = 1,
+  DonotVary = 2,
+}
+
+export enum InterestComputationMethod {
+  E360 = 0,
+  Actual360 = 1,
+  Actual365 = 2,
+}
+
+export enum RequestType {
+  Create = 0,
+  Modify = 1,
+  Deactivation = 2,
+  Reactivation = 3,
+}
+
+export enum InvestmentBookingStatus {
+  Pending = 0,
+  Active = 1,
+  Liquidated = 2,
+}
+
+export enum CapitalizationMethod {
+  UponBooking = 0,
+  AtIntervals = 1,
+  AtMaturity = 2,
+}
+
+export enum RollOverOption {
+  UsingPrincipal = 0,
+  UsingPrincipalplusInterest = 1,
+}
+
+export enum InvestmentBookingRequestType {
+  Booking = 0,
+  EarlyLiquidation = 1,
+  PartLiquidation = 2,
+}
+
+export enum RequestStatus {
+  Draft = 0,
+  InReview = 1,
+  Approved = 2,
+  InIssue = 3,
+}
+
+export enum Interval {
+  Hours = 0,
+  Days = 1,
+  Weeks = 2,
+  Months = 3,
+  Years = 4,
+}

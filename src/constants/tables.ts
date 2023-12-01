@@ -33,18 +33,6 @@ export const BulkValidationTableHeaders: {
   { hasFilter: false, text: "" },
 ];
 
-export const BulkValidationSummaryTableHeaders: {
-  hasFilter: boolean;
-  text: string;
-}[] = [
-  { hasFilter: false, text: "S/N" },
-  { hasFilter: false, text: "product name" },
-  { hasFilter: false, text: "product code" },
-  { hasFilter: false, text: "location" },
-  { hasFilter: false, text: "product description" },
-  { hasFilter: false, text: "" },
-];
-
 export const RequestTableHeaders: { hasFilter: boolean; text: string }[] = [
   { hasFilter: false, text: "request" },
   { hasFilter: true, text: "type" },
@@ -223,12 +211,12 @@ export const ActiveFilterOptions: any[] = [
   {
     id: 1,
     name: "active",
-    value: "A",
+    value: 2,
   },
   {
     id: 2,
     name: "inactive",
-    value: "I",
+    value: 1,
   },
 ];
 
@@ -236,68 +224,68 @@ export const StatusFilterOptions: any[] = [
   {
     id: 1,
     name: "approved",
-    value: "A",
+    value: 2,
   },
   {
     id: 2,
     name: "in-review",
-    value: "P",
+    value: 1,
   },
   {
     id: 3,
     name: "in-issue",
-    value: "R",
+    value: 3,
   },
   {
     id: 4,
     name: "draft",
-    value: "D",
+    value: 0,
   },
 ];
 
 export const CheckerStatusFilterOptions: any[] = [
   {
-    id: 1,
+    id: 2,
     name: "approved",
-    value: "A",
+    value: 2,
   },
   {
-    id: 2,
+    id: 1,
     name: "pending",
-    value: "P",
+    value: 1,
   },
   {
     id: 3,
     name: "rejected",
-    value: "R",
+    value: 3,
   },
   {
-    id: 4,
+    id: 0,
     name: "draft",
-    value: "D",
+    value: 0,
   },
 ];
 
 export const TypeFilterOptions: any[] = [
   {
-    id: 1,
+    id: 0,
     name: "creation",
-    value: "CREATE",
+    value: 0,
+  },
+  {
+    id: 1,
+    name: "modification",
+    value: 1,
   },
   {
     id: 2,
-    name: "modification",
-    value: "CHANGE",
+    name: "deactivation",
+    value: 2,
   },
   {
     id: 3,
-    name: "deactivation",
-    value: "DEACTIVATE",
-  },
-  {
-    id: 4,
     name: "reactivation",
-    value: "REACTIVATE",
+    value: 3,
   },
 ];
 
@@ -305,19 +293,18 @@ export const productFilterOptions: any[] = [
   {
     id: 1,
     name: "Term Deposit",
-    value: "CREATE",
+    value: 0,
   },
   {
     id: 2,
     name: "Commercial Paper",
-    value: "CHANGE",
+    value: 2,
   },
   {
     id: 3,
     name: "Treasury Bills",
-    value: "DEACTIVATE",
+    value: 1,
   },
-
 ];
 
 export const DateFilterOptions: any[] = [

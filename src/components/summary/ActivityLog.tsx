@@ -65,7 +65,7 @@ export default function ActivityLog({
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
                         >
-                          <g clip-path="url(#clip0_45812_713696)">
+                          <g clipPath="url(#clip0_45812_713696)">
                             <circle
                               cx="12.5"
                               cy="13"

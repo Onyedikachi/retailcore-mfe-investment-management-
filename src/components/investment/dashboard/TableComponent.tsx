@@ -409,7 +409,7 @@ export default function TableComponent() {
           setSearchTerm={setSearch}
           placeholder="Search by product name/code"
         />
-        <div className="relative  after:content-[none] after:w-1 after:h-[80%] after:absolute after:border-r after:right-[-15px] after:top-1/2 after:translate-y-[-50%] after:border-[#E5E9EB]">
+        <div className="relative  after:content-[''] after:w-1 after:h-[80%] after:absolute after:border-r after:right-[-15px] after:top-1/2 after:translate-y-[-50%] after:border-[#E5E9EB]">
           {/* Refresh button  */}
 
           <button
@@ -422,11 +422,8 @@ export default function TableComponent() {
         </div>{" "}
         <div>
           {/* download button  */}{" "}
-          {/* {((permissions?.includes("VIEW_ALL_PRODUCT_RECORDS") &&
-            category === StatusCategoryType?.AllProducts) ||
-            (permissions?.includes("VIEW_ALL_PRODUCT_REQUESTS") &&
-              category === StatusCategoryType?.Requests)) && ( */}
-          {/* <button
+         
+          <button
             onClick={() =>
               handleDownload(downloadData, isChecker, csvExporter, category)
             }
@@ -434,8 +431,8 @@ export default function TableComponent() {
             className="flex gap-x-2 items-center bg-transparent border-none text-[#636363] text-base"
           >
             <HiDownload className="text-lg" /> Download
-          </button> */}
-          {/* )} */}
+          </button>
+        
         </div>
       </div>
 

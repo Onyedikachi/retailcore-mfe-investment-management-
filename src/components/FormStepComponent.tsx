@@ -33,7 +33,7 @@ export default function FormStepComponent({
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <g clip-path="url(#clip0_49301_118241)">
+                <g clipPath="url(#clip0_49301_118241)">
                   <path
                     d="M15.7599 0H-0.0997126C-0.575403 0 -0.841018 0.490595 -0.546427 0.82552L7.38336 9.80718C7.61034 10.0643 8.0474 10.0643 8.27679 9.80718L16.2066 0.82552C16.5012 0.490595 16.2356 0 15.7599 0Z"
                     fill="#CF2A2A"

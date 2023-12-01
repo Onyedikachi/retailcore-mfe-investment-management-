@@ -57,7 +57,7 @@ export default function SelectedRequirementsTable() {
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
                           >
-                            <g clip-path="url(#clip0_49301_99045)">
+                            <g clipPath="url(#clip0_49301_99045)">
                               <path
                                 d="M0.160156 2.207L2.95316 5L0.160156 7.793L2.36716 10L5.16016 7.207L7.95316 10L10.1602 7.793L7.36716 5L10.1602 2.207L7.95316 0L5.16016 2.793L2.36716 0L0.160156 2.207Z"
                                 fill="#CF2A2A"
