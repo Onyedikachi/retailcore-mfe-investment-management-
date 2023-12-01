@@ -13,6 +13,7 @@ on:
   push:
     branches:
       - dev
+      - dev2
       - qa
       - staging
       - main
@@ -22,7 +23,7 @@ jobs:
     uses: sterling-retailcore-team/workflow-templates/.github/workflows/code_quality.yml@main
     secrets: inherit
     with:
-      CODE_COVERAGE: 'node'
+      CODE_COVERAGE: "node" # specify codebase for code coverage. e.g CODE_COVERAGE: 'node' or CODE_COVERAGE: 'python', e.t.c
   build_image:
     uses: sterling-retailcore-team/workflow-templates/.github/workflows/build.yml@main
     needs: [code_quality]
@@ -37,13 +38,12 @@ jobs:
       USE_BUILDTIME_ARGS: false # toggle to use buildtime variables
       DEPLOY_VARIANT_CONTAINER: false # toggle to build a variant
       USE_VARIANT_BUILDTIME_ARGS: false # toggle to use buildtime variables for variants
-      VARIANT_DOCKERFILE_NAME: '' # name of the variant dockerfile
-      VARIANT_CONTAINER_NAME: '' # provide a name for the container variant if building one
-      MFE_CUSTOM_BUILD_SCRIPT: ''
-      MFE: true
-    secrets:
-      BUILDTIME_ARGS: '' # if using buildtime variables, specify secrets in this format "${{ secrets.example }}"
-      VARIANT_BUILDTIME_ARGS: '' # if using buildtime variables for the variant, specify secrets in this format "${{ secrets.example }}"
+      VARIANT_DOCKERFILE_NAME: "" # name of the variant dockerfile
+      VARIANT_CONTAINER_NAME: "" # provide a name for the container variant if building one
+      MFE: true # set to true for microfrontend repositories and false for microservices
+    secrets:   
+      BUILDTIME_ARGS: "" # if using buildtime variables, specify secrets in this format "${{ secrets.example }}"
+      VARIANT_BUILDTIME_ARGS: "" # if using buildtime variables for the variant, specify secrets in this format "${{ secrets.example }}"
       GH_ACTIONS_PAT: ${{ secrets.GH_ACTIONS_PAT }} # mandatory, do not remove
 
   deploy_microservice:
@@ -55,16 +55,16 @@ jobs:
       GITHUB_REPOSITORY_OWNER: ${GITHUB_REPOSITORY_OWNER}
       GITHUB_EVENT_NAME: ${GITHUB_EVENT_NAME}
       DEPLOY_VARIANT_CONTAINER: false # toggle to deploy a variant
-      VARIANT_CONTAINER_NAME: '' # provide a name for the container variant if deploying one
-      MFE: true
-      MFE_PACKAGE_NAME: 'investment-management'
+      VARIANT_CONTAINER_NAME: "" # provide a name for the container variant if deploying one
+      MFE: true # set to true for microfrontend repositories and false for microservices
+      MFE_PACKAGE_NAME: 'investment-management' # for microfrontends, specify the package name to be used in the import-map
     secrets: inherit
     needs: build_image
     if: |
       always() &&
       (!contains(needs.build_image.result, 'failure') ||
       !contains(needs.build_image.result, 'cancelled'))
-
+  
   smoke_test:
     uses: sterling-retailcore-team/workflow-templates/.github/workflows/smoke_tests.yml@main
     with:
@@ -75,4 +75,3 @@ jobs:
       always() &&
       (!contains(needs.deploy_microservice.result, 'failure') ||
       !contains(needs.deploy_microservice.result, 'cancelled'))
-      
