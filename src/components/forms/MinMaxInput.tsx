@@ -1,6 +1,6 @@
 import React from "react";
 interface MinMaxProps {
-  label: string;
+  label?: string;
   hasButton?: boolean;
   currency?: string;
   className?: string;
@@ -13,7 +13,7 @@ export default function MinMaxInput({
 }: MinMaxProps) {
   return (
     <div className={`${className} flex items-center gap-4`}>
-      <div>{label}</div>
+      {label && <div>{label}</div>}
       {currency && <div className="text-[#636363]">{currency}</div>}
 
       <div className="w-full flex flex-col gap-2">

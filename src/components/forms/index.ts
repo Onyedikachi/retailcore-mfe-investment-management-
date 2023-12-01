@@ -10,3 +10,4 @@ export { default as CustomInput } from "./CustomInput";
 export { default as SideLabelSearchSelect } from "./SideLabelSearchSelect";
 export { default as FormDate } from "./FormDate";
 export { default as MinMaxInput } from "./MinMaxInput";
+export { default as InfoLabel } from "./InfoLabel";

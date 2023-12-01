@@ -1,9 +1,35 @@
 import React, { useState } from "react";
 import { BorderlessSelect } from "@app/components/forms";
 import { SelectedRequirementsTable } from "@app/components";
+import { MinMaxInput, InfoLabel } from "@app/components/forms";
+import { RiInformationLine } from "react-icons/ri";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { CustomerEligibilityCriteriaSchema } from "@app/constants";
 
-export default function CustomerEligibilityCriteria() {
-  // const [category, setCategory] = useState("");
+export default function CustomerEligibilityCriteria(
+  formData,
+  setFormData,
+  setDisabled,
+  setStep
+) {
+  const [chosenCategory, setChosenCategory] = useState("");
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    clearErrors,
+
+    setValue,
+    setError: assignError,
+    getValues,
+    formState: { errors, isValid },
+  } = useForm({
+    resolver: yupResolver(CustomerEligibilityCriteriaSchema),
+    defaultValues: formData,
+    // values,
+  });
 
   return (
     <div>
@@ -11,7 +37,13 @@ export default function CustomerEligibilityCriteria() {
         <div className="w-[300px]">
           <BorderlessSelect
             labelName={"Customer Category"}
-            handleSelected={() => {}}
+            inputError={errors?.category}
+            register={register}
+            inputName={"category"}
+            handleSelected={(value) => {
+              setChosenCategory(value.value);
+              setValue("category", value.value);
+            }}
             options={[
               {
                 id: 1,
@@ -27,23 +59,40 @@ export default function CustomerEligibilityCriteria() {
           />
         </div>
 
-        <div className="w-[300px]">
-          <BorderlessSelect
-            labelName={"Type of corporate customer"}
-            handleSelected={() => {}}
-            options={[
-              {
-                id: 1,
-                text: "Individual",
-                value: "Individual",
-              },
-              {
-                id: 2,
-                text: "Corporate",
-                value: "Corporate",
-              },
-            ]}
-          />
+        <div className="flex">
+          {chosenCategory?.toLowerCase() == "Corporate" ? (
+            <div className="w-[300px]">
+              <BorderlessSelect
+                labelName={"Type of corporate customer"}
+                handleSelected={() => {}}
+                options={[
+                  {
+                    id: 1,
+                    text: "Individual",
+                    value: "Individual",
+                  },
+                  {
+                    id: 2,
+                    text: "Corporate",
+                    value: "Corporate",
+                  },
+                ]}
+              />
+            </div>
+          ) : (
+            <div className="flex flex-col ">
+              <InfoLabel label={"Age Group Eligibility"} info={"String"} />
+              <div className="flex items-end gap-[25px]">
+                <div className="w-[150px]">
+                  <MinMaxInput />
+                </div>
+                <div className="flex items-center">-</div>
+                <div className="w-[150px]">
+                  <MinMaxInput />
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <div className="flex justify-end mt-10">

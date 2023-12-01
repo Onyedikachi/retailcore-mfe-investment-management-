@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { paths } from "@app/routes/paths";
+import { Confirm, Failed, Success } from "@app/components/modals";
 
 import {
   Breadcrumbs,
@@ -26,6 +27,7 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
 }
 
 export default function CreateTermDeposit() {
+  const [step, setStep] = useState(2);
   const [productInformationFormData, setProductInformationFormData] = useState({
     name: "",
     slogan: "",
@@ -33,8 +35,17 @@ export default function CreateTermDeposit() {
     lifeCycle: "",
     currency: "",
   });
+  const [customerEligibilityCriteria, setCustomerEligibilityCriteria] =
+    useState({
+      category: "",
+    });
   const [isDisabled, setDisabled] = useState<boolean>(true);
-  const [step, setStep] = useState(1);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [draftText] = useState({
+    mainText: "Do you want to save as draft?",
+    subText: "Requests in draft will be deleted after 30 days of inactivity",
+  });
+
   // const [formRef, setFormRef] = useState("");
 
   const navigate = useNavigate();
@@ -63,6 +74,10 @@ export default function CreateTermDeposit() {
       : navigate(paths.TERM_DEPOSIT_SUMMARY);
   }
 
+  const handleDraft = () => {
+    navigate(paths.INVESTMENT_DASHBOARD);
+  };
+
   let component;
   let formRef;
 
@@ -70,6 +85,7 @@ export default function CreateTermDeposit() {
     case 1:
       component = (
         <ProductInformation
+          setStep={setStep}
           formData={productInformationFormData}
           setFormData={setProductInformationFormData}
           setDisabled={setDisabled}
@@ -78,7 +94,14 @@ export default function CreateTermDeposit() {
       formRef = "productform";
       break;
     case 2:
-      component = <CustomerEligibilityCriteria />;
+      component = (
+        <CustomerEligibilityCriteria
+          setStep={setStep}
+          formData={customerEligibilityCriteria}
+          setFormData={setCustomerEligibilityCriteria}
+          setDisabled={setDisabled}
+        />
+      );
       break;
     case 3:
       component = <PricingConfig />;
@@ -93,6 +116,7 @@ export default function CreateTermDeposit() {
     default:
       component = (
         <ProductInformation
+          setStep={setStep}
           formData={productInformationFormData}
           setFormData={setProductInformationFormData}
           setDisabled={setDisabled}
@@ -121,27 +145,29 @@ export default function CreateTermDeposit() {
             <div className="h-px w-full bg-[#CCCCCC] mb-12 mt-16"></div>
 
             <div className="flex mb-[70px]  justify-between">
-              <Button
-                onClick={() => handlePrev(step, setStep, termDepositFormSteps)}
-                className="text-gray-500 px-10 py-1 font-medium text-base bg-white border border-[#D8DAE5] leading-[24px] disabled:bg-transparent"
-              >
-                Previous
-              </Button>
+              <div>
+                {step > 1 && (
+                  <Button
+                    onClick={() =>
+                      handlePrev(step, setStep, termDepositFormSteps)
+                    }
+                    className="text-gray-500 px-10 py-1 font-medium text-base bg-white border border-[#D8DAE5] leading-[24px] disabled:bg-transparent"
+                  >
+                    Previous
+                  </Button>
+                )}
+              </div>
               <div className="flex justify-end gap-6">
                 <Button
-                  onClick={() =>
-                    handleNext(step, setStep, termDepositFormSteps)
-                  }
+                  onClick={() => setIsConfirmOpen(true)}
                   className="text-gray-500 px-10 py-1 font-medium text-base bg-white border border-[#D8DAE5] leading-[24px] disabled:bg-transparent"
                 >
                   Save As Draft
                 </Button>
 
                 <Button
-
                   type="submit"
                   form={formRef}
-
                   className={
                     "bg-sterling-red-800 rounded-lg px-10 py-1 font-medium text-base"
                   }
@@ -153,6 +179,18 @@ export default function CreateTermDeposit() {
           </div>
         </div>
       </div>
+
+      {/* //Modals */}
+      {isConfirmOpen && (
+        <Confirm
+          text={draftText.mainText}
+          subtext={draftText.subText}
+          isOpen={isConfirmOpen}
+          setIsOpen={setIsConfirmOpen}
+          onCancel={() => setIsConfirmOpen(false)}
+          onConfirm={() => handleDraft()}
+        />
+      )}
     </div>
   );
 }
