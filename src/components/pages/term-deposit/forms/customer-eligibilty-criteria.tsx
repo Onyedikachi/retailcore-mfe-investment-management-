@@ -6,6 +6,8 @@ import { RiInformationLine } from "react-icons/ri";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CustomerEligibilityCriteriaSchema } from "@app/constants";
+import { SelectRequirements } from "@app/components/modals";
+import { EntriesAndEventsSearch } from "@app/components/pages/term-deposit/forms";
 
 export default function CustomerEligibilityCriteria(
   formData,
@@ -14,7 +16,23 @@ export default function CustomerEligibilityCriteria(
   setStep
 ) {
   const [chosenCategory, setChosenCategory] = useState("");
-
+  const [documents, setDocuments] = useState([
+    "Customer signature",
+    "Signature",
+    "Document 1",
+    "Document 2",
+    "Document 3",
+    "Document 4",
+    "Document 5",
+    "Document 6",
+    "Document 7",
+    "Document 8",
+    "Document 9",
+    "Document 10",
+    "Document 11",
+    "Document 12",
+  ]);
+  const [isRequirementsOpen, setIsRequirementsOpen] = useState(false);
   const {
     register,
     handleSubmit,
@@ -96,7 +114,10 @@ export default function CustomerEligibilityCriteria(
         </div>
       </div>
       <div className="flex justify-end mt-10">
-        <div className="flex items-center gap-[10px]">
+        <div
+          onClick={() => setIsRequirementsOpen(true)}
+          className="cursor-pointer flex items-center gap-[10px]"
+        >
           <svg
             width="29"
             height="28"
@@ -157,6 +178,90 @@ export default function CustomerEligibilityCriteria(
       <div>
         <SelectedRequirementsTable />
       </div>
+
+      {isRequirementsOpen && (
+        <SelectRequirements
+          header={"Document Requirements"}
+          isOpen={isRequirementsOpen}
+          setIsOpen={setIsRequirementsOpen}
+          onCancel={() => setIsRequirementsOpen(false)}
+          onConfirm={() => setIsRequirementsOpen(false)}
+        >
+          <div className="flex flex-col gap-2">
+            <span className=" flex items-center gap-[5px] text-[##636363] text-xs font-normal">
+              <span className="text-[15px]">
+                <RiInformationLine />
+              </span>
+              <span>
+                Customer must provide the following selected documents before
+                the product can be assigned
+              </span>
+            </span>
+            <div className="w-full">
+              {" "}
+              <EntriesAndEventsSearch
+                placeholder={"Search"}
+                options={[{ name: "Current Assets", id: "1" }]}
+              />
+            </div>
+            <div className="flex flex-col gap-[5px]">
+              <div className="p-5 max-h-[282px] overflow-y-auto">
+                <fieldset>
+                  <div className="space-y-5">
+                    <div className="relative flex items-start">
+                      <div className="flex h-6 items-center">
+                        <input
+                          id="comments"
+                          aria-describedby="comments-description"
+                          name="comments"
+                          type="checkbox"
+                          className="h-4 w-4 rounded border-gray-300  !accent-sterling-red-800 ring-0"
+                        />
+                      </div>
+                      <div className="ml-3 text-sm leading-6">
+                        <label
+                          htmlFor="comments"
+                          className="font-normal text-base text-[#636363]"
+                        >
+                          All Documents
+                        </label>{" "}
+                      </div>
+                    </div>
+                  </div>
+                  {documents?.map((document, index) => (
+                    <div className="space-y-5 ml-[16px]">
+                      <div className="relative flex items-start">
+                        <div className="flex h-6 items-center">
+                          <input
+                            id="comments"
+                            aria-describedby="comments-description"
+                            name="comments"
+                            type="checkbox"
+                            className="h-4 w-4 rounded border-gray-300  !accent-sterling-red-800 ring-0"
+                          />
+                        </div>
+                        <div className="ml-3 text-sm leading-6">
+                          <label
+                            htmlFor="comments"
+                            className="font-normal text-base text-[#636363]"
+                          >
+                            {document}
+                          </label>{" "}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </fieldset>
+              </div>
+              <div className="flex justify-end mb-[10px]">
+                <span className="cursor-pointer text-[#CF2A2A] text-base">
+                  Add Other Document
+                </span>
+              </div>
+            </div>
+          </div>
+        </SelectRequirements>
+      )}
     </div>
   );
 }
