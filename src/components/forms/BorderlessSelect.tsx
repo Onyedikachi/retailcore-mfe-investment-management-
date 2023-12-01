@@ -7,6 +7,9 @@ export default function Select({
   options,
   handleSelected,
   labelName,
+  register,
+  inputError,
+  inputName,
 }: BorderlessSelectProps): React.JSX.Element {
   const [selected, setSelected] = useState(options[0]);
 
@@ -26,9 +29,19 @@ export default function Select({
           {labelName}
         </label>
       </div>
-      <Listbox value={selected} onChange={setSelected}>
+      <Listbox
+        value={selected}
+        {...register(inputName, {
+          required: true,
+        })}
+        onChange={setSelected}
+      >
         <div className="relative mt-1">
-          <Listbox.Button className="relative w-full cursor-pointer  bg-white py-1 pl-2 pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm">
+          <Listbox.Button
+            className={`relative w-full cursor-pointer  bg-white py-1 pl-2 pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm ${
+              inputError ? "border-red-500" : ""
+            }`}
+          >
             <span className="block truncate">{selected?.text}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-xs">
               {/* <FaChevronDown className=" text-[#636363]" aria-hidden="true" /> */}

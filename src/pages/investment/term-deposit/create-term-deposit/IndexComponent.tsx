@@ -26,7 +26,17 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
 }
 
 export default function CreateTermDeposit() {
-  const [step, setStep] = useState(3);
+  const [productInformationFormData, setProductInformationFormData] = useState({
+    name: "",
+    slogan: "",
+    description: "",
+    lifeCycle: "",
+    currency: "",
+  });
+  const [isDisabled, setDisabled] = useState<boolean>(true);
+  const [step, setStep] = useState(1);
+  // const [formRef, setFormRef] = useState("");
+
   const navigate = useNavigate();
 
   const links = [
@@ -47,15 +57,14 @@ export default function CreateTermDeposit() {
     },
   ];
 
-  const [productInformationFormData, setProductInformationFormData] = useState({
-    name: "",
-    slogan: "",
-    description: "",
-    lifeCycle: "",
-    currency: "",
-  });
+  function handleNav() {
+    step < termDepositFormSteps.length
+      ? handleNext(step, setStep, termDepositFormSteps)
+      : navigate(paths.TERM_DEPOSIT_SUMMARY);
+  }
 
   let component;
+  let formRef;
 
   switch (step) {
     case 1:
@@ -63,8 +72,10 @@ export default function CreateTermDeposit() {
         <ProductInformation
           formData={productInformationFormData}
           setFormData={setProductInformationFormData}
+          setDisabled={setDisabled}
         />
       );
+      formRef = "productform";
       break;
     case 2:
       component = <CustomerEligibilityCriteria />;
@@ -84,6 +95,7 @@ export default function CreateTermDeposit() {
         <ProductInformation
           formData={productInformationFormData}
           setFormData={setProductInformationFormData}
+          setDisabled={setDisabled}
         />
       );
   }
@@ -126,11 +138,10 @@ export default function CreateTermDeposit() {
                 </Button>
 
                 <Button
-                  onClick={() =>
-                    step < termDepositFormSteps.length
-                      ? handleNext(step, setStep, termDepositFormSteps)
-                      : navigate("/investment-management/term-deposit/process-summary/submission")
-                  }
+
+                  type="submit"
+                  form={formRef}
+
                   className={
                     "bg-sterling-red-800 rounded-lg px-10 py-1 font-medium text-base"
                   }

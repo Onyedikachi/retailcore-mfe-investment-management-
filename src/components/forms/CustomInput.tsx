@@ -1,6 +1,7 @@
 import React from "react";
 
 type CustomInputProps = {
+  placeholder?: string;
   inputClass?: string;
   defaultValue?: any;
   formData?: any;
@@ -9,23 +10,25 @@ type CustomInputProps = {
 };
 export function handleChange(value, formData, setFormData, maxLength) {
   console.log(value);
+  // setFormData({...formData})
 }
 export default function CustomInput({
   formData,
   setFormData,
   maxLength,
   defaultValue,
+  placeholder,
   inputClass,
 }: CustomInputProps) {
   return (
     <div className="relative flex items-center w-full">
       <input
-        data-testid="ccustom-input"
+        data-testid="custom-input"
         className={`${inputClass} placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB] `}
         onChange={(e) =>
           handleChange(e.target.value, formData, setFormData, maxLength)
         }
-        placeholder=""
+        placeholder={placeholder}
         // maxLength={defaultLength}
         defaultValue={defaultValue}
         // aria-invalid={errors?.name ? "true" : "false"}
