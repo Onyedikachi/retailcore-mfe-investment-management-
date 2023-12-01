@@ -27,7 +27,7 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
 }
 
 export default function CreateTermDeposit() {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
   const [productInformationFormData, setProductInformationFormData] = useState({
     name: "",
     slogan: "",
@@ -85,7 +85,7 @@ export default function CreateTermDeposit() {
     case 1:
       component = (
         <ProductInformation
-          setStep={setStep}
+          proceed={handleNav}
           formData={productInformationFormData}
           setFormData={setProductInformationFormData}
           setDisabled={setDisabled}
@@ -96,27 +96,31 @@ export default function CreateTermDeposit() {
     case 2:
       component = (
         <CustomerEligibilityCriteria
-          setStep={setStep}
+          proceed={handleNav}
           formData={customerEligibilityCriteria}
           setFormData={setCustomerEligibilityCriteria}
           setDisabled={setDisabled}
         />
       );
+      formRef = "customereligibilitycriteria";
       break;
     case 3:
-      component = <PricingConfig />;
+      component = <PricingConfig proceed={handleNav} />;
+      formRef = "pricingconfig";
       break;
     case 4:
-      component = <LiquiditySetup />;
+      component = <LiquiditySetup proceed={handleNav} />;
+      formRef = "liquiditysetup";
       break;
     case 5:
-      component = <AccountingEntriesAndEvents />;
+      component = <AccountingEntriesAndEvents proceed={handleNav} />;
+      formRef = "entriesandevents";
       break;
 
     default:
       component = (
         <ProductInformation
-          setStep={setStep}
+          proceed={handleNav}
           formData={productInformationFormData}
           setFormData={setProductInformationFormData}
           setDisabled={setDisabled}
