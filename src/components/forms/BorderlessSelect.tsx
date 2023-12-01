@@ -7,7 +7,7 @@ export default function Select({
   options,
   handleSelected,
   labelName,
-  register,
+  register = () => {},
   inputError,
   inputName,
 }: BorderlessSelectProps): React.JSX.Element {
@@ -38,9 +38,7 @@ export default function Select({
       >
         <div className="relative mt-1">
           <Listbox.Button
-            className={`relative w-full cursor-pointer  bg-white py-1 pl-2 pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm ${
-              inputError ? "border-red-500" : ""
-            }`}
+            className={`relative w-full cursor-pointer  bg-white py-1 pl-2 pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm `}
           >
             <span className="block truncate">{selected?.text}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-xs">

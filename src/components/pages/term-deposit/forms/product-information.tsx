@@ -102,7 +102,10 @@ export default function ProductInformation({
   formData,
   setFormData,
   setDisabled,
+  setStep,
 }) {
+  //
+  //
   const {
     register,
     handleSubmit,
@@ -157,6 +160,7 @@ export default function ProductInformation({
 
   function onProceed(d: any) {
     console.log("ProductInfo: " + JSON.stringify(d));
+    setStep(2);
   }
 
   return (

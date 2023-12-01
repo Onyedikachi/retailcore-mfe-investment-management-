@@ -43,3 +43,9 @@ export const ProductInformationFormSchema = yup
     currency: yup.string().required("Product currency is required"),
   })
   .required();
+
+export const CustomerEligibilityCriteriaSchema = yup
+  .object({
+    category: yup.string().required("Product currency is required"),
+  })
+  .required();
