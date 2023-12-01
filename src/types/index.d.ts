@@ -25,6 +25,10 @@ export interface BorderlessSelectProps {
   options: array;
   handleSelected: (value) => void;
   labelName: string;
+  register?: any;
+  inputError?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
+  clearErrors?: any;
+  inputName?: string | null | undefined;
 }
 
 export interface ActiveFilterProps {}

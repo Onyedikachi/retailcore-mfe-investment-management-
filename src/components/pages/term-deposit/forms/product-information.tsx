@@ -168,7 +168,7 @@ export default function ProductInformation({
           </label>
 
           <InputDiv>
-            <div className="relative flex items-center max-w-[64">
+            <div className="relative flex items-center max-w-[642px]">
               <input
                 data-testid="product-name"
                 className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB] ${
@@ -334,19 +334,41 @@ export default function ProductInformation({
           </div>
 
           <div className="flex items-end gap">
+            {/* <InputDiv> */}
             <div className="w-[300px]">
               <BorderlessSelect
+                // clearErrors={() => clearErrors("currency")}
+                inputError={errors?.currency}
+                register={register}
+                inputName={"currency"}
                 labelName={"Product Currency"}
-                handleSelected={() => {}}
+                handleSelected={(value) => {
+                  setValue("currency", value.value);
+                }}
                 options={[
                   {
                     id: 1,
                     text: "NGN",
                     value: "NGN",
                   },
+                  {
+                    id: 2,
+                    text: "USD",
+                    value: "USD",
+                  },
                 ]}
               />
             </div>
+            {/* {errors?.currency && (
+                <span className="text-sm text-danger-500">
+                  {errors?.currency?.message}
+                </span>
+              )}
+
+              {error && (
+                <span className="text-sm text-danger-500">{error}</span>
+              )} */}
+            {/* </InputDiv> */}
           </div>
         </div>
       </div>
