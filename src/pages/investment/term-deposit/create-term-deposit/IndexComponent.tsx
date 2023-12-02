@@ -40,6 +40,7 @@ export default function CreateTermDeposit() {
       category: "",
       ageGroupStart: 0,
       ageGroupEnd: 0,
+      corporateCustomerType: "",
     });
   const [isDisabled, setDisabled] = useState<boolean>(true);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);

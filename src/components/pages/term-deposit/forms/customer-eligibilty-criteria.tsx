@@ -15,7 +15,7 @@ export default function CustomerEligibilityCriteria({
   setDisabled,
   proceed,
 }) {
-  const [chosenCategory, setChosenCategory] = useState("");
+  const [chosenCategory, setChosenCategory] = useState("Corporate");
   const [documents, setDocuments] = useState([
     "Customer signature",
     "Signature",
@@ -49,6 +49,9 @@ export default function CustomerEligibilityCriteria({
     // values,
   });
 
+  // const [showCategory, setShowCategory] = useState("Individual");
+  // const selectedCategory = watch("category");
+
   // const computedategory = useMemo(calculateValue, dependencies);
 
   function onProceed(d: any) {
@@ -60,7 +63,7 @@ export default function CustomerEligibilityCriteria({
     <div>
       <form id="customereligibilitycriteria" onSubmit={handleSubmit(onProceed)}>
         <div className="flex gap-[18px]">
-          {/* {`category: ${category}`} */}
+          {/* {`category: ${selectedCategory}`} */}
           <div className="w-[300px]">
             <BorderlessSelect
               labelName={"Customer Category"}
@@ -68,8 +71,6 @@ export default function CustomerEligibilityCriteria({
               register={register}
               inputName={"category"}
               handleSelected={(value) => {
-                // console.log(value);
-                // setChosenCategory(value.value);
                 setValue("category", value.value);
               }}
               options={[
@@ -88,21 +89,25 @@ export default function CustomerEligibilityCriteria({
           </div>
 
           <div className="flex">
-            {chosenCategory?.toLowerCase() == "Corporate" ? (
+            {chosenCategory?.toLowerCase() == "corporate" ? (
               <div className="w-[300px]">
                 <BorderlessSelect
                   labelName={"Type of corporate customer"}
-                  handleSelected={() => {}}
+                  register={register}
+                  inputName={"corporateCustomerType"}
+                  handleSelected={(value) => {
+                    setValue("corporateCustomerType", value.value);
+                  }}
                   options={[
                     {
                       id: 1,
-                      text: "Individual",
-                      value: "Individual",
+                      text: "CustomerType1",
+                      value: "CustomerType1",
                     },
                     {
                       id: 2,
-                      text: "Corporate",
-                      value: "Corporate",
+                      text: "CustomerType2",
+                      value: "CustomerType2",
                     },
                   ]}
                 />
