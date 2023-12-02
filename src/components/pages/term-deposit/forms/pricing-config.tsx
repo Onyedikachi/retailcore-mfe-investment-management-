@@ -35,20 +35,23 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
     defaultValues: formData,
     // values,
   });
-  const [principalType, setSelectedPrincipalType] = useState("Fixed");
+
+  const [applicableInterestRangeType, setApplicableInterestRangeType] =
+    useState("varyByTenor");
   const varyOptions = [
-    { id: "Vary by principal", title: "Vary by principal" },
-    { id: "Vary by tenor", title: "Vary by tenor" },
+    {
+      id: "Vary by principal",
+      title: "Vary by principal",
+      value: "varyByPrincipal",
+    },
+    { id: "Vary by tenor", title: "Vary by tenor", value: "varyByTenor" },
     {
       id: "Do not vary by principal or tenor",
       title: "Do not vary by principal or tenor",
+      value: "dontVary",
     },
   ];
 
-  const applicablePrincipalTypes = [
-    { id: "Fixed", title: "Fixed" },
-    { id: "Range", title: "Range" },
-  ];
   function onProceed(d: any) {
     console.log("Pricing - Config:" + JSON.stringify(d));
     // proceed();
@@ -109,35 +112,10 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
           </div>
         </InputDivs>
         <InputDivs label={"Applicable Principal"}>
-          <div className="flex gap-[51px] mb-[40px]">
-            {principalType}
-            {applicablePrincipalTypes.map((applicablePrincipalType) => (
-              <div
-                key={applicablePrincipalType.id}
-                className="flex items-center"
-              >
-                <input
-                  id={applicablePrincipalType.id}
-                  name="applicable-principal-type"
-                  type="radio"
-                  value={applicablePrincipalType.title}
-                  onChange={(e) => setSelectedPrincipalType(e.target.value)}
-                  defaultChecked={applicablePrincipalType.id === principalType}
-                  className="h-4 w-4 border-gray-300 accent-sterling-red-800"
-                />
-                <label
-                  htmlFor={applicablePrincipalType.id}
-                  className="ml-3 block text-base font-medium leading-6 text-[#636363]"
-                >
-                  {applicablePrincipalType.title}
-                </label>
-              </div>
-            ))}
-          </div>
           <div className="flex items-center gap-[25px] mt-[14px]">
             <div className="flex gap-[25px]">
               <MinMaxInput
-                className="w-[200px]"
+                className="w-[300px]"
                 label={"Min"}
                 currency={"NGN"}
                 register={register}
@@ -146,22 +124,11 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                   setValue("applicablePrincipalMin", value.value);
                 }}
               />
-              <div className="w-[150px]">
-                <BorderlessSelect
-                  inputError={errors?.applicableTenorMaxDays}
-                  register={register}
-                  inputName={"applicablePrincipalMinDays"}
-                  handleSelected={(value) => {
-                    setValue("applicablePrincipalMinDays", value.value);
-                  }}
-                  options={daysOptions}
-                />
-              </div>
             </div>{" "}
             -
             <div className="flex gap-[25px]">
               <MinMaxInput
-                className="w-[200px]"
+                className="w-[300px]"
                 label={"Max"}
                 currency={"NGN"}
                 register={register}
@@ -170,17 +137,6 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                   setValue("applicablePrincipalMax", value.value);
                 }}
               />
-              <div className="w-[150px]">
-                <BorderlessSelect
-                  inputError={errors?.applicableTenorMaxDays}
-                  register={register}
-                  inputName={"applicablePrincipalMaxDays"}
-                  handleSelected={(value) => {
-                    setValue("applicablePrincipalMaxDays", value.value);
-                  }}
-                  options={daysOptions}
-                />
-              </div>
             </div>{" "}
           </div>
         </InputDivs>
@@ -192,7 +148,13 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                   id={varyOption.id}
                   name="notification-method"
                   type="radio"
-                  defaultChecked={varyOption.id === varyOptions[2].id}
+                  value={varyOption.value}
+                  onChange={(e) =>
+                    setApplicableInterestRangeType(e.target.value)
+                  }
+                  defaultChecked={
+                    varyOption.value === applicableInterestRangeType
+                  }
                   className="h-4 w-4 border-gray-300 accent-sterling-red-800"
                 />
                 <label
@@ -204,45 +166,126 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
               </div>
             ))}
           </div>
-          <div className="flex items-center gap-[25px] mt-[14px]">
-            <div className="flex gap-[25px]">
-              <MinMaxInput
-                className="w-[150px]"
-                label={"Min"}
-                register={register}
-                inputName={"applicableInterestMin"}
-                handleChange={(value) => {
-                  setValue("applicableInterestMin", value.value);
-                }}
-              />
-              <div className="w-[150px]">
-                <BorderlessSelect
-                  inputError={errors?.applicableTenorMaxDays}
+          {applicableInterestRangeType === "varyByPrincipal" && (
+            <div className="flex items-center gap-[25px] mt-[14px]">
+              <div className="flex gap-[25px]">
+                <MinMaxInput
+                  className="w-[150px]"
+                  label={"Min"}
                   register={register}
-                  inputName={"applicableInterestMax"}
-                  handleSelected={(value) => {
-                    setValue("applicableInterestMax", value.value);
+                  inputName={"applicableInterestMin"}
+                  handleChange={(value) => {
+                    setValue("applicableInterestMin", value.value);
                   }}
-                  options={daysOptions}
                 />
+                <div className="w-[150px]">
+                  <BorderlessSelect
+                    inputError={errors?.applicableTenorMaxDays}
+                    register={register}
+                    inputName={"applicableInterestMax"}
+                    handleSelected={(value) => {
+                      setValue("applicableInterestMax", value.value);
+                    }}
+                    options={daysOptions}
+                  />
+                </div>
+              </div>{" "}
+              -
+              <div className="flex gap-[25px]">
+                <MinMaxInput className="w-[150px]" label={"Max"} />
+                <div className="w-[150px]">
+                  <BorderlessSelect
+                    inputError={errors?.applicableTenorMaxDays}
+                    register={register}
+                    inputName={"applicableTenorMaxDays"}
+                    handleSelected={(value) => {
+                      setValue("applicableTenorMaxDays", value.value);
+                    }}
+                    options={daysOptions}
+                  />
+                </div>
+              </div>{" "}
+            </div>
+          )}
+
+          {applicableInterestRangeType === "varyByTenor" && (
+            <div className="flex items-center gap-[25px] mt-[14px]">
+              <div className="flex items-center gap-[25px] mt-[14px]">
+                <div className="flex gap-[25px]">
+                  <MinMaxInput
+                    className="w-[200px]"
+                    label={"Min"}
+                    register={register}
+                    inputName={"applicableInterestMin"}
+                    handleChange={(value) => {
+                      setValue("applicableInterestMin", value.value);
+                    }}
+                  />
+                </div>{" "}
+                -
+                <div className="flex gap-[25px]">
+                  <MinMaxInput className="w-[200px]" label={"Max"} />
+                </div>{" "}
               </div>
-            </div>{" "}
-            -
-            <div className="flex gap-[25px]">
-              <MinMaxInput className="w-[150px]" label={"Max"} />
-              <div className="w-[150px]">
-                <BorderlessSelect
-                  inputError={errors?.applicableTenorMaxDays}
+              <span>for tenor between:</span>
+              <div className="flex gap-[25px]">
+                <MinMaxInput
+                  className="w-[90px]"
                   register={register}
-                  inputName={"applicableTenorMaxDays"}
-                  handleSelected={(value) => {
-                    setValue("applicableTenorMaxDays", value.value);
+                  inputName={"applicableInterestMin"}
+                  handleChange={(value) => {
+                    setValue("applicableInterestMin", value.value);
                   }}
-                  options={daysOptions}
                 />
-              </div>
-            </div>{" "}
-          </div>
+                <div className="w-[90px]">
+                  <BorderlessSelect
+                    inputError={errors?.applicableTenorMaxDays}
+                    register={register}
+                    inputName={"applicableInterestMax"}
+                    handleSelected={(value) => {
+                      setValue("applicableInterestMax", value.value);
+                    }}
+                    options={daysOptions}
+                  />
+                </div>
+              </div>{" "}
+              -
+              <div className="flex gap-[25px]">
+                <MinMaxInput className="w-[90px]" />
+                <div className="w-[90px]">
+                  <BorderlessSelect
+                    inputError={errors?.applicableTenorMaxDays}
+                    register={register}
+                    inputName={"applicableTenorMaxDays"}
+                    handleSelected={(value) => {
+                      setValue("applicableTenorMaxDays", value.value);
+                    }}
+                    options={daysOptions}
+                  />
+                </div>
+              </div>{" "}
+            </div>
+          )}
+
+          {applicableInterestRangeType === "dontVary" && (
+            <div className="flex items-center gap-[25px] mt-[14px]">
+              <div className="flex gap-[25px]">
+                <MinMaxInput
+                  className="w-[140px]"
+                  label={"Min"}
+                  register={register}
+                  inputName={"applicableInterestMin"}
+                  handleChange={(value) => {
+                    setValue("applicableInterestMin", value.value);
+                  }}
+                />
+              </div>{" "}
+              -
+              <div className="flex gap-[25px]">
+                <MinMaxInput className="w-[140px]" label={"Max"} />
+              </div>{" "}
+            </div>
+          )}
         </InputDivs>
         <InputDivs label={"Interest Computation Days in Year Method"}>
           <div className="flex items-center gap-[25px] mt-[14px]">
