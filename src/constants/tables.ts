@@ -46,7 +46,7 @@ export const RequestTableHeaders: { hasFilter: boolean; text: string }[] = [
 export const DropDownOptions: any = {
   creation: [
     {
-      A: [
+      approved: [
         {
           id: "",
           text: "View",
@@ -55,17 +55,13 @@ export const DropDownOptions: any = {
       ],
     },
     {
-      R: [
+      "in-issue": [
         {
           id: "",
           text: "View",
           icon: "FaEye",
         },
-        // {
-        //   id: "",
-        //   text: "Modify",
-        //   icon: "FaEdit",
-        // },
+
         {
           id: "",
           text: "Delete Request",
@@ -74,7 +70,7 @@ export const DropDownOptions: any = {
       ],
     },
     {
-      P: [
+      "in-review": [
         {
           id: "View",
           text: "View",
@@ -93,7 +89,7 @@ export const DropDownOptions: any = {
       ],
     },
     {
-      D: [
+      draft: [
         {
           id: "",
           text: "Continue Request",
@@ -109,7 +105,7 @@ export const DropDownOptions: any = {
   ],
   activation: [
     {
-      A: [
+      approved: [
         {
           id: "",
           text: "View",
@@ -118,7 +114,7 @@ export const DropDownOptions: any = {
       ],
     },
     {
-      R: [
+      "in-issue": [
         {
           id: "",
           text: "View",
@@ -137,7 +133,7 @@ export const DropDownOptions: any = {
       ],
     },
     {
-      P: [
+      "in-review": [
         {
           id: "View",
           text: "View",
@@ -152,7 +148,7 @@ export const DropDownOptions: any = {
       ],
     },
     {
-      D: [
+      draft: [
         {
           id: "",
           text: "Continue Request",
@@ -219,7 +215,20 @@ export const ActiveFilterOptions: any[] = [
     value: 1,
   },
 ];
-
+export const ProductTypes: any[] = [
+  {
+    id: 0,
+    name: "Term Deposit",
+  },
+  {
+    id: 1,
+    name: "Treasure Bill",
+  },
+  {
+    id: 2,
+    name: "Commercial Paper",
+  },
+];
 export const StatusFilterOptions: any[] = [
   {
     id: 1,
@@ -453,5 +462,150 @@ export const LastRequestReviewStatus = [
     type: "both",
     request_type: "REACTIVATE",
     text: "Product reactivation approved",
+  },
+];
+
+export const productHeader = [
+  {
+    label: "product name/code",
+    key: "productName",
+    options: [
+      {
+        id: 1,
+        name: "",
+        value: "",
+      },
+    ],
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "product type",
+    key: "productType",
+    options: productFilterOptions,
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "state",
+    key: "state",
+    options: ActiveFilterOptions,
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "updated on",
+    key: "updatedOn",
+    options: [
+      {
+        id: 1,
+        name: "",
+        value: "",
+      },
+    ],
+    hasSelect: false,
+    hasDateSelect: true,
+  },
+  {
+    label: "",
+    options: [],
+    hasSelect: false,
+    hasDateSelect: false,
+    key: "actions",
+  },
+];
+export const requestHeader = [
+  {
+    label: "request",
+    key: "request",
+    options: [
+      {
+        id: 1,
+        name: "",
+        value: "",
+      },
+    ],
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "type",
+    key: "requestType",
+    options: TypeFilterOptions,
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "initiator",
+    key: "created_By",
+    options: [
+      {
+        id: 1,
+        name: "Term deposit",
+        value: "1",
+      },
+      {
+        id: 2,
+        name: "Commercial paper",
+        value: "2",
+      },
+      {
+        id: 3,
+        name: "Treasurer bill",
+        value: "3",
+      },
+    ],
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "reviewer",
+    key: "treated_by",
+    options: [
+      {
+        id: 1,
+        name: "Term deposit",
+        value: "1",
+      },
+      {
+        id: 2,
+        name: "Commercial paper",
+        value: "2",
+      },
+      {
+        id: 3,
+        name: "Treasurer bill",
+        value: "3",
+      },
+    ],
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "status",
+    key: "requestStatus",
+    options: StatusFilterOptions,
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "updated on",
+    key: "updatedOn",
+    options: [
+      {
+        id: 1,
+        name: "",
+        value: "",
+      },
+    ],
+    hasSelect: false,
+    hasDateSelect: true,
+  },
+  {
+    label: "",
+    options: [],
+    hasSelect: false,
+    hasDateSelect: false,
+    key: "actions",
   },
 ];

@@ -44,6 +44,7 @@ export const StatusButton = ({
   isActive,
   setActiveType,
   analyticsData,
+  isLoading,
 }: any) => {
   return (
     <button
@@ -64,7 +65,10 @@ export const StatusButton = ({
         {item.type}
       </span>
       <span className="text-2xl xl:text-4xl text-[#252C32] font-semibold">
-        {count(item, analyticsData)}
+        {!isLoading && count(item, analyticsData)}
+        {isLoading && (
+          <div className="mt-3 spinner-border h-6 w-6 border-t border-danger-500 rounded-full animate-spin"></div>
+        )}
       </span>
     </button>
   );
@@ -198,6 +202,7 @@ export function handlePermission(
 export default function StatusCard({
   data,
   requests,
+  isLoading,
   handleChange,
 }: any): React.JSX.Element {
   // const { permissions } = useContext(AppContext);
@@ -214,66 +219,29 @@ export default function StatusCard({
     useState(ProductOptions);
   const [filteredRequestOptions, setFilteredRequestOptions] =
     useState(RequestOptions);
-  const {
-    isChecker,
-    selected,
-    setSelected,
-    category,
-    setCategory,
-    setStatus,
-    status,
-    isRefreshing,
-  } = useContext(InvestmentContext);
+  const { isChecker, selected, setSelected, category, setCategory, status } =
+    useContext(InvestmentContext);
   const { permissions } = useContext(AppContext);
-
-  // const { data, refetch: productRefetch } = useGetProductAnalyticsQuery({
-  //   filter_by: productFilter,
-  // });
-
-  // const { data: requests, refetch: requestRefetch } =
-  //   useGetRequestAnalyticsQuery({ filter_by: requestFilter });
 
   // Get select value
   function handleSelected(value: any) {
     setSelected(value);
     return value;
   }
-  useEffect(() => {
-    if (category === StatusCategoryType.AllProducts) {
-      setProductFilter(selected?.value);
-      // productRefetch();
-    } else {
-      setRequestFilter(selected?.value);
-      // requestRefetch();
-    }
-  }, [selected?.value, category]);
 
   useEffect(() => {
-    handleChange(selected?.value, category, activeType);
+    handleChange({ selected: selected?.value, category, activeType });
   }, [selected?.value, category, activeType]);
 
-  useEffect(() => {
-    queryCategory && setCategory(queryCategory);
-  }, [queryCategory]);
+  // useEffect(() => {
+  //   if (status === "") {
+  //     setActiveType("all");
+  //   }
+  // }, [status]);
 
-  useEffect(() => {
-    handleActiveType(activeType, setStatus);
-  }, [activeType]);
-
-  useEffect(() => {
-    if (status === "") {
-      setActiveType("all");
-    }
-  }, [status]);
-
-  useEffect(() => {
-    setActiveType("all");
-  }, [selected]);
-
-  useEffect(() => {
-    // productRefetch();
-    // requestRefetch();
-  }, [isRefreshing]);
+  // useEffect(() => {
+  //   setActiveType("all");
+  // }, [selected]);
 
   useEffect(() => {
     handlePermission(
@@ -304,6 +272,7 @@ export default function StatusCard({
               item={item}
               isActive={activeType === item.type}
               setActiveType={setActiveType}
+              isLoading={isLoading}
               analyticsData={
                 category === StatusCategoryType.AllProducts ? data : requests
               }

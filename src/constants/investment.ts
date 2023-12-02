@@ -11,7 +11,7 @@ export const StatusCategories = [
 
 export const StatusTypes = [
   {
-    id: 1,
+    id: 0,
     type: "all",
     color: "#252C32",
   },
@@ -21,7 +21,7 @@ export const StatusTypes = [
     color: "#2FB755",
   },
   {
-    id: 2,
+    id: 1,
     type: "inactive",
     color: "#AAAAAA",
   },

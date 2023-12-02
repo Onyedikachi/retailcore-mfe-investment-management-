@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import { ExportToCsv } from "export-to-csv";
 import { HiRefresh, HiDownload } from "react-icons/hi";
-// import { RequestTable, ProductTable } from "./tables";
 import { StatusCategoryType } from "../../../constants/enums";
 import moment from "moment";
 import {
@@ -13,13 +12,7 @@ import {
 } from "@app/utils";
 import SearchInput from "@app/components/SearchInput";
 import Table from "@app/components/table";
-import {
-  ActiveFilterOptions,
-  DropDownOptions,
-  StatusFilterOptions,
-  TypeFilterOptions,
-  productFilterOptions,
-} from "@app/constants";
+import { DropDownOptions, productHeader, requestHeader } from "@app/constants";
 
 interface RequestDataProps {
   request: string;
@@ -86,14 +79,14 @@ export function handleDownload(downloadData, isChecker, csvExporter, category) {
       };
 
       if (!isChecker) {
-        obj.initiator = i?.created_by || "";
+        obj.initiator = i?.created_By || "";
         obj.status = handleUserView(i?.status, isChecker);
       } else {
-        obj.reviewer = i?.created_by || "";
+        obj.reviewer = i?.created_By || "";
         obj.status = handleUserView(i?.status, isChecker);
       }
 
-      obj["updated on"] = moment(i.updated_at).format("lll");
+      obj["updated on"] = moment(i.updated_at).format("DD MMM YYYY, hh:mm A");
 
       return obj;
     });
@@ -104,7 +97,7 @@ export function handleDownload(downloadData, isChecker, csvExporter, category) {
         "product name": i?.name || "",
         "product code": i?.code || "",
         status: handleUserView(i?.status, isChecker),
-        "updated on": moment(i.updated_at).format("lll"),
+        "updated on": moment(i.updated_at).format("DD MMM YYYY, hh:mm A"),
       };
 
       return obj;
@@ -119,12 +112,19 @@ export function handleDownload(downloadData, isChecker, csvExporter, category) {
   }
 }
 
-export default function TableComponent() {
-  const { category, setStatus, setSearch, isChecker } =
-    useContext(InvestmentContext);
+export default function TableComponent({
+  productData,
+  requestData,
+  handleRefresh,
+  isLoading,
+  handleSearch,
+  setQuery,
+}: any) {
+  const { category, setStatus, isChecker } = useContext(InvestmentContext);
   const { permissions } = useContext(AppContext);
-  const [refresh, setRefresh] = useState(false);
-  const [downloadData, setDownloadData] = useState<any[]>([]);
+  const [downloadData, setDownloadData] = useState<any[]>(
+    StatusCategoryType?.AllProducts ? productData : requestData
+  );
   const [options, setOptions] = React.useState({
     fieldSeparator: ",",
     quoteStrings: '"',
@@ -157,233 +157,6 @@ export default function TableComponent() {
     setStatus("");
   }, [category]);
 
-  const headers = [
-    {
-      label: "product name/code",
-      key: "productName",
-      options: [
-        {
-          id: 1,
-          name: "",
-          value: "",
-        },
-      ],
-      hasSelect: false,
-      hasDateSelect: false,
-    },
-    {
-      label: "product type",
-      key: "productType",
-      options: productFilterOptions,
-      hasSelect: true,
-      hasDateSelect: false,
-    },
-    {
-      label: "state",
-      key: "state",
-      options: ActiveFilterOptions,
-      hasSelect: true,
-      hasDateSelect: false,
-    },
-    {
-      label: "updated on",
-      key: "updatedOn",
-      options: [
-        {
-          id: 1,
-          name: "",
-          value: "",
-        },
-      ],
-      hasSelect: false,
-      hasDateSelect: true,
-    },
-    {
-      label: "",
-      options: [],
-      hasSelect: false,
-      hasDateSelect: false,
-      key: "actions",
-    },
-  ];
-  const requestHeaders = [
-    {
-      label: "request",
-      key: "request",
-      options: [
-        {
-          id: 1,
-          name: "",
-          value: "",
-        },
-      ],
-      hasSelect: false,
-      hasDateSelect: false,
-    },
-    {
-      label: "type",
-      key: "type",
-      options: TypeFilterOptions,
-      hasSelect: true,
-      hasDateSelect: false,
-    },
-    {
-      label: "initiator",
-      key: "created_by",
-      options: [
-        {
-          id: 1,
-          name: "Term deposit",
-          value: "1",
-        },
-        {
-          id: 2,
-          name: "Commercial paper",
-          value: "2",
-        },
-        {
-          id: 3,
-          name: "Treasurer bill",
-          value: "3",
-        },
-      ],
-      hasSelect: true,
-      hasDateSelect: false,
-    },
-    {
-      label: "reviewer",
-      key: "treated_by",
-      options: [
-        {
-          id: 1,
-          name: "Term deposit",
-          value: "1",
-        },
-        {
-          id: 2,
-          name: "Commercial paper",
-          value: "2",
-        },
-        {
-          id: 3,
-          name: "Treasurer bill",
-          value: "3",
-        },
-      ],
-      hasSelect: true,
-      hasDateSelect: false,
-    },
-    {
-      label: "status",
-      key: "status",
-      options: StatusFilterOptions,
-      hasSelect: true,
-      hasDateSelect: false,
-    },
-    {
-      label: "updated on",
-      key: "updatedOn",
-      options: [
-        {
-          id: 1,
-          name: "",
-          value: "",
-        },
-      ],
-      hasSelect: false,
-      hasDateSelect: true,
-    },
-    {
-      label: "",
-      options: [],
-      hasSelect: false,
-      hasDateSelect: false,
-      key: "actions",
-    },
-  ];
-  const ProductData = [
-    {
-      id: 1,
-      productName: "Product Royal",
-      productCode: "TM-01",
-      description: "Leading with excellent customer search for the item",
-      state: "active",
-      productType: "term deposit",
-      updatedOn: new Date(),
-      isNew: false,
-      isNameEdited: true,
-      islocked: false,
-      status: "A",
-    },
-    {
-      id: 2,
-      productName: "Product Sunshine",
-      productCode: "TM-02",
-      description: "Leading with excellent customer  search for the item",
-      state: "inactive",
-      status: "R",
-      productType: "term deposit",
-      updatedOn: new Date(),
-      isNew: false,
-      isNameEdited: false,
-      islocked: false,
-    },
-    {
-      id: 3,
-      productName: "Product Pride",
-      productCode: "TM-03",
-      description: "Leading with excellent customer  search for the item",
-      state: "active",
-      productType: "term deposit",
-      updatedOn: new Date(),
-      isNew: true,
-      isNameEdited: false,
-      islocked: true,
-      status: "I",
-    },
-  ];
-  const requestData = [
-    {
-      id: 1,
-      request: "Leading with excellent customer search for the item",
-      state: "active",
-      type: "deactivation",
-      created_by: "John doe",
-      treated_by: "Jane Doe",
-      updatedOn: new Date(),
-      isNew: false,
-      isNameEdited: true,
-      islocked: false,
-      status: "A",
-    },
-    {
-      id: 2,
-      request: "Leading with excellent customer search for the item",
-      state: "active",
-      type: "modification",
-      created_by: "John doe",
-      treated_by: "Jane Doe",
-      updatedOn: new Date(),
-      isNew: false,
-      isNameEdited: true,
-      islocked: false,
-      status: "P",
-    },
-    {
-      id: 3,
-      request: "Leading with excellent customer search for the item",
-      state: "active",
-      type: "creation",
-      created_by: "John doe",
-      treated_by: "Jane Doe",
-      updatedOn: new Date(),
-      isNew: false,
-      isNameEdited: true,
-      islocked: false,
-      status: "R",
-    },
-  ];
-
   const getOptionData = (value: string, label: string) => {
     console.log(
       "🚀 ~ file: TableComponent.tsx:188 ~ getOptionData  ~ label:",
@@ -399,20 +172,21 @@ export default function TableComponent() {
       "🚀 ~ file: TableComponent.tsx:193 ~ onChangeDate ~ value:",
       value
     );
+  
   };
   const handleDropClick = (value: any) => {
     console.log(
       "🚀 ~ file: TableComponent.tsx:197 ~ handleDropClick ~ value:",
       value
     );
-    return {};
+  
   };
   return (
     <section className="w-full h-full">
       {/* Table Top bar  */}
       <div className="flex justify-end gap-x-[25px] items-center mb-[27px] h-auto">
         <SearchInput
-          setSearchTerm={setSearch}
+          setSearchTerm={handleSearch}
           placeholder="Search by product name/code"
         />
         <div className="relative  after:content-[''] after:w-1 after:h-[80%] after:absolute after:border-r after:right-[-15px] after:top-1/2 after:translate-y-[-50%] after:border-[#E5E9EB]">
@@ -420,7 +194,7 @@ export default function TableComponent() {
 
           <button
             data-testid="refresh-btn"
-            onClick={() => setRefresh(!refresh)}
+            onClick={() => handleRefresh()}
             className="flex whitespace-nowrap gap-x-2 items-center bg-transparent border-none text-[#636363] text-base"
           >
             <HiRefresh className="text-lg" /> Refresh table
@@ -430,7 +204,14 @@ export default function TableComponent() {
           {/* download button  */}{" "}
           <button
             onClick={() =>
-              handleDownload(downloadData, isChecker, csvExporter, category)
+              handleDownload(
+                category === StatusCategoryType?.AllProducts
+                  ? productData
+                  : requestData,
+                isChecker,
+                csvExporter,
+                category
+              )
             }
             data-testid="download-btn"
             className="flex gap-x-2 items-center bg-transparent border-none text-[#636363] text-base"
@@ -444,12 +225,12 @@ export default function TableComponent() {
       <Table
         headers={
           category === StatusCategoryType?.AllProducts
-            ? headers
-            : handleHeaders(requestHeaders, isChecker)
+            ? productHeader
+            : handleHeaders(requestHeader, isChecker)
         }
         tableRows={
           category === StatusCategoryType?.AllProducts
-            ? ProductData
+            ? productData
             : requestData
         }
         page={1}
@@ -457,7 +238,7 @@ export default function TableComponent() {
         fetchMoreData={undefined}
         hasMore={false}
         getOptionData={getOptionData}
-        isLoading={false}
+        isLoading={isLoading}
         dropDownOptions={DropDownOptions}
         dropDownClick={handleDropClick}
         onChangeDate={onChangeDate}

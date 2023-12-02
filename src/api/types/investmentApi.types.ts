@@ -1,4 +1,4 @@
-export interface IGetInvestments {
+export interface IGetProducts {
   page?: number;
   page_size?: number;
   filter_by?: string;
@@ -8,7 +8,7 @@ export interface IGetInvestments {
   q?: string;
 }
 
-export interface ICreateInvestment {
+export interface ICreateProduct {
   name: string;
   description: string;
   draft: boolean;

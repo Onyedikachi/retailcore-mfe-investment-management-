@@ -38,22 +38,7 @@ interface TableProps {
   type?: string;
 }
 
-export const setOptionsByStatus = (status: any) => {
-  switch (status) {
-    case "P":
-      return "inactive";
-    case "A":
-      return "active";
-    case "R":
-      return "inactive";
-    case "D":
-      return "inactive";
-    case "I":
-      return "inactive";
-    default:
-      return status;
-  }
-};
+
 // Extract Dropdown component for reusability
 export const DropdownButton = ({ options, handleClick }: any) => {
   return (
@@ -69,18 +54,19 @@ export const handleProductsDropdown = (
   locked = false,
   permissions: string[] = []
 ): any => {
+  console.log("🚀 ~ file: index.tsx:57 ~ status:", status)
   if (locked)
-    return DropDownOptions[setOptionsByStatus(status)]?.filter(
+    return DropDownOptions[status]?.filter(
       (i: any) => i.text.toLowerCase() === "view"
     );
 
   if (!status) return [];
   if (isChecker) {
-    return DropDownOptions[setOptionsByStatus(status)]?.filter(
+    return DropDownOptions[status]?.filter(
       (i: any) => i.text.toLowerCase() === "view"
     );
   } else {
-    let options = DropDownOptions[setOptionsByStatus(status)];
+    let options = DropDownOptions[status];
     // if (!permissions?.includes("CREATE_PRODUCT")) {
     //   options = options.filter(
     //     (i: any) =>
@@ -283,13 +269,13 @@ export default function TableComponent<TableProps>({
                             <>
                               {typeof item[header.key] !== "object" &&
                                 header.key !== "state" &&
-                                header.key !== "status" && (
+                                header.key !== "requestStatus" && (
                                   <TextCellContent value={item[header.key]} />
                                 )}
                               {header.key === "state" && (
                                 <StateCellContent value={item[header.key]} />
                               )}
-                              {header.key === "status" && (
+                              {header.key === "requestStatus" && (
                                 <StatusCellContent
                                   value={item[header.key]}
                                   isChecker={isChecker}
@@ -309,14 +295,14 @@ export default function TableComponent<TableProps>({
                               dropDownOptions={
                                 type === "all products"
                                   ? handleProductsDropdown(
-                                      item.status,
+                                      item.state,
                                       isChecker,
                                       dropDownOptions,
                                       item.islocked
                                     )
                                   : handleDropdown(
-                                      item.status,
-                                      item.type,
+                                      item.requestStatus,
+                                      item.requestType,
                                       permissions
                                     )
                               }
@@ -369,13 +355,7 @@ export default function TableComponent<TableProps>({
           setIsOpen={setFailed}
         />
       )}
-      <Loader
-        isOpen={isLoading}
-        text="Submitting"
-        setIsOpen={function (e: any): void {
-          throw new Error("Function not implemented.");
-        }}
-      />
+      
       {isDeactivationOpen && (
         <RequestDeactivation
           isOpen={isDeactivationOpen}
