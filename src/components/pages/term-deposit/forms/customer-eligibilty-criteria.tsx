@@ -49,14 +49,18 @@ export default function CustomerEligibilityCriteria({
     // values,
   });
 
-  function onProceed() {
-    proceed();
+  // const computedategory = useMemo(calculateValue, dependencies);
+
+  function onProceed(d: any) {
+    console.log("Customer - Eligibility:" + JSON.stringify(d));
+    // proceed();
   }
 
   return (
     <div>
       <form id="customereligibilitycriteria" onSubmit={handleSubmit(onProceed)}>
         <div className="flex gap-[18px]">
+          {/* {`category: ${category}`} */}
           <div className="w-[300px]">
             <BorderlessSelect
               labelName={"Customer Category"}
@@ -66,7 +70,7 @@ export default function CustomerEligibilityCriteria({
               handleSelected={(value) => {
                 // console.log(value);
                 // setChosenCategory(value.value);
-                // setValue("category", value.value);
+                setValue("category", value.value);
               }}
               options={[
                 {
@@ -108,11 +112,23 @@ export default function CustomerEligibilityCriteria({
                 <InfoLabel label={"Age Group Eligibility"} info={"String"} />
                 <div className="flex items-end gap-[25px]">
                   <div className="w-[150px]">
-                    <MinMaxInput />
+                    <MinMaxInput
+                      register={register}
+                      inputName={"ageGroupStart"}
+                      handleChange={(value) => {
+                        setValue("ageGroupStart", value.value);
+                      }}
+                    />
                   </div>
                   <div className="flex items-center">-</div>
                   <div className="w-[150px]">
-                    <MinMaxInput />
+                    <MinMaxInput
+                      register={register}
+                      inputName={"ageGroupEnd"}
+                      handleChange={(value) => {
+                        setValue("ageGroupEnd", value.value);
+                      }}
+                    />
                   </div>
                 </div>
               </div>
@@ -146,9 +162,9 @@ export default function CustomerEligibilityCriteria({
                   width="28"
                   height="28"
                   filterUnits="userSpaceOnUse"
-                  color-interpolation-filters="sRGB"
+                  colorInterpolationFilters="sRGB"
                 >
-                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                  <feFlood floodOpacity="0" result="BackgroundImageFix" />
                   <feColorMatrix
                     in="SourceAlpha"
                     type="matrix"

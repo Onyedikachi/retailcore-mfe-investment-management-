@@ -27,7 +27,7 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
 }
 
 export default function CreateTermDeposit() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
   const [productInformationFormData, setProductInformationFormData] = useState({
     name: "",
     slogan: "",
@@ -38,6 +38,8 @@ export default function CreateTermDeposit() {
   const [customerEligibilityCriteria, setCustomerEligibilityCriteria] =
     useState({
       category: "",
+      ageGroupStart: 0,
+      ageGroupEnd: 0,
     });
   const [isDisabled, setDisabled] = useState<boolean>(true);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
