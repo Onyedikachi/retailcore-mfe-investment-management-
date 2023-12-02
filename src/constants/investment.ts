@@ -259,3 +259,21 @@ export const daysOptions = [
     value: "4",
   },
 ];
+
+export const interestComputationDaysOptions = [
+  {
+    id: "30E/360",
+    text: "30E/360",
+    value: "30E/360",
+  },
+  {
+    id: "Actual/360",
+    text: "Actual/360",
+    value: "Actual/360",
+  },
+  {
+    id: "Actual/365",
+    text: "Actual/365",
+    value: "Actual/365",
+  },
+];

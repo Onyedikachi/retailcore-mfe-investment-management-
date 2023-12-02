@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { RiInformationLine } from "react-icons/ri";
 import { MinMaxInput } from "@app/components/forms";
 import { BorderlessSelect } from "@app/components/forms";
-import { daysOptions } from "@app/constants";
+import { daysOptions, interestComputationDaysOptions } from "@app/constants";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { pricingConfigSchema } from "@app/constants";
@@ -35,6 +35,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
     defaultValues: formData,
     // values,
   });
+  const [principalType, setSelectedPrincipalType] = useState("Fixed");
   const varyOptions = [
     { id: "Vary by principal", title: "Vary by principal" },
     { id: "Vary by tenor", title: "Vary by tenor" },
@@ -109,6 +110,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
         </InputDivs>
         <InputDivs label={"Applicable Principal"}>
           <div className="flex gap-[51px] mb-[40px]">
+            {principalType}
             {applicablePrincipalTypes.map((applicablePrincipalType) => (
               <div
                 key={applicablePrincipalType.id}
@@ -118,10 +120,9 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                   id={applicablePrincipalType.id}
                   name="applicable-principal-type"
                   type="radio"
-                  defaultChecked={
-                    applicablePrincipalType.id ===
-                    applicablePrincipalTypes[0].id
-                  }
+                  value={applicablePrincipalType.title}
+                  onChange={(e) => setSelectedPrincipalType(e.target.value)}
+                  defaultChecked={applicablePrincipalType.id === principalType}
                   className="h-4 w-4 border-gray-300 accent-sterling-red-800"
                 />
                 <label
@@ -245,43 +246,17 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
         </InputDivs>
         <InputDivs label={"Interest Computation Days in Year Method"}>
           <div className="flex items-center gap-[25px] mt-[14px]">
-            <div className="flex gap-[25px]">
-              <MinMaxInput
-                className="w-[150px]"
-                label={"Min"}
+            <div className="w-[150px]">
+              <BorderlessSelect
+                inputError={errors?.interestComputation}
                 register={register}
-                inputName={"applicableTenorMin"}
-                handleChange={(value) => {
-                  setValue("applicableTenorMin", value.value);
+                inputName={"interestComputation"}
+                handleSelected={(value) => {
+                  setValue("interestComputation", value.value);
                 }}
+                options={interestComputationDaysOptions}
               />
-              <div className="w-[150px]">
-                <BorderlessSelect
-                  inputError={errors?.applicableTenorMaxDays}
-                  register={register}
-                  inputName={"applicableTenorMaxDays"}
-                  handleSelected={(value) => {
-                    setValue("applicableTenorMaxDays", value.value);
-                  }}
-                  options={daysOptions}
-                />
-              </div>
-            </div>{" "}
-            -
-            <div className="flex gap-[25px]">
-              <MinMaxInput className="w-[150px]" label={"Max"} />
-              <div className="w-[150px]">
-                <BorderlessSelect
-                  inputError={errors?.applicableTenorMaxDays}
-                  register={register}
-                  inputName={"applicableTenorMaxDays"}
-                  handleSelected={(value) => {
-                    setValue("applicableTenorMaxDays", value.value);
-                  }}
-                  options={daysOptions}
-                />
-              </div>
-            </div>{" "}
+            </div>
           </div>
         </InputDivs>
       </div>
