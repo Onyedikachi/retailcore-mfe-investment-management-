@@ -47,12 +47,26 @@ export const ProductInformationFormSchema = yup
 export const CustomerEligibilityCriteriaSchema = yup
   .object({
     category: yup.string(),
+    ageGroupStart: yup.number(),
+    ageGroupEnd: yup.number(),
+    corporateCustomerType: yup.string(),
   })
   .required();
 
 export const pricingConfigSchema = yup
   .object({
-    category: yup.string(),
+    applicableTenorMin: yup.number(),
+    applicableTenorMinDays: yup.number(),
+    applicableTenorMax: yup.number(),
+    applicableTenorMaxDays: yup.number(),
+    applicablePrincipalMin: yup.number(),
+    applicablePrincipalMax: yup.number(),
+    applicablePrincipalMinDays: yup.number(),
+    applicablePrincipalMaxDays: yup.number(),
+    varyOption: yup.string(),
+    applicableInterestMin: yup.number(),
+    applicableInterestMax: yup.number(),
+    interestComputation: yup.string(),
   })
   .required();
 export const liquiditySetup = yup

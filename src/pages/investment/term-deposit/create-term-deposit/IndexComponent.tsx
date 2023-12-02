@@ -27,7 +27,7 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
 }
 
 export default function CreateTermDeposit() {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(3);
   const [productInformationFormData, setProductInformationFormData] = useState({
     name: "",
     slogan: "",
@@ -42,6 +42,20 @@ export default function CreateTermDeposit() {
       ageGroupEnd: 0,
       corporateCustomerType: "",
     });
+  const [pricingConfigData, setPricingConfigData] = useState({
+    applicableTenorMin: 0,
+    applicableTenorMinDays: 0,
+    applicableTenorMax: 0,
+    applicableTenorMaxDays: 0,
+    applicablePrincipalMin: 0,
+    applicablePrincipalMax: 0,
+    applicablePrincipalMinDays: 0,
+    applicablePrincipalMaxDays: 0,
+    varyOption: "",
+    applicableInterestMin: 0,
+    applicableInterestMax: 0,
+    interestComputation: "",
+  });
   const [isDisabled, setDisabled] = useState<boolean>(true);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [draftText] = useState({
@@ -108,7 +122,13 @@ export default function CreateTermDeposit() {
       formRef = "customereligibilitycriteria";
       break;
     case 3:
-      component = <PricingConfig proceed={handleNav} />;
+      component = (
+        <PricingConfig
+          formData={pricingConfigData}
+          setFormData={setPricingConfigData}
+          proceed={handleNav}
+        />
+      );
       formRef = "pricingconfig";
       break;
     case 4:

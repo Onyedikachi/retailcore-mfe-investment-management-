@@ -15,7 +15,7 @@ export default function CustomerEligibilityCriteria({
   setDisabled,
   proceed,
 }) {
-  const [chosenCategory, setChosenCategory] = useState("Corporate");
+  const [chosenCategory, setChosenCategory] = useState("Individual");
   const [documents, setDocuments] = useState([
     "Customer signature",
     "Signature",
@@ -56,7 +56,7 @@ export default function CustomerEligibilityCriteria({
 
   function onProceed(d: any) {
     console.log("Customer - Eligibility:" + JSON.stringify(d));
-    // proceed();
+    proceed();
   }
 
   return (
