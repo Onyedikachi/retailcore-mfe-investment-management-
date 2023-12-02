@@ -4,12 +4,18 @@ interface MinMaxProps {
   hasButton?: boolean;
   currency?: string;
   className?: string;
+  inputName?: string;
+  register?: any;
+  handleChange?: (value) => void;
 }
 export default function MinMaxInput({
   label,
   hasButton,
   currency,
   className,
+  register = () => {},
+  handleChange,
+  inputName,
 }: MinMaxProps) {
   return (
     <div className={`${className} flex items-center gap-4`}>
@@ -21,9 +27,12 @@ export default function MinMaxInput({
           <input
             data-testid="min-max-input"
             className={`placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] `}
-            onChange={(e) => e.target.valueAsNumber}
-            placeholder="01"
+            onChange={(e) => handleChange(e.target.valueAsNumber)}
+            placeholder="0"
             // maxLength={defaultLength}
+            {...register(inputName, {
+              required: true,
+            })}
             defaultValue={0}
             // aria-invalid={errors?.name ? "true" : "false"}
           />
