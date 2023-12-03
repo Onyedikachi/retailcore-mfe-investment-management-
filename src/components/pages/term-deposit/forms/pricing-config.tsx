@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { RiInformationLine } from "react-icons/ri";
+import { IoMdAddCircle } from "react-icons/io";
 import { MinMaxInput } from "@app/components/forms";
 import { BorderlessSelect } from "@app/components/forms";
 import { daysOptions, interestComputationDaysOptions } from "@app/constants";
@@ -37,15 +38,28 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
     // values,
   });
 
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
-    {
-      control, // control props comes from useForm (optional: if you are using FormContext)
-      name: "tenorRateRanges", // unique name for your Field Array
-    }
-  );
+  const {
+    fields: tenorRangeFields,
+    append: appendTenorRange,
+
+    remove: removeTenorRangeInput,
+  } = useFieldArray({
+    control, // control props comes from useForm (optional: if you are using FormContext)
+    name: "tenorRateRanges", // unique name for your Field Array
+  });
+
+  const {
+    fields: principalRangeFields,
+    append: appendPrincipalRange,
+
+    remove: removePrincipalRangeInput,
+  } = useFieldArray({
+    control, // control props comes from useForm (optional: if you are using FormContext)
+    name: "principalRateRanges", // unique name for your Field Array
+  });
 
   const addTenorRange = () => {
-    append({
+    appendTenorRange({
       minRange: 0,
       maxRange: 0,
       tenorFrom: 0,
@@ -56,7 +70,20 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
   };
 
   const removeTenorRange = (index) => {
-    remove(index);
+    removeTenorRangeInput(index);
+  };
+
+  const addPrincipalRange = () => {
+    appendPrincipalRange({
+      minRange: 0,
+      maxRange: 0,
+      amountFrom: 0,
+      amountTo: 0,
+    });
+  };
+
+  const removePrincipalRange = (index) => {
+    removePrincipalRangeInput(index);
   };
 
   const [applicableInterestRangeType, setApplicableInterestRangeType] =
@@ -190,53 +217,107 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
             ))}
           </div>
           {applicableInterestRangeType === "varyByPrincipal" && (
-            <div className="flex items-center gap-[25px] mt-[14px]">
-              <div className="flex gap-[25px]">
-                <MinMaxInput
-                  className="w-[150px]"
-                  label={"Min"}
-                  register={register}
-                  inputName={"applicableInterestMin"}
-                  handleChange={(value) => {
-                    setValue("applicableInterestMin", value.value);
-                  }}
-                />
-                <div className="w-[150px]">
-                  <BorderlessSelect
-                    inputError={errors?.applicableTenorMaxDays}
-                    register={register}
-                    inputName={"applicableInterestMax"}
-                    handleSelected={(value) => {
-                      setValue("applicableInterestMax", value.value);
-                    }}
-                    options={daysOptions}
-                  />
+            <div>
+              {principalRangeFields.map((range, index) => (
+                <div
+                  className="flex items-center gap-6 mt-[14px]"
+                  key={range.id}
+                >
+                  <div className="flex items-center gap-[25px] ">
+                    <div className="flex items-center gap-[25px] ">
+                      <div className="flex gap-[25px]">
+                        <MinMaxInput
+                          className="w-[140px]"
+                          label={"Min"}
+                          register={register}
+                          inputName={`principalRateRanges.${index}.minRange`}
+                        />
+                      </div>{" "}
+                      -
+                      <div className="flex gap-[25px]">
+                        <MinMaxInput
+                          className="w-[140px]"
+                          label={"Max"}
+                          register={register}
+                          inputName={`principalRateRanges.${index}.maxRange`}
+                        />
+                      </div>{" "}
+                    </div>
+                    <span>for princcipal between:</span>
+                    <div className="flex gap-[25px] ">
+                      <MinMaxInput
+                        className="w-[120px]"
+                        register={register}
+                        inputName={`principalRateRanges.${index}.amountFrom`}
+                      />
+                    </div>{" "}
+                    -
+                    <div className="flex gap-[25px] ">
+                      <MinMaxInput
+                        className="w-[120px]"
+                        register={register}
+                        inputName={`principalRateRanges.${index}.amountTo`}
+                      />
+                    </div>{" "}
+                  </div>
+                  {principalRangeFields.length > 1 && (
+                    <div
+                      className="h-4 w-4"
+                      onClick={() => removePrincipalRange(index)}
+                    >
+                      <svg
+                        width="11"
+                        height="10"
+                        viewBox="0 0 11 10"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g clip-path="url(#clip0_49301_99370)">
+                          <path
+                            d="M0.160156 2.207L2.95316 5L0.160156 7.793L2.36716 10L5.16016 7.207L7.95316 10L10.1602 7.793L7.36716 5L10.1602 2.207L7.95316 0L5.16016 2.793L2.36716 0L0.160156 2.207Z"
+                            fill="#CF2A2A"
+                          />
+                        </g>
+                        <defs>
+                          <clipPath id="clip0_49301_99370">
+                            <rect
+                              width="10"
+                              height="10"
+                              fill="white"
+                              transform="translate(0.160156)"
+                            />
+                          </clipPath>
+                        </defs>
+                      </svg>
+                    </div>
+                  )}
                 </div>
-              </div>{" "}
-              -
-              <div className="flex gap-[25px]">
-                <MinMaxInput className="w-[150px]" label={"Max"} />
-                <div className="w-[150px]">
-                  <BorderlessSelect
-                    inputError={errors?.applicableTenorMaxDays}
-                    register={register}
-                    inputName={"applicableTenorMaxDays"}
-                    handleSelected={(value) => {
-                      setValue("applicableTenorMaxDays", value.value);
-                    }}
-                    options={daysOptions}
-                  />
+              ))}
+
+              <div className="flex justify-end">
+                <div
+                  className="flex items-center gap-4 cursor-pointer text-[##636363] ml-auto"
+                  onClick={addPrincipalRange}
+                >
+                  <span className="text-[20px]">
+                    {" "}
+                    <IoMdAddCircle />
+                  </span>{" "}
+                  <span>Add slab</span>
                 </div>
-              </div>{" "}
+              </div>
             </div>
           )}
 
           {applicableInterestRangeType === "varyByTenor" && (
             <div>
-              {fields.map((range, index) => (
-                <div key={range.id}>
-                  <div className="flex items-center gap-[25px] mt-[14px]">
-                    <div className="flex items-center gap-[25px] mt-[14px]">
+              {tenorRangeFields.map((range, index) => (
+                <div
+                  className="flex items-center gap-6 mt-[14px]"
+                  key={range.id}
+                >
+                  <div className="flex items-center gap-[25px] ">
+                    <div className="flex items-center gap-[25px] ">
                       <div className="flex gap-[25px]">
                         <MinMaxInput
                           className="w-[140px]"
@@ -264,7 +345,9 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                       />
                       <div className="w-[90px]">
                         <BorderlessSelect
-                          inputError={errors?.entries?.[index]?.tenorFromType}
+                          inputError={
+                            errors?.tenorRateRanges?.[index]?.tenorFromType
+                          }
                           register={register}
                           inputName={`tenorRateRanges.${index}.tenorFromType`}
                           handleSelected={(value) => {
@@ -286,7 +369,9 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                       />
                       <div className="w-[90px]">
                         <BorderlessSelect
-                          inputError={errors?.entries?.[index]?.tenorToType}
+                          inputError={
+                            errors?.tenorRateRanges?.[index]?.tenorToType
+                          }
                           register={register}
                           inputName={`tenorRateRanges.${index}.tenorToType`}
                           handleSelected={(value) => {
@@ -300,12 +385,52 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                       </div>
                     </div>{" "}
                   </div>
-
-                  <div onClick={removeTenorRange}>cancel</div>
+                  {tenorRangeFields.length > 1 && (
+                    <div
+                      className="h-4 w-4"
+                      onClick={() => removeTenorRange(index)}
+                    >
+                      <svg
+                        width="11"
+                        height="10"
+                        viewBox="0 0 11 10"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g clip-path="url(#clip0_49301_99370)">
+                          <path
+                            d="M0.160156 2.207L2.95316 5L0.160156 7.793L2.36716 10L5.16016 7.207L7.95316 10L10.1602 7.793L7.36716 5L10.1602 2.207L7.95316 0L5.16016 2.793L2.36716 0L0.160156 2.207Z"
+                            fill="#CF2A2A"
+                          />
+                        </g>
+                        <defs>
+                          <clipPath id="clip0_49301_99370">
+                            <rect
+                              width="10"
+                              height="10"
+                              fill="white"
+                              transform="translate(0.160156)"
+                            />
+                          </clipPath>
+                        </defs>
+                      </svg>
+                    </div>
+                  )}
                 </div>
               ))}
 
-              <div onClick={addTenorRange}>Add</div>
+              <div className="flex justify-end">
+                <div
+                  className="flex items-center gap-4 cursor-pointer text-[##636363] ml-auto"
+                  onClick={addTenorRange}
+                >
+                  <span className="text-[20px]">
+                    {" "}
+                    <IoMdAddCircle />
+                  </span>{" "}
+                  <span>Add slab</span>
+                </div>
+              </div>
             </div>
           )}
 

@@ -55,6 +55,24 @@ export default function CreateTermDeposit() {
     applicableInterestMin: 0,
     applicableInterestMax: 0,
     interestComputation: "",
+    tenorRateRanges: [
+      {
+        minRange: 0,
+        maxRange: 0,
+        tenorFrom: 0,
+        tenorFromType: "",
+        tenorTo: 0,
+        tenorToType: "",
+      },
+    ],
+    principalRateRanges: [
+      {
+        minRange: 0,
+        maxRange: 0,
+        amountFrom: 0,
+        amountTo: 0,
+      },
+    ],
   });
   const [isDisabled, setDisabled] = useState<boolean>(true);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);

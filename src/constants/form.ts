@@ -67,6 +67,25 @@ export const pricingConfigSchema = yup
     applicableInterestMin: yup.number(),
     applicableInterestMax: yup.number(),
     interestComputation: yup.string(),
+    tenorRateRanges: yup.array().of(
+      yup.object().shape({
+        minRange: yup.number(),
+        maxRange: yup.number(),
+        tenorFrom: yup.number(),
+        tenorFromType: yup.string(),
+        tenorTo: yup.number(),
+        tenorToType: yup.string(),
+      })
+    ),
+    principalRateRanges: yup.array().of(
+      yup.object().shape({
+        minRange: yup.number(),
+        maxRange: yup.number(),
+        amountFrom: yup.number(),
+
+        amountTo: yup.number(),
+      })
+    ),
   })
   .required();
 export const liquiditySetup = yup
