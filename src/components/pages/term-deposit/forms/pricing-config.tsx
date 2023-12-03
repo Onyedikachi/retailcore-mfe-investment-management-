@@ -191,7 +191,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
           </div>
         </InputDivs>
         <InputDivs label={"Applicable Interest Rate Range (Per Annum)"}>
-          <div className="flex gap-[51px] mb-[40px]">
+          <div className="flex gap-[51px] mb-[10px]">
             {varyOptions.map((varyOption) => (
               <div key={varyOption.id} className="flex items-center">
                 <input
@@ -227,7 +227,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                     <div className="flex items-center gap-[25px] ">
                       <div className="flex gap-[25px]">
                         <MinMaxInput
-                          className="w-[140px]"
+                          className="w-[200px]"
                           label={"Min"}
                           register={register}
                           inputName={`principalRateRanges.${index}.minRange`}
@@ -236,17 +236,18 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                       -
                       <div className="flex gap-[25px]">
                         <MinMaxInput
-                          className="w-[140px]"
+                          className="w-[200px]"
                           label={"Max"}
                           register={register}
                           inputName={`principalRateRanges.${index}.maxRange`}
                         />
                       </div>{" "}
                     </div>
-                    <span>for princcipal between:</span>
+                    <span>for principal between:</span>
                     <div className="flex gap-[25px] ">
                       <MinMaxInput
-                        className="w-[120px]"
+                        label={"NGN"}
+                        className="w-[150px]"
                         register={register}
                         inputName={`principalRateRanges.${index}.amountFrom`}
                       />
@@ -254,7 +255,8 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                     -
                     <div className="flex gap-[25px] ">
                       <MinMaxInput
-                        className="w-[120px]"
+                        label={"NGN"}
+                        className="w-[150px]"
                         register={register}
                         inputName={`principalRateRanges.${index}.amountTo`}
                       />
@@ -454,21 +456,23 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
             </div>
           )}
         </InputDivs>
-        <InputDivs label={"Interest Computation Days in Year Method"}>
-          <div className="flex items-center gap-[25px] mt-[14px]">
-            <div className="w-[150px]">
-              <BorderlessSelect
-                inputError={errors?.interestComputation}
-                register={register}
-                inputName={"interestComputation"}
-                handleSelected={(value) => {
-                  setValue("interestComputation", value.value);
-                }}
-                options={interestComputationDaysOptions}
-              />
-            </div>
+        <div className="flex flex-col gap-[25px] ">
+          <span className="capitalize min-w-[300px] flex items-center gap-[5px] text-[##636363] text-base font-medium">
+            Interest Computation Days in Year Method
+            <RiInformationLine />
+          </span>
+          <div className="w-[300px]">
+            <BorderlessSelect
+              inputError={errors?.interestComputation}
+              register={register}
+              inputName={"interestComputation"}
+              handleSelected={(value) => {
+                setValue("interestComputation", value.value);
+              }}
+              options={interestComputationDaysOptions}
+            />
           </div>
-        </InputDivs>
+        </div>
       </div>
     </form>
   );
