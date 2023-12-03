@@ -3,7 +3,7 @@ import { RiInformationLine } from "react-icons/ri";
 import { MinMaxInput } from "@app/components/forms";
 import { BorderlessSelect } from "@app/components/forms";
 import { daysOptions, interestComputationDaysOptions } from "@app/constants";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { pricingConfigSchema } from "@app/constants";
 
@@ -27,6 +27,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
     watch,
     clearErrors,
     setValue,
+    control,
     setError: assignError,
     getValues,
     formState: { errors, isValid },
@@ -35,6 +36,17 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
     defaultValues: formData,
     // values,
   });
+
+  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
+    {
+      control, // control props comes from useForm (optional: if you are using FormContext)
+      name: "tenorRateRanges", // unique name for your Field Array
+    }
+  );
+
+  const addTenorRange = () => {
+    append({ minRange: 0 });
+  };
 
   const [applicableInterestRangeType, setApplicableInterestRangeType] =
     useState("varyByTenor");
@@ -209,61 +221,69 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
           )}
 
           {applicableInterestRangeType === "varyByTenor" && (
-            <div className="flex items-center gap-[25px] mt-[14px]">
-              <div className="flex items-center gap-[25px] mt-[14px]">
-                <div className="flex gap-[25px]">
-                  <MinMaxInput
-                    className="w-[200px]"
-                    label={"Min"}
-                    register={register}
-                    inputName={"applicableInterestMin"}
-                    handleChange={(value) => {
-                      setValue("applicableInterestMin", value.value);
-                    }}
-                  />
-                </div>{" "}
-                -
-                <div className="flex gap-[25px]">
-                  <MinMaxInput className="w-[200px]" label={"Max"} />
-                </div>{" "}
-              </div>
-              <span>for tenor between:</span>
-              <div className="flex gap-[25px]">
-                <MinMaxInput
-                  className="w-[90px]"
-                  register={register}
-                  inputName={"applicableInterestMin"}
-                  handleChange={(value) => {
-                    setValue("applicableInterestMin", value.value);
-                  }}
-                />
-                <div className="w-[90px]">
-                  <BorderlessSelect
-                    inputError={errors?.applicableTenorMaxDays}
-                    register={register}
-                    inputName={"applicableInterestMax"}
-                    handleSelected={(value) => {
-                      setValue("applicableInterestMax", value.value);
-                    }}
-                    options={daysOptions}
-                  />
+            <div>
+              {fields.map((range, index) => (
+                <div key={range.id}>
+                  <div className="flex items-center gap-[25px] mt-[14px]">
+                    <div className="flex items-center gap-[25px] mt-[14px]">
+                      <div className="flex gap-[25px]">
+                        <MinMaxInput
+                          className="w-[140px]"
+                          label={"Min"}
+                          register={register}
+                          inputName={`tenorRateRanges.${index}.minRange`}
+                          // handleChange={(value) => {
+                          //   setValue("applicableInterestMin", value.value);
+                          // }}
+                        />
+                      </div>{" "}
+                      -
+                      <div className="flex gap-[25px]">
+                        <MinMaxInput className="w-[140px]" label={"Max"} />
+                      </div>{" "}
+                    </div>
+                    <span>for tenor between:</span>
+                    <div className="flex gap-[25px]">
+                      <MinMaxInput
+                        className="w-[90px]"
+                        register={register}
+                        inputName={"applicableInterestMin"}
+                        handleChange={(value) => {
+                          setValue("applicableInterestMin", value.value);
+                        }}
+                      />
+                      <div className="w-[90px]">
+                        <BorderlessSelect
+                          inputError={errors?.applicableTenorMaxDays}
+                          register={register}
+                          inputName={"applicableInterestMax"}
+                          handleSelected={(value) => {
+                            setValue("applicableInterestMax", value.value);
+                          }}
+                          options={daysOptions}
+                        />
+                      </div>
+                    </div>{" "}
+                    -
+                    <div className="flex gap-[25px]">
+                      <MinMaxInput className="w-[90px]" />
+                      <div className="w-[90px]">
+                        <BorderlessSelect
+                          inputError={errors?.applicableTenorMaxDays}
+                          register={register}
+                          inputName={"applicableTenorMaxDays"}
+                          handleSelected={(value) => {
+                            setValue("applicableTenorMaxDays", value.value);
+                          }}
+                          options={daysOptions}
+                        />
+                      </div>
+                    </div>{" "}
+                  </div>
                 </div>
-              </div>{" "}
-              -
-              <div className="flex gap-[25px]">
-                <MinMaxInput className="w-[90px]" />
-                <div className="w-[90px]">
-                  <BorderlessSelect
-                    inputError={errors?.applicableTenorMaxDays}
-                    register={register}
-                    inputName={"applicableTenorMaxDays"}
-                    handleSelected={(value) => {
-                      setValue("applicableTenorMaxDays", value.value);
-                    }}
-                    options={daysOptions}
-                  />
-                </div>
-              </div>{" "}
+              ))}
+
+              <div onClick={addTenorRange}>Add</div>
             </div>
           )}
 
