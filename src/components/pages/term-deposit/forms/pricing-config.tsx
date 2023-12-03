@@ -45,7 +45,18 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
   );
 
   const addTenorRange = () => {
-    append({ minRange: 0 });
+    append({
+      minRange: 0,
+      maxRange: 0,
+      tenorFrom: 0,
+      tenorFromType: "",
+      tenorTo: 0,
+      tenorToType: "",
+    });
+  };
+
+  const removeTenorRange = (index) => {
+    remove(index);
   };
 
   const [applicableInterestRangeType, setApplicableInterestRangeType] =
@@ -232,14 +243,16 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                           label={"Min"}
                           register={register}
                           inputName={`tenorRateRanges.${index}.minRange`}
-                          // handleChange={(value) => {
-                          //   setValue("applicableInterestMin", value.value);
-                          // }}
                         />
                       </div>{" "}
                       -
                       <div className="flex gap-[25px]">
-                        <MinMaxInput className="w-[140px]" label={"Max"} />
+                        <MinMaxInput
+                          className="w-[140px]"
+                          label={"Max"}
+                          register={register}
+                          inputName={`tenorRateRanges.${index}.maxRange`}
+                        />
                       </div>{" "}
                     </div>
                     <span>for tenor between:</span>
@@ -247,18 +260,18 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                       <MinMaxInput
                         className="w-[90px]"
                         register={register}
-                        inputName={"applicableInterestMin"}
-                        handleChange={(value) => {
-                          setValue("applicableInterestMin", value.value);
-                        }}
+                        inputName={`tenorRateRanges.${index}.tenorFrom`}
                       />
                       <div className="w-[90px]">
                         <BorderlessSelect
-                          inputError={errors?.applicableTenorMaxDays}
+                          inputError={errors?.entries?.[index]?.tenorFromType}
                           register={register}
-                          inputName={"applicableInterestMax"}
+                          inputName={`tenorRateRanges.${index}.tenorFromType`}
                           handleSelected={(value) => {
-                            setValue("applicableInterestMax", value.value);
+                            setValue(
+                              `tenorRateRanges.${index}.tenorFromType`,
+                              value.value
+                            );
                           }}
                           options={daysOptions}
                         />
@@ -266,20 +279,29 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                     </div>{" "}
                     -
                     <div className="flex gap-[25px]">
-                      <MinMaxInput className="w-[90px]" />
+                      <MinMaxInput
+                        className="w-[90px]"
+                        register={register}
+                        inputName={`tenorRateRanges.${index}.tenorTo`}
+                      />
                       <div className="w-[90px]">
                         <BorderlessSelect
-                          inputError={errors?.applicableTenorMaxDays}
+                          inputError={errors?.entries?.[index]?.tenorToType}
                           register={register}
-                          inputName={"applicableTenorMaxDays"}
+                          inputName={`tenorRateRanges.${index}.tenorToType`}
                           handleSelected={(value) => {
-                            setValue("applicableTenorMaxDays", value.value);
+                            setValue(
+                              `tenorRateRanges.${index}.tenorToType`,
+                              value.value
+                            );
                           }}
                           options={daysOptions}
                         />
                       </div>
                     </div>{" "}
                   </div>
+
+                  <div onClick={removeTenorRange}>cancel</div>
                 </div>
               ))}
 
