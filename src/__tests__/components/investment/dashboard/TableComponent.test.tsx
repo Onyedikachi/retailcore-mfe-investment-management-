@@ -194,8 +194,8 @@ describe("handleHeaders", () => {
     expect(result).toEqual([{ key: "other_key" }]);
   });
 
-  it("should filter out 'treated_by' when isChecker is false", () => {
-    const headers = [{ key: "treated_by" }, { key: "other_key" }];
+  it("should filter out 'approved_By' when isChecker is false", () => {
+    const headers = [{ key: "approved_By" }, { key: "other_key" }];
     const isChecker = false;
 
     const result = handleHeaders(headers, isChecker);

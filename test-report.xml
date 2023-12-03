@@ -105,7 +105,7 @@
     <testCase name="handleDropdown should return an empty array if locked parameter is true and &quot;view&quot; option does not exist" duration="1"/>
     <testCase name="handleDropdown should return an array with only &quot;view&quot; option if isChecker parameter is true and &quot;view&quot; option exists" duration="1"/>
     <testCase name="handleHeaders should filter out &apos;created_by&apos; when isChecker is true" duration="1"/>
-    <testCase name="handleHeaders should filter out &apos;treated_by&apos; when isChecker is false" duration="1"/>
+    <testCase name="handleHeaders should filter out &apos;approved_By&apos; when isChecker is false" duration="1"/>
     <testCase name="handleDownload should generate CSV for requests category" duration="17"/>
     <testCase name="handleDownload should generate CSV for product category" duration="2"/>
     <testCase name="handleDownload should not generate CSV if downloadData is empty" duration="1"/>

@@ -29,7 +29,7 @@ export const StatusTypes = [
 
 export const StatusRequests = [
   {
-    id: 1,
+    id: null,
     type: "all",
     color: "#252C32",
   },
@@ -39,17 +39,17 @@ export const StatusRequests = [
     color: "#2FB755",
   },
   {
-    id: 2,
+    id: 1,
     type: "in-review",
     color: "#3FA2F7",
   },
   {
-    id: 2,
+    id: 3,
     type: "in-issue",
     color: "#CF2A2A",
   },
   {
-    id: 2,
+    id: 0,
     type: "draft",
     color: "#AAAAAA",
   },
@@ -259,3 +259,78 @@ export const daysOptions = [
     value: "4",
   },
 ];
+
+export const CustomerCategory = {
+  0: "Individual",
+  1: "Corporate",
+};
+
+export const ProductType = {
+  0: "Term Deposit",
+  1: "Treasure Bill",
+  2: "Commercial Paper",
+};
+
+export const ProductState = {
+  0: "Pending",
+  1: "Inactive",
+  2: "Active",
+};
+
+
+export const InterestRateRangeType = {
+  0: "Vary By Principal",
+  1: "Vary By Tenor",
+  2: "Do not Vary",
+};
+
+export const InterestComputationMethod = {
+  0: "E360",
+  1: "Actual360",
+  2: "Actual365",
+};
+
+export const RequestType = {
+  0: "Create",
+  1: "Modify",
+  2: "Deactivation",
+  3: "Reactivation",
+};
+
+export const InvestmentBookingStatus = {
+  0: "Pending",
+  1: "Active",
+  2: "Liquidated",
+};
+
+export const CapitalizationMethod = {
+  0: "Upon Booking",
+  1: "At Intervals",
+  2: "At Maturity",
+};
+
+export const RollOverOption = {
+  0: "Using Principal",
+  1: "Using Principal + Interest",
+};
+
+export const InvestmentBookingRequestType = {
+  0: "Booking",
+  1: "Early Liquidation",
+  2: "Part Liquidation",
+};
+
+export const RequestStatus = {
+  0: "Draft",
+  1: "In-Review",
+  2: "Approved",
+  3: "In-Issue",
+};
+
+export const Interval = {
+  0: "hours",
+  1: "days",
+  2: "weeks",
+  3: "months",
+  4: "years",
+};

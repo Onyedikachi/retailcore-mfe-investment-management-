@@ -14,8 +14,11 @@ export const handleInputChange = (
   debouncedSetSearchTerm(newValue);
 };
 
-export function closeBox(setInputValue) {
-  setInputValue("");
+export function closeBox(setSearchResults, setShowBox) {
+  if (setSearchResults && setShowBox) {
+    setSearchResults([]);
+    setShowBox(false);
+  }
 }
 export default function SearchInput({
   setSearchTerm,
@@ -24,6 +27,10 @@ export default function SearchInput({
   fullW = false,
   isTruncated = false,
   showSearchbox = true,
+  searchResults,
+  setSearchResults,
+  searchLoading,
+  handleSearch,
 }: {
   setSearchTerm: (e: string) => void;
   placeholder?: string;
@@ -31,18 +38,28 @@ export default function SearchInput({
   fullW?: boolean;
   isTruncated?: boolean;
   showSearchbox?: boolean;
+  searchResults?: any[];
+  setSearchResults?: (e: any) => void;
+  searchLoading?: boolean;
+  handleSearch?: (e: string) => void;
 }) {
   const [inputValue, setInputValue] = useState("");
-  const [resultOpen, setResultOpen] = useState(false);
+  const [showBox, setShowBox] = useState(false);
   // Create a debounced version of the setSearchTerm function
   const debouncedSetSearchTerm = debounce((value) => {
     setSearchTerm(value);
-  }, 800);
+  }, 0);
 
   // Handler for input change
-
+  React.useEffect(() => {
+    if (!inputValue.length && handleSearch) {
+      handleSearch("");
+    }
+  }, [inputValue]);
   return (
-    <OutsideClickHandler onOutsideClick={() => closeBox(setInputValue)}>
+    <OutsideClickHandler
+      onOutsideClick={() => closeBox(setSearchResults, setShowBox)}
+    >
       <div
         className={`z-[99] border-b border-[#AAAAAA]  flex items-center relative bg-transparent shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]
        ${fullW ? "" : "max-w-[340px]"} ${
@@ -59,6 +76,8 @@ export default function SearchInput({
             onChange={(e) =>
               handleInputChange(e, setInputValue, debouncedSetSearchTerm)
             }
+            onKeyDown={() => setShowBox(true)}
+            value={inputValue}
             type="search"
             data-testid="search"
             placeholder={placeholder}
@@ -75,21 +94,59 @@ export default function SearchInput({
           )}
         </div>
 
-        {showSearchbox && inputValue && (
-          <div className="z-[99] w-[352px] right-0 max-h-[376px] overflow-y-auto bg-white absolute top-[100%] mt-2 rounded-lg py-[22px] px-[18px] shadow-[0px_0px_6px_0px_rgba(0,0,0,0.25)] ">
-            <ul className="grid gap-y-[10px]">
-              <li className="flex gap-x-2">
-                <span className="flex w-6 h-6 items-center justify-center">
-                  <FaSearch className="text-[#48535B] " />
-                </span>
-                <span>
-                  <span className="max-w-max truncate text-[#636363]">
-                    Title
-                  </span>
-                  <span className="block text-xs text-[#aaa]">Text</span>
-                </span>
-              </li>
-            </ul>
+        {showSearchbox && showBox && (
+          <div className="z-[99] w-[352px] right-0 max-h-[386px] overflow-y-auto bg-white absolute top-[100%] mt-2 rounded-lg py-[22px] px-[10px] shadow-[0px_0px_6px_0px_rgba(0,0,0,0.25)] ">
+            {!searchLoading ? (
+              <div>
+                {searchResults?.length > 0 ? (
+                  <ul className="grid gap-y-[10px]">
+                    {searchResults?.map((item) => (
+                      <li
+                        key={item?.id}
+                        className="flex gap-x-2 cursor-pointer hover:bg-[#F9E5E5] py-1 px-2"
+                        onClick={() => {
+                          setInputValue(item.name);
+                          setSearchTerm(item.name);
+                          setShowBox(false);
+                          handleSearch(item.name);
+                        }}
+                      >
+                        <span className="flex w-6 h-6 items-center justify-center">
+                          <FaSearch className="text-[#48535B] " />
+                        </span>
+                        <span>
+                          <span className="max-w-max truncate text-[#636363] capitalize">
+                            {item.name}
+                          </span>
+                          <span className="block text-xs text-[#aaa]">
+                            {item.code}
+                          </span>
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <div>
+                    {inputValue ? (
+                      <div className="text-center py-1 text-sm font-light opacity-80 max-w-[320px]">
+                        No results for{" "}
+                        <span className="font-medium opacity-100">
+                          "{inputValue}"
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="text-center py-1 text-sm font-light opacity-80 ">
+                        No search query
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="flex justify-center p-1">
+                <div className="spinner-border h-6 w-6 border-t border-danger-500 rounded-full animate-spin"></div>
+              </div>
+            )}
           </div>
         )}
       </div>
