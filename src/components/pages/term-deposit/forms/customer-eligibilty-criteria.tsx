@@ -32,6 +32,9 @@ export default function CustomerEligibilityCriteria({
     "Document 11",
     "Document 12",
   ]);
+  const [selectedRequirements, setSelectedRequirements] = useState([]);
+
+  const [toggledRequirements, setToggledRequirements] = useState([]);
   const [isRequirementsOpen, setIsRequirementsOpen] = useState(false);
   const {
     register,
@@ -49,14 +52,38 @@ export default function CustomerEligibilityCriteria({
     // values,
   });
 
-  // const [showCategory, setShowCategory] = useState("Individual");
-  // const selectedCategory = watch("category");
+  const handleCheckedRequirement = (e) => {
+    const value = e.target.value;
+    const isChecked = e.target.checked;
 
-  // const computedategory = useMemo(calculateValue, dependencies);
+    if (value === "all-documents") {
+      isChecked
+        ? setToggledRequirements(documents)
+        : setToggledRequirements([]);
 
+      return;
+    }
+
+    // If checked, add to the array; otherwise, remove it
+    setToggledRequirements((prevItems) =>
+      isChecked
+        ? [...prevItems, value]
+        : prevItems.filter((item) => item !== value)
+    );
+  };
+
+  const handleRequirement = (itemToDelete) => {
+    // Filter out the item to delete
+    const updatedRequirement = selectedRequirements.filter(
+      (item) => item !== itemToDelete
+    );
+
+    // Update the state with the new array
+    setSelectedRequirements(updatedRequirement);
+  };
   function onProceed(d: any) {
     console.log("Customer - Eligibility:" + JSON.stringify(d));
-    proceed();
+    // proceed();
   }
 
   return (
@@ -203,11 +230,18 @@ export default function CustomerEligibilityCriteria({
           </div>
         </div>
         <div>
-          <SelectedRequirementsTable />
+          <SelectedRequirementsTable
+            tableItems={selectedRequirements}
+            deleteTableItem={handleRequirement}
+          />
         </div>
 
         {isRequirementsOpen && (
           <SelectRequirements
+            actionFn={() => {
+              setSelectedRequirements(toggledRequirements);
+              setIsRequirementsOpen(false);
+            }}
             header={"Document Requirements"}
             isOpen={isRequirementsOpen}
             setIsOpen={setIsRequirementsOpen}
@@ -238,16 +272,18 @@ export default function CustomerEligibilityCriteria({
                       <div className="relative flex items-start">
                         <div className="flex h-6 items-center">
                           <input
-                            id="comments"
-                            aria-describedby="comments-description"
-                            name="comments"
+                            id="doc-requirement-all"
+                            aria-describedby="all-docs-description"
+                            name="all-docs"
                             type="checkbox"
+                            value="all-documents"
+                            onChange={handleCheckedRequirement}
                             className="h-4 w-4 rounded border-gray-300  !accent-sterling-red-800 ring-0"
                           />
                         </div>
                         <div className="ml-3 text-sm leading-6">
                           <label
-                            htmlFor="comments"
+                            htmlFor="doc-requirement-all"
                             className="font-normal text-base text-[#636363]"
                           >
                             All Documents
@@ -260,17 +296,20 @@ export default function CustomerEligibilityCriteria({
                         <div className="relative flex items-start">
                           <div className="flex h-6 items-center">
                             <input
-                              id="comments"
-                              aria-describedby="comments-description"
-                              name="comments"
+                              id={`doc-requirement-${document}`}
+                              aria-describedby="doc-requirement-description"
+                              name="doc-requirement"
                               type="checkbox"
+                              value={document}
+                              onChange={handleCheckedRequirement}
+                              checked={toggledRequirements.includes(document)}
                               className="h-4 w-4 rounded border-gray-300  !accent-sterling-red-800 ring-0"
                             />
                           </div>
                           <div className="ml-3 text-sm leading-6">
                             <label
-                              htmlFor="comments"
-                              className="font-normal text-base text-[#636363]"
+                              htmlFor={`doc-requirement-${document}`}
+                              className="cursor-pointer font-normal text-base text-[#636363]"
                             >
                               {document}
                             </label>{" "}
