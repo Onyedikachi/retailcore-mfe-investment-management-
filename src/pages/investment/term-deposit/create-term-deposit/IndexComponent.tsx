@@ -19,11 +19,11 @@ import {
 import { termDepositFormSteps } from "@app/constants";
 
 export function handleNext(step, setStep, termDepositFormSteps) {
-  step < termDepositFormSteps.length ? setStep(step + 1) : () => {};
+  step < termDepositFormSteps.length && setStep(step + 1);
 }
 
 export function handlePrev(step, setStep, termDepositFormSteps) {
-  step > termDepositFormSteps[0].index ? setStep(step - 1) : () => {};
+  step > termDepositFormSteps[0].index && setStep(step - 1);
 }
 
 export default function CreateTermDeposit() {

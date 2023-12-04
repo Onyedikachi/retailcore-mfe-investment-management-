@@ -7,7 +7,7 @@ import { StatusCategoryType } from "@app/constants/enums";
 import CreateButton from "./CreateButton";
 import SearchInput from "./SearchInput";
 
-export function Tabs({}) {
+export function Tabs() {
   const [active, setActtive] = useState("deposit");
   const [search, setSearch] = useState("")
   const tabOptions = [

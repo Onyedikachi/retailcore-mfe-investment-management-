@@ -139,23 +139,15 @@ export default function ProductInformation({
 
   function compareValues() {
     const name = getValues("name");
-    const conditions = [
-      // watchLga !== oldData?.lga,
-      // watchCity !== oldData?.city,
-      // watchStreetname !== oldData?.streetname,
-      // watchCountry !== oldData?.country,
-      // watchPostalcode !== oldData?.postalcode,
-      // watchNumber !== oldData?.number,
-      // watchDescription !== oldData?.description,
-      // watchState !== oldData?.state,
-      // name !== oldData?.name,
-    ];
+    // const conditions = [
+  
+    // ];
 
-    if (conditions.some((condition) => condition)) {
-      // setDisabled(false);
-    } else {
-      // setDisabled(true);
-    }
+    // if (conditions.some((condition) => condition)) {
+    //   // setDisabled(false);
+    // } else {
+    //   // setDisabled(true);
+    // }
   }
 
   function onProceed(d: any) {

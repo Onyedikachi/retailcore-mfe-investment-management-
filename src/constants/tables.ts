@@ -609,3 +609,122 @@ export const requestHeader = [
     key: "actions",
   },
 ];
+export const ButtonOptions  = [
+  {
+    title: "Deposit",
+    key: "deposit",
+    isUrl: false,
+    links: [
+      {
+        title: "Current",
+        key: "current",
+        isUrl: true,
+        url: "#",
+      },
+
+      {
+        title: "Savings",
+        key: "savings",
+        isUrl: true,
+        url: "#",
+      },
+    ],
+  },
+  {
+    title: "Credit",
+    key: "credit",
+    isUrl: false,
+    links: [
+      {
+        title: "Loans",
+        key: "loans",
+        isUrl: false,
+        url: "#",
+        links: [
+          {
+            title: "Individual Loans",
+            key: "individual-loans",
+            isUrl: true,
+            url: "#",
+          },
+          {
+            title: "Commercial loans",
+            key: "commercial-loans",
+            isUrl: false,
+            url: "#",
+            links: [
+              {
+                title: "SME Loans",
+                key: "sme-loans",
+                isUrl: true,
+                url: "#",
+              },
+              {
+                title: "Corporate loans",
+                key: "corporate-loans",
+                isUrl: true,
+                url: "#",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        title: "Overdraft",
+        key: "overdraft",
+        isUrl: true,
+        url: "#",
+      },
+    ],
+  },
+  {
+    title: "Over the counter payment",
+    key: "counter-payment",
+    isUrl: false,
+    links: [
+      {
+        title: "Cash withdrawal",
+        key: "cash-withdrawal",
+        isUrl: true,
+        url: "#",
+      },
+      {
+        title: "Within bank transfer",
+        key: "within-bank-transfer",
+        isUrl: true,
+        url: "#",
+      },
+      {
+        title: "Other bank transfer",
+        key: "other-bank-transfer",
+        isUrl: true,
+        url: "#",
+      },
+    ],
+  },
+  {
+    title: "Investment",
+    key: "investment",
+    isUrl: false,
+    links: [
+      {
+        title: "Term deposits",
+        key: "term-deposits",
+        isUrl: true,
+        url: "term-deposit/create",
+      },
+      {
+        title: "Treasury Bill",
+        key: "treasury-bill",
+        isUrl: true,
+        url: "#",
+      },
+      {
+        title: "Commercial paper",
+        key: "commercial-paper",
+        isUrl: true,
+        url: "#",
+      },
+    ],
+  },
+];
