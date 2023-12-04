@@ -81,7 +81,7 @@ export const investmentApi: any = createApi({
         return {
           url: urls.REQUESTS,
           method: "post",
-          body: params,
+          body: cleanObject(params),
         };
       },
     }),
@@ -110,14 +110,24 @@ export const investmentApi: any = createApi({
       },
     }),
 
+    deleteProductRequest: builder.mutation<any, any>({
+      query: (data) => {
+        return {
+          url: `${urls.REQUESTS}/delete?productrequestId=${data}`,
+          method: "delete",
+        };
+      },
+    }),
     getProductStats: builder.query<any, any>({
       query: (data) => {
         if (!data.filter_by) return;
         return {
-          url: `${urls.PRODUCT_STATS}?${new URLSearchParams({
-            // ...data,
-            filterBy: data.filter_by,
-          })}`,
+          url: `${urls.PRODUCT_STATS}?${new URLSearchParams(
+            cleanObject({
+              ...data,
+              filterBy: data.filter_by,
+            })
+          )}`,
           method: "get",
         };
       },
@@ -126,10 +136,12 @@ export const investmentApi: any = createApi({
       query: (data) => {
         if (!data.filter_by) return;
         return {
-          url: `${urls.REQUEST_STATS}?${new URLSearchParams({
-            // ...data,
-            filterBy: data.filter_by,
-          })}`,
+          url: `${urls.REQUEST_STATS}?${new URLSearchParams(
+            cleanObject({
+              // ...data,
+              filterBy: data.filter_by,
+            })
+          )}`,
           method: "get",
         };
       },
@@ -234,4 +246,5 @@ export const {
   useGetProductByCodeQuery,
   useUploadDocumentMutation,
   useGetPermissionsMutation,
+  useDeleteProductMutation,
 } = investmentApi;

@@ -17,8 +17,13 @@ export function handleClick(item, setDuration, setDates) {
   setDuration(item.value);
   if (item.value) {
     setDates({
-      endDate: moment().format("l"), // Get the current date and time
-      startDate: moment().subtract(item.value, "days").format("l"), // Add the specified duration to the start date
+      endDate: moment().toISOString(), // Get the current date and time
+      startDate: moment().subtract(item.value, "days").toISOString(), // Add the specified duration to the start date
+    });
+  }else{
+    setDates({
+      endDate: null, // Get the current date and time
+      startDate: null, // Add the specified duration to the start date
     });
   }
 }
@@ -102,7 +107,7 @@ export default function DateSelect({
                       selected={
                         dates.startDate ? new Date(dates.startDate) : null
                       }
-                      onChange={(value) => onChange(value, setDate)}
+                      onChange={(value) => onChange(value, setDates)}
                       startDate={
                         dates.startDate ? new Date(dates.startDate) : null
                       }

@@ -54,7 +54,7 @@ export const handleProductsDropdown = (
   locked = false,
   permissions: string[] = []
 ): any => {
-  console.log("🚀 ~ file: index.tsx:57 ~ status:", status)
+ 
   if (locked)
     return DropDownOptions[status]?.filter(
       (i: any) => i.text.toLowerCase() === "view"
@@ -90,7 +90,7 @@ export const TextCellContent = ({ value }) => (
 
 export const ProductNameCellContent = ({ value }) => (
   <>
-    <span className="relative block font-medium text-sm text-[#aaaaaa]">
+    <span className="relative block font-medium text-sm text-[#aaaaaa] uppercase">
       {value?.productCode || "-"}
     </span>
   </>
@@ -146,6 +146,7 @@ export default function TableComponent<TableProps>({
 }) {
   const { role, permissions } = useContext(AppContext);
   const { isChecker } = useContext(InvestmentContext);
+  const [detail, setDetail]= useState<any>(null)
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [isDeactivationOpen, setIsDeactivationOpen] = useState(false);
@@ -159,6 +160,7 @@ export default function TableComponent<TableProps>({
 
   function getdata(item, key) {}
   const handleAction = (action, items) => {
+    setDetail(items)
     dropDownClick(action, items);
     setSubText("");
     if (action.toLowerCase() === "deactivate") {
@@ -269,6 +271,7 @@ export default function TableComponent<TableProps>({
                             <>
                               {typeof item[header.key] !== "object" &&
                                 header.key !== "state" &&
+                                header.key !== "updatedOn" &&
                                 header.key !== "requestStatus" && (
                                   <TextCellContent value={item[header.key]} />
                                 )}
@@ -369,6 +372,7 @@ export default function TableComponent<TableProps>({
           isOpen={isDetailOpen}
           setIsOpen={setDetailOpen}
           handleClick={handleAction}
+          detail={detail}
           // setReason={() => {}}
         />
       )}

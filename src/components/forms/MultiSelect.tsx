@@ -32,7 +32,7 @@ export default function MultiSelect({
 
   useEffect(() => {
     getOptions(selectedOptions);
-  }, [selectedOptions, isOpen]);
+  }, [selectedOptions]);
 
   return (
     <div className="relative max-w-max z-40">

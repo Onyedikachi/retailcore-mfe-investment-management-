@@ -161,43 +161,43 @@ export function handlePermission(
   RequestOptions,
   setFilteredProductOptions
 ) {
-  if (!permissions?.length) return;
-  if (
-    permissions?.includes("VIEW_ALL_PRODUCT_RECORDS") ||
-    permissions?.includes("APPROVE_PRODUCT_REQUESTS")
-  ) {
+  // if (!permissions?.length) return;
+  // if (
+  //   permissions?.includes("VIEW_ALL_PRODUCT_RECORDS") ||
+  //   permissions?.includes("APPROVE_PRODUCT_REQUESTS")
+  // ) {
     setFilteredProductOptions(ProductOptions);
-  } else {
-    setFilteredProductOptions(
-      ProductOptions.map((i: any) => {
-        if (i.value === "created_by_anyone") {
-          i.disabled = true;
-        }
-        if (i.value === "approved_system_wide") {
-          i.disabled = true;
-        }
-        return i;
-      })
-    );
-  }
-  if (
-    permissions?.includes("VIEW_ALL_PRODUCT_REQUESTS") ||
-    permissions?.includes("APPROVE_PRODUCT_REQUESTS")
-  ) {
+  // } else {
+  //   setFilteredProductOptions(
+  //     ProductOptions.map((i: any) => {
+  //       if (i.value === "created_by_anyone") {
+  //         i.disabled = true;
+  //       }
+  //       if (i.value === "approved_system_wide") {
+  //         i.disabled = true;
+  //       }
+  //       return i;
+  //     })
+  //   );
+  // }
+  // if (
+  //   permissions?.includes("VIEW_ALL_PRODUCT_REQUESTS") ||
+  //   permissions?.includes("APPROVE_PRODUCT_REQUESTS")
+  // ) {
     setFilteredRequestOptions(RequestOptions);
-  } else {
-    setFilteredRequestOptions(
-      RequestOptions.map((i: any) => {
-        if (i.value === "created_by_anyone") {
-          i.disabled = true;
-        }
-        if (i.value === "sent_to_anyone") {
-          i.disabled = true;
-        }
-        return i;
-      })
-    );
-  }
+  // } else {
+  //   setFilteredRequestOptions(
+  //     RequestOptions.map((i: any) => {
+  //       if (i.value === "created_by_anyone") {
+  //         i.disabled = true;
+  //       }
+  //       if (i.value === "sent_to_anyone") {
+  //         i.disabled = true;
+  //       }
+  //       return i;
+  //     })
+  //   );
+  // }
 }
 export default function StatusCard({
   data,
@@ -233,15 +233,15 @@ export default function StatusCard({
     handleChange({ selected: selected?.value, category, activeType });
   }, [selected?.value, category, activeType]);
 
-  // useEffect(() => {
-  //   if (status === "") {
-  //     setActiveType("all");
-  //   }
-  // }, [status]);
+  useEffect(() => {
+    if (status === "") {
+      setActiveType("all");
+    }
+  }, [status]);
 
-  // useEffect(() => {
-  //   setActiveType("all");
-  // }, [selected]);
+  useEffect(() => {
+    setActiveType("all");
+  }, [selected]);
 
   useEffect(() => {
     handlePermission(
