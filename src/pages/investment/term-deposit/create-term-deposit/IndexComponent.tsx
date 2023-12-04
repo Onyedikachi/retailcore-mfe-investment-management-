@@ -27,12 +27,74 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
 }
 
 export default function CreateTermDeposit() {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
+  const [productData, setProductData] = useState({
+    productInfo: {
+      productName: "string",
+      slogan: "string",
+      description: "string",
+      startDate: "2023-12-04T14:39:55.205Z",
+      endDate: "2023-12-04T14:39:55.205Z",
+      currency: "string",
+      customerCategory: 0,
+    },
+    customerEligibility: {
+      ageGroupMin: 0,
+      ageGroupMax: 0,
+      requireDocument: [
+        {
+          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          name: "string",
+        },
+      ],
+    },
+    pricingConfiguration: {
+      applicableTenorMin: 0,
+      applicableTenorMinUnit: 0,
+      applicableTenorMax: 0,
+      applicableTenorMaxUnit: 0,
+      applicablePrincipalMin: 0,
+      applicablePrincipalMax: 0,
+      interestRateRangeType: 0,
+      interestRateConfigModels: [
+        {
+          min: 0,
+          max: 0,
+          principalMin: 0,
+          principalMax: 0,
+          tenorMin: 0,
+          tenorMinUnit: 0,
+          tenorMax: 0,
+          tenorMaxUnit: 0,
+        },
+      ],
+      interestRateMin: 0,
+      interestRateMax: 0,
+    },
+    liquidation: {
+      part_AllowPartLiquidation: true,
+      part_MaxPartLiquidation: 0,
+      part_RequireNoticeBeforeLiquidation: true,
+      part_NoticePeriod: 0,
+      part_NoticePeriodUnit: 0,
+      part_LiquidationPenalty: "string",
+      early_AllowEarlyLiquidation: true,
+      early_RequireNoticeBeforeLiquidation: true,
+      early_NoticePeriod: 0,
+      early_NoticePeriodUnit: 0,
+      early_LiquidationPenalty: "string",
+      early_LiquidationPenaltyPercentage: 0,
+    },
+    interestComputationMethod: 0,
+    isDraft: true,
+    productType: 0,
+  });
   const [productInformationFormData, setProductInformationFormData] = useState({
     name: "",
     slogan: "",
     description: "",
-    lifeCycle: "",
+    startDate: "",
+    endDate: "",
     currency: "",
   });
   const [customerEligibilityCriteria, setCustomerEligibilityCriteria] =
