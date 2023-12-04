@@ -370,7 +370,6 @@ export default function TableComponent<TableProps>({
                     )}
                   </tr>
                 </thead>
-
                 <tbody>
                   {Array.from(Array(5)).map((item: any, index) => (
                     <tr
