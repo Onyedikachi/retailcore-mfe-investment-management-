@@ -92,7 +92,6 @@ export default function CustomerEligibilityCriteria({
     <div>
       <form id="customereligibilitycriteria" onSubmit={handleSubmit(onProceed)}>
         <div className="flex gap-[18px]">
-          {/* {`category: ${selectedCategory}`} */}
           <div className="w-[300px]">
             <BorderlessSelect
               labelName={"Customer Category"}
@@ -118,55 +117,55 @@ export default function CustomerEligibilityCriteria({
           </div>
 
           <div className="flex">
-            {chosenCategory?.toLowerCase() == "corporate" ? (
-              <div className="w-[300px]">
-                <BorderlessSelect
-                  labelName={"Type of corporate customer"}
-                  register={register}
-                  inputName={"corporateCustomerType"}
-                  handleSelected={(value) => {
-                    setValue("corporateCustomerType", value.value);
-                  }}
-                  options={[
-                    {
-                      id: 1,
-                      text: "CustomerType1",
-                      value: "CustomerType1",
-                    },
-                    {
-                      id: 2,
-                      text: "CustomerType2",
-                      value: "CustomerType2",
-                    },
-                  ]}
-                />
-              </div>
-            ) : (
-              <div className="flex flex-col ">
-                <InfoLabel label={"Age Group Eligibility"} info={"String"} />
-                <div className="flex items-end gap-[25px]">
-                  <div className="w-[150px]">
-                    <MinMaxInput
-                      register={register}
-                      inputName={"ageGroupStart"}
-                      handleChange={(value) => {
-                        setValue("ageGroupStart", value.value);
-                      }}
-                    />
-                  </div>
-                  <div className="flex items-center">-</div>
-                  <div className="w-[150px]">
-                    <MinMaxInput
-                      register={register}
-                      inputName={"ageGroupEnd"}
-                      handleChange={(value) => {
-                        setValue("ageGroupEnd", value.value);
-                      }}
-                    />
-                  </div>
+            {/* {chosenCategory?.toLowerCase() == "corporate" ? ( */}
+            <div className="w-[300px]">
+              <BorderlessSelect
+                labelName={"Type of corporate customer"}
+                register={register}
+                inputName={"corporateCustomerType"}
+                handleSelected={(value) => {
+                  setValue("corporateCustomerType", value.value);
+                }}
+                options={[
+                  {
+                    id: 1,
+                    text: "CustomerType1",
+                    value: "CustomerType1",
+                  },
+                  {
+                    id: 2,
+                    text: "CustomerType2",
+                    value: "CustomerType2",
+                  },
+                ]}
+              />
+            </div>
+            {/* // ) : ( */}
+            <div className="flex flex-col ">
+              <InfoLabel label={"Age Group Eligibility"} info={"String"} />
+              <div className="flex items-end gap-[25px]">
+                <div className="w-[150px]">
+                  <MinMaxInput
+                    register={register}
+                    inputName={"ageGroupStart"}
+                    handleChange={(value) => {
+                      setValue("ageGroupStart", value.value);
+                    }}
+                  />
+                </div>
+                <div className="flex items-center">-</div>
+                <div className="w-[150px]">
+                  <MinMaxInput
+                    register={register}
+                    inputName={"ageGroupEnd"}
+                    handleChange={(value) => {
+                      setValue("ageGroupEnd", value.value);
+                    }}
+                  />
                 </div>
               </div>
-            )}
+            </div>
+            {/* // )} */}
           </div>
         </div>
         <div className="flex justify-end mt-10">
@@ -294,7 +293,7 @@ export default function CustomerEligibilityCriteria({
                       </div>
                     </div>
                     {documents?.map((document, index) => (
-                      <div className="space-y-5 ml-[16px]">
+                      <div key={document} className="space-y-5 ml-[16px]">
                         <div className="relative flex items-start">
                           <div className="flex h-6 items-center">
                             <input

@@ -27,7 +27,7 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
 }
 
 export default function CreateTermDeposit() {
-  const [step, setStep] = useState(5);
+  const [step, setStep] = useState(2);
   const [productInformationFormData, setProductInformationFormData] = useState({
     name: "",
     slogan: "",

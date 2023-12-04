@@ -49,7 +49,7 @@ export default function SelectRequirements({
           <Button
             type="button"
             data-testid="submit-btn"
-            onClick={actionFn}
+            // onClick={actionFn}
             className="rounded-lg text-base font-medium py-[5px] h-[44px] bg-sterling-red-800 border border-sterling-red-800 text-white w-[126px] px-10"
           >
             Select
