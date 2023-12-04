@@ -89,14 +89,14 @@ export default function CreateTermDeposit() {
     isDraft: true,
     productType: 0,
   });
-  const [productInformationFormData, setProductInformationFormData] = useState({
-    name: "",
-    slogan: "",
-    description: "",
-    startDate: "",
-    endDate: "",
-    currency: "",
-  });
+  // const [productInformationFormData, setProductInformationFormData] = useState({
+  //   name: "",
+  //   slogan: "",
+  //   description: "",
+  //   startDate: "",
+  //   endDate: "",
+  //   currency: "",
+  // });
   const [customerEligibilityCriteria, setCustomerEligibilityCriteria] =
     useState({
       category: "",
@@ -183,8 +183,10 @@ export default function CreateTermDeposit() {
       component = (
         <ProductInformation
           proceed={handleNav}
-          formData={productInformationFormData}
-          setFormData={setProductInformationFormData}
+          formData={productData.productInfo}
+          setFormData={(productInfo) =>
+            setProductData({ ...productData, productInfo: productInfo })
+          }
           setDisabled={setDisabled}
         />
       );
@@ -224,8 +226,10 @@ export default function CreateTermDeposit() {
       component = (
         <ProductInformation
           proceed={handleNav}
-          formData={productInformationFormData}
-          setFormData={setProductInformationFormData}
+          formData={productData.productInfo}
+          setFormData={(productInfo) =>
+            setProductData({ ...productData, productInfo: productInfo })
+          }
           setDisabled={setDisabled}
         />
       );

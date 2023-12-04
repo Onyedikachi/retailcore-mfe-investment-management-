@@ -56,7 +56,7 @@ export function handleName(
   const remainder = defaultLength - Number(namelength);
 
   setCharLeft(remainder);
-  clearErrors("name");
+  clearErrors("productName");
   setCurrentName(watchName);
   if (!watchName) return;
   if (watchName.length > 3) {
@@ -67,7 +67,7 @@ export function handleName(
         compareValues();
         return;
       }
-      validateName({ name: watchName, productId: id || "" });
+      validateName({ productName: watchName, productId: id || "" });
     }, timer)();
   } else {
     setError("");
@@ -78,7 +78,6 @@ export function handleName(
 
 export function handleSlogan(
   watchSlogan,
-
   setSloganCharLeft,
   setIsSloganOkay,
   clearErrors,
@@ -160,6 +159,7 @@ export default function ProductInformation({
 
   function onProceed(d: any) {
     console.log("ProductInfo: " + JSON.stringify(d));
+    // setFormData(d);
     proceed();
   }
 
@@ -176,9 +176,11 @@ export default function ProductInformation({
               <input
                 data-testid="product-name"
                 className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB] ${
-                  errors?.name || error ? "border-red-500" : ""
-                } ${isNameOkay && !errors?.name ? "border-success-500" : ""}`}
-                {...register("name", {
+                  errors?.productName || error ? "border-red-500" : ""
+                } ${
+                  isNameOkay && !errors?.productName ? "border-success-500" : ""
+                }`}
+                {...register("productName", {
                   required: true,
                   maxLength: 50,
                 })}
@@ -200,20 +202,20 @@ export default function ProductInformation({
                 }}
                 placeholder="Enter Name"
                 maxLength={defaultLength}
-                defaultValue={formData?.name}
-                aria-invalid={errors?.name ? "true" : "false"}
+                defaultValue={formData?.productName}
+                aria-invalid={errors?.productName ? "true" : "false"}
               />
               <div className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]">
                 <span>
                   {" "}
                   {charLeft}/{defaultLength}
                 </span>{" "}
-                {isNameOkay && !errors?.name && (
+                {isNameOkay && !errors?.productName && (
                   <span>
                     <FaCheckCircle className="text-success-500 text-xl" />
                   </span>
                 )}
-                {(error || errors?.name) && (
+                {(error || errors?.productName) && (
                   <span>
                     <RiErrorWarningFill className="text-danger-500 text-xl w-5 h-5" />
                   </span>
@@ -223,9 +225,9 @@ export default function ProductInformation({
                 )}
               </div>
             </div>
-            {errors?.name && (
+            {errors?.productName && (
               <span className="text-sm text-danger-500">
-                {errors?.name?.message}
+                {errors?.productName?.message}
               </span>
             )}
             {isNameOkay && (

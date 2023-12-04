@@ -13,8 +13,7 @@ const urls = {
   ACTIVITY_LOG: "/product/activitylog",
 
   // Validate
-  VALIDATE_NAME: "/product/verify--name",
-
+  VALIDATE_NAME: "/product/verify-name",
 };
 
 export default urls;
