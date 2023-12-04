@@ -4,7 +4,10 @@ import { HiRefresh, HiDownload } from "react-icons/hi";
 import { StatusCategoryType } from "../../../constants/enums";
 import moment from "moment";
 import { ucObjectKeys, InvestmentContext, AppContext } from "@app/utils";
-import { useGetPostProductsMutation } from "@app/api";
+import {
+  useGetPostProductsMutation,
+  useGetPostRequestsMutation,
+} from "@app/api";
 import SearchInput from "@app/components/SearchInput";
 import Table from "@app/components/table";
 import {
@@ -115,17 +118,32 @@ export function handleDownload(downloadData, isChecker, csvExporter, category) {
   }
 }
 
-export const getSearchResult = (value, getProducts, setSearchResults) => {
+export const getSearchResult = (
+  value,
+  getProducts,
+  getRequests,
+  category,
+  setSearchResults
+) => {
   if (!value.length) {
     setSearchResults([]);
     return;
   }
-  getProducts({
-    search: value,
-    page: 1,
-    page_Size: 15,
-    filter_by: "created_by_me",
-  });
+  if (category === StatusCategoryType.AllProducts) {
+    getProducts({
+      search: value,
+      page: 1,
+      page_Size: 25,
+      filter_by: "created_by_me",
+    });
+  } else {
+    getRequests({
+      search: value,
+      page: 1,
+      page_Size: 25,
+      filter_by: "created_by_me",
+    });
+  }
 };
 export const handleSearch = (value, setQuery, query) => {
   setQuery({
@@ -166,6 +184,17 @@ export default function TableComponent({
     getProducts,
     { data, isSuccess, isError, error, isLoading: searchLoading },
   ] = useGetPostProductsMutation();
+
+  const [
+    getRequests,
+    {
+      data: request,
+      isSuccess: isRequestSuccess,
+      isError: isRequestError,
+      error: requestError,
+      isLoading: isRequestLoading,
+    },
+  ] = useGetPostRequestsMutation();
   useEffect(() => {
     isSuccess &&
       setSearchResults(
@@ -177,25 +206,20 @@ export default function TableComponent({
           };
         })
       );
-    // isRequestSuccess &&
-    // setSearchResults(
-    //     request.results.map((i) => {
-    //       return {
-    //         ...i,
-    //         requestStatus: StatusFilterOptions.find(
-    //           (n) => n.value === i.requestStatus
-    //         ).name,
-    //         requestType: TypeFilterOptions.find(
-    //           (n) => n.value === i.requestType
-    //         ).name,
-    //       };
-    //     })
-    //   );
+    isRequestSuccess &&
+      setSearchResults(
+        request.results.map((i) => {
+          return {
+            ...i,
+            name: i.request,
+          };
+        })
+      );
 
     return () => {
       setSearchResults([]);
     };
-  }, [data, isSuccess, isError]);
+  }, [data, request, isSuccess, isRequestSuccess]);
 
   React.useEffect(() => {
     setOptions({
@@ -256,9 +280,15 @@ export default function TableComponent({
       <div className="flex justify-end gap-x-[25px] items-center mb-[27px] h-auto">
         <SearchInput
           setSearchTerm={(value) =>
-            getSearchResult(value, getProducts, setSearchResults)
+            getSearchResult(
+              value,
+              getProducts,
+              getRequests,
+              category,
+              setSearchResults
+            )
           }
-          placeholder="Search by product name/code"
+          placeholder={`Search by product name${category=== StatusCategoryType.Requests?'/code':''}`}
           searchResults={searchResults}
           setSearchResults={setSearchResults}
           searchLoading={searchLoading}
