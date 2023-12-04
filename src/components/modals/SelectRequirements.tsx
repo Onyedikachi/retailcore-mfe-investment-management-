@@ -12,6 +12,7 @@ interface SelectRequirementsProps {
   onCancel?: () => void;
   onConfirm: () => void;
   children?: any;
+  actionFn: () => void;
 }
 
 export default function SelectRequirements({
@@ -22,6 +23,7 @@ export default function SelectRequirements({
   isOpen,
   setIsOpen,
   children,
+  actionFn,
 }: SelectRequirementsProps): React.JSX.Element {
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -47,9 +49,7 @@ export default function SelectRequirements({
           <Button
             type="button"
             data-testid="submit-btn"
-            onClick={() => {
-              onConfirm();
-            }}
+            onClick={actionFn}
             className="rounded-lg text-base font-medium py-[5px] h-[44px] bg-sterling-red-800 border border-sterling-red-800 text-white w-[126px] px-10"
           >
             Select

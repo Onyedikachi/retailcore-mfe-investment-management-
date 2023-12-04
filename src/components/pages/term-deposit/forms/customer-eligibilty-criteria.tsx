@@ -15,7 +15,7 @@ export default function CustomerEligibilityCriteria({
   setDisabled,
   proceed,
 }) {
-  const [chosenCategory, setChosenCategory] = useState("");
+  const [chosenCategory, setChosenCategory] = useState("Individual");
   const [documents, setDocuments] = useState([
     "Customer signature",
     "Signature",
@@ -32,6 +32,9 @@ export default function CustomerEligibilityCriteria({
     "Document 11",
     "Document 12",
   ]);
+  const [selectedRequirements, setSelectedRequirements] = useState([]);
+
+  const [toggledRequirements, setToggledRequirements] = useState([]);
   const [isRequirementsOpen, setIsRequirementsOpen] = useState(false);
   const {
     register,
@@ -49,7 +52,39 @@ export default function CustomerEligibilityCriteria({
     // values,
   });
 
-  function onProceed() {
+  const selectedCategory = watch("category");
+
+  const handleCheckedRequirement = (e) => {
+    const value = e.target.value;
+    const isChecked = e.target.checked;
+
+    if (value === "all-documents") {
+      isChecked
+        ? setToggledRequirements(documents)
+        : setToggledRequirements([]);
+
+      return;
+    }
+
+    // If checked, add to the array; otherwise, remove it
+    setToggledRequirements((prevItems) =>
+      isChecked
+        ? [...prevItems, value]
+        : prevItems.filter((item) => item !== value)
+    );
+  };
+
+  const handleRequirement = (itemToDelete) => {
+    // Filter out the item to delete
+    const updatedRequirement = selectedRequirements.filter(
+      (item) => item !== itemToDelete
+    );
+
+    // Update the state with the new array
+    setSelectedRequirements(updatedRequirement);
+  };
+  function onProceed(d: any) {
+    console.log("Customer - Eligibility:" + JSON.stringify(d));
     proceed();
   }
 
@@ -57,6 +92,7 @@ export default function CustomerEligibilityCriteria({
     <div>
       <form id="customereligibilitycriteria" onSubmit={handleSubmit(onProceed)}>
         <div className="flex gap-[18px]">
+          {/* {`category: ${selectedCategory}`} */}
           <div className="w-[300px]">
             <BorderlessSelect
               labelName={"Customer Category"}
@@ -64,9 +100,7 @@ export default function CustomerEligibilityCriteria({
               register={register}
               inputName={"category"}
               handleSelected={(value) => {
-                // console.log(value);
-                // setChosenCategory(value.value);
-                // setValue("category", value.value);
+                setValue("category", value.value);
               }}
               options={[
                 {
@@ -84,21 +118,25 @@ export default function CustomerEligibilityCriteria({
           </div>
 
           <div className="flex">
-            {chosenCategory?.toLowerCase() == "Corporate" ? (
+            {chosenCategory?.toLowerCase() == "corporate" ? (
               <div className="w-[300px]">
                 <BorderlessSelect
                   labelName={"Type of corporate customer"}
-                  handleSelected={() => {}}
+                  register={register}
+                  inputName={"corporateCustomerType"}
+                  handleSelected={(value) => {
+                    setValue("corporateCustomerType", value.value);
+                  }}
                   options={[
                     {
                       id: 1,
-                      text: "Individual",
-                      value: "Individual",
+                      text: "CustomerType1",
+                      value: "CustomerType1",
                     },
                     {
                       id: 2,
-                      text: "Corporate",
-                      value: "Corporate",
+                      text: "CustomerType2",
+                      value: "CustomerType2",
                     },
                   ]}
                 />
@@ -108,11 +146,23 @@ export default function CustomerEligibilityCriteria({
                 <InfoLabel label={"Age Group Eligibility"} info={"String"} />
                 <div className="flex items-end gap-[25px]">
                   <div className="w-[150px]">
-                    <MinMaxInput />
+                    <MinMaxInput
+                      register={register}
+                      inputName={"ageGroupStart"}
+                      handleChange={(value) => {
+                        setValue("ageGroupStart", value.value);
+                      }}
+                    />
                   </div>
                   <div className="flex items-center">-</div>
                   <div className="w-[150px]">
-                    <MinMaxInput />
+                    <MinMaxInput
+                      register={register}
+                      inputName={"ageGroupEnd"}
+                      handleChange={(value) => {
+                        setValue("ageGroupEnd", value.value);
+                      }}
+                    />
                   </div>
                 </div>
               </div>
@@ -146,9 +196,9 @@ export default function CustomerEligibilityCriteria({
                   width="28"
                   height="28"
                   filterUnits="userSpaceOnUse"
-                  color-interpolation-filters="sRGB"
+                  colorInterpolationFilters="sRGB"
                 >
-                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                  <feFlood floodOpacity="0" result="BackgroundImageFix" />
                   <feColorMatrix
                     in="SourceAlpha"
                     type="matrix"
@@ -182,11 +232,18 @@ export default function CustomerEligibilityCriteria({
           </div>
         </div>
         <div>
-          <SelectedRequirementsTable />
+          <SelectedRequirementsTable
+            tableItems={selectedRequirements}
+            deleteTableItem={handleRequirement}
+          />
         </div>
 
         {isRequirementsOpen && (
           <SelectRequirements
+            actionFn={() => {
+              setSelectedRequirements(toggledRequirements);
+              setIsRequirementsOpen(false);
+            }}
             header={"Document Requirements"}
             isOpen={isRequirementsOpen}
             setIsOpen={setIsRequirementsOpen}
@@ -217,16 +274,18 @@ export default function CustomerEligibilityCriteria({
                       <div className="relative flex items-start">
                         <div className="flex h-6 items-center">
                           <input
-                            id="comments"
-                            aria-describedby="comments-description"
-                            name="comments"
+                            id="doc-requirement-all"
+                            aria-describedby="all-docs-description"
+                            name="all-docs"
                             type="checkbox"
+                            value="all-documents"
+                            onChange={handleCheckedRequirement}
                             className="h-4 w-4 rounded border-gray-300  !accent-sterling-red-800 ring-0"
                           />
                         </div>
                         <div className="ml-3 text-sm leading-6">
                           <label
-                            htmlFor="comments"
+                            htmlFor="doc-requirement-all"
                             className="font-normal text-base text-[#636363]"
                           >
                             All Documents
@@ -239,17 +298,20 @@ export default function CustomerEligibilityCriteria({
                         <div className="relative flex items-start">
                           <div className="flex h-6 items-center">
                             <input
-                              id="comments"
-                              aria-describedby="comments-description"
-                              name="comments"
+                              id={`doc-requirement-${document}`}
+                              aria-describedby="doc-requirement-description"
+                              name="doc-requirement"
                               type="checkbox"
+                              value={document}
+                              onChange={handleCheckedRequirement}
+                              checked={toggledRequirements.includes(document)}
                               className="h-4 w-4 rounded border-gray-300  !accent-sterling-red-800 ring-0"
                             />
                           </div>
                           <div className="ml-3 text-sm leading-6">
                             <label
-                              htmlFor="comments"
-                              className="font-normal text-base text-[#636363]"
+                              htmlFor={`doc-requirement-${document}`}
+                              className="cursor-pointer font-normal text-base text-[#636363]"
                             >
                               {document}
                             </label>{" "}

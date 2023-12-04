@@ -24,7 +24,7 @@ export interface SelectProps {
 export interface BorderlessSelectProps {
   options: array;
   handleSelected: (value) => void;
-  labelName: string;
+  labelName?: string;
   register?: any;
   inputError?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
   clearErrors?: any;

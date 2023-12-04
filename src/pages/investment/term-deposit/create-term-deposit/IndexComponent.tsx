@@ -27,7 +27,7 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
 }
 
 export default function CreateTermDeposit() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(5);
   const [productInformationFormData, setProductInformationFormData] = useState({
     name: "",
     slogan: "",
@@ -38,7 +38,42 @@ export default function CreateTermDeposit() {
   const [customerEligibilityCriteria, setCustomerEligibilityCriteria] =
     useState({
       category: "",
+      ageGroupStart: 0,
+      ageGroupEnd: 0,
+      corporateCustomerType: "",
     });
+  const [pricingConfigData, setPricingConfigData] = useState({
+    applicableTenorMin: 0,
+    applicableTenorMinDays: 0,
+    applicableTenorMax: 0,
+    applicableTenorMaxDays: 0,
+    applicablePrincipalMin: 0,
+    applicablePrincipalMax: 0,
+    applicablePrincipalMinDays: 0,
+    applicablePrincipalMaxDays: 0,
+    varyOption: "",
+    applicableInterestMin: 0,
+    applicableInterestMax: 0,
+    interestComputation: "",
+    tenorRateRanges: [
+      {
+        minRange: 0,
+        maxRange: 0,
+        tenorFrom: 0,
+        tenorFromType: "",
+        tenorTo: 0,
+        tenorToType: "",
+      },
+    ],
+    principalRateRanges: [
+      {
+        minRange: 0,
+        maxRange: 0,
+        amountFrom: 0,
+        amountTo: 0,
+      },
+    ],
+  });
   const [isDisabled, setDisabled] = useState<boolean>(true);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [draftText] = useState({
@@ -105,7 +140,13 @@ export default function CreateTermDeposit() {
       formRef = "customereligibilitycriteria";
       break;
     case 3:
-      component = <PricingConfig proceed={handleNav} />;
+      component = (
+        <PricingConfig
+          formData={pricingConfigData}
+          setFormData={setPricingConfigData}
+          proceed={handleNav}
+        />
+      );
       formRef = "pricingconfig";
       break;
     case 4:
