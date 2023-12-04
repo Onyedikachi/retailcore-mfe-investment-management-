@@ -38,7 +38,6 @@ interface TableProps {
   type?: string;
 }
 
-
 // Extract Dropdown component for reusability
 export const DropdownButton = ({ options, handleClick }: any) => {
   return (
@@ -54,7 +53,6 @@ export const handleProductsDropdown = (
   locked = false,
   permissions: string[] = []
 ): any => {
- 
   if (locked)
     return DropDownOptions[status]?.filter(
       (i: any) => i.text.toLowerCase() === "view"
@@ -146,7 +144,7 @@ export default function TableComponent<TableProps>({
 }) {
   const { role, permissions } = useContext(AppContext);
   const { isChecker } = useContext(InvestmentContext);
-  const [detail, setDetail]= useState<any>(null)
+  const [detail, setDetail] = useState<any>(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [isDeactivationOpen, setIsDeactivationOpen] = useState(false);
@@ -160,7 +158,7 @@ export default function TableComponent<TableProps>({
 
   function getdata(item, key) {}
   const handleAction = (action, items) => {
-    setDetail(items)
+    setDetail(items);
     dropDownClick(action, items);
     setSubText("");
     if (action.toLowerCase() === "deactivate") {
@@ -322,9 +320,75 @@ export default function TableComponent<TableProps>({
           </table>
 
           {isLoading && <BottomBarLoader />}
-          {!tableRows?.length && !isLoading && (
-            <div className="text-sm text-center p-10 opacity-80">
-              No data available
+          {tableRows?.length && !isLoading && (
+            <div className="text-sm text-left p-10 opacity-80">
+              <table className="w-full relative">
+                <thead
+                  className={`${
+                    tableRows?.length > 0 ? "sticky" : "relative"
+                  } top-0 bg-white border-b border-[#C2C9D1]/30 z-[10]`}
+                >
+                  <tr>
+                    {headers.map(
+                      ({ label, options, hasSelect, hasDateSelect, key }) => (
+                        <th
+                          key={label}
+                          className="relative uppercase font-bold text-sm text-[#AAAAAA] px-4 py-5 after:content-[''] after:w-1 after:h-[18px] after:absolute after:border-r after:left-0 after:top-1/2 after:translate-y-[-50%] after:border-[#AAAAAA]/75 first-of-type:after:content-none last-of-type:after:content-none border-b border-[#C2C9D1]/30 whitespace-nowrap"
+                        >
+                          <div className="relative flex items-center gap-x-20 justify-between">
+                            <span className="relative">
+                              {label}{" "}
+                              {key === "updatedOn" && (
+                                <span className="absolute block bg-[#CF2A2A] h-[6px] w-[6px] rounded-full -right-[6px] top-[1px]"></span>
+                              )}
+                            </span>
+
+                            <span>
+                              {hasSelect && (
+                                <MultiSelect
+                                  options={options}
+                                  getOptions={(e: any) =>
+                                    getOptionData(e, label)
+                                  }
+                                >
+                                  <span className="w-4 h-4 flex items-center justify-center">
+                                    <BsFunnel />
+                                  </span>
+                                </MultiSelect>
+                              )}
+                              {hasDateSelect && (
+                                <DateSelect onChangeDate={onChangeDate}>
+                                  <span className="w-4 h-4 flex items-center justify-center">
+                                    <BsFunnel />
+                                  </span>
+                                </DateSelect>
+                              )}
+                            </span>
+                          </div>
+                        </th>
+                      )
+                    )}
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {Array.from(Array(5)).map((item: any, index) => (
+                    <tr
+                      key={item + index}
+                      className="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"
+                    >
+                      {headers.map((it, idxx) => (
+                        <td
+                          key={it}
+                          className="text-base font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative text-left"
+                        >
+                          {idxx === 0 && index === 0 && "No data available"}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           )}
         </div>
@@ -358,7 +422,7 @@ export default function TableComponent<TableProps>({
           setIsOpen={setFailed}
         />
       )}
-      
+
       {isDeactivationOpen && (
         <RequestDeactivation
           isOpen={isDeactivationOpen}
