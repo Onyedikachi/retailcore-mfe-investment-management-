@@ -524,7 +524,7 @@
 //                         <td className="text-base font-medium text-[#636363] px-4 py-5  max-w-[284px] truncate capitalize">
 //                           {!isChecker
 //                             ? item.created_By
-//                             : item.treated_by || "-"}
+//                             : item.approved_By || "-"}
 //                         </td>
 //                         <td className="text-base font-medium text-[#636363] px-4 py-5 ">
 //                           <span

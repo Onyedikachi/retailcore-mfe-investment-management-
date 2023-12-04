@@ -14,7 +14,13 @@ import {
   useGetProductStatsQuery,
   useGetRequestStatsQuery,
 } from "@app/api";
-import { ProductTypes, StatusFilterOptions, StatusTypes, TypeFilterOptions, productHeader, requestHeader } from "@app/constants";
+import {
+  ProductTypes,
+  StatusFilterOptions,
+  StatusTypes,
+  TypeFilterOptions,
+
+} from "@app/constants";
 import { sortTabStatus } from "@app/utils/sortTabStatus";
 
 export function handleToggle(selected, setIsChecker, setHideCreate) {
@@ -30,12 +36,19 @@ export function handleToggle(selected, setIsChecker, setHideCreate) {
   }
 }
 
-export const handleChange = (selected, activeType, setQuery, query) => {
+export const handleChange = (
+  selected,
+  activeType,
+  setQuery,
+  query,
+  category
+) => {
   setQuery({
     ...query,
     page: 1,
     filter_by: selected,
-    status_In: activeType === "all" ? null : [sortTabStatus(activeType)],
+    status_In:
+      activeType === "all" ? null : [sortTabStatus(activeType, category)],
   });
 };
 export const handleRefresh = (
@@ -87,6 +100,9 @@ export default function IndexComponent() {
     end_Date: null,
     page: 1,
     page_Size: 15,
+    productType_In: null,
+    requestType_In: null,
+    initiator_In: null,
   });
   const value = useMemo(
     () => ({
@@ -177,7 +193,16 @@ export default function IndexComponent() {
       getRequests({ ...query, page: 1 });
       requestRefetch({ ...query, page: 1 });
     }
-  }, [category, query.filter_by, query.search, query.status_In]);
+  }, [
+    category,
+    query.filter_by,
+    query.search,
+    query.status_In,
+    query.productType_In,
+    query.start_Date,
+    query.end_Date,
+    query.requestType_In,
+  ]);
 
   useEffect(() => {
     isSuccess &&
@@ -190,13 +215,20 @@ export default function IndexComponent() {
           };
         })
       );
-    isRequestSuccess && setRequestData(request.results.map((i) => {
-      return {
-        ...i,
-        requestStatus: StatusFilterOptions.find((n) => n.value === i.requestStatus).name,
-        requestType: TypeFilterOptions.find((n) => n.value=== i.requestType).name,
-      };
-    }));
+    isRequestSuccess &&
+      setRequestData(
+        request.results.map((i) => {
+          return {
+            ...i,
+            requestStatus: StatusFilterOptions.find(
+              (n) => n.value === i.requestStatus
+            ).name,
+            requestType: TypeFilterOptions.find(
+              (n) => n.value === i.requestType
+            ).name,
+          };
+        })
+      );
 
     return () => {
       setProductData([]);
@@ -214,7 +246,7 @@ export default function IndexComponent() {
               data={prodStatData}
               requests={requestStatData}
               handleChange={({ selected, activeType }) =>
-                handleChange(selected, activeType, setQuery, query)
+                handleChange(selected, activeType, setQuery, query, category)
               }
               isLoading={requestStatLoading || prodStatLoading}
             />
@@ -236,6 +268,8 @@ export default function IndexComponent() {
                 productData={productData}
                 requestData={requestData}
                 isLoading={isLoading || isRequestLoading}
+                query={query}
+                setQuery={setQuery}
               />
             </div>
           </div>

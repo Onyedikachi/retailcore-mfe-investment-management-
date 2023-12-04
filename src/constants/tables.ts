@@ -320,7 +320,7 @@ export const DateFilterOptions: any[] = [
   {
     id: 1,
     name: "All time",
-    value: "",
+    value: null,
   },
   {
     id: 2,
@@ -560,7 +560,7 @@ export const requestHeader = [
   },
   {
     label: "reviewer",
-    key: "treated_by",
+    key: "approved_By",
     options: [
       {
         id: 1,

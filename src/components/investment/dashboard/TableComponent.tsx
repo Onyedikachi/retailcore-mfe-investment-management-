@@ -1,18 +1,19 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ExportToCsv } from "export-to-csv";
 import { HiRefresh, HiDownload } from "react-icons/hi";
 import { StatusCategoryType } from "../../../constants/enums";
 import moment from "moment";
-import {
-  getRequestType,
-  ucObjectKeys,
-  InvestmentContext,
-  handleUserView,
-  AppContext,
-} from "@app/utils";
+import { ucObjectKeys, InvestmentContext, AppContext } from "@app/utils";
+import { useGetPostProductsMutation } from "@app/api";
 import SearchInput from "@app/components/SearchInput";
 import Table from "@app/components/table";
-import { DropDownOptions, productHeader, requestHeader } from "@app/constants";
+import {
+  DropDownOptions,
+  ProductTypes,
+  StatusTypes,
+  productHeader,
+  requestHeader,
+} from "@app/constants";
 
 interface RequestDataProps {
   request: string;
@@ -26,7 +27,8 @@ interface RequestDataProps {
 interface ProductDataProps {
   "product name": string;
   "product code": string;
-  status: string;
+  "product type": string;
+  state: string;
   "updated on": string;
 }
 
@@ -65,8 +67,8 @@ export const handleDropdown = (
 
 export const handleHeaders = (headers: any, isChecker) => {
   return isChecker
-    ? headers.filter((i) => i.key !== "created_by")
-    : headers.filter((i) => i.key !== "treated_by");
+    ? headers.filter((i) => i.label !== "initiator")
+    : headers.filter((i) => i.label !== "reviewer");
 };
 export function handleDownload(downloadData, isChecker, csvExporter, category) {
   try {
@@ -74,19 +76,19 @@ export function handleDownload(downloadData, isChecker, csvExporter, category) {
     const requestData = downloadData.map((i) => {
       // @ts-ignore
       let obj: RequestDataProps = {
-        request: i?.description || "",
-        type: getRequestType(i?.request_type) || "",
+        request: i?.request || "",
+        type: i?.requestType || "",
       };
 
       if (!isChecker) {
         obj.initiator = i?.created_By || "";
-        obj.status = handleUserView(i?.status, isChecker);
+        obj.status = i?.requestStatus;
       } else {
-        obj.reviewer = i?.created_By || "";
-        obj.status = handleUserView(i?.status, isChecker);
+        obj.reviewer = i?.approved_By || "";
+        obj.status = i?.requestStatus;
       }
 
-      obj["updated on"] = moment(i.updated_at).format("DD MMM YYYY, hh:mm A");
+      obj["updated on"] = moment(i.updatedOn).format("DD MMM YYYY, hh:mm A");
 
       return obj;
     });
@@ -94,10 +96,11 @@ export function handleDownload(downloadData, isChecker, csvExporter, category) {
     const productData = downloadData.map((i) => {
       // @ts-ignore
       let obj: ProductDataProps = {
-        "product name": i?.name || "",
-        "product code": i?.code || "",
-        status: handleUserView(i?.status, isChecker),
-        "updated on": moment(i.updated_at).format("DD MMM YYYY, hh:mm A"),
+        "product name": i?.productName || "",
+        "product code": i?.productCode || "",
+        "product type": i?.productType || "",
+        state: i?.state || "",
+        "updated on": moment(i.updatedOn).format("DD MMM YYYY, hh:mm A"),
       };
 
       return obj;
@@ -112,19 +115,36 @@ export function handleDownload(downloadData, isChecker, csvExporter, category) {
   }
 }
 
+export const getSearchResult = (value, getProducts, setSearchResults) => {
+  if (!value.length) {
+    setSearchResults([]);
+    return;
+  }
+  getProducts({
+    search: value,
+    page: 1,
+    page_Size: 15,
+    filter_by: "created_by_me",
+  });
+};
+export const handleSearch = (value, setQuery, query) => {
+  setQuery({
+    ...query,
+    search: value,
+  });
+};
 export default function TableComponent({
   productData,
   requestData,
   handleRefresh,
   isLoading,
   handleSearch,
+  query,
   setQuery,
 }: any) {
   const { category, setStatus, isChecker } = useContext(InvestmentContext);
   const { permissions } = useContext(AppContext);
-  const [downloadData, setDownloadData] = useState<any[]>(
-    StatusCategoryType?.AllProducts ? productData : requestData
-  );
+  const [searchResults, setSearchResults] = useState<any[]>([]);
   const [options, setOptions] = React.useState({
     fieldSeparator: ",",
     quoteStrings: '"',
@@ -132,13 +152,50 @@ export default function TableComponent({
     showLabels: true,
     showTitle: false,
     title: "Product management",
-    filename: StatusCategoryType?.AllProducts ? "products" : "requests",
+    filename:
+      category === StatusCategoryType?.AllProducts
+        ? "dashboard_products_data"
+        : "dashboard_requests_data",
     useTextFile: false,
     useBom: true,
     useKeysAsHeaders: true,
   });
-
   const csvExporter = new ExportToCsv(options);
+
+  const [
+    getProducts,
+    { data, isSuccess, isError, error, isLoading: searchLoading },
+  ] = useGetPostProductsMutation();
+  useEffect(() => {
+    isSuccess &&
+      setSearchResults(
+        data.results.map((i) => {
+          return {
+            ...i,
+            name: i.productName,
+            code: i.productCode,
+          };
+        })
+      );
+    // isRequestSuccess &&
+    // setSearchResults(
+    //     request.results.map((i) => {
+    //       return {
+    //         ...i,
+    //         requestStatus: StatusFilterOptions.find(
+    //           (n) => n.value === i.requestStatus
+    //         ).name,
+    //         requestType: TypeFilterOptions.find(
+    //           (n) => n.value === i.requestType
+    //         ).name,
+    //       };
+    //     })
+    //   );
+
+    return () => {
+      setSearchResults([]);
+    };
+  }, [data, isSuccess, isError]);
 
   React.useEffect(() => {
     setOptions({
@@ -149,7 +206,9 @@ export default function TableComponent({
       showTitle: false,
       title: "Product management",
       filename:
-        category === StatusCategoryType?.AllProducts ? "products" : "requests",
+        category === StatusCategoryType?.AllProducts
+          ? "dashboard_products_data"
+          : "dashboard_requests_data",
       useTextFile: false,
       useBom: true,
       useKeysAsHeaders: true,
@@ -157,37 +216,53 @@ export default function TableComponent({
     setStatus("");
   }, [category]);
 
-  const getOptionData = (value: string, label: string) => {
-    console.log(
-      "🚀 ~ file: TableComponent.tsx:188 ~ getOptionData  ~ label:",
-      label
-    );
-    console.log(
-      "🚀 ~ file: TableComponent.tsx:179 ~ getOptionData  ~ value:",
-      value
-    );
+  const getOptionData = (value: any, label: string) => {
+    if (label === "product type") {
+      setQuery({
+        ...query,
+        productType_In: value.length ? value.map((i) => i.value) : null,
+      });
+    }
+    if (label === "type") {
+      setQuery({
+        ...query,
+        requestType_In: value.length ? value.map((i) => i.value) : null,
+      });
+    }
+    if (label === "state" || label === "status") {
+      setQuery({
+        ...query,
+        status_In: value.length ? value.map((i) => i.value) : null,
+      });
+    }
   };
   const onChangeDate = (value: any) => {
-    console.log(
-      "🚀 ~ file: TableComponent.tsx:193 ~ onChangeDate ~ value:",
-      value
-    );
-  
+    setQuery({
+      ...query,
+      start_Date: value.startDate,
+      end_Date: value.endDate,
+    });
   };
+
   const handleDropClick = (value: any) => {
     console.log(
       "🚀 ~ file: TableComponent.tsx:197 ~ handleDropClick ~ value:",
       value
     );
-  
   };
   return (
     <section className="w-full h-full">
       {/* Table Top bar  */}
       <div className="flex justify-end gap-x-[25px] items-center mb-[27px] h-auto">
         <SearchInput
-          setSearchTerm={handleSearch}
+          setSearchTerm={(value) =>
+            getSearchResult(value, getProducts, setSearchResults)
+          }
           placeholder="Search by product name/code"
+          searchResults={searchResults}
+          setSearchResults={setSearchResults}
+          searchLoading={searchLoading}
+          handleSearch={(value) => handleSearch(value, setQuery, query)}
         />
         <div className="relative  after:content-[''] after:w-1 after:h-[80%] after:absolute after:border-r after:right-[-15px] after:top-1/2 after:translate-y-[-50%] after:border-[#E5E9EB]">
           {/* Refresh button  */}

@@ -1,28 +1,25 @@
 import React, { useState } from "react";
 import { IoArrowUndo } from "react-icons/io5";
 import { FaBan, FaEdit, FaPlayCircle, FaTimes } from "react-icons/fa";
+import moment from "moment";
 import ModalLayout from "./Layout";
 import BottomBarLoader from "../BottomBarLoader";
+import { CustomerCategory, Interval } from "@app/constants";
+import { currencyFormatter } from "@app/utils/formatCurrency";
 
 interface Props {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   onCancel?: () => void;
   handleClick?: (e: any, detail: any) => void;
+  detail: any;
 }
-const detail = {
-  status: "A",
-  name: "Name",
-  type: "Type",
-  code: "CODE",
-  slogan: "Slogan",
-  description: "description",
-  reason: "Reason",
-};
+
 export default function ProductDetail({
   isOpen,
   setIsOpen,
   handleClick,
+  detail,
 }: Props) {
   const data = [
     "3% for principal between 0 and 200,000",
@@ -45,16 +42,16 @@ export default function ProductDetail({
         <div className="flex justify-between items-center pb-6 pt-8 px-16 border-b border-[#CCCCCC] w-full">
           <div className="flex gap-x-5 items-center">
             <h1 className="text-[#636363] font-bold text-2xl uppercase">
-              {detail.name}
+              {detail.productName}
             </h1>
             <span
               className={`${
-                detail?.status === "A"
+                detail?.state === "active"
                   ? "text-[#15692A] bg-[#D4F7DC]"
                   : "text-[#1E0A3C] bg-[#E5E5EA]"
-              } px-2 py-[1px] rounded font-medium`}
+              } px-2 py-[1px] rounded font-medium capitalize`}
             >
-              {detail?.status === "A" ? "Active" : "Inactive"}
+              {detail?.state}
             </span>
           </div>
           <button
@@ -78,17 +75,23 @@ export default function ProductDetail({
               )}
               <div>
                 <span className="font-bold block mb-[15px]">Product Type</span>
-                <span className="font-normal block">{detail?.type}</span>
+                <span className="font-normal block uppercase">
+                  {detail?.productType || "-"}
+                </span>
               </div>
               <div>
                 <span className="font-bold block mb-[15px]">Product Code</span>
-                <span className="font-normal block">{detail?.code}</span>
+                <span className="font-normal block">
+                  {detail?.productCode || "-"}
+                </span>
               </div>
               <div>
                 <span className="font-bold block mb-[15px]">
                   Product Slogan
                 </span>
-                <span className="font-normal block">{detail?.slogan}</span>
+                <span className="font-normal block">
+                  {detail?.slogan || "-"}
+                </span>
               </div>
 
               <div>
@@ -96,37 +99,31 @@ export default function ProductDetail({
                   Product Description
                 </span>
                 <span className="font-normal block">
-                  {detail?.description}{" "}
+                  {detail?.description || "-"}{" "}
                 </span>
               </div>
+
               <div>
                 <span className="font-bold block mb-[15px]">
                   Product Life Cycle
                 </span>
                 <span className="font-normal block">
-                  {detail?.description}{" "}
-                </span>
-              </div>
-              <div>
-                <span className="font-bold block mb-[15px]">
-                  Product Life Cycle
-                </span>
-                <span className="font-normal block">
-                  {detail?.description}{" "}
+                  {moment(detail.startDate).format("DD MMM YYYY")} -{" "}
+                  {detail.endDate
+                    ? moment(detail.endDate).format("DD MMM YYYY")
+                    : "Unspecified"}
                 </span>
               </div>
               <div>
                 <span className="font-bold block mb-[15px]">Currency</span>
-                <span className="font-normal block">
-                  {detail?.description}{" "}
-                </span>
+                <span className="font-normal block">{detail?.currency} </span>
               </div>
               <div>
                 <span className="font-bold block mb-[15px]">
                   Customer Category
                 </span>
                 <span className="font-normal block">
-                  {detail?.description}{" "}
+                  {CustomerCategory[detail?.customerCategory]}{" "}
                 </span>
               </div>
             </div>
@@ -143,7 +140,7 @@ export default function ProductDetail({
 
                 {/* {permissions?.includes("CREATE_BRANCH") && ( */}
                 <>
-                  {detail?.status !== "A" ? (
+                  {detail?.state !== "active" ? (
                     <button
                       type="button"
                       data-testid="activate-btn"
@@ -179,13 +176,32 @@ export default function ProductDetail({
                 <span className="font-bold block mb-[15px]">
                   Applicable Tenor
                 </span>
-                <span className="font-normal block">{detail?.type}</span>
+                <span className="font-normal block">
+                  {`${detail?.applicableTenorMin} ${
+                    Interval[detail?.applicableTenorMinUnit]
+                  }`}{" "}
+                  -{" "}
+                  {`${detail?.applicableTenorMax} ${
+                    Interval[detail?.applicableTenorMaxUnit]
+                  }`}
+                </span>
               </div>
               <div>
                 <span className="font-bold block mb-[15px]">
                   Applicable Principal
                 </span>
-                <span className="font-normal block">{detail?.code}</span>
+                <span className="font-normal block">
+                  {currencyFormatter(
+                    detail?.applicablePrincipalMin,
+                    detail.currency
+                  )}{" "}
+                  {detail?.applicablePrincipalMax
+                    ? `- ${currencyFormatter(
+                        detail?.applicablePrincipalMax,
+                        detail.currency
+                      )}`
+                    : "and above"}
+                </span>
               </div>
               <div>
                 <span className="font-bold block mb-[15px]">Interest Rate</span>
@@ -197,23 +213,31 @@ export default function ProductDetail({
                   View more
                 </button>
               </div>
-
-              <div>
-                <span className="font-bold block mb-[15px]">
-                  Part Liquidation
-                </span>
-                <span className="font-normal block">
-                  {detail?.description}{" "}
-                </span>
-              </div>
-              <div>
-                <span className="font-bold block mb-[15px]">
-                  Early Liquidation
-                </span>
-                <span className="font-normal block">
-                  {detail?.description}{" "}
-                </span>
-              </div>
+              {detail?.part_AllowPartLiquidation && (
+                <div>
+                  <span className="font-bold block mb-[15px]">
+                    Part Liquidation
+                  </span>
+                  <span className="font-normal block">
+                    Maximum of {detail?.part_MaxPartLiquidation}%{" "}
+                    {detail?.part_LiquidationPenalty === "pay" && (
+                      <span> with penalty</span>
+                    )}
+                  </span>
+                </div>
+              )}
+              {detail?.early_AllowEarlyLiquidation && (
+                <div>
+                  <span className="font-bold block mb-[15px]">
+                    Early Liquidation
+                  </span>
+                  <span className="font-normal block">
+                    Allowed{" "}
+                    {detail?.early_LiquidationPenalty === "pay" &&
+                      "with penalty"}
+                  </span>
+                </div>
+              )}
 
               <div>
                 <span className="font-bold block mb-[15px]">
