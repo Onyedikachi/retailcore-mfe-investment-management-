@@ -1,14 +1,27 @@
-import React, { useState, forwardRef } from "react";
+import React, { useState, forwardRef, useEffect } from "react";
 import DatePicker, { CalendarContainer } from "react-datepicker";
 import { FaRegCalendarAlt } from "react-icons/fa";
 
-export default function FormDate() {
-  const [date, setDate] = useState("");
-  //   const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => (
-  //     <button className="example-custom-input" onClick={onClick} ref={ref}>
-  //       {value}
-  //     </button>
-  //   ));
+interface FormDateProps {
+  className?: string;
+  inputName?: string;
+  register?: any;
+  handleChange?: (value) => void;
+  defaultValue?: "";
+}
+
+export default function FormDate({
+  register = () => {},
+  inputName,
+  handleChange,
+  className,
+  defaultValue,
+}: FormDateProps) {
+  const [date, setDate] = useState(defaultValue);
+
+  useEffect(() => {
+    handleChange(date);
+  }, [date]);
   const MyContainer = ({ className, children }) => {
     return (
       <div
@@ -33,6 +46,9 @@ export default function FormDate() {
           data-testid="date-picker"
           selected={date ? new Date(date) : null}
           onChange={(date) => setDate(date)}
+          // {...register(inputName, {
+          //   // required: true,
+          // })}
           calendarContainer={MyContainer}
           placeholderText="dd/mm/yyyy"
           className={` placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4 border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] `}

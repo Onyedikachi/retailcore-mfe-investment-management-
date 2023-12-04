@@ -336,9 +336,24 @@ export default function ProductInformation({
             </label>
 
             <div className="flex ">
-              <FormDate />
+              <FormDate
+                register={register}
+                inputName={"startDate"}
+                handleChange={(value) => {
+                  console.log(value);
+                  setValue("startDate", value);
+                }}
+                defaultValue={formData.startDate}
+              />
               -
-              <FormDate />
+              <FormDate
+                register={register}
+                inputName={"endDate"}
+                handleChange={(value) => {
+                  setValue("endDate", value);
+                }}
+                defaultValue={formData.endDate}
+              />
             </div>
           </div>
 
