@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function EntriesAndEventsSearchResults() {
   const tabLinks = [
@@ -112,6 +112,10 @@ export default function EntriesAndEventsSearchResults() {
   const [currentTab, setCurrentTab] = useState(tabLinks[0]);
 
   const [menus, setMenus] = useState(currentTab.menu);
+
+  useEffect(() => {
+    setMenus(currentTab.menu);
+  }, [currentTab]);
 
   const toggleSubMenu = (menuIndex) => {
     //get the index of the menu on click
