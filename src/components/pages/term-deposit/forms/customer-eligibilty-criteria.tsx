@@ -52,6 +52,8 @@ export default function CustomerEligibilityCriteria({
     // values,
   });
 
+  const selectedCategory = watch("category");
+
   const handleCheckedRequirement = (e) => {
     const value = e.target.value;
     const isChecked = e.target.checked;
@@ -83,14 +85,14 @@ export default function CustomerEligibilityCriteria({
   };
   function onProceed(d: any) {
     console.log("Customer - Eligibility:" + JSON.stringify(d));
-    // proceed();
+    proceed();
   }
 
   return (
     <div>
       <form id="customereligibilitycriteria" onSubmit={handleSubmit(onProceed)}>
         <div className="flex gap-[18px]">
-          {/* {`category: ${selectedCategory}`} */}
+          {`category: ${selectedCategory}`}
           <div className="w-[300px]">
             <BorderlessSelect
               labelName={"Customer Category"}
