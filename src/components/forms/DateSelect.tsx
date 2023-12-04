@@ -107,7 +107,7 @@ export default function DateSelect({
                       selected={
                         dates.startDate ? new Date(dates.startDate) : null
                       }
-                      onChange={(value) => onChange(value, setDate)}
+                      onChange={(value) => onChange(value, setDates)}
                       startDate={
                         dates.startDate ? new Date(dates.startDate) : null
                       }
