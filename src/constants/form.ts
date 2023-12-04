@@ -28,7 +28,7 @@ export const FormSchema = yup
 
 export const ProductInformationFormSchema = yup
   .object({
-    name: yup
+    productName: yup
       .string()
       .matches(
         productNameRegex,
@@ -39,8 +39,10 @@ export const ProductInformationFormSchema = yup
       .max(50, "Maximum of 50 chars"),
     slogan: yup.string().max(160, "Maximum of 160 chars"),
     description: yup.string().required("Product description is required"),
-    productLifeCycle: yup.string(),
+    startDate: yup.string(),
+    endDate: yup.string(),
     currency: yup.string().required("Product currency is required"),
+    customerCategory: yup.number(),
   })
   .required();
 

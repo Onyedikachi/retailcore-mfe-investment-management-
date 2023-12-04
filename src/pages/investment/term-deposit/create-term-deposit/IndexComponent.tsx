@@ -242,6 +242,7 @@ export default function CreateTermDeposit() {
         </h1>
         <Breadcrumbs links={links} />
       </div>
+      {/* {productData.productInfo.productName} */}
       <div className="h-full px-[37px] py-[30px] bg-[#F7F7F7]">
         <div className=" bg-[#ffffff] rounded-md px-[100px] pt-[54px] pb-[49px] ">
           <div className="pb-[49px] ">

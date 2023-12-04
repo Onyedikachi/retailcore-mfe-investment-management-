@@ -67,7 +67,7 @@ export function handleName(
         compareValues();
         return;
       }
-      validateName({ productName: watchName, productId: id || "" });
+      validateName({ productName: watchName, productId: id || null });
     }, timer)();
   } else {
     setError("");
@@ -97,6 +97,7 @@ export function handleSlogan(
   }
 }
 
+//ProductInformation
 export default function ProductInformation({
   formData,
   setFormData,
@@ -104,7 +105,7 @@ export default function ProductInformation({
   proceed,
 }) {
   //
-  //
+  //useForm
   const {
     register,
     handleSubmit,
@@ -118,6 +119,8 @@ export default function ProductInformation({
     resolver: yupResolver(ProductInformationFormSchema),
     defaultValues: formData,
   });
+
+  //useState
   const productFormRef = useRef();
   const [error, setError] = useState<string>("");
   const [charLeft, setCharLeft] = useState<number>(50);
@@ -159,7 +162,7 @@ export default function ProductInformation({
 
   function onProceed(d: any) {
     console.log("ProductInfo: " + JSON.stringify(d));
-    // setFormData(d);
+    setFormData(d);
     proceed();
   }
 
