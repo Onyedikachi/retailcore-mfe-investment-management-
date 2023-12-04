@@ -52,6 +52,8 @@ export default function CustomerEligibilityCriteria({
     // values,
   });
 
+  const selectedCategory = watch("category");
+
   const handleCheckedRequirement = (e) => {
     const value = e.target.value;
     const isChecked = e.target.checked;
@@ -83,7 +85,7 @@ export default function CustomerEligibilityCriteria({
   };
   function onProceed(d: any) {
     console.log("Customer - Eligibility:" + JSON.stringify(d));
-    // proceed();
+    proceed();
   }
 
   return (

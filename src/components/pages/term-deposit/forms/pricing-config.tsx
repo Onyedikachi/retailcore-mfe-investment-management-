@@ -104,7 +104,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
 
   function onProceed(d: any) {
     console.log("Pricing - Config:" + JSON.stringify(d));
-    // proceed();
+    proceed();
   }
   return (
     <form id="pricingconfig" onSubmit={handleSubmit(onProceed)}>
