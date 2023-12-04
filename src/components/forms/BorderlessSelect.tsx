@@ -10,7 +10,12 @@ export default function Select({
   register = () => {},
   inputError,
   inputName,
+  defaultValue,
 }: BorderlessSelectProps): React.JSX.Element {
+  // const indexOfItemWithDefaultValue = options.findIndex(
+  //   (item) => item.value === defaultValue
+  // );
+
   const [selected, setSelected] = useState(options[0]);
 
   useEffect(() => {

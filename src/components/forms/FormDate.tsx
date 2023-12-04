@@ -7,7 +7,7 @@ interface FormDateProps {
   inputName?: string;
   register?: any;
   handleChange?: (value) => void;
-  defaultValue?: "";
+  defaultValue?: string;
 }
 
 export default function FormDate({
@@ -15,7 +15,7 @@ export default function FormDate({
   inputName,
   handleChange,
   className,
-  defaultValue,
+  defaultValue = "",
 }: FormDateProps) {
   const [date, setDate] = useState(defaultValue);
 

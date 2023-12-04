@@ -33,20 +33,21 @@ export default function CreateTermDeposit() {
       productName: "string",
       slogan: "string",
       description: "string",
-      startDate: "2023-12-04T14:39:55.205Z",
-      endDate: "2023-12-04T14:39:55.205Z",
-      currency: "string",
+      startDate: "",
+      endDate: "",
+      currency: "",
       customerCategory: 0,
     },
     customerEligibility: {
-      ageGroupMin: 0,
-      ageGroupMax: 0,
+      ageGroupMin: 1,
+      ageGroupMax: 1,
       requireDocument: [
-        {
-          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          name: "string",
-        },
+        // {
+        //   id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        //   name: "string",
+        // },
       ],
+      customerCategory: 0,
     },
     pricingConfiguration: {
       applicableTenorMin: 0,
@@ -97,13 +98,13 @@ export default function CreateTermDeposit() {
   //   endDate: "",
   //   currency: "",
   // });
-  const [customerEligibilityCriteria, setCustomerEligibilityCriteria] =
-    useState({
-      category: "",
-      ageGroupStart: 0,
-      ageGroupEnd: 0,
-      corporateCustomerType: "",
-    });
+  // const [customerEligibilityCriteria, setCustomerEligibilityCriteria] =
+  //   useState({
+  //     category: "",
+  //     ageGroupStart: 0,
+  //     ageGroupEnd: 0,
+  //     corporateCustomerType: "",
+  //   });
   const [pricingConfigData, setPricingConfigData] = useState({
     applicableTenorMin: 0,
     applicableTenorMinDays: 0,
@@ -196,8 +197,13 @@ export default function CreateTermDeposit() {
       component = (
         <CustomerEligibilityCriteria
           proceed={handleNav}
-          formData={customerEligibilityCriteria}
-          setFormData={setCustomerEligibilityCriteria}
+          formData={productData.customerEligibility}
+          setFormData={(customerEligibility) =>
+            setProductData({
+              ...productData,
+              customerEligibility: customerEligibility,
+            })
+          }
           setDisabled={setDisabled}
         />
       );
@@ -206,8 +212,13 @@ export default function CreateTermDeposit() {
     case 3:
       component = (
         <PricingConfig
-          formData={pricingConfigData}
-          setFormData={setPricingConfigData}
+          formData={productData.pricingConfiguration}
+          setFormData={(pricingConfiguration) =>
+            setProductData({
+              ...productData,
+              pricingConfiguration: pricingConfiguration,
+            })
+          }
           proceed={handleNav}
         />
       );
