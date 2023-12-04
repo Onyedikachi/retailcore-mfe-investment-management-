@@ -1,5 +1,8 @@
 import React from "react";
-import { EntriesAndEventsSearch } from "@app/components/pages/term-deposit/forms";
+import {
+  EntriesAndEventsSearch,
+  EntriesAndEventsSearchResults,
+} from "@app/components/pages/term-deposit/forms";
 import { InputDivs } from "@app/components/pages/term-deposit/forms/liquidity-setup";
 export default function SideLabelSearchSelect() {
   const types = [
@@ -21,6 +24,10 @@ export default function SideLabelSearchSelect() {
           </div>
         </InputDivs>
       ))}
+
+      <div>
+        <EntriesAndEventsSearchResults />
+      </div>
     </div>
   );
 }

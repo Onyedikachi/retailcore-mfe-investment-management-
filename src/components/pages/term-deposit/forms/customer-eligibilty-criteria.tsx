@@ -92,7 +92,7 @@ export default function CustomerEligibilityCriteria({
     <div>
       <form id="customereligibilitycriteria" onSubmit={handleSubmit(onProceed)}>
         <div className="flex gap-[18px]">
-          {`category: ${selectedCategory}`}
+          {/* {`category: ${selectedCategory}`} */}
           <div className="w-[300px]">
             <BorderlessSelect
               labelName={"Customer Category"}
