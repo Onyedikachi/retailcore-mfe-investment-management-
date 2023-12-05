@@ -7,6 +7,7 @@ import ModalLayout from "./Layout";
 import Button from "../Button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AppContext } from "@app/utils";
+import { IoChevronForward } from "react-icons/io5";
 
 interface SuccessProps {
   text: string;
@@ -33,13 +34,13 @@ export function Success({
         </div>
         <p className="font-normal text-2xl">{text}</p>
         <div className="flex justify-between items-center gap-x-[6px]">
-          {location?.pathname === "/branch-management" ? (
+          {location?.pathname === "/product-factory/investment" ? (
             <Button
               onClick={() =>
                 role === "superadmin" ||
                 location?.search === "?category=requests"
                   ? navigate(0)
-                  : navigate("/branch-management?category=requests")
+                  : navigate("/product-factory/investment?category=requests")
               }
               type="button"
               data-testid="close-btn"
@@ -53,7 +54,7 @@ export function Success({
               onClick={() =>
                 location?.search === "?category=requests"
                   ? navigate(0)
-                  : navigate("/branch-management?category=requests")
+                  : navigate("/product-factory/investment?category=requests")
               }
               type="button"
               data-testid="dashboard-link"
@@ -86,6 +87,7 @@ interface FailedProps {
   setIsOpen: (isOpen: boolean) => void;
   canClose?: boolean;
   canRetry?: boolean;
+  canProceed?: boolean;
 }
 export function Failed({
   text,
@@ -94,6 +96,7 @@ export function Failed({
   setIsOpen,
   canClose = false,
   canRetry = false,
+  canProceed = false
 }: FailedProps): React.JSX.Element {
   const navigate = useNavigate();
   const location = useLocation();
@@ -105,23 +108,9 @@ export function Failed({
         </div>
         <p className="font-normal text-2xl">{text}</p>
         <p className="font-normal text-base mb-[26px]">{subtext}</p>
-        <div className="flex justify-between items-center gap-x-10">
-          {canRetry && (
-            <div>
-              {" "}
-              <Button
-                onClick={() => setIsOpen(false)}
-                type="button"
-                data-testid="close-btn"
-                className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-1 text-[#667085] outline-none"
-              >
-                <IoIosRefresh className="text-[#636363] text-4xl" /> Click to
-                retry
-              </Button>
-            </div>
-          )}
+        <div className={`flex  items-center gap-x-10 w-full ${!canProceed && !canRetry?"justify-center":"justify-between"}`}>
           <div>
-            {location?.pathname === "/branch-management" ? (
+            {location?.pathname === "/product-factory/investment" ? (
               <Button
                 onClick={() => navigate(0)}
                 type="button"
@@ -136,7 +125,7 @@ export function Failed({
                 onClick={() =>
                   location?.search === "?category=requests"
                     ? navigate(0)
-                    : navigate("/branch-management?category=requests")
+                    : navigate("/product-factory/investment?category=requests")
                 }
                 type="button"
                 data-testid="dashboard-link"
@@ -147,6 +136,33 @@ export function Failed({
               </Button>
             )}
           </div>
+          {canRetry && (
+            <div>
+              {" "}
+              <Button
+                onClick={() => setIsOpen(false)}
+                type="button"
+                data-testid="close-btn"
+                className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-1 text-[#CF2A2A] underline outline-none"
+              >
+                Click to retry
+              </Button>
+            </div>
+          )}
+           {canProceed && (
+            <div>
+              {" "}
+              <Button
+                onClick={() => setIsOpen(false)}
+                type="button"
+                data-testid="close-btn"
+                className="flex gap-x-1 items-center text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-1 text-[#667085] outline-none"
+              >
+                Proceed
+                <IoChevronForward className="text-[#CF2A2A] text-2xl" />
+              </Button>
+            </div>
+          )}
         </div>
         {canClose && (
           <button
@@ -173,7 +189,7 @@ interface PromptProps {
   canClose?: boolean;
 }
 
-export function Prompt({
+export function Prompt({ 
   heading,
   text1,
   text2,
@@ -201,7 +217,7 @@ export function Prompt({
             canProceed ? "justify-between" : "justify-center"
           } w-full flex  items-center gap-x-[6px]`}
         >
-          {location?.pathname === "/branch-management" ? (
+          {location?.pathname === "/product-factory/investment" ? (
             <Button
               onClick={() => setIsOpen(false)}
               type="button"
@@ -216,7 +232,7 @@ export function Prompt({
               onClick={() =>
                 location?.search === "?category=requests"
                   ? navigate(0)
-                  : navigate("/branch-management?category=requests")
+                  : navigate("/product-factory/investment?category=requests")
               }
               type="button"
               data-testid="dashboard-link"

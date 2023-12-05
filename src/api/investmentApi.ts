@@ -1,120 +1,153 @@
-import { axiosBaseQuery } from "@Sterling/shared";
-import { createApi } from "@reduxjs/toolkit/query/react";
+import { axiosBaseQuery, getToken } from "@Sterling/shared";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { REHYDRATE } from "redux-persist";
-import {
-  IGetInvestments,
-  ICreateInvestment,
-} from "./types/investmentApi.types";
+import { IGetProducts, ICreateProduct } from "./types/investmentApi.types";
 
 import { parseQueryParams } from "../utils/parseQueryParams";
 import urls from "../helpers/url_helpers";
+import { cleanObject } from "@app/utils/cleanObject";
+// baseQuery: axiosBaseQuery({ serviceKey: "investment" }),
 
+console.log(process.env)
 export const investmentApi: any = createApi({
   reducerPath: "investmentApi",
-  baseQuery: axiosBaseQuery({ serviceKey: "team" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl:
+      "https://retailcore-investment-management-api.dev.bepeerless.co/v1",
+    prepareHeaders: (headers) => {
+      const token = getToken();
+
+      // If we have a token set in state, let's assume that we should be passing it.
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
   keepUnusedDataFor: 0,
   extractRehydrationInfo(action, { reducerPath }) {
     if (action.type === REHYDRATE && action.payload) {
       return action.payload[reducerPath];
     }
   },
-  tagTypes: ["Investmentes", "Create_Investment"],
   endpoints: (builder) => ({
-    getInvestmentes: builder.query<
-      IGetInvestments,
-      {
-        page?: number;
-        filter_by?: string;
-        status?: string | number;
-        q?: string;
-      }
-    >({
+    getProductActivityLog: builder.query<any, any>({
       query: (params) => {
         return {
-          url: urls.INVESTMENT,
+          url: urls.ACTIVITY_LOG,
           method: "get",
-          params: parseQueryParams(params),
+          params: cleanObject(params),
         };
       },
-      providesTags: ["Investmentes"],
     }),
-    getPostInvestmentes: builder.mutation<
-      IGetInvestments,
+    getPostProducts: builder.mutation<
+      IGetProducts,
       {
-        page?: number;
-        page_size?: number;
-        filter_by?: string;
-        status__in?: any[];
-        start_date?: string;
-        end_date?: string;
-        q?: string;
+        filter_by: string;
+        status_In: number[];
+        search: string;
+        start_Date: string;
+        end_Date: string;
+        page: number;
+        page_Size: number;
       }
     >({
       query: (params) => {
         if (!params?.filter_by) return;
         return {
-          url: urls.INVESTMENT,
+          url: urls.PRODUCT,
           method: "post",
-          body: params,
+          body: cleanObject(params),
         };
       },
     }),
-    createInvestment: builder.mutation<
-      ICreateInvestment,
+    getPostRequests: builder.mutation<
+      IGetProducts,
       {
-        data: ICreateInvestment;
+        filter_by: string;
+        status_In: number[];
+        search: string;
+        start_Date: string;
+        end_Date: string;
+        page: number;
+        page_Size: number;
+      }
+    >({
+      query: (params) => {
+        if (!params?.filter_by) return;
+        return {
+          url: urls.REQUESTS,
+          method: "post",
+          body: cleanObject(params),
+        };
+      },
+    }),
+    createProduct: builder.mutation<
+      ICreateProduct,
+      {
+        data: ICreateProduct;
       }
     >({
       query: (data) => {
         return {
-          url: urls.CREATE,
+          url: urls.PRODUCT_CREATE,
           method: "post",
           body: data,
         };
       },
     }),
 
-    modifyInvestment: builder.mutation<any, any>({
+    modifyProduct: builder.mutation<any, any>({
       query: (data) => {
         return {
-          url: `${urls.INVESTMENT}/modify/${data.id}`,
+          url: `${urls.PRODUCT}/modify/${data.id}`,
           method: "put",
           body: data,
         };
       },
     }),
 
-    getInvestmentAnalytics: builder.query<any, any>({
+    deleteProductRequest: builder.mutation<any, any>({
+      query: (data) => {
+        return {
+          url: `${urls.REQUESTS}/delete?productrequestId=${data}`,
+          method: "delete",
+        };
+      },
+    }),
+    getProductStats: builder.query<any, any>({
       query: (data) => {
         if (!data.filter_by) return;
         return {
-          url: `${urls.INVESTMENT}/analytics?filterBy=${data.filter_by}`,
+          url: `${urls.PRODUCT_STATS}?${new URLSearchParams(
+            cleanObject({
+              ...data,
+              filterBy: data.filter_by,
+            })
+          )}`,
           method: "get",
         };
       },
     }),
-    getInvestmentTemplate: builder.query<any, any>({
-      query: () => {
+    getRequestStats: builder.query<any, any>({
+      query: (data) => {
+        if (!data.filter_by) return;
         return {
-          url: `${urls.GET_TEMPLATE}`,
+          url: `${urls.REQUEST_STATS}?${new URLSearchParams(
+            cleanObject({
+              // ...data,
+              filterBy: data.filter_by,
+            })
+          )}`,
           method: "get",
         };
       },
     }),
 
-    getLedgers: builder.query<any, any>({
+    getProduct: builder.query<any, any>({
       query: (data) => {
         return {
-          url: `ledgers?page=${data.page}&page_size=${data.size}&state=${data.state}&search=${data.search}`,
-          method: "get",
-        };
-      },
-    }),
-
-    getInvestment: builder.query<any, any>({
-      query: (data) => {
-        return {
-          url: `${urls.INVESTMENT}/${data}`,
+          url: `${urls.PRODUCT}/${data}`,
           method: "get",
         };
       },
@@ -134,20 +167,7 @@ export const investmentApi: any = createApi({
         };
       },
     }),
-    validateAddress: builder.mutation<
-      any,
-      {
-        data: { name: string };
-      }
-    >({
-      query: (data) => {
-        return {
-          url: urls.VALIDATE_ADDRESS,
-          method: "post",
-          body: data,
-        };
-      },
-    }),
+
     uploadDocument: builder.mutation<
       any,
       {
@@ -156,7 +176,7 @@ export const investmentApi: any = createApi({
     >({
       query: (data) => {
         return {
-          url: `${urls.INVESTMENT}/uploadsingledocument`,
+          url: `${urls.PRODUCT}/uploadsingledocument`,
           method: "post",
           body: data,
         };
@@ -176,41 +196,30 @@ export const investmentApi: any = createApi({
         };
       },
     }),
-    activateInvestment: builder.mutation<{ id: string }, { id: string }>({
+    activateProduct: builder.mutation<{ id: string }, { id: string }>({
       query: (data) => {
         return {
-          url: `${urls.INVESTMENT}/reactivate`,
+          url: `${urls.PRODUCT}/reactivate`,
           method: "put",
           body: data,
         };
       },
     }),
 
-    deactivateInvestment: builder.mutation<{ id: string }, { id: string }>({
+    deactivateProduct: builder.mutation<{ id: string }, { id: string }>({
       query: (data) => {
         return {
-          url: `${urls.INVESTMENT}/deactivate`,
+          url: `${urls.PRODUCT}/deactivate`,
           method: "put",
           body: data,
         };
       },
     }),
-    getInvestmentActivities: builder.query<any, any>({
-      query: (params) => {
-        if (!params.requestId) {
-          return { data: null }; // Return empty data to simulate skipping the query
-        }
-        return {
-          url: urls.INVESTMENT + "/activities/" + params.requestId,
-          method: "get",
-          params: parseQueryParams({ page: params.page }),
-        };
-      },
-    }),
-    getInvestmentByCode: builder.query<any, any>({
+
+    getProductByCode: builder.query<any, any>({
       query: (params) => {
         return {
-          url: urls.INVESTMENT + "/" + params,
+          url: urls.PRODUCT + "/" + params,
           method: "get",
         };
       },
@@ -219,23 +228,21 @@ export const investmentApi: any = createApi({
 });
 
 export const {
-  useGetInvestmentesQuery,
-  useCreateInvestmentMutation,
+  useCreateProductMutation,
   useValidateNameMutation,
-  useGetInvestmentQuery,
-  useGetInvestmentAnalyticsQuery,
-  useGetInvestmentMembersQuery,
-  useAddInvestmentMemberMutation,
-  useUpdateInvestmentMutation,
-  useActivateInvestmentMutation,
-  useDeactivateInvestmentMutation,
-  useModifyInvestmentMutation,
-  useGetPostInvestmentesMutation,
+  useGetProductQuery,
+  useGetProductStatsQuery,
+  useGetRequestStatsQuery,
+  useActivateProductMutation,
+  useDeactivateProductMutation,
+  useModifyProductMutation,
+  useGetPostRequestsMutation,
+  useGetPostProductsMutation,
   useGetLedgersQuery,
-  useGetInvestmentActivitiesQuery,
-  useGetInvestmentByCodeQuery,
-  useValidateAddressMutation,
+  useGetProductActivitiesQuery,
+  useGetProductByCodeQuery,
   useUploadDocumentMutation,
   useGetPermissionsMutation,
-  useGetInvestmentTemplateQuery,
+  useDeleteProductMutation,
+  useGetProductActivityLogQuery
 } = investmentApi;

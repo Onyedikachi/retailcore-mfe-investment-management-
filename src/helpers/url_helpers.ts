@@ -1,19 +1,20 @@
 const urls = {
   // CREATE
-  CREATE: "/create",
-  BULK_CREATE: "/bulk-create",
+  PRODUCT_CREATE: "/product/add",
 
   // Requests
-  REQUESTS: "/requests",
-  REQUEST_ACTIVITIES: "/requests/activities",
+  REQUESTS: "/productrequest",
+  REQUEST_STATS: "/productrequest/stats",
+  REQUEST_ACTIVITY_LOG: "/productrequest/activitylog",
 
-  // Branches
-  INVESTMENT: "/branch",
+  // Products
+  PRODUCT: "/product",
+  PRODUCT_STATS: "product/stats",
+
+  ACTIVITY_LOG: "/product/activitylog",
 
   // Validate
-  VALIDATE_NAME: "/validate-name",
-  VALIDATE_ADDRESS: "/validate-address",
-  GET_TEMPLATE: "/Branch/template"
+  VALIDATE_NAME: "/product/verify-name",
 };
 
 export default urls;

@@ -55,7 +55,7 @@
 
 // export function handleViewNav(item: any, navigate) {
 //   if (item.request_type === "BULK_CREATE") {
-//     const routeState = "Bulk Branch Creation Review";
+//     const routeState = "Bulk Product Creation Review";
 //     navigate(
 //       `/branch-management/bulk-branch-creation-view/summary/${item.id}/view?status=show`,
 //       { state: routeState }
@@ -63,7 +63,7 @@
 //     return;
 //   }
 //   if (item.request_type === "CREATE") {
-//     const routeState = "Branch Creation Review";
+//     const routeState = "Product Creation Review";
 //     navigate(
 //       `/branch-management/branch-creation-view/summary/${item.id}/view`,
 //       {
@@ -106,17 +106,17 @@
 //     );
 //   }
 //   if (e.toLowerCase() === "withdraw & delete request") {
-//     setConfirmText(Prompts.BRANCH_WITHDRAW_DELETE);
+//     setConfirmText(Prompts.PRODUCT_WITHDRAW_DELETE);
 
 //     setIsConfirmOpen(true);
 //   }
 //   if (e.toLowerCase() === "delete request") {
-//     setConfirmText(Prompts.BRANCH_DELETE);
+//     setConfirmText(Prompts.PRODUCT_DELETE);
 
 //     setIsConfirmOpen(true);
 //   }
 //   if (e.toLowerCase() === "withdraw & modify") {
-//     setConfirmText(Prompts.BRANCH_WITHDRAW_MODIFY);
+//     setConfirmText(Prompts.PRODUCT_WITHDRAW_MODIFY);
 //     setIsConfirmOpen(true);
 //   }
 //   if (e.toLowerCase() === "continue request" || e.toLowerCase() === "modify") {
@@ -127,7 +127,7 @@
 //           : "request_modify"
 //       }/${item?.request_type === "BULK_CREATE" ? "bulk" : "single"}/${
 //         item?.id
-//       }/${item?.branches[0]?.id}?type=${e.toLowerCase() === "modify" ? "issue" : "draft"}&branchId=${item?.branches[0]?.id}`
+//       }/${item?.products[0]?.id}?type=${e.toLowerCase() === "modify" ? "issue" : "draft"}&branchId=${item?.products[0]?.id}`
 //     );
 //   }
 // }
@@ -139,8 +139,8 @@
 // ) {
 //   setSuccessText(
 //     role === "superadmin"
-//       ? Messages.BRANCH_DEACTIVATE_SUCCESS
-//       : Messages.ADMIN_BRANCH_DEACTIVATE_SUCCESS
+//       ? Messages.PRODUCT_DEACTIVATE_SUCCESS
+//       : Messages.ADMIN_PRODUCT_DEACTIVATE_SUCCESS
 //   );
 //   setIsDeactivationOpen(false);
 //   setIsSuccessOpen(true);
@@ -157,17 +157,17 @@
 //   if (statType === "withdraw & delete request") {
 //     deleteRequest(detail?.id);
 
-//     setSuccessText(Messages.BRANCH_WITHDRAW_DELETE_SUCCESS);
+//     setSuccessText(Messages.PRODUCT_WITHDRAW_DELETE_SUCCESS);
 //   }
 //   if (statType === "delete request") {
 //     deleteRequest(detail?.id);
-//     setSuccessText(Messages.BRANCH_DELETE_SUCCESS);
+//     setSuccessText(Messages.PRODUCT_DELETE_SUCCESS);
 //   }
 //   if (statType === "withdraw & modify") {
 //     navigate(
 //       `/branch-management/request/modify/${
 //         detail?.request_type === "BULK_CREATE" ? "bulk" : "single"
-//       }/${detail?.id}/${detail?.branches[0]?.id}?type=pending`
+//       }/${detail?.id}/${detail?.products[0]?.id}?type=pending`
 //     );
 //   }
 // }
@@ -183,7 +183,7 @@
 // }): React.JSX.Element {
 //   interface RequestDataProps {
 //     [x: string]: any;
-//     branches: any;
+//     products: any;
 //     name: any;
 //     id: any;
 //     request: string;
@@ -351,10 +351,10 @@
 //     if (deleteIsError) {
 //       statType === "delete request"
 //         ? setFailedText(
-//             `${Messages.BRANCH_DELETE_FAILED} ${detail?.description} request`
+//             `${Messages.PRODUCT_DELETE_FAILED} ${detail?.description} request`
 //           )
 //         : setFailedText(
-//             `${Messages.BRANCH_WITHDRAW_DELETE_FAILED} ${detail?.description} request`
+//             `${Messages.PRODUCT_WITHDRAW_DELETE_FAILED} ${detail?.description} request`
 //           );
 //       setFailedSubtext(deleteError?.message?.Msg);
 //       setFailed(true);
@@ -523,8 +523,8 @@
 //                         </td>
 //                         <td className="text-base font-medium text-[#636363] px-4 py-5  max-w-[284px] truncate capitalize">
 //                           {!isChecker
-//                             ? item.created_by
-//                             : item.treated_by || "-"}
+//                             ? item.created_By
+//                             : item.approved_By || "-"}
 //                         </td>
 //                         <td className="text-base font-medium text-[#636363] px-4 py-5 ">
 //                           <span

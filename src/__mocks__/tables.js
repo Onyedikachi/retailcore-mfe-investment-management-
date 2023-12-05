@@ -1,8 +1,8 @@
-export const BranchData = [
+export const ProductData = [
   {
     id: 1,
-    branchName: "Branch Royal",
-    branchCode: "TM-01",
+    productName: "Product Royal",
+    productCode: "TM-01",
     description: "Leading with excellent customer search for the item",
     state: "active",
     updatedOn: new Date(),
@@ -11,8 +11,8 @@ export const BranchData = [
   },
   {
     id: 2,
-    branchName: "Branch Sunshine",
-    branchCode: "TM-02",
+    productName: "Product Sunshine",
+    productCode: "TM-02",
     description: "Leading with excellent customer  search for the item",
     state: "inactive",
     updatedOn: new Date(),
@@ -21,8 +21,8 @@ export const BranchData = [
   },
   {
     id: 3,
-    branchName: "Branch Pride",
-    branchCode: "TM-03",
+    productName: "Product Pride",
+    productCode: "TM-03",
     description: "Leading with excellent customer  search for the item",
     state: "active",
     updatedOn: new Date(),
@@ -31,7 +31,7 @@ export const BranchData = [
   },
 ];
 
-export const MockBranchList = [
+export const MockProductList = [
   {
     id: "1",
     name: "Akatsuki",
@@ -82,7 +82,7 @@ export const MockBranchList = [
 export const RequestData = [
   {
     id: 1,
-    request: "Creation of Branch Royal",
+    request: "Creation of Product Royal",
     type: "Creation",
     initiator: "John wick",
     status: "approved",
@@ -90,7 +90,7 @@ export const RequestData = [
   },
   {
     id: 6,
-    request: "Creation of Branch Royal",
+    request: "Creation of Product Royal",
     type: "Creation",
     initiator: "John wick",
     status: "in-review",
@@ -106,7 +106,7 @@ export const RequestData = [
   },
   {
     id: 3,
-    request: "Creation of Branch 1, Branch 2, Branch 3,Branch 4, Branch 5",
+    request: "Creation of Product 1, Product 2, Product 3,Product 4, Product 5",
     type: "Deactivation",
     initiator: "John wick",
     status: "in-issue",
@@ -114,7 +114,7 @@ export const RequestData = [
   },
   {
     id: 4,
-    request: "Creation of Branch Royal",
+    request: "Creation of Product Royal",
     type: "Activation",
     initiator: "John wick",
     status: "draft",
@@ -122,7 +122,7 @@ export const RequestData = [
   },
   {
     id: 5,
-    request: "Creation of Branch Royal",
+    request: "Creation of Product Royal",
     type: "Modification",
     initiator: "John wick",
     status: "approved",
@@ -133,9 +133,9 @@ export const RequestData = [
 export const BulkValidation = [
   {
     id: 1,
-    branchName: "Branch Pride",
-    branchCode: "TM-03",
-    description: "Creation of Branch Royal",
+    productName: "Product Pride",
+    productCode: "TM-03",
+    description: "Creation of Product Royal",
     type: "Creation",
     initiator: "John wick",
     status: "Failed",
@@ -143,9 +143,9 @@ export const BulkValidation = [
   },
   {
     id: 2,
-    branchName: "Branch Pride",
-    branchCode: "TM-03",
-    description: "Creation of Branch Royal",
+    productName: "Product Pride",
+    productCode: "TM-03",
+    description: "Creation of Product Royal",
     type: "Creation",
     initiator: "John wick",
     status: "Failed",
@@ -153,9 +153,9 @@ export const BulkValidation = [
   },
   {
     id: 3,
-    branchName: "Branch Pride",
-    branchCode: "TM-03",
-    description: "Creation of Branch Royal",
+    productName: "Product Pride",
+    productCode: "TM-03",
+    description: "Creation of Product Royal",
     type: "Creation",
     initiator: "John wick",
     status: "Failed",
@@ -163,9 +163,9 @@ export const BulkValidation = [
   },
   {
     id: 4,
-    branchName: "Branch Pride",
-    branchCode: "TM-03",
-    description: "Creation of Branch Royal",
+    productName: "Product Pride",
+    productCode: "TM-03",
+    description: "Creation of Product Royal",
     type: "Creation",
     initiator: "John wick",
     status: "Failed",
@@ -173,9 +173,9 @@ export const BulkValidation = [
   },
   {
     id: 5,
-    branchName: "Branch Pride",
-    branchCode: "TM-03",
-    description: "Creation of Branch Royal",
+    productName: "Product Pride",
+    productCode: "TM-03",
+    description: "Creation of Product Royal",
     type: "Creation",
     initiator: "John wick",
     status: "Failed",
@@ -186,39 +186,39 @@ export const BulkValidation = [
 export const BulkValidationSummary = [
   {
     id: 1,
-    branchName: "Branch Pride",
-    branchCode: "TM-03",
-    description: "Creation of Branch Royal",
+    productName: "Product Pride",
+    productCode: "TM-03",
+    description: "Creation of Product Royal",
 
     updatedOn: new Date(),
   },
 ];
 
-export const BranchStructureData = [
+export const ProductStructureData = [
   {
     id: 1,
     name: "Okoro Ifeanyi",
-    detail: ["cpc cso initiator", "branch teller initiator", "it admin"],
+    detail: ["cpc cso initiator", "product teller initiator", "it admin"],
   },
   {
     id: 2,
     name: "Okoro Ifeanyi",
-    detail: ["cpc cso initiator", "branch teller initiator", "it admin"],
+    detail: ["cpc cso initiator", "product teller initiator", "it admin"],
   },
   {
     id: 3,
     name: "Okoro Ifeanyi",
-    detail: ["cpc cso initiator", "branch teller initiator", "it admin"],
+    detail: ["cpc cso initiator", "product teller initiator", "it admin"],
   },
   {
     id: 4,
     name: "Okoro Ifeanyi",
-    detail: ["cpc cso initiator", "branch teller initiator", "it admin"],
+    detail: ["cpc cso initiator", "product teller initiator", "it admin"],
   },
   {
     id: 5,
     name: "Okoro Ifeanyi",
-    detail: ["cpc cso initiator", "branch teller initiator", "it admin"],
+    detail: ["cpc cso initiator", "product teller initiator", "it admin"],
   },
 ];
 

@@ -21,6 +21,16 @@ export interface SelectProps {
   options: array;
   handleSelected: (value) => void;
 }
+export interface BorderlessSelectProps {
+  options: array;
+  handleSelected: (value) => void;
+  labelName?: string;
+  register?: any;
+  inputError?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
+  clearErrors?: any;
+  inputName?: string | null | undefined;
+  defaultValue?: any;
+}
 
 export interface ActiveFilterProps {}
 
@@ -41,7 +51,7 @@ export interface StatusCardProps {
 }
 
 export enum StatusCategoryType {
-  AllBranches = "all branches",
+  AllProducts = "all products",
   Requests = "requests",
   // Add other category types here
 }
@@ -49,4 +59,10 @@ export enum StatusCategoryType {
 export enum StatusItemType {
   Type = "type",
   Request = "request",
+}
+
+export interface formStepItem {
+  id: number;
+  label: string;
+  index: number;
 }

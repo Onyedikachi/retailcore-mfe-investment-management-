@@ -12,7 +12,7 @@
 
 
 // import {
-//   BranchTableHeaders,
+//   ProductTableHeaders,
 //   DropDownOptions,
 //   ActiveFilterOptions,
 //   DateFilterOptions,
@@ -23,7 +23,7 @@
 //   Confirm,
 //   DeactivationRequest,
 //   Success,
-//   BranchDetail,
+//   ProductDetail,
 //   Failed,
 // } from "../../../modals";
 // import { AppContext, InvestmentContext } from "@app/utils/context";
@@ -36,7 +36,7 @@
 // import { Messages, Prompts } from "@app/constants/enums";
 // import debounce from "lodash.debounce";
 
-// interface BranchDataProps {
+// interface ProductDataProps {
 //   [x: string]: any;
 //   id: any;
 //   branchName: string;
@@ -76,14 +76,14 @@
 //     );
 //   } else {
 //     let options = DropDownOptions[setOptionsByStatus(status)];
-//     if (!permissions?.includes("CREATE_BRANCH")) {
+//     if (!permissions?.includes("CREATE_PRODUCT")) {
 //       options = options.filter(
 //         (i: any) =>
 //           i.text.toLowerCase() !== "deactivate" &&
 //           i.text.toLowerCase() !== "activate"
 //       );
 //     }
-//     if (!permissions?.includes("CREATE_BRANCH")) {
+//     if (!permissions?.includes("CREATE_PRODUCT")) {
 //       options = options.filter((i: any) => i.text.toLowerCase() !== "modify");
 //     }
 //     return options;
@@ -105,7 +105,7 @@
 //   }
 // };
 
-// export function handleBranchUserView(value: string) {
+// export function handleProductUserView(value: string) {
 //   switch (value) {
 //     case "P":
 //       return "inactive";
@@ -130,7 +130,7 @@
 //   setDetail,
 //   setStatType,
 //   setIsConfirmOpen,
-//   setBranchView
+//   setProductView
 // ) => {
 //   //e is the menu option text, e.g "View"
 //   setConfirmText("");
@@ -148,29 +148,29 @@
 //     setIsConfirmOpen(true);
 //   }
 //   if (e.toLowerCase() === "activate") {
-//     setConfirmText(Prompts.BRANCH_ACTIVATE);
+//     setConfirmText(Prompts.PRODUCT_ACTIVATE);
 //     setIsConfirmOpen(true);
 //   }
 //   if (e.toLowerCase() === "view") {
-//     setBranchView(true);
+//     setProductView(true);
 //   }
 
 //   if (e.toLowerCase() === "modify") {
-//     setConfirmText(Prompts.BRANCH_MODIFY);
+//     setConfirmText(Prompts.PRODUCT_MODIFY);
 //     setIsConfirmOpen(true);
 //   }
 // };
 
-// export const handleDeactivationRequest = (detail, deactivateBranch, reason) => {
+// export const handleDeactivationRequest = (detail, deactivateProduct, reason) => {
 //   if (!reason || !detail?.id) return;
-//   deactivateBranch({ id: detail?.id, reason });
+//   deactivateProduct({ id: detail?.id, reason });
 // };
 
 // export const handleConfirm = (
 //   setIsConfirmOpen,
 //   statType,
 //   setIsDeactivationOpen,
-//   activateBranch,
+//   activateProduct,
 //   detail,
 //   navigate
 // ) => {
@@ -179,7 +179,7 @@
 //     setIsDeactivationOpen(true);
 //   }
 //   if (statType === "activate") {
-//     activateBranch({ id: detail?.id, branchid: detail?.id });
+//     activateProduct({ id: detail?.id, branchid: detail?.id });
 //   }
 //   if (statType === "modify") {
 //     // @ts-ignore
@@ -189,8 +189,8 @@
 //   }
 // };
 
-// // BranchTable component
-// function BranchTable({
+// // ProductTable component
+// function ProductTable({
 //   refresh,
 //   setDownloadData,
 //   setRefresh,
@@ -208,7 +208,7 @@
 //   const [failedSubText, setFailedSubtext] = useState("");
 //   const [failedText, setFailedText] = useState("");
 //   const [selectedOptions, setSelectedOptions] = useState<any[]>([]);
-//   const [isBranchView, setBranchView] = useState(false);
+//   const [isProductView, setProductView] = useState(false);
 //   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 //   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
 //   const [isDeactivationOpen, setIsDeactivationOpen] = useState(false);
@@ -216,7 +216,7 @@
 //   const [subText, setSubText] = useState("");
 //   const [successText, setSuccessText] = useState("");
 //   const [statType, setStatType] = useState("");
-//   const [detail, setDetail] = useState<BranchDataProps | null>(null);
+//   const [detail, setDetail] = useState<ProductDataProps | null>(null);
 //   const [hasMore, setHasMore] = useState(false);
 //   const [startDate, setStartDate] = useState(null);
 //   const [endDate, setEndDate] = useState(null);
@@ -241,34 +241,34 @@
 //     q: "",
 //   });
 //   const initialLoad = useRef(false);
-//   const [branchData, setBranchData] = useState([]);
+//   const [branchData, setProductData] = useState([]);
 //   const [
-//     getPostBranches,
+//     getPostProductes,
 //     { data: tableData, isLoading, isSuccess: getIsSuccess },
-//   ] = useGetPostBranchesMutation();
+//   ] = useGetPostProductesMutation();
 
 //   function fetchData(page) {
-//     getPostBranches({ ...removeNullEmptyKeys(queryParams), page });
+//     getPostProductes({ ...removeNullEmptyKeys(queryParams), page });
 //   }
 //   const [
-//     activateBranch,
+//     activateProduct,
 //     {
-//       isLoading: ActivateBranchLoading,
-//       isSuccess: ActivateBranchIsSuccess,
-//       isError: ActivateBranchIsError,
-//       error: ActivateBranchError,
+//       isLoading: ActivateProductLoading,
+//       isSuccess: ActivateProductIsSuccess,
+//       isError: ActivateProductIsError,
+//       error: ActivateProductError,
 //     },
-//   ] = useActivateBranchMutation();
+//   ] = useActivateProductMutation();
 
 //   const [
-//     deactivateBranch,
+//     deactivateProduct,
 //     {
-//       isLoading: DeactivateBranchLoading,
-//       isSuccess: DeactivateBranchIsSuccess,
-//       isError: DeactivateBranchIsError,
-//       error: DeactivateBranchError,
+//       isLoading: DeactivateProductLoading,
+//       isSuccess: DeactivateProductIsSuccess,
+//       isError: DeactivateProductIsError,
+//       error: DeactivateProductError,
 //     },
-//   ] = useDeactivateBranchMutation();
+//   ] = useDeactivateProductMutation();
 
 //   useEffect(() => {
 //     fetchData(currentPage);
@@ -328,50 +328,50 @@
 //   }, [duration]);
 
 //   useEffect(() => {
-//     if (ActivateBranchIsSuccess) {
+//     if (ActivateProductIsSuccess) {
 //       setSuccessText(
 //         role === "superadmin"
-//           ? Messages.BRANCH_ACTIVATE_SUCCESS
-//           : Messages.ADMIN_BRANCH_ACTIVATE_SUCCESS
+//           ? Messages.PRODUCT_ACTIVATE_SUCCESS
+//           : Messages.ADMIN_PRODUCT_ACTIVATE_SUCCESS
 //       );
 //       setIsSuccessOpen(true);
 //       fetchData(1);
 //     }
-//     if (DeactivateBranchIsSuccess) {
+//     if (DeactivateProductIsSuccess) {
 //       setSuccessText(
 //         role === "superadmin"
-//           ? Messages.BRANCH_DEACTIVATE_SUCCESS
-//           : Messages.ADMIN_BRANCH_DEACTIVATE_SUCCESS
+//           ? Messages.PRODUCT_DEACTIVATE_SUCCESS
+//           : Messages.ADMIN_PRODUCT_DEACTIVATE_SUCCESS
 //       );
 //       setIsDeactivationOpen(false);
 //       setIsSuccessOpen(true);
 //       fetchData(1);
 //     }
-//     if (ActivateBranchIsError || DeactivateBranchIsError) {
-//       ActivateBranchIsError &&
-//         setFailedSubtext(ActivateBranchError?.message?.Msg);
-//       ActivateBranchIsError &&
+//     if (ActivateProductIsError || DeactivateProductIsError) {
+//       ActivateProductIsError &&
+//         setFailedSubtext(ActivateProductError?.message?.Msg);
+//       ActivateProductIsError &&
 //         setFailedText(
 //           role === "superadmin"
-//             ? Messages.BRANCH_ACTIVATE_FAILED
-//             : Messages.ADMIN_BRANCH_ACTIVATE_FAILED
+//             ? Messages.PRODUCT_ACTIVATE_FAILED
+//             : Messages.ADMIN_PRODUCT_ACTIVATE_FAILED
 //         );
-//       DeactivateBranchIsError &&
-//         setFailedSubtext(DeactivateBranchError?.message?.Msg);
-//       DeactivateBranchIsError &&
+//       DeactivateProductIsError &&
+//         setFailedSubtext(DeactivateProductError?.message?.Msg);
+//       DeactivateProductIsError &&
 //         setFailedText(
 //           role === "superadmin"
-//             ? Messages.BRANCH_DEACTIVATE_FAILED
-//             : Messages.ADMIN_BRANCH_DEACTIVATE_FAILED
+//             ? Messages.PRODUCT_DEACTIVATE_FAILED
+//             : Messages.ADMIN_PRODUCT_DEACTIVATE_FAILED
 //         );
 //       setFailed(true);
 //     }
 //     // reset()
 //   }, [
-//     ActivateBranchIsError,
-//     ActivateBranchIsSuccess,
-//     DeactivateBranchIsError,
-//     DeactivateBranchIsSuccess,
+//     ActivateProductIsError,
+//     ActivateProductIsSuccess,
+//     DeactivateProductIsError,
+//     DeactivateProductIsSuccess,
 //   ]);
 
 //   // Update the useEffect that watches `tableData` to update the `reqData` state with the fetched data
@@ -386,7 +386,7 @@
 //       }
 //       // When fetching the first page, reset the reqData state with the new data
 //       if (currentPage === 1) {
-//         setBranchData(res);
+//         setProductData(res);
 //         setPageParams({
 //           ...pageParams,
 //           count: tableData?.data?.count,
@@ -395,7 +395,7 @@
 //       } else {
 //         initialLoad.current = true;
 //         // When fetching subsequent pages, concatenate the new data to the existing data
-//         setBranchData([...branchData, ...res]);
+//         setProductData([...branchData, ...res]);
 //       }
 //     }
 //   }, [tableData, currentPage, getIsSuccess]);
@@ -419,8 +419,8 @@
 
 //   return (
 //     <section className="w-full overflow-auto h-full">
-//       {isBranchView && (
-//         <BranchDetail
+//       {isProductView && (
+//         <ProductDetail
 //           handleClick={(e, item) =>
 //             handleClick(
 //               e,
@@ -430,12 +430,12 @@
 //               setDetail,
 //               setStatType,
 //               setIsConfirmOpen,
-//               setBranchView
+//               setProductView
 //             )
 //           }
 //           detail={detail}
-//           isOpen={isBranchView}
-//           setIsOpen={setBranchView}
+//           isOpen={isProductView}
+//           setIsOpen={setProductView}
 //         />
 //       )}
 //       <InfiniteScroll
@@ -452,7 +452,7 @@
 //               } top-0 bg-white border-b border-[#C2C9D1]/30 z-[10]`}
 //             >
 //               <tr>
-//                 {BranchTableHeaders.map(({ text, hasFilter }) => (
+//                 {ProductTableHeaders.map(({ text, hasFilter }) => (
 //                   <th
 //                     key={text}
 //                     className="relative uppercase font-bold text-sm text-[#AAAAAA] px-4 py-5 after:content-[''] after:w-1 after:h-[18px] after:absolute after:border-r after:left-0 after:top-1/2 after:translate-y-[-50%] after:border-[#AAAAAA]/75 first-of-type:after:content-none last-of-type:after:content-none border-b border-[#C2C9D1]/30 whitespace-nowrap"
@@ -521,7 +521,7 @@
 //                           item.status
 //                         )}`}
 //                       >
-//                         {handleBranchUserView(item.status)}
+//                         {handleProductUserView(item.status)}
 //                       </span>
 //                     </td>
 //                     <td className="text-base font-medium text-[#636363] px-4 py-5">
@@ -547,7 +547,7 @@
 //                             setDetail,
 //                             setStatType,
 //                             setIsConfirmOpen,
-//                             setBranchView
+//                             setProductView
 //                           )
 //                         }
 //                       />
@@ -577,7 +577,7 @@
 //               setIsConfirmOpen,
 //               statType,
 //               setIsDeactivationOpen,
-//               activateBranch,
+//               activateProduct,
 //               detail,
 //               navigate
 //             )
@@ -601,7 +601,7 @@
 //         />
 //       )}
 //       <Loader
-//         isOpen={ActivateBranchLoading || DeactivateBranchLoading}
+//         isOpen={ActivateProductLoading || DeactivateProductLoading}
 //         text="Submitting"
 //         setIsOpen={function (e: any): void {
 //           throw new Error("Function not implemented.");
@@ -613,7 +613,7 @@
 //           setIsOpen={setIsDeactivationOpen}
 //           detail={detail}
 //           onConfirm={() =>
-//             handleDeactivationRequest(detail, deactivateBranch, reason)
+//             handleDeactivationRequest(detail, deactivateProduct, reason)
 //           }
 //           setReason={setReason}
 //         />
@@ -622,4 +622,4 @@
 //   );
 // }
 
-// export default BranchTable;
+// export default ProductTable;

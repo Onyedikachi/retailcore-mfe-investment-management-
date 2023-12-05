@@ -20,6 +20,14 @@ export const authApi = createApi({
         };
       },
     }),
+    getUsers: builder.query<any, any>({
+      query: (payload) => {
+        return {
+          url: `/users?${new URLSearchParams(payload)}`,
+          method: "get",
+        };
+      },
+    }),
     getUsersPermissions: builder.query<any, any>({
       query: (payload) => {
         return {

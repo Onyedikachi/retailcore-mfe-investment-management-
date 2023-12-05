@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
-import { useGetLinksQuery, useAddLinkMutation } from "@app/api";
+// import { useGetLinksQuery, useAddLinkMutation } from "@app/api";
 
 export default function QuickLinks() {
   const [isOpen, setIsOpen] = useState(true);
@@ -9,9 +9,9 @@ export default function QuickLinks() {
     {
       isDefault: true,
       count: 1,
-      name: "Branch management dashbaord",
-      category: "BranchManagement",
-      link: "branch-management",
+      name: "Product management",
+      category: "ProductManagement",
+      link: "product-management",
     },
   ];
   // const { data, isLoading, isFetching } = useGetLinksQuery();
@@ -21,7 +21,7 @@ export default function QuickLinks() {
   }, []);
   return (
     <div className="border border-[#E5E9EB] rounded-lg bg-white px-[13px] py-8 w-[300px]">
-      <h1 className="uppercase text-xl mb-5">Quick Links</h1>
+      <h1 className="uppercase text-xl mb-5 font-medium">Quick Links</h1>
       <hr className="border-[#ddd] mb-[15px]" />
       {isOpen && (
         <div className="relative bg-[#F9F2F2] mb-7  rounded-[6px] border border-[#E5E9EB] p-4">
@@ -44,10 +44,10 @@ export default function QuickLinks() {
       )}
       <div>
         <ul className="grid grid-cols-2 gap-11">
-          {Array.from(Array(1)).map((i, idx) => (
+          {links.map((item, idx) => (
             <li key={`idx-${idx + 1}`}>
               <Link
-                to="/"
+                to={item?.link}
                 role="link"
                 className="flex flex-col items-center justify-center text-center"
               >
@@ -70,7 +70,7 @@ export default function QuickLinks() {
                     />
                   </svg>
                 </span>
-                <span className="block text-sm">Workflow Configuration</span>
+                <span className="block text-sm">{item.name}</span>
               </Link>
             </li>
           ))}
