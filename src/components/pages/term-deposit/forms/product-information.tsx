@@ -356,6 +356,7 @@ export default function ProductInformation({
           <div className="flex items-end gap">
             {/* <InputDiv> */}
             <div className="w-[300px]">
+              {/* {formData.currency} */}
               <BorderlessSelect
                 // clearErrors={() => clearErrors("currency")}
                 inputError={errors?.currency}
@@ -377,6 +378,8 @@ export default function ProductInformation({
                     value: "USD",
                   },
                 ]}
+                // defaultValue={formData.currency}
+                // defaultProperty={"value"}
               />
             </div>
             {/* {errors?.currency && (

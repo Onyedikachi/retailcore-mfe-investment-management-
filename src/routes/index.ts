@@ -17,7 +17,7 @@ export const routes = [
   },
 
   {
-    path: paths.CREATE_TERM_DEPOSIT,
+    path: paths.CREATE_PRODUCT,
     name: "Create Term Deposit",
     exact: true,
     component: lazy(
@@ -31,10 +31,7 @@ export const routes = [
     path: paths.TERM_DEPOSIT_SUMMARY,
     name: "Term Deposit Summary",
     exact: true,
-    component: lazy(
-      () =>
-        import("../pages/investment/term-deposit/Summary")
-    ),
+    component: lazy(() => import("../pages/investment/term-deposit/Summary")),
   },
 ];
 

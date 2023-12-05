@@ -28,23 +28,14 @@ export default function CustomerEligibilityCriteria({
       id: "3fa85f64-5717-4562-b3fc-2c963f66afb2",
       name: "Drivers Lisence",
     },
-    // "Signature",
-    // "Document 1",
-    // "Document 2",
-    // "Document 3",
-    // "Document 4",
-    // "Document 5",
-    // "Document 6",
-    // "Document 7",
-    // "Document 8",
-    // "Document 9",
-    // "Document 10",
-    // "Document 11",
-    // "Document 12",
   ]);
-  const [selectedRequirements, setSelectedRequirements] = useState([]);
+  const [selectedRequirements, setSelectedRequirements] = useState([
+    ...formData.requireDocument,
+  ]);
   const [selectAll, setSelectAll] = useState(false);
-  const [toggledRequirements, setToggledRequirements] = useState([]);
+  const [toggledRequirements, setToggledRequirements] = useState([
+    ...formData.requireDocument,
+  ]);
   const [isRequirementsOpen, setIsRequirementsOpen] = useState(false);
   const {
     register,

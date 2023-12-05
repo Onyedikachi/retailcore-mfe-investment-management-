@@ -2,8 +2,7 @@ import { Fragment, useEffect, useState, memo } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { FaChevronDown } from "react-icons/fa";
 import { BorderlessSelectProps } from "@app/types";
-
-export default function Select({
+function Select({
   options,
   handleSelected,
   labelName,
@@ -11,13 +10,19 @@ export default function Select({
   inputError,
   inputName,
   defaultValue,
+  defaultProperty,
 }: BorderlessSelectProps): React.JSX.Element {
-  // const indexOfItemWithDefaultValue = options.findIndex(
-  //   (item) => item.value === defaultValue
-  // );
+  //   const defaultValue = 'USD'
+  // const defaultProperty = 'value'
 
-  const [selected, setSelected] = useState(options[0]);
+  const indexOfDefault =
+    defaultValue && defaultProperty
+      ? options.findIndex((item) => item[defaultProperty] === defaultValue)
+      : 0;
 
+  console.log("indexOfDefault: " + indexOfDefault);
+
+  const [selected, setSelected] = useState(options[indexOfDefault]);
   useEffect(() => {
     handleSelected(selected);
   }, [selected, handleSelected]);
@@ -112,4 +117,4 @@ export default function Select({
   );
 }
 
-// export default memo(Select);
+export default memo(Select);
