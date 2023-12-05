@@ -42,10 +42,10 @@ export default function CreateTermDeposit() {
       ageGroupMin: 0,
       ageGroupMax: 0,
       requireDocument: [
-        {
-          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          name: "Passport",
-        },
+        // {
+        //   id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        //   name: "Passport",
+        // },
       ],
     },
     pricingConfiguration: {
