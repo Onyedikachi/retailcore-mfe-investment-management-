@@ -15,7 +15,7 @@ import React from "react";
 // ];
 
 type SelectedRequirementsTable = {
-  tableItems: string[];
+  tableItems: any[];
   deleteTableItem: (itemToDelete) => void;
 };
 
@@ -48,12 +48,12 @@ export default function SelectedRequirementsTable({
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
                   {tableItems.map((document, index) => (
-                    <tr className="bg-[#F9F2F2]" key={document}>
+                    <tr key={document.id} className="bg-[#F9F2F2]">
                       <td className="max-w-[49px] capitalize whitespace-nowrap py-4 pl-4 pr-3 text-base font-medium text-[#636363] sm:pl-6 lg:pl-8">
                         {index + 1}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-base text-[#636363]">
-                        {document}
+                        {document.name}
                       </td>
 
                       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8">

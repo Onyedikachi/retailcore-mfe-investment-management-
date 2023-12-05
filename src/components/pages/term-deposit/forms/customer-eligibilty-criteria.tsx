@@ -15,36 +15,35 @@ export default function CustomerEligibilityCriteria({
   setDisabled,
   proceed,
 }) {
-  // const [chosenCategory, setChosenCategory] = useState("Individual");
   const [documents, setDocuments] = useState([
-    //  {
-    //   id:  1,
-    //   name:  "Customer signature"
-    //  },
-    //  {
-    //   id:  2,
-    //   name:  "Document 2"
-    //  },
-    //  {
-    //   id:  3,
-    //   name:  "Document 3"
-    //  },
-    "Signature",
-    "Document 1",
-    "Document 2",
-    "Document 3",
-    "Document 4",
-    "Document 5",
-    "Document 6",
-    "Document 7",
-    "Document 8",
-    "Document 9",
-    "Document 10",
-    "Document 11",
-    "Document 12",
+    {
+      id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      name: "Passport",
+    },
+    {
+      id: "3fa85f64-5717-4562-b3fc-2c963f66afe6",
+      name: "ID Card",
+    },
+    {
+      id: "3fa85f64-5717-4562-b3fc-2c963f66afb2",
+      name: "Drivers Lisence",
+    },
+    // "Signature",
+    // "Document 1",
+    // "Document 2",
+    // "Document 3",
+    // "Document 4",
+    // "Document 5",
+    // "Document 6",
+    // "Document 7",
+    // "Document 8",
+    // "Document 9",
+    // "Document 10",
+    // "Document 11",
+    // "Document 12",
   ]);
   const [selectedRequirements, setSelectedRequirements] = useState([]);
-
+  const [selectAll, setSelectAll] = useState(false);
   const [toggledRequirements, setToggledRequirements] = useState([]);
   const [isRequirementsOpen, setIsRequirementsOpen] = useState(false);
   const {
@@ -65,27 +64,32 @@ export default function CustomerEligibilityCriteria({
 
   const selectedCategory = watch("category");
 
-  const handleCheckedRequirement = (e) => {
-    const value = e.target.value;
-    const isChecked = e.target.checked;
-
-    if (value === "all-documents") {
-      isChecked
-        ? setToggledRequirements(documents)
-        : setToggledRequirements([]);
-
-      return;
-    }
-
-    // If checked, add to the array; otherwise, remove it
-    setToggledRequirements((prevItems) =>
-      isChecked
-        ? [...prevItems, value]
-        : prevItems.filter((item) => item !== value)
+  const handleCheckedRequirement = (document) => {
+    const isDocumentToggled = toggledRequirements.some(
+      (d) => d.id === document.id
     );
+
+    // If it's checked, add it to the array; if unchecked, remove it
+    if (isDocumentToggled) {
+      setToggledRequirements(
+        toggledRequirements.filter((d) => d.id !== document.id)
+      );
+    } else {
+      setToggledRequirements([...toggledRequirements, document]);
+    }
   };
 
-  const handleRequirement = (itemToDelete) => {
+  const handleSelectAllChange = () => {
+    // If "Select All" is checked, set all documents to toggledDocuments; if unchecked, clear the array
+    if (selectAll) {
+      setToggledRequirements([]);
+    } else {
+      setToggledRequirements([...documents]);
+    }
+    setSelectAll(!selectAll);
+  };
+
+  const deleteRequirementItem = (itemToDelete) => {
     // Filter out the item to delete
     const updatedRequirement = selectedRequirements.filter(
       (item) => item !== itemToDelete
@@ -95,9 +99,9 @@ export default function CustomerEligibilityCriteria({
     setSelectedRequirements(updatedRequirement);
   };
   //update the customer eligibility
-  useEffect(() => {
-    setFormData({ ...formData, requireDocument: selectedRequirements });
-  }, [selectedRequirements]);
+  // useEffect(() => {
+  //   setFormData({ ...formData, requireDocument: selectedRequirements });
+  // }, [selectedRequirements]);
   function onProceed(d: any) {
     console.log(
       "Customer - Eligibility:" +
@@ -278,7 +282,7 @@ export default function CustomerEligibilityCriteria({
         <div>
           <SelectedRequirementsTable
             tableItems={selectedRequirements}
-            deleteTableItem={handleRequirement}
+            deleteTableItem={deleteRequirementItem}
           />
         </div>
 
@@ -318,12 +322,12 @@ export default function CustomerEligibilityCriteria({
                       <div className="relative flex items-start">
                         <div className="flex h-6 items-center">
                           <input
-                            id="doc-requirement-all"
-                            aria-describedby="all-docs-description"
-                            name="all-docs"
+                            aria-describedby="selectAll-description"
+                            name="selectAll"
                             type="checkbox"
-                            value="all-documents"
-                            onChange={handleCheckedRequirement}
+                            id="selectAll"
+                            checked={selectAll}
+                            onChange={handleSelectAllChange}
                             className="h-4 w-4 rounded border-gray-300  !accent-sterling-red-800 ring-0"
                           />
                         </div>
@@ -337,27 +341,32 @@ export default function CustomerEligibilityCriteria({
                         </div>
                       </div>
                     </div>
+
                     {documents?.map((document, index) => (
-                      <div key={document} className="space-y-5 ml-[16px]">
+                      <div key={document.id} className="space-y-5 ml-[16px]">
                         <div className="relative flex items-start">
                           <div className="flex h-6 items-center">
                             <input
-                              id={`doc-requirement-${document}`}
+                              id={`doc-requirement-${document.id}`}
                               aria-describedby="doc-requirement-description"
                               name="doc-requirement"
                               type="checkbox"
-                              value={document}
-                              onChange={handleCheckedRequirement}
-                              checked={toggledRequirements.includes(document)}
+                              value={JSON.stringify(document)}
+                              onChange={() =>
+                                handleCheckedRequirement(document)
+                              }
+                              checked={toggledRequirements.some(
+                                (d) => d.id === document.id
+                              )}
                               className="h-4 w-4 rounded border-gray-300  !accent-sterling-red-800 ring-0"
                             />
                           </div>
                           <div className="ml-3 text-sm leading-6">
                             <label
-                              htmlFor={`doc-requirement-${document}`}
+                              htmlFor={`doc-requirement-${document.id}`}
                               className="cursor-pointer font-normal text-base text-[#636363]"
                             >
-                              {document}
+                              {document.name}
                             </label>{" "}
                           </div>
                         </div>
