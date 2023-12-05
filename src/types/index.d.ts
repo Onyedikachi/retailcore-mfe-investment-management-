@@ -30,6 +30,7 @@ export interface BorderlessSelectProps {
   clearErrors?: any;
   inputName?: string | null | undefined;
   defaultValue?: any;
+  defaultProperty?: any;
 }
 
 export interface ActiveFilterProps {}

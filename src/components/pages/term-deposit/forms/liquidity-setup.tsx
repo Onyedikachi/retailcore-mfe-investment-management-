@@ -43,7 +43,6 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
   function onProceed(d: any) {
     console.log("Customer - Eligibility:" + JSON.stringify({ ...d }));
     setFormData({ ...d });
-
     proceed();
   }
   return (

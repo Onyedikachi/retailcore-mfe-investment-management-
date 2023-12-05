@@ -1,6 +1,6 @@
 export const paths = {
   INVESTMENT_DASHBOARD: "/product-factory/investment",
   INVESTMENT_TEST: "/product-factory/investment/investment-test",
-  CREATE_TERM_DEPOSIT: "/product-factory/investment/term-deposit/create",
+  CREATE_PRODUCT: "/product-factory/investment/:type/:process",
   TERM_DEPOSIT_SUMMARY: "/product-factory/investment/:type/process-summary/:process",
 };

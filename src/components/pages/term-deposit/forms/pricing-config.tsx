@@ -45,7 +45,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
     remove: removeTenorRangeInput,
   } = useFieldArray({
     control, // control props comes from useForm (optional: if you are using FormContext)
-    name: "tenorRateRanges", // unique name for your Field Array
+    name: "interestRateConfigModels", // unique name for your Field Array
   });
 
   const {
@@ -55,17 +55,19 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
     remove: removePrincipalRangeInput,
   } = useFieldArray({
     control, // control props comes from useForm (optional: if you are using FormContext)
-    name: "principalRateRanges", // unique name for your Field Array
+    name: "interestRateConfigModels", // unique name for your Field Array
   });
 
   const addTenorRange = () => {
     appendTenorRange({
-      minRange: 0,
-      maxRange: 0,
-      tenorFrom: 0,
-      tenorFromType: "",
-      tenorTo: 0,
-      tenorToType: "",
+      min: 0,
+      max: 0,
+      principalMin: 0,
+      principalMax: 0,
+      tenorMin: 0,
+      tenorMinUnit: 0,
+      tenorMax: 0,
+      tenorMaxUnit: 0,
     });
   };
 
@@ -75,10 +77,14 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
 
   const addPrincipalRange = () => {
     appendPrincipalRange({
-      minRange: 0,
-      maxRange: 0,
-      amountFrom: 0,
-      amountTo: 0,
+      min: 0,
+      max: 0,
+      principalMin: 0,
+      principalMax: 0,
+      tenorMin: 0,
+      tenorMinUnit: 0,
+      tenorMax: 0,
+      tenorMaxUnit: 0,
     });
   };
 
@@ -87,18 +93,18 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
   };
 
   const [applicableInterestRangeType, setApplicableInterestRangeType] =
-    useState("varyByTenor");
+    useState(0);
   const varyOptions = [
     {
       id: "Vary by principal",
       title: "Vary by principal",
-      value: "varyByPrincipal",
+      value: 0,
     },
-    { id: "Vary by tenor", title: "Vary by tenor", value: "varyByTenor" },
+    { id: "Vary by tenor", title: "Vary by tenor", value: 1 },
     {
       id: "Do not vary by principal or tenor",
       title: "Do not vary by principal or tenor",
-      value: "dontVary",
+      value: 2,
     },
   ];
 
@@ -199,6 +205,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
         </InputDivs>
         <InputDivs label={"Applicable Interest Rate Range (Per Annum)"}>
           <div className="flex gap-[51px] mb-[10px]">
+            {/* <span>RangeEnum: {applicableInterestRangeType}</span> */}
             {varyOptions.map((varyOption) => (
               <div key={varyOption.id} className="flex items-center">
                 <input
@@ -207,7 +214,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                   type="radio"
                   value={varyOption.value}
                   onChange={(e) =>
-                    setApplicableInterestRangeType(e.target.value)
+                    setApplicableInterestRangeType(Number(e.target.value))
                   }
                   defaultChecked={
                     varyOption.value === applicableInterestRangeType
@@ -223,13 +230,14 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
               </div>
             ))}
           </div>
-          {applicableInterestRangeType === "varyByPrincipal" && (
+          {applicableInterestRangeType === 0 && (
             <div>
               {principalRangeFields.map((range, index) => (
                 <div
                   className="flex items-center gap-6 mt-[14px]"
                   key={range.id}
                 >
+                  {/* <span>{JSON.stringify(range)}</span> */}
                   <div className="flex items-center gap-[25px] ">
                     <div className="flex items-center gap-[25px] ">
                       <div className="flex gap-[25px]">
@@ -237,7 +245,8 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                           className="w-[200px]"
                           label={"Min"}
                           register={register}
-                          inputName={`principalRateRanges.${index}.minRange`}
+                          inputName={`principalRateRanges.${index}.min`}
+                          // defaultValue={range.min}
                         />
                       </div>{" "}
                       -
@@ -246,7 +255,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                           className="w-[200px]"
                           label={"Max"}
                           register={register}
-                          inputName={`principalRateRanges.${index}.maxRange`}
+                          inputName={`principalRateRanges.${index}.max`}
                         />
                       </div>{" "}
                     </div>
@@ -256,7 +265,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                         label={"NGN"}
                         className="w-[150px]"
                         register={register}
-                        inputName={`principalRateRanges.${index}.amountFrom`}
+                        inputName={`principalRateRanges.${index}.principalMin`}
                       />
                     </div>{" "}
                     -
@@ -265,7 +274,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                         label={"NGN"}
                         className="w-[150px]"
                         register={register}
-                        inputName={`principalRateRanges.${index}.amountTo`}
+                        inputName={`principalRateRanges.${index}.principalMax`}
                       />
                     </div>{" "}
                   </div>
@@ -318,7 +327,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
             </div>
           )}
 
-          {applicableInterestRangeType === "varyByTenor" && (
+          {applicableInterestRangeType === 1 && (
             <div>
               {tenorRangeFields.map((range, index) => (
                 <div
@@ -443,7 +452,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
             </div>
           )}
 
-          {applicableInterestRangeType === "dontVary" && (
+          {applicableInterestRangeType === 2 && (
             <div className="flex items-center gap-[25px] mt-[14px]">
               <div className="flex gap-[25px]">
                 <MinMaxInput
