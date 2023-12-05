@@ -5,6 +5,7 @@ const urls = {
   // Requests
   REQUESTS: "/productrequest",
   REQUEST_STATS: "/productrequest/stats",
+  REQUEST_ACTIVITY_LOG: "/productrequest/activitylog",
 
   // Products
   PRODUCT: "/product",

@@ -34,13 +34,13 @@ export function Success({
         </div>
         <p className="font-normal text-2xl">{text}</p>
         <div className="flex justify-between items-center gap-x-[6px]">
-          {location?.pathname === "/investment-management" ? (
+          {location?.pathname === "/product-factory/investment" ? (
             <Button
               onClick={() =>
                 role === "superadmin" ||
                 location?.search === "?category=requests"
                   ? navigate(0)
-                  : navigate("/investment-management?category=requests")
+                  : navigate("/product-factory/investment?category=requests")
               }
               type="button"
               data-testid="close-btn"
@@ -54,7 +54,7 @@ export function Success({
               onClick={() =>
                 location?.search === "?category=requests"
                   ? navigate(0)
-                  : navigate("/investment-management?category=requests")
+                  : navigate("/product-factory/investment?category=requests")
               }
               type="button"
               data-testid="dashboard-link"
@@ -110,7 +110,7 @@ export function Failed({
         <p className="font-normal text-base mb-[26px]">{subtext}</p>
         <div className={`flex  items-center gap-x-10 w-full ${!canProceed && !canRetry?"justify-center":"justify-between"}`}>
           <div>
-            {location?.pathname === "/investment-management" ? (
+            {location?.pathname === "/product-factory/investment" ? (
               <Button
                 onClick={() => navigate(0)}
                 type="button"
@@ -125,7 +125,7 @@ export function Failed({
                 onClick={() =>
                   location?.search === "?category=requests"
                     ? navigate(0)
-                    : navigate("/investment-management?category=requests")
+                    : navigate("/product-factory/investment?category=requests")
                 }
                 type="button"
                 data-testid="dashboard-link"
@@ -217,7 +217,7 @@ export function Prompt({
             canProceed ? "justify-between" : "justify-center"
           } w-full flex  items-center gap-x-[6px]`}
         >
-          {location?.pathname === "/investment-management" ? (
+          {location?.pathname === "/product-factory/investment" ? (
             <Button
               onClick={() => setIsOpen(false)}
               type="button"
@@ -232,7 +232,7 @@ export function Prompt({
               onClick={() =>
                 location?.search === "?category=requests"
                   ? navigate(0)
-                  : navigate("/investment-management?category=requests")
+                  : navigate("/product-factory/investment?category=requests")
               }
               type="button"
               data-testid="dashboard-link"

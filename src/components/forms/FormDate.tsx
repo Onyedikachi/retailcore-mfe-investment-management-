@@ -43,7 +43,7 @@ export default function FormDate({
     <div>
       <div className="relative flex items-center">
         <DatePicker
-          dateFormat="yyyy/MM/dd"
+          dateFormat="dd/MM/yyyy"
           data-testid="date-picker"
           selected={date ? new Date(date) : null}
           onChange={(date) => setDate(date)}

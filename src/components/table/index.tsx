@@ -20,6 +20,7 @@ import { Confirm, Failed, Success } from "../modals";
 import Loader from "../Loader";
 import RequestDeactivation from "../modals/RequestDeactivation";
 import ProductDetail from "../modals/ProductDetail";
+import { StatusCategoryType } from "@app/types";
 
 interface TableProps {
   headers: any[];
@@ -36,8 +37,8 @@ interface TableProps {
   dropDownClick?: any;
   onChangeDate?: any;
   type?: string;
+  noData?: string;
 }
-
 
 // Extract Dropdown component for reusability
 export const DropdownButton = ({ options, handleClick }: any) => {
@@ -54,7 +55,6 @@ export const handleProductsDropdown = (
   locked = false,
   permissions: string[] = []
 ): any => {
- 
   if (locked)
     return DropDownOptions[status]?.filter(
       (i: any) => i.text.toLowerCase() === "view"
@@ -143,10 +143,11 @@ export default function TableComponent<TableProps>({
   dropDownClick,
   onChangeDate,
   type = "",
+  noData = "No data available",
 }) {
   const { role, permissions } = useContext(AppContext);
   const { isChecker } = useContext(InvestmentContext);
-  const [detail, setDetail]= useState<any>(null)
+  const [detail, setDetail] = useState<any>(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [isDeactivationOpen, setIsDeactivationOpen] = useState(false);
@@ -160,7 +161,7 @@ export default function TableComponent<TableProps>({
 
   function getdata(item, key) {}
   const handleAction = (action, items) => {
-    setDetail(items)
+    setDetail(items);
     dropDownClick(action, items);
     setSubText("");
     if (action.toLowerCase() === "deactivate") {
@@ -258,13 +259,13 @@ export default function TableComponent<TableProps>({
               <tbody>
                 {tableRows.map((item: any, index) => (
                   <tr
-                    key={item.id + index}
+                    key={item.id +  index.toString()}
                     className="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"
                   >
                     {headers.map((header, idx) => (
                       <td
                         className="text-base font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative"
-                        key={idx}
+                        key={idx.toString() + header.key}
                       >
                         <span className="relative">
                           {header.key !== "actions" ? (
@@ -319,14 +320,28 @@ export default function TableComponent<TableProps>({
                 ))}
               </tbody>
             )}
+            {tableRows?.length == 0 && !isLoading && (
+              <tbody>
+                {Array.from(Array(5)).map((item: any, index) => (
+                  <tr
+                    key={item + index.toString()}
+                    className="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"
+                  >
+                    {headers.map((it, idxx) => (
+                      <td
+                        key={`key-${idxx}`}
+                        className="text-sm font-medium text-[#aaa] px-4 py-5 capitalize max-w-[290px] truncate relative text-left"
+                      >
+                        {idxx === 0 && index === 0 && noData}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            )}
           </table>
 
           {isLoading && <BottomBarLoader />}
-          {!tableRows?.length && !isLoading && (
-            <div className="text-sm text-center p-10 opacity-80">
-              No data available
-            </div>
-          )}
         </div>
       </InfiniteScroll>
       {isConfirmOpen && (
@@ -358,7 +373,7 @@ export default function TableComponent<TableProps>({
           setIsOpen={setFailed}
         />
       )}
-      
+
       {isDeactivationOpen && (
         <RequestDeactivation
           isOpen={isDeactivationOpen}

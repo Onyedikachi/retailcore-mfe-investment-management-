@@ -9,6 +9,8 @@ import {
   ReviewStatus,
 } from "@app/components/summary";
 import { Breadcrumbs, Loader, Button } from "@app/components";
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
+import { useGetProductActivityLogQuery } from "@app/api";
 export function Container({ children }) {
   return (
     <div className="rounded-[10px] border border-[#EEE] px-12 py-10">
@@ -17,21 +19,24 @@ export function Container({ children }) {
   );
 }
 export default function Summary() {
+  const [searchParams] = useSearchParams();
+  const { tab, type } = useParams();
+  const id = searchParams.get("id");
   const links = [
     {
       id: 1,
       title: "Product Factory",
-      url: "/product/factory/dashboard/deposit",
+      url: "/product-factory/dashboard/deposit",
     },
     {
       id: 2,
       title: "Investment",
-      url: paths.INVESTMENT_DASHBOARD,
+      url: "/product-factory/investment",
     },
     {
       id: 3,
-      title: "New Term Deposit Product",
-      url: paths.CREATE_TERM_DEPOSIT,
+      title: type,
+      url: "#",
     },
     {
       id: 4,
@@ -50,6 +55,9 @@ export default function Summary() {
   };
 
   const [state, setState] = useState();
+
+  const { data: activityData, isLoading: activityIsLoading } =
+    useGetProductActivityLogQuery({ productid: id });
 
   return (
     <div className="flex flex-col min-h-[100vh] ">
@@ -74,7 +82,11 @@ export default function Summary() {
           <Actions />
         </div>
 
-        <ActivityLog isFetching={false} isLoading={false} activities={[]} />
+        <ActivityLog
+          isFetching={false}
+          isLoading={activityIsLoading}
+          activities={activityData?.results}
+        />
       </div>
     </div>
   );

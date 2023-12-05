@@ -141,16 +141,15 @@ export default function ProductInformation({
 
   function compareValues() {
     const name = getValues("name");
-    const conditions = [
-      // watchDescription !== oldData?.description,
-      // productName !== oldData?.name,
-    ];
+    // const conditions = [
 
-    if (conditions.some((condition) => condition)) {
-      // setDisabled(false);
-    } else {
-      // setDisabled(true);
-    }
+    // ];
+
+    // if (conditions.some((condition) => condition)) {
+    //   // setDisabled(false);
+    // } else {
+    //   // setDisabled(true);
+    // }
   }
 
   function onProceed(d: any) {

@@ -4,7 +4,11 @@ import { HiRefresh, HiDownload } from "react-icons/hi";
 import { StatusCategoryType } from "../../../constants/enums";
 import moment from "moment";
 import { ucObjectKeys, InvestmentContext, AppContext } from "@app/utils";
-import { useGetPostProductsMutation } from "@app/api";
+import {
+  useGetPostProductsMutation,
+  useGetPostRequestsMutation,
+  useGetUsersPermissionsQuery,
+} from "@app/api";
 import SearchInput from "@app/components/SearchInput";
 import Table from "@app/components/table";
 import {
@@ -115,17 +119,32 @@ export function handleDownload(downloadData, isChecker, csvExporter, category) {
   }
 }
 
-export const getSearchResult = (value, getProducts, setSearchResults) => {
+export const getSearchResult = (
+  value,
+  getProducts,
+  getRequests,
+  category,
+  setSearchResults
+) => {
   if (!value.length) {
     setSearchResults([]);
     return;
   }
-  getProducts({
-    search: value,
-    page: 1,
-    page_Size: 15,
-    filter_by: "created_by_me",
-  });
+  if (category === StatusCategoryType.AllProducts) {
+    getProducts({
+      search: value,
+      page: 1,
+      page_Size: 25,
+      filter_by: "created_by_me",
+    });
+  } else {
+    getRequests({
+      search: value,
+      page: 1,
+      page_Size: 25,
+      filter_by: "created_by_me",
+    });
+  }
 };
 export const handleSearch = (value, setQuery, query) => {
   setQuery({
@@ -144,6 +163,7 @@ export default function TableComponent({
 }: any) {
   const { category, setStatus, isChecker } = useContext(InvestmentContext);
   const { permissions } = useContext(AppContext);
+  const [users, setUsers] = useState([]);
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [options, setOptions] = React.useState({
     fieldSeparator: ",",
@@ -166,6 +186,35 @@ export default function TableComponent({
     getProducts,
     { data, isSuccess, isError, error, isLoading: searchLoading },
   ] = useGetPostProductsMutation();
+
+  const [
+    getRequests,
+    {
+      data: request,
+      isSuccess: isRequestSuccess,
+      isError: isRequestError,
+      error: requestError,
+      isLoading: isRequestLoading,
+    },
+  ] = useGetPostRequestsMutation();
+
+  const { data: userData, isSuccess: userSuccess } =
+    useGetUsersPermissionsQuery({ permissions: ["APPROVE_BRANCH_REQUESTS"] });
+
+  useEffect(() => {
+    if (userSuccess) {
+      setUsers(
+        userData?.data?.map((i) => {
+          return {
+            name: i.fullname,
+            value: i.id,
+            id: i.id,
+          };
+        })
+      );
+    }
+  }, [userSuccess]);
+
   useEffect(() => {
     isSuccess &&
       setSearchResults(
@@ -177,25 +226,20 @@ export default function TableComponent({
           };
         })
       );
-    // isRequestSuccess &&
-    // setSearchResults(
-    //     request.results.map((i) => {
-    //       return {
-    //         ...i,
-    //         requestStatus: StatusFilterOptions.find(
-    //           (n) => n.value === i.requestStatus
-    //         ).name,
-    //         requestType: TypeFilterOptions.find(
-    //           (n) => n.value === i.requestType
-    //         ).name,
-    //       };
-    //     })
-    //   );
+    isRequestSuccess &&
+      setSearchResults(
+        request.results.map((i) => {
+          return {
+            ...i,
+            name: i.request,
+          };
+        })
+      );
 
     return () => {
       setSearchResults([]);
     };
-  }, [data, isSuccess, isError]);
+  }, [data, request, isSuccess, isRequestSuccess]);
 
   React.useEffect(() => {
     setOptions({
@@ -229,6 +273,19 @@ export default function TableComponent({
         requestType_In: value.length ? value.map((i) => i.value) : null,
       });
     }
+
+    if (label === "initiator") {
+      setQuery({
+        ...query,
+        initiator_In: value.length ? value.map((i) => i.value) : null,
+      });
+    }
+    if (label === "reviewer") {
+      setQuery({
+        ...query,
+        initiator_In: value.length ? value.map((i) => i.value) : null,
+      });
+    }
     if (label === "state" || label === "status") {
       setQuery({
         ...query,
@@ -256,9 +313,17 @@ export default function TableComponent({
       <div className="flex justify-end gap-x-[25px] items-center mb-[27px] h-auto">
         <SearchInput
           setSearchTerm={(value) =>
-            getSearchResult(value, getProducts, setSearchResults)
+            getSearchResult(
+              value,
+              getProducts,
+              getRequests,
+              category,
+              setSearchResults
+            )
           }
-          placeholder="Search by product name/code"
+          placeholder={`Search by product name${
+            category === StatusCategoryType.Requests ? "/code" : ""
+          }`}
           searchResults={searchResults}
           setSearchResults={setSearchResults}
           searchLoading={searchLoading}
@@ -300,8 +365,11 @@ export default function TableComponent({
       <Table
         headers={
           category === StatusCategoryType?.AllProducts
-            ? productHeader
-            : handleHeaders(requestHeader, isChecker)
+            ? productHeader.map((i) => ({ ...i, options: users }))
+            : handleHeaders(
+                requestHeader.map((i) => ({ ...i, options: users })),
+                isChecker
+              )
         }
         tableRows={
           category === StatusCategoryType?.AllProducts
@@ -318,6 +386,11 @@ export default function TableComponent({
         dropDownClick={handleDropClick}
         onChangeDate={onChangeDate}
         type={category.toLowerCase()}
+        noData={
+          StatusCategoryType.Requests === category
+            ? "No request available"
+            : "No product available"
+        }
       />
     </section>
   );

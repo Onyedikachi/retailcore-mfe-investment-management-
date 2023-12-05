@@ -33,7 +33,7 @@ export default function CustomInput({
         defaultValue={defaultValue}
         // aria-invalid={errors?.name ? "true" : "false"}
       />
-      {maxLength && (
+      {maxLength > 0 && (
         <div className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]">
           <span>
             {0}/{maxLength}
