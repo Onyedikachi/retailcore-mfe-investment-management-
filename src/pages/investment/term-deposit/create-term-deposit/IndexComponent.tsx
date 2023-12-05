@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { paths } from "@app/routes/paths";
 import { Confirm, Failed, Success } from "@app/components/modals";
-
+import { useCreateProductMutation } from "@app/api";
 import {
   Breadcrumbs,
   Loader,
@@ -105,38 +105,7 @@ export default function CreateTermDeposit() {
   //     ageGroupEnd: 0,
   //     corporateCustomerType: "",
   //   });
-  const [pricingConfigData, setPricingConfigData] = useState({
-    applicableTenorMin: 0,
-    applicableTenorMinDays: 0,
-    applicableTenorMax: 0,
-    applicableTenorMaxDays: 0,
-    applicablePrincipalMin: 0,
-    applicablePrincipalMax: 0,
-    applicablePrincipalMinDays: 0,
-    applicablePrincipalMaxDays: 0,
-    varyOption: "",
-    applicableInterestMin: 0,
-    applicableInterestMax: 0,
-    interestComputation: "",
-    tenorRateRanges: [
-      {
-        minRange: 0,
-        maxRange: 0,
-        tenorFrom: 0,
-        tenorFromType: "",
-        tenorTo: 0,
-        tenorToType: "",
-      },
-    ],
-    principalRateRanges: [
-      {
-        minRange: 0,
-        maxRange: 0,
-        amountFrom: 0,
-        amountTo: 0,
-      },
-    ],
-  });
+
   const [isDisabled, setDisabled] = useState<boolean>(true);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [draftText] = useState({
@@ -165,6 +134,10 @@ export default function CreateTermDeposit() {
       url: "#",
     },
   ];
+  const [
+    createProduct,
+    { isLoading, isSuccess, isError, reset, error: draftError },
+  ] = useCreateProductMutation();
 
   function handleNav() {
     step < termDepositFormSteps.length
@@ -173,6 +146,7 @@ export default function CreateTermDeposit() {
   }
 
   const handleDraft = () => {
+    createProduct({ ...productData, isDraft: true });
     navigate(paths.INVESTMENT_DASHBOARD);
   };
 
