@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ProcessingStatusSlider,
   ActivityLog,
@@ -15,9 +15,13 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
-import { useGetProductActivityLogQuery, useCreateProductMutation } from "@app/api";
+import {
+  useGetProductActivityLogQuery,
+  useCreateProductMutation,
+} from "@app/api";
 import { Confirm, Failed, Success } from "@app/components/modals";
-import { Prompts } from "@app/constants/enums";
+
+import { Messages, Prompts } from "@app/constants/enums";
 export function Container({ children }) {
   return (
     <div className="rounded-[10px] border border-[#EEE] px-12 py-10">
@@ -78,10 +82,10 @@ export default function Preview({ formData }: any) {
       ? useGetProductActivityLogQuery({ productid: id })
       : { data: undefined, isLoading: false };
 
-      const [
-        createProduct,
-        { isLoading, isSuccess, isError, reset, error: draftError },
-      ] = useCreateProductMutation();
+  const [
+    createProduct,
+    { isLoading: createProductLoading, isSuccess, isError, reset, error },
+  ] = useCreateProductMutation();
 
   const handleModify = () => {
     navigate(-1);
@@ -92,9 +96,22 @@ export default function Preview({ formData }: any) {
     return;
   };
   const handleSubmit = () => {
-    createProduct({ ...formData, isDraft: false });
+    createProduct({  isDraft: false });
     // navigate(paths.INVESTMENT_DASHBOARD);
   };
+  useEffect(() => {
+    if (isSuccess) {
+      setSuccessText(Messages.ADMIN_PRODUCT_CREATE_SUCCESS);
+      setIsSuccessOpen(true);
+    }
+
+    if (isError) {
+      setFailedText(Messages.ADMIN_PRODUCT_CREATE_FAILED);
+      setFailedSubtext(error?.data?.msg);
+      setFailed(true);
+    }
+  }, [isSuccess, isError, error]);
+
   return (
     <div className="flex flex-col min-h-[100vh] ">
       <div className="px-[37px] py-[11px] bg-white">
@@ -139,11 +156,10 @@ export default function Preview({ formData }: any) {
           setIsOpen={setIsConfirmOpen}
           onConfirm={() => {
             setIsConfirmOpen(false);
-            navigate("/product-factory/investment")
+            navigate("/product-factory/investment");
           }}
           onCancel={() => {
             setIsConfirmOpen(false);
-           
           }}
         />
       )}
@@ -160,8 +176,10 @@ export default function Preview({ formData }: any) {
           subtext={failedSubText}
           isOpen={isFailed}
           setIsOpen={setFailed}
+          canRetry
         />
       )}
+      <Loader isOpen={createProductLoading} text={"Submitting"} />
     </div>
   );
 }
