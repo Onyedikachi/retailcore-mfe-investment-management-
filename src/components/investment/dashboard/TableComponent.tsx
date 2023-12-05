@@ -198,13 +198,19 @@ export default function TableComponent({
     },
   ] = useGetPostRequestsMutation();
 
-  const { data: userData, isSuccess: userSuccess } =
-    useGetUsersPermissionsQuery({ permissions: ["APPROVE_BRANCH_REQUESTS"] });
+  const { data: initData, isSuccess: initSuccess } =
+    useGetUsersPermissionsQuery({ permissions: ["CREATE_INVESTMENT_PRODUCT"] });
+  const { data: reviewData, isSuccess: reviewSuccess } =
+    useGetUsersPermissionsQuery({
+      permissions: [
+        "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS",
+      ],
+    });
 
   useEffect(() => {
-    if (userSuccess) {
+    if (initSuccess || reviewSuccess) {
       setUsers(
-        userData?.data?.map((i) => {
+        (isChecker ? initData : reviewData)?.data?.map((i) => {
           return {
             name: i.fullname,
             value: i.id,
@@ -213,7 +219,7 @@ export default function TableComponent({
         })
       );
     }
-  }, [userSuccess]);
+  }, [reviewSuccess, initSuccess]);
 
   useEffect(() => {
     isSuccess &&

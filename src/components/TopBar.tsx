@@ -6,10 +6,31 @@ import { InvestmentContext, AppContext } from "../utils/context";
 import { StatusCategoryType } from "@app/constants/enums";
 import CreateButton from "./CreateButton";
 import SearchInput from "./SearchInput";
+import { useGetPostProductsMutation } from "@app/api";
+
+export const getSearchResult = (
+  value,
+  getProducts,
+
+  setSearchResults
+) => {
+  if (!value.length) {
+    setSearchResults([]);
+    return;
+  }
+
+  getProducts({
+    search: value,
+    page: 1,
+    page_Size: 25,
+    filter_by: "created_by_me",
+  });
+};
 
 export function Tabs() {
   const [active, setActtive] = useState("deposit");
-  const [search, setSearch] = useState("")
+  const [search, setSearch] = useState("");
+  const [searchResults, setSearchResults] = useState<any[]>([]);
   const tabOptions = [
     {
       title: "deposit",
@@ -28,13 +49,20 @@ export function Tabs() {
       url: "",
     },
   ];
+
+  const [
+    getProducts,
+    { data, isSuccess, isError, error, isLoading: searchLoading },
+  ] = useGetPostProductsMutation();
+
+  function handleSearch(value) {}
   return (
     <div className="flex justify-between">
       <ul className="flex gap-x-8">
         {tabOptions.map((tab) => (
           <li
             key={tab.title}
-            onClick={()=> setActtive(tab.title)}
+            onClick={() => setActtive(tab.title)}
             data-testid={tab.title}
             className={`${
               active == tab.title
@@ -42,21 +70,34 @@ export function Tabs() {
                 : "text-[#636363] text-base "
             }   capitalize flex flex-col justify-end cursor-pointer`}
           >
-           
-              <span className="block mb-[7px]">{tab.title}</span>
-              <span
-                className={`${
-                  active == tab.title
-                    ? " border-[#CF2A2A] shadow-[0px_0px_4px_1px_rgba(0,0,0,0.25)] border-[1.5px]"
-                    : "border-[#DDE2E4] border-[0.75px] shadow-[0px_0px_2px_0px_rgba(228,139,139,0.48)]"
-                }   rounded-lg w-full block`}
-              />
-           
+            <span className="block mb-[7px]">{tab.title}</span>
+            <span
+              className={`${
+                active == tab.title
+                  ? " border-[#CF2A2A] shadow-[0px_0px_4px_1px_rgba(0,0,0,0.25)] border-[1.5px]"
+                  : "border-[#DDE2E4] border-[0.75px] shadow-[0px_0px_2px_0px_rgba(228,139,139,0.48)]"
+              }   rounded-lg w-full block`}
+            />
           </li>
         ))}
       </ul>
       <div>
-        <SearchInput hideBorder placeholder="Search for product" setSearchTerm={setSearch} />
+        <SearchInput
+          hideBorder
+          setSearchTerm={(value) =>
+            getSearchResult(
+              value,
+              getProducts,
+
+              setSearchResults
+            )
+          }
+          placeholder="Search by product"
+          searchResults={searchResults}
+          setSearchResults={setSearchResults}
+          searchLoading={searchLoading}
+          handleSearch={(value) => handleSearch(value)}
+        />
       </div>
     </div>
   );
@@ -71,7 +112,9 @@ export default function TopBar() {
         data-testid="top-bar"
         className="py-[52px] w-full min-h-[198px] flex gap-x-9 items-center"
       >
-        <h1 className="text-[#636363] text-[38px] font-bold">Product Factory</h1>
+        <h1 className="text-[#636363] text-[38px] font-bold">
+          Product Factory
+        </h1>
 
         <CreateButton>
           <Button data-testid="create-btn" className="bg-sterling-red-800">

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import DropDown from "@app/components/DropDown";
@@ -15,12 +15,14 @@ import {
   handleUserView,
 } from "@app/utils";
 import { FaBars, FaEye } from "react-icons/fa";
-import { Prompts } from "@app/constants/enums";
+import { Actions, Messages, Prompts } from "@app/constants/enums";
 import { Confirm, Failed, Success } from "../modals";
 import Loader from "../Loader";
 import RequestDeactivation from "../modals/RequestDeactivation";
 import ProductDetail from "../modals/ProductDetail";
 import { StatusCategoryType } from "@app/types";
+import { useNavigate } from "react-router-dom";
+import { useDeleteProductMutation } from "@app/api";
 
 interface TableProps {
   headers: any[];
@@ -55,10 +57,11 @@ export const handleProductsDropdown = (
   locked = false,
   permissions: string[] = []
 ): any => {
-  if (locked)
-    return DropDownOptions[status]?.filter(
-      (i: any) => i.text.toLowerCase() === "view"
-    );
+  console.log("🚀 ~ file: index.tsx:59 ~ permissions:", permissions);
+  // if (locked)
+  //   return DropDownOptions[status]?.filter(
+  //     (i: any) => i.text.toLowerCase() === "view"
+  //   );
 
   if (!status) return [];
   if (isChecker) {
@@ -67,16 +70,19 @@ export const handleProductsDropdown = (
     );
   } else {
     let options = DropDownOptions[status];
-    // if (!permissions?.includes("CREATE_PRODUCT")) {
-    //   options = options.filter(
-    //     (i: any) =>
-    //       i.text.toLowerCase() !== "deactivate" &&
-    //       i.text.toLowerCase() !== "activate"
-    //   );
-    // }
-    // if (!permissions?.includes("CREATE_PRODUCT")) {
-    //   options = options.filter((i: any) => i.text.toLowerCase() !== "modify");
-    // }
+    if (!permissions?.includes("RE_OR_DEACTIVATE_INVESTMENT_PRODUCT")) {
+      options = options.filter(
+        (i: any) =>
+          i.text.toLowerCase() !== "deactivate" &&
+          i.text.toLowerCase() !== "activate"
+      );
+    }
+    if (!permissions?.includes("CREATE_INVESTMENT_PRODUCT")) {
+      options = options.filter(
+        (i: any) =>
+          i.text.toLowerCase() !== "modify" && i.text.toLowerCase() !== "clone"
+      );
+    }
     return options;
   }
 };
@@ -146,7 +152,9 @@ export default function TableComponent<TableProps>({
   noData = "No data available",
 }) {
   const { role, permissions } = useContext(AppContext);
-  const { isChecker } = useContext(InvestmentContext);
+  const { isChecker, category } = useContext(InvestmentContext);
+  const [action, setAction] = useState("");
+  const navigate = useNavigate();
   const [detail, setDetail] = useState<any>(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
@@ -159,47 +167,83 @@ export default function TableComponent<TableProps>({
   const [failedText, setFailedText] = useState("");
   const [isDetailOpen, setDetailOpen] = useState(false);
 
-  function getdata(item, key) {}
+  // function getdata(item, key) {}
   const handleAction = (action, items) => {
+    setAction(action);
     setDetail(items);
     dropDownClick(action, items);
     setSubText("");
-    if (action.toLowerCase() === "deactivate") {
+
+    if (action.toLowerCase() === Actions.DEACTIVATE) {
       setConfirmText(Prompts.PRODUCT_DEACTIVATE);
       setSubText(Prompts.PRODUCT_DEACTIVATE_SUBTEXT);
       setIsConfirmOpen(true);
       return;
     }
-    if (action.toLowerCase() === "activate") {
+    if (action.toLowerCase() === Actions.ACTIVATE) {
       setConfirmText(Prompts.PRODUCT_ACTIVATE);
       setIsConfirmOpen(true);
       return;
     }
-    if (action.toLowerCase() === "withdraw & delete request") {
+    if (action.toLowerCase() === Actions.WITHDRAW_DELETE) {
       setConfirmText(Prompts.PRODUCT_WITHDRAW_DELETE);
       setIsConfirmOpen(true);
       return;
     }
-    if (action.toLowerCase() === "delete request") {
+    if (action.toLowerCase() === Actions.DELETE_REQUESTS) {
       setConfirmText(Prompts.PRODUCT_DELETE);
       setIsConfirmOpen(true);
       return;
     }
-    if (action.toLowerCase() === "withdraw & modify") {
+    if (action.toLowerCase() === Actions.WITHDARW_MODIFY) {
       setConfirmText(Prompts.PRODUCT_WITHDRAW_MODIFY);
       setIsConfirmOpen(true);
       return;
     }
-    if (action.toLowerCase() === "modify") {
+    if (action.toLowerCase() === Actions.MODIFY) {
       setConfirmText(Prompts.PRODUCT_MODIFY);
       setIsConfirmOpen(true);
       return;
     }
-    if (action.toLowerCase() === "view") {
-      setDetailOpen(true);
+    if (action.toLowerCase() === Actions.DELETE_DRAFT) {
+      setConfirmText(Prompts.PRODUCT_DELETE);
+      setIsConfirmOpen(true);
+      return;
+    }
+    if (action.toLowerCase() === Actions.VIEW) {
+      category === StatusCategoryType.AllProducts
+        ? setDetailOpen(true)
+        : navigate(
+            `/product-factory/investment/${encodeURIComponent(
+              "term deposit"
+            )}/process-summary/preview/${items.id}?category=request`
+          );
       return;
     }
   };
+
+  const [deleteRequest, { isSuccess, isError, error, isLoading: deleteLoading }] =
+    useDeleteProductMutation();
+
+  const handleConfirm = () => {
+    console.log(
+      "🚀 ~ file: index.tsx:230 ~ handleConfirm ~ handleConfirm:",
+      handleConfirm
+    );
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      setSuccessText(Messages.PRODUCT_DELETE_SUCCESS);
+      setIsSuccessOpen(true);
+    }
+    if (isError) {
+      setFailedText(Messages.PRODUCT_DELETE_SUCCESS);
+      setFailedSubtext(error?.data?.message);
+      setFailed(true);
+    }
+  }, [isSuccess, isError, error]);
+
   return (
     <div>
       <InfiniteScroll
@@ -259,7 +303,7 @@ export default function TableComponent<TableProps>({
               <tbody>
                 {tableRows.map((item: any, index) => (
                   <tr
-                    key={item.id +  index.toString()}
+                    key={item.id + index.toString()}
                     className="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"
                   >
                     {headers.map((header, idx) => (
@@ -302,7 +346,8 @@ export default function TableComponent<TableProps>({
                                       item.state,
                                       isChecker,
                                       dropDownOptions,
-                                      item.islocked
+                                      item.islocked,
+                                      permissions
                                     )
                                   : handleDropdown(
                                       item.requestStatus,
@@ -352,6 +397,7 @@ export default function TableComponent<TableProps>({
           setIsOpen={setIsConfirmOpen}
           onConfirm={() => {
             setIsConfirmOpen(false);
+            handleConfirm();
           }}
           onCancel={() => {
             setIsConfirmOpen(false);
@@ -391,6 +437,7 @@ export default function TableComponent<TableProps>({
           // setReason={() => {}}
         />
       )}
+      {deleteLoading && <Loader isOpen={deleteLoading} text={"Submitting"} />}
     </div>
   );
 }

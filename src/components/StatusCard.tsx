@@ -161,43 +161,43 @@ export function handlePermission(
   RequestOptions,
   setFilteredProductOptions
 ) {
-  // if (!permissions?.length) return;
-  // if (
-  //   permissions?.includes("VIEW_ALL_PRODUCT_RECORDS") ||
-  //   permissions?.includes("APPROVE_PRODUCT_REQUESTS")
-  // ) {
+  if (!permissions?.length) return;
+  if (
+    permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS") ||
+    permissions?.includes("AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS")
+  ) {
     setFilteredProductOptions(ProductOptions);
-  // } else {
-  //   setFilteredProductOptions(
-  //     ProductOptions.map((i: any) => {
-  //       if (i.value === "created_by_anyone") {
-  //         i.disabled = true;
-  //       }
-  //       if (i.value === "approved_system_wide") {
-  //         i.disabled = true;
-  //       }
-  //       return i;
-  //     })
-  //   );
-  // }
-  // if (
-  //   permissions?.includes("VIEW_ALL_PRODUCT_REQUESTS") ||
-  //   permissions?.includes("APPROVE_PRODUCT_REQUESTS")
-  // ) {
+  } else {
+    setFilteredProductOptions(
+      ProductOptions.map((i: any) => {
+        if (i.value === "created_by_anyone") {
+          i.disabled = true;
+        }
+        if (i.value === "approved_system_wide") {
+          i.disabled = true;
+        }
+        return i;
+      })
+    );
+  }
+  if (
+    permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS") ||
+    permissions?.includes("AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS")
+  ) {
     setFilteredRequestOptions(RequestOptions);
-  // } else {
-  //   setFilteredRequestOptions(
-  //     RequestOptions.map((i: any) => {
-  //       if (i.value === "created_by_anyone") {
-  //         i.disabled = true;
-  //       }
-  //       if (i.value === "sent_to_anyone") {
-  //         i.disabled = true;
-  //       }
-  //       return i;
-  //     })
-  //   );
-  // }
+  } else {
+    setFilteredRequestOptions(
+      RequestOptions.map((i: any) => {
+        if (i.value === "created_by_anyone") {
+          i.disabled = true;
+        }
+        if (i.value === "sent_to_anyone") {
+          i.disabled = true;
+        }
+        return i;
+      })
+    );
+  }
 }
 export default function StatusCard({
   data,
