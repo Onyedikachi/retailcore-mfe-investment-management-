@@ -39,8 +39,8 @@ export default function CreateTermDeposit() {
       customerCategory: 0,
     },
     customerEligibility: {
-      ageGroupMin: 0,
-      ageGroupMax: 0,
+      ageGroupMin: 2,
+      ageGroupMax: 3,
       requireDocument: [
         // {
         //   id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -49,11 +49,12 @@ export default function CreateTermDeposit() {
       ],
     },
     pricingConfiguration: {
-      applicableTenorMin: 0,
+      applicableTenorMin: 2,
       applicableTenorMinUnit: 1,
       applicableTenorMax: 8,
       applicableTenorMaxUnit: 1,
-
+      applicablePrincipalMin: 3,
+      applicablePrincipalMax: 4,
       interestRateRangeType: 0,
       interestRateConfigModels: [
         {
