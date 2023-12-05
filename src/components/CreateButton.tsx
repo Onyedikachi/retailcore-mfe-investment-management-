@@ -1,9 +1,18 @@
 import { ButtonOptions } from "@app/constants";
-import React, { useState, useRef, useEffect } from "react";
+import { AppContext } from "@app/utils";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { FaCaretRight } from "react-icons/fa";
 import OutsideClickHandler from "react-outside-click-handler";
 import { useNavigate } from "react-router-dom";
 
+interface CreateProp {
+  title: string;
+  key: string;
+  isUrl: boolean;
+  links: any;
+  url: string;
+  permission: string;
+}
 export function closeButton(
   setIsOpen,
   setSecondActive,
@@ -23,6 +32,7 @@ export function goToUrl(url, navigate) {
   }
 }
 export default function CreateButton({ children }) {
+  const { permissions } = useContext(AppContext);
   const navigate = useNavigate();
   const windowSize = useRef(window.innerWidth);
   const [firstActive, setFirstActive] = useState("");
@@ -64,22 +74,17 @@ export default function CreateButton({ children }) {
           {isOpen && (
             <div className="top-0 absolute w-[286px] z-10 bg-white rounded-b-lg shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] pt-[1px]">
               <ul>
-                {ButtonOptions.map(
-                  (item: {
-                    title: string;
-                    key: string;
-                    isUrl: boolean;
-                    links: any;
-                    url: string;
-                  }) => (
-                    <li
+                {ButtonOptions.map((item: CreateProp) => (
+                  <li className="group">
+                    <button
+                      disabled={!permissions.includes(item?.permission)}
                       key={item.key}
                       onClick={() =>
                         item.isUrl
                           ? goToUrl(item.url, navigate)
                           : setFirstActive(item.key)
                       }
-                      className={`z-10 relative text-base text-[#636363] capitalize pl-6 pr-4 flex justify-between items-center py-3 last:rounded-b-lg hover:bg-[#F9E5E5] cursor-pointer ${
+                      className={`disabled:opacity-50 disabled:cursor-not-allowed w-full z-10 relative text-base text-[#636363] capitalize pl-6 pr-4 flex justify-between items-center py-3 group-last:rounded-b-lg hover:bg-[#F9E5E5] cursor-pointer ${
                         firstActive.toLowerCase() === item.key
                           ? "bg-[#F9E5E5]"
                           : "bg-white"
@@ -92,22 +97,16 @@ export default function CreateButton({ children }) {
                         firstActive.toLowerCase() === item.key && (
                           <div className="z-10 absolute top-0 -right-[212px] w-[209px] bg-white rounded-b-lg shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] pt-[1px]">
                             <ul>
-                              {item?.links.map(
-                                (item2: {
-                                  title: string;
-                                  key: string;
-                                  isUrl: boolean;
-                                  links: any;
-                                  url: string;
-                                }) => (
-                                  <li
+                              {item?.links.map((item2: CreateProp) => (
+                                <li className="group">
+                                  <button
                                     key={item2.key}
                                     onClick={() =>
                                       item2.isUrl
                                         ? goToUrl(item2.url, navigate)
                                         : setSecondActive(item2.key)
                                     }
-                                    className={`relative text-base text-[#636363] capitalize pl-6 pr-4 flex justify-between items-center py-3 last:rounded-b-lg hover:bg-[#F9E5E5] cursor-pointer  ${
+                                    className={`disabled:opacity-50 disabled:cursor-not-allowed w-full relative text-base text-[#636363] capitalize pl-6 pr-4 flex justify-between items-center py-3 group-last:rounded-b-lg hover:bg-[#F9E5E5] cursor-pointer  ${
                                       secondActive.toLowerCase() === item2.key
                                         ? "bg-[#F9E5E5]"
                                         : "bg-white"
@@ -128,96 +127,94 @@ export default function CreateButton({ children }) {
                                         >
                                           <ul>
                                             {item2?.links.map(
-                                              (item3: {
-                                                title: string;
-                                                key: string;
-                                                isUrl: boolean;
-                                                links: any;
-                                                url: string;
-                                              }) => (
-                                                <li
-                                                  key={item3.key}
-                                                  onClick={() =>
-                                                    item3.isUrl
-                                                      ? goToUrl(
-                                                          item3.url,
-                                                          navigate
-                                                        )
-                                                      : setThirdActive(
-                                                          item3.key
-                                                        )
-                                                  }
-                                                  className={`relative text-base text-[#636363] capitalize pl-6 pr-4 flex justify-between items-center py-3 last:rounded-b-lg hover:bg-[#F9E5E5] cursor-pointer  ${
-                                                    thirdActive.toLowerCase() ===
-                                                    item3.key
-                                                      ? "bg-[#F9E5E5]"
-                                                      : "bg-white"
-                                                  }`}
-                                                >
-                                                  <span>{item3.title}</span>{" "}
-                                                  {!item3.isUrl && (
-                                                    <FaCaretRight />
-                                                  )}
-                                                  {!item3.isUrl &&
-                                                    thirdActive.toLowerCase() ===
-                                                      item3.key && (
-                                                      <div className="z-10 absolute top-0 -right-[212px] w-[209px] bg-white rounded-b-lg shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] pt-[1px]">
-                                                        <ul>
-                                                          {item3?.links.map(
-                                                            (item4: {
-                                                              title: string;
-                                                              key: string;
-                                                              isUrl: boolean;
-                                                              links: any;
-                                                              url: string;
-                                                            }) => (
-                                                              <li
-                                                                key={item4.key}
-                                                                onClick={() =>
-                                                                  item4.isUrl
-                                                                    ? goToUrl(
-                                                                        item4.url,
-                                                                        navigate
-                                                                      )
-                                                                    : setFourthActive(
-                                                                        item3.key
-                                                                      )
-                                                                }
-                                                                className={`relative text-base text-[#636363] capitalize pl-6 pr-4 flex justify-between items-center py-3 last:rounded-b-lg cursor-pointer  hover:bg-[#F9E5E5] ${
-                                                                  fourthActive.toLowerCase() ===
-                                                                  item4.key
-                                                                    ? "bg-[#F9E5E5]"
-                                                                    : "bg-white"
-                                                                }`}
-                                                              >
-                                                                <span>
-                                                                  {item4.title}
-                                                                </span>{" "}
-                                                                {!item4.isUrl && (
-                                                                  <FaCaretRight />
-                                                                )}
-                                                                {/* Fourth level  */}
-                                                              </li>
-                                                            )
-                                                          )}
-                                                        </ul>
-                                                      </div>
+                                              (item3: CreateProp) => (
+                                                <li className="group">
+                                                  <button
+                                                    key={item3.key}
+                                                    onClick={() =>
+                                                      item3.isUrl
+                                                        ? goToUrl(
+                                                            item3.url,
+                                                            navigate
+                                                          )
+                                                        : setThirdActive(
+                                                            item3.key
+                                                          )
+                                                    }
+                                                    className={`disabled:opacity-50 disabled:cursor-not-allowed w-full relative text-base text-[#636363] capitalize pl-6 pr-4 flex justify-between items-center py-3 group-last:rounded-b-lg hover:bg-[#F9E5E5] cursor-pointer  ${
+                                                      thirdActive.toLowerCase() ===
+                                                      item3.key
+                                                        ? "bg-[#F9E5E5]"
+                                                        : "bg-white"
+                                                    }`}
+                                                  >
+                                                    <span>{item3.title}</span>{" "}
+                                                    {!item3.isUrl && (
+                                                      <FaCaretRight />
                                                     )}
+                                                    {!item3.isUrl &&
+                                                      thirdActive.toLowerCase() ===
+                                                        item3.key && (
+                                                        <div className="z-10 absolute top-0 -right-[212px] w-[209px] bg-white rounded-b-lg shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] pt-[1px]">
+                                                          <ul>
+                                                            {item3?.links.map(
+                                                              (
+                                                                item4: CreateProp
+                                                              ) => (
+                                                                <li className="group">
+                                                                  <button
+                                                                    key={
+                                                                      item4.key
+                                                                    }
+                                                                    onClick={() =>
+                                                                      item4.isUrl
+                                                                        ? goToUrl(
+                                                                            item4.url,
+                                                                            navigate
+                                                                          )
+                                                                        : setFourthActive(
+                                                                            item3.key
+                                                                          )
+                                                                    }
+                                                                    className={`disabled:opacity-50 disabled:cursor-not-allowed w-full relative text-base text-[#636363] capitalize pl-6 pr-4 flex justify-between items-center py-3 group-last:rounded-b-lg cursor-pointer  hover:bg-[#F9E5E5] ${
+                                                                      fourthActive.toLowerCase() ===
+                                                                      item4.key
+                                                                        ? "bg-[#F9E5E5]"
+                                                                        : "bg-white"
+                                                                    }`}
+                                                                  >
+                                                                    <span>
+                                                                      {
+                                                                        item4.title
+                                                                      }
+                                                                    </span>{" "}
+                                                                    {!item4.isUrl && (
+                                                                      <FaCaretRight />
+                                                                    )}
+                                                                    {/* Fourth level  */}
+                                                                  </button>
+                                                                </li>
+                                                              )
+                                                            )}
+                                                          </ul>
+                                                        </div>
+                                                      )}
+                                                  </button>
                                                 </li>
                                               )
                                             )}
                                           </ul>
                                         </div>
                                       )}
-                                  </li>
-                                )
-                              )}
+                                  </button>
+                                </li>
+                              ))}
                             </ul>
                           </div>
                         )}
-                    </li>
-                  )
-                )}
+                    </button>
+                  </li>
+                ))}
               </ul>
             </div>
           )}

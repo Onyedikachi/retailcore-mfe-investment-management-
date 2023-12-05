@@ -18,7 +18,7 @@ export default function Actions() {
   return (
     <div className=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-[60px] py-[40px]  ">
       {/* Submission  */}
-      {process === "submission" && (
+      {process === "create" && (
         <div className=" flex  gap-6">
           <button
             onClick={() => {}}

@@ -1,3 +1,5 @@
+import { FieldError, Merge, FieldErrorsImpl } from "react-hook-form";
+
 export type IconType =
   | "filter"
   | "eye"
@@ -18,11 +20,11 @@ export interface ButtonProps {
 }
 
 export interface SelectProps {
-  options: array;
+  options: any[];
   handleSelected: (value) => void;
 }
 export interface BorderlessSelectProps {
-  options: array;
+  options: any[];
   handleSelected: (value) => void;
   labelName?: string;
   register?: any;

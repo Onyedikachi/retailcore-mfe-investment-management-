@@ -8,7 +8,7 @@ import urls from "../helpers/url_helpers";
 import { cleanObject } from "@app/utils/cleanObject";
 // baseQuery: axiosBaseQuery({ serviceKey: "investment" }),
 
-console.log(process.env)
+console.log(process.env);
 export const investmentApi: any = createApi({
   reducerPath: "investmentApi",
   baseQuery: fetchBaseQuery({
@@ -35,6 +35,15 @@ export const investmentApi: any = createApi({
       query: (params) => {
         return {
           url: urls.ACTIVITY_LOG,
+          method: "get",
+          params: cleanObject(params),
+        };
+      },
+    }),
+    getProductRequestActivityLog: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: urls.REQUEST_ACTIVITY_LOG,
           method: "get",
           params: cleanObject(params),
         };
@@ -110,7 +119,7 @@ export const investmentApi: any = createApi({
     deleteProductRequest: builder.mutation<any, any>({
       query: (data) => {
         return {
-          url: `${urls.REQUESTS}/delete?productrequestId=${data}`,
+          url: `${urls.REQUESTS}/delete/${data}`,
           method: "delete",
         };
       },
@@ -129,6 +138,18 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    getProductDetail: builder.query<any, any>({
+      query: (data) => {
+        if (!data.productId) return;
+        return {
+          url: `${urls.PRODUCT_DETAILS}?${new URLSearchParams(
+            cleanObject(data)
+          )}`,
+          method: "get",
+        };
+      },
+    }),
+
     getRequestStats: builder.query<any, any>({
       query: (data) => {
         if (!data.filter_by) return;
@@ -244,5 +265,7 @@ export const {
   useUploadDocumentMutation,
   useGetPermissionsMutation,
   useDeleteProductMutation,
-  useGetProductActivityLogQuery
+  useGetProductActivityLogQuery,
+  useGetProductRequestActivityLogQuery,
+  useGetProductDetailQuery,
 } = investmentApi;
