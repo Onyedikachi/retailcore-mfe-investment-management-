@@ -10,7 +10,7 @@ import { ProductInformationFormSchema } from "@app/constants";
 import debounce from "lodash.debounce";
 import { useParams } from "react-router-dom";
 import { useValidateNameMutation } from "@app/api";
-
+import moment from "moment";
 const defaultLength = 50;
 const defaultSloganLength = 160;
 
@@ -153,8 +153,13 @@ export default function ProductInformation({
   }
 
   function onProceed(d: any) {
-    console.log("ProductInfo: " + JSON.stringify(d));
-    setFormData(d);
+    console.log("Date:" + moment(d.startDate).format("yyyy-MM-DD"));
+
+    setFormData({
+      ...d,
+      startDate: moment(d.startDate).format("yyyy-MM-DD"),
+      endDate: moment(d.endDate).format("yyyy-MM-DD"),
+    });
     proceed();
   }
 

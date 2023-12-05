@@ -30,32 +30,30 @@ export default function CreateTermDeposit() {
   const [step, setStep] = useState(1);
   const [productData, setProductData] = useState({
     productInfo: {
-      productName: "string",
-      slogan: "string",
-      description: "string",
-      startDate: "",
-      endDate: "",
-      currency: "",
+      productName: "Kaine Term Deposit",
+      slogan: "Dep10 ",
+      description: "Just testing",
+      startDate: "2023-12-03",
+      endDate: "2023-12-30",
+      currency: "NGN",
       customerCategory: 0,
     },
     customerEligibility: {
-      ageGroupMin: 1,
-      ageGroupMax: 1,
+      ageGroupMin: 0,
+      ageGroupMax: 0,
       requireDocument: [
-        // {
-        //   id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        //   name: "string",
-        // },
+        {
+          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          name: "Passport",
+        },
       ],
-      customerCategory: 0,
     },
     pricingConfiguration: {
       applicableTenorMin: 0,
-      applicableTenorMinUnit: 0,
-      applicableTenorMax: 0,
-      applicableTenorMaxUnit: 0,
-      applicablePrincipalMin: 0,
-      applicablePrincipalMax: 0,
+      applicableTenorMinUnit: 1,
+      applicableTenorMax: 8,
+      applicableTenorMaxUnit: 1,
+
       interestRateRangeType: 0,
       interestRateConfigModels: [
         {
@@ -69,8 +67,8 @@ export default function CreateTermDeposit() {
           tenorMaxUnit: 0,
         },
       ],
-      interestRateMin: 0,
-      interestRateMax: 0,
+      interestRateMin: 10,
+      interestRateMax: 60,
     },
     liquidation: {
       part_AllowPartLiquidation: true,
@@ -78,7 +76,7 @@ export default function CreateTermDeposit() {
       part_RequireNoticeBeforeLiquidation: true,
       part_NoticePeriod: 0,
       part_NoticePeriodUnit: 0,
-      part_LiquidationPenalty: "string",
+      part_LiquidationPenalty: "pay",
       early_AllowEarlyLiquidation: true,
       early_RequireNoticeBeforeLiquidation: true,
       early_NoticePeriod: 0,
@@ -87,7 +85,7 @@ export default function CreateTermDeposit() {
       early_LiquidationPenaltyPercentage: 0,
     },
     interestComputationMethod: 0,
-    isDraft: true,
+    isDraft: false,
     productType: 0,
   });
   // const [productInformationFormData, setProductInformationFormData] = useState({
@@ -147,7 +145,7 @@ export default function CreateTermDeposit() {
 
   const handleDraft = () => {
     createProduct({ ...productData, isDraft: true });
-    navigate(paths.INVESTMENT_DASHBOARD);
+    // navigate(paths.INVESTMENT_DASHBOARD);
   };
 
   let component;
