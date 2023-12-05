@@ -94,7 +94,7 @@ export default function CreateTermDeposit() {
     {
       id: 2,
       title: "Investment",
-      url: "/investment-management",
+      url: "/product-factory/investment",
     },
     {
       id: 3,

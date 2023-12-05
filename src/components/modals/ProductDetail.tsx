@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { IoArrowUndo } from "react-icons/io5";
+import { Link } from "react-router-dom";
 import { FaBan, FaEdit, FaPlayCircle, FaTimes } from "react-icons/fa";
 import moment from "moment";
 import ModalLayout from "./Layout";
@@ -163,11 +164,15 @@ export default function ProductDetail({
               </div>
               {/* )} */}
 
-              <button
-                className={`group flex items-center whitespace-nowrap py-[1px] text-base text-[#636363] gap-x-3 underline outline-none`}
+              <Link
+                to={`/product-factory/investment/${encodeURIComponent("term deposit")}/process-summary/preview?id=${detail.id}&category=product`}
               >
-                View Activity Log
-              </button>
+                <button
+                  className={`group flex items-center whitespace-nowrap py-[1px] text-base text-[#636363] gap-x-3 underline outline-none`}
+                >
+                  View Activity Log
+                </button>
+              </Link>
             </div>
           </div>
           <div className="border border-[#E5E9EB] rounded-lg py-[25px] px-[30px] h-[593px]">

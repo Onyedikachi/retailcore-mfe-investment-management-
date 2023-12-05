@@ -20,6 +20,7 @@ import { Confirm, Failed, Success } from "../modals";
 import Loader from "../Loader";
 import RequestDeactivation from "../modals/RequestDeactivation";
 import ProductDetail from "../modals/ProductDetail";
+import { StatusCategoryType } from "@app/types";
 
 interface TableProps {
   headers: any[];
@@ -36,6 +37,7 @@ interface TableProps {
   dropDownClick?: any;
   onChangeDate?: any;
   type?: string;
+  noData?: string;
 }
 
 // Extract Dropdown component for reusability
@@ -141,6 +143,7 @@ export default function TableComponent<TableProps>({
   dropDownClick,
   onChangeDate,
   type = "",
+  noData = "No data available",
 }) {
   const { role, permissions } = useContext(AppContext);
   const { isChecker } = useContext(InvestmentContext);
@@ -256,13 +259,13 @@ export default function TableComponent<TableProps>({
               <tbody>
                 {tableRows.map((item: any, index) => (
                   <tr
-                    key={item.id + index}
+                    key={item.id +  index.toString()}
                     className="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"
                   >
                     {headers.map((header, idx) => (
                       <td
                         className="text-base font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative"
-                        key={idx}
+                        key={idx.toString() + header.key}
                       >
                         <span className="relative">
                           {header.key !== "actions" ? (
@@ -321,15 +324,15 @@ export default function TableComponent<TableProps>({
               <tbody>
                 {Array.from(Array(5)).map((item: any, index) => (
                   <tr
-                    key={item + index}
+                    key={item + index.toString()}
                     className="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"
                   >
                     {headers.map((it, idxx) => (
                       <td
-                        key={it}
-                        className="text-base font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative text-left"
+                        key={`key-${idxx}`}
+                        className="text-sm font-medium text-[#aaa] px-4 py-5 capitalize max-w-[290px] truncate relative text-left"
                       >
-                        {idxx === 0 && index === 0 && "No data available"}
+                        {idxx === 0 && index === 0 && noData}
                       </td>
                     ))}
                   </tr>
