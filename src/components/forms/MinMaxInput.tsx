@@ -7,6 +7,7 @@ interface MinMaxProps {
   inputName?: string;
   register?: any;
   handleChange?: (value) => void;
+  defaultValue?: any;
 }
 export default function MinMaxInput({
   label,
@@ -16,6 +17,7 @@ export default function MinMaxInput({
   register = () => {},
   handleChange,
   inputName,
+  defaultValue = 0,
 }: MinMaxProps) {
   return (
     <div className={`${className} flex items-center gap-4`}>
@@ -33,7 +35,7 @@ export default function MinMaxInput({
             {...register(inputName, {
               required: true,
             })}
-            defaultValue={0}
+            defaultValue={defaultValue}
             // aria-invalid={errors?.name ? "true" : "false"}
           />
           <div className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]">

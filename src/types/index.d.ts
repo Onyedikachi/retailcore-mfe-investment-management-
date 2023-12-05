@@ -29,6 +29,7 @@ export interface BorderlessSelectProps {
   inputError?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
   clearErrors?: any;
   inputName?: string | null | undefined;
+  defaultValue?: any;
 }
 
 export interface ActiveFilterProps {}

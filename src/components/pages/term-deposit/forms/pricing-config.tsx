@@ -104,6 +104,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
 
   function onProceed(d: any) {
     console.log("Pricing - Config:" + JSON.stringify(d));
+
     proceed();
   }
   return (
@@ -118,18 +119,20 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                   register={register}
                   inputName={"applicableTenorMin"}
                   handleChange={(value) => {
-                    setValue("applicableTenorMin", value.value);
+                    setValue("applicableTenorMin", value);
                   }}
+                  defaultValue={formData.applicableTenorMin}
                 />
               </div>
               <div className="w-[150px]">
                 <BorderlessSelect
-                  inputError={errors?.applicableTenorMinDays}
+                  inputError={errors?.applicableTenorMinUnit}
                   register={register}
-                  inputName={"applicableTenorMinDays"}
+                  inputName={"applicableTenorMinUnit"}
                   handleSelected={(value) => {
-                    setValue("applicableTenorMinDays", value.value);
+                    setValue("applicableTenorMinUnit", value.value);
                   }}
+                  defaultValue={formData.applicableTenorMinUnit}
                   options={daysOptions}
                 />
               </div>
@@ -142,19 +145,21 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                   register={register}
                   inputName={"applicableTenorMax"}
                   handleChange={(value) => {
-                    setValue("applicableTenorMax", value.value);
+                    setValue("applicableTenorMax", value);
                   }}
+                  defaultValue={formData.applicableTenorMax}
                 />
               </div>
 
               <div className="w-[150px]">
                 <BorderlessSelect
-                  inputError={errors?.applicableTenorMaxDays}
+                  inputError={errors?.applicableTenorMaxUnit}
                   register={register}
-                  inputName={"applicableTenorMaxDays"}
+                  inputName={"applicableTenorMaxUnit"}
                   handleSelected={(value) => {
-                    setValue("applicableTenorMaxDays", value.value);
+                    setValue("applicableTenorMaxUnit", value.value);
                   }}
+                  defaultValue={formData.applicableTenorMaxUnit}
                   options={daysOptions}
                 />
               </div>
@@ -173,6 +178,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                 handleChange={(value) => {
                   setValue("applicablePrincipalMin", value.value);
                 }}
+                defaultValue={formData.applicablePrincipalMin}
               />
             </div>{" "}
             -
@@ -186,6 +192,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                 handleChange={(value) => {
                   setValue("applicablePrincipalMax", value.value);
                 }}
+                defaultValue={formData.applicablePrincipalMax}
               />
             </div>{" "}
           </div>
@@ -443,15 +450,25 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                   className="w-[140px]"
                   label={"Min"}
                   register={register}
-                  inputName={"applicableInterestMin"}
+                  inputName={"interestRateMin"}
                   handleChange={(value) => {
-                    setValue("applicableInterestMin", value.value);
+                    setValue("interestRateMin", value);
                   }}
+                  defaultValue={formData.interestRateMin}
                 />
               </div>{" "}
               -
               <div className="flex gap-[25px]">
-                <MinMaxInput className="w-[140px]" label={"Max"} />
+                <MinMaxInput
+                  className="w-[140px]"
+                  label={"Max"}
+                  register={register}
+                  inputName={"interestRateMax"}
+                  handleChange={(value) => {
+                    setValue("interestRateMax", value);
+                  }}
+                  defaultValue={formData.interestRateMax}
+                />
               </div>{" "}
             </div>
           )}

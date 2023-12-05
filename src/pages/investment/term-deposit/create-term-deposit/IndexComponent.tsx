@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { paths } from "@app/routes/paths";
 import { Confirm, Failed, Success } from "@app/components/modals";
-
+import { useCreateProductMutation } from "@app/api";
 import {
   Breadcrumbs,
   Loader,
@@ -27,53 +27,83 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
 }
 
 export default function CreateTermDeposit() {
-  const [step, setStep] = useState(5);
-  const [productInformationFormData, setProductInformationFormData] = useState({
-    name: "",
-    slogan: "",
-    description: "",
-    lifeCycle: "",
-    currency: "",
+  const [step, setStep] = useState(1);
+  const [productData, setProductData] = useState({
+    productInfo: {
+      productName: "Kaine Term Deposit",
+      slogan: "Dep10 ",
+      description: "Just testing",
+      startDate: "2023-12-03",
+      endDate: "2023-12-30",
+      currency: "NGN",
+      customerCategory: 0,
+    },
+    customerEligibility: {
+      ageGroupMin: 0,
+      ageGroupMax: 0,
+      requireDocument: [
+        {
+          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          name: "Passport",
+        },
+      ],
+    },
+    pricingConfiguration: {
+      applicableTenorMin: 0,
+      applicableTenorMinUnit: 1,
+      applicableTenorMax: 8,
+      applicableTenorMaxUnit: 1,
+
+      interestRateRangeType: 0,
+      interestRateConfigModels: [
+        {
+          min: 0,
+          max: 0,
+          principalMin: 0,
+          principalMax: 0,
+          tenorMin: 0,
+          tenorMinUnit: 0,
+          tenorMax: 0,
+          tenorMaxUnit: 0,
+        },
+      ],
+      interestRateMin: 10,
+      interestRateMax: 60,
+    },
+    liquidation: {
+      part_AllowPartLiquidation: true,
+      part_MaxPartLiquidation: 0,
+      part_RequireNoticeBeforeLiquidation: true,
+      part_NoticePeriod: 0,
+      part_NoticePeriodUnit: 0,
+      part_LiquidationPenalty: "pay",
+      early_AllowEarlyLiquidation: true,
+      early_RequireNoticeBeforeLiquidation: true,
+      early_NoticePeriod: 0,
+      early_NoticePeriodUnit: 0,
+      early_LiquidationPenalty: "string",
+      early_LiquidationPenaltyPercentage: 0,
+    },
+    interestComputationMethod: 0,
+    isDraft: false,
+    productType: 0,
   });
-  const [customerEligibilityCriteria, setCustomerEligibilityCriteria] =
-    useState({
-      category: "",
-      ageGroupStart: 0,
-      ageGroupEnd: 0,
-      corporateCustomerType: "",
-    });
-  const [pricingConfigData, setPricingConfigData] = useState({
-    applicableTenorMin: 0,
-    applicableTenorMinDays: 0,
-    applicableTenorMax: 0,
-    applicableTenorMaxDays: 0,
-    applicablePrincipalMin: 0,
-    applicablePrincipalMax: 0,
-    applicablePrincipalMinDays: 0,
-    applicablePrincipalMaxDays: 0,
-    varyOption: "",
-    applicableInterestMin: 0,
-    applicableInterestMax: 0,
-    interestComputation: "",
-    tenorRateRanges: [
-      {
-        minRange: 0,
-        maxRange: 0,
-        tenorFrom: 0,
-        tenorFromType: "",
-        tenorTo: 0,
-        tenorToType: "",
-      },
-    ],
-    principalRateRanges: [
-      {
-        minRange: 0,
-        maxRange: 0,
-        amountFrom: 0,
-        amountTo: 0,
-      },
-    ],
-  });
+  // const [productInformationFormData, setProductInformationFormData] = useState({
+  //   name: "",
+  //   slogan: "",
+  //   description: "",
+  //   startDate: "",
+  //   endDate: "",
+  //   currency: "",
+  // });
+  // const [customerEligibilityCriteria, setCustomerEligibilityCriteria] =
+  //   useState({
+  //     category: "",
+  //     ageGroupStart: 0,
+  //     ageGroupEnd: 0,
+  //     corporateCustomerType: "",
+  //   });
+
   const [isDisabled, setDisabled] = useState<boolean>(true);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [draftText] = useState({
@@ -102,6 +132,10 @@ export default function CreateTermDeposit() {
       url: "#",
     },
   ];
+  const [
+    createProduct,
+    { isLoading, isSuccess, isError, reset, error: draftError },
+  ] = useCreateProductMutation();
 
   function handleNav() {
     step < termDepositFormSteps.length
@@ -110,7 +144,8 @@ export default function CreateTermDeposit() {
   }
 
   const handleDraft = () => {
-    navigate(paths.INVESTMENT_DASHBOARD);
+    createProduct({ ...productData, isDraft: true });
+    // navigate(paths.INVESTMENT_DASHBOARD);
   };
 
   let component;
@@ -121,8 +156,10 @@ export default function CreateTermDeposit() {
       component = (
         <ProductInformation
           proceed={handleNav}
-          formData={productInformationFormData}
-          setFormData={setProductInformationFormData}
+          formData={productData.productInfo}
+          setFormData={(productInfo) =>
+            setProductData({ ...productData, productInfo: productInfo })
+          }
           setDisabled={setDisabled}
         />
       );
@@ -132,8 +169,13 @@ export default function CreateTermDeposit() {
       component = (
         <CustomerEligibilityCriteria
           proceed={handleNav}
-          formData={customerEligibilityCriteria}
-          setFormData={setCustomerEligibilityCriteria}
+          formData={productData.customerEligibility}
+          setFormData={(customerEligibility) =>
+            setProductData({
+              ...productData,
+              customerEligibility: customerEligibility,
+            })
+          }
           setDisabled={setDisabled}
         />
       );
@@ -142,15 +184,31 @@ export default function CreateTermDeposit() {
     case 3:
       component = (
         <PricingConfig
-          formData={pricingConfigData}
-          setFormData={setPricingConfigData}
+          formData={productData.pricingConfiguration}
+          setFormData={(pricingConfiguration) =>
+            setProductData({
+              ...productData,
+              pricingConfiguration: pricingConfiguration,
+            })
+          }
           proceed={handleNav}
         />
       );
       formRef = "pricingconfig";
       break;
     case 4:
-      component = <LiquiditySetup proceed={handleNav} />;
+      component = (
+        <LiquiditySetup
+          proceed={handleNav}
+          formData={productData.liquidation}
+          setFormData={(liquidation) =>
+            setProductData({
+              ...productData,
+              liquidation: liquidation,
+            })
+          }
+        />
+      );
       formRef = "liquiditysetup";
       break;
     case 5:
@@ -162,8 +220,10 @@ export default function CreateTermDeposit() {
       component = (
         <ProductInformation
           proceed={handleNav}
-          formData={productInformationFormData}
-          setFormData={setProductInformationFormData}
+          formData={productData.productInfo}
+          setFormData={(productInfo) =>
+            setProductData({ ...productData, productInfo: productInfo })
+          }
           setDisabled={setDisabled}
         />
       );
@@ -176,6 +236,7 @@ export default function CreateTermDeposit() {
         </h1>
         <Breadcrumbs links={links} />
       </div>
+      {/* {productData.productInfo.productName} */}
       <div className="h-full px-[37px] py-[30px] bg-[#F7F7F7]">
         <div className=" bg-[#ffffff] rounded-md px-[100px] pt-[54px] pb-[49px] ">
           <div className="pb-[49px] ">

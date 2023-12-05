@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BorderlessSelect } from "@app/components/forms";
 import { SelectedRequirementsTable } from "@app/components";
 import { MinMaxInput, InfoLabel } from "@app/components/forms";
@@ -15,9 +15,20 @@ export default function CustomerEligibilityCriteria({
   setDisabled,
   proceed,
 }) {
-  const [chosenCategory, setChosenCategory] = useState("Individual");
+  // const [chosenCategory, setChosenCategory] = useState("Individual");
   const [documents, setDocuments] = useState([
-    "Customer signature",
+    //  {
+    //   id:  1,
+    //   name:  "Customer signature"
+    //  },
+    //  {
+    //   id:  2,
+    //   name:  "Document 2"
+    //  },
+    //  {
+    //   id:  3,
+    //   name:  "Document 3"
+    //  },
     "Signature",
     "Document 1",
     "Document 2",
@@ -83,8 +94,17 @@ export default function CustomerEligibilityCriteria({
     // Update the state with the new array
     setSelectedRequirements(updatedRequirement);
   };
+  //update the customer eligibility
+  useEffect(() => {
+    setFormData({ ...formData, requireDocument: selectedRequirements });
+  }, [selectedRequirements]);
   function onProceed(d: any) {
-    console.log("Customer - Eligibility:" + JSON.stringify(d));
+    console.log(
+      "Customer - Eligibility:" +
+        JSON.stringify({ ...d, requireDocument: selectedRequirements })
+    );
+    setFormData({ ...d, requireDocument: selectedRequirements });
+
     proceed();
   }
 
@@ -92,8 +112,7 @@ export default function CustomerEligibilityCriteria({
     <div>
       <form id="customereligibilitycriteria" onSubmit={handleSubmit(onProceed)}>
         <div className="flex gap-[18px]">
-          {/* {`category: ${selectedCategory}`} */}
-          <div className="w-[300px]">
+          {/* <div className="w-[300px]">
             <BorderlessSelect
               labelName={"Customer Category"}
               inputError={errors?.category}
@@ -115,58 +134,83 @@ export default function CustomerEligibilityCriteria({
                 },
               ]}
             />
-          </div>
+          </div> */}
 
-          <div className="flex">
-            {chosenCategory?.toLowerCase() == "corporate" ? (
-              <div className="w-[300px]">
-                <BorderlessSelect
-                  labelName={"Type of corporate customer"}
-                  register={register}
-                  inputName={"corporateCustomerType"}
-                  handleSelected={(value) => {
-                    setValue("corporateCustomerType", value.value);
-                  }}
-                  options={[
-                    {
-                      id: 1,
-                      text: "CustomerType1",
-                      value: "CustomerType1",
-                    },
-                    {
-                      id: 2,
-                      text: "CustomerType2",
-                      value: "CustomerType2",
-                    },
-                  ]}
-                />
-              </div>
-            ) : (
-              <div className="flex flex-col ">
-                <InfoLabel label={"Age Group Eligibility"} info={"String"} />
-                <div className="flex items-end gap-[25px]">
-                  <div className="w-[150px]">
-                    <MinMaxInput
-                      register={register}
-                      inputName={"ageGroupStart"}
-                      handleChange={(value) => {
-                        setValue("ageGroupStart", value.value);
-                      }}
-                    />
-                  </div>
-                  <div className="flex items-center">-</div>
-                  <div className="w-[150px]">
-                    <MinMaxInput
-                      register={register}
-                      inputName={"ageGroupEnd"}
-                      handleChange={(value) => {
-                        setValue("ageGroupEnd", value.value);
-                      }}
-                    />
-                  </div>
+          <div className="flex gap-[25px]">
+            <div className="w-[300px]">
+              <BorderlessSelect
+                labelName={"Customer Category"}
+                register={register}
+                inputName={"customerCategory"}
+                handleSelected={(value) => {
+                  setValue("customerCategory", value.value);
+                }}
+                defaultValue={formData.customerCategory}
+                options={[
+                  {
+                    id: 1,
+                    text: "Individual",
+                    value: 0,
+                  },
+                  {
+                    id: 2,
+                    text: "Corporate",
+                    value: 1,
+                  },
+                ]}
+              />
+            </div>
+            {/* {chosenCategory?.toLowerCase() == "corporate" ? ( */}
+            {/* <div className="w-[300px]">
+              <BorderlessSelect
+                labelName={"Type of corporate customer"}
+                register={register}
+                inputName={"corporateCustomerType"}
+                handleSelected={(value) => {
+                  setValue("corporateCustomerType", value.value);
+                }}
+                options={[
+                  {
+                    id: 1,
+                    text: "CustomerType1",
+                    value: "CustomerType1",
+                  },
+                  {
+                    id: 2,
+                    text: "CustomerType2",
+                    value: "CustomerType2",
+                  },
+                ]}
+              />
+            </div> */}
+            {/* // ) : ( */}
+            <div className="flex flex-col ">
+              <InfoLabel label={"Age Group Eligibility"} info={"String"} />
+              <div className="flex items-end gap-[25px]">
+                <div className="w-[150px]">
+                  <MinMaxInput
+                    register={register}
+                    inputName={"ageGroupMin"}
+                    handleChange={(value) => {
+                      setValue("ageGroupMin", value);
+                    }}
+                    defaultValue={formData.ageGroupMin}
+                  />
+                </div>
+                <div className="flex items-center">-</div>
+                <div className="w-[150px]">
+                  <MinMaxInput
+                    register={register}
+                    inputName={"ageGroupMax"}
+                    handleChange={(value) => {
+                      setValue("ageGroupMax", value);
+                    }}
+                    defaultValue={formData.ageGroupMin}
+                  />
                 </div>
               </div>
-            )}
+            </div>
+            {/* // )} */}
           </div>
         </div>
         <div className="flex justify-end mt-10">
@@ -294,7 +338,7 @@ export default function CustomerEligibilityCriteria({
                       </div>
                     </div>
                     {documents?.map((document, index) => (
-                      <div className="space-y-5 ml-[16px]">
+                      <div key={document} className="space-y-5 ml-[16px]">
                         <div className="relative flex items-start">
                           <div className="flex h-6 items-center">
                             <input

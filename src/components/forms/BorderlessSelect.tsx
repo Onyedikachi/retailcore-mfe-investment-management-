@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState, memo } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { FaChevronDown } from "react-icons/fa";
 import { BorderlessSelectProps } from "@app/types";
@@ -10,7 +10,12 @@ export default function Select({
   register = () => {},
   inputError,
   inputName,
+  defaultValue,
 }: BorderlessSelectProps): React.JSX.Element {
+  // const indexOfItemWithDefaultValue = options.findIndex(
+  //   (item) => item.value === defaultValue
+  // );
+
   const [selected, setSelected] = useState(options[0]);
 
   useEffect(() => {
@@ -106,3 +111,5 @@ export default function Select({
     </div>
   );
 }
+
+// export default memo(Select);

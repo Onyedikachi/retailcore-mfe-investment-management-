@@ -277,7 +277,6 @@ export const ProductState = {
   2: "Active",
 };
 
-
 export const InterestRateRangeType = {
   0: "Vary By Principal",
   1: "Vary By Tenor",

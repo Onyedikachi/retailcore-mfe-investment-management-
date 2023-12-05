@@ -10,7 +10,7 @@ import { ProductInformationFormSchema } from "@app/constants";
 import debounce from "lodash.debounce";
 import { useParams } from "react-router-dom";
 import { useValidateNameMutation } from "@app/api";
-
+import moment from "moment";
 const defaultLength = 50;
 const defaultSloganLength = 160;
 
@@ -56,7 +56,7 @@ export function handleName(
   const remainder = defaultLength - Number(namelength);
 
   setCharLeft(remainder);
-  clearErrors("name");
+  clearErrors("productName");
   setCurrentName(watchName);
   if (!watchName) return;
   if (watchName.length > 3) {
@@ -67,7 +67,7 @@ export function handleName(
         compareValues();
         return;
       }
-      validateName({ name: watchName, productId: id || "" });
+      validateName({ productName: watchName, productId: id || null });
     }, timer)();
   } else {
     setError("");
@@ -78,7 +78,6 @@ export function handleName(
 
 export function handleSlogan(
   watchSlogan,
-
   setSloganCharLeft,
   setIsSloganOkay,
   clearErrors,
@@ -98,6 +97,7 @@ export function handleSlogan(
   }
 }
 
+//ProductInformation
 export default function ProductInformation({
   formData,
   setFormData,
@@ -105,7 +105,7 @@ export default function ProductInformation({
   proceed,
 }) {
   //
-  //
+  //useForm
   const {
     register,
     handleSubmit,
@@ -119,6 +119,8 @@ export default function ProductInformation({
     resolver: yupResolver(ProductInformationFormSchema),
     defaultValues: formData,
   });
+
+  //useState
   const productFormRef = useRef();
   const [error, setError] = useState<string>("");
   const [charLeft, setCharLeft] = useState<number>(50);
@@ -140,7 +142,7 @@ export default function ProductInformation({
   function compareValues() {
     const name = getValues("name");
     // const conditions = [
-  
+
     // ];
 
     // if (conditions.some((condition) => condition)) {
@@ -151,7 +153,13 @@ export default function ProductInformation({
   }
 
   function onProceed(d: any) {
-    console.log("ProductInfo: " + JSON.stringify(d));
+    console.log("Date:" + moment(d.startDate).format("yyyy-MM-DD"));
+
+    setFormData({
+      ...d,
+      startDate: moment(d.startDate).format("yyyy-MM-DD"),
+      endDate: moment(d.endDate).format("yyyy-MM-DD"),
+    });
     proceed();
   }
 
@@ -168,9 +176,11 @@ export default function ProductInformation({
               <input
                 data-testid="product-name"
                 className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB] ${
-                  errors?.name || error ? "border-red-500" : ""
-                } ${isNameOkay && !errors?.name ? "border-success-500" : ""}`}
-                {...register("name", {
+                  errors?.productName || error ? "border-red-500" : ""
+                } ${
+                  isNameOkay && !errors?.productName ? "border-success-500" : ""
+                }`}
+                {...register("productName", {
                   required: true,
                   maxLength: 50,
                 })}
@@ -192,20 +202,20 @@ export default function ProductInformation({
                 }}
                 placeholder="Enter Name"
                 maxLength={defaultLength}
-                defaultValue={formData?.name}
-                aria-invalid={errors?.name ? "true" : "false"}
+                defaultValue={formData?.productName}
+                aria-invalid={errors?.productName ? "true" : "false"}
               />
               <div className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]">
                 <span>
                   {" "}
                   {charLeft}/{defaultLength}
                 </span>{" "}
-                {isNameOkay && !errors?.name && (
+                {isNameOkay && !errors?.productName && (
                   <span>
                     <FaCheckCircle className="text-success-500 text-xl" />
                   </span>
                 )}
-                {(error || errors?.name) && (
+                {(error || errors?.productName) && (
                   <span>
                     <RiErrorWarningFill className="text-danger-500 text-xl w-5 h-5" />
                   </span>
@@ -215,9 +225,9 @@ export default function ProductInformation({
                 )}
               </div>
             </div>
-            {errors?.name && (
+            {errors?.productName && (
               <span className="text-sm text-danger-500">
-                {errors?.name?.message}
+                {errors?.productName?.message}
               </span>
             )}
             {isNameOkay && (
@@ -323,9 +333,23 @@ export default function ProductInformation({
             </label>
 
             <div className="flex ">
-              <FormDate />
+              <FormDate
+                register={register}
+                inputName={"startDate"}
+                handleChange={(value) => {
+                  setValue("startDate", value);
+                }}
+                defaultValue={formData.startDate}
+              />
               -
-              <FormDate />
+              <FormDate
+                register={register}
+                inputName={"endDate"}
+                handleChange={(value) => {
+                  setValue("endDate", value);
+                }}
+                defaultValue={formData.endDate}
+              />
             </div>
           </div>
 
