@@ -126,9 +126,9 @@ export default function ActivityLog({
                       <p className="text-[#636363] font-normal text-sm">
                         {item?.description}
                       </p>
-                      {item?.created_at && (
+                      {item?.created_At && (
                         <p className="text-[#AAA] font-normal text-xs">
-                          {moment(item?.created_at).format("lll")}
+                          {moment(item?.created_At).format("lll")}
                         </p>
                       )}
                     </div>

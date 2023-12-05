@@ -496,13 +496,7 @@ export const productHeader = [
   {
     label: "updated on",
     key: "updatedOn",
-    options: [
-      {
-        id: 1,
-        name: "",
-        value: "",
-      },
-    ],
+    options: [],
     hasSelect: false,
     hasDateSelect: true,
   },
@@ -538,23 +532,7 @@ export const requestHeader = [
   {
     label: "initiator",
     key: "created_By",
-    options: [
-      {
-        id: 1,
-        name: "Term deposit",
-        value: "1",
-      },
-      {
-        id: 2,
-        name: "Commercial paper",
-        value: "2",
-      },
-      {
-        id: 3,
-        name: "Treasurer bill",
-        value: "3",
-      },
-    ],
+    options: [],
     hasSelect: true,
     hasDateSelect: false,
   },

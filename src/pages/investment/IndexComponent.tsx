@@ -202,6 +202,7 @@ export default function IndexComponent() {
     query.start_Date,
     query.end_Date,
     query.requestType_In,
+    query.initiator_In
   ]);
 
   useEffect(() => {

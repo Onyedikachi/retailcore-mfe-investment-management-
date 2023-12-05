@@ -5,7 +5,7 @@ import ModifySvg from "@app/assets/images/ModifySvg";
 import CancelSvg from "@app/assets/images/CancelSvg";
 import { IoArrowUndo } from "react-icons/io5";
 import ShareButton from "../ShareButton";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Confirm } from "../modals";
 
 export const handlePrint = () => {
@@ -85,7 +85,8 @@ export default function Actions() {
             url={window.location.href}
           />
 
-          <Button
+       <Link to="/product-factory/investment">
+       <Button
             data-testid="gotodashboard"
             className="cursor-pointer max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"
           >
@@ -95,8 +96,9 @@ export default function Actions() {
               Return to dashboard
             </div>
           </Button>
+       </Link>
 
-          <Button
+          {/* <Button
             data-testid="request_modify"
             className="max-w-max  px-10 py-[5px] text-white rounded-lg border border-sterling-red-800 bg-sterling-red-800 justify-center items-center gap-2.5 inline-flex"
           >
@@ -117,7 +119,7 @@ export default function Actions() {
             <span className="text-white text-base font-medium leading-normal">
               Modify
             </span>
-          </Button>
+          </Button> */}
         </div>
       )}
       {/* Approval/ Rejection  */}
@@ -201,9 +203,14 @@ export default function Actions() {
         </div>
       )}
 
-      <Confirm isOpen={cancel} setIsOpen={setCancel} text={""} onConfirm={function (): void {
-        throw new Error("Function not implemented.");
-      } } />
+      <Confirm
+        isOpen={cancel}
+        setIsOpen={setCancel}
+        text={""}
+        onConfirm={function (): void {
+          throw new Error("Function not implemented.");
+        }}
+      />
     </div>
   );
 }

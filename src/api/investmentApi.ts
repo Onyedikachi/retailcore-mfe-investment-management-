@@ -7,10 +7,8 @@ import { parseQueryParams } from "../utils/parseQueryParams";
 import urls from "../helpers/url_helpers";
 import { cleanObject } from "@app/utils/cleanObject";
 // baseQuery: axiosBaseQuery({ serviceKey: "investment" }),
-console.log(
-  "🚀 ~ file: investmentApi.ts:9 ~ axiosBaseQuery({ serviceK",
-  axiosBaseQuery({ serviceKey: "investment" })
-);
+
+console.log(process.env)
 export const investmentApi: any = createApi({
   reducerPath: "investmentApi",
   baseQuery: fetchBaseQuery({
@@ -23,7 +21,6 @@ export const investmentApi: any = createApi({
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
       }
-
       return headers;
     },
   }),
@@ -247,4 +244,5 @@ export const {
   useUploadDocumentMutation,
   useGetPermissionsMutation,
   useDeleteProductMutation,
+  useGetProductActivityLogQuery
 } = investmentApi;

@@ -7,6 +7,7 @@ import { ucObjectKeys, InvestmentContext, AppContext } from "@app/utils";
 import {
   useGetPostProductsMutation,
   useGetPostRequestsMutation,
+  useGetUsersPermissionsQuery,
 } from "@app/api";
 import SearchInput from "@app/components/SearchInput";
 import Table from "@app/components/table";
@@ -162,6 +163,7 @@ export default function TableComponent({
 }: any) {
   const { category, setStatus, isChecker } = useContext(InvestmentContext);
   const { permissions } = useContext(AppContext);
+  const [users, setUsers] = useState([]);
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [options, setOptions] = React.useState({
     fieldSeparator: ",",
@@ -195,6 +197,24 @@ export default function TableComponent({
       isLoading: isRequestLoading,
     },
   ] = useGetPostRequestsMutation();
+
+  const { data: userData, isSuccess: userSuccess } =
+    useGetUsersPermissionsQuery({ permissions: ["APPROVE_BRANCH_REQUESTS"] });
+
+  useEffect(() => {
+    if (userSuccess) {
+      setUsers(
+        userData?.data?.map((i) => {
+          return {
+            name: i.fullname,
+            value: i.id,
+            id: i.id,
+          };
+        })
+      );
+    }
+  }, [userSuccess]);
+
   useEffect(() => {
     isSuccess &&
       setSearchResults(
@@ -253,6 +273,19 @@ export default function TableComponent({
         requestType_In: value.length ? value.map((i) => i.value) : null,
       });
     }
+
+    if (label === "initiator") {
+      setQuery({
+        ...query,
+        initiator_In: value.length ? value.map((i) => i.value) : null,
+      });
+    }
+    if (label === "reviewer") {
+      setQuery({
+        ...query,
+        initiator_In: value.length ? value.map((i) => i.value) : null,
+      });
+    }
     if (label === "state" || label === "status") {
       setQuery({
         ...query,
@@ -288,7 +321,9 @@ export default function TableComponent({
               setSearchResults
             )
           }
-          placeholder={`Search by product name${category=== StatusCategoryType.Requests?'/code':''}`}
+          placeholder={`Search by product name${
+            category === StatusCategoryType.Requests ? "/code" : ""
+          }`}
           searchResults={searchResults}
           setSearchResults={setSearchResults}
           searchLoading={searchLoading}
@@ -330,8 +365,11 @@ export default function TableComponent({
       <Table
         headers={
           category === StatusCategoryType?.AllProducts
-            ? productHeader
-            : handleHeaders(requestHeader, isChecker)
+            ? productHeader.map((i) => ({ ...i, options: users }))
+            : handleHeaders(
+                requestHeader.map((i) => ({ ...i, options: users })),
+                isChecker
+              )
         }
         tableRows={
           category === StatusCategoryType?.AllProducts
@@ -348,6 +386,11 @@ export default function TableComponent({
         dropDownClick={handleDropClick}
         onChangeDate={onChangeDate}
         type={category.toLowerCase()}
+        noData={
+          StatusCategoryType.Requests === category
+            ? "No request available"
+            : "No product available"
+        }
       />
     </section>
   );
