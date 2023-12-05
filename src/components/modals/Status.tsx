@@ -143,7 +143,7 @@ export function Failed({
                 onClick={() => setIsOpen(false)}
                 type="button"
                 data-testid="close-btn"
-                className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-1 text-[#CF2A2A] underline outline-none"
+                className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-1 text-[#CF2A2A] hover:underline outline-none"
               >
                 Click to retry
               </Button>
