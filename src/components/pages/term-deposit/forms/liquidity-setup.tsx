@@ -40,14 +40,14 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
       label: "Allow Early Liquidation",
     },
   ];
+  function onProceed(d: any) {
+    console.log("Customer - Eligibility:" + JSON.stringify({ ...d }));
+    setFormData({ ...d });
+
+    proceed();
+  }
   return (
-    <form
-      id="liquiditysetup"
-      onSubmit={(e) => {
-        e.preventDefault();
-        proceed();
-      }}
-    >
+    <form id="liquiditysetup" onSubmit={handleSubmit(onProceed)}>
       <div className="flex flex-col gap-14">
         {liquidationTypes.map((type) => (
           <ToggleInputChildren key={type.label} label={type.label}>
