@@ -90,9 +90,20 @@ export const pricingConfigSchema = yup
     ),
   })
   .required();
-export const liquiditySetup = yup
+export const liquiditySetupSchema = yup
   .object({
-    category: yup.string(),
+    part_AllowPartLiquidation: yup.boolean(),
+    part_MaxPartLiquidation: yup.number(),
+    part_RequireNoticeBeforeLiquidation: yup.boolean(),
+    part_NoticePeriod: yup.number(),
+    part_NoticePeriodUnit: yup.number(),
+    part_LiquidationPenalty: yup.string(),
+    early_AllowEarlyLiquidation: yup.boolean(),
+    early_RequireNoticeBeforeLiquidation: yup.boolean(),
+    early_NoticePeriod: yup.number(),
+    early_NoticePeriodUnit: yup.number(),
+    early_LiquidationPenalty: yup.string(),
+    early_LiquidationPenaltyPercentage: yup.number(),
   })
   .required();
 export const entriesAndEventsSchema = yup

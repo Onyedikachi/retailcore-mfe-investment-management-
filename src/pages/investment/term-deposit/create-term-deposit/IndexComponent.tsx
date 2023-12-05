@@ -225,7 +225,18 @@ export default function CreateTermDeposit() {
       formRef = "pricingconfig";
       break;
     case 4:
-      component = <LiquiditySetup proceed={handleNav} />;
+      component = (
+        <LiquiditySetup
+          proceed={handleNav}
+          formData={productData.liquidation}
+          setFormData={(liquidation) =>
+            setProductData({
+              ...productData,
+              liquidation: liquidation,
+            })
+          }
+        />
+      );
       formRef = "liquiditysetup";
       break;
     case 5:

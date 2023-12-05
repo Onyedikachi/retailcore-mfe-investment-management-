@@ -450,15 +450,25 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                   className="w-[140px]"
                   label={"Min"}
                   register={register}
-                  inputName={"applicableInterestMin"}
+                  inputName={"interestRateMin"}
                   handleChange={(value) => {
-                    setValue("applicableInterestMin", value.value);
+                    setValue("interestRateMin", value);
                   }}
+                  defaultValue={formData.interestRateMin}
                 />
               </div>{" "}
               -
               <div className="flex gap-[25px]">
-                <MinMaxInput className="w-[140px]" label={"Max"} />
+                <MinMaxInput
+                  className="w-[140px]"
+                  label={"Max"}
+                  register={register}
+                  inputName={"interestRateMax"}
+                  handleChange={(value) => {
+                    setValue("interestRateMax", value);
+                  }}
+                  defaultValue={formData.interestRateMax}
+                />
               </div>{" "}
             </div>
           )}
