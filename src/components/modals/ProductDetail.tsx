@@ -35,9 +35,8 @@ export default function ProductDetail({
     "3% for principal between 400,000 and 600,000",
   ];
   const { data: productData, isLoading } = useGetProductDetailQuery({
-    productId: detail.id,
+    id: detail.id,
   });
-  console.log("🚀 ~ file: ProductDetail.tsx:40 ~ productData:", productData);
   const [open, setOpen] = useState(false);
 
   // React.useEffect(()=>{
@@ -54,7 +53,7 @@ export default function ProductDetail({
             <div className="flex justify-between items-center pb-6 pt-8 px-16 border-b border-[#CCCCCC] w-full">
               <div className="flex gap-x-5 items-center">
                 <h1 className="text-[#636363] font-bold text-2xl uppercase">
-                  {productData?.data?.productInfo?.productName}
+                  {productData?.data?.productInfo?.productName || "-"}
                 </h1>
                 <span
                   className={`${

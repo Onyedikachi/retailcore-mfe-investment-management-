@@ -367,7 +367,7 @@ export default function TableComponent<TableProps>({
             )}
             {tableRows?.length == 0 && !isLoading && (
               <tbody>
-                {Array.from(Array(5)).map((item: any, index) => (
+                {Array.from(Array(10)).map((item: any, index) => (
                   <tr
                     key={item + index.toString()}
                     className="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"

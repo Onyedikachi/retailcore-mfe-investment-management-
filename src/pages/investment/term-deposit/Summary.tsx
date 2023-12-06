@@ -71,7 +71,7 @@ export default function Summary() {
       : { data: undefined, isLoading: false };
 
       const { data: productData, isLoading } = useGetProductDetailQuery({
-        productId: id,
+       id,
       });
       
   return (

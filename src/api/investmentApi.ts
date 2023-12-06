@@ -140,7 +140,7 @@ export const investmentApi: any = createApi({
     }),
     getProductDetail: builder.query<any, any>({
       query: (data) => {
-        if (!data.productId) return;
+        if (!data.id) return;
         return {
           url: `${urls.PRODUCT_DETAILS}?${new URLSearchParams(
             cleanObject(data)
