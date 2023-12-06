@@ -381,8 +381,9 @@ export default function ProductInformation({
                 register={register}
                 inputName={"currency"}
                 labelName={"Product Currency"}
+                value={formData.currency}
                 handleSelected={(value) => {
-                  setValue("currency", value.value);
+                  setValue("currency", value?.value);
                 }}
                 options={[
                   {

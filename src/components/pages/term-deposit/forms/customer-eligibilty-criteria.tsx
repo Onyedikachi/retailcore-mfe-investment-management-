@@ -42,7 +42,6 @@ export default function CustomerEligibilityCriteria({
     handleSubmit,
     watch,
     clearErrors,
-
     setValue,
     setError: assignError,
     getValues,
@@ -54,6 +53,15 @@ export default function CustomerEligibilityCriteria({
   });
 
   const selectedCategory = watch("category");
+  const currency = getValues();
+  console.log("🚀 ~ file: customer-eligibilty-criteria.tsx:57 ~ currency:", currency)
+  // useEffect(() => {
+  //   ;
+  //   console.log(
+  //     "🚀 ~ file: customer-eligibilty-criteria.tsx:59 ~ useEffect ~ currency:",
+  //     currency
+  //   );
+  // }, [formData]);
 
   const handleCheckedRequirement = (document) => {
     const isDocumentToggled = toggledRequirements.some(
@@ -114,7 +122,7 @@ export default function CustomerEligibilityCriteria({
               register={register}
               inputName={"category"}
               handleSelected={(value) => {
-                setValue("category", value.value);
+                setValue("category", value?.value);
               }}
               options={[
                 {
@@ -138,7 +146,7 @@ export default function CustomerEligibilityCriteria({
                 register={register}
                 inputName={"customerCategory"}
                 handleSelected={(value) => {
-                  setValue("customerCategory", value.value);
+                  setValue("customerCategory", value?.value);
                 }}
                 defaultValue={formData.customerCategory}
                 options={[
@@ -162,7 +170,7 @@ export default function CustomerEligibilityCriteria({
                 register={register}
                 inputName={"corporateCustomerType"}
                 handleSelected={(value) => {
-                  setValue("corporateCustomerType", value.value);
+                  setValue("corporateCustomerType", value?.value);
                 }}
                 options={[
                   {

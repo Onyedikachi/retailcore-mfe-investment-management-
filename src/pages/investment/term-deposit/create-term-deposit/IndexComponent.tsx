@@ -38,7 +38,7 @@ export default function CreateTermDeposit() {
       description: "",
       startDate: "",
       endDate: "",
-      currency: "NGN",
+      currency:  "USD",
       customerCategory: 0,
     },
     customerEligibility: {
