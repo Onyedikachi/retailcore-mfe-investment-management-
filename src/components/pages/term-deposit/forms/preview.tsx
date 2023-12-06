@@ -43,6 +43,8 @@ export default function Preview({ formData }: any) {
   const [isFailed, setFailed] = useState(false);
   const [failedSubText, setFailedSubtext] = useState("");
   const [failedText, setFailedText] = useState("");
+
+
   const links = [
     {
       id: 1,
@@ -65,6 +67,8 @@ export default function Preview({ formData }: any) {
       url: "#",
     },
   ];
+
+
 
   const staticDetails = {
     name: "Term deposit 1",
@@ -96,7 +100,7 @@ export default function Preview({ formData }: any) {
     return;
   };
   const handleSubmit = () => {
-    createProduct({  isDraft: false });
+    createProduct({ ...formData, isDraft: false });
     // navigate(paths.INVESTMENT_DASHBOARD);
   };
   useEffect(() => {
@@ -131,7 +135,7 @@ export default function Preview({ formData }: any) {
               <ReviewStatus status={"r"} reason={"r"} type={""} text="failed" />
             )}
             <Container>
-              <ProductDetail detail={formData} oldData={formData} />
+              <ProductDetail detail={formData} previousDetail={formData} />
             </Container>
           </div>
           <Actions

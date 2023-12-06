@@ -33,11 +33,11 @@ export default function CreateTermDeposit() {
   const [step, setStep] = useState(1);
   const [productData, setProductData] = useState({
     productInfo: {
-      productName: "Kaine Term Deposit",
-      slogan: "Dep10 ",
-      description: "Just testing",
-      startDate: "2023-12-03",
-      endDate: "2023-12-30",
+      productName: "",
+      slogan: "",
+      description: "",
+      startDate: "",
+      endDate: "",
       currency: "NGN",
       customerCategory: 0,
     },
@@ -56,9 +56,9 @@ export default function CreateTermDeposit() {
       interestRateRangeType: 0,
       interestRateConfigModels: [
         {
-          min: 1,
-          max: 2,
-          principalMin: 11,
+          min: 0,
+          max: 0,
+          principalMin: 1,
           principalMax: 12,
           tenorMin: 21,
           tenorMinUnit: 0,
@@ -80,7 +80,7 @@ export default function CreateTermDeposit() {
       early_RequireNoticeBeforeLiquidation: true,
       early_NoticePeriod: 4,
       early_NoticePeriodUnit: 5,
-      early_LiquidationPenalty: "string",
+      early_LiquidationPenalty: "pay",
       early_LiquidationPenaltyPercentage: 7,
     },
     interestComputationMethod: 0,
@@ -124,14 +124,15 @@ export default function CreateTermDeposit() {
   function handleNav() {
     step < termDepositFormSteps.length
       ? handleNext(step, setStep, termDepositFormSteps)
-      : navigate("/product-factory/investment/term-deposit/create?stage=preview");
+      : navigate(
+          "/product-factory/investment/term-deposit/create?stage=preview"
+        );
   }
 
   const handleDraft = () => {
     createProduct({ ...productData, isDraft: true });
     // navigate(paths.INVESTMENT_DASHBOARD);
   };
-
 
   let component;
   let formRef;
@@ -275,7 +276,11 @@ export default function CreateTermDeposit() {
         </div>
       )}
 
-      {stage && stage === "preview" && <div><Preview  formData={productData} /></div>}
+      {stage && stage === "preview" && (
+        <div>
+          <Preview formData={productData} />
+        </div>
+      )}
 
       {/* //Modals */}
       {isConfirmOpen && (

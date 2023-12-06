@@ -22,7 +22,7 @@ import RequestDeactivation from "../modals/RequestDeactivation";
 import ProductDetail from "../modals/ProductDetail";
 import { StatusCategoryType } from "@app/types";
 import { useNavigate } from "react-router-dom";
-import { useDeleteProductMutation } from "@app/api";
+import { useDeleteProductRequestMutation } from "@app/api";
 
 interface TableProps {
   headers: any[];
@@ -223,7 +223,7 @@ export default function TableComponent<TableProps>({
   };
 
   const [deleteRequest, { isSuccess, isError, error, isLoading: deleteLoading }] =
-    useDeleteProductMutation();
+  useDeleteProductRequestMutation();
 
   const handleConfirm = () => {
     console.log(

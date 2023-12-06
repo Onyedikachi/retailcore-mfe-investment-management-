@@ -264,7 +264,7 @@ export const {
   useGetProductByCodeQuery,
   useUploadDocumentMutation,
   useGetPermissionsMutation,
-  useDeleteProductMutation,
+  useDeleteProductRequestMutation,
   useGetProductActivityLogQuery,
   useGetProductRequestActivityLogQuery,
   useGetProductDetailQuery,
