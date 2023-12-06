@@ -33,9 +33,9 @@ export default function CreateTermDeposit() {
   const [step, setStep] = useState(1);
   const [productData, setProductData] = useState({
     productInfo: {
-      productName: "ww",
-      slogan: "www",
-      description: "wwww",
+      productName: "",
+      slogan: "",
+      description: "",
       startDate: "",
       endDate: "",
       currency: "NGN",
