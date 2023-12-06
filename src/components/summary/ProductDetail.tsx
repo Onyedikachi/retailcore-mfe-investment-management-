@@ -83,16 +83,19 @@ export default function ProductDetail({ detail, previousDetail }: any) {
                 Product Name
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                {previousDetail && previousDetail?.name !== detail.name && (
-                  <span className="block  line-through mb-2 text-[#aaa]">
-                    {" "}
-                    {previousDetail?.name}
-                  </span>
-                )}
+                {previousDetail &&
+                  previousDetail?.productInfo?.productName !==
+                    detail?.productInfo?.productName && (
+                    <span className="block  line-through mb-2 text-[#aaa]">
+                      {" "}
+                      {previousDetail?.productInfo?.productName}
+                    </span>
+                  )}
                 <span className="flex itmes-center">
                   {" "}
-                  {detail?.name}{" "}
-                  {previousDetail && previousDetail?.name !== detail?.name && (
+                  {detail?.productInfo?.productName}{" "}
+                  {previousDetail?.productInfo?.productName !==
+                    detail?.productInfo?.productName && (
                     <span className="block text-success-500 pl-[2px]">
                       {" "}
                       New

@@ -131,7 +131,7 @@ export default function Preview({ formData }: any) {
               <ReviewStatus status={"r"} reason={"r"} type={""} text="failed" />
             )}
             <Container>
-              <ProductDetail detail={formData} oldData={formData} />
+              <ProductDetail detail={formData} previousDetail={formData} />
             </Container>
           </div>
           <Actions
