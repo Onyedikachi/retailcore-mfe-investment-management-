@@ -65,7 +65,21 @@ export function DebitCreditTable() {
   );
 }
 export default function ProductDetail({ detail, previousDetail }: any) {
+
   const [isNewDescription, setDescription] = useState(false);
+  // const [productInfo, setProductInfo] = useState({
+  //   productName: "",
+  //   slogan: "",
+  //   description: "",
+  //   startDate: "",
+  //   endDate: "",
+  //   currency: "NGN",
+  //   customerCategory: 0,
+  // });
+  // useEffect(() => {
+    
+  //   setProductInfo(formData.productInfo);
+  // }, [formData]);
 
   return (
     <div>
@@ -109,17 +123,17 @@ export default function ProductDetail({ detail, previousDetail }: any) {
                 Slogan
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                {previousDetail && previousDetail?.slogan !== detail.slogan && (
+                {previousDetail && previousDetail?.productInfo?.slogan !== detail.productInfo?.slogan && (
                   <span className="block  line-through mb-2 text-[#aaa]">
                     {" "}
-                    {previousDetail?.slogan}
+                    {previousDetail?.productInfo?.slogan}
                   </span>
                 )}
                 <span className="flex itmes-center">
                   {" "}
-                  {detail?.slogan}{" "}
+                  {detail?.productInfo?.slogan}{" "}
                   {previousDetail &&
-                    previousDetail?.slogan !== detail?.slogan && (
+                    previousDetail?.productInfo?.slogan !== detail?.productInfo?.slogan && (
                       <span className="block text-success-500 pl-[2px]">
                         {" "}
                         New
@@ -135,17 +149,17 @@ export default function ProductDetail({ detail, previousDetail }: any) {
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
                 {previousDetail &&
-                  previousDetail?.description !== detail.description && (
+                  previousDetail?.productInfo?.description !== detail?.productInfo?.description && (
                     <span className="block  line-through mb-2 text-[#aaa]">
                       {" "}
-                      {previousDetail?.description}
+                      {previousDetail?.productInfo?.description}
                     </span>
                   )}
                 <span className="flex itmes-center">
                   {" "}
-                  {detail?.description}{" "}
+                  {detail?.productInfo?.description}{" "}
                   {previousDetail &&
-                    previousDetail?.description !== detail?.description && (
+                    previousDetail?.productInfo?.description !== detail?.productInfo?.description && (
                       <span className="block text-success-500 pl-[2px]">
                         {" "}
                         New
@@ -160,17 +174,17 @@ export default function ProductDetail({ detail, previousDetail }: any) {
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
                 {previousDetail &&
-                  previousDetail?.currency !== detail.currency && (
+                  previousDetail?.productInfo?.currency !== detail?.productInfo?.currency && (
                     <span className="block  line-through mb-2 text-[#aaa]">
                       {" "}
-                      {previousDetail?.currency}
+                      {previousDetail?.productInfo?.currency}
                     </span>
                   )}
                 <span className="flex itmes-center">
                   {" "}
-                  {detail?.currency}{" "}
+                  {detail?.productInfo?.currency}{" "}
                   {previousDetail &&
-                    previousDetail?.currency !== detail?.currency && (
+                    previousDetail?.productInfo?.currency !== detail?.productInfo?.currency && (
                       <span className="block text-success-500 pl-[2px]">
                         {" "}
                         New

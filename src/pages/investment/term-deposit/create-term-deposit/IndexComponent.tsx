@@ -33,55 +33,55 @@ export default function CreateTermDeposit() {
   const [step, setStep] = useState(1);
   const [productData, setProductData] = useState({
     productInfo: {
-      productName: "",
-      slogan: "",
-      description: "",
+      productName: "ww",
+      slogan: "www",
+      description: "wwww",
       startDate: "",
       endDate: "",
       currency: "NGN",
       customerCategory: 0,
     },
     customerEligibility: {
-      ageGroupMin: 0,
-      ageGroupMax: 0,
+      ageGroupMin: 2,
+      ageGroupMax: 3,
       requireDocument: [],
     },
     pricingConfiguration: {
-      applicableTenorMin: 0,
-      applicableTenorMinUnit: 0,
-      applicableTenorMax: 0,
-      applicableTenorMaxUnit: 0,
-      applicablePrincipalMin: 0,
-      applicablePrincipalMax: 0,
+      applicableTenorMin: 2,
+      applicableTenorMinUnit: 1,
+      applicableTenorMax: 8,
+      applicableTenorMaxUnit: 1,
+      applicablePrincipalMin: 3,
+      applicablePrincipalMax: 4,
       interestRateRangeType: 0,
       interestRateConfigModels: [
         {
           min: 0,
           max: 0,
-          principalMin: 0,
-          principalMax: 0,
-          tenorMin: 0,
+          principalMin: 1,
+          principalMax: 12,
+          tenorMin: 21,
           tenorMinUnit: 0,
-          tenorMax: 0,
+          tenorMax: 22,
           tenorMaxUnit: 0,
         },
       ],
-      interestRateMin: 0,
-      interestRateMax:0,
+      interestRateMin: 10,
+      interestRateMax: 60,
     },
     liquidation: {
       part_AllowPartLiquidation: true,
-      part_MaxPartLiquidation: 0,
+      part_MaxPartLiquidation: 1,
       part_RequireNoticeBeforeLiquidation: true,
-      part_NoticePeriod: 0,
-      part_NoticePeriodUnit: 0,
+      part_NoticePeriod: 2,
+      part_NoticePeriodUnit: 3,
       part_LiquidationPenalty: "pay",
       early_AllowEarlyLiquidation: true,
       early_RequireNoticeBeforeLiquidation: true,
-      early_NoticePeriod: 0,
-      early_NoticePeriodUnit: 0,
-      early_LiquidationPenalty: "string",
-      early_LiquidationPenaltyPercentage: 0,
+      early_NoticePeriod: 4,
+      early_NoticePeriodUnit: 5,
+      early_LiquidationPenalty: "pay",
+      early_LiquidationPenaltyPercentage: 7,
     },
     interestComputationMethod: 0,
     isDraft: false,
@@ -124,14 +124,15 @@ export default function CreateTermDeposit() {
   function handleNav() {
     step < termDepositFormSteps.length
       ? handleNext(step, setStep, termDepositFormSteps)
-      : navigate("/product-factory/investment/term-deposit/create?stage=preview");
+      : navigate(
+          "/product-factory/investment/term-deposit/create?stage=preview"
+        );
   }
 
   const handleDraft = () => {
     createProduct({ ...productData, isDraft: true });
     // navigate(paths.INVESTMENT_DASHBOARD);
   };
-
 
   let component;
   let formRef;
@@ -275,7 +276,11 @@ export default function CreateTermDeposit() {
         </div>
       )}
 
-      {stage && stage === "preview" && <div><Preview  formData={productData} /></div>}
+      {stage && stage === "preview" && (
+        <div>
+          <Preview formData={productData} />
+        </div>
+      )}
 
       {/* //Modals */}
       {isConfirmOpen && (

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { RiErrorWarningFill } from "react-icons/ri";
 import { FaCheckCircle } from "react-icons/fa";
 import { AiOutlineLoading } from "react-icons/ai";
@@ -151,6 +151,24 @@ export default function ProductInformation({
     //   // setDisabled(true);
     // }
   }
+
+  useEffect(() => {
+    if (nameIsError) {
+      setError("Product name is not available, Please choose another");
+      setIsNameOkay(false);
+      setDisabled(true);
+    } else {
+      handleValidatingName(
+        nameIsSuccess,
+        setIsNameOkay,
+        nameIsError,
+        setError,
+        nameError,
+        setDisabled,
+        charLeft
+      );
+    }
+  }, [nameIsError, nameIsSuccess]);
 
   function onProceed(d: any) {
     console.log("Date:" + moment(d.startDate).format("yyyy-MM-DD"));

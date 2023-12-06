@@ -20,7 +20,7 @@ function Select({
       ? options.findIndex((item) => item[defaultProperty] === defaultValue)
       : 0;
 
-  console.log("indexOfDefault: " + indexOfDefault);
+  // console.log("indexOfDefault: " + indexOfDefault);
 
   const [selected, setSelected] = useState(options[indexOfDefault]);
   useEffect(() => {
