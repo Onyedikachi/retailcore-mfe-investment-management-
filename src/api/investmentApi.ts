@@ -11,19 +11,7 @@ import { cleanObject } from "@app/utils/cleanObject";
 console.log(process.env);
 export const investmentApi: any = createApi({
   reducerPath: "investmentApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl:
-      "https://retailcore-investment-management-api.dev.bepeerless.co/v1",
-    prepareHeaders: (headers) => {
-      const token = getToken();
-
-      // If we have a token set in state, let's assume that we should be passing it.
-      if (token) {
-        headers.set("authorization", `Bearer ${token}`);
-      }
-      return headers;
-    },
-  }),
+  baseQuery: axiosBaseQuery({ serviceKey: "investment" }),
   keepUnusedDataFor: 0,
   extractRehydrationInfo(action, { reducerPath }) {
     if (action.type === REHYDRATE && action.payload) {

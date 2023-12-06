@@ -39,8 +39,26 @@ export const ProductInformationFormSchema = yup
       .max(50, "Maximum of 50 chars"),
     slogan: yup.string().max(160, "Maximum of 160 chars"),
     description: yup.string().required("Product description is required"),
-    startDate: yup.string(),
-    endDate: yup.string(),
+    startDate: yup
+      .string()
+      .test(
+        "start-date",
+        "Start date must be less than end date",
+        function (startDate) {
+          const { endDate } = this.parent;
+          return new Date(startDate) < new Date(endDate);
+        }
+      ),
+    endDate: yup
+      .string()
+      .test(
+        "end-date",
+        "End date must be greater than start date",
+        function (endDate) {
+          const { startDate } = this.parent;
+          return new Date(endDate) > new Date(startDate);
+        }
+      ),
     currency: yup.string().required("Product currency is required"),
     customerCategory: yup.number(),
   })
@@ -111,3 +129,16 @@ export const entriesAndEventsSchema = yup
     category: yup.string(),
   })
   .required();
+
+export const currencyOptions = [
+  {
+    id: 1,
+    text: "NGN",
+    value: "NGN",
+  },
+  {
+    id: 2,
+    text: "USD",
+    value: "USD",
+  },
+];

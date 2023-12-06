@@ -57,12 +57,12 @@ export default function ProductDetail({
                 </h1>
                 <span
                   className={`${
-                    detail?.state === "active"
+                    productData?.data?.state === 2
                       ? "text-[#15692A] bg-[#D4F7DC]"
                       : "text-[#1E0A3C] bg-[#E5E5EA]"
                   } px-2 py-[1px] rounded font-medium capitalize`}
                 >
-                  {detail?.state}
+                  {productData?.data?.state === 2 ? "Active" : "Inactive"}
                 </span>
               </div>
               <button
@@ -100,8 +100,8 @@ export default function ProductDetail({
                     <span className="font-bold block mb-[15px]">
                       Product Code
                     </span>
-                    <span className="font-normal block">
-                      {productData?.data?.productInfo?.productCode || "-"}
+                    <span className="font-normal block uppercase">
+                      {productData?.data?.productCode || "-"}
                     </span>
                   </div>
                   <div>
@@ -305,10 +305,12 @@ export default function ProductDetail({
                     <span className="font-bold block mb-[15px]">
                       Principal Deposit Charge & Tax
                     </span>
-                    <div className="flex items-center flex-wrap gap-x-1"><span className="font-normal block">Charges :</span>
-                    <span className="font-normal block">
-                      Maintenance , Auction
-                    </span></div>
+                    <div className="flex items-center flex-wrap gap-x-1">
+                      <span className="font-normal block">Charges :</span>
+                      <span className="font-normal block">
+                        Maintenance , Auction
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
