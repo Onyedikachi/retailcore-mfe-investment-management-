@@ -136,7 +136,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                   register={register}
                   inputName={"applicableTenorMinUnit"}
                   handleSelected={(value) => {
-                    setValue("applicableTenorMinUnit", value.value);
+                    setValue("applicableTenorMinUnit", value?.value);
                   }}
                   defaultValue={formData.applicableTenorMinUnit}
                   options={daysOptions}
@@ -163,7 +163,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                   register={register}
                   inputName={"applicableTenorMaxUnit"}
                   handleSelected={(value) => {
-                    setValue("applicableTenorMaxUnit", value.value);
+                    setValue("applicableTenorMaxUnit", value?.value);
                   }}
                   defaultValue={formData.applicableTenorMaxUnit}
                   options={daysOptions}
@@ -182,7 +182,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                 register={register}
                 inputName={"applicablePrincipalMin"}
                 handleChange={(value) => {
-                  setValue("applicablePrincipalMin", value.value);
+                  setValue("applicablePrincipalMin", value?.value);
                 }}
                 defaultValue={formData.applicablePrincipalMin}
               />
@@ -196,7 +196,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                 register={register}
                 inputName={"applicablePrincipalMax"}
                 handleChange={(value) => {
-                  setValue("applicablePrincipalMax", value.value);
+                  setValue("applicablePrincipalMax", value?.value);
                 }}
                 defaultValue={formData.applicablePrincipalMax}
               />
@@ -371,7 +371,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                           handleSelected={(value) => {
                             setValue(
                               `tenorRateRanges.${index}.tenorFromType`,
-                              value.value
+                              value?.value
                             );
                           }}
                           options={daysOptions}
@@ -395,7 +395,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                           handleSelected={(value) => {
                             setValue(
                               `tenorRateRanges.${index}.tenorToType`,
-                              value.value
+                              value?.value
                             );
                           }}
                           options={daysOptions}
@@ -493,7 +493,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
               register={register}
               inputName={"interestComputation"}
               handleSelected={(value) => {
-                setValue("interestComputation", value.value);
+                setValue("interestComputation", value?.value);
               }}
               options={interestComputationDaysOptions}
             />

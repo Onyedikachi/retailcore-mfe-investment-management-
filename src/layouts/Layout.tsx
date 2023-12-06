@@ -30,13 +30,10 @@ const Layout = () => {
           "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS",
           "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS",
           "RE_OR_DEACTIVATE_INVESTMENT_PRODUCT",
-          "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
+          "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS",
         ]
       );
-      console.log(
-        "🚀 ~ file: Layout.tsx:29 ~ auth$?.subscribe ~ value?.user?.user_permissions:",
-        value?.user?.user_permissions
-      );
+
       handleRole(setRole, value);
     });
   }, []);

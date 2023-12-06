@@ -5,32 +5,40 @@ import { BorderlessSelectProps } from "@app/types";
 function Select({
   options,
   handleSelected,
+  value,
   labelName,
   register = () => {},
   inputError,
   inputName,
-  defaultValue,
   defaultProperty,
+  defaultValue,
+  placeholder = "Select",
 }: BorderlessSelectProps): React.JSX.Element {
   //   const defaultValue = 'USD'
   // const defaultProperty = 'value'
 
-  const indexOfDefault =
-    defaultValue && defaultProperty
-      ? options.findIndex((item) => item[defaultProperty] === defaultValue)
-      : 0;
+  // const indexOfDefault =
+  //   defaultValue && defaultProperty
+  //     ? options.findIndex((item) => item[defaultProperty] === defaultValue)
+  //     : 0;
 
   // console.log("indexOfDefault: " + indexOfDefault);
 
-  const [selected, setSelected] = useState(options[indexOfDefault]);
+  const [selected, setSelected] = useState<any>(null);
+
   useEffect(() => {
     handleSelected(selected);
   }, [selected, handleSelected]);
 
   // Change selected when changing status category
   useEffect(() => {
-    setSelected(options[0]);
-  }, [options]);
+    if (value) {
+      const selectedOption = options.find(
+        (i) => i.value.toLowerCase() === value.toLowerCase()
+      );
+      setSelected(selectedOption);
+    }
+  }, [value]);
 
   return (
     <div role="combobox" className={` min-w-full`}>
@@ -50,7 +58,9 @@ function Select({
           <Listbox.Button
             className={`relative w-full cursor-pointer  bg-white py-1 pl-2 pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm `}
           >
-            <span className="block truncate">{selected?.text}</span>
+            <span className="block truncate">
+              {selected?.text || placeholder}
+            </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-xs">
               {/* <FaChevronDown className=" text-[#636363]" aria-hidden="true" /> */}
               <svg

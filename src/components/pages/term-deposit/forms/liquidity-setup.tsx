@@ -98,7 +98,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                             register={register}
                             inputName={"part_NoticePeriodUnit"}
                             handleSelected={(value) => {
-                              setValue("part_NoticePeriodUnit", value.value);
+                              setValue("part_NoticePeriodUnit", value?.value);
                             }}
                             defaultValue={formData.part_NoticePeriodUnit}
                             options={daysOptions}
@@ -120,7 +120,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                           register={register}
                           inputName={"part_LiquidationPenalty"}
                           handleSelected={(value) => {
-                            setValue("part_LiquidationPenalty", value.value);
+                            setValue("part_LiquidationPenalty", value?.value);
                           }}
                           defaultValue={formData.part_LiquidationPenalty}
                           options={partLiquidationPenaltyOptions}
@@ -155,7 +155,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                           register={register}
                           inputName={"early_NoticePeriodUnit"}
                           handleSelected={(value) => {
-                            setValue("early_NoticePeriodUnit", value.value);
+                            setValue("early_NoticePeriodUnit", value?.value);
                           }}
                           defaultValue={formData.early_NoticePeriodUnit}
                           options={daysOptions}
@@ -177,7 +177,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                         register={register}
                         inputName={"early_LiquidationPenalty"}
                         handleSelected={(value) => {
-                          setValue("early_LiquidationPenalty", value.value);
+                          setValue("early_LiquidationPenalty", value?.value);
                         }}
                         defaultValue={formData.early_LiquidationPenalty}
                         options={partLiquidationPenaltyOptions}
