@@ -1,24 +1,28 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
-// import { useGetLinksQuery, useAddLinkMutation } from "@app/api";
+import { useGetLinksQuery, useAddLinkMutation } from "@app/api";
 
 export default function QuickLinks() {
   const [isOpen, setIsOpen] = useState(true);
-  const links = [
-    {
-      isDefault: true,
-      count: 1,
-      name: "Product management",
-      category: "ProductManagement",
-      link: "product-management",
-    },
-  ];
-  // const { data, isLoading, isFetching } = useGetLinksQuery();
+  const defaultLink = {
+    isDefault: true,
+    count: 1,
+    name: "Product management",
+    category: "ProductManagement",
+    link: "product-management",
+  }
+  const [links, setLinks] = useState( [defaultLink])
+  const { data: quickLinks, isLoading, isFetching } = useGetLinksQuery();
   // const [addLink, { isLoading: addLoading }] = useAddLinkMutation();
   React.useEffect(() => {
     // addLink(links);
-  }, []);
+   
+      if(quickLinks && quickLinks.data.length){
+        setLinks([defaultLink, ...quickLinks.data])
+      console.log("🚀 ~ file: QuickLinks.tsx:23 ~ React.useEffect ~ data:", quickLinks)
+    }
+  }, [quickLinks]);
   return (
     <div className="border border-[#E5E9EB] rounded-lg bg-white px-[13px] py-8 w-[300px]">
       <h1 className="uppercase text-xl mb-5 font-medium">Quick Links</h1>

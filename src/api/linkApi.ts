@@ -25,7 +25,7 @@ export const linkApi = createApi({
     getLinks: builder.query<any, any>({
       query: () => {
         return {
-          url: `/quick-link/all`,
+          url: `/quick-link/all/ProductFactory`,
           method: "get",
         };
       },
