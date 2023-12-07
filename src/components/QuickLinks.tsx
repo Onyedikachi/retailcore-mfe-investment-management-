@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
-import { useGetLinksQuery, useAddLinkMutation } from "@app/api";
+import { useGetLinksQuery, useUpdateLinkMutation } from "@app/api";
+import { MODULENAME } from "@app/constants";
 
 export default function QuickLinks() {
   const [isOpen, setIsOpen] = useState(true);
@@ -11,16 +12,63 @@ export default function QuickLinks() {
     name: "Product management",
     category: "ProductManagement",
     link: "product-management",
-  }
-  const [links, setLinks] = useState( [defaultLink])
+  };
+  const [links, setLinks] = useState([defaultLink]);
   const { data: quickLinks, isLoading, isFetching } = useGetLinksQuery();
+  const [updateLink] = useUpdateLinkMutation();
   // const [addLink, { isLoading: addLoading }] = useAddLinkMutation();
+
+  React.useEffect(() => {
+    const moduleName = MODULENAME;
+    console.log(
+      "🚀 ~ file: QuickLinks.tsx:23 ~ React.useEffect ~ moduleName:",
+      moduleName
+    );
+    const moduleLink =
+      "https://seabaas.dev.bepeerless.co/product-factory/investment";
+    console.log(
+      "🚀 ~ file: QuickLinks.tsx:25 ~ React.useEffect ~ moduleLink:",
+      moduleLink
+    );
+
+   
+    const updateLinkCount = async () => {
+      try {
+        const result = await updateLink({
+          moduleName,
+          moduleLink,
+
+        });
+
+        console.log(
+          "🚀 ~ file: QuickLinks.tsx:29 ~ updateLinkCount ~ result:",
+          result
+        );
+      } catch (err) {
+        console.error("Error creating link:", err);
+      }
+    };
+
+    updateLinkCount()
+
+    return () => {
+      console.log(
+        "🚀 ~ file: QuickLinks.tsx:45 ~ return ~ Cleanup logic:",
+        "Cleanup logic"
+      );
+      // Additional cleanup actions can be performed here
+    };
+  }, []);
+
   React.useEffect(() => {
     // addLink(links);
-   
-      if(quickLinks && quickLinks.data.length){
-        setLinks([defaultLink, ...quickLinks.data])
-      console.log("🚀 ~ file: QuickLinks.tsx:23 ~ React.useEffect ~ data:", quickLinks)
+
+    if (quickLinks && quickLinks.data.length) {
+      setLinks([defaultLink, ...quickLinks.data]);
+      console.log(
+        "🚀 ~ file: QuickLinks.tsx:23 ~ React.useEffect ~ data:",
+        quickLinks
+      );
     }
   }, [quickLinks]);
   return (
