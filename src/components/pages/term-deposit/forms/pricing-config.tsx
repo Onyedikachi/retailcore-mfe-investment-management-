@@ -10,13 +10,31 @@ import {
 import { useForm, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { pricingConfigSchema } from "@app/constants";
+import { FormToolTip } from "@app/components";
+import { toolTips } from "@app/constants";
 
-export function InputDivs({ children, label }) {
+const labels = [
+  "Applicable Tenor",
+  "Applicable Principal",
+  "Applicable Interest Rate Range (Per Annum)",
+];
+export function InputDivs({ children, label, requiredField = true }) {
   return (
     <div className="flex flex-col gap-[10px] ">
-      <span className="capitalize min-w-[300px] flex items-center gap-[5px] text-[##636363] text-base font-medium">
-        {label} <RiInformationLine />
-      </span>
+      <div className="flex  gap-2 min-w-[300px]">
+        {" "}
+        <label className="  text-base font-medium text-[#636363]">
+          {label}
+          {requiredField && <span className="text-red-500">*</span>}
+        </label>
+        {label == labels[0] && <FormToolTip tip={toolTips.applicableTenor} />}
+        {label == labels[1] && (
+          <FormToolTip tip={toolTips.applicablePrincipal} />
+        )}
+        {label == labels[2] && (
+          <FormToolTip tip={toolTips.applicableInterestRange} />
+        )}
+      </div>
 
       <div className=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-6 py-5 flex flex-col gap-5 ">
         {children}
@@ -126,7 +144,7 @@ export default function PricingConfig({ proceed, formData, setFormData, setDisab
   return (
     <form id="pricingconfig" onSubmit={handleSubmit(onProceed)}>
       <div className="flex flex-col gap-10">
-        <InputDivs label={"Applicable Tenor"}>
+        <InputDivs label={labels[0]}>
           <div className="flex items-center gap-[25px] mt-[14px]">
             <div className="flex gap-[25px]">
               <div className="w-[150px]">
@@ -198,7 +216,7 @@ export default function PricingConfig({ proceed, formData, setFormData, setDisab
             </div>{" "}
           </div>
         </InputDivs>
-        <InputDivs label={"Applicable Principal"}>
+        <InputDivs label={labels[1]}>
           <div className="flex items-center gap-[25px] mt-[14px]">
             <div className="flex gap-[25px]">
               <MinMaxInput
@@ -237,7 +255,7 @@ export default function PricingConfig({ proceed, formData, setFormData, setDisab
             </div>{" "}
           </div>
         </InputDivs>
-        <InputDivs label={"Applicable Interest Rate Range (Per Annum)"}>
+        <InputDivs label={labels[2]}>
           <div className="flex gap-[51px] mb-[10px]">
             {/* <span>RangeEnum: {applicableInterestRangeType}</span> */}
             {varyOptions.map((varyOption) => (
@@ -520,8 +538,9 @@ export default function PricingConfig({ proceed, formData, setFormData, setDisab
         <div className="flex flex-col gap-[25px] ">
           <span className="capitalize min-w-[300px] flex items-center gap-[5px] text-[##636363] text-base font-medium">
             Interest Computation Days in Year Method
-            <RiInformationLine />
+            <FormToolTip tip={toolTips.interestComputation} />
           </span>
+         
           <div className="w-[300px]">
             <BorderlessSelect
               inputError={errors?.interestComputation}

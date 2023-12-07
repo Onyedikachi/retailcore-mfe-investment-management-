@@ -4,7 +4,6 @@ import { FaChevronDown } from "react-icons/fa";
 import { BorderlessSelectProps } from "@app/types";
 import { FormToolTip } from "@app/components";
 
-
 export default function Select({
   options,
   handleSelected,
@@ -19,7 +18,7 @@ export default function Select({
   clearErrors,
   tip,
   requiredField = false,
-  trigger
+  trigger,
 }: BorderlessSelectProps): React.JSX.Element {
   const [selected, setSelected] = useState<any>(null);
 
@@ -32,7 +31,7 @@ export default function Select({
     clearErrors(inputName);
     setSelected(val);
     handleSelected && handleSelected(val);
-    trigger && trigger(inputName)
+    trigger && trigger(inputName);
   };
   // Change selected when changing status category
   useEffect(() => {
@@ -47,15 +46,14 @@ export default function Select({
 
   return (
     <div role="combobox" className={` min-w-full`}>
-    
-
       <div className="flex  gap-2 min-w-[300px]">
-              {" "}
-              <label className="  text-base font-semibold text-[#636363]">
-              {labelName}{requiredField &&  <span className="text-red-500">*</span>}
-              </label>
-              <FormToolTip tip={tip} />
-            </div>
+        {" "}
+        <label className="  text-base font-semibold text-[#636363]">
+          {labelName}
+          {requiredField && <span className="text-red-500">*</span>}
+        </label>
+        {tip && <FormToolTip tip={tip} />}
+      </div>
       <Listbox
         value={selected}
         {...register(inputName, {
