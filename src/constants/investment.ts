@@ -1,3 +1,5 @@
+export const MODULENAME = 'ProductFactory'
+
 export const StatusCategories = [
   {
     id: 1,
