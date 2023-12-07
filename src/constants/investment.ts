@@ -333,6 +333,34 @@ export const Interval = {
   3: "months",
   4: "years",
 };
+
+export const IntervalOptions = [
+  {
+    id: "0",
+    text: "hour(s)",
+    value: 0,
+  },
+  {
+    id: "1",
+    text: "day(s)",
+    value: 1,
+  },
+  {
+    id: "2",
+    text: "week(s)",
+    value: 2,
+  },
+  {
+    id: "3",
+    text: "month(s)",
+    value: 3,
+  },
+  {
+    id: "4",
+    text: "year(s)",
+    value: 4,
+  },
+];
 export const interestComputationDaysOptions = [
   {
     id: "30E/360",

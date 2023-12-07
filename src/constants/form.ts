@@ -66,17 +66,63 @@ export const CustomerEligibilityCriteriaSchema = yup
 
 export const pricingConfigSchema = yup
   .object({
-    applicableTenorMin: yup.number(),
+    applicableTenorMax: yup
+      .number()
+      .required("Applicable Tenor Max is required")
+      .test(
+        "min-less-than-max",
+        "Applicable Tenor Max must be greater than Applicable Tenor Min",
+        function (value) {
+          const applicableTenorMax = this.parent.applicableTenorMax;
+          return (
+            value === undefined ||
+            applicableTenorMax === undefined ||
+            value < applicableTenorMax
+          );
+        }
+      ),
     applicableTenorMinDays: yup.number(),
-    applicableTenorMax: yup.number(),
+    applicableTenorMin: yup
+      .number()
+      .required("Applicable Tenor Min is required"),
     applicableTenorMaxDays: yup.number(),
-    applicablePrincipalMin: yup.number(),
-    applicablePrincipalMax: yup.number(),
+    applicablePrincipalMin: yup
+      .number()
+      .required("Applicable Principal Min is required"),
+    applicablePrincipalMax: yup
+      .number()
+      .required("Applicable Principal Max is required")
+      .test(
+        "max-less-than-min",
+        "Applicable Principal Max must be greater than Applicable Principal Min",
+        function (value) {
+          const applicablePrincipalMin = this.parent.applicablePrincipalMin;
+          return (
+            value === undefined ||
+            applicablePrincipalMin === undefined ||
+            value > applicablePrincipalMin
+          );
+        }
+      ),
     applicablePrincipalMinDays: yup.number(),
     applicablePrincipalMaxDays: yup.number(),
     varyOption: yup.string(),
     applicableInterestMin: yup.number(),
-    applicableInterestMax: yup.number(),
+    applicableInterestMax: yup
+      .number()
+      .required("Applicable Interest Max is required")
+      .test(
+        "max-less-than-min",
+        "Applicable Interest Max must be greater than Applicable Interest Min",
+        function (value) {
+          const applicableInterestMin = this.parent.applicableInterestMin;
+          return (
+            value === undefined ||
+            applicableInterestMin === undefined ||
+            value > applicableInterestMin
+          );
+        }
+      ),
     interestComputation: yup.string(),
     tenorRateRanges: yup.array().of(
       yup.object().shape({
@@ -206,11 +252,15 @@ export const documentOptions = [
 ];
 
 export const toolTips = {
-  productName: 'Choose a unique name for this product. You cannot reuse an existing name',
-  lifeCycle: 'Specify the lifecycle of the product. Leave either field blank if undefined.Specify the lifecycle of the product. Leave either field blank if undefined.',
-  currency: 'Select applicable transaction currency for this product.',
-  customerCategory: 'Select the customer category for which this product will be applied to.',
-  ageGroup: 'Select the customer age group for which this product will be applied to. Leave either field blank if undefined.',
-  requirements: 'Select the documents that are required for a customer to provide before they can be assigned this product',
-  
-} 
+  productName:
+    "Choose a unique name for this product. You cannot reuse an existing name",
+  lifeCycle:
+    "Specify the lifecycle of the product. Leave either field blank if undefined.Specify the lifecycle of the product. Leave either field blank if undefined.",
+  currency: "Select applicable transaction currency for this product.",
+  customerCategory:
+    "Select the customer category for which this product will be applied to.",
+  ageGroup:
+    "Select the customer age group for which this product will be applied to. Leave either field blank if undefined.",
+  requirements:
+    "Select the documents that are required for a customer to provide before they can be assigned this product",
+};

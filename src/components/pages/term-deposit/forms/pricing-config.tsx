@@ -3,7 +3,7 @@ import { RiInformationLine } from "react-icons/ri";
 import { IoMdAddCircle } from "react-icons/io";
 import { MinMaxInput } from "@app/components/forms";
 import { BorderlessSelect } from "@app/components/forms";
-import { daysOptions, interestComputationDaysOptions } from "@app/constants";
+import { IntervalOptions, interestComputationDaysOptions } from "@app/constants";
 import { useForm, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { pricingConfigSchema } from "@app/constants";
@@ -61,12 +61,12 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
   const addTenorRange = () => {
     appendTenorRange({
       min: 0,
-      max: 0,
+      max: null,
       principalMin: 0,
-      principalMax: 0,
+      principalMax: null,
       tenorMin: 0,
       tenorMinUnit: 0,
-      tenorMax: 0,
+      tenorMax: null,
       tenorMaxUnit: 0,
     });
   };
@@ -78,12 +78,12 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
   const addPrincipalRange = () => {
     appendPrincipalRange({
       min: 0,
-      max: 0,
+      max: null,
       principalMin: 0,
-      principalMax: 0,
+      principalMax: null,
       tenorMin: 0,
       tenorMinUnit: 0,
-      tenorMax: 0,
+      tenorMax: null,
       tenorMaxUnit: 0,
     });
   };
@@ -139,7 +139,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                     setValue("applicableTenorMinUnit", value?.value);
                   }}
                   defaultValue={formData.applicableTenorMinUnit}
-                  options={daysOptions}
+                  options={IntervalOptions}
                 />
               </div>
             </div>{" "}
@@ -166,7 +166,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                     setValue("applicableTenorMaxUnit", value?.value);
                   }}
                   defaultValue={formData.applicableTenorMaxUnit}
-                  options={daysOptions}
+                  options={IntervalOptions}
                 />
               </div>
             </div>{" "}
@@ -374,7 +374,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                               value?.value
                             );
                           }}
-                          options={daysOptions}
+                          options={IntervalOptions}
                         />
                       </div>
                     </div>{" "}
@@ -398,7 +398,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                               value?.value
                             );
                           }}
-                          options={daysOptions}
+                          options={IntervalOptions}
                         />
                       </div>
                     </div>{" "}
