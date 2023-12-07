@@ -1,21 +1,22 @@
-import moment from "moment";
-import React, { useState, forwardRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import DatePicker, { CalendarContainer } from "react-datepicker";
 import { FaRegCalendarAlt } from "react-icons/fa";
+import "react-datepicker/dist/react-datepicker.css";
 
 interface FormDateProps {
   className?: string;
   inputName?: string;
   register?: any;
-  handleChange?: (value) => void;
-  defaultValue?: string;
+  handleChange?: (value: Date) => void;
+  defaultValue?: string | null;
   errors?: any;
-  minDate?: any;
-  maxDate?: any;
-  clearErrors?: any;
+  minDate?: Date | null;
+  maxDate?: Date | null;
+  clearErrors?: (name?: string | string[]) => void;
+  trigger: any
 }
 
-export default function FormDate({
+const FormDate: React.FC<FormDateProps> = ({
   register = () => {},
   inputName,
   handleChange,
@@ -25,35 +26,41 @@ export default function FormDate({
   minDate,
   maxDate,
   clearErrors,
-}: FormDateProps) {
-  const [date, setDate] = useState(defaultValue);
+  trigger
+}: FormDateProps) => {
+  const [date, setDate] = useState<Date | null>(
+    defaultValue ? new Date(defaultValue) : null
+  );
 
   useEffect(() => {
     if (defaultValue) {
-      setDate(defaultValue);
+      setDate(new Date(defaultValue));
     }
   }, [defaultValue]);
 
   useEffect(() => {
-    handleChange(date);
+    handleChange(date!); // Ensuring date is not null
   }, [date]);
-  const MyContainer = ({ className, children }) => {
-    return (
-      <div
-        style={{
-          padding: "8px",
-          background: "#ffffff",
-          color: "#fff",
-          borderRadius: "4px",
-          boxShadow: "0px 4px 8px 0px rgba(5, 27, 68, 0.08)",
-        }}
-      >
-        <CalendarContainer className={className}>
-          <div style={{ position: "relative" }}>{children}</div>
-        </CalendarContainer>
-      </div>
-    );
-  };
+
+  const MyContainer: React.FC<{ className: string }> = ({
+    className,
+    children,
+  }) => (
+    <div
+      style={{
+        padding: "8px",
+        background: "#ffffff",
+        color: "#fff",
+        borderRadius: "4px",
+        boxShadow: "0px 4px 8px 0px rgba(5, 27, 68, 0.08)",
+      }}
+    >
+      <CalendarContainer className={className}>
+        <div style={{ position: "relative" }}>{children}</div>
+      </CalendarContainer>
+    </div>
+  );
+
   return (
     <div>
       <div className="relative flex items-center date-picker">
@@ -61,18 +68,19 @@ export default function FormDate({
           showIcon
           dateFormat="dd/MM/yyyy"
           data-testid="date-picker"
-          selected={date ? new Date(date) : null}
+          selected={date}
           onChange={(date) => {
             setDate(date);
-            clearErrors(inputName);
+            clearErrors && clearErrors(inputName);
+            trigger && trigger(inputName)
           }}
           calendarContainer={MyContainer}
-          minDate={minDate ? new Date(minDate) : null}
-          maxDate={maxDate ? new Date(maxDate) : null}
+          minDate={minDate}
+          maxDate={maxDate}
           placeholderText="dd/mm/yyyy"
-          className={` placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4 border-b  placeholder:text-[#BCBBBB] ${
+          className={`placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4 border-b placeholder:text-[#BCBBBB] ${
             errors && errors[inputName] ? "border-red-600" : "border-[#8F8F8F]"
-          } `}
+          }`}
         />
       </div>
       {errors && errors[inputName] && (
@@ -82,4 +90,6 @@ export default function FormDate({
       )}
     </div>
   );
-}
+};
+
+export default FormDate;

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { RiErrorWarningFill } from "react-icons/ri";
 import { FaCheckCircle } from "react-icons/fa";
 import { AiOutlineLoading } from "react-icons/ai";
@@ -23,20 +23,27 @@ export function handleValidatingName(
   nameIsSuccess,
   setIsNameOkay,
   nameIsError,
-  setError,
+  assignError,
   nameError,
-  setDisabled,
-  charLeft
+  trigger,
+  charLeft,
+  clearErrors
 ) {
-  if (nameIsSuccess && charLeft < 47) {
-    setIsNameOkay(true);
-    setError("");
-    setDisabled(false);
-  }
   if (nameIsError) {
+    trigger("productName");
+    assignError("productName", {
+      type: "custom",
+      message: nameError?.message?.Message,
+    });
+
     setIsNameOkay(false);
-    setError(nameError?.message?.Msg);
-    setDisabled(true);
+
+  }
+  if (nameIsSuccess && charLeft < 47) {
+    // trigger("productName");
+    clearErrors("productName");
+    setIsNameOkay(true);
+   
   }
 }
 
@@ -119,10 +126,12 @@ export default function ProductInformation({
     setValue,
     setError: assignError,
     getValues,
-    formState: { errors },
+    trigger,
+    formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(ProductInformationFormSchema),
     defaultValues: formData,
+    mode: "all",
   });
 
   //useState
@@ -144,6 +153,19 @@ export default function ProductInformation({
     },
   ] = useValidateNameMutation();
 
+  useEffect(() => {
+    handleValidatingName(
+      nameIsSuccess,
+      setIsNameOkay,
+      nameIsError,
+      assignError,
+      nameError,
+      trigger,
+      charLeft,
+      clearErrors
+    );
+  }, [nameIsSuccess, nameIsError]);
+  const values = getValues();
   function compareValues() {
     const name = getValues("name");
     // const conditions = [
@@ -160,11 +182,18 @@ export default function ProductInformation({
   function onProceed(d: any) {
     setFormData({
       ...d,
-      startDate: moment(d.startDate).format("yyyy-MM-DD"),
-      endDate: moment(d.endDate).format("yyyy-MM-DD"),
+      startDate: d.startDate && moment(d.startDate).format("yyyy-MM-DD"),
+      endDate: d.endDate && moment(d.endDate).format("yyyy-MM-DD"),
     });
     proceed();
   }
+
+  useEffect(() => {
+    console.log("🚀 ~ file: product-information.tsx:191 ~ isValid:", isValid);
+
+    setDisabled(!isValid);
+  }, [values]);
+
   //watchers
   const watchStartDate = watch("startDate");
   const watchEndDate = watch("endDate");
@@ -319,11 +348,9 @@ export default function ProductInformation({
             <textarea
               data-testid="product-description"
               placeholder="Enter description"
-              {...register("description", {
-                required: true,
-              })}
+              {...register("description")}
               defaultValue={formData?.description}
-              className={`min-h-[150px] w-full rounded-md border border-[#8F8F8F] focus:outline-none px-3 py-[11px] placeholder:text-[#BCBBBB] resize-none${
+              className={`min-h-[150px] w-full rounded-md border border-[#8F8F8F] focus:outline-none px-3 py-[11px] placeholder:text-[#BCBBBB] resize-none ${
                 errors?.description || error
                   ? "border-red-500 ring-1 ring-red-500"
                   : ""
@@ -358,6 +385,7 @@ export default function ProductInformation({
                   setValue("startDate", value);
                 }}
                 defaultValue={formData.startDate}
+                trigger={trigger}
                 clearErrors={clearErrors}
               />
               -
@@ -366,6 +394,7 @@ export default function ProductInformation({
                 inputName={"endDate"}
                 errors={errors}
                 minDate={watchStartDate}
+                trigger={trigger}
                 handleChange={(value) => {
                   setValue("endDate", value);
                 }}
@@ -391,6 +420,7 @@ export default function ProductInformation({
                 requiredField={true}
                 tip={toolTips.currency}
                 options={currencyOptions}
+                trigger={trigger}
               />
             </div>
 

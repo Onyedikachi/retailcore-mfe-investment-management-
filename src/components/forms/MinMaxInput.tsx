@@ -11,6 +11,7 @@ interface MinMaxProps {
   errors?: any;
   setValue?: any;
   clearErrors?: any;
+  trigger?: any
 }
 export default function MinMaxInput({
   label,
@@ -24,6 +25,7 @@ export default function MinMaxInput({
   errors,
   setValue,
   clearErrors,
+  trigger
 }: MinMaxProps) {
   return (
     <div className={`${className} flex items-center gap-4`}>
@@ -42,6 +44,7 @@ export default function MinMaxInput({
             onChange={(e) => {
               setValue(inputName, e.target.valueAsNumber);
               clearErrors(inputName);
+              trigger(inputName)
             }}
             placeholder="0"
             // maxLength={defaultLength}
