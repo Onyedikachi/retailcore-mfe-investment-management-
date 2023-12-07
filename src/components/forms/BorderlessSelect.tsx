@@ -30,10 +30,10 @@ export default function Select({
   };
   // Change selected when changing status category
   useEffect(() => {
-    if (defaultValue.length) {
+    if (defaultValue?.length) {
       setSelected(
         options.find(
-          (i) => i.value.toLowerCase() === defaultValue.toLowerCase()
+          (i) => i.value.toLowerCase() === defaultValue?.toLowerCase()
         )
       );
     }
