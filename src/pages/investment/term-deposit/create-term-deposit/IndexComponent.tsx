@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { paths } from "@app/routes/paths";
 import { Confirm, Failed, Success } from "@app/components/modals";
 import { useCreateProductMutation } from "@app/api";
@@ -27,28 +27,6 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
 }
 
 export default function CreateTermDeposit() {
-<<<<<<< Updated upstream
-  const [step, setStep] = useState(1);
-  const [productData, setProductData] = useState({
-    productInfo: {
-      productName: "Kaine Term Deposit",
-      slogan: "Dep10 ",
-      description: "Just testing",
-      startDate: "2023-12-03",
-      endDate: "2023-12-30",
-      currency: "NGN",
-      customerCategory: 0,
-    },
-    customerEligibility: {
-      ageGroupMin: 0,
-      ageGroupMax: 0,
-      requireDocument: [
-        {
-          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          name: "Passport",
-        },
-      ],
-=======
   const [searchParams] = useSearchParams();
   const stage = searchParams.get("stage");
   const [step, setStep] = useState(3);
@@ -67,7 +45,6 @@ export default function CreateTermDeposit() {
       ageGroupMax: null,
       requireDocument: [],
       corporateCustomerType: [],
->>>>>>> Stashed changes
     },
     pricingConfiguration: {
       applicableTenorMin: 0,

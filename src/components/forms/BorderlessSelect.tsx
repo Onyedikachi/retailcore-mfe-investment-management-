@@ -11,14 +11,6 @@ export default function Select({
   inputError,
   inputName,
   defaultValue,
-<<<<<<< Updated upstream
-}: BorderlessSelectProps): React.JSX.Element {
-  // const indexOfItemWithDefaultValue = options.findIndex(
-  //   (item) => item.value === defaultValue
-  // );
-
-  const [selected, setSelected] = useState(options[0]);
-=======
   placeholder = "Select",
   errors,
   setValue,
@@ -26,7 +18,6 @@ export default function Select({
 }: BorderlessSelectProps): React.JSX.Element {
 
   const [selected, setSelected] = useState<any>(null);
->>>>>>> Stashed changes
 
   // useEffect(() => {
   //   handleSelected(selected);

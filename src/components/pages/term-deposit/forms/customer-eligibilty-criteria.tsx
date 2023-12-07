@@ -26,42 +26,11 @@ export default function CustomerEligibilityCriteria({
   setDisabled,
   proceed,
 }) {
-<<<<<<< Updated upstream
-  const [documents, setDocuments] = useState([
-    {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      name: "Passport",
-    },
-    {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66afe6",
-      name: "ID Card",
-    },
-    {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66afb2",
-      name: "Drivers Lisence",
-    },
-    // "Signature",
-    // "Document 1",
-    // "Document 2",
-    // "Document 3",
-    // "Document 4",
-    // "Document 5",
-    // "Document 6",
-    // "Document 7",
-    // "Document 8",
-    // "Document 9",
-    // "Document 10",
-    // "Document 11",
-    // "Document 12",
-  ]);
-  const [selectedRequirements, setSelectedRequirements] = useState([]);
-=======
   const [documents, setDocuments] = useState([...documentOptions]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedRequirements, setSelectedRequirements] = useState([
     ...formData.requireDocument,
   ]);
->>>>>>> Stashed changes
   const [selectAll, setSelectAll] = useState(false);
   const [toggledRequirements, setToggledRequirements] = useState([]);
   const [isRequirementsOpen, setIsRequirementsOpen] = useState(false);
@@ -80,15 +49,12 @@ export default function CustomerEligibilityCriteria({
     defaultValues: formData,
     // values,
   });
-<<<<<<< Updated upstream
 
   const selectedCategory = watch("category");
 
-=======
   const [isAdd, setIsAdd] = useState(false);
   const [newDocument, setNewDocument] = useState("");
   const values = getValues();
->>>>>>> Stashed changes
   const handleCheckedRequirement = (document) => {
     const isDocumentToggled = toggledRequirements.some(
       (d) => d.id === document.id
@@ -136,104 +102,21 @@ export default function CustomerEligibilityCriteria({
   return (
     <div>
       <form id="customereligibilitycriteria" onSubmit={handleSubmit(onProceed)}>
-<<<<<<< Updated upstream
-        <div className="flex gap-[18px]">
-          {/* <div className="w-[300px]">
-            <BorderlessSelect
-              labelName={"Customer Category"}
-              inputError={errors?.category}
-              register={register}
-              inputName={"category"}
-              handleSelected={(value) => {
-                setValue("category", value.value);
-              }}
-              options={[
-                {
-                  id: 1,
-                  text: "Individual",
-                  value: "Individual",
-                },
-                {
-                  id: 2,
-                  text: "Corporate",
-                  value: "Corporate",
-                },
-              ]}
-            />
-          </div> */}
-
-=======
         <div className="flex gap-[18px] flex-wrap">
->>>>>>> Stashed changes
           <div className="flex gap-[25px]">
             <div className="w-[300px]">
               <BorderlessSelect
                 labelName={"Customer Category"}
                 register={register}
                 inputName={"customerCategory"}
-<<<<<<< Updated upstream
-                handleSelected={(value) => {
-                  setValue("customerCategory", value.value);
-                }}
-=======
                 errors={errors}
                 setValue={setValue}
->>>>>>> Stashed changes
                 defaultValue={formData.customerCategory}
                 options={categoryOptions}
                 placeholder="Select customer category"
                 clearErrors={clearErrors}
               />
             </div>
-<<<<<<< Updated upstream
-            {/* {chosenCategory?.toLowerCase() == "corporate" ? ( */}
-            {/* <div className="w-[300px]">
-              <BorderlessSelect
-                labelName={"Type of corporate customer"}
-                register={register}
-                inputName={"corporateCustomerType"}
-                handleSelected={(value) => {
-                  setValue("corporateCustomerType", value.value);
-                }}
-                options={[
-                  {
-                    id: 1,
-                    text: "CustomerType1",
-                    value: "CustomerType1",
-                  },
-                  {
-                    id: 2,
-                    text: "CustomerType2",
-                    value: "CustomerType2",
-                  },
-                ]}
-              />
-            </div> */}
-            {/* // ) : ( */}
-            <div className="flex flex-col ">
-              <InfoLabel label={"Age Group Eligibility"} info={"String"} />
-              <div className="flex items-end gap-[25px]">
-                <div className="w-[150px]">
-                  <MinMaxInput
-                    register={register}
-                    inputName={"ageGroupMin"}
-                    handleChange={(value) => {
-                      setValue("ageGroupMin", value);
-                    }}
-                    defaultValue={formData.ageGroupMin}
-                  />
-                </div>
-                <div className="flex items-center">-</div>
-                <div className="w-[150px]">
-                  <MinMaxInput
-                    register={register}
-                    inputName={"ageGroupMax"}
-                    handleChange={(value) => {
-                      setValue("ageGroupMax", value);
-                    }}
-                    defaultValue={formData.ageGroupMin}
-                  />
-=======
             {watchCustomerCategory === CustomerCategoryType.Corporate && (
               <div className="w-[300px] flex items-center">
                 <MultiSelectForm
@@ -275,7 +158,6 @@ export default function CustomerEligibilityCriteria({
                       clearErrors={clearErrors}
                     />
                   </div>
->>>>>>> Stashed changes
                 </div>
               </div>
             )}

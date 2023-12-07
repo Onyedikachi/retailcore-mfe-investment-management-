@@ -370,28 +370,10 @@ export default function ProductInformation({
                 setValue={setValue}
                 inputName={"currency"}
                 labelName={"Product Currency"}
-<<<<<<< Updated upstream
-                handleSelected={(value) => {
-                  setValue("currency", value.value);
-                }}
-                options={[
-                  {
-                    id: 1,
-                    text: "NGN",
-                    value: "NGN",
-                  },
-                  {
-                    id: 2,
-                    text: "USD",
-                    value: "USD",
-                  },
-                ]}
-=======
                 value={formData.currency}
                 placeholder="Select currency"
                 clearErrors={clearErrors}
                 options={currencyOptions}
->>>>>>> Stashed changes
               />
             </div>
 

@@ -32,13 +32,10 @@ export interface BorderlessSelectProps {
   clearErrors?: any;
   inputName?: string | null | undefined;
   defaultValue?: any;
-<<<<<<< Updated upstream
-=======
   placeholder?: any;
   errors?: any
   setValue?: any
   allLabel? : any
->>>>>>> Stashed changes
 }
 
 export interface ActiveFilterProps {}
