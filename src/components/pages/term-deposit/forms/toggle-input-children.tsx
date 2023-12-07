@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { RiInformationLine } from "react-icons/ri";
 import { Switch } from "@headlessui/react";
-
+import { FormToolTip } from "@app/components";
+import { toolTips } from "@app/constants";
+import { liquidationTypes } from "@app/constants";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -17,7 +19,13 @@ export default function ToggleInputChildren({ children, label }) {
     >
       <div className="flex items-center gap-[10px]">
         <span className="capitalize min-w-[300px] flex items-center gap-[5px] text-[##636363] text-base font-medium">
-          {label} <RiInformationLine />
+          {label}
+          {label == liquidationTypes[0].label && (
+            <FormToolTip tip={toolTips.allowPartLiquidation} />
+          )}
+          {label == liquidationTypes[1].label && (
+            <FormToolTip tip={toolTips.allowEarlyLiquidation} />
+          )}
         </span>
         <Switch
           checked={isOpen}
