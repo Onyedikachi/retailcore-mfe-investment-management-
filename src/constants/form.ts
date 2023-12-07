@@ -200,3 +200,13 @@ export const documentOptions = [
     name: "Proof of residential address",
   },
 ];
+
+export const toolTips = {
+  productName: 'Choose a unique name for this product. You cannot reuse an existing name',
+  lifeCycle: 'Specify the lifecycle of the product. Leave either field blank if undefined.Specify the lifecycle of the product. Leave either field blank if undefined.',
+  currency: 'Select applicable transaction currency for this product.',
+  customerCategory: 'Select the customer category for which this product will be applied to.',
+  ageGroup: 'Select the customer age group for which this product will be applied to. Leave either field blank if undefined.',
+  requirements: 'Select the documents that are required for a customer to provide before they can be assigned this product',
+  
+} 

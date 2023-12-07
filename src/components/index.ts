@@ -11,3 +11,4 @@ export { default as QuickLinks } from "./QuickLinks";
 export { default as FormStepComponent } from "./FormStepComponent";
 export { default as ProductSearch } from "./ProductSearch";
 export { default as SelectedRequirementsTable } from "./SelectedRequirementsTable";
+export { default as FormToolTip } from "./FormToolTip";
