@@ -29,7 +29,7 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
 export default function CreateTermDeposit() {
   const [searchParams] = useSearchParams();
   const stage = searchParams.get("stage");
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
   const [productData, setProductData] = useState({
     productInfo: {
       productName: "",
