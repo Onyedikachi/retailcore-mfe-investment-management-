@@ -27,6 +27,7 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
 }
 
 export default function CreateTermDeposit() {
+<<<<<<< Updated upstream
   const [step, setStep] = useState(1);
   const [productData, setProductData] = useState({
     productInfo: {
@@ -47,6 +48,26 @@ export default function CreateTermDeposit() {
           name: "Passport",
         },
       ],
+=======
+  const [searchParams] = useSearchParams();
+  const stage = searchParams.get("stage");
+  const [step, setStep] = useState(3);
+  const [productData, setProductData] = useState({
+    productInfo: {
+      productName: "",
+      slogan: "",
+      description: "",
+      startDate: null,
+      endDate: null,
+      currency: "",
+      customerCategory: null,
+    },
+    customerEligibility: {
+      ageGroupMin: null,
+      ageGroupMax: null,
+      requireDocument: [],
+      corporateCustomerType: [],
+>>>>>>> Stashed changes
     },
     pricingConfiguration: {
       applicableTenorMin: 0,

@@ -371,9 +371,15 @@ export default function TableComponent({
       <Table
         headers={
           category === StatusCategoryType?.AllProducts
-            ? productHeader.map((i) => ({ ...i, options: users }))
+            ? productHeader
             : handleHeaders(
-                requestHeader.map((i) => ({ ...i, options: users })),
+                requestHeader.map((i) => {
+                  if (i.key === "created_By" || i.key === "approved_By") {
+                    i.options = users;
+                  
+                  }
+                  return i;
+                }),
                 isChecker
               )
         }

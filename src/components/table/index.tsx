@@ -57,7 +57,6 @@ export const handleProductsDropdown = (
   locked = false,
   permissions: string[] = []
 ): any => {
-  console.log("🚀 ~ file: index.tsx:59 ~ permissions:", permissions);
   // if (locked)
   //   return DropDownOptions[status]?.filter(
   //     (i: any) => i.text.toLowerCase() === "view"
