@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RiInformationLine } from "react-icons/ri";
 import { IoMdAddCircle } from "react-icons/io";
 import { MinMaxInput } from "@app/components/forms";
 import { BorderlessSelect } from "@app/components/forms";
-import { IntervalOptions, interestComputationDaysOptions } from "@app/constants";
+import {
+  IntervalOptions,
+  interestComputationDaysOptions,
+} from "@app/constants";
 import { useForm, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { pricingConfigSchema } from "@app/constants";
@@ -21,7 +24,7 @@ export function InputDivs({ children, label }) {
     </div>
   );
 }
-export default function PricingConfig({ proceed, formData, setFormData }) {
+export default function PricingConfig({ proceed, formData, setFormData, setDisabled }) {
   const {
     register,
     handleSubmit,
@@ -31,6 +34,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
     control,
     setError: assignError,
     getValues,
+    trigger,
     formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(pricingConfigSchema),
@@ -113,6 +117,12 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
 
     proceed();
   }
+  const values = getValues();
+  useEffect(() => {
+    console.log("🚀 ~ file: product-information.tsx:191 ~ isValid:", isValid);
+
+    setDisabled(!isValid);
+  }, [values]);
   return (
     <form id="pricingconfig" onSubmit={handleSubmit(onProceed)}>
       <div className="flex flex-col gap-10">
@@ -124,6 +134,10 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                   label={"Min"}
                   register={register}
                   inputName={"applicableTenorMin"}
+                  errors={errors}
+                  setValue={setValue}
+                  trigger={trigger}
+                  clearErrors={clearErrors}
                   handleChange={(value) => {
                     setValue("applicableTenorMin", value);
                   }}
@@ -140,6 +154,10 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                   }}
                   defaultValue={formData.applicableTenorMinUnit}
                   options={IntervalOptions}
+                  errors={errors}
+                  setValue={setValue}
+                  trigger={trigger}
+                  clearErrors={clearErrors}
                 />
               </div>
             </div>{" "}
@@ -154,6 +172,10 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                     setValue("applicableTenorMax", value);
                   }}
                   defaultValue={formData.applicableTenorMax}
+                  errors={errors}
+                  setValue={setValue}
+                  trigger={trigger}
+                  clearErrors={clearErrors}
                 />
               </div>
 
@@ -167,6 +189,10 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                   }}
                   defaultValue={formData.applicableTenorMaxUnit}
                   options={IntervalOptions}
+                  errors={errors}
+                  setValue={setValue}
+                  trigger={trigger}
+                  clearErrors={clearErrors}
                 />
               </div>
             </div>{" "}
@@ -185,6 +211,10 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                   setValue("applicablePrincipalMin", value?.value);
                 }}
                 defaultValue={formData.applicablePrincipalMin}
+                errors={errors}
+                setValue={setValue}
+                trigger={trigger}
+                clearErrors={clearErrors}
               />
             </div>{" "}
             -
@@ -199,6 +229,10 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                   setValue("applicablePrincipalMax", value?.value);
                 }}
                 defaultValue={formData.applicablePrincipalMax}
+                errors={errors}
+                setValue={setValue}
+                trigger={trigger}
+                clearErrors={clearErrors}
               />
             </div>{" "}
           </div>
@@ -246,6 +280,7 @@ export default function PricingConfig({ proceed, formData, setFormData }) {
                           label={"Min"}
                           register={register}
                           inputName={`principalRateRanges.${index}.min`}
+
                           // defaultValue={range.min}
                         />
                       </div>{" "}

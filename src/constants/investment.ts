@@ -337,27 +337,27 @@ export const Interval = {
 export const IntervalOptions = [
   {
     id: "0",
-    text: "hour(s)",
+    text: "Hour(s)",
     value: 0,
   },
   {
     id: "1",
-    text: "day(s)",
+    text: "Day(s)",
     value: 1,
   },
   {
     id: "2",
-    text: "week(s)",
+    text: "Week(s)",
     value: 2,
   },
   {
     id: "3",
-    text: "month(s)",
+    text: "Month(s)",
     value: 3,
   },
   {
     id: "4",
-    text: "year(s)",
+    text: "Year(s)",
     value: 4,
   },
 ];

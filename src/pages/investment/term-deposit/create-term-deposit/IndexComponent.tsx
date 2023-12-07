@@ -49,7 +49,7 @@ export default function CreateTermDeposit() {
     pricingConfiguration: {
       applicableTenorMin: 0,
       applicableTenorMinUnit: 1,
-      applicableTenorMax: 8,
+      applicableTenorMax: null,
       applicableTenorMaxUnit: 1,
 
       interestRateRangeType: 0,
@@ -58,15 +58,15 @@ export default function CreateTermDeposit() {
           min: 0,
           max: 0,
           principalMin: 0,
-          principalMax: 0,
+          principalMax: null,
           tenorMin: 0,
           tenorMinUnit: 0,
-          tenorMax: 0,
-          tenorMaxUnit: 0,
+          tenorMax: null,
+          tenorMaxUnit: null,
         },
       ],
-      interestRateMin: 10,
-      interestRateMax: 60,
+      interestRateMin: 0,
+      interestRateMax: null,
     },
     liquidation: {
       part_AllowPartLiquidation: true,
@@ -190,6 +190,7 @@ export default function CreateTermDeposit() {
             })
           }
           proceed={handleNav}
+          setDisabled={setDisabled}
         />
       );
       formRef = "pricingconfig";
