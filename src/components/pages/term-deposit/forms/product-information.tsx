@@ -3,10 +3,15 @@ import { RiErrorWarningFill } from "react-icons/ri";
 import { FaCheckCircle } from "react-icons/fa";
 import { AiOutlineLoading } from "react-icons/ai";
 import { FormDate, CustomInput } from "@app/components/forms";
+import { FormToolTip } from "@app/components";
 import { BorderlessSelect, DateSelect } from "@app/components/forms";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ProductInformationFormSchema, currencyOptions } from "@app/constants";
+import {
+  ProductInformationFormSchema,
+  currencyOptions,
+  toolTips,
+} from "@app/constants";
 import debounce from "lodash.debounce";
 import { useParams } from "react-router-dom";
 import { useValidateNameMutation } from "@app/api";
@@ -197,9 +202,13 @@ export default function ProductInformation({
     <form id="productform" onSubmit={handleSubmit(onProceed)}>
       <div className="">
         <div className="mb-6 flex flex-col gap-[1px]">
-          <label className="w-[300px] pt-[10px]  text-base font-semibold text-[#636363]">
-            Product Name <span className="text-red-500">*</span>
-          </label>
+          <div className="flex itemx-center gap-2 w-[300px]">
+            {" "}
+            <label className=" pt-[10px]  text-base font-semibold text-[#636363]">
+              Product Name <span className="text-red-500">*</span>
+            </label>
+            <FormToolTip tip={toolTips.productName} />
+          </div>
 
           <InputDiv>
             <div className="relative flex items-center max-w-[642px]">
@@ -329,9 +338,12 @@ export default function ProductInformation({
         </div>
 
         <div className="mb-6 flex flex-col gap-[13px]">
-          <label className="w-[300px] pt-[10px] text-base font-semibold text-[#636363]">
-            Product Description
-          </label>
+        <div className="flex  gap-2 w-[300px]">
+              {" "}
+              <label className=" pt-[10px]  text-base font-semibold text-[#636363]">
+                Product Description <span className="text-red-500">*</span>
+              </label>
+            </div>
           <InputDiv>
             <textarea
               data-testid="product-description"
@@ -356,9 +368,13 @@ export default function ProductInformation({
 
         <div className="flex gap-12">
           <div className="flex flex-col gap">
-            <label className="w-[300px] pt-[10px] text-base font-semibold text-[#636363]">
-              Product Life Cycle
-            </label>
+            <div className="flex  gap-2 w-[300px]">
+              {" "}
+              <label className=" pt-[10px]  text-base font-semibold text-[#636363]">
+                Product Life Cycle 
+              </label>
+              <FormToolTip tip={toolTips.lifeCycle} />
+            </div>
 
             <div className="flex ">
               <FormDate
@@ -402,6 +418,8 @@ export default function ProductInformation({
                 defaultValue={formData.currency}
                 placeholder="Select currency"
                 clearErrors={clearErrors}
+                requiredField={true}
+                tip={toolTips.currency}
                 options={currencyOptions}
                 trigger={trigger}
               />

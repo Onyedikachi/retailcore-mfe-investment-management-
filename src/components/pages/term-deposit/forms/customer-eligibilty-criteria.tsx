@@ -4,6 +4,8 @@ import {
   ComboSelect,
   MultiSelect,
 } from "@app/components/forms";
+import { FormToolTip } from "@app/components";
+import { toolTips } from "@app/constants";
 import { Button, SelectedRequirementsTable } from "@app/components";
 import { MinMaxInput, InfoLabel } from "@app/components/forms";
 import { RiInformationLine } from "react-icons/ri";
@@ -43,7 +45,7 @@ export default function CustomerEligibilityCriteria({
     setValue,
     setError: assignError,
     getValues,
-    formState: { errors ,isValid},
+    formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(CustomerEligibilityCriteriaSchema),
     defaultValues: formData,
@@ -119,6 +121,8 @@ export default function CustomerEligibilityCriteria({
                 options={categoryOptions}
                 placeholder="Select customer category"
                 clearErrors={clearErrors}
+                requiredField={true}
+                tip={toolTips.customerCategory}
               />
             </div>
             {watchCustomerCategory === CustomerCategoryType.Corporate && (
@@ -259,7 +263,7 @@ export default function CustomerEligibilityCriteria({
                 <div className="flex flex-col gap-2">
                   <span className=" flex items-center gap-[5px] text-[##636363] text-xs font-normal">
                     <span className="text-[15px]">
-                      <RiInformationLine />
+                    <FormToolTip tip={toolTips.requirements} />
                     </span>
                     <span>
                       Customer must provide the following selected documents
