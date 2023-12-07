@@ -27,47 +27,22 @@ export const FormSchema = yup
   })
   .required();
 
-export const ProductInformationFormSchema = yup
-  .object({
-    productName: yup
-      .string()
-      .matches(
-        productNameRegex,
-        "Product name can only contain alphabets, numbers, and space characters"
-      )
-      .required("Product name is required")
-      .min(3)
-      .max(50, "Maximum of 50 chars"),
-    slogan: yup.string().max(160, "Maximum of 160 chars").nullable(),
-    description: yup.string().required("Product description is required"),
-    startDate: yup
-      .string()
-      .nullable()
-
-      .test(
-        "start-date",
-        "Start date must be less than end date",
-        function (startDate) {
-          const { endDate } = this.parent;
-          return new Date(startDate) < new Date(endDate);
-        }
-      ),
-    endDate: yup
-      .string()
-      .nullable()
-
-      .test(
-        "end-date",
-        "End date must be greater than start date",
-        function (endDate) {
-          const { startDate } = this.parent;
-          return new Date(endDate) > new Date(startDate);
-        }
-      ),
-    currency: yup.string().required("Product currency is required"),
-    customerCategory: yup.number(),
-  })
-  .required();
+export const ProductInformationFormSchema = yup.object({
+  productName: yup
+    .string()
+    .matches(
+      productNameRegex,
+      "Product name can only contain alphabets, numbers, and space characters"
+    )
+    .required("Product name is required")
+    .min(3)
+    .max(50, "Maximum of 50 chars"),
+  slogan: yup.string().max(160, "Maximum of 160 chars").nullable(),
+  description: yup.string().required("Product description is required"),
+  startDate: yup.string().nullable().required("Start date is required"),
+  endDate: yup.string().nullable(),
+  currency: yup.string().required("Select a currency")
+});
 
 export const CustomerEligibilityCriteriaSchema = yup
   .object({
