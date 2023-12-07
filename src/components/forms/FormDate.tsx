@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, { useState, forwardRef, useEffect } from "react";
 import DatePicker, { CalendarContainer } from "react-datepicker";
 import { FaRegCalendarAlt } from "react-icons/fa";
@@ -19,7 +20,7 @@ export default function FormDate({
   inputName,
   handleChange,
   className,
-  defaultValue = "",
+  defaultValue,
   errors,
   minDate,
   maxDate,
@@ -28,11 +29,14 @@ export default function FormDate({
   const [date, setDate] = useState(defaultValue);
 
   useEffect(() => {
+    if (defaultValue) {
+      setDate(defaultValue);
+    }
+  }, [defaultValue]);
+
+  useEffect(() => {
     handleChange(date);
   }, [date]);
-  useEffect(() => {
-    console.log("🚀 ~ file: FormDate.tsx:26 ~ minDate:", minDate);
-  }, [minDate]);
   const MyContainer = ({ className, children }) => {
     return (
       <div
@@ -63,8 +67,8 @@ export default function FormDate({
             clearErrors(inputName);
           }}
           calendarContainer={MyContainer}
-          minDate={new Date(minDate)}
-          maxDate={new Date(maxDate)}
+          minDate={minDate ? new Date(minDate) : null}
+          maxDate={maxDate ? new Date(maxDate) : null}
           placeholderText="dd/mm/yyyy"
           className={` placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4 border-b  placeholder:text-[#BCBBBB] ${
             errors && errors[inputName] ? "border-red-600" : "border-[#8F8F8F]"
