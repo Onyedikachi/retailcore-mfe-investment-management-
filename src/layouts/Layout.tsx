@@ -25,17 +25,7 @@ const Layout = () => {
   useEffect(() => {
     auth$?.subscribe((value) => {
       setPermissions(
-<<<<<<< Updated upstream
-        value?.user?.user_permissions || [
-          "CREATE_INVESTMENT_PRODUCT",
-          "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS",
-          "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS",
-          "RE_OR_DEACTIVATE_INVESTMENT_PRODUCT",
-          "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS",
-        ]
-=======
         value?.user?.user_permissions || []
->>>>>>> Stashed changes
       );
 
       handleRole(setRole, value);

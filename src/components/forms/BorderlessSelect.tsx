@@ -56,15 +56,11 @@ export default function Select({
                 : "border-[#8F8F8F]"
             }`}
           >
-<<<<<<< Updated upstream
-            <span className="block truncate">{selected?.text}</span>
-=======
             <span className="block truncate">
               {selected?.text || (
                 <span className="text-[#aaa]">{placeholder}</span>
               )}
             </span>
->>>>>>> Stashed changes
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-xs">
               {/* <FaChevronDown className=" text-[#636363]" aria-hidden="true" /> */}
               <svg

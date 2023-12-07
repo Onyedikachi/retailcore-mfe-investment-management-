@@ -40,10 +40,6 @@ export const ProductInformationFormSchema = yup
       .max(50, "Maximum of 50 chars"),
     slogan: yup.string().max(160, "Maximum of 160 chars").nullable(),
     description: yup.string().required("Product description is required"),
-<<<<<<< Updated upstream
-    startDate: yup.string(),
-    endDate: yup.string(),
-=======
     startDate: yup
       .string()
       .nullable()
@@ -68,7 +64,6 @@ export const ProductInformationFormSchema = yup
           return new Date(endDate) > new Date(startDate);
         }
       ),
->>>>>>> Stashed changes
     currency: yup.string().required("Product currency is required"),
     customerCategory: yup.number(),
   })
@@ -146,8 +141,6 @@ export const entriesAndEventsSchema = yup
     category: yup.string(),
   })
   .required();
-<<<<<<< Updated upstream
-=======
 
 export const currencyOptions = [
   {
@@ -232,4 +225,3 @@ export const documentOptions = [
     name: "Proof of residential address",
   },
 ];
->>>>>>> Stashed changes
