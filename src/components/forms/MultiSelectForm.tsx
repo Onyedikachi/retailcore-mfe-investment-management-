@@ -41,7 +41,9 @@ export default function MultiSelectForm({
     register(inputName);
     setValue(inputName, selectedOptions);
     clearErrors(inputName);
+   if(selectedOptions.length){
     trigger(inputName);
+   }
   }, [selectedOptions]);
 
   const handleAll = (val) => {
