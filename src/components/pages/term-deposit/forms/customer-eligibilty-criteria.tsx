@@ -20,7 +20,7 @@ import {
 import { SelectRequirements } from "@app/components/modals";
 import { EntriesAndEventsSearch } from "@app/components/pages/term-deposit/forms";
 import { CustomerCategoryType } from "@app/constants/enums";
-import MultiSelectForm from "@app/components/forms/MultiSelectForm";
+import MultiSelectForm from "@app/components/forms/MultiSelectForm2";
 
 export default function CustomerEligibilityCriteria({
   formData,
@@ -154,6 +154,7 @@ export default function CustomerEligibilityCriteria({
                       label="Min"
                       clearErrors={clearErrors}
                       trigger={trigger}
+                      type="number"
                     />
                   </div>
                   <div className="flex items-center">-</div>
@@ -167,6 +168,7 @@ export default function CustomerEligibilityCriteria({
                       label="Max"
                       clearErrors={clearErrors}
                       trigger={trigger}
+                      type="number"
                     />
                   </div>
                 </div>

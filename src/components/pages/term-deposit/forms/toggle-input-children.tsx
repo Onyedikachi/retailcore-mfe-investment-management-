@@ -5,8 +5,21 @@ import { Switch } from "@headlessui/react";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
-export default function ToggleInputChildren({ children, label }) {
+export default function ToggleInputChildren({
+  children,
+  label,
+  setValue,
+  trigger,
+  inputName,
+  defaultValue,
+}) {
   const [isOpen, setIsOpen] = useState(false);
+
+  React.useEffect(() => {
+    if (defaultValue !== null) {
+      setIsOpen(defaultValue);
+    }
+  }, [defaultValue]);
   return (
     <div
       style={{
@@ -23,18 +36,20 @@ export default function ToggleInputChildren({ children, label }) {
           checked={isOpen}
           onChange={(value) => {
             setIsOpen(value);
+            setValue(inputName, value);
+            trigger(inputName);
           }}
           className={classNames(
-            isOpen ? "bg-[#CF2A2A]" : "bg-gray-200",
-            "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border border-transparent transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
+            isOpen ? "bg-[#CF2A2A]" : "bg-transparent",
+            "border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
           )}
         >
           <span className="sr-only">Use setting</span>
           <span
             aria-hidden="true"
             className={classNames(
-              isOpen ? "translate-x-5" : "translate-x-0",
-              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+              isOpen ? "translate-x-[14px] bg-white" : "translate-x-0  bg-white ",
+              "pointer-events-none inline-block h-[14px] w-[14px] transform rounded-full border border-[#CF2A2A] shadow ring-0 transition duration-200 ease-in-out"
             )}
           />
         </Switch>

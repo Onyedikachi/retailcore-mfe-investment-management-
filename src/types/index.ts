@@ -38,8 +38,9 @@ export interface BorderlessSelectProps {
   allLabel?: any;
   requiredField?: boolean;
   tip?: any;
-
+  error?: any;
   trigger?: any;
+  disabled?: boolean
 }
 
 export interface ActiveFilterProps {}

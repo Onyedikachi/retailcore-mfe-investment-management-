@@ -29,7 +29,7 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
 export default function CreateTermDeposit() {
   const [searchParams] = useSearchParams();
   const stage = searchParams.get("stage");
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(4);
   const [productData, setProductData] = useState({
     productInfo: {
       productName: "",
@@ -47,40 +47,44 @@ export default function CreateTermDeposit() {
       corporateCustomerType: [],
     },
     pricingConfiguration: {
+      interestRateRangeType: 0,
       applicableTenorMin: 0,
       applicableTenorMinUnit: 1,
       applicableTenorMax: null,
       applicableTenorMaxUnit: 1,
+      applicablePrincipalMin: 0,
+      applicablePrincipalMax: null,
 
-      interestRateRangeType: 0,
       interestRateConfigModels: [
         {
           min: 0,
-          max: 0,
+          max: null,
           principalMin: 0,
           principalMax: null,
           tenorMin: 0,
           tenorMinUnit: 0,
           tenorMax: null,
-          tenorMaxUnit: null,
+          tenorMaxUnit: 0,
         },
       ],
-      interestRateMin: 0,
-      interestRateMax: null,
     },
     liquidation: {
-      part_AllowPartLiquidation: true,
+      part_AllowPartLiquidation: false,
       part_MaxPartLiquidation: 0,
-      part_RequireNoticeBeforeLiquidation: true,
+      part_RequireNoticeBeforeLiquidation: false,
       part_NoticePeriod: 0,
       part_NoticePeriodUnit: 0,
-      part_LiquidationPenalty: "pay",
-      early_AllowEarlyLiquidation: true,
-      early_RequireNoticeBeforeLiquidation: true,
+      part_LiquidationPenalty: 0,
+      part_LiquidationPenaltyAmount: 0,
+      early_AllowEarlyLiquidation: false,
+      early_RequireNoticeBeforeLiquidation: false,
       early_NoticePeriod: 0,
       early_NoticePeriodUnit: 0,
-      early_LiquidationPenalty: "string",
+      early_LiquidationPenalty: "",
+      early_LiquidationPenaltyAmount:0,
       early_LiquidationPenaltyPercentage: 0,
+      specialInterestRate: 0,
+      specialCharges: [],
     },
     interestComputationMethod: 0,
     isDraft: false,
@@ -189,6 +193,7 @@ export default function CreateTermDeposit() {
               pricingConfiguration: pricingConfiguration,
             })
           }
+          productData={productData}
           proceed={handleNav}
           setDisabled={setDisabled}
         />
@@ -273,7 +278,7 @@ export default function CreateTermDeposit() {
                 <Button
                   type="submit"
                   form={formRef}
-                  disabled={isDisabled}
+                  // disabled={isDisabled}
                   className={
                     "bg-sterling-red-800 rounded-lg px-10 py-1 font-medium text-base"
                   }

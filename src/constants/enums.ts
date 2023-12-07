@@ -100,3 +100,13 @@ export enum CustomerCategoryType {
   Corporate = 1,
   // Add other category types here
 }
+
+export enum LiquidationPenalty {
+  None = 0,
+  ForfietAll = 1,
+  ForfietPortion = 2,
+  RecalculateInterest = 3,
+  TakeCharge = 4,
+  ComparePenalties = 5,
+}
+

@@ -1,6 +1,7 @@
 import * as yup from "yup";
 import { productNameRegex } from "./investment";
 import { CustomerCategoryType } from "./enums";
+import { InterestRateRangeType } from "./testenums";
 
 export const FormSchema = yup
   .object({
@@ -66,35 +67,37 @@ export const CustomerEligibilityCriteriaSchema = yup
 
 export const pricingConfigSchema = yup
   .object({
+    interestRateRangeType: yup.number().required(),
     applicableTenorMax: yup
       .number()
-      .required("Applicable Tenor Max is required")
-      .test(
-        "min-less-than-max",
-        "Applicable Tenor Max must be greater than Applicable Tenor Min",
-        function (value) {
-          const applicableTenorMax = this.parent.applicableTenorMax;
-          return (
-            value === undefined ||
-            applicableTenorMax === undefined ||
-            value < applicableTenorMax
-          );
-        }
-      ),
-    applicableTenorMinDays: yup.number(),
+      .typeError("Invalid value")
+      .required("Max is required")
+      .test("min-less-than-max", "Must be greater than Min", function (value) {
+        const applicableTenorMin = this.parent.applicableTenorMin;
+        return (
+          value === undefined ||
+          applicableTenorMin === undefined ||
+          value > applicableTenorMin
+        );
+      }),
+
     applicableTenorMin: yup
       .number()
-      .required("Applicable Tenor Min is required"),
-    applicableTenorMaxDays: yup.number(),
+      .typeError("Invalid value")
+      .required("Min is required"),
+
     applicablePrincipalMin: yup
       .number()
-      .required("Applicable Principal Min is required"),
+      .typeError("Invalid value")
+      .required("Min is required"),
+
     applicablePrincipalMax: yup
       .number()
-      .required("Applicable Principal Max is required")
+      .typeError("Invalid value")
+      .required("Max is required")
       .test(
         "max-less-than-min",
-        "Applicable Principal Max must be greater than Applicable Principal Min",
+        "Max must be greater than Min",
         function (value) {
           const applicablePrincipalMin = this.parent.applicablePrincipalMin;
           return (
@@ -104,43 +107,90 @@ export const pricingConfigSchema = yup
           );
         }
       ),
-    applicablePrincipalMinDays: yup.number(),
-    applicablePrincipalMaxDays: yup.number(),
-    varyOption: yup.string(),
-    applicableInterestMin: yup.number(),
-    applicableInterestMax: yup
-      .number()
-      .required("Applicable Interest Max is required")
-      .test(
-        "max-less-than-min",
-        "Applicable Interest Max must be greater than Applicable Interest Min",
-        function (value) {
-          const applicableInterestMin = this.parent.applicableInterestMin;
-          return (
-            value === undefined ||
-            applicableInterestMin === undefined ||
-            value > applicableInterestMin
-          );
-        }
-      ),
-    interestComputation: yup.string(),
-    tenorRateRanges: yup.array().of(
-      yup.object().shape({
-        minRange: yup.number(),
-        maxRange: yup.number(),
-        tenorFrom: yup.number(),
-        tenorFromType: yup.string(),
-        tenorTo: yup.number(),
-        tenorToType: yup.string(),
-      })
-    ),
-    principalRateRanges: yup.array().of(
-      yup.object().shape({
-        minRange: yup.number(),
-        maxRange: yup.number(),
-        amountFrom: yup.number(),
 
-        amountTo: yup.number(),
+    interestRateConfigModels: yup.array().of(
+      yup.object().shape({
+        min: yup.number().typeError("Invalid value"),
+        max: yup
+          .number()
+          .typeError("Invalid value")
+          .test(
+            "max-less-than-min",
+            "Max must be greater than Min",
+            function (value) {
+              const min = this.parent.min;
+              return value === undefined || min === undefined || value > min;
+            }
+          ),
+
+        tenorMax: yup.number().when("interestRateRangeType", {
+          is: InterestRateRangeType.VaryByTenor.toString(),
+          then: yup
+            .number().typeError("Invalid value")
+            .test(
+              "max-less-than-min",
+              "Max must be greater than Min",
+              function (value) {
+                const tenorMin = this.parent.tenorMin;
+                return (
+                  value === undefined ||
+                  tenorMin === undefined ||
+                  value > tenorMin
+                );
+              }
+            ),
+
+          otherwise: yup.number().typeError("Invalid value").nullable(),
+        }),
+
+        tenorMinUnit: yup.number().typeError("Invalid value").when("interestRateRangeType", {
+          is: InterestRateRangeType.VaryByTenor.toString(),
+          then: yup.number().required("Required").typeError("Invalid value"),
+          otherwise: yup.number().typeError("Invalid value").nullable(),
+        }),
+
+        tenorMin: yup.number().typeError("Invalid value").when("interestRateRangeType", {
+          is: InterestRateRangeType.VaryByTenor.toString(),
+          then: yup.number().required("Required").typeError("Invalid value"),
+          otherwise: yup.number().typeError("Invalid value").nullable()
+        }),
+
+        tenorMaxUnit: yup.number().typeError("Invalid value").when("interestRateRangeType", {
+          is: InterestRateRangeType.VaryByTenor.toString(),
+          then: yup.number().required("Required").typeError("Invalid value"),
+          otherwise: yup.number().typeError("Invalid value").nullable(),
+        }),
+
+        principalMin: yup
+          .number()
+          .typeError("Invalid value")
+          .when("interestRateRangeType", {
+            is: InterestRateRangeType.VaryByPrincipal.toString(),
+            then: yup.number().typeError("Invalid value").required("Required"),
+            otherwise: yup.number().typeError("Invalid value").nullable(),
+          }),
+
+        principalMax: yup
+          .number()
+          .typeError("Invalid value")
+          .when("interestRateRangeType", {
+            is: InterestRateRangeType.VaryByPrincipal.toString(),
+            then: yup
+              .number()
+              .typeError("Invalid value").test(
+                "max-less-than-min",
+                "Max must be greater than Min",
+                function (value) {
+                  const principalMin = this.parent.principalMin;
+                  return (
+                    value === undefined ||
+                    principalMin === undefined ||
+                    value > principalMin
+                  );
+                }
+              ),
+            otherwise: yup.number().typeError("Invalid value").nullable(),
+          }),
       })
     ),
   })
