@@ -35,7 +35,7 @@ const Tooltip = ({
   duration = 200,
 }) => {
   return (
-    <div className=" !bg-white">
+    <div className="flex items-end !bg-white">
       <Tippy
         content={content}
         placement={placement}

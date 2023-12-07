@@ -206,11 +206,23 @@ export const documentOptions = [
 ];
 
 export const toolTips = {
-  productName: 'Choose a unique name for this product. You cannot reuse an existing name',
-  lifeCycle: 'Specify the lifecycle of the product. Leave either field blank if undefined.Specify the lifecycle of the product. Leave either field blank if undefined.',
-  currency: 'Select applicable transaction currency for this product.',
-  customerCategory: 'Select the customer category for which this product will be applied to.',
-  ageGroup: 'Select the customer age group for which this product will be applied to. Leave either field blank if undefined.',
-  requirements: 'Select the documents that are required for a customer to provide before they can be assigned this product',
-  
-} 
+  productName:
+    "Choose a unique name for this product. You cannot reuse an existing name",
+  lifeCycle:
+    "Specify the lifecycle of the product. Leave either field blank if undefined.Specify the lifecycle of the product. Leave either field blank if undefined.",
+  currency: "Select applicable transaction currency for this product.",
+  customerCategory:
+    "Select the customer category for which this product will be applied to.",
+  ageGroup:
+    "Select the customer age group for which this product will be applied to. Leave either field blank if undefined.",
+  requirements:
+    "Select the documents that are required for a customer to provide before they can be assigned this product",
+  applicableTenor:
+    "The allowed investment maturity duration at the point of booking the product for a customer",
+  applicablePrincipal:
+    "The allowed investment amount at the point of booking the product for the customer",
+  applicableInterestRange: "Interest Range",
+  interestComputation: "Interest Computation",
+  allowEarlyLiquidation: "AllowEarly",
+  allowPartLiquidation: "Allow part",
+};
