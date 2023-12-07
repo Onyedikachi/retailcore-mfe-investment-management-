@@ -7,6 +7,8 @@ import { FormToolTip } from "@app/components";
 import { BorderlessSelect, DateSelect } from "@app/components/forms";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import {RedDot} from '@app/components/forms'
+
 import {
   ProductInformationFormSchema,
   currencyOptions,
@@ -204,8 +206,8 @@ export default function ProductInformation({
         <div className="mb-6 flex flex-col gap-[1px]">
           <div className="flex itemx-center gap-2 w-[300px]">
             {" "}
-            <label className=" pt-[10px]  text-base font-semibold text-[#636363]">
-              Product Name <span className="text-red-500">*</span>
+            <label className=" pt-[10px]  flex text-base font-semibold text-[#636363]">
+              Product Name <span className="flex"> <RedDot /></span>
             </label>
             <FormToolTip tip={toolTips.productName} />
           </div>
@@ -340,8 +342,8 @@ export default function ProductInformation({
         <div className="mb-6 flex flex-col gap-[13px]">
         <div className="flex  gap-2 w-[300px]">
               {" "}
-              <label className=" pt-[10px]  text-base font-semibold text-[#636363]">
-                Product Description <span className="text-red-500">*</span>
+              <label className=" pt-[10px] flex text-base font-semibold text-[#636363]">
+                Product Description <span className="flex"> <RedDot /></span>
               </label>
             </div>
           <InputDiv>

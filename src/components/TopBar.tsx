@@ -7,6 +7,7 @@ import { StatusCategoryType } from "@app/constants/enums";
 import CreateButton from "./CreateButton";
 import SearchInput from "./SearchInput";
 import { useGetPostProductsMutation } from "@app/api";
+import { useNavigate } from "react-router-dom";
 
 export const getSearchResult = (
   value,
@@ -28,27 +29,33 @@ export const getSearchResult = (
 };
 
 export function Tabs() {
-  const [active, setActtive] = useState("deposit");
+  const [active, setActtive] = useState("investment");
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
+  const navigate = useNavigate();
   const tabOptions = [
     {
       title: "deposit",
-      url: "",
+      url: "/product/factory/dashboard/Deposit",
     },
     {
       title: "credit",
-      url: "",
+      url: "#",
     },
     {
       title: "Over the counter Payments",
-      url: "",
+      url: "/product/factory/dashboard/Payment",
     },
     {
       title: "investment",
-      url: "",
+      url: "/product-factory/investment",
     },
   ];
+
+  function handleTabClick (tab){
+    setActtive(tab.title)
+    navigate(tab.url)
+  }
 
   const [
     getProducts,
@@ -62,7 +69,9 @@ export function Tabs() {
         {tabOptions.map((tab) => (
           <li
             key={tab.title}
-            onClick={() => setActtive(tab.title)}
+            onClick={() => {
+              handleTabClick(tab)
+            }}
             data-testid={tab.title}
             className={`${
               active == tab.title

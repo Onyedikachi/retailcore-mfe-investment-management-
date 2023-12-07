@@ -13,6 +13,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { pricingConfigSchema } from "@app/constants";
 import { FormToolTip } from "@app/components";
 import { toolTips } from "@app/constants";
+import {RedDot} from '@app/components/forms'
 
 const labels = [
   "Applicable Tenor",
@@ -24,9 +25,9 @@ export function InputDivs({ children, label, requiredField = true }) {
     <div className="flex flex-col gap-[10px] ">
       <div className="flex  gap-2 min-w-[300px]">
         {" "}
-        <label className="  text-base font-medium text-[#636363]">
+        <label className=" flex text-base font-medium text-[#636363]">
           {label}
-          {requiredField && <span className="text-red-500">*</span>}
+         <span className="flex"> {requiredField && <RedDot />}</span>
         </label>
         {label == labels[0] && <FormToolTip tip={toolTips.applicableTenor} />}
         {label == labels[1] && (

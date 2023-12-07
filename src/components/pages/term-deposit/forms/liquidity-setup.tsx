@@ -12,6 +12,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { liquiditySetupSchema } from "@app/constants";
 import MultiSelectForm2 from "@app/components/forms/MultiSelectForm2";
 import { FaTimes } from "react-icons/fa";
+import {liquidationTypes} from '@app/constants'
+import { partLiquidationPenaltyOptions, daysOptions } from "@app/constants";
+
+// import { FormToolTip } from "@app/components";
+// import { toolTips } from "@app/constants";
 
 export function InputDivs({
   children,
@@ -45,14 +50,14 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
     defaultValues: formData,
     // values,
   });
-  const liquidationTypes = [
-    {
-      label: "Allow Part Liquidation",
-    },
-    {
-      label: "Allow Early Liquidation",
-    },
-  ];
+  // const liquidationTypes = [
+  //   {
+  //     label: "Allow Part Liquidation",
+  //   },
+  //   {
+  //     label: "Allow Early Liquidation",
+  //   },
+  // ];
   function onProceed(d: any) {
     console.log("Customer - Eligibility:" + JSON.stringify({ ...d }));
     setFormData({ ...d });

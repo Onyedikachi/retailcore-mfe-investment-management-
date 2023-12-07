@@ -582,7 +582,7 @@ export const ButtonOptions  = [
         title: "Current",
         key: "current",
         isUrl: true,
-        url: "#",
+        url: "/product/factory/current/create-new-product/1",
         permission:"CREATE_INVESTMENT_PRODUCT"
       },
 
@@ -590,7 +590,7 @@ export const ButtonOptions  = [
         title: "Savings",
         key: "savings",
         isUrl: true,
-        url: "#",
+        url: "/product/factory/savings/create-new-product/1",
         permission:"CREATE_INVESTMENT_PRODUCT"
       },
     ],
@@ -659,21 +659,21 @@ export const ButtonOptions  = [
         title: "Cash withdrawal",
         key: "cash-withdrawal",
         isUrl: true,
-        url: "#",
+        url: "/product/factory/payment/over-the-counter/cash-withdrawal/1",
         permission:"CREATE_INVESTMENT_PRODUCT"
       },
       {
         title: "Within bank transfer",
         key: "within-bank-transfer",
         isUrl: true,
-        url: "#",
+        url: "/product/factory/payment/over-the-counter/within-bank-transfer/1",
         permission:"CREATE_INVESTMENT_PRODUCT"
       },
       {
         title: "Other bank transfer",
         key: "other-bank-transfer",
         isUrl: true,
-        url: "#",
+        url: "/product/factory/payment/over-the-counter/other-bank-transfer/1",
         permission:"CREATE_INVESTMENT_PRODUCT"
       },
     ],

@@ -1,4 +1,5 @@
 import React from "react";
+import {RedDot} from '@app/components/forms'
 import {
   EntriesAndEventsSearch,
   EntriesAndEventsSearchResults,
@@ -7,8 +8,8 @@ import {
 export function InputDivs({ children, label }) {
   return (
     <div className="flex gap-[10px] ">
-      <span className="min-w-[300px] capitalize flex items-start gap-[5px] text-[##636363] text-base font-medium">
-        {label}
+      <span className="min-w-[300px] capitalize flex items-start gap-[1px] text-[##636363] text-base font-medium">
+        {label} <RedDot />
       </span>
       <div>{children}</div>
     </div>
