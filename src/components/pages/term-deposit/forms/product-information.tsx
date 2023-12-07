@@ -370,7 +370,7 @@ export default function ProductInformation({
                 setValue={setValue}
                 inputName={"currency"}
                 labelName={"Product Currency"}
-                value={formData.currency}
+                defaultValue={formData.currency}
                 placeholder="Select currency"
                 clearErrors={clearErrors}
                 options={currencyOptions}

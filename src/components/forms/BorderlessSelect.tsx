@@ -14,9 +14,8 @@ export default function Select({
   placeholder = "Select",
   errors,
   setValue,
-  clearErrors
+  clearErrors,
 }: BorderlessSelectProps): React.JSX.Element {
-
   const [selected, setSelected] = useState<any>(null);
 
   // useEffect(() => {
@@ -24,15 +23,21 @@ export default function Select({
   // }, [selected, handleSelected]);
 
   const handleChange = (val) => {
-  setValue(inputName, val.value)
-  clearErrors(inputName)
-  setSelected(val)
-  handleSelected && handleSelected(val)
-  }
+    setValue(inputName, val.value);
+    clearErrors(inputName);
+    setSelected(val);
+    handleSelected && handleSelected(val);
+  };
   // Change selected when changing status category
   useEffect(() => {
-    setSelected(options[0]);
-  }, [options]);
+    if (defaultValue.length) {
+      setSelected(
+        options.find(
+          (i) => i.value.toLowerCase() === defaultValue.toLowerCase()
+        )
+      );
+    }
+  }, [defaultValue]);
 
   return (
     <div role="combobox" className={` min-w-full`}>
