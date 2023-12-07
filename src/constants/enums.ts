@@ -81,11 +81,11 @@ export enum Prompts {
   PRODUCT_DEACTIVATION_REJECT = "Do you want to reject product deactivation",
   PRODUCT_ACTIVATION_APPROVE = "Do you want to approve product activation",
   PRODUCT_ACTIVATION_REJECT = "Do you want to reject product activation",
-  PRODUCT_DEACTIVATE_SUBTEXT ="This product will no longer be available for assignment to customers after deactivation"
+  PRODUCT_DEACTIVATE_SUBTEXT = "This product will no longer be available for assignment to customers after deactivation",
 }
 
 export enum Actions {
-  VIEW = 'view',
+  VIEW = "view",
   DELETE_DRAFT = "delete draft",
   WITHDRAW_DELETE = "withdraw & delete request",
   ACTIVATE = "activate",
@@ -93,5 +93,10 @@ export enum Actions {
   DELETE_REQUESTS = "delete request",
   WITHDARW_MODIFY = "withdraw & modify",
   MODIFY = "modify",
+}
 
+export enum CustomerCategoryType {
+  Individual = 0,
+  Corporate = 1,
+  // Add other category types here
 }

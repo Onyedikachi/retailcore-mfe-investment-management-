@@ -1,5 +1,6 @@
 import * as yup from "yup";
 import { productNameRegex } from "./investment";
+import { CustomerCategoryType } from "./enums";
 
 export const FormSchema = yup
   .object({
@@ -37,10 +38,16 @@ export const ProductInformationFormSchema = yup
       .required("Product name is required")
       .min(3)
       .max(50, "Maximum of 50 chars"),
-    slogan: yup.string().max(160, "Maximum of 160 chars"),
+    slogan: yup.string().max(160, "Maximum of 160 chars").nullable(),
     description: yup.string().required("Product description is required"),
+<<<<<<< Updated upstream
+    startDate: yup.string(),
+    endDate: yup.string(),
+=======
     startDate: yup
       .string()
+      .nullable()
+
       .test(
         "start-date",
         "Start date must be less than end date",
@@ -51,6 +58,8 @@ export const ProductInformationFormSchema = yup
       ),
     endDate: yup
       .string()
+      .nullable()
+
       .test(
         "end-date",
         "End date must be greater than start date",
@@ -59,6 +68,7 @@ export const ProductInformationFormSchema = yup
           return new Date(endDate) > new Date(startDate);
         }
       ),
+>>>>>>> Stashed changes
     currency: yup.string().required("Product currency is required"),
     customerCategory: yup.number(),
   })
@@ -66,10 +76,17 @@ export const ProductInformationFormSchema = yup
 
 export const CustomerEligibilityCriteriaSchema = yup
   .object({
-    category: yup.string(),
+    customerCategory: yup.number().required("Select a category"),
     ageGroupStart: yup.number(),
     ageGroupEnd: yup.number(),
-    corporateCustomerType: yup.string(),
+    corporateCustomerType: yup.array().when("customerCategory", {
+      is: CustomerCategoryType.Corporate,
+      then: yup
+        .array()
+        .required("Corporate customer type is required")
+        .min(1, "At least one corporate customer type is required"),
+      otherwise: yup.array(),
+    }),
   })
   .required();
 
@@ -129,6 +146,8 @@ export const entriesAndEventsSchema = yup
     category: yup.string(),
   })
   .required();
+<<<<<<< Updated upstream
+=======
 
 export const currencyOptions = [
   {
@@ -142,3 +161,75 @@ export const currencyOptions = [
     value: "USD",
   },
 ];
+
+export const categoryOptions = [
+  {
+    id: 1,
+    text: "Individual",
+    value: 0,
+  },
+  {
+    id: 2,
+    text: "Corporate",
+    value: 1,
+  },
+];
+
+export const customerTypeOptions = [
+  {
+    id: 1,
+    text: "Limited liability company",
+    value: "Limited liability company",
+  },
+  {
+    id: 2,
+    text: "Partnership",
+    value: "Partnership",
+  },
+  {
+    id: 2,
+    text: "Religous body",
+    value: "Religous body",
+  },
+  {
+    id: 2,
+    text: "Club/Association",
+    value: "Club/Association",
+  },
+  {
+    id: 2,
+    text: "Trust",
+    value: "trust",
+  },
+  {
+    id: 2,
+    text: "Public entry",
+    value: "public entry",
+  },
+  {
+    id: 2,
+    text: "SME",
+    value: "sme",
+  },
+];
+
+export const documentOptions = [
+  {
+    id: "Customer Photo",
+    name: "Customer Photo",
+  },
+  {
+    id: "Signature",
+    name: "Signature",
+  },
+
+  {
+    id: "Valid Identification document",
+    name: "Valid Identification document",
+  },
+  {
+    id: "Proof of residential address",
+    name: "Proof of residential address",
+  },
+];
+>>>>>>> Stashed changes

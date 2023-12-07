@@ -23,33 +23,30 @@ export default function SelectedRequirementsTable({
   tableItems,
   deleteTableItem,
 }: SelectedRequirementsTable) {
+  const headers = ["s/n", "DOCUMENTATION REQUIRED", ""];
   return (
     <div className="px-4 sm:px-6 lg:px-8">
-      {tableItems.length > 0 && (
-        <div className="mt-8 flow-root">
-          <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div className="inline-block min-w-full py-2 align-middle">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead>
-                  <tr>
+      <div className="mt-8 flow-root">
+        <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div className="inline-block min-w-full py-2 align-middle">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead>
+                <tr>
+                  {headers.map((i, idx) => (
                     <th
-                      scope="col"
-                      className="max-w-[49px] py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-[#AAAAAA] sm:pl-6 lg:pl-8"
+                      key={i + idx.toString()}
+                      className="text-left relative uppercase font-bold text-sm text-[#AAAAAA] px-4 py-5 after:content-[''] after:w-1 after:h-[18px] after:absolute after:border-r after:left-0 after:top-1/2 after:translate-y-[-50%] after:border-[#AAAAAA]/75 first-of-type:after:content-none last-of-type:after:content-none border-b border-[#C2C9D1]/30 whitespace-nowrap"
                     >
-                      S|N
+                  {i}
                     </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-[#AAAAAA]"
-                    >
-                      DOCUMEMNTATION REQUIRED
-                    </th>
-                  </tr>
-                </thead>
+                  ))}
+                </tr>
+              </thead>
+              {tableItems.length > 0 ? (
                 <tbody className="divide-y divide-gray-200 bg-white">
                   {tableItems.map((document, index) => (
                     <tr key={document.id} className="bg-[#F9F2F2]">
-                      <td className="max-w-[49px] capitalize whitespace-nowrap py-4 pl-4 pr-3 text-base font-medium text-[#636363] sm:pl-6 lg:pl-8">
+                      <td className="w-[50px] capitalize whitespace-nowrap py-4 pl-4 pr-3 text-base font-medium text-[#636363] sm:pl-6 lg:pl-8">
                         {index + 1}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-base text-[#636363]">
@@ -92,11 +89,25 @@ export default function SelectedRequirementsTable({
                     </tr>
                   ))}
                 </tbody>
-              </table>
-            </div>
+              ) : (
+                <tbody>
+                  {Array.from(Array(5)).map((item: any, index) => (
+                    <tr
+                      key={item + index.toString()}
+                      className="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"
+                    >
+                      <td className="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize  truncate relative text-left">
+                        {index === 0 && "No document selected"}
+                      </td>
+                      <td className="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize truncate relative text-left"></td>
+                    </tr>
+                  ))}
+                </tbody>
+              )}
+            </table>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }

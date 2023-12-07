@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { paths } from "@app/routes/paths";
 import { Confirm, Failed, Success } from "@app/components/modals";
 import { useCreateProductMutation } from "@app/api";
@@ -17,7 +17,6 @@ import {
   PricingConfig,
 } from "@app/components/pages/term-deposit/forms";
 import { termDepositFormSteps } from "@app/constants";
-import Preview from "@app/components/pages/term-deposit/forms/preview";
 
 export function handleNext(step, setStep, termDepositFormSteps) {
   step < termDepositFormSteps.length && setStep(step + 1);
@@ -28,41 +27,64 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
 }
 
 export default function CreateTermDeposit() {
+<<<<<<< Updated upstream
+  const [step, setStep] = useState(1);
+  const [productData, setProductData] = useState({
+    productInfo: {
+      productName: "Kaine Term Deposit",
+      slogan: "Dep10 ",
+      description: "Just testing",
+      startDate: "2023-12-03",
+      endDate: "2023-12-30",
+      currency: "NGN",
+      customerCategory: 0,
+    },
+    customerEligibility: {
+      ageGroupMin: 0,
+      ageGroupMax: 0,
+      requireDocument: [
+        {
+          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          name: "Passport",
+        },
+      ],
+=======
   const [searchParams] = useSearchParams();
   const stage = searchParams.get("stage");
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(3);
   const [productData, setProductData] = useState({
     productInfo: {
       productName: "",
       slogan: "",
       description: "",
-      startDate: "",
-      endDate: "",
-      currency:  "USD",
-      customerCategory: 0,
+      startDate: null,
+      endDate: null,
+      currency: "",
+      customerCategory: null,
     },
     customerEligibility: {
-      ageGroupMin: 2,
-      ageGroupMax: 3,
+      ageGroupMin: null,
+      ageGroupMax: null,
       requireDocument: [],
+      corporateCustomerType: [],
+>>>>>>> Stashed changes
     },
     pricingConfiguration: {
-      applicableTenorMin: 2,
+      applicableTenorMin: 0,
       applicableTenorMinUnit: 1,
       applicableTenorMax: 8,
       applicableTenorMaxUnit: 1,
-      applicablePrincipalMin: 3,
-      applicablePrincipalMax: 4,
+
       interestRateRangeType: 0,
       interestRateConfigModels: [
         {
           min: 0,
           max: 0,
-          principalMin: 1,
-          principalMax: 12,
-          tenorMin: 21,
+          principalMin: 0,
+          principalMax: 0,
+          tenorMin: 0,
           tenorMinUnit: 0,
-          tenorMax: 22,
+          tenorMax: 0,
           tenorMaxUnit: 0,
         },
       ],
@@ -71,22 +93,37 @@ export default function CreateTermDeposit() {
     },
     liquidation: {
       part_AllowPartLiquidation: true,
-      part_MaxPartLiquidation: 1,
+      part_MaxPartLiquidation: 0,
       part_RequireNoticeBeforeLiquidation: true,
-      part_NoticePeriod: 2,
-      part_NoticePeriodUnit: 3,
+      part_NoticePeriod: 0,
+      part_NoticePeriodUnit: 0,
       part_LiquidationPenalty: "pay",
       early_AllowEarlyLiquidation: true,
       early_RequireNoticeBeforeLiquidation: true,
-      early_NoticePeriod: 4,
-      early_NoticePeriodUnit: 5,
-      early_LiquidationPenalty: "pay",
-      early_LiquidationPenaltyPercentage: 7,
+      early_NoticePeriod: 0,
+      early_NoticePeriodUnit: 0,
+      early_LiquidationPenalty: "string",
+      early_LiquidationPenaltyPercentage: 0,
     },
     interestComputationMethod: 0,
     isDraft: false,
     productType: 0,
   });
+  // const [productInformationFormData, setProductInformationFormData] = useState({
+  //   name: "",
+  //   slogan: "",
+  //   description: "",
+  //   startDate: "",
+  //   endDate: "",
+  //   currency: "",
+  // });
+  // const [customerEligibilityCriteria, setCustomerEligibilityCriteria] =
+  //   useState({
+  //     category: "",
+  //     ageGroupStart: 0,
+  //     ageGroupEnd: 0,
+  //     corporateCustomerType: "",
+  //   });
 
   const [isDisabled, setDisabled] = useState<boolean>(true);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -124,9 +161,7 @@ export default function CreateTermDeposit() {
   function handleNav() {
     step < termDepositFormSteps.length
       ? handleNext(step, setStep, termDepositFormSteps)
-      : navigate(
-          "/product-factory/investment/term-deposit/create?stage=preview"
-        );
+      : navigate(paths.TERM_DEPOSIT_SUMMARY);
   }
 
   const handleDraft = () => {
@@ -216,71 +251,61 @@ export default function CreateTermDeposit() {
   }
   return (
     <div className="flex flex-col min-h-[100vh] ">
-      {!stage && (
-        <div>
-          <div className="px-[37px] py-[11px] bg-white">
-            <h1 className="text-[#747373] text-[24px] font-bold mb-7 uppercase">
-              New Term Deposit Product
-            </h1>
-            <Breadcrumbs links={links} />
+      <div className="px-[37px] py-[11px] bg-white">
+        <h1 className="text-[#747373] text-[24px] font-bold mb-7 uppercase">
+          New Term Deposit Product
+        </h1>
+        <Breadcrumbs links={links} />
+      </div>
+      {/* {productData.productInfo.productName} */}
+      <div className="h-full px-[37px] py-[30px] bg-[#F7F7F7]">
+        <div className=" bg-[#ffffff] rounded-md px-[100px] pt-[54px] pb-[49px] ">
+          <div className="pb-[49px] ">
+            <FormStepComponent
+              formStepItems={termDepositFormSteps}
+              step={step}
+            />
           </div>
-          {/* {productData.productInfo.productName} */}
-          <div className="h-full px-[37px] py-[30px] bg-[#F7F7F7]">
-            <div className=" bg-[#ffffff] rounded-md px-[100px] pt-[54px] pb-[49px] ">
-              <div className="pb-[49px] ">
-                <FormStepComponent
-                  formStepItems={termDepositFormSteps}
-                  step={step}
-                />
+          <div className=" bg-[#ffffff] border border-[#EEEEEE] rounded-[10px] px-[87px] pt-[100px] pb-[43px] ">
+            {component}
+
+            <div className="h-px w-full bg-[#CCCCCC] mb-12 mt-16"></div>
+
+            <div className="flex mb-[70px]  justify-between">
+              <div>
+                {step > 1 && (
+                  <Button
+                    onClick={() =>
+                      handlePrev(step, setStep, termDepositFormSteps)
+                    }
+                    className="text-gray-500 px-10 py-1 font-medium text-base bg-white border border-[#D8DAE5] leading-[24px] disabled:bg-transparent"
+                  >
+                    Previous
+                  </Button>
+                )}
               </div>
-              <div className=" bg-[#ffffff] border border-[#EEEEEE] rounded-[10px] px-[87px] pt-[100px] pb-[43px] ">
-                {component}
+              <div className="flex justify-end gap-6">
+                <Button
+                  onClick={() => setIsConfirmOpen(true)}
+                  className="text-gray-500 px-10 py-1 font-medium text-base bg-white border border-[#D8DAE5] leading-[24px] disabled:bg-transparent"
+                >
+                  Save As Draft
+                </Button>
 
-                <div className="h-px w-full bg-[#CCCCCC] mb-12 mt-16"></div>
-
-                <div className="flex mb-[70px]  justify-between">
-                  <div>
-                    {step > 1 && (
-                      <Button
-                        onClick={() =>
-                          handlePrev(step, setStep, termDepositFormSteps)
-                        }
-                        className="text-gray-500 px-10 py-1 font-medium text-base bg-white border border-[#D8DAE5] leading-[24px] disabled:bg-transparent"
-                      >
-                        Previous
-                      </Button>
-                    )}
-                  </div>
-                  <div className="flex justify-end gap-6">
-                    <Button
-                      onClick={() => setIsConfirmOpen(true)}
-                      className="text-gray-500 px-10 py-1 font-medium text-base bg-white border border-[#D8DAE5] leading-[24px] disabled:bg-transparent"
-                    >
-                      Save As Draft
-                    </Button>
-
-                    <Button
-                      type="submit"
-                      form={formRef}
-                      className={
-                        "bg-sterling-red-800 rounded-lg px-10 py-1 font-medium text-base"
-                      }
-                    >
-                      Next
-                    </Button>
-                  </div>
-                </div>
+                <Button
+                  type="submit"
+                  form={formRef}
+                  className={
+                    "bg-sterling-red-800 rounded-lg px-10 py-1 font-medium text-base"
+                  }
+                >
+                  Next
+                </Button>
               </div>
             </div>
           </div>
         </div>
-      )}
-
-      {stage && stage === "preview" && (
-        <div>
-          <Preview formData={productData} />
-        </div>
-      )}
+      </div>
 
       {/* //Modals */}
       {isConfirmOpen && (

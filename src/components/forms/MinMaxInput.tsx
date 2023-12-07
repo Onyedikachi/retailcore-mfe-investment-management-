@@ -8,6 +8,9 @@ interface MinMaxProps {
   register?: any;
   handleChange?: (value) => void;
   defaultValue?: any;
+  errors?: any;
+  setValue?: any;
+  clearErrors?: any;
 }
 export default function MinMaxInput({
   label,
@@ -18,6 +21,9 @@ export default function MinMaxInput({
   handleChange,
   inputName,
   defaultValue = 0,
+  errors,
+  setValue,
+  clearErrors,
 }: MinMaxProps) {
   return (
     <div className={`${className} flex items-center gap-4`}>
@@ -28,13 +34,18 @@ export default function MinMaxInput({
         <div className="relative flex items-center max-w-[642px]">
           <input
             data-testid="min-max-input"
-            className={`placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] `}
-            onChange={(e) => handleChange(e.target.valueAsNumber)}
+            className={`placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] ${
+              errors && errors[inputName]
+                ? "border-red-600"
+                : "border-[#8F8F8F]"
+            }`}
+            onChange={(e) => {
+              setValue(inputName, e.target.valueAsNumber);
+              clearErrors(inputName);
+            }}
             placeholder="0"
             // maxLength={defaultLength}
-            {...register(inputName, {
-              required: true,
-            })}
+            {...register(inputName)}
             defaultValue={defaultValue}
             // aria-invalid={errors?.name ? "true" : "false"}
           />
@@ -46,6 +57,11 @@ export default function MinMaxInput({
             )}
           </div>
         </div>
+        {errors && errors[inputName] && (
+          <span className="text-sm text-danger-500">
+            {errors[inputName]?.message}
+          </span>
+        )}
       </div>
     </div>
   );

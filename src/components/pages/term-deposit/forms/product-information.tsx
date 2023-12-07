@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { RiErrorWarningFill } from "react-icons/ri";
 import { FaCheckCircle } from "react-icons/fa";
 import { AiOutlineLoading } from "react-icons/ai";
@@ -6,7 +6,7 @@ import { FormDate, CustomInput } from "@app/components/forms";
 import { BorderlessSelect, DateSelect } from "@app/components/forms";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ProductInformationFormSchema } from "@app/constants";
+import { ProductInformationFormSchema, currencyOptions } from "@app/constants";
 import debounce from "lodash.debounce";
 import { useParams } from "react-router-dom";
 import { useValidateNameMutation } from "@app/api";
@@ -114,7 +114,7 @@ export default function ProductInformation({
     setValue,
     setError: assignError,
     getValues,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm({
     resolver: yupResolver(ProductInformationFormSchema),
     defaultValues: formData,
@@ -152,27 +152,8 @@ export default function ProductInformation({
     // }
   }
 
-  useEffect(() => {
-    if (nameIsError) {
-      setError("Product name is not available, Please choose another");
-      setIsNameOkay(false);
-      setDisabled(true);
-    } else {
-      handleValidatingName(
-        nameIsSuccess,
-        setIsNameOkay,
-        nameIsError,
-        setError,
-        nameError,
-        setDisabled,
-        charLeft
-      );
-    }
-  }, [nameIsError, nameIsSuccess]);
-
   function onProceed(d: any) {
-    console.log("Date:" + moment(d.startDate).format("yyyy-MM-DD"));
-
+ 
     setFormData({
       ...d,
       startDate: moment(d.startDate).format("yyyy-MM-DD"),
@@ -180,7 +161,10 @@ export default function ProductInformation({
     });
     proceed();
   }
-
+  //watchers
+  const watchStartDate = watch("startDate");
+  const watchEndDate = watch("endDate");
+  const watchCurrency = watch("currency");
   return (
     <form id="productform" onSubmit={handleSubmit(onProceed)}>
       <div className="">
@@ -354,19 +338,24 @@ export default function ProductInformation({
               <FormDate
                 register={register}
                 inputName={"startDate"}
+                errors={errors}
                 handleChange={(value) => {
                   setValue("startDate", value);
                 }}
                 defaultValue={formData.startDate}
+                clearErrors={clearErrors}
               />
               -
               <FormDate
                 register={register}
                 inputName={"endDate"}
+                errors={errors}
+                minDate={watchStartDate}
                 handleChange={(value) => {
                   setValue("endDate", value);
                 }}
                 defaultValue={formData.endDate}
+                clearErrors={clearErrors}
               />
             </div>
           </div>
@@ -374,16 +363,16 @@ export default function ProductInformation({
           <div className="flex items-end gap">
             {/* <InputDiv> */}
             <div className="w-[300px]">
-              {/* {formData.currency} */}
               <BorderlessSelect
-                // clearErrors={() => clearErrors("currency")}
                 inputError={errors?.currency}
                 register={register}
+                errors={errors}
+                setValue={setValue}
                 inputName={"currency"}
                 labelName={"Product Currency"}
-                value={formData.currency}
+<<<<<<< Updated upstream
                 handleSelected={(value) => {
-                  setValue("currency", value?.value);
+                  setValue("currency", value.value);
                 }}
                 options={[
                   {
@@ -397,19 +386,15 @@ export default function ProductInformation({
                     value: "USD",
                   },
                 ]}
-                // defaultValue={formData.currency}
-                // defaultProperty={"value"}
+=======
+                value={formData.currency}
+                placeholder="Select currency"
+                clearErrors={clearErrors}
+                options={currencyOptions}
+>>>>>>> Stashed changes
               />
             </div>
-            {/* {errors?.currency && (
-                <span className="text-sm text-danger-500">
-                  {errors?.currency?.message}
-                </span>
-              )}
 
-              {error && (
-                <span className="text-sm text-danger-500">{error}</span>
-              )} */}
             {/* </InputDiv> */}
           </div>
         </div>

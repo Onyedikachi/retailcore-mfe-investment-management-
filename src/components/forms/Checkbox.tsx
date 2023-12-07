@@ -28,7 +28,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ label, checked, onChange }) => {
           className="accent-sterling-red-800"
           data-testid={label}
         />
-        <span>{label}</span>
+        <span className="whitespace-nowrap">{label}</span>
       </label>
     </div>
   );

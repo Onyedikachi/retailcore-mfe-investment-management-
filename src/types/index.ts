@@ -25,16 +25,20 @@ export interface SelectProps {
 }
 export interface BorderlessSelectProps {
   options: any[];
-  handleSelected: (value) => void;
+  handleSelected?: (value) => void;
   labelName?: string;
   register?: any;
   inputError?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
   clearErrors?: any;
   inputName?: string | null | undefined;
-  value?: any;
-  defaultProperty?: any;
   defaultValue?: any;
+<<<<<<< Updated upstream
+=======
   placeholder?: any;
+  errors?: any
+  setValue?: any
+  allLabel? : any
+>>>>>>> Stashed changes
 }
 
 export interface ActiveFilterProps {}
