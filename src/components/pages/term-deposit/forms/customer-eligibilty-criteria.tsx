@@ -39,11 +39,11 @@ export default function CustomerEligibilityCriteria({
     handleSubmit,
     watch,
     clearErrors,
-
+    trigger,
     setValue,
     setError: assignError,
     getValues,
-    formState: { errors },
+    formState: { errors ,isValid},
   } = useForm({
     resolver: yupResolver(CustomerEligibilityCriteriaSchema),
     defaultValues: formData,
@@ -97,7 +97,11 @@ export default function CustomerEligibilityCriteria({
     setFormData({ ...d, requireDocument: selectedRequirements });
     proceed();
   }
- 
+  useEffect(() => {
+    console.log("🚀 ~ file: product-information.tsx:191 ~ isValid:", isValid);
+
+    setDisabled(!isValid);
+  }, [values]);
   const watchCustomerCategory = watch("customerCategory");
   return (
     <div>
@@ -128,6 +132,7 @@ export default function CustomerEligibilityCriteria({
                   options={customerTypeOptions}
                   allLabel="All"
                   clearErrors={clearErrors}
+                  trigger={trigger}
                 />
               </div>
             )}
@@ -144,6 +149,7 @@ export default function CustomerEligibilityCriteria({
                       defaultValue={formData.ageGroupMin}
                       label="Min"
                       clearErrors={clearErrors}
+                      trigger={trigger}
                     />
                   </div>
                   <div className="flex items-center">-</div>
@@ -156,6 +162,7 @@ export default function CustomerEligibilityCriteria({
                       defaultValue={formData.ageGroupMin}
                       label="Max"
                       clearErrors={clearErrors}
+                      trigger={trigger}
                     />
                   </div>
                 </div>

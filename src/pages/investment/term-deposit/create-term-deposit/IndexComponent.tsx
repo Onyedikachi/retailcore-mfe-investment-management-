@@ -35,13 +35,13 @@ export default function CreateTermDeposit() {
       productName: "",
       slogan: "",
       description: "",
-      startDate: "",
-      endDate: "",
+      startDate: null,
+      endDate: null,
       currency: "",
       customerCategory: null,
     },
     customerEligibility: {
-      ageGroupMin: null,
+      ageGroupMin: 0,
       ageGroupMax: null,
       requireDocument: [],
       corporateCustomerType: [],
@@ -272,6 +272,7 @@ export default function CreateTermDeposit() {
                 <Button
                   type="submit"
                   form={formRef}
+                  disabled={isDisabled}
                   className={
                     "bg-sterling-red-800 rounded-lg px-10 py-1 font-medium text-base"
                   }

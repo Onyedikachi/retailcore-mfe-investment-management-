@@ -30,18 +30,22 @@ export const FormSchema = yup
 export const ProductInformationFormSchema = yup.object({
   productName: yup
     .string()
+    .required("Product name is required")
     .matches(
       productNameRegex,
       "Product name can only contain alphabets, numbers, and space characters"
     )
-    .required("Product name is required")
-    .min(3)
+    .min(3, "Minimum of 4 chars")
     .max(50, "Maximum of 50 chars"),
   slogan: yup.string().max(160, "Maximum of 160 chars").nullable(),
-  description: yup.string().required("Product description is required"),
-  startDate: yup.string().nullable().required("Start date is required"),
-  endDate: yup.string().nullable(),
-  currency: yup.string().required("Select a currency")
+  description: yup
+    .string()
+    .required("Product description is required")
+    .min(4, "Minimum of 4 chars")
+    .max(250, "Maximum of 250 chars"),
+  startDate: yup.date().nullable().required("Start date is required"),
+  endDate: yup.date().nullable(),
+  currency: yup.string().required("Select a currency"),
 });
 
 export const CustomerEligibilityCriteriaSchema = yup

@@ -33,9 +33,10 @@ export interface BorderlessSelectProps {
   inputName?: string | null | undefined;
   defaultValue?: any;
   placeholder?: any;
-  errors?: any
-  setValue?: any
-  allLabel? : any
+  errors?: any;
+  setValue?: any;
+  allLabel?: any;
+  trigger?: any;
 }
 
 export interface ActiveFilterProps {}

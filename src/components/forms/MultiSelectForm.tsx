@@ -31,6 +31,7 @@ export default function MultiSelectForm({
   errors,
   setValue,
   clearErrors,
+  trigger,
 }: BorderlessSelectProps): React.JSX.Element {
   const [isSelectAll] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -40,6 +41,7 @@ export default function MultiSelectForm({
     register(inputName);
     setValue(inputName, selectedOptions);
     clearErrors(inputName);
+    trigger(inputName);
   }, [selectedOptions]);
 
   const handleAll = (val) => {

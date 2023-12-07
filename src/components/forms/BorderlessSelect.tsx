@@ -15,6 +15,7 @@ export default function Select({
   errors,
   setValue,
   clearErrors,
+  trigger
 }: BorderlessSelectProps): React.JSX.Element {
   const [selected, setSelected] = useState<any>(null);
 
@@ -27,6 +28,7 @@ export default function Select({
     clearErrors(inputName);
     setSelected(val);
     handleSelected && handleSelected(val);
+    trigger && trigger(inputName)
   };
   // Change selected when changing status category
   useEffect(() => {
