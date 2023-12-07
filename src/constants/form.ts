@@ -204,6 +204,14 @@ export const documentOptions = [
     name: "Proof of residential address",
   },
 ];
+export const liquidationTypes = [
+  {
+    label: "Allow Part Liquidation",
+  },
+  {
+    label: "Allow Early Liquidation",
+  },
+];
 
 export const toolTips = {
   productName:
@@ -223,6 +231,7 @@ export const toolTips = {
     "The allowed investment amount at the point of booking the product for the customer",
   applicableInterestRange: "Interest Range",
   interestComputation: "Interest Computation",
-  allowEarlyLiquidation: "AllowEarly",
+ 
   allowPartLiquidation: "Allow part",
+  allowEarlyLiquidation: "AllowEarly",
 };

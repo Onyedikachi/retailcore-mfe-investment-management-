@@ -1,10 +1,13 @@
 import React from "react";
 import { ToggleInputChildren } from "@app/components/pages/term-deposit/forms";
 import { BorderlessSelect, MinMaxInput } from "@app/components/forms";
+import {liquidationTypes} from '@app/constants'
 import { partLiquidationPenaltyOptions, daysOptions } from "@app/constants";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { liquiditySetupSchema } from "@app/constants";
+// import { FormToolTip } from "@app/components";
+// import { toolTips } from "@app/constants";
 
 export function InputDivs({ children, label }) {
   return (
@@ -32,14 +35,14 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
     defaultValues: formData,
     // values,
   });
-  const liquidationTypes = [
-    {
-      label: "Allow Part Liquidation",
-    },
-    {
-      label: "Allow Early Liquidation",
-    },
-  ];
+  // const liquidationTypes = [
+  //   {
+  //     label: "Allow Part Liquidation",
+  //   },
+  //   {
+  //     label: "Allow Early Liquidation",
+  //   },
+  // ];
   function onProceed(d: any) {
     console.log("Customer - Eligibility:" + JSON.stringify({ ...d }));
     setFormData({ ...d });
