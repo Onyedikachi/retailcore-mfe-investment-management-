@@ -3,6 +3,8 @@ import { Listbox, Transition } from "@headlessui/react";
 import { FaChevronDown } from "react-icons/fa";
 import { BorderlessSelectProps } from "@app/types";
 import { FormToolTip } from "@app/components";
+import {RedDot} from '@app/components/forms'
+
 
 export default function Select({
   options,
@@ -48,9 +50,9 @@ export default function Select({
     <div role="combobox" className={` min-w-full`}>
       <div className="flex  gap-2 min-w-[300px]">
         {" "}
-        <label className="  text-base font-semibold text-[#636363]">
+        <label className="flex  text-base font-semibold text-[#636363]">
           {labelName}
-          {requiredField && <span className="text-red-500">*</span>}
+          {requiredField && <RedDot />}
         </label>
         {tip && <FormToolTip tip={tip} />}
       </div>

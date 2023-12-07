@@ -6,6 +6,7 @@ import { Failed, Success } from ".";
 import Button from "../Button";
 import Loader from "../Loader";
 import { FormUpload } from "../forms";
+import {RedDot} from '@app/components/forms'
 
 interface ApprovedProps {
   isOpen: boolean;
@@ -51,7 +52,7 @@ export default function RequestDeactivation({
               className="flex gap-x-1 text-[#333333] mb-2"
             >
               Provide justification for deactivation
-              <span className="text-red-500">*</span>
+              <RedDot />
             </label>
             <textarea
               id="reason"
