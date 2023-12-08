@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
-import { useGetLinksQuery, useUpdateLinkMutation } from "@app/api";
-import { MODULENAME } from "@app/constants";
+import {
+  useGetLinksQuery,
+  useUpdateLinkMutation,
+  useAddLinkMutation,
+} from "@app/api";
 
 export default function QuickLinks() {
   const [isOpen, setIsOpen] = useState(true);
@@ -14,61 +17,71 @@ export default function QuickLinks() {
     link: "product-management",
   };
   const [links, setLinks] = useState([defaultLink]);
-  const { data: quickLinks, isLoading, isFetching } = useGetLinksQuery();
+  const {
+    data: quickLinks,
+    isLoading,
+    isFetching,
+    isSuccess: isLinksQuerySuccessful,
+  } = useGetLinksQuery();
   const [updateLink] = useUpdateLinkMutation();
-  // const [addLink, { isLoading: addLoading }] = useAddLinkMutation();
+
+  const [addLink] = useAddLinkMutation();
+  const baseUrl = "https://seabaas.dev.bepeerless.co";
+  // React.useEffect(() => {
+
+  //   return () => {
+  //     // Additional cleanup actions can be performed here
+  //   };
+  // }, []);
 
   React.useEffect(() => {
-    const moduleName = MODULENAME;
-    console.log(
-      "🚀 ~ file: QuickLinks.tsx:23 ~ React.useEffect ~ moduleName:",
-      moduleName
-    );
-    const moduleLink =
-      "https://seabaas.dev.bepeerless.co/product-factory/investment";
-    console.log(
-      "🚀 ~ file: QuickLinks.tsx:25 ~ React.useEffect ~ moduleLink:",
-      moduleLink
-    );
+    if (isLinksQuerySuccessful) {
+      const moduleName = "Product Factory";
+      const moduleLink = `product-factory/investment`;
+      //get
+      if (quickLinks && quickLinks.data && quickLinks.data.length > 0) {
+        setLinks([defaultLink, ...quickLinks.data]);
+        console.log(
+          "🚀 ~ file: QuickLinks.tsx:23 ~ React.useEffect ~ data:",
+          quickLinks
+        );
+      }
+//check if quickLinks has link of this page
+      const hasPageLink =
+        quickLinks && quickLinks.data
+          ? quickLinks?.data.some(
+              (link) => link.link === `${baseUrl}/product-factory/investment`
+            )
+          : false;
+      console.log(
+        "🚀 ~ file: QuickLinks.tsx:44 ~ React.useEffect ~ hasPageLink:",
+        hasPageLink
+      );
 
-   
-    const updateLinkCount = async () => {
-      try {
-        const result = await updateLink({
+      //add
+
+      if (
+        (quickLinks && !quickLinks.data) ||
+        quickLinks?.data?.length === 0 ||
+        !hasPageLink
+      ) {
+        addLink([
+          {
+            link: `product-factory/investment`,
+            name: "Product Factory",
+            category: "ProductFactory",
+
+            isDefault: true,
+          },
+        ]);
+      }
+      //update
+      if (hasPageLink) {
+        updateLink({
           moduleName,
           moduleLink,
-
         });
-
-        console.log(
-          "🚀 ~ file: QuickLinks.tsx:29 ~ updateLinkCount ~ result:",
-          result
-        );
-      } catch (err) {
-        console.error("Error creating link:", err);
       }
-    };
-
-    updateLinkCount()
-
-    return () => {
-      console.log(
-        "🚀 ~ file: QuickLinks.tsx:45 ~ return ~ Cleanup logic:",
-        "Cleanup logic"
-      );
-      // Additional cleanup actions can be performed here
-    };
-  }, []);
-
-  React.useEffect(() => {
-    // addLink(links);
-
-    if (quickLinks && quickLinks.data.length) {
-      setLinks([defaultLink, ...quickLinks.data]);
-      console.log(
-        "🚀 ~ file: QuickLinks.tsx:23 ~ React.useEffect ~ data:",
-        quickLinks
-      );
     }
   }, [quickLinks]);
   return (
