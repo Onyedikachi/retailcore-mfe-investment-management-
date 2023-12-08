@@ -29,7 +29,8 @@ export function Container({ children }) {
     </div>
   );
 }
-export default function Preview({ formData }: any) {
+export default function Preview({ formData, oldData= null }: any) {
+  console.log("🚀 ~ file: preview.tsx:33 ~ Preview ~ formData:", formData)
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { type, process } = useParams();
@@ -135,7 +136,7 @@ export default function Preview({ formData }: any) {
               <ReviewStatus status={"r"} reason={"r"} type={""} text="failed" />
             )}
             <Container>
-              <ProductDetail detail={formData} previousDetail={formData} />
+              <ProductDetail detail={formData} oldData={oldData} />
             </Container>
           </div>
           <Actions

@@ -21,6 +21,8 @@ export default function Select({
   tip,
   requiredField = false,
   trigger,
+  error,
+  disabled= false
 }: BorderlessSelectProps): React.JSX.Element {
   const [selected, setSelected] = useState<any>(null);
 
@@ -37,12 +39,8 @@ export default function Select({
   };
   // Change selected when changing status category
   useEffect(() => {
-    if (defaultValue?.length) {
-      setSelected(
-        options.find(
-          (i) => i.value.toLowerCase() === defaultValue?.toLowerCase()
-        )
-      );
+    if (defaultValue) {
+      setSelected(options.find((i) => i.value === defaultValue));
     }
   }, [defaultValue]);
 
@@ -62,11 +60,12 @@ export default function Select({
           required: true,
         })}
         onChange={handleChange}
+        disabled={disabled}
       >
         <div className="relative mt-1">
           <Listbox.Button
             className={`relative w-full cursor-pointer  bg-white py-1  pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm ${
-              errors && errors[inputName]
+              (errors && errors[inputName]) || error
                 ? "border-red-600"
                 : "border-[#8F8F8F]"
             }`}
@@ -95,7 +94,7 @@ export default function Select({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto bg-white  focus:outline-none text-sm shadow-[0px_0px_4px_0px_#00000040] right-0 rounded-b-lg z-40">
+            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto z-[400] bg-white  focus:outline-none text-sm shadow-[0px_0px_4px_0px_#00000040] right-0 rounded-b-lg">
               {options.map(
                 (
                   option: {
@@ -138,9 +137,9 @@ export default function Select({
           </Transition>
         </div>
       </Listbox>
-      {errors && errors[inputName] && (
+      {((errors && errors[inputName]) || error) && (
         <span className="text-sm text-danger-500">
-          {errors[inputName]?.message}
+          {errors[inputName]?.message || error}
         </span>
       )}
     </div>

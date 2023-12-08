@@ -387,6 +387,7 @@ export default function ProductInformation({
                   setValue("startDate", value);
                 }}
                 defaultValue={formData.startDate}
+                minDate={new Date()}
                 trigger={trigger}
                 clearErrors={clearErrors}
               />

@@ -48,8 +48,7 @@ export interface ICreateProduct {
         tenorMaxUnit: number;
       }
     ];
-    interestRateMin: number;
-    interestRateMax: number;
+  
   };
   liquidation: {
     part_AllowPartLiquidation: boolean;

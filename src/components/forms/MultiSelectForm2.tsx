@@ -3,6 +3,7 @@ import { useState, useEffect, ReactNode } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import Checkbox from "./Checkbox";
 import { BorderlessSelectProps } from "@app/types";
+import { FaSearch } from "react-icons/fa";
 
 export function closeDropdown(setIsOpen) {
   setIsOpen(false);
@@ -16,7 +17,7 @@ export function handleChange(id, value, selectedOptions, setSelectedOptions) {
     setSelectedOptions(arrOptions.map((i) => i.value));
   }
 }
-export default function MultiSelectForm({
+export default function MultiSelectForm2({
   options,
   handleSelected,
   value,
@@ -33,32 +34,28 @@ export default function MultiSelectForm({
   clearErrors,
   trigger,
 }: BorderlessSelectProps): React.JSX.Element {
-  const [isSelectAll] = useState(false);
+  const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
 
-  useEffect(() => {
+  const handleClick = () => {
     register(inputName);
-    setValue(inputName, selectedOptions);
+    setValue && setValue(inputName, selectedOptions);
+    handleSelected && handleSelected({ inputName, selectedOptions });
     clearErrors(inputName);
-   if(selectedOptions.length){
-    trigger(inputName);
-   }
-  }, [selectedOptions]);
-
-  const handleAll = (val) => {
-    if (val) {
-      setSelectedOptions(options.map((i) => i.value));
-    } else {
-      setSelectedOptions([]);
+    if (selectedOptions.length) {
+      trigger(inputName);
     }
+    setSearch("");
+    closeDropdown(setIsOpen);
   };
+
   // Change selected when changing status category
   useEffect(() => {
-    if (defaultValue?.length) {
-      setSelectedOptions(defaultValue);
+    if (value?.length) {
+      setSelectedOptions(value);
     }
-  }, [defaultValue]);
+  }, [value]);
   return (
     <div className="relative z-40 w-full">
       <div>
@@ -67,19 +64,23 @@ export default function MultiSelectForm({
         </label>
       </div>
       <OutsideClickHandler onOutsideClick={() => closeDropdown(setIsOpen)}>
-        <button
-          className={`relative w-full cursor-pointer  bg-white py-1 pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm flex items-center justify-between ${
+        <div
+          onClick={() => setIsOpen(!isOpen)}
+          className={`relative gap-x-1 w-full cursor-pointer h-10 bg-white py-1 pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm flex items-center justify-between ${
             errors && errors[inputName] ? "border-red-600" : "border-[#8F8F8F]"
           }`}
-          onClick={() => setIsOpen(!isOpen)}
         >
-          <span className="block max-w-max truncate flex-1">
-            {selectedOptions?.join(",") || (
-              <span className="text-[#aaa]">{placeholder}</span>
-            )}
+          <span className="flex items-center justify-center">
+            {" "}
+            <FaSearch className="text-xl text-[#636363]" />
           </span>
+          <input
+            placeholder={placeholder}
+            className={`relative flex-1 outline-none px-3`}
+            onChange={(e)=> setSearch(e.target.value)}
+            value={search}
+          />
           <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-xs">
-            {/* <FaChevronDown className=" text-[#636363]" aria-hidden="true" /> */}
             <svg
               width="15"
               height="10"
@@ -90,40 +91,45 @@ export default function MultiSelectForm({
               <path d="M15 0H0L7.14286 9.47368L15 0Z" fill="#636363" />
             </svg>
           </span>
-        </button>
+        </div>
+
         {isOpen && (
           <div className="z-40 transition-all duration-300 top-[60px] absolute left-0 shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]  bg-white min-w-[175px] w-full rounded-b-[6px]">
             <div>
-              <ul className="grid">
-                <li className="cursor-pointer hover:bg-[#F9E5E5] py-[10px] px-6">
-                  <Checkbox
-                    label={allLabel}
-                    onChange={handleAll}
-                    checked={isSelectAll}
-                  />
-                </li>
-                {options.map((item) => (
-                  <li
-                    key={item.value}
-                    className="cursor-pointer hover:bg-[#F9E5E5] py-[10px] px-6"
-                  >
-                    <Checkbox
-                      label={item.text}
-                      checked={() =>
-                        selectedOptions?.some((i) => i === item.value)
-                      }
-                      onChange={() =>
-                        handleChange(
-                          item.id,
-                          item.value,
-                          selectedOptions,
-                          setSelectedOptions
-                        )
-                      }
-                    />
-                  </li>
-                ))}
+              <ul className="grid overflow-y-auto max-h-300px">
+                {options
+                  .filter((i) =>
+                    i.text?.toLowerCase().includes(search?.toLowerCase())
+                  )
+                  .map((item) => (
+                    <li
+                      key={item.value}
+                      className="cursor-pointer hover:bg-[#F9E5E5] py-[8px] px-6"
+                    >
+                      <Checkbox
+                        label={item.text}
+                        sublabel={item.sub}
+                        checked={() =>
+                          selectedOptions?.some((i) => i === item.value)
+                        }
+                        onChange={() =>
+                          handleChange(
+                            item.id,
+                            item.value,
+                            selectedOptions,
+                            setSelectedOptions
+                          )
+                        }
+                      />
+                    </li>
+                  ))}
               </ul>
+              <span
+                onClick={handleClick}
+                className="text-sm text-danger-500 block mt-2 py-[10px] px-6"
+              >
+                Add selected charge
+              </span>
             </div>
           </div>
         )}

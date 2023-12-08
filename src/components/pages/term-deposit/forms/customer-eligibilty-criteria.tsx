@@ -131,6 +131,7 @@ export default function CustomerEligibilityCriteria({
                   labelName={"Type of corporate customer"}
                   register={register}
                   inputName={"corporateCustomerType"}
+                  defaultValue={formData.corporateCustomerType}
                   errors={errors}
                   setValue={setValue}
                   options={customerTypeOptions}
@@ -154,6 +155,7 @@ export default function CustomerEligibilityCriteria({
                       label="Min"
                       clearErrors={clearErrors}
                       trigger={trigger}
+                      type="number"
                     />
                   </div>
                   <div className="flex items-center">-</div>
@@ -167,6 +169,7 @@ export default function CustomerEligibilityCriteria({
                       label="Max"
                       clearErrors={clearErrors}
                       trigger={trigger}
+                      type="number"
                     />
                   </div>
                 </div>
