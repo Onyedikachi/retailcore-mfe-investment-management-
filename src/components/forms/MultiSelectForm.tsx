@@ -55,10 +55,10 @@ export default function MultiSelectForm({
   };
   // Change selected when changing status category
   useEffect(() => {
-    if (value?.length) {
-      setSelectedOptions(value);
+    if (defaultValue?.length) {
+      setSelectedOptions(defaultValue);
     }
-  }, [value]);
+  }, [defaultValue]);
   return (
     <div className="relative z-40 w-full">
       <div>
@@ -92,7 +92,7 @@ export default function MultiSelectForm({
           </span>
         </button>
         {isOpen && (
-          <div className="z-40 transition-all duration-300 top-[56px] absolute left-0 shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]  bg-white min-w-[175px] w-full rounded-b-[6px]">
+          <div className="z-40 transition-all duration-300 top-[60px] absolute left-0 shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]  bg-white min-w-[175px] w-full rounded-b-[6px]">
             <div>
               <ul className="grid">
                 <li className="cursor-pointer hover:bg-[#F9E5E5] py-[10px] px-6">

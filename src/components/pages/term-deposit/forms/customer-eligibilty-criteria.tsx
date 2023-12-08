@@ -20,7 +20,7 @@ import {
 import { SelectRequirements } from "@app/components/modals";
 import { EntriesAndEventsSearch } from "@app/components/pages/term-deposit/forms";
 import { CustomerCategoryType } from "@app/constants/enums";
-import MultiSelectForm from "@app/components/forms/MultiSelectForm2";
+import MultiSelectForm from "@app/components/forms/MultiSelectForm";
 
 export default function CustomerEligibilityCriteria({
   formData,
@@ -131,6 +131,7 @@ export default function CustomerEligibilityCriteria({
                   labelName={"Type of corporate customer"}
                   register={register}
                   inputName={"corporateCustomerType"}
+                  defaultValue={formData.corporateCustomerType}
                   errors={errors}
                   setValue={setValue}
                   options={customerTypeOptions}

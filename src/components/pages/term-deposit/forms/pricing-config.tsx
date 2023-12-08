@@ -196,7 +196,7 @@ export default function PricingConfig({
                 setValue={setValue}
                 trigger={trigger}
                 clearErrors={clearErrors}
-                type="number"
+            
               />
             </div>{" "}
             -
@@ -212,7 +212,7 @@ export default function PricingConfig({
                 setValue={setValue}
                 trigger={trigger}
                 clearErrors={clearErrors}
-                type="number"
+               
               />
             </div>{" "}
           </div>
@@ -268,7 +268,7 @@ export default function PricingConfig({
                           formData?.interestRateConfigModels?.[index]?.min
                         }
                         clearErrors={clearErrors}
-                        type="number"
+                      
 
                         // defaultValue={range.min}
                       />
@@ -291,7 +291,7 @@ export default function PricingConfig({
                         setValue={setValue}
                         trigger={trigger}
                         clearErrors={clearErrors}
-                        type="number"
+                      
                       />
                     </div>{" "}
                   </div>
@@ -317,7 +317,7 @@ export default function PricingConfig({
                           setValue={setValue}
                           trigger={trigger}
                           clearErrors={clearErrors}
-                          type="number"
+                         
                         />
                       </div>{" "}
                       -
@@ -339,7 +339,7 @@ export default function PricingConfig({
                           setValue={setValue}
                           trigger={trigger}
                           clearErrors={clearErrors}
-                          type="number"
+                         
                         />
                       </div>{" "}
                     </>
@@ -408,6 +408,8 @@ export default function PricingConfig({
                           setValue={setValue}
                           trigger={trigger}
                           clearErrors={clearErrors}
+                          type="number"
+
                         />
                         <div className="w-[90px]">
                           <BorderlessSelect

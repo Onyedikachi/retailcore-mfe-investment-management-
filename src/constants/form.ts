@@ -217,6 +217,12 @@ export const entriesAndEventsSchema = yup
   })
   .required();
 
+  export const glMappingSchema  = yup.object({
+    TermDepositLiabilityAccount: yup.string().required('Term Deposit liability account is required'),
+    InterestAccrualAccount: yup.string().required('Interest accrual account is required'),
+    InterestExpenseAccount: yup.string().required('Interest expense account is required'),
+  });
+
 export const currencyOptions = [
   {
     id: 1,

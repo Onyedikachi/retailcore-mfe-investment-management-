@@ -40,7 +40,8 @@ export default function MultiSelectForm2({
 
   const handleClick = () => {
     register(inputName);
-    setValue(inputName, selectedOptions);
+    setValue && setValue(inputName, selectedOptions);
+    handleSelected && handleSelected({ inputName, selectedOptions });
     clearErrors(inputName);
     if (selectedOptions.length) {
       trigger(inputName);
@@ -73,7 +74,12 @@ export default function MultiSelectForm2({
             {" "}
             <FaSearch className="text-xl text-[#636363]" />
           </span>
-          <input placeholder={placeholder} className={`relative flex-1 outline-none px-3`} />
+          <input
+            placeholder={placeholder}
+            className={`relative flex-1 outline-none px-3`}
+            onChange={(e)=> setSearch(e.target.value)}
+            value={search}
+          />
           <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-xs">
             <svg
               width="15"
@@ -88,31 +94,35 @@ export default function MultiSelectForm2({
         </div>
 
         {isOpen && (
-          <div className="z-40 transition-all duration-300 top-12 absolute left-0 shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]  bg-white min-w-[175px] w-full rounded-b-[6px]">
+          <div className="z-40 transition-all duration-300 top-[60px] absolute left-0 shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]  bg-white min-w-[175px] w-full rounded-b-[6px]">
             <div>
               <ul className="grid overflow-y-auto max-h-300px">
-                {options.filter(i=> i.text?.toLowerCase().includes(search?.toLowerCase())).map((item) => (
-                  <li
-                    key={item.value}
-                    className="cursor-pointer hover:bg-[#F9E5E5] py-[8px] px-6"
-                  >
-                    <Checkbox
-                      label={item.text}
-                      sublabel={item.sub}
-                      checked={() =>
-                        selectedOptions?.some((i) => i === item.value)
-                      }
-                      onChange={() =>
-                        handleChange(
-                          item.id,
-                          item.value,
-                          selectedOptions,
-                          setSelectedOptions
-                        )
-                      }
-                    />
-                  </li>
-                ))}
+                {options
+                  .filter((i) =>
+                    i.text?.toLowerCase().includes(search?.toLowerCase())
+                  )
+                  .map((item) => (
+                    <li
+                      key={item.value}
+                      className="cursor-pointer hover:bg-[#F9E5E5] py-[8px] px-6"
+                    >
+                      <Checkbox
+                        label={item.text}
+                        sublabel={item.sub}
+                        checked={() =>
+                          selectedOptions?.some((i) => i === item.value)
+                        }
+                        onChange={() =>
+                          handleChange(
+                            item.id,
+                            item.value,
+                            selectedOptions,
+                            setSelectedOptions
+                          )
+                        }
+                      />
+                    </li>
+                  ))}
               </ul>
               <span
                 onClick={handleClick}

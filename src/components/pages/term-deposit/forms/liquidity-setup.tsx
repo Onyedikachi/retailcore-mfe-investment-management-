@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ToggleInputChildren } from "@app/components/pages/term-deposit/forms";
 import { BorderlessSelect, MinMaxInput } from "@app/components/forms";
 import {
@@ -12,7 +12,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { liquiditySetupSchema } from "@app/constants";
 import MultiSelectForm2 from "@app/components/forms/MultiSelectForm2";
 import { FaTimes } from "react-icons/fa";
-import {liquidationTypes} from '@app/constants'
+import { liquidationTypes } from "@app/constants";
 import { partLiquidationPenaltyOptions, daysOptions } from "@app/constants";
 
 // import { FormToolTip } from "@app/components";
@@ -50,14 +50,26 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
     defaultValues: formData,
     // values,
   });
-  // const liquidationTypes = [
-  //   {
-  //     label: "Allow Part Liquidation",
-  //   },
-  //   {
-  //     label: "Allow Early Liquidation",
-  //   },
-  // ];
+  const [partOptionCharges, setPartOptionCharges] = useState([]);
+  const [earlyOptionCharges, setEarlyOptionCharges] = useState([]);
+
+  function handleSelected({ inputName, selectedOptions }) {
+    console.log(
+      "🚀 ~ file: liquidity-setup.tsx:57 ~ handleSelected ~ selectedOptions:",
+      selectedOptions
+    );
+    console.log(
+      "🚀 ~ file: liquidity-setup.tsx:57 ~ handleSelected ~ inputName:",
+      inputName
+    );
+    if (inputName === "partCharges") {
+      setPartOptionCharges(selectedOptions);
+    }
+
+    if (inputName === "earlyCharges") {
+      setEarlyOptionCharges(selectedOptions);
+    }
+  }
   function onProceed(d: any) {
     console.log("Customer - Eligibility:" + JSON.stringify({ ...d }));
     setFormData({ ...d });
@@ -107,12 +119,11 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                           trigger={trigger}
                           clearErrors={clearErrors}
                           defaultValue={formData.part_MaxPartLiquidation}
-                          type="number"
                         />
                       </div>
 
                       <div className="flex gap-4">
-                        <div className="flex items-center text-[##636363] ">
+                        <div className="flex items-center text-[#636363] ">
                           of principal
                         </div>
                       </div>
@@ -209,7 +220,6 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                             trigger={trigger}
                             clearErrors={clearErrors}
                             defaultValue={formData.part_SpecialInterestRate}
-                            type="number"
                           />
                         </div>
                       )}
@@ -227,7 +237,6 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                             trigger={trigger}
                             clearErrors={clearErrors}
                             defaultValue={formData.part_SpecialInterestRate}
-                            type="number"
                           />
                         </div>
                       </div>
@@ -241,24 +250,34 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                             labelName=""
                             placeholder="Search and select"
                             register={register}
-                            inputName={"specialCharges"}
+                            inputName={"partCharges"}
                             errors={errors}
                             setValue={setValue}
                             options={customerTypeOptions}
                             allLabel="All"
                             clearErrors={clearErrors}
                             trigger={trigger}
+                            handleSelected={handleSelected}
                           />
                         </div>
                         {watchPartLiquidationPenalty === 4 && (
                           <div className="flex flex-wrap gap-x-1 gapy-1">
-                            {Array.from(Array(4)).map((i) => (
+                            {partOptionCharges.map((i) => (
                               <span
                                 key={i}
                                 className="rounded-full px-[13px] py-[4px] text-xs bg-[#E0E0E0] flex gap-x-6 items-center text-[#16252A]"
                               >
-                                Loan charge NGN50{" "}
-                                <FaTimes className="text-[#CF2A2A] font-bold" />
+                                {i}{" "}
+                                <span
+                                  onClick={() => {
+                                    setPartOptionCharges(
+                                      partOptionCharges.filter((n) => n !== i)
+                                    );
+                                  }}
+                                >
+                                  {" "}
+                                  <FaTimes className="text-[#CF2A2A] font-bold" />
+                                </span>
                               </span>
                             ))}
                           </div>
@@ -296,29 +315,17 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                       >
                         <div className="">
                           <div className="w-[300px] flex items-center mb-4">
-                            <MultiSelectForm2
-                              labelName=""
-                              placeholder="Search and select"
+                            <BorderlessSelect
+                              inputError={errors?.part_LiquidationPenalty}
                               register={register}
-                              inputName={"specialCharges"}
+                              inputName={"part_LiquidationPenalty"}
                               errors={errors}
                               setValue={setValue}
-                              options={customerTypeOptions}
-                              allLabel="All"
-                              clearErrors={clearErrors}
                               trigger={trigger}
+                              clearErrors={clearErrors}
+                              defaultValue={formData.part_LiquidationPenalty}
+                              options={ApplyOptions}
                             />
-                          </div>
-                          <div className="flex flex-wrap gap-x-1 gapy-1">
-                            {Array.from(Array(4)).map((i) => (
-                              <span
-                                key={i}
-                                className="rounded-full px-[13px] py-[4px] text-xs bg-[#E0E0E0] flex gap-x-6 items-center text-[#16252A]"
-                              >
-                                Loan charge NGN50{" "}
-                                <FaTimes className="text-[#CF2A2A] font-bold" />
-                              </span>
-                            ))}
                           </div>
                         </div>
                       </InputDivs>
@@ -337,7 +344,6 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                               trigger={trigger}
                               clearErrors={clearErrors}
                               defaultValue={formData.part_SpecialInterestRate}
-                              type="number"
                             />
                           </div>
                         </div>
@@ -359,12 +365,14 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                         className="accent-sterling-red-800"
                       />
                     </div>
-                    
-                    <div  className={`w-[100px] ${
-                          !watch("early_RequireNoticeBeforeLiquidation")
-                            ? "opacity-40"
-                            : ""
-                        }`}>
+
+                    <div
+                      className={`w-[100px] ${
+                        !watch("early_RequireNoticeBeforeLiquidation")
+                          ? "opacity-40"
+                          : ""
+                      }`}
+                    >
                       <MinMaxInput
                         register={register}
                         inputName={"early_NoticePeriod"}
@@ -395,7 +403,9 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                           clearErrors={clearErrors}
                           defaultValue={formData.early_NoticePeriodUnit}
                           options={IntervalOptions}
-                          disabled={!watch("early_RequireNoticeBeforeLiquidation")}
+                          disabled={
+                            !watch("early_RequireNoticeBeforeLiquidation")
+                          }
                         />
                       </div>
 
@@ -431,7 +441,6 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                           trigger={trigger}
                           clearErrors={clearErrors}
                           defaultValue={formData.part_SpecialInterestRate}
-                          type="number"
                         />
                       </div>
                     )}
@@ -449,7 +458,6 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                           trigger={trigger}
                           clearErrors={clearErrors}
                           defaultValue={formData.part_SpecialInterestRate}
-                          type="number"
                         />
                       </div>
                     </div>
@@ -463,7 +471,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                           labelName=""
                           placeholder="Search and select"
                           register={register}
-                          inputName={"specialCharges"}
+                          inputName={"earlyCharges"}
                           errors={errors}
                           setValue={setValue}
                           options={customerTypeOptions}
@@ -474,13 +482,22 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                       </div>
                       {watchEarlyLiquidationPenalty === 4 && (
                         <div className="flex flex-wrap gap-x-1 gapy-1">
-                          {Array.from(Array(4)).map((i) => (
+                          {earlyOptionCharges.map((i) => (
                             <span
                               key={i}
                               className="rounded-full px-[13px] py-[4px] text-xs bg-[#E0E0E0] flex gap-x-6 items-center text-[#16252A]"
                             >
-                              Loan charge NGN50{" "}
-                              <FaTimes className="text-[#CF2A2A] font-bold" />
+                              {i}{" "}
+                              <span
+                                onClick={() => {
+                                  setEarlyOptionCharges(
+                                    earlyOptionCharges.filter((n) => n !== i)
+                                  );
+                                }}
+                              >
+                                {" "}
+                                <FaTimes className="text-[#CF2A2A] font-bold" />
+                              </span>
                             </span>
                           ))}
                         </div>
@@ -518,29 +535,17 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                     >
                       <div className="">
                         <div className="w-[300px] flex items-center mb-4">
-                          <MultiSelectForm2
-                            labelName=""
-                            placeholder="Search and select"
+                          <BorderlessSelect
+                            inputError={errors?.part_LiquidationPenalty}
                             register={register}
-                            inputName={"specialCharges"}
+                            inputName={"part_LiquidationPenalty"}
                             errors={errors}
                             setValue={setValue}
-                            options={customerTypeOptions}
-                            allLabel="All"
-                            clearErrors={clearErrors}
                             trigger={trigger}
+                            clearErrors={clearErrors}
+                            defaultValue={formData.part_LiquidationPenalty}
+                            options={ApplyOptions}
                           />
-                        </div>
-                        <div className="flex flex-wrap gap-x-1 gapy-1">
-                          {Array.from(Array(4)).map((i) => (
-                            <span
-                              key={i}
-                              className="rounded-full px-[13px] py-[4px] text-xs bg-[#E0E0E0] flex gap-x-6 items-center text-[#16252A]"
-                            >
-                              Loan charge NGN50{" "}
-                              <FaTimes className="text-[#CF2A2A] font-bold" />
-                            </span>
-                          ))}
                         </div>
                       </div>
                     </InputDivs>

@@ -1,16 +1,91 @@
-import React from "react";
-import { SideLabelSearchSelect } from "@app/components/forms";
-import {RedDot} from '@app/components/forms'
+import React, { useEffect, useState } from "react";
+import { GlInput } from "@app/components/forms";
+import { RedDot } from "@app/components/forms";
+import { glMappingSchema } from "@app/constants";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
 
-export default function AccountingEntriesAndEvents({ proceed }) {
+export function InputDivs({ children, label }) {
   return (
-    <form
-      id="entriesandevents"
-      onSubmit={(e) => {
-        e.preventDefault();
-        proceed();
-      }}
-    >
+    <div className="flex gap-[10px] items-center">
+      <span className="min-w-[250px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium">
+        {label} <RedDot />
+      </span>
+      <div>{children}</div>
+    </div>
+  );
+}
+
+export default function AccountingEntriesAndEvents({
+  proceed,
+  formData,
+  setFormData,
+  setDisabled,
+}) {
+  const [clearFields, setClearField] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    clearErrors,
+    reset,
+    trigger,
+    setValue,
+    setError: assignError,
+    getValues,
+    formState: { errors, isValid },
+  } = useForm({
+    resolver: yupResolver(glMappingSchema),
+    defaultValues: {
+      TermDepositLiabilityAccount: "",
+      InterestAccrualAccount: "",
+      InterestExpenseAccount: "",
+    },
+    // values,
+  });
+
+  const GlMappingOptions = [
+    {
+      id: "1",
+      text: "Term Deposit Liability account",
+      key: "TermDepositLiabilityAccount",
+    },
+    {
+      id: "2",
+      text: "Interest accural account",
+      key: "InterestAccrualAccount",
+    },
+    {
+      id: "3",
+      text: "Interest expense account",
+      key: "InterestExpenseAccount",
+    },
+  ];
+  // glMappingSchema
+  const handleClick = (key, menu, name, subname) => {
+    setValue(key, subname);
+  };
+  const values = getValues();
+
+  function onProceed(d: any) {
+    console.log(
+      "🚀 ~ file: accounting-entries-and-events.tsx:71 ~ onProceed ~ d:",
+      d
+    );
+    setFormData(d);
+    proceed();
+  }
+
+  useEffect(() => {
+    setDisabled(!isValid);
+  }, [values, errors]);
+
+  const handleClear = () => {
+    setClearField(!clearFields);
+    reset();
+  };
+  return (
+    <form id="entriesandevents" onSubmit={handleSubmit(onProceed)}>
       <div>
         <div
           style={{
@@ -23,12 +98,36 @@ export default function AccountingEntriesAndEvents({ proceed }) {
             <span className="text-[18px] flex  gap-[1px] text-[#636363] font-semibold">
               Product to GL Mapping <RedDot />
             </span>
-            <span className="font-normal text-sm text-[#AAA] italic underline">
+            <span
+              className="font-normal text-sm text-danger-500 italic underline"
+              onClick={handleClear}
+            >
               Clear all entries
             </span>
           </div>
+
           <div className="flex flex-col gap-4 px-[30px] py-5">
-            <SideLabelSearchSelect />
+            <div className="flex flex-col items-start gap-y-5">
+              {GlMappingOptions.map((type) => (
+                <InputDivs key={type.text} label={type.text}>
+                  <div>
+                    <div className="w-[360px] relative">
+                      <div className=" ">
+                        <GlInput
+                          handleClick={handleClick}
+                          inputName={type.key}
+                          defaultValue={formData[type.key]}
+                          register={register}
+                          trigger={trigger}
+                          errors={errors}
+                          clearFields={clearFields}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </InputDivs>
+              ))}
+            </div>
           </div>
         </div>
       </div>
