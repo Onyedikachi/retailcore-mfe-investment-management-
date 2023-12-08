@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   BorderlessSelect,
-  ComboSelect,
-  MultiSelect,
+
 } from "@app/components/forms";
 import { FormToolTip } from "@app/components";
 import { toolTips } from "@app/constants";
@@ -57,6 +56,7 @@ export default function CustomerEligibilityCriteria({
   const [isAdd, setIsAdd] = useState(false);
   const [newDocument, setNewDocument] = useState("");
   const values = getValues();
+ 
   const handleCheckedRequirement = (document) => {
     const isDocumentToggled = toggledRequirements.some(
       (d) => d.id === document.id
@@ -96,12 +96,12 @@ export default function CustomerEligibilityCriteria({
   };
 
   function onProceed(d: any) {
+    
     setFormData({ ...d, requireDocument: selectedRequirements });
     proceed();
   }
   useEffect(() => {
-    console.log("🚀 ~ file: product-information.tsx:191 ~ isValid:", isValid);
-
+   
     setDisabled(!isValid);
   }, [values]);
   const watchCustomerCategory = watch("customerCategory");
@@ -145,7 +145,7 @@ export default function CustomerEligibilityCriteria({
               <div className="flex flex-col ">
                 <InfoLabel label={"Age Group Eligibility"} info={"String"} />
                 <div className="flex items-end gap-[25px]">
-                  <div className="w-[150px]">
+                  <div className="w-[180px]">
                     <MinMaxInput
                       register={register}
                       inputName={"ageGroupMin"}
@@ -159,13 +159,13 @@ export default function CustomerEligibilityCriteria({
                     />
                   </div>
                   <div className="flex items-center">-</div>
-                  <div className="w-[150px]">
+                  <div className="w-[180px]">
                     <MinMaxInput
                       register={register}
                       inputName={"ageGroupMax"}
                       errors={errors}
                       setValue={setValue}
-                      defaultValue={formData.ageGroupMin}
+                      defaultValue={formData.ageGroupMax}
                       label="Max"
                       clearErrors={clearErrors}
                       trigger={trigger}

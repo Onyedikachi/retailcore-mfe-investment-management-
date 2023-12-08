@@ -3,31 +3,6 @@ import { productNameRegex } from "./investment";
 import { CustomerCategoryType } from "./enums";
 import { InterestRateRangeType } from "./testenums";
 
-export const FormSchema = yup
-  .object({
-    name: yup
-      .string()
-      .matches(
-        productNameRegex,
-        "Product name can only contain alphabets, numbers, and space characters"
-      )
-      .required("Product name is required")
-      .min(3)
-      .max(50, "Maximum of 50 chars"),
-    description: yup.string().nullable(),
-    draft: yup.boolean(),
-    type: yup.string().required(),
-    code: yup.string().nullable(),
-    number: yup.string().required("Provide a street number"),
-    streetname: yup.string().required("Provide a street name"),
-    city: yup.string().required("Provide a city"),
-    country: yup.string().required("Provide a country"),
-    state: yup.string().required("Provide a state"),
-    lga: yup.string().nullable(),
-    postalcode: yup.string().typeError("Provide a valid zip code").nullable(),
-  })
-  .required();
-
 export const ProductInformationFormSchema = yup.object({
   productName: yup
     .string()
@@ -51,9 +26,27 @@ export const ProductInformationFormSchema = yup.object({
 
 export const CustomerEligibilityCriteriaSchema = yup
   .object({
-    customerCategory: yup.number().required("Select a category"),
-    ageGroupStart: yup.number(),
-    ageGroupEnd: yup.number(),
+    customerCategory: yup
+      .number()
+      .typeError("Select a category")
+      .required("Select a category"),
+    ageGroupMin: yup.number().typeError("Invalid value").min(0, "Min of  0"),
+    ageGroupMax: yup
+      .number()
+      .typeError("Invalid value")
+      .nullable()
+      .min(1, "Min of  0")
+      .test("min-less-than-max", "Must be greater than Min", function (value) {
+        const ageGroupMin = this.parent.ageGroupMin;
+        return (
+          value === null ||
+          value === undefined ||
+          value === 0 ||
+          ageGroupMin === undefined ||
+          value > ageGroupMin
+        );
+      }),
+
     corporateCustomerType: yup.array().when("customerCategory", {
       is: CustomerCategoryType.Corporate,
       then: yup
@@ -65,163 +58,350 @@ export const CustomerEligibilityCriteriaSchema = yup
   })
   .required();
 
-export const pricingConfigSchema = yup
-  .object({
-    interestRateRangeType: yup.number().required(),
-    applicableTenorMax: yup
-      .number()
-      .typeError("Invalid value")
-      .required("Max is required")
-      .test("min-less-than-max", "Must be greater than Min", function (value) {
-        const applicableTenorMin = this.parent.applicableTenorMin;
-        return (
-          value === undefined ||
-          applicableTenorMin === undefined ||
-          value > applicableTenorMin
-        );
-      }),
+const interestRateConfigModelSchema = yup.object().shape({
+  min: yup.number().typeError("Invalid value"),
+  max: yup
+    .number()
+    .typeError("Invalid value")
+    .nullable()
+    .when("$interestRateRangeType", {
+      is: (category) => {
+        InterestRateRangeType.VaryByPrincipal === parseInt(category, 10);
+      },
+      then: (schema) => schema.required().moreThan(yup.ref("min")),
+      otherwise: (schema) => schema.nullable(),
+    }),
+  tenorMin: yup
+    .number()
+    .typeError("Invalid value")
+    .when("$interestRateRangeType", {
+      is: InterestRateRangeType.VaryByTenor,
+      then: yup.number().required("Required").typeError("Invalid value"),
+      otherwise: yup.number().typeError("Invalid value").nullable(),
+    }),
 
-    applicableTenorMin: yup
+  tenorMax: yup.number().when("$interestRateRangeType", {
+    is: InterestRateRangeType.VaryByTenor,
+    then: yup
       .number()
       .typeError("Invalid value")
-      .required("Min is required"),
-
-    applicablePrincipalMin: yup
-      .number()
-      .typeError("Invalid value")
-      .required("Min is required"),
-
-    applicablePrincipalMax: yup
-      .number()
-      .typeError("Invalid value")
-      .required("Max is required")
       .test(
         "max-less-than-min",
         "Max must be greater than Min",
         function (value) {
-          const applicablePrincipalMin = this.parent.applicablePrincipalMin;
+          const tenorMin = this.parent.tenorMin;
           return (
-            value === undefined ||
-            applicablePrincipalMin === undefined ||
-            value > applicablePrincipalMin
+            value === undefined || tenorMin === undefined || value > tenorMin
           );
         }
       ),
+    otherwise: yup.number().typeError("Invalid value").nullable(),
+  }),
+  tenorMinUnit: yup
+    .number()
+    .typeError("Invalid value")
+    .when("$interestRateRangeType", {
+      is: InterestRateRangeType.VaryByTenor,
+      then: yup.number().required("Required").typeError("Invalid value"),
+      otherwise: yup.number().typeError("Invalid value").nullable(),
+    }),
 
-    interestRateConfigModels: yup.array().of(
-      yup.object().shape({
-        min: yup.number().typeError("Invalid value"),
-        max: yup
-          .number()
-          .typeError("Invalid value")
-          .test(
-            "max-less-than-min",
-            "Max must be greater than Min",
-            function (value) {
-              const min = this.parent.min;
-              return value === undefined || min === undefined || value > min;
-            }
-          ),
+  tenorMaxUnit: yup
+    .number()
+    .typeError("Invalid value")
+    .when("$interestRateRangeType", {
+      is: InterestRateRangeType.VaryByTenor,
+      then: yup.number().required("Required").typeError("Invalid value"),
+      otherwise: yup.number().typeError("Invalid value").nullable(),
+    }),
 
-        tenorMax: yup.number().when("interestRateRangeType", {
-          is: InterestRateRangeType.VaryByTenor.toString(),
-          then: yup
-            .number().typeError("Invalid value")
-            .test(
-              "max-less-than-min",
-              "Max must be greater than Min",
-              function (value) {
-                const tenorMin = this.parent.tenorMin;
-                return (
-                  value === undefined ||
-                  tenorMin === undefined ||
-                  value > tenorMin
-                );
-              }
-            ),
+  principalMin: yup
+    .number()
+    .typeError("Invalid value")
+    .when("$interestRateRangeType", {
+      is: InterestRateRangeType.VaryByPrincipal,
+      then: yup.number().typeError("Invalid value").required("Required"),
+      otherwise: yup.number().typeError("Invalid value").nullable(),
+    }),
 
-          otherwise: yup.number().typeError("Invalid value").nullable(),
-        }),
+  principalMax: yup
+    .number()
+    .typeError("Invalid value")
+    .when("$interestRateRangeType", {
+      is: (category) => {
+        console.log(
+          "🚀 ~ file: form.ts:132 ~ interestRateConfigModelSchema ~ category:",
+          category
+        );
+        InterestRateRangeType.VaryByPrincipal === parseInt(category, 10);
+      },
+      then: yup
+        .number()
+        .typeError("Invalid value")
+        .test(
+          "max-less-than-min",
+          "Max must be greater than Min",
+          function (value) {
+            const principalMin = this.parent.principalMin;
+            return (
+              value === undefined ||
+              principalMin === undefined ||
+              value > principalMin
+            );
+          }
+        ),
+      otherwise: yup.number().typeError("Invalid value").nullable(),
+    }),
+});
+export const pricingConfigSchema = yup.object({
+  interestRateRangeType: yup.number().required(),
+  applicableTenorMax: yup
+    .number()
+    .typeError("Invalid value")
+    .required("Max is required")
+    .test("min-less-than-max", "Must be greater than Min", function (value) {
+      const applicableTenorMin = this.parent.applicableTenorMin;
+      return (
+        value === undefined ||
+        applicableTenorMin === undefined ||
+        value > applicableTenorMin
+      );
+    }),
 
-        tenorMinUnit: yup.number().typeError("Invalid value").when("interestRateRangeType", {
-          is: InterestRateRangeType.VaryByTenor.toString(),
-          then: yup.number().required("Required").typeError("Invalid value"),
-          otherwise: yup.number().typeError("Invalid value").nullable(),
-        }),
+  applicableTenorMin: yup
+    .number()
+    .typeError("Invalid value")
+    .required("Min is required"),
 
-        tenorMin: yup.number().typeError("Invalid value").when("interestRateRangeType", {
-          is: InterestRateRangeType.VaryByTenor.toString(),
-          then: yup.number().required("Required").typeError("Invalid value"),
-          otherwise: yup.number().typeError("Invalid value").nullable()
-        }),
+  applicablePrincipalMin: yup
+    .number()
+    .typeError("Invalid value")
+    .required("Min is required"),
 
-        tenorMaxUnit: yup.number().typeError("Invalid value").when("interestRateRangeType", {
-          is: InterestRateRangeType.VaryByTenor.toString(),
-          then: yup.number().required("Required").typeError("Invalid value"),
-          otherwise: yup.number().typeError("Invalid value").nullable(),
-        }),
-
-        principalMin: yup
-          .number()
-          .typeError("Invalid value")
-          .when("interestRateRangeType", {
-            is: InterestRateRangeType.VaryByPrincipal.toString(),
-            then: yup.number().typeError("Invalid value").required("Required"),
-            otherwise: yup.number().typeError("Invalid value").nullable(),
-          }),
-
-        principalMax: yup
-          .number()
-          .typeError("Invalid value")
-          .when("interestRateRangeType", {
-            is: InterestRateRangeType.VaryByPrincipal.toString(),
-            then: yup
-              .number()
-              .typeError("Invalid value").test(
-                "max-less-than-min",
-                "Max must be greater than Min",
-                function (value) {
-                  const principalMin = this.parent.principalMin;
-                  return (
-                    value === undefined ||
-                    principalMin === undefined ||
-                    value > principalMin
-                  );
-                }
-              ),
-            otherwise: yup.number().typeError("Invalid value").nullable(),
-          }),
-      })
+  applicablePrincipalMax: yup
+    .number()
+    .typeError("Invalid value")
+    .required("Max is required")
+    .test(
+      "max-less-than-min",
+      "Max must be greater than Min",
+      function (value) {
+        const applicablePrincipalMin = this.parent.applicablePrincipalMin;
+        return (
+          value === undefined ||
+          applicablePrincipalMin === undefined ||
+          value > applicablePrincipalMin
+        );
+      }
     ),
-  })
-  .required();
+  interestRateMin: yup
+    .number()
+    .typeError("Invalid value")
+    .nullable()
+    .when("interestRateRangeType", {
+      is: InterestRateRangeType.DonotVary,
+      then: yup.number().typeError("Invalid value").required("Max is required"),
+      otherwise: yup.number().typeError("Invalid value").nullable(),
+    }),
+  interestRateMax: yup
+    .number()
+    .typeError("Invalid value")
+    .nullable()
+    .when("interestRateRangeType", {
+      is: InterestRateRangeType.DonotVary,
+      then: yup
+        .number()
+        .typeError("Invalid value")
+        .required("Max is required")
+        .test(
+          "min-less-than-max",
+          "Must be greater than Min",
+          function (value) {
+            const interestRateMin = this.parent.interestRateMin;
+            return (
+              value === undefined ||
+              interestRateMin === undefined ||
+              value > interestRateMin
+            );
+          }
+        ),
+      otherwise: yup.number().typeError("Invalid value").nullable(),
+    }),
+
+  interestRateConfigModels: yup
+    .array()
+    .of(interestRateConfigModelSchema)
+    .test({
+      test: function (value) {
+        const rateType = this.parent.interestRateRangeType;
+        for (let i = 1; i < value.length; i++) {
+          const prevMax = value[i - 1]?.max;
+          const currentMin = value[i]?.min;
+          const prevTenorMax = value[i - 1]?.tenorMax;
+          const currentTenorMin = value[i]?.tenorMin;
+          const prevPrincipalMax = value[i]?.principalMax;
+          const currentPrincipalMin = value[i]?.principalMin;
+
+          const latestPrincipalMin = value[i - 1]?.principalMin;
+          const latestPrincipalMax = value[i - 1]?.principalMax;
+          const latestTenorMin = value[i - 1]?.tenorMin;
+          const latestTenorMax = value[i - 1]?.tenorMax;
+          const latestMin = value[i - 1]?.min;
+          const latestMax = value[i - 1]?.max;
+
+          if (
+            prevMax !== undefined &&
+            currentMin !== undefined &&
+            currentMin <= prevMax
+          ) {
+            return this.createError({
+              message: "Value  must be greater than previous slab",
+              path: `interestRateConfigModels[${i}].min`,
+            });
+          }
+
+          if (
+            prevTenorMax !== undefined &&
+            currentTenorMin !== undefined &&
+            currentTenorMin <= prevTenorMax
+          ) {
+            return this.createError({
+              message: "Value  must be greater than previous slab",
+              path: `interestRateConfigModels[${i}].tenorMin`,
+            });
+          }
+          if (
+            prevPrincipalMax !== undefined &&
+            currentPrincipalMin !== undefined &&
+            currentPrincipalMin <= prevPrincipalMax
+          ) {
+            return this.createError({
+              message: "Value  must be greater than previous slab",
+              path: `interestRateConfigModels[${i}].principalMin`,
+            });
+          }
+
+          if (
+            latestPrincipalMax !== undefined &&
+            latestPrincipalMin !== undefined &&
+            latestPrincipalMax < latestPrincipalMin
+          ) {
+            return this.createError({
+              message: "Value must be greater than min ",
+              path: `interestRateConfigModels[${i - 1}].principalMax`,
+            });
+          }
+          if (
+            latestTenorMax !== undefined &&
+            latestTenorMin !== undefined &&
+            latestTenorMax < latestTenorMin
+          ) {
+            return this.createError({
+              message: "Value must be greater than min ",
+              path: `interestRateConfigModels[${i - 1}].tenorMax`,
+            });
+          }
+
+          if (
+            latestMax !== undefined &&
+            latestMin !== undefined &&
+            latestMax < latestMin
+          ) {
+            return this.createError({
+              message: "Value must be greater than min ",
+              path: `interestRateConfigModels[${i - 1}].max`,
+            });
+          }
+        }
+
+        return true;
+      },
+    }),
+});
+
 export const liquiditySetupSchema = yup
   .object({
-    part_AllowPartLiquidation: yup.boolean(),
-    part_MaxPartLiquidation: yup.number(),
-    part_RequireNoticeBeforeLiquidation: yup.boolean(),
-    part_NoticePeriod: yup.number(),
-    part_NoticePeriodUnit: yup.number(),
-    part_LiquidationPenalty: yup.string(),
-    early_AllowEarlyLiquidation: yup.boolean(),
-    early_RequireNoticeBeforeLiquidation: yup.boolean(),
-    early_NoticePeriod: yup.number(),
-    early_NoticePeriodUnit: yup.number(),
-    early_LiquidationPenalty: yup.string(),
-    early_LiquidationPenaltyPercentage: yup.number(),
-  })
-  .required();
-export const entriesAndEventsSchema = yup
-  .object({
-    category: yup.string(),
+    part_AllowPartLiquidation: yup.boolean().typeError("Invalid value"),
+    part_MaxPartLiquidation: yup
+      .number()
+      .typeError("Invalid value")
+      .when("part_AllowPartLiquidation", {
+        is: true,
+        then: (schema) => schema.required("Provide value"),
+        otherwise: (schema) => schema.nullable(),
+      }),
+    part_RequireNoticeBeforeLiquidation: yup
+      .boolean()
+      .typeError("Invalid value"),
+    part_NoticePeriod: yup
+      .number()
+      .typeError("Invalid value")
+      .when("part_RequireNoticeBeforeLiquidation", {
+        is: (val) => val === true,
+        then: (schema) => schema.required("Provide a notice period"),
+        otherwise: (schema) => schema.nullable(),
+      }),
+    part_NoticePeriodUnit: yup
+      .number()
+      .typeError("Invalid value")
+      .when("part_RequireNoticeBeforeLiquidation", {
+        is: true,
+        then: (schema) => schema.required("Choose a duration"),
+        otherwise: (schema) => schema.nullable(),
+      }),
+    part_LiquidationPenalty: yup.number().typeError("Invalid value"),
+    part_LiquidationPenaltyPercentage: yup
+      .number()
+      .typeError("Invalid value")
+      .when("part_LiquidationPenalty", {
+        is: (val) => parseInt(val, 10) === 2,
+        then: (schema) => schema.required("Provide value"),
+        otherwise: (schema) => schema.nullable(),
+      }),
+
+    early_AllowEarlyLiquidation: yup.boolean().typeError("Invalid value"),
+    early_RequireNoticeBeforeLiquidation: yup
+      .boolean()
+      .typeError("Invalid value"),
+    early_NoticePeriod: yup
+      .number()
+      .typeError("Invalid value")
+      .when("early_RequireNoticeBeforeLiquidation", {
+        is: (val) => val === true,
+        then: (schema) => schema.required("Provide a notice period"),
+        otherwise: (schema) => schema.nullable(),
+      }),
+    early_NoticePeriodUnit: yup
+      .number()
+      .typeError("Invalid value")
+      .when("early_RequireNoticeBeforeLiquidation", {
+        is: true,
+        then: (schema) => schema.required("Choose a duration"),
+        otherwise: (schema) => schema.nullable(),
+      }),
+    early_LiquidationPenalty: yup.number().typeError("Invalid value"),
+    early_LiquidationPenaltyPercentage: yup
+      .number()
+      .typeError("Invalid value")
+      .when("early_LiquidationPenalty", {
+        is: (val) => parseInt(val, 10) === 2,
+        then: (schema) => schema.required("Provide value"),
+        otherwise: (schema) => schema.nullable(),
+      }),
   })
   .required();
 
-  export const glMappingSchema  = yup.object({
-    TermDepositLiabilityAccount: yup.string().required('Term Deposit liability account is required'),
-    InterestAccrualAccount: yup.string().required('Interest accrual account is required'),
-    InterestExpenseAccount: yup.string().required('Interest expense account is required'),
-  });
+export const glMappingSchema = yup.object({
+  TermDepositLiabilityAccount: yup
+    .string()
+    .required("Term Deposit liability account is required"),
+  InterestAccrualAccount: yup
+    .string()
+    .required("Interest accrual account is required"),
+  InterestExpenseAccount: yup
+    .string()
+    .required("Interest expense account is required"),
+});
 
 export const currencyOptions = [
   {
@@ -289,20 +469,20 @@ export const customerTypeOptions = [
 
 export const documentOptions = [
   {
-    id: "Customer Photo",
+    id: "fa85f64-5717-4562-b3fc-2c963f66afa6",
     name: "Customer Photo",
   },
   {
-    id: "Signature",
+    id: "fa85f64-3317-4562-b3fc-2c963f66afa6",
     name: "Signature",
   },
 
   {
-    id: "Valid Identification document",
+    id: "fa85f64-5717-4562-b3fc-2c963f66af45",
     name: "Valid Identification document",
   },
   {
-    id: "Proof of residential address",
+    id: "fa85f64-5447-4462-b3fc-2c963f66afa6",
     name: "Proof of residential address",
   },
 ];
@@ -333,7 +513,7 @@ export const toolTips = {
     "The allowed investment amount at the point of booking the product for the customer",
   applicableInterestRange: "Interest Range",
   interestComputation: "Interest Computation",
- 
+
   allowPartLiquidation: "Allow part",
   allowEarlyLiquidation: "AllowEarly",
 };

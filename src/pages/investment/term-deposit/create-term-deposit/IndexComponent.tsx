@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { paths } from "@app/routes/paths";
 import { Confirm, Failed, Success } from "@app/components/modals";
@@ -18,6 +18,7 @@ import {
 } from "@app/components/pages/term-deposit/forms";
 import { termDepositFormSteps } from "@app/constants";
 import Preview from "@app/components/pages/term-deposit/forms/preview";
+import { Messages } from "@app/constants/enums";
 
 export function handleNext(step, setStep, termDepositFormSteps) {
   step < termDepositFormSteps.length && setStep(step + 1);
@@ -31,6 +32,12 @@ export default function CreateTermDeposit() {
   const [searchParams] = useSearchParams();
   const stage = searchParams.get("stage");
   const [step, setStep] = useState(1);
+  const [isSuccessOpen, setIsSuccessOpen] = useState(false);
+  const [subText, setSubText] = useState("");
+  const [successText, setSuccessText] = useState("");
+  const [isFailed, setFailed] = useState(false);
+  const [failedSubText, setFailedSubtext] = useState("");
+  const [failedText, setFailedText] = useState("");
   const [productData, setProductData] = useState({
     productInfo: {
       productName: "",
@@ -46,6 +53,7 @@ export default function CreateTermDeposit() {
       ageGroupMax: null,
       requireDocument: [],
       corporateCustomerType: [],
+      customerCategory: null,
     },
     pricingConfiguration: {
       interestRateRangeType: 0,
@@ -63,30 +71,38 @@ export default function CreateTermDeposit() {
           principalMin: 0,
           principalMax: null,
           tenorMin: 0,
-          tenorMinUnit: 0,
+          tenorMinUnit: 1,
           tenorMax: null,
-          tenorMaxUnit: 0,
+          tenorMaxUnit: 1,
         },
       ],
+      interestRateMin: 0,
+      interestRateMax: null,
     },
     liquidation: {
       part_AllowPartLiquidation: false,
       part_MaxPartLiquidation: 0,
       part_RequireNoticeBeforeLiquidation: false,
       part_NoticePeriod: 0,
-      part_NoticePeriodUnit: 0,
+      part_NoticePeriodUnit: 1,
       part_LiquidationPenalty: 0,
-      part_LiquidationPenaltyAmount: 0,
+      part_LiquidationPenaltyPercentage: 0,
       early_AllowEarlyLiquidation: false,
       early_RequireNoticeBeforeLiquidation: false,
       early_NoticePeriod: 0,
-      early_NoticePeriodUnit: 0,
-      early_LiquidationPenalty: "",
-      early_LiquidationPenaltyAmount: 0,
+      early_NoticePeriodUnit: 1,
+      early_LiquidationPenalty: 0,
       early_LiquidationPenaltyPercentage: 0,
       specialInterestRate: 0,
       specialCharges: [],
     },
+    productGlMappings: [
+      {
+        accountName: "",
+        accountId: "",
+        glAccountType: 0,
+      },
+    ],
     interestComputationMethod: 0,
     TermDepositLiabilityAccount: "",
     InterestAccrualAccount: "",
@@ -138,10 +154,8 @@ export default function CreateTermDeposit() {
       url: "#",
     },
   ];
-  const [
-    createProduct,
-    { isLoading, isSuccess, isError, reset, error: draftError },
-  ] = useCreateProductMutation();
+  const [createProduct, { isLoading, isSuccess, isError, reset, error }] =
+    useCreateProductMutation();
 
   function handleNav() {
     step < termDepositFormSteps.length
@@ -152,6 +166,7 @@ export default function CreateTermDeposit() {
   }
 
   const handleDraft = () => {
+    setIsConfirmOpen(false);
     createProduct({ ...productData, isDraft: true });
   };
 
@@ -180,6 +195,10 @@ export default function CreateTermDeposit() {
           setFormData={(customerEligibility) =>
             setProductData({
               ...productData,
+              productInfo: {
+                ...productData.productInfo,
+                customerCategory: customerEligibility.customerCategory,
+              },
               customerEligibility: customerEligibility,
             })
           }
@@ -228,7 +247,7 @@ export default function CreateTermDeposit() {
           setFormData={(data) =>
             setProductData({
               ...productData,
-              ...data,
+              productGlMappings: data,
             })
           }
           setDisabled={setDisabled}
@@ -249,6 +268,29 @@ export default function CreateTermDeposit() {
         />
       );
   }
+  useEffect(() => {
+    console.log(
+      "🚀 ~ file: IndexComponent.tsx:258 ~ useEffect ~ productData:",
+      productData
+    );
+  }, [productData]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      setSuccessText(Messages.PRODUCT_DRAFT_SUCCESS);
+      setIsSuccessOpen(true);
+    }
+
+    if (isError) {
+      setFailedText(Messages.PRODUCT_DRAFT_FAILED);
+      setFailedSubtext(error?.message?.message);
+      console.log(
+        "🚀 ~ file: IndexComponent.tsx:287 ~ useEffect ~ error:",
+        error
+      );
+      setFailed(true);
+    }
+  }, [isSuccess, isError, error]);
   return (
     <div>
       {!stage && (
@@ -277,6 +319,7 @@ export default function CreateTermDeposit() {
                   <div>
                     {step > 1 && (
                       <Button
+                        type="button"
                         onClick={() =>
                           handlePrev(step, setStep, termDepositFormSteps)
                         }
@@ -288,6 +331,7 @@ export default function CreateTermDeposit() {
                   </div>
                   <div className="flex justify-end gap-6">
                     <Button
+                      type="button"
                       onClick={() => setIsConfirmOpen(true)}
                       className="text-gray-500 px-10 py-1 font-medium text-base bg-white border border-[#D8DAE5] leading-[24px] disabled:bg-transparent"
                     >
@@ -297,7 +341,7 @@ export default function CreateTermDeposit() {
                     <Button
                       type="submit"
                       form={formRef}
-                      // disabled={isDisabled}
+                      disabled={isDisabled}
                       className={
                         "bg-sterling-red-800 rounded-lg px-10 py-1 font-medium text-base"
                       }
@@ -309,7 +353,7 @@ export default function CreateTermDeposit() {
               </div>
             </div>
           </div>
-
+          <Loader isOpen={isLoading} text={"Submitting"} />
           {/* //Modals */}
           {isConfirmOpen && (
             <Confirm
@@ -319,6 +363,22 @@ export default function CreateTermDeposit() {
               setIsOpen={setIsConfirmOpen}
               onCancel={() => setIsConfirmOpen(false)}
               onConfirm={() => handleDraft()}
+            />
+          )}
+          {isFailed && (
+            <Failed
+              text={failedText}
+              subtext={failedSubText}
+              isOpen={isFailed}
+              setIsOpen={setFailed}
+              canRetry
+            />
+          )}
+          {isSuccessOpen && (
+            <Success
+              text={successText}
+              isOpen={isSuccessOpen}
+              setIsOpen={setIsSuccessOpen}
             />
           )}
         </div>

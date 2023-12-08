@@ -112,7 +112,7 @@ export default function Preview({ formData, oldData= null }: any) {
 
     if (isError) {
       setFailedText(Messages.ADMIN_PRODUCT_CREATE_FAILED);
-      setFailedSubtext(error?.data?.msg);
+      setFailedSubtext(error?.message?.message);
       setFailed(true);
     }
   }, [isSuccess, isError, error]);

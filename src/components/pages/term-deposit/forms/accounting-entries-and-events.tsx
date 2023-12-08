@@ -22,6 +22,7 @@ export default function AccountingEntriesAndEvents({
   setFormData,
   setDisabled,
 }) {
+  const [mapOptions, setMapOptions] = useState([]);
   const [clearFields, setClearField] = useState(false);
   const {
     register,
@@ -46,33 +47,49 @@ export default function AccountingEntriesAndEvents({
 
   const GlMappingOptions = [
     {
-      id: "1",
+      id: 0,
       text: "Term Deposit Liability account",
       key: "TermDepositLiabilityAccount",
     },
     {
-      id: "2",
+      id: 1,
       text: "Interest accural account",
       key: "InterestAccrualAccount",
     },
     {
-      id: "3",
+      id: 2,
       text: "Interest expense account",
       key: "InterestExpenseAccount",
     },
   ];
   // glMappingSchema
   const handleClick = (key, menu, name, subname) => {
+    const data = {
+      accountName: subname,
+      accountId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      glAccountType: GlMappingOptions.find((i) => i.key === key)?.id,
+    };
+
     setValue(key, subname);
+
+    if (!mapOptions.some((i) => i.glAccountType === data.glAccountType)) {
+      setMapOptions([...mapOptions, data]);
+    } else {
+      setMapOptions((prevMapOptions) =>
+        prevMapOptions.map((i) =>
+          i.glAccountType === data.glAccountType
+            ? { ...i, accountName: subname, accountId: data.accountId }
+            : i
+        )
+      );
+    }
   };
+
   const values = getValues();
 
   function onProceed(d: any) {
-    console.log(
-      "🚀 ~ file: accounting-entries-and-events.tsx:71 ~ onProceed ~ d:",
-      d
-    );
-    setFormData(d);
+
+    setFormData(mapOptions);
     proceed();
   }
 
@@ -82,6 +99,7 @@ export default function AccountingEntriesAndEvents({
 
   const handleClear = () => {
     setClearField(!clearFields);
+    setMapOptions([])
     reset();
   };
   return (

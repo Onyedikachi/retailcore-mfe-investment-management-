@@ -238,7 +238,7 @@ export default function TableComponent<TableProps>({
     }
     if (isError) {
       setFailedText(Messages.PRODUCT_DELETE_SUCCESS);
-      setFailedSubtext(error?.data?.message);
+      setFailedSubtext(error?.message?.message);
       setFailed(true);
     }
   }, [isSuccess, isError, error]);
