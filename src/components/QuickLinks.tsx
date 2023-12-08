@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
-import { useGetLinksQuery, useUpdateLinkMutation } from "@app/api";
+import { useGetLinksQuery, useUpdateLinkMutation, useAddLinkMutation } from "@app/api";
 import { MODULENAME } from "@app/constants";
 
 export default function QuickLinks() {
@@ -16,20 +16,15 @@ export default function QuickLinks() {
   const [links, setLinks] = useState([defaultLink]);
   const { data: quickLinks, isLoading, isFetching } = useGetLinksQuery();
   const [updateLink] = useUpdateLinkMutation();
-  // const [addLink, { isLoading: addLoading }] = useAddLinkMutation();
 
+  const [addLink] = useAddLinkMutation();
+const baseUrl = 'https://seabaas.dev.bepeerless.co'
   React.useEffect(() => {
     const moduleName = MODULENAME;
-    console.log(
-      "🚀 ~ file: QuickLinks.tsx:23 ~ React.useEffect ~ moduleName:",
-      moduleName
-    );
+   
     const moduleLink =
-      "https://seabaas.dev.bepeerless.co/product-factory/investment";
-    console.log(
-      "🚀 ~ file: QuickLinks.tsx:25 ~ React.useEffect ~ moduleLink:",
-      moduleLink
-    );
+      `${baseUrl}/product-factory/investment`;
+   
 
    
     const updateLinkCount = async () => {
@@ -52,16 +47,21 @@ export default function QuickLinks() {
     updateLinkCount()
 
     return () => {
-      console.log(
-        "🚀 ~ file: QuickLinks.tsx:45 ~ return ~ Cleanup logic:",
-        "Cleanup logic"
-      );
+      
       // Additional cleanup actions can be performed here
     };
   }, []);
 
   React.useEffect(() => {
-    // addLink(links);
+    
+    if(!quickLinks){
+      addLink({
+        isDefault: true,
+        name: "ProductFactory",
+        category: "Investment",
+        link: `${baseUrl}/product-factory/investment`,
+      })
+    }
 
     if (quickLinks && quickLinks.data.length) {
       setLinks([defaultLink, ...quickLinks.data]);
