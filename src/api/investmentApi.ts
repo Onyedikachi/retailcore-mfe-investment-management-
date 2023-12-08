@@ -22,7 +22,9 @@ export const investmentApi: any = createApi({
     getProductActivityLog: builder.query<any, any>({
       query: (params) => {
         return {
-          url: urls.ACTIVITY_LOG,
+          url: `${urls.ACTIVITY_LOG}?${new URLSearchParams(
+            cleanObject(params)
+          )}`,
           method: "get",
           params: cleanObject(params),
         };
@@ -31,9 +33,10 @@ export const investmentApi: any = createApi({
     getProductRequestActivityLog: builder.query<any, any>({
       query: (params) => {
         return {
-          url: urls.REQUEST_ACTIVITY_LOG,
+          url: `${urls.REQUEST_ACTIVITY_LOG}?${new URLSearchParams(
+            cleanObject(params)
+          )}`,
           method: "get",
-          params: cleanObject(params),
         };
       },
     }),
