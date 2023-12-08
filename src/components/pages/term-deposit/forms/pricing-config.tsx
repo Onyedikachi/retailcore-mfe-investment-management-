@@ -108,11 +108,11 @@ export default function PricingConfig({
       errors
     );
     setDisabled(!isValid);
-    if (values?.interestRateRangeType) {
-      pricingConfigSchema?.validate(values, {
-        context: { interestRateRangeType: values?.interestRateRangeType },
-      });
-    }
+    // if (values?.interestRateRangeType) {
+    //   pricingConfigSchema?.validate(values, {
+    //     context: { interestRateRangeType: values?.interestRateRangeType },
+    //   });
+    // }
   }, [values]);
   const watchinterestRateRangeType = watch("interestRateRangeType");
   return (

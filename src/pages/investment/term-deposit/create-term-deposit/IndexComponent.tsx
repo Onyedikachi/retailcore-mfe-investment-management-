@@ -31,7 +31,7 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
 export default function CreateTermDeposit() {
   const [searchParams] = useSearchParams();
   const stage = searchParams.get("stage");
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(5);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [subText, setSubText] = useState("");
   const [successText, setSuccessText] = useState("");
@@ -244,10 +244,11 @@ export default function CreateTermDeposit() {
         <AccountingEntriesAndEvents
           proceed={handleNav}
           formData={productData}
-          setFormData={(data) =>
+          setFormData={({data, mapOptions}) =>
             setProductData({
               ...productData,
-              productGlMappings: data,
+              ...data,
+              productGlMappings: mapOptions,
             })
           }
           setDisabled={setDisabled}

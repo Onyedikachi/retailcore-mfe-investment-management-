@@ -14,7 +14,7 @@ export default function EntriesAndEventsSearchResults({
   errors,
   error,
   defaultValue,
-  clearFields
+  clearFields,
 }: any) {
   const [query, setQuery] = useState("");
   const [isOpen, setOpen] = useState(false);
@@ -142,13 +142,11 @@ export default function EntriesAndEventsSearchResults({
     });
   };
   useEffect(() => {
-    if (defaultValue.length) {
-      setQuery(defaultValue);
-    }
+    setQuery(defaultValue);
   }, [defaultValue]);
-  
+
   useEffect(() => {
-    setQuery("");
+    clearFields && setQuery("");
   }, [clearFields]);
 
   return (
@@ -232,7 +230,9 @@ export default function EntriesAndEventsSearchResults({
                     {menu.isOpen && (
                       <div className="ml-[40px] flex flex-col gap-4">
                         {menu.subMenu
-                          .filter((i) => i.name.toLowerCase().includes(query))
+                          .filter((i) =>
+                            i.name.toLowerCase().includes(query.toLowerCase())
+                          )
                           .map((subMenu, id) => (
                             <p
                               onClick={() => {

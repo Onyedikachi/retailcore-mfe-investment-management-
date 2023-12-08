@@ -22,6 +22,10 @@ export default function AccountingEntriesAndEvents({
   setFormData,
   setDisabled,
 }) {
+  console.log(
+    "🚀 ~ file: accounting-entries-and-events.tsx:25 ~ formData:",
+    formData
+  );
   const [mapOptions, setMapOptions] = useState([]);
   const [clearFields, setClearField] = useState(false);
   const {
@@ -42,6 +46,7 @@ export default function AccountingEntriesAndEvents({
       InterestAccrualAccount: "",
       InterestExpenseAccount: "",
     },
+    mode: "all",
     // values,
   });
 
@@ -88,19 +93,26 @@ export default function AccountingEntriesAndEvents({
   const values = getValues();
 
   function onProceed(d: any) {
-
-    setFormData(mapOptions);
+    setFormData({ data: d, mapOptions });
     proceed();
   }
 
   useEffect(() => {
-    setDisabled(!isValid);
-  }, [values, errors]);
+    // setDisabled(!isValid);
+    if (mapOptions.length === 3) {
+      setDisabled(false);
+    }
+  }, [values, mapOptions]);
+
+  // useEffect(() => {
+  //   trigger();
+  // }, []);
 
   const handleClear = () => {
     setClearField(!clearFields);
-    setMapOptions([])
+    setMapOptions([]);
     reset();
+    setClearField(!clearFields);
   };
   return (
     <form id="entriesandevents" onSubmit={handleSubmit(onProceed)}>
