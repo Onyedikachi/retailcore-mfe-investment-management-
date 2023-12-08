@@ -31,7 +31,7 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
 export default function CreateTermDeposit() {
   const [searchParams] = useSearchParams();
   const stage = searchParams.get("stage");
-  const [step, setStep] = useState(5);
+  const [step, setStep] = useState(1);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [subText, setSubText] = useState("");
   const [successText, setSuccessText] = useState("");
