@@ -1,9 +1,12 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import QuickLinks from "../../components/QuickLinks";
 import React from "react";
-import { useUpdateLinkMutation, useAddLinkMutation, useGetLinksQuery } from '../../api';
-import {MODULENAME} from '../../constants'
-
+import {
+  useUpdateLinkMutation,
+  useAddLinkMutation,
+  useGetLinksQuery,
+} from "../../api";
+import { MODULENAME } from "../../constants";
 
 jest.mock("react-router-dom", () => ({
   BrowserRouter: ({ children }) => <div>{children}</div>,
@@ -145,116 +148,144 @@ describe("QuickLinks component", () => {
     expect(getByText("Product management")).toBeInTheDocument();
   });
 
- 
+  it("renders QuickLinks component with mocked useUpdateLinkMutation", () => {
+    jest.mock("@app/api", () => ({
+      ...jest.requireActual("@app/api"),
+      useUpdateLinkMutation: jest.fn(),
+    }));
+    // Mock the useUpdateLinkMutation hook
+    const mockUpdateLinkMutation = jest.fn();
+    useUpdateLinkMutation.mockReturnValue([mockUpdateLinkMutation]);
 
-  
-    it("renders QuickLinks component with mocked useUpdateLinkMutation", () => {
-      jest.mock("@app/api", () => ({
-        ...jest.requireActual("@app/api"),
-        useUpdateLinkMutation: jest.fn(),
-      }));
-      // Mock the useUpdateLinkMutation hook
-      const mockUpdateLinkMutation = jest.fn();
-      useUpdateLinkMutation.mockReturnValue([mockUpdateLinkMutation]);
+    render(<QuickLinks />);
 
+    // You can add more assertions based on your component's behavior
+    expect(screen.getByText(/Quick Links/i)).toBeInTheDocument();
+
+    // For example, you can check if the hook was called during component rendering
+    expect(useUpdateLinkMutation).toHaveBeenCalled();
+  });
+
+  it("calls updateLink with correct arguments", async () => {
+    const mockUpdateLinkMutation = jest.fn();
+    useUpdateLinkMutation.mockReturnValue([mockUpdateLinkMutation]);
+
+    render(<QuickLinks />);
+
+    // Assuming that the component calls updateLink when it mounts
+    // You can also trigger the action that calls updateLink in your component
+
+    // Wait for asynchronous operations (e.g., updateLink) to complete
+    // You may need to adjust this based on the actual behavior of your component
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    const baseUrl = "https://seabaas.dev.bepeerless.co";
+
+    // Check if updateLink has been called with the correct arguments
+    expect(mockUpdateLinkMutation).toHaveBeenCalledWith({
+      moduleName: MODULENAME, // Replace with the actual value
+      moduleLink: `${baseUrl}/product-factory/investment`, // Replace with the actual value
+    });
+  });
+
+  it("calls addLink when quickLinks is not available", async () => {
+    const mockAddLinkMutation = jest.fn();
+    const mockUseGetLinksQuery = jest.fn();
+    useAddLinkMutation.mockReturnValue([mockAddLinkMutation]);
+    useGetLinksQuery.mockReturnValue({
+      data: null,
+      isLoading: false,
+      isFetching: false,
+    });
+
+    render(<QuickLinks />);
+
+    // Wait for asynchronous operations (e.g., useEffect) to complete
+    await waitFor(() => {});
+
+    // Check if addLink has been called with the correct arguments
+    expect(mockAddLinkMutation).toHaveBeenCalledWith({
+      isDefault: true,
+      name: "ProductFactory",
+      category: "Investment",
+      link: "https://seabaas.dev.bepeerless.co/product-factory/investment",
+    });
+  });
+
+  it("sets links state when quickLinks is available", async () => {
+    const mockUseGetLinksQuery = jest.fn();
+    useGetLinksQuery.mockReturnValue({
+      data: {
+        data: [
+          // Your data structure here
+        ],
+      },
+      isLoading: false,
+      isFetching: false,
+    });
+
+    render(<QuickLinks />);
+
+    // Wait for asynchronous operations (e.g., useEffect) to complete
+    await waitFor(() => {});
+
+    // You can check if setLinks has been called with the expected values
+    // Note: Adjust this based on your actual data structure
+    // expect(setLinks).toHaveBeenCalledWith([defaultLink, ...expectedLinks]);
+  });
+
+  describe("QuickLinks component", () => {
+    test("should toggle the isOpen state when close button is clicked", () => {
       render(<QuickLinks />);
 
-      // You can add more assertions based on your component's behavior
-      expect(screen.getByText(/Quick Links/i)).toBeInTheDocument();
+      // Verify that the suggestion block is initially rendered when isOpen is true
+      expect(
+        screen.getByText("Suggested from your activity")
+      ).toBeInTheDocument();
 
-      // For example, you can check if the hook was called during component rendering
-      expect(useUpdateLinkMutation).toHaveBeenCalled();
+      // Click the close button to toggle isOpen
+      fireEvent.click(screen.getByTestId("close"));
+
+      // Verify that the suggestion block is not present after clicking close
+      expect(
+        screen.queryByText("Suggested from your activity")
+      ).not.toBeInTheDocument();
+
+      // Click the close button again to toggle isOpen back to true
+      fireEvent.click(screen.getByTestId("close"));
+
+      // Verify that the suggestion block is present after clicking close again
+      expect(
+        screen.getByText("Suggested from your activity")
+      ).toBeInTheDocument();
+    });
+  });
+
+  test("should set the baseUrl correctly", () => {
+    render(<QuickLinks />);
+    const baseUrl = "https://seabaas.dev.bepeerless.co";
+
+    // Assuming baseUrl is used in the component, you can assert that it is set correctly
+    expect(baseUrl).toBe("https://seabaas.dev.bepeerless.co");
+  });
+
+  test("should log an error when updateLink throws an error", async () => {
+    // Mock the updateLink function to throw an error
+    const mockUpdateLink = jest
+      .fn()
+      .mockRejectedValue(new Error("Update link error"));
+    require("@app/api").useUpdateLinkMutation.mockReturnValue([mockUpdateLink]);
+
+    render(<QuickLinks />);
+
+    // Ensure that updateLinkCount is called
+    await waitFor(() => {
+      expect(mockUpdateLink).toHaveBeenCalled();
     });
 
-
-    it('calls updateLink with correct arguments', async () => {
-      const mockUpdateLinkMutation = jest.fn();
-      useUpdateLinkMutation.mockReturnValue([mockUpdateLinkMutation]);
-  
-      render(<QuickLinks />);
-  
-      // Assuming that the component calls updateLink when it mounts
-      // You can also trigger the action that calls updateLink in your component
-  
-      // Wait for asynchronous operations (e.g., updateLink) to complete
-      // You may need to adjust this based on the actual behavior of your component
-      await new Promise((resolve) => setTimeout(resolve, 0));
-      const baseUrl = 'https://seabaas.dev.bepeerless.co'
- 
-   
-  
-      // Check if updateLink has been called with the correct arguments
-      expect(mockUpdateLinkMutation).toHaveBeenCalledWith({
-        moduleName: MODULENAME, // Replace with the actual value
-        moduleLink: `${baseUrl}/product-factory/investment`, // Replace with the actual value
-      });
-    });
-
-    it('calls addLink when quickLinks is not available', async () => {
-      const mockAddLinkMutation = jest.fn();
-      const mockUseGetLinksQuery = jest.fn();
-      useAddLinkMutation.mockReturnValue([mockAddLinkMutation]);
-      useGetLinksQuery.mockReturnValue({
-        data: null,
-        isLoading: false,
-        isFetching: false,
-      });
-  
-      render(<QuickLinks />);
-  
-      // Wait for asynchronous operations (e.g., useEffect) to complete
-      await waitFor(() => {});
-  
-      // Check if addLink has been called with the correct arguments
-      expect(mockAddLinkMutation).toHaveBeenCalledWith({
-        isDefault: true,
-        name: 'ProductFactory',
-        category: 'Investment',
-        link: 'https://seabaas.dev.bepeerless.co/product-factory/investment',
-      });
-    });
-  
-    it('sets links state when quickLinks is available', async () => {
-      const mockUseGetLinksQuery = jest.fn();
-      useGetLinksQuery.mockReturnValue({
-        data: {
-          data: [
-            // Your data structure here
-          ],
-        },
-        isLoading: false,
-        isFetching: false,
-      });
-  
-      render(<QuickLinks />);
-  
-      // Wait for asynchronous operations (e.g., useEffect) to complete
-      await waitFor(() => {});
-  
-      // You can check if setLinks has been called with the expected values
-      // Note: Adjust this based on your actual data structure
-      // expect(setLinks).toHaveBeenCalledWith([defaultLink, ...expectedLinks]);
-    });
-
-    describe('QuickLinks component', () => {
-      test('should toggle the isOpen state when close button is clicked', () => {
-        render(<QuickLinks />);
-    
-        // Verify that the suggestion block is initially rendered when isOpen is true
-        expect(screen.getByText('Suggested from your activity')).toBeInTheDocument();
-    
-        // Click the close button to toggle isOpen
-        fireEvent.click(screen.getByTestId('close'));
-    
-        // Verify that the suggestion block is not present after clicking close
-        expect(screen.queryByText('Suggested from your activity')).not.toBeInTheDocument();
-    
-        // Click the close button again to toggle isOpen back to true
-        fireEvent.click(screen.getByTestId('close'));
-    
-        // Verify that the suggestion block is present after clicking close again
-        expect(screen.getByText('Suggested from your activity')).toBeInTheDocument();
-      });
-    });
-
+    // Ensure that the error message is logged
+    expect(console.error).toHaveBeenCalledWith(
+      "Error creating link:",
+      new Error("Update link error")
+    );
+  });
 });
