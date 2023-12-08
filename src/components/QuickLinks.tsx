@@ -41,22 +41,16 @@ export default function QuickLinks() {
       //get
       if (quickLinks && quickLinks.data && quickLinks.data.length > 0) {
         setLinks([defaultLink, ...quickLinks.data]);
-        console.log(
-          "🚀 ~ file: QuickLinks.tsx:23 ~ React.useEffect ~ data:",
-          quickLinks
-        );
+        
       }
-//check if quickLinks has link of this page
+      //check if quickLinks has link of this page
       const hasPageLink =
         quickLinks && quickLinks.data
           ? quickLinks?.data.some(
               (link) => link.link === `${baseUrl}/product-factory/investment`
             )
           : false;
-      console.log(
-        "🚀 ~ file: QuickLinks.tsx:44 ~ React.useEffect ~ hasPageLink:",
-        hasPageLink
-      );
+     
 
       //add
 
@@ -135,7 +129,9 @@ export default function QuickLinks() {
                     />
                   </svg>
                 </span>
-                <span className="block text-sm">{item.name}</span>
+                <span data-testid="link-name" className="block text-sm">
+                  {item.name}
+                </span>
               </Link>
             </li>
           ))}
