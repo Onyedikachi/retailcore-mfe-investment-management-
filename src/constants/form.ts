@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import uuid from 'react-uuid';
 import { productNameRegex } from "./investment";
 import { CustomerCategoryType } from "./enums";
 import { InterestRateRangeType } from "./testenums";
@@ -469,20 +470,20 @@ export const customerTypeOptions = [
 
 export const documentOptions = [
   {
-    id: "fa85f64-5717-4562-b3fc-2c963f66afa6",
+    id: uuid(),
     name: "Customer Photo",
   },
   {
-    id: "fa85f64-3317-4562-b3fc-2c963f66afa6",
+    id: uuid(),
     name: "Signature",
   },
 
   {
-    id: "fa85f64-5717-4562-b3fc-2c963f66af45",
+    id:uuid(),
     name: "Valid Identification document",
   },
   {
-    id: "fa85f64-5447-4462-b3fc-2c963f66afa6",
+    id: uuid(),
     name: "Proof of residential address",
   },
 ];

@@ -168,6 +168,7 @@ export default function TableComponent<TableProps>({
 
   // function getdata(item, key) {}
   const handleAction = (action, items) => {
+    console.log("🚀 ~ file: index.tsx:171 ~ handleAction ~ action:", action);
     setAction(action);
     setDetail(items);
     dropDownClick(action, items);
@@ -209,6 +210,15 @@ export default function TableComponent<TableProps>({
       setIsConfirmOpen(true);
       return;
     }
+    if (action.toLowerCase() === Actions.CONTINUE_REQUEST) {
+      s: navigate(
+        `/product-factory/investment/${encodeURIComponent(
+          "term deposit"
+        )}/modify/?id=${items.id}?type=draft`
+      );
+      return;
+    }
+
     if (action.toLowerCase() === Actions.VIEW) {
       category === StatusCategoryType.AllProducts
         ? setDetailOpen(true)
@@ -221,14 +231,15 @@ export default function TableComponent<TableProps>({
     }
   };
 
-  const [deleteRequest, { isSuccess, isError, error, isLoading: deleteLoading }] =
-  useDeleteProductRequestMutation();
+  const [
+    deleteRequest,
+    { isSuccess, isError, error, isLoading: deleteLoading },
+  ] = useDeleteProductRequestMutation();
 
   const handleConfirm = () => {
-    console.log(
-      "🚀 ~ file: index.tsx:230 ~ handleConfirm ~ handleConfirm:",
-      handleConfirm
-    );
+    if (action.toLowerCase().includes("delete")) {
+      deleteRequest(detail.id);
+    }
   };
 
   useEffect(() => {

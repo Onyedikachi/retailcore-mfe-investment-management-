@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { paths } from "@app/routes/paths";
 import { Confirm, Failed, Success } from "@app/components/modals";
-import { useCreateProductMutation } from "@app/api";
+import { useCreateProductMutation, useGetProductDetailQuery } from "@app/api";
 import {
   Breadcrumbs,
   Loader,
@@ -31,6 +31,7 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
 export default function CreateTermDeposit() {
   const [searchParams] = useSearchParams();
   const stage = searchParams.get("stage");
+  const id = searchParams.get("id");
   const [step, setStep] = useState(1);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [subText, setSubText] = useState("");
@@ -59,20 +60,20 @@ export default function CreateTermDeposit() {
       interestRateRangeType: 0,
       applicableTenorMin: 0,
       applicableTenorMinUnit: 1,
-      applicableTenorMax: null,
+      applicableTenorMax: 0,
       applicableTenorMaxUnit: 1,
       applicablePrincipalMin: 0,
-      applicablePrincipalMax: null,
+      applicablePrincipalMax: 0,
 
       interestRateConfigModels: [
         {
           min: 0,
-          max: null,
+          max: 0,
           principalMin: 0,
-          principalMax: null,
+          principalMax: 0,
           tenorMin: 0,
           tenorMinUnit: 1,
-          tenorMax: null,
+          tenorMax: 0,
           tenorMaxUnit: 1,
         },
       ],
@@ -96,13 +97,7 @@ export default function CreateTermDeposit() {
       specialInterestRate: 0,
       specialCharges: [],
     },
-    productGlMappings: [
-      {
-        accountName: "",
-        accountId: "",
-        glAccountType: 0,
-      },
-    ],
+    productGlMappings: [],
     interestComputationMethod: 0,
     TermDepositLiabilityAccount: "",
     InterestAccrualAccount: "",
@@ -110,21 +105,6 @@ export default function CreateTermDeposit() {
     isDraft: false,
     productType: 0,
   });
-  // const [productInformationFormData, setProductInformationFormData] = useState({
-  //   name: "",
-  //   slogan: "",
-  //   description: "",
-  //   startDate: "",
-  //   endDate: "",
-  //   currency: "",
-  // });
-  // const [customerEligibilityCriteria, setCustomerEligibilityCriteria] =
-  //   useState({
-  //     category: "",
-  //     ageGroupStart: 0,
-  //     ageGroupEnd: 0,
-  //     corporateCustomerType: "",
-  //   });
 
   const [isDisabled, setDisabled] = useState<boolean>(true);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -132,8 +112,6 @@ export default function CreateTermDeposit() {
     mainText: "Do you want to save as draft?",
     subText: "Requests in draft will be deleted after 30 days of inactivity",
   });
-
-  // const [formRef, setFormRef] = useState("");
 
   const navigate = useNavigate();
 
@@ -157,6 +135,13 @@ export default function CreateTermDeposit() {
   const [createProduct, { isLoading, isSuccess, isError, reset, error }] =
     useCreateProductMutation();
 
+  const { data: modifyData, isLoading: modifyIsLoadin } =
+    useGetProductDetailQuery(
+      {
+        id,
+      },
+      { skip: !id }
+    );
   function handleNav() {
     step < termDepositFormSteps.length
       ? handleNext(step, setStep, termDepositFormSteps)
@@ -244,7 +229,7 @@ export default function CreateTermDeposit() {
         <AccountingEntriesAndEvents
           proceed={handleNav}
           formData={productData}
-          setFormData={({data, mapOptions}) =>
+          setFormData={({ data, mapOptions }) =>
             setProductData({
               ...productData,
               ...data,
