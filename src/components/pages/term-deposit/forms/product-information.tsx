@@ -201,7 +201,8 @@ export default function ProductInformation({
   }, [setValue, formData]);
 
   //watchers
-  const watchStartDate = watch("startDate");
+  const watchStartDate = new Date(watch("startDate"));
+  watchStartDate.setDate(watchStartDate.getDate() + 1);
   const watchEndDate = watch("endDate");
   const watchCurrency = watch("currency");
   return (
