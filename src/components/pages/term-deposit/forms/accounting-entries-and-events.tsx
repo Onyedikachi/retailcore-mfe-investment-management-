@@ -116,6 +116,10 @@ export default function AccountingEntriesAndEvents({
   };
   useEffect(() => {
     if (formData) {
+    console.log("🚀 ~ file: accounting-entries-and-events.tsx:119 ~ useEffect ~ formData:", formData)
+    setValue("TermDepositLiabilityAccount", formData.TermDepositLiabilityAccount)
+    setValue("InterestExpenseAccount", formData.InterestExpenseAccount)
+    setValue("InterestExpenseAccount", formData.InterestExpenseAccount)
     }
   }, [setValue, formData]);
   return (
