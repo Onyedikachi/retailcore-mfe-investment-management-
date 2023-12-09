@@ -137,8 +137,8 @@ export default function Actions({
   return (
     <div className=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-[60px] py-[40px]  ">
       {/* Submission  */}
-      {process === "create" ||
-        (process === "modify" && (
+      {(process === "create" ||
+        process === "modify") && (
           <div className=" flex  gap-6">
             <button
               onClick={handleCancel}
@@ -172,7 +172,7 @@ export default function Actions({
               <span className=" font-medium text-base">Submit</span>
             </button>
           </div>
-        ))}
+        )}
       {/* Preview  */}
       {process == "preview" && (
         <div className=" flex  gap-x-6 justify-end">

@@ -100,6 +100,7 @@ export default function SelectedRequirementsTable({
                         {index === 0 && "No document selected"}
                       </td>
                       <td className="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize truncate relative text-left"></td>
+                      <td className="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize truncate relative text-left"></td>
                     </tr>
                   ))}
                 </tbody>

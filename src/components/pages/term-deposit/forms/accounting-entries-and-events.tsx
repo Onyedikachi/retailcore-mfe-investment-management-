@@ -116,6 +116,10 @@ export default function AccountingEntriesAndEvents({
   };
   useEffect(() => {
     if (formData) {
+   
+    setValue("TermDepositLiabilityAccount", formData?.TermDepositLiabilityAccount)
+    setValue("InterestAccrualAccount", formData?.InterestAccrualAccount)
+    setValue("InterestExpenseAccount", formData?.InterestExpenseAccount)
     }
   }, [setValue, formData]);
   return (

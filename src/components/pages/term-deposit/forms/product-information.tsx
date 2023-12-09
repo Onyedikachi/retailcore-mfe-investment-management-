@@ -233,7 +233,6 @@ export default function ProductInformation({
                   required: true,
                   maxLength: 50,
                 })}
-               
                 onChange={(e) => {
                   handleName(
                     validateName,
@@ -298,7 +297,6 @@ export default function ProductInformation({
             <div className="relative flex items-center">
               <input
                 data-testid="investment-slogan"
-              
                 className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB] ${
                   errors?.slogan || error ? "border-red-500" : ""
                 }${isSloganOkay && !errors?.slogan ? "" : ""}`}
@@ -359,32 +357,34 @@ export default function ProductInformation({
           </div>
           <InputDiv>
             <div className="relative">
-            <textarea
-              data-testid="product-description"
-              placeholder="Enter description"
-              maxLength={250}
-              {...register("description", {
-                required: true,
-                maxLength: 250,
-              })}
-              defaultValue={values?.description}
-              className={`min-h-[150px] w-full rounded-md border border-[#8F8F8F] focus:outline-none px-3 py-[11px] placeholder:text-[#BCBBBB] resize-none ${
-                errors?.description || error
-                  ? "border-red-500 ring-1 ring-red-500"
-                  : ""
-              }${!errors?.description ? "" : ""}`}
-            />
+              <textarea
+                data-testid="product-description"
+                placeholder="Enter description"
+                maxLength={250}
+                {...register("description", {
+                  required: true,
+                  maxLength: 250,
+                })}
+                defaultValue={values?.description}
+                className={`min-h-[150px] w-full rounded-md border border-[#8F8F8F] focus:outline-none px-3 py-[11px] placeholder:text-[#BCBBBB] resize-none ${
+                  errors?.description || error
+                    ? "border-red-500 ring-1 ring-red-500"
+                    : ""
+                }`}
+              />
+
+              {error && (
+                <span className="text-sm text-danger-500">{error}</span>
+              )}
+              <span className="absolute bottom-4 right-2 text-xs text-[#8F8F8F] flex items-center gap-x-1">
+                <span>{watch("description").length || 0}</span>/<span>250</span>
+              </span>
+            </div>
             {errors?.description && (
               <span className="text-sm text-danger-500">
                 {errors?.description?.message}
               </span>
             )}
-
-            {error && <span className="text-sm text-danger-500">{error}</span>}
-            <span className="absolute bottom-4 right-2 text-xs text-[#8F8F8F] flex items-center gap-x-1">
-              <span>{watch("description").length || 0}</span>/<span>250</span>
-            </span>
-            </div>
           </InputDiv>
         </div>
 
