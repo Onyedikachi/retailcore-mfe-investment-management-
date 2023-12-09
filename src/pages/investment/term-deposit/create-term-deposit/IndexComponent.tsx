@@ -267,6 +267,7 @@ export default function CreateTermDeposit() {
   useEffect(() => {
     if (requestIsSuccess) {
       const data = JSON.parse(requestData?.data?.metaInfo);
+      console.log("🚀 ~ file: IndexComponent.tsx:270 ~ useEffect ~ data:", data)
 
       setProductData(convertKeysToLowerCase({ ...data }));
     }
@@ -281,10 +282,6 @@ export default function CreateTermDeposit() {
     if (isError) {
       setFailedText(Messages.PRODUCT_DRAFT_FAILED);
       setFailedSubtext(error?.message?.message);
-      console.log(
-        "🚀 ~ file: IndexComponent.tsx:287 ~ useEffect ~ error:",
-        error
-      );
       setFailed(true);
     }
   }, [isSuccess, isError, error]);
