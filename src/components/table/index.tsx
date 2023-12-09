@@ -214,10 +214,10 @@ export default function TableComponent<TableProps>({
       return;
     }
     if (action.toLowerCase() === Actions.CONTINUE_REQUEST) {
-      s: navigate(
+       navigate(
         `/product-factory/investment/${encodeURIComponent(
           "term deposit"
-        )}/modify/?id=${items.id}?type=draft`
+        )}/continue/?id=${items.id}?type=draft`
       );
       return;
     }
@@ -257,6 +257,13 @@ export default function TableComponent<TableProps>({
     }
     if (action.toLowerCase() === Actions.ACTIVATE) {
       activateProduct({ id: detail?.id });
+    }
+    if (action.toLowerCase() === Actions.MODIFY) {
+      navigate(
+        `/product-factory/investment/${encodeURIComponent(
+          "term deposit"
+        )}/modify/?id=${detail.id}`
+      );
     }
   };
 
