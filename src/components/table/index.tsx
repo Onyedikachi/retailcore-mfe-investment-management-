@@ -22,7 +22,10 @@ import RequestDeactivation from "../modals/RequestDeactivation";
 import ProductDetail from "../modals/ProductDetail";
 import { StatusCategoryType } from "@app/types";
 import { useNavigate } from "react-router-dom";
-import { useDeleteProductRequestMutation } from "@app/api";
+import {
+  useActivateProductMutation,
+  useDeleteProductRequestMutation,
+} from "@app/api";
 
 interface TableProps {
   headers: any[];
@@ -168,6 +171,7 @@ export default function TableComponent<TableProps>({
 
   // function getdata(item, key) {}
   const handleAction = (action, items) => {
+    console.log("🚀 ~ file: index.tsx:171 ~ handleAction ~ action:", action);
     setAction(action);
     setDetail(items);
     dropDownClick(action, items);
@@ -209,6 +213,15 @@ export default function TableComponent<TableProps>({
       setIsConfirmOpen(true);
       return;
     }
+    if (action.toLowerCase() === Actions.CONTINUE_REQUEST) {
+      s: navigate(
+        `/product-factory/investment/${encodeURIComponent(
+          "term deposit"
+        )}/modify/?id=${items.id}?type=draft`
+      );
+      return;
+    }
+
     if (action.toLowerCase() === Actions.VIEW) {
       category === StatusCategoryType.AllProducts
         ? setDetailOpen(true)
@@ -221,14 +234,30 @@ export default function TableComponent<TableProps>({
     }
   };
 
-  const [deleteRequest, { isSuccess, isError, error, isLoading: deleteLoading }] =
-  useDeleteProductRequestMutation();
+  const [
+    deleteRequest,
+    { isSuccess, isError, error, isLoading: deleteLoading },
+  ] = useDeleteProductRequestMutation();
+  const [
+    activateProduct,
+    {
+      isSuccess: activateSuccess,
+      isError: activateIsError,
+      error: activateError,
+      isLoading: activateIsLoading,
+    },
+  ] = useActivateProductMutation();
 
   const handleConfirm = () => {
-    console.log(
-      "🚀 ~ file: index.tsx:230 ~ handleConfirm ~ handleConfirm:",
-      handleConfirm
-    );
+    if (action.toLowerCase().includes("delete")) {
+      deleteRequest(detail.id);
+    }
+    if (action.toLowerCase() === Actions.DEACTIVATE) {
+      setIsDeactivationOpen(true);
+    }
+    if (action.toLowerCase() === Actions.ACTIVATE) {
+      activateProduct({ id: detail?.id });
+    }
   };
 
   useEffect(() => {
@@ -236,12 +265,26 @@ export default function TableComponent<TableProps>({
       setSuccessText(Messages.PRODUCT_DELETE_SUCCESS);
       setIsSuccessOpen(true);
     }
+    if (activateSuccess) {
+      setSuccessText(
+        role === "superadmin"
+          ? Messages.PRODUCT_ACTIVATE_SUCCESS
+          : Messages.ADMIN_PRODUCT_ACTIVATE_SUCCESS
+      );
+      setIsSuccessOpen(true);
+    }
     if (isError) {
-      setFailedText(Messages.PRODUCT_DELETE_SUCCESS);
-      setFailedSubtext(error?.data?.message);
+      setFailedText(Messages.PRODUCT_DELETE_FAILED);
+      setFailedSubtext(error?.message?.message);
       setFailed(true);
     }
-  }, [isSuccess, isError, error]);
+
+    if (activateIsError) {
+      setFailedText(Messages.PRODUCT_ACTIVATE_FAILED);
+      setFailedSubtext(activateError?.message?.message);
+      setFailed(true);
+    }
+  }, [isSuccess, isError, error, activateSuccess, activateIsError]);
 
   return (
     <div>
@@ -424,6 +467,7 @@ export default function TableComponent<TableProps>({
           isOpen={isDeactivationOpen}
           setIsOpen={setIsDeactivationOpen}
           onConfirm={() => {}}
+          detail={detail}
           // setReason={() => {}}
         />
       )}
@@ -436,7 +480,12 @@ export default function TableComponent<TableProps>({
           // setReason={() => {}}
         />
       )}
-      {deleteLoading && <Loader isOpen={deleteLoading} text={"Submitting"} />}
+      {(deleteLoading || activateIsLoading) && (
+        <Loader
+          isOpen={deleteLoading || activateIsLoading}
+          text={"Submitting"}
+        />
+      )}
     </div>
   );
 }

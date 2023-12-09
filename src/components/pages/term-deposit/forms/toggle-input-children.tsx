@@ -14,6 +14,7 @@ export default function ToggleInputChildren({
   trigger,
   inputName,
   defaultValue,
+  register
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -41,6 +42,7 @@ export default function ToggleInputChildren({
           )}
         </span>
         <Switch
+        {...register(inputName)}
           checked={isOpen}
           onChange={(value) => {
             setIsOpen(value);

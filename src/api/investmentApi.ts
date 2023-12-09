@@ -22,7 +22,9 @@ export const investmentApi: any = createApi({
     getProductActivityLog: builder.query<any, any>({
       query: (params) => {
         return {
-          url: urls.ACTIVITY_LOG,
+          url: `${urls.ACTIVITY_LOG}?${new URLSearchParams(
+            cleanObject(params)
+          )}`,
           method: "get",
           params: cleanObject(params),
         };
@@ -31,9 +33,10 @@ export const investmentApi: any = createApi({
     getProductRequestActivityLog: builder.query<any, any>({
       query: (params) => {
         return {
-          url: urls.REQUEST_ACTIVITY_LOG,
+          url: `${urls.REQUEST_ACTIVITY_LOG}?${new URLSearchParams(
+            cleanObject(params)
+          )}`,
           method: "get",
-          params: cleanObject(params),
         };
       },
     }),
@@ -137,6 +140,15 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    getRequestDetail: builder.query<any, any>({
+      query: (data) => {
+        if (!data.id) return;
+        return {
+          url: `${urls.REQUESTS}/${data.id}}`,
+          method: "get",
+        };
+      },
+    }),
 
     getRequestStats: builder.query<any, any>({
       query: (data) => {
@@ -208,9 +220,9 @@ export const investmentApi: any = createApi({
     activateProduct: builder.mutation<{ id: string }, { id: string }>({
       query: (data) => {
         return {
-          url: `${urls.PRODUCT}/reactivate`,
+          url: `${urls.PRODUCT}/reactivate/${data.id}`,
           method: "put",
-          body: data,
+         
         };
       },
     }),
@@ -256,4 +268,5 @@ export const {
   useGetProductActivityLogQuery,
   useGetProductRequestActivityLogQuery,
   useGetProductDetailQuery,
+  useGetRequestDetailQuery,
 } = investmentApi;

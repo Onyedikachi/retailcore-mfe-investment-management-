@@ -14,7 +14,7 @@ interface MinMaxProps {
   trigger?: any;
   error?: string;
   disabled?: boolean;
-  type?: string
+  type?: string;
 }
 export default function MinMaxInput({
   label,
@@ -31,7 +31,7 @@ export default function MinMaxInput({
   trigger,
   error,
   disabled = false,
-  type = "text"
+  type = "text",
 }: MinMaxProps) {
   return (
     <div>
@@ -42,7 +42,7 @@ export default function MinMaxInput({
         <div className="w-full flex flex-col gap-2">
           <div className="relative flex items-center max-w-[642px]">
             <input
-            type={type}
+              type={type}
               disabled={disabled}
               data-testid="min-max-input"
               className={`placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] ${
@@ -57,7 +57,7 @@ export default function MinMaxInput({
               }}
               placeholder="0"
               // maxLength={defaultLength}
-              {...register(inputName)}
+              {...register(inputName, { required: true })}
               defaultValue={defaultValue}
               // aria-invalid={errors?.name ? "true" : "false"}
             />

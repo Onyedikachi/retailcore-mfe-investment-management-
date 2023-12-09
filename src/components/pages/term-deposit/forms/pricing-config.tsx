@@ -13,7 +13,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { pricingConfigSchema } from "@app/constants";
 import { FormToolTip } from "@app/components";
 import { toolTips } from "@app/constants";
-import {RedDot} from '@app/components/forms'
+import { RedDot } from "@app/components/forms";
 
 const labels = [
   "Applicable Tenor",
@@ -27,7 +27,7 @@ export function InputDivs({ children, label, requiredField = true }) {
         {" "}
         <label className=" flex text-base font-medium text-[#636363]">
           {label}
-         <span className="flex"> {requiredField && <RedDot />}</span>
+          <span className="flex"> {requiredField && <RedDot />}</span>
         </label>
         {label == labels[0] && <FormToolTip tip={toolTips.applicableTenor} />}
         {label == labels[1] && (
@@ -84,9 +84,9 @@ export default function PricingConfig({
       principalMin: 0,
       principalMax: null,
       tenorMin: 0,
-      tenorMinUnit: 0,
+      tenorMinUnit: 1,
       tenorMax: null,
-      tenorMaxUnit: null,
+      tenorMaxUnit: 1,
     });
   };
 
@@ -95,7 +95,6 @@ export default function PricingConfig({
   };
 
   function onProceed(d: any) {
-    console.log("Pricing - Config:" + JSON.stringify(d));
     setFormData({ ...d });
     proceed();
   }
@@ -103,17 +102,25 @@ export default function PricingConfig({
 
   useEffect(() => {
     console.log("🚀 ~ file: product-information.tsx:191 ~ isValid:", isValid);
-    console.log(
-      "🚀 ~ file: pricing-config.tsx:139 ~ PricingConfig ~ values:",
-      values
-    );
 
     console.log(
       "🚀 ~ file: pricing-config.tsx:153 ~ useEffect ~ errors:",
       errors
     );
-    // setDisabled(!isValid);
+    setDisabled(!isValid);
+    // if (values?.interestRateRangeType) {
+    //   pricingConfigSchema?.validate(values, {
+    //     context: { interestRateRangeType: values?.interestRateRangeType },
+    //   });
+    // }
   }, [values]);
+  useEffect(() => {
+    if (formData) {
+      Object.entries(formData).forEach(([name, value]) =>
+        setValue(name, value)
+      );
+    }
+  }, [setValue, formData]);
   const watchinterestRateRangeType = watch("interestRateRangeType");
   return (
     <form id="pricingconfig" onSubmit={handleSubmit(onProceed)}>
@@ -130,7 +137,7 @@ export default function PricingConfig({
                   setValue={setValue}
                   trigger={trigger}
                   clearErrors={clearErrors}
-                  defaultValue={formData.applicableTenorMin}
+                  defaultValue={formData?.applicableTenorMin}
                   type="number"
                 />
               </div>
@@ -139,7 +146,7 @@ export default function PricingConfig({
                   inputError={errors?.applicableTenorMinUnit}
                   register={register}
                   inputName={"applicableTenorMinUnit"}
-                  defaultValue={formData.applicableTenorMinUnit}
+                  defaultValue={formData?.applicableTenorMinUnit}
                   options={IntervalOptions}
                   errors={errors}
                   setValue={setValue}
@@ -151,12 +158,12 @@ export default function PricingConfig({
             </div>{" "}
             -
             <div className="flex gap-[25px]">
-              <div className="w-[150px]">
+              <div className="w-[180px]">
                 <MinMaxInput
                   label={"Max"}
                   register={register}
                   inputName={"applicableTenorMax"}
-                  defaultValue={formData.applicableTenorMax}
+                  defaultValue={formData?.applicableTenorMax}
                   errors={errors}
                   setValue={setValue}
                   trigger={trigger}
@@ -165,12 +172,12 @@ export default function PricingConfig({
                 />
               </div>
 
-              <div className="w-[150px]">
+              <div className="w-[180px]">
                 <BorderlessSelect
                   inputError={errors?.applicableTenorMaxUnit}
                   register={register}
                   inputName={"applicableTenorMaxUnit"}
-                  defaultValue={formData.applicableTenorMaxUnit}
+                  defaultValue={formData?.applicableTenorMaxUnit}
                   options={IntervalOptions}
                   errors={errors}
                   setValue={setValue}
@@ -191,12 +198,11 @@ export default function PricingConfig({
                 currency={productData?.productInfo?.currency}
                 register={register}
                 inputName={"applicablePrincipalMin"}
-                defaultValue={formData.applicablePrincipalMin}
+                defaultValue={formData?.applicablePrincipalMin}
                 errors={errors}
                 setValue={setValue}
                 trigger={trigger}
                 clearErrors={clearErrors}
-            
               />
             </div>{" "}
             -
@@ -207,12 +213,11 @@ export default function PricingConfig({
                 currency={productData?.productInfo?.currency}
                 register={register}
                 inputName={"applicablePrincipalMax"}
-                defaultValue={formData.applicablePrincipalMax}
+                defaultValue={formData?.applicablePrincipalMax}
                 errors={errors}
                 setValue={setValue}
                 trigger={trigger}
                 clearErrors={clearErrors}
-               
               />
             </div>{" "}
           </div>
@@ -244,243 +249,275 @@ export default function PricingConfig({
               )
             )}
           </div>
-
-          <div>
-            {interestRateConfigModels.map((range, index) => (
-              <div className="flex items-center gap-6 mt-[14px]" key={range.id}>
-                {/* <span>{JSON.stringify(range)}</span> */}
-                <div className="flex items-center gap-[25px] ">
+          {parseInt(watchinterestRateRangeType, 10) !== 2 && (
+            <div>
+              {interestRateConfigModels.map((range, index) => (
+                <div
+                  className="flex items-center gap-6 mt-[14px]"
+                  key={range.id}
+                >
+                  {/* <span>{JSON.stringify(range)}</span> */}
                   <div className="flex items-center gap-[25px] ">
-                    <div className="flex gap-[25px]">
-                      <MinMaxInput
-                        className="w-[200px]"
-                        label={"Min"}
-                        register={register}
-                        inputName={`interestRateConfigModels.${index}.min`}
-                        errors={errors}
-                        error={
-                          errors?.interestRateConfigModels?.[index]?.min
-                            ?.message
-                        }
-                        setValue={setValue}
-                        trigger={trigger}
-                        defaultValue={
-                          formData?.interestRateConfigModels?.[index]?.min
-                        }
-                        clearErrors={clearErrors}
-                      
+                    <div className="flex items-center gap-[25px] ">
+                      <div className="flex gap-[25px]">
+                        <MinMaxInput
+                          className="w-[200px]"
+                          label={"Min"}
+                          register={register}
+                          inputName={`interestRateConfigModels.${index}.min`}
+                          errors={errors}
+                          error={
+                            errors?.interestRateConfigModels?.[index]?.min
+                              ?.message
+                          }
+                          setValue={setValue}
+                          trigger={trigger}
+                          defaultValue={
+                            formData?.interestRateConfigModels?.[index]?.min
+                          }
+                          clearErrors={clearErrors}
 
-                        // defaultValue={range.min}
-                      />
-                    </div>{" "}
-                    -
-                    <div className="flex gap-[25px]">
-                      <MinMaxInput
-                        className="w-[200px]"
-                        label={"Max"}
-                        register={register}
-                        inputName={`interestRateConfigModels.${index}.max`}
-                        errors={errors}
-                        error={
-                          errors?.interestRateConfigModels?.[index]?.max
-                            ?.message
-                        }
-                        defaultValue={
-                          formData?.interestRateConfigModels?.[index]?.max
-                        }
-                        setValue={setValue}
-                        trigger={trigger}
-                        clearErrors={clearErrors}
-                      
-                      />
-                    </div>{" "}
+                          // defaultValue={range.min}
+                        />
+                      </div>{" "}
+                      -
+                      <div className="flex gap-[25px]">
+                        <MinMaxInput
+                          className="w-[200px]"
+                          label={"Max"}
+                          register={register}
+                          inputName={`interestRateConfigModels.${index}.max`}
+                          errors={errors}
+                          error={
+                            errors?.interestRateConfigModels?.[index]?.max
+                              ?.message
+                          }
+                          defaultValue={
+                            formData?.interestRateConfigModels?.[index]?.max
+                          }
+                          setValue={setValue}
+                          trigger={trigger}
+                          clearErrors={clearErrors}
+                        />
+                      </div>{" "}
+                    </div>
+                    {/* principal starts here  */}
+                    {parseInt(watchinterestRateRangeType, 10) === 0 && (
+                      <>
+                        <span>for principal between:</span>
+                        <div className="flex gap-[25px] ">
+                          <MinMaxInput
+                            label={productData?.productInfo?.currency}
+                            className="w-[180px]"
+                            register={register}
+                            inputName={`interestRateConfigModels.${index}.principalMin`}
+                            errors={errors}
+                            error={
+                              errors?.interestRateConfigModels?.[index]
+                                ?.principalMin?.message
+                            }
+                            defaultValue={
+                              formData?.interestRateConfigModels?.[index]
+                                ?.principalMin
+                            }
+                            setValue={setValue}
+                            trigger={trigger}
+                            clearErrors={clearErrors}
+                          />
+                        </div>{" "}
+                        -
+                        <div className="flex gap-[25px] ">
+                          <MinMaxInput
+                            label={productData?.productInfo?.currency}
+                            className="w-[180px]"
+                            register={register}
+                            inputName={`interestRateConfigModels.${index}.principalMax`}
+                            errors={errors}
+                            error={
+                              errors?.interestRateConfigModels?.[index]
+                                ?.principalMax?.message
+                            }
+                            defaultValue={
+                              formData?.interestRateConfigModels?.[index]
+                                ?.principalMax
+                            }
+                            setValue={setValue}
+                            trigger={trigger}
+                            clearErrors={clearErrors}
+                          />
+                        </div>{" "}
+                      </>
+                    )}
+
+                    {/* principal ends here  */}
+                    {/* tenor starts here  */}
+                    {parseInt(watchinterestRateRangeType, 10) === 1 && (
+                      <>
+                        <span>for tenor between:</span>
+                        <div className="flex gap-[25px]">
+                          <MinMaxInput
+                            className="w-[90px]"
+                            register={register}
+                            inputName={`interestRateConfigModels.${index}.tenorMin`}
+                            errors={errors}
+                            error={
+                              errors?.interestRateConfigModels?.[index]
+                                ?.tenorMin?.message
+                            }
+                            defaultValue={
+                              formData?.interestRateConfigModels?.[index]
+                                ?.tenorMin
+                            }
+                            setValue={setValue}
+                            trigger={trigger}
+                            clearErrors={clearErrors}
+                            type="number"
+                          />
+                          <div className="w-[90px]">
+                            <BorderlessSelect
+                              inputError={errors?.tenorMinUnit}
+                              register={register}
+                              inputName={`interestRateConfigModels.${index}.tenorMinUnit`}
+                              errors={errors}
+                              error={
+                                errors?.interestRateConfigModels?.[index]
+                                  ?.tenorMinUnit?.message
+                              }
+                              defaultValue={
+                                formData?.interestRateConfigModels[index]
+                                  ?.tenorMinUnit
+                              }
+                              setValue={setValue}
+                              trigger={trigger}
+                              clearErrors={clearErrors}
+                              options={IntervalOptions}
+                            />
+                          </div>
+                        </div>{" "}
+                        -
+                        <div className="flex gap-[25px]">
+                          <MinMaxInput
+                            className="w-[90px]"
+                            register={register}
+                            inputName={`interestRateConfigModels.${index}.tenorMax`}
+                            errors={errors}
+                            error={
+                              errors?.interestRateConfigModels?.[index]
+                                ?.tenorMax?.message
+                            }
+                            defaultValue={
+                              formData?.interestRateConfigModels?.[index]
+                                ?.tenorMax
+                            }
+                            setValue={setValue}
+                            trigger={trigger}
+                            clearErrors={clearErrors}
+                            type="number"
+                          />
+                          <div className="w-[90px]">
+                            <BorderlessSelect
+                              inputError={errors?.tenorMaxUnit}
+                              register={register}
+                              inputName={`interestRateConfigModels.${index}.tenorMaxUnit`}
+                              errors={errors}
+                              error={
+                                errors?.interestRateConfigModels?.[index]
+                                  ?.tenorMaxUnit?.message
+                              }
+                              defaultValue={
+                                formData?.interestRateConfigModels?.[index]
+                                  ?.tenorMaxUnit
+                              }
+                              setValue={setValue}
+                              trigger={trigger}
+                              clearErrors={clearErrors}
+                              options={IntervalOptions}
+                            />
+                          </div>
+                        </div>
+                      </>
+                    )}
+
+                    {/* tenor ends here  */}
                   </div>
-                  {/* principal starts here  */}
-                  {parseInt(watchinterestRateRangeType, 10) === 0 && (
-                    <>
-                      <span>for principal between:</span>
-                      <div className="flex gap-[25px] ">
-                        <MinMaxInput
-                          label={productData?.productInfo?.currency}
-                          className="w-[150px]"
-                          register={register}
-                          inputName={`interestRateConfigModels.${index}.principalMin`}
-                          errors={errors}
-                          error={
-                            errors?.interestRateConfigModels?.[index]
-                              ?.principalMin?.message
-                          }
-                          defaultValue={
-                            formData?.interestRateConfigModels?.[index]
-                              ?.principalMin
-                          }
-                          setValue={setValue}
-                          trigger={trigger}
-                          clearErrors={clearErrors}
-                         
-                        />
-                      </div>{" "}
-                      -
-                      <div className="flex gap-[25px] ">
-                        <MinMaxInput
-                          label={productData?.productInfo?.currency}
-                          className="w-[150px]"
-                          register={register}
-                          inputName={`interestRateConfigModels.${index}.principalMax`}
-                          errors={errors}
-                          error={
-                            errors?.interestRateConfigModels?.[index]
-                              ?.principalMax?.message
-                          }
-                          defaultValue={
-                            formData?.interestRateConfigModels?.[index]
-                              ?.principalMax
-                          }
-                          setValue={setValue}
-                          trigger={trigger}
-                          clearErrors={clearErrors}
-                         
-                        />
-                      </div>{" "}
-                    </>
-                  )}
-
-                  {/* principal ends here  */}
-                  {/* tenor starts here  */}
-                  {parseInt(watchinterestRateRangeType, 10) === 1 && (
-                    <>
-                      <span>for tenor between:</span>
-                      <div className="flex gap-[25px]">
-                        <MinMaxInput
-                          className="w-[90px]"
-                          register={register}
-                          inputName={`interestRateConfigModels.${index}.tenorMin`}
-                          errors={errors}
-                          error={
-                            errors?.interestRateConfigModels?.[index]?.tenorMin
-                              ?.message
-                          }
-                          defaultValue={
-                            formData?.interestRateConfigModels?.[index]
-                              ?.tenorMin
-                          }
-                          setValue={setValue}
-                          trigger={trigger}
-                          clearErrors={clearErrors}
-                          type="number"
-                        />
-                        <div className="w-[90px]">
-                          <BorderlessSelect
-                            inputError={errors?.tenorMinUnit}
-                            register={register}
-                            inputName={`interestRateConfigModels.${index}.tenorMinUnit`}
-                            errors={errors}
-                            error={
-                              errors?.interestRateConfigModels?.[index]
-                                ?.tenorMinUnit?.message
-                            }
-                            defaultValue={
-                              formData?.interestRateConfigModels?.[index]
-                                ?.tenorMinUnit
-                            }
-                            setValue={setValue}
-                            trigger={trigger}
-                            clearErrors={clearErrors}
-                            options={IntervalOptions}
+                  {interestRateConfigModels.length > 1 && (
+                    <div className="h-4 w-4" onClick={() => removeField(index)}>
+                      <svg
+                        width="11"
+                        height="10"
+                        viewBox="0 0 11 10"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g clip-path="url(#clip0_49301_99370)">
+                          <path
+                            d="M0.160156 2.207L2.95316 5L0.160156 7.793L2.36716 10L5.16016 7.207L7.95316 10L10.1602 7.793L7.36716 5L10.1602 2.207L7.95316 0L5.16016 2.793L2.36716 0L0.160156 2.207Z"
+                            fill="#CF2A2A"
                           />
-                        </div>
-                      </div>{" "}
-                      -
-                      <div className="flex gap-[25px]">
-                        <MinMaxInput
-                          className="w-[90px]"
-                          register={register}
-                          inputName={`interestRateConfigModels.${index}.tenorMax`}
-                          errors={errors}
-                          error={
-                            errors?.interestRateConfigModels?.[index]?.tenorMax
-                              ?.message
-                          }
-                          defaultValue={
-                            formData?.interestRateConfigModels?.[index]
-                              ?.tenorMax
-                          }
-                          setValue={setValue}
-                          trigger={trigger}
-                          clearErrors={clearErrors}
-                          type="number"
-
-                        />
-                        <div className="w-[90px]">
-                          <BorderlessSelect
-                            inputError={errors?.tenorMaxUnit}
-                            register={register}
-                            inputName={`interestRateConfigModels.${index}.tenorMaxUnit`}
-                            errors={errors}
-                            error={
-                              errors?.interestRateConfigModels?.[index]
-                                ?.tenorMaxUnit?.message
-                            }
-                            defaultValue={
-                              formData?.interestRateConfigModels?.[index]
-                                ?.tenorMaxUnit
-                            }
-                            setValue={setValue}
-                            trigger={trigger}
-                            clearErrors={clearErrors}
-                            options={IntervalOptions}
-                          />
-                        </div>
-                      </div>
-                    </>
+                        </g>
+                        <defs>
+                          <clipPath id="clip0_49301_99370">
+                            <rect
+                              width="10"
+                              height="10"
+                              fill="white"
+                              transform="translate(0.160156)"
+                            />
+                          </clipPath>
+                        </defs>
+                      </svg>
+                    </div>
                   )}
-
-                  {/* tenor ends here  */}
                 </div>
-                {interestRateConfigModels.length > 1 && (
-                  <div className="h-4 w-4" onClick={() => removeField(index)}>
-                    <svg
-                      width="11"
-                      height="10"
-                      viewBox="0 0 11 10"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <g clip-path="url(#clip0_49301_99370)">
-                        <path
-                          d="M0.160156 2.207L2.95316 5L0.160156 7.793L2.36716 10L5.16016 7.207L7.95316 10L10.1602 7.793L7.36716 5L10.1602 2.207L7.95316 0L5.16016 2.793L2.36716 0L0.160156 2.207Z"
-                          fill="#CF2A2A"
-                        />
-                      </g>
-                      <defs>
-                        <clipPath id="clip0_49301_99370">
-                          <rect
-                            width="10"
-                            height="10"
-                            fill="white"
-                            transform="translate(0.160156)"
-                          />
-                        </clipPath>
-                      </defs>
-                    </svg>
-                  </div>
-                )}
-              </div>
-            ))}
+              ))}
 
-            <div className="flex justify-end">
-              <div
-                className="flex items-center gap-4 cursor-pointer text-[##636363] ml-auto"
-                onClick={addField}
-              >
-                <span className="text-[20px]">
-                  {" "}
-                  <IoMdAddCircle />
-                </span>{" "}
-                <span>Add slab</span>
+              <div className="flex justify-end">
+                <div
+                  className="flex items-center gap-4 cursor-pointer text-[##636363] ml-auto"
+                  onClick={addField}
+                >
+                  <span className="text-[20px]">
+                    {" "}
+                    <IoMdAddCircle />
+                  </span>{" "}
+                  <span>Add slab</span>
+                </div>
               </div>
             </div>
-          </div>
+          )}
+          {parseInt(watchinterestRateRangeType, 10) === 2 && (
+            <div className="flex items-center gap-[25px] ">
+              <div className="flex gap-[25px]">
+                <MinMaxInput
+                  className="w-[200px]"
+                  label={"Min"}
+                  register={register}
+                  inputName={`interestRateMin`}
+                  errors={errors}
+                  setValue={setValue}
+                  trigger={trigger}
+                  defaultValue={formData?.interestRateMin}
+                  clearErrors={clearErrors}
+
+                  // defaultValue={range.min}
+                />
+              </div>{" "}
+              -
+              <div className="flex gap-[25px]">
+                <MinMaxInput
+                  className="w-[200px]"
+                  label={"Max"}
+                  register={register}
+                  inputName={`interestRateMax`}
+                  errors={errors}
+                  defaultValue={formData?.interestRateMax}
+                  setValue={setValue}
+                  trigger={trigger}
+                  clearErrors={clearErrors}
+                />
+              </div>{" "}
+            </div>
+          )}
         </InputDivs>
         <div className="flex flex-col gap-[25px] ">
           <span className="capitalize min-w-[300px] flex items-center gap-[5px] text-[##636363] text-base font-medium">
@@ -494,7 +531,7 @@ export default function PricingConfig({
               register={register}
               inputName={"interestComputation"}
               options={interestComputationDaysOptions}
-              defaultValue={formData.interestComputation}
+              defaultValue={formData?.interestComputation}
               errors={errors}
               setValue={setValue}
               trigger={trigger}

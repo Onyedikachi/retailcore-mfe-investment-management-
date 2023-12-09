@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   ProcessingStatusSlider,
   ActivityLog,
@@ -22,6 +22,7 @@ import {
 import { Confirm, Failed, Success } from "@app/components/modals";
 
 import { Messages, Prompts } from "@app/constants/enums";
+import { AppContext } from "@app/utils";
 export function Container({ children }) {
   return (
     <div className="rounded-[10px] border border-[#EEE] px-12 py-10">
@@ -29,8 +30,9 @@ export function Container({ children }) {
     </div>
   );
 }
-export default function Preview({ formData, oldData= null }: any) {
-  console.log("🚀 ~ file: preview.tsx:33 ~ Preview ~ formData:", formData)
+export default function Preview({ formData, oldData = null }: any) {
+  console.log("🚀 ~ file: preview.tsx:33 ~ Preview ~ formData:", formData);
+  const { role } = useContext(AppContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { type, process } = useParams();
@@ -44,7 +46,6 @@ export default function Preview({ formData, oldData= null }: any) {
   const [isFailed, setFailed] = useState(false);
   const [failedSubText, setFailedSubtext] = useState("");
   const [failedText, setFailedText] = useState("");
-
 
   const links = [
     {
@@ -68,8 +69,6 @@ export default function Preview({ formData, oldData= null }: any) {
       url: "#",
     },
   ];
-
-
 
   const staticDetails = {
     name: "Term deposit 1",
@@ -106,13 +105,17 @@ export default function Preview({ formData, oldData= null }: any) {
   };
   useEffect(() => {
     if (isSuccess) {
-      setSuccessText(Messages.ADMIN_PRODUCT_CREATE_SUCCESS);
+      setSuccessText(
+        role === "superadmin"
+          ? Messages.PRODUCT_CREATE_SUCCESS
+          : Messages.ADMIN_PRODUCT_CREATE_SUCCESS
+      );
       setIsSuccessOpen(true);
     }
 
     if (isError) {
       setFailedText(Messages.ADMIN_PRODUCT_CREATE_FAILED);
-      setFailedSubtext(error?.data?.msg);
+      setFailedSubtext(error?.message?.message);
       setFailed(true);
     }
   }, [isSuccess, isError, error]);

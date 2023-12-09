@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  BorderlessSelect,
-  ComboSelect,
-  MultiSelect,
-} from "@app/components/forms";
+import { BorderlessSelect } from "@app/components/forms";
 import { FormToolTip } from "@app/components";
 import { toolTips } from "@app/constants";
 import { Button, SelectedRequirementsTable } from "@app/components";
@@ -30,9 +26,7 @@ export default function CustomerEligibilityCriteria({
 }) {
   const [documents, setDocuments] = useState([...documentOptions]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedRequirements, setSelectedRequirements] = useState([
-    ...formData.requireDocument,
-  ]);
+  const [selectedRequirements, setSelectedRequirements] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [toggledRequirements, setToggledRequirements] = useState([]);
   const [isRequirementsOpen, setIsRequirementsOpen] = useState(false);
@@ -57,6 +51,7 @@ export default function CustomerEligibilityCriteria({
   const [isAdd, setIsAdd] = useState(false);
   const [newDocument, setNewDocument] = useState("");
   const values = getValues();
+
   const handleCheckedRequirement = (document) => {
     const isDocumentToggled = toggledRequirements.some(
       (d) => d.id === document.id
@@ -100,10 +95,16 @@ export default function CustomerEligibilityCriteria({
     proceed();
   }
   useEffect(() => {
-    console.log("🚀 ~ file: product-information.tsx:191 ~ isValid:", isValid);
-
     setDisabled(!isValid);
   }, [values]);
+  useEffect(() => {
+    if (formData) {
+      Object.entries(formData).forEach(([name, value]) =>
+        setValue(name, value)
+      );
+      setSelectedRequirements(formData?.requireDocument);
+    }
+  }, [setValue, formData]);
   const watchCustomerCategory = watch("customerCategory");
   return (
     <div>
@@ -117,7 +118,7 @@ export default function CustomerEligibilityCriteria({
                 inputName={"customerCategory"}
                 errors={errors}
                 setValue={setValue}
-                defaultValue={formData.customerCategory}
+                defaultValue={formData?.customerCategory}
                 options={categoryOptions}
                 placeholder="Select customer category"
                 clearErrors={clearErrors}
@@ -131,7 +132,7 @@ export default function CustomerEligibilityCriteria({
                   labelName={"Type of corporate customer"}
                   register={register}
                   inputName={"corporateCustomerType"}
-                  defaultValue={formData.corporateCustomerType}
+                  defaultValue={formData?.corporateCustomerType}
                   errors={errors}
                   setValue={setValue}
                   options={customerTypeOptions}
@@ -145,13 +146,13 @@ export default function CustomerEligibilityCriteria({
               <div className="flex flex-col ">
                 <InfoLabel label={"Age Group Eligibility"} info={"String"} />
                 <div className="flex items-end gap-[25px]">
-                  <div className="w-[150px]">
+                  <div className="w-[180px]">
                     <MinMaxInput
                       register={register}
                       inputName={"ageGroupMin"}
                       errors={errors}
                       setValue={setValue}
-                      defaultValue={formData.ageGroupMin}
+                      defaultValue={formData?.ageGroupMin}
                       label="Min"
                       clearErrors={clearErrors}
                       trigger={trigger}
@@ -159,13 +160,13 @@ export default function CustomerEligibilityCriteria({
                     />
                   </div>
                   <div className="flex items-center">-</div>
-                  <div className="w-[150px]">
+                  <div className="w-[180px]">
                     <MinMaxInput
                       register={register}
                       inputName={"ageGroupMax"}
                       errors={errors}
                       setValue={setValue}
-                      defaultValue={formData.ageGroupMin}
+                      defaultValue={formData?.ageGroupMax}
                       label="Max"
                       clearErrors={clearErrors}
                       trigger={trigger}
@@ -266,7 +267,7 @@ export default function CustomerEligibilityCriteria({
                 <div className="flex flex-col gap-2">
                   <span className=" flex items-center gap-[5px] text-[##636363] text-xs font-normal">
                     <span className="text-[15px]">
-                    <FormToolTip tip={toolTips.requirements} />
+                      <FormToolTip tip={toolTips.requirements} />
                     </span>
                     <span>
                       Customer must provide the following selected documents

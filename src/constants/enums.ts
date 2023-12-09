@@ -93,6 +93,7 @@ export enum Actions {
   DELETE_REQUESTS = "delete request",
   WITHDARW_MODIFY = "withdraw & modify",
   MODIFY = "modify",
+  CONTINUE_REQUEST = "continue request"
 }
 
 export enum CustomerCategoryType {

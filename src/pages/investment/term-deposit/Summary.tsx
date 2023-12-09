@@ -25,6 +25,7 @@ export function Container({ children }) {
 export default function Summary() {
   const [searchParams] = useSearchParams();
   const { tab, type, id } = useParams();
+  console.log("🚀 ~ file: Summary.tsx:28 ~ Summary ~ id:", id)
   const category = searchParams.get("category");
   const links = [
     {
@@ -59,21 +60,23 @@ export default function Summary() {
   };
 
   const [state, setState] = useState();
+  // Fetch product data
+  const { data: productData, isLoading } = useGetProductDetailQuery({ id });
 
+  // Fetch activity data based on the category
   const { data: activityData, isLoading: activityIsLoading } =
-    category === "product"
-      ? useGetProductActivityLogQuery({ productid: id })
-      : { data: undefined, isLoading: false };
+    useGetProductActivityLogQuery(
+      { productid: id },
+      { skip: category === "request" }
+    );
 
+  // Fetch activity request data based on the category
   const { data: activityRequestData, isLoading: activityRequestIsLoading } =
-    category === "request"
-      ? useGetProductRequestActivityLogQuery({ productrequestId: id })
-      : { data: undefined, isLoading: false };
+    useGetProductRequestActivityLogQuery(
+      { productrequestId: id },
+      { skip: category === "product" }
+    );
 
-      const { data: productData, isLoading } = useGetProductDetailQuery({
-       id,
-      });
-      
   return (
     <div className="flex flex-col min-h-[100vh] ">
       <div className="px-[37px] py-[11px] bg-white">
@@ -90,7 +93,10 @@ export default function Summary() {
             />
             <ReviewStatus status={"r"} reason={"r"} type={""} text="failed" />
             <Container>
-              <ProductDetail detail={productData?.data} oldData={productData?.data} />
+              <ProductDetail
+                detail={productData?.data}
+                oldData={productData?.data}
+              />
             </Container>
           </div>
 

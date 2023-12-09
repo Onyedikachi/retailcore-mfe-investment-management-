@@ -80,7 +80,7 @@ export default function ProductDetail({ detail, oldData }: any) {
   // });
   // useEffect(() => {
 
-  //   setProductInfo(formData.productInfo);
+  //   setProductInfo(formData?.productInfo);
   // }, [formData]);
 
   return (
