@@ -33,7 +33,7 @@ export default function CreateTermDeposit() {
   const [searchParams] = useSearchParams();
   const stage = searchParams.get("stage");
   const id = searchParams.get("id");
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(3);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [subText, setSubText] = useState("");
   const [successText, setSuccessText] = useState("");
@@ -65,7 +65,7 @@ export default function CreateTermDeposit() {
       applicableTenorMaxUnit: 1,
       applicablePrincipalMin: 0,
       applicablePrincipalMax: 0,
-
+      interestComputationMethod: 2,
       interestRateConfigModels: [
         {
           min: 0,

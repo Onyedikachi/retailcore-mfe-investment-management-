@@ -354,39 +354,45 @@ export const IntervalOptions = [
     id: "1",
     text: "Day(s)",
     value: 1,
+    subvalue: "day",
   },
   {
     id: "2",
     text: "Week(s)",
     value: 2,
+    subvalue: "week",
   },
   {
     id: "3",
     text: "Month(s)",
     value: 3,
+    subvalue: "month",
   },
   {
     id: "4",
     text: "Year(s)",
     value: 4,
+    subvalue: "year",
   },
 ];
 export const interestComputationDaysOptions = [
   {
     id: "30E/360",
     text: "30E/360",
-    value: "30E/360",
+    value: 0,
   },
   {
     id: "Actual/360",
     text: "Actual/360",
-    value: "Actual/360",
+    value: 1,
   },
   {
     id: "Actual/365",
     text: "Actual/365",
-    value: "Actual/365",
+    value: 2,
   },
+ 
+  
 ];
 export const LiquidityOptions = [
   {
