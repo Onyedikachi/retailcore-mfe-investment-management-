@@ -10,6 +10,7 @@ const urls = {
   // Products
   PRODUCT: "/product",
   PRODUCT_STATS: "product/stats",
+  PRODUCT_DETAILS: "product/product-details",
 
   ACTIVITY_LOG: "/product/activitylog",
 

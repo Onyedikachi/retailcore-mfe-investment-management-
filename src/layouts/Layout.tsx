@@ -24,7 +24,10 @@ const Layout = () => {
   );
   useEffect(() => {
     auth$?.subscribe((value) => {
-      setPermissions(value?.user?.user_permissions);
+      setPermissions(
+        value?.user?.user_permissions || []
+      );
+
       handleRole(setRole, value);
     });
   }, []);

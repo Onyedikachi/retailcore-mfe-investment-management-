@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import { FaEye } from "react-icons/fa";
+import moment from "moment";
+import { CustomerCategory, Interval, ProductTypes } from "@app/constants";
+import { currencyFormatter } from "@app/utils/formatCurrency";
 
 export function DebitCreditTable() {
   const headers = [
@@ -64,8 +67,21 @@ export function DebitCreditTable() {
     </table>
   );
 }
-export default function ProductDetail({ detail, previousDetail }: any) {
+export default function ProductDetail({ detail, oldData }: any) {
   const [isNewDescription, setDescription] = useState(false);
+  // const [productInfo, setProductInfo] = useState({
+  //   productName: "",
+  //   slogan: "",
+  //   description: "",
+  //   startDate: "",
+  //   endDate: "",
+  //   currency: "NGN",
+  //   customerCategory: 0,
+  // });
+  // useEffect(() => {
+
+  //   setProductInfo(formData?.productInfo);
+  // }, [formData]);
 
   return (
     <div>
@@ -83,16 +99,19 @@ export default function ProductDetail({ detail, previousDetail }: any) {
                 Product Name
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                {previousDetail && previousDetail?.name !== detail.name && (
-                  <span className="block  line-through mb-2 text-[#aaa]">
-                    {" "}
-                    {previousDetail?.name}
-                  </span>
-                )}
+                {oldData &&
+                  oldData?.productInfo?.productName !==
+                    detail?.productInfo?.productName && (
+                    <span className="block  line-through mb-2 text-[#aaa]">
+                      {" "}
+                      {oldData?.productInfo?.productName}
+                    </span>
+                  )}
                 <span className="flex itmes-center">
                   {" "}
-                  {detail?.name}{" "}
-                  {previousDetail && previousDetail?.name !== detail?.name && (
+                  {detail?.productInfo?.productName}{" "}
+                  {oldData?.productInfo?.productName !==
+                    detail?.productInfo?.productName && (
                     <span className="block text-success-500 pl-[2px]">
                       {" "}
                       New
@@ -106,17 +125,20 @@ export default function ProductDetail({ detail, previousDetail }: any) {
                 Slogan
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                {previousDetail && previousDetail?.slogan !== detail.slogan && (
-                  <span className="block  line-through mb-2 text-[#aaa]">
-                    {" "}
-                    {previousDetail?.slogan}
-                  </span>
-                )}
+                {oldData &&
+                  oldData?.productInfo?.slogan !==
+                    detail.productInfo?.slogan && (
+                    <span className="block  line-through mb-2 text-[#aaa]">
+                      {" "}
+                      {oldData?.productInfo?.slogan}
+                    </span>
+                  )}
                 <span className="flex itmes-center">
                   {" "}
-                  {detail?.slogan}{" "}
-                  {previousDetail &&
-                    previousDetail?.slogan !== detail?.slogan && (
+                  {detail?.productInfo?.slogan}{" "}
+                  {oldData &&
+                    oldData?.productInfo?.slogan !==
+                      detail?.productInfo?.slogan && (
                       <span className="block text-success-500 pl-[2px]">
                         {" "}
                         New
@@ -131,18 +153,20 @@ export default function ProductDetail({ detail, previousDetail }: any) {
                 Product Description
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                {previousDetail &&
-                  previousDetail?.description !== detail.description && (
+                {oldData &&
+                  oldData?.productInfo?.description !==
+                    detail?.productInfo?.description && (
                     <span className="block  line-through mb-2 text-[#aaa]">
                       {" "}
-                      {previousDetail?.description}
+                      {oldData?.productInfo?.description}
                     </span>
                   )}
                 <span className="flex itmes-center">
                   {" "}
-                  {detail?.description}{" "}
-                  {previousDetail &&
-                    previousDetail?.description !== detail?.description && (
+                  {detail?.productInfo?.description}{" "}
+                  {oldData &&
+                    oldData?.productInfo?.description !==
+                      detail?.productInfo?.description && (
                       <span className="block text-success-500 pl-[2px]">
                         {" "}
                         New
@@ -156,18 +180,20 @@ export default function ProductDetail({ detail, previousDetail }: any) {
                 Product Currency
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                {previousDetail &&
-                  previousDetail?.currency !== detail.currency && (
+                {oldData &&
+                  oldData?.productInfo?.currency !==
+                    detail?.productInfo?.currency && (
                     <span className="block  line-through mb-2 text-[#aaa]">
                       {" "}
-                      {previousDetail?.currency}
+                      {oldData?.productInfo?.currency}
                     </span>
                   )}
                 <span className="flex itmes-center">
                   {" "}
-                  {detail?.currency}{" "}
-                  {previousDetail &&
-                    previousDetail?.currency !== detail?.currency && (
+                  {detail?.productInfo?.currency}{" "}
+                  {oldData &&
+                    oldData?.productInfo?.currency !==
+                      detail?.productInfo?.currency && (
                       <span className="block text-success-500 pl-[2px]">
                         {" "}
                         New
@@ -182,22 +208,21 @@ export default function ProductDetail({ detail, previousDetail }: any) {
                 Tenure
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                {previousDetail && previousDetail?.tenure !== detail.tenure && (
+                {oldData && oldData?.tenure !== detail.tenure && (
                   <span className="block  line-through mb-2 text-[#aaa]">
                     {" "}
-                    {previousDetail?.tenure}
+                    {oldData?.tenure}
                   </span>
                 )}
                 <span className="flex itmes-center">
                   {" "}
                   {detail?.tenure}{" "}
-                  {previousDetail &&
-                    previousDetail?.tenure !== detail?.tenure && (
-                      <span className="block text-success-500 pl-[2px]">
-                        {" "}
-                        New
-                      </span>
-                    )}
+                  {oldData && oldData?.tenure !== detail?.tenure && (
+                    <span className="block text-success-500 pl-[2px]">
+                      {" "}
+                      New
+                    </span>
+                  )}
                 </span>
               </div>
             </div>
@@ -207,25 +232,19 @@ export default function ProductDetail({ detail, previousDetail }: any) {
                 Product life cycle
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                {previousDetail &&
-                  previousDetail?.productLifeCycle !==
-                    detail.productLifeCycle && (
-                    <span className="block  line-through mb-2 text-[#aaa]">
-                      {" "}
-                      {previousDetail?.productLifeCycle}
-                    </span>
-                  )}
                 <span className="flex itmes-center">
                   {" "}
-                  {detail?.productLifeCycle}{" "}
-                  {previousDetail &&
-                    previousDetail?.productLifeCycle !==
-                      detail?.productLifeCycle && (
-                      <span className="block text-success-500 pl-[2px]">
-                        {" "}
-                        New
-                      </span>
-                    )}
+                  <span className="font-normal block">
+                    {moment(detail?.productInfo?.startDate).format(
+                      "DD MMM YYYY"
+                    )}{" "}
+                    -{" "}
+                    {detail?.productInfo?.endDate
+                      ? moment(detail?.productInfo?.endDate).format(
+                          "DD MMM YYYY"
+                        )
+                      : "Unspecified"}
+                  </span>
                 </span>
               </div>
             </div>
@@ -241,21 +260,25 @@ export default function ProductDetail({ detail, previousDetail }: any) {
                 Customer group category
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                {previousDetail && previousDetail?.name !== detail.name && (
-                  <span className="block  line-through mb-2 text-[#aaa]">
-                    {" "}
-                    {previousDetail?.name}
-                  </span>
-                )}
-                <span className="flex itmes-center">
-                  {" "}
-                  {detail?.name}{" "}
-                  {previousDetail && previousDetail?.name !== detail?.name && (
-                    <span className="block text-success-500 pl-[2px]">
+                {oldData &&
+                  oldData?.productInfo?.customerCategory !==
+                    detail.productInfo?.customerCategory && (
+                    <span className="block  line-through mb-2 text-[#aaa]">
                       {" "}
-                      New
+                      {oldData?.productInfo?.customerCategory}
                     </span>
                   )}
+                <span className="flex itmes-center">
+                  {" "}
+                  {CustomerCategory[detail?.productInfo?.customerCategory]}{" "}
+                  {oldData &&
+                    oldData?.productInfo?.customerCategory !==
+                      detail?.productInfo?.customerCategory && (
+                      <span className="block text-success-500 pl-[2px]">
+                        {" "}
+                        New
+                      </span>
+                    )}
                 </span>
               </div>
             </div>
@@ -264,21 +287,10 @@ export default function ProductDetail({ detail, previousDetail }: any) {
                 Age group eligibility
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                {previousDetail && previousDetail?.name !== detail.name && (
-                  <span className="block  line-through mb-2 text-[#aaa]">
-                    {" "}
-                    {previousDetail?.name}
-                  </span>
-                )}
                 <span className="flex itmes-center">
                   {" "}
-                  {detail?.name}{" "}
-                  {previousDetail && previousDetail?.name !== detail?.name && (
-                    <span className="block text-success-500 pl-[2px]">
-                      {" "}
-                      New
-                    </span>
-                  )}
+                  {detail?.customerEligibility.ageGroupMin}
+                  {" - "} {detail?.customerEligibility.ageGroupMax}
                 </span>
               </div>
             </div>
@@ -287,10 +299,12 @@ export default function ProductDetail({ detail, previousDetail }: any) {
                 Documentation required
               </div>
               <div className="w-full text-base font-normal text-[#636363] flex flex-wrap gap-x-1 gap-y-1">
-                <span className="font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
-                  {" "}
-                  Customer photo
-                </span>
+                {detail?.customerEligibility.requireDocument.map((i) => (
+                  <span className="font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
+                    {" "}
+                    {i?.name}
+                  </span>
+                ))}
               </div>
             </div>
           </div>
@@ -306,8 +320,19 @@ export default function ProductDetail({ detail, previousDetail }: any) {
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
                 <span className="block  mb-2 text-[#636363]">
-                  {" "}
-                  {detail?.name}
+                  <span className="font-normal block">
+                    {`${detail?.pricingConfiguration?.applicableTenorMin} ${
+                      Interval[
+                        detail?.pricingConfiguration?.applicableTenorMinUnit
+                      ]
+                    }`}{" "}
+                    -{" "}
+                    {`${detail?.pricingConfiguration?.applicableTenorMax} ${
+                      Interval[
+                        detail?.pricingConfiguration?.applicableTenorMaxUnit
+                      ]
+                    }`}
+                  </span>
                 </span>
               </div>
             </div>
@@ -317,8 +342,16 @@ export default function ProductDetail({ detail, previousDetail }: any) {
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
                 <span className="block  mb-2 text-[#636363]">
-                  {" "}
-                  {detail?.name}
+                  {currencyFormatter(
+                    detail?.pricingConfiguration?.applicablePrincipalMin,
+                    detail?.productInfo.currency
+                  )}{" "}
+                  {detail?.pricingConfiguration?.applicablePrincipalMax
+                    ? `- ${currencyFormatter(
+                        detail?.pricingConfiguration?.applicablePrincipalMax,
+                        detail?.productInfo?.currency
+                      )}`
+                    : "and above"}
                 </span>
               </div>
             </div>
@@ -349,20 +382,10 @@ export default function ProductDetail({ detail, previousDetail }: any) {
                 Part Liquidation
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                {previousDetail && previousDetail?.name !== detail.name && (
-                  <span className="block  line-through mb-2 text-[#aaa]">
-                    {" "}
-                    {previousDetail?.name}
-                  </span>
-                )}
-                <span className="flex itmes-center">
-                  {" "}
-                  {detail?.name}{" "}
-                  {previousDetail && previousDetail?.name !== detail?.name && (
-                    <span className="block text-success-500 pl-[2px]">
-                      {" "}
-                      New
-                    </span>
+                <span className="font-normal block">
+                  Maximum of {detail?.liquidation?.part_MaxPartLiquidation}%{" "}
+                  {detail?.liquidation?.part_LiquidationPenalty === "pay" && (
+                    <span> with penalty</span>
                   )}
                 </span>
               </div>
@@ -374,13 +397,16 @@ export default function ProductDetail({ detail, previousDetail }: any) {
               <div className="w-full text-base font-normal text-[#636363]">
                 <span className="block">
                   Require notice of{" "}
-                  <span className="font-medium text-[#16252A]">7 days</span>{" "}
+                  <span className="font-medium text-[#16252A]">
+                    {detail?.liquidation?.early_NoticePeriod}{" "}
+                    {Interval[detail?.liquidation?.early_NoticePeriodUnit]}
+                  </span>{" "}
                   before liquidation
                 </span>
                 <span className="block">
                   {" "}
                   <span className=" text-[#16252A]">Penalty</span> Take a charge
-                  of "charge"
+                  of {detail?.liquidation?.early_LiquidationPenaltyPercentage}%
                 </span>
               </div>
             </div>
@@ -459,8 +485,8 @@ export default function ProductDetail({ detail, previousDetail }: any) {
           </h4>
           <div className="grid grid-cols-1 gap-[25px] px-12">
             <div className=" flex gap-[54px]">
-              <div className="w-[300px]   text-base font-medium text-[#636363]">
-                Product COde
+              <div className="w-[300px]   text-base font-medium text-[#636363] uppercase">
+                {detail?.productCode || "-"}
               </div>
             </div>
           </div>

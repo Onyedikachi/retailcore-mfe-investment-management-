@@ -10,7 +10,11 @@ import {
 } from "@app/components/summary";
 import { Breadcrumbs, Loader, Button } from "@app/components";
 import { useLocation, useParams, useSearchParams } from "react-router-dom";
-import { useGetProductActivityLogQuery } from "@app/api";
+import {
+  useGetProductActivityLogQuery,
+  useGetProductDetailQuery,
+  useGetProductRequestActivityLogQuery,
+} from "@app/api";
 export function Container({ children }) {
   return (
     <div className="rounded-[10px] border border-[#EEE] px-12 py-10">
@@ -20,8 +24,9 @@ export function Container({ children }) {
 }
 export default function Summary() {
   const [searchParams] = useSearchParams();
-  const { tab, type } = useParams();
-  const id = searchParams.get("id");
+  const { tab, type, id } = useParams();
+  console.log("🚀 ~ file: Summary.tsx:28 ~ Summary ~ id:", id)
+  const category = searchParams.get("category");
   const links = [
     {
       id: 1,
@@ -55,9 +60,22 @@ export default function Summary() {
   };
 
   const [state, setState] = useState();
+  // Fetch product data
+  const { data: productData, isLoading } = useGetProductDetailQuery({ id });
 
+  // Fetch activity data based on the category
   const { data: activityData, isLoading: activityIsLoading } =
-    useGetProductActivityLogQuery({ productid: id });
+    useGetProductActivityLogQuery(
+      { productid: id },
+      { skip: category === "request" }
+    );
+
+  // Fetch activity request data based on the category
+  const { data: activityRequestData, isLoading: activityRequestIsLoading } =
+    useGetProductRequestActivityLogQuery(
+      { productrequestId: id },
+      { skip: category === "product" }
+    );
 
   return (
     <div className="flex flex-col min-h-[100vh] ">
@@ -75,7 +93,10 @@ export default function Summary() {
             />
             <ReviewStatus status={"r"} reason={"r"} type={""} text="failed" />
             <Container>
-              <ProductDetail detail={staticDetails} oldData={staticDetails} />
+              <ProductDetail
+                detail={productData?.data}
+                oldData={productData?.data}
+              />
             </Container>
           </div>
 
@@ -84,8 +105,8 @@ export default function Summary() {
 
         <ActivityLog
           isFetching={false}
-          isLoading={activityIsLoading}
-          activities={activityData?.results}
+          isLoading={activityIsLoading || activityRequestIsLoading}
+          activities={activityData?.results || activityRequestData?.results}
         />
       </div>
     </div>

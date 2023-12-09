@@ -4,9 +4,15 @@ interface CheckboxProps {
   label: string;
   checked: boolean;
   onChange?: (isChecked: boolean) => void;
+  sublabel?: string;
 }
 
-const Checkbox: React.FC<CheckboxProps> = ({ label, checked, onChange }) => {
+const Checkbox: React.FC<CheckboxProps> = ({
+  label,
+  checked,
+  onChange,
+  sublabel,
+}) => {
   const [isChecked, setIsChecked] = useState(checked);
 
   useEffect(() => {
@@ -28,7 +34,8 @@ const Checkbox: React.FC<CheckboxProps> = ({ label, checked, onChange }) => {
           className="accent-sterling-red-800"
           data-testid={label}
         />
-        <span>{label}</span>
+        <span className="whitespace-nowrap block">{label}</span>
+        <span className="whitespace-nowrap text-xs text-[#aaa]">{sublabel}</span>
       </label>
     </div>
   );

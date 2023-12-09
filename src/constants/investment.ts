@@ -1,3 +1,5 @@
+export const MODULENAME = 'ProductFactory'
+
 export const StatusCategories = [
   {
     id: 1,
@@ -282,6 +284,19 @@ export const InterestRateRangeType = {
   1: "Vary By Tenor",
   2: "Do not Vary",
 };
+export const VaryOptions = [
+  {
+    id: "Vary by principal",
+    title: "Vary by principal",
+    value: 0,
+  },
+  { id: "Vary by tenor", title: "Vary by tenor", value: 1 },
+  {
+    id: "Do not vary by principal or tenor",
+    title: "Do not vary by principal or tenor",
+    value: 2,
+  },
+];
 
 export const InterestComputationMethod = {
   0: "E360",
@@ -333,6 +348,29 @@ export const Interval = {
   3: "months",
   4: "years",
 };
+
+export const IntervalOptions = [
+  {
+    id: "1",
+    text: "Day(s)",
+    value: 1,
+  },
+  {
+    id: "2",
+    text: "Week(s)",
+    value: 2,
+  },
+  {
+    id: "3",
+    text: "Month(s)",
+    value: 3,
+  },
+  {
+    id: "4",
+    text: "Year(s)",
+    value: 4,
+  },
+];
 export const interestComputationDaysOptions = [
   {
     id: "30E/360",
@@ -350,3 +388,57 @@ export const interestComputationDaysOptions = [
     value: "Actual/365",
   },
 ];
+export const LiquidityOptions = [
+  {
+    id: "none",
+    text: "None",
+    value: 0,
+  },
+  {
+    id: "ForfietAll",
+    text: "Forfeit all accrued interest",
+    value: 1,
+  },
+  {
+    id: "ForfietPortion",
+    text: "Forfeit a portion of accrued interest",
+    value: 2,
+  },
+  {
+    id: "RecalculateInterest",
+    text: "Recalculate accrued interest ",
+    value: 3,
+  },
+  {
+    id: "TakeCharge",
+    text: "Take a charge",
+    value: 4,
+  },
+  {
+    id: "ComparePenalties",
+    text: "Compare Penalties",
+    value: 5,
+  },
+];
+export const ApplyOptions = [
+  {
+    id: 1,
+    text: "The smallest of:",
+    value: "The smallest of:",
+  },
+  {
+    id: 2,
+    text: "The largest of:",
+    value: "The largest of:",
+  },
+  {
+    id: 3,
+    text: "The average of:",
+    value: "The average of:",
+  },
+  {
+    id: 4,
+    text: "The sum of:",
+    value: "The sum of:",
+  },
+]

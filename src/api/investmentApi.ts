@@ -8,22 +8,10 @@ import urls from "../helpers/url_helpers";
 import { cleanObject } from "@app/utils/cleanObject";
 // baseQuery: axiosBaseQuery({ serviceKey: "investment" }),
 
-console.log(process.env)
+console.log(process.env);
 export const investmentApi: any = createApi({
   reducerPath: "investmentApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl:
-      "https://retailcore-investment-management-api.dev.bepeerless.co/v1",
-    prepareHeaders: (headers) => {
-      const token = getToken();
-
-      // If we have a token set in state, let's assume that we should be passing it.
-      if (token) {
-        headers.set("authorization", `Bearer ${token}`);
-      }
-      return headers;
-    },
-  }),
+  baseQuery: axiosBaseQuery({ serviceKey: "investment" }),
   keepUnusedDataFor: 0,
   extractRehydrationInfo(action, { reducerPath }) {
     if (action.type === REHYDRATE && action.payload) {
@@ -34,9 +22,21 @@ export const investmentApi: any = createApi({
     getProductActivityLog: builder.query<any, any>({
       query: (params) => {
         return {
-          url: urls.ACTIVITY_LOG,
+          url: `${urls.ACTIVITY_LOG}?${new URLSearchParams(
+            cleanObject(params)
+          )}`,
           method: "get",
           params: cleanObject(params),
+        };
+      },
+    }),
+    getProductRequestActivityLog: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `${urls.REQUEST_ACTIVITY_LOG}?${new URLSearchParams(
+            cleanObject(params)
+          )}`,
+          method: "get",
         };
       },
     }),
@@ -110,7 +110,7 @@ export const investmentApi: any = createApi({
     deleteProductRequest: builder.mutation<any, any>({
       query: (data) => {
         return {
-          url: `${urls.REQUESTS}/delete?productrequestId=${data}`,
+          url: `${urls.REQUESTS}/delete/${data}`,
           method: "delete",
         };
       },
@@ -129,6 +129,27 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    getProductDetail: builder.query<any, any>({
+      query: (data) => {
+        if (!data.id) return;
+        return {
+          url: `${urls.PRODUCT_DETAILS}?${new URLSearchParams(
+            cleanObject(data)
+          )}`,
+          method: "get",
+        };
+      },
+    }),
+    getRequestDetail: builder.query<any, any>({
+      query: (data) => {
+        if (!data.id) return;
+        return {
+          url: `${urls.REQUESTS}/${data.id}}`,
+          method: "get",
+        };
+      },
+    }),
+
     getRequestStats: builder.query<any, any>({
       query: (data) => {
         if (!data.filter_by) return;
@@ -199,9 +220,9 @@ export const investmentApi: any = createApi({
     activateProduct: builder.mutation<{ id: string }, { id: string }>({
       query: (data) => {
         return {
-          url: `${urls.PRODUCT}/reactivate`,
+          url: `${urls.PRODUCT}/reactivate/${data.id}`,
           method: "put",
-          body: data,
+         
         };
       },
     }),
@@ -243,6 +264,9 @@ export const {
   useGetProductByCodeQuery,
   useUploadDocumentMutation,
   useGetPermissionsMutation,
-  useDeleteProductMutation,
-  useGetProductActivityLogQuery
+  useDeleteProductRequestMutation,
+  useGetProductActivityLogQuery,
+  useGetProductRequestActivityLogQuery,
+  useGetProductDetailQuery,
+  useGetRequestDetailQuery,
 } = investmentApi;

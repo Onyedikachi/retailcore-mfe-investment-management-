@@ -8,6 +8,13 @@ interface MinMaxProps {
   register?: any;
   handleChange?: (value) => void;
   defaultValue?: any;
+  errors?: any;
+  setValue?: any;
+  clearErrors?: any;
+  trigger?: any;
+  error?: string;
+  disabled?: boolean;
+  type?: string;
 }
 export default function MinMaxInput({
   label,
@@ -18,35 +25,57 @@ export default function MinMaxInput({
   handleChange,
   inputName,
   defaultValue = 0,
+  errors,
+  setValue,
+  clearErrors,
+  trigger,
+  error,
+  disabled = false,
+  type = "text",
 }: MinMaxProps) {
   return (
-    <div className={`${className} flex items-center gap-4`}>
-      {label && <div>{label}</div>}
-      {currency && <div className="text-[#636363]">{currency}</div>}
+    <div>
+      <div className={`${className} flex items-center gap-4`}>
+        {label && <div>{label}</div>}
+        {currency && <div className="text-[#636363]">{currency}</div>}
 
-      <div className="w-full flex flex-col gap-2">
-        <div className="relative flex items-center max-w-[642px]">
-          <input
-            data-testid="min-max-input"
-            className={`placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] `}
-            onChange={(e) => handleChange(e.target.valueAsNumber)}
-            placeholder="0"
-            // maxLength={defaultLength}
-            {...register(inputName, {
-              required: true,
-            })}
-            defaultValue={defaultValue}
-            // aria-invalid={errors?.name ? "true" : "false"}
-          />
-          <div className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]">
-            {hasButton && (
-              <span>
-                {0}/{50}
-              </span>
-            )}
+        <div className="w-full flex flex-col gap-2">
+          <div className="relative flex items-center max-w-[642px]">
+            <input
+              type={type}
+              disabled={disabled}
+              data-testid="min-max-input"
+              className={`placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] ${
+                (errors && errors[inputName]) || error
+                  ? "border-red-600"
+                  : "border-[#8F8F8F]"
+              }`}
+              onChange={(e) => {
+                clearErrors(inputName);
+                setValue(inputName, e.target.valueAsNumber);
+                trigger(inputName);
+              }}
+              placeholder="0"
+              // maxLength={defaultLength}
+              {...register(inputName, { required: true })}
+              defaultValue={defaultValue}
+              // aria-invalid={errors?.name ? "true" : "false"}
+            />
+            <div className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]">
+              {hasButton && (
+                <span>
+                  {0}/{50}
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </div>
+      {((errors && errors[inputName]) || error) && (
+        <span className="text-sm text-danger-500">
+          {errors[inputName]?.message || error}
+        </span>
+      )}
     </div>
   );
 }

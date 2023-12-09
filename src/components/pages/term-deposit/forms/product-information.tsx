@@ -1,12 +1,19 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { RiErrorWarningFill } from "react-icons/ri";
 import { FaCheckCircle } from "react-icons/fa";
 import { AiOutlineLoading } from "react-icons/ai";
 import { FormDate, CustomInput } from "@app/components/forms";
+import { FormToolTip } from "@app/components";
 import { BorderlessSelect, DateSelect } from "@app/components/forms";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ProductInformationFormSchema } from "@app/constants";
+import { RedDot } from "@app/components/forms";
+
+import {
+  ProductInformationFormSchema,
+  currencyOptions,
+  toolTips,
+} from "@app/constants";
 import debounce from "lodash.debounce";
 import { useParams } from "react-router-dom";
 import { useValidateNameMutation } from "@app/api";
@@ -18,20 +25,25 @@ export function handleValidatingName(
   nameIsSuccess,
   setIsNameOkay,
   nameIsError,
-  setError,
+  assignError,
   nameError,
-  setDisabled,
-  charLeft
+  trigger,
+  charLeft,
+  clearErrors
 ) {
-  if (nameIsSuccess && charLeft < 47) {
-    setIsNameOkay(true);
-    setError("");
-    setDisabled(false);
-  }
   if (nameIsError) {
+    trigger("productName");
+    assignError("productName", {
+      type: "custom",
+      message: nameError?.message?.Message,
+    });
+
     setIsNameOkay(false);
-    setError(nameError?.message?.Msg);
-    setDisabled(true);
+  }
+  if (nameIsSuccess && charLeft < 47) {
+    // trigger("productName");
+    clearErrors("productName");
+    setIsNameOkay(true);
   }
 }
 
@@ -104,7 +116,6 @@ export default function ProductInformation({
   setDisabled,
   proceed,
 }) {
-  //
   //useForm
   const {
     register,
@@ -114,10 +125,12 @@ export default function ProductInformation({
     setValue,
     setError: assignError,
     getValues,
+    trigger,
     formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(ProductInformationFormSchema),
     defaultValues: formData,
+    mode: "all",
   });
 
   //useState
@@ -139,6 +152,19 @@ export default function ProductInformation({
     },
   ] = useValidateNameMutation();
 
+  useEffect(() => {
+    handleValidatingName(
+      nameIsSuccess,
+      setIsNameOkay,
+      nameIsError,
+      assignError,
+      nameError,
+      trigger,
+      charLeft,
+      clearErrors
+    );
+  }, [nameIsSuccess, nameIsError]);
+  const values = getValues();
   function compareValues() {
     const name = getValues("name");
     // const conditions = [
@@ -153,23 +179,45 @@ export default function ProductInformation({
   }
 
   function onProceed(d: any) {
-    console.log("Date:" + moment(d.startDate).format("yyyy-MM-DD"));
-
     setFormData({
       ...d,
-      startDate: moment(d.startDate).format("yyyy-MM-DD"),
-      endDate: moment(d.endDate).format("yyyy-MM-DD"),
+      startDate: d.startDate && moment(d.startDate).format("yyyy-MM-DD"),
+      endDate: d.endDate && moment(d.endDate).format("yyyy-MM-DD"),
     });
     proceed();
   }
 
+  useEffect(() => {
+    console.log("🚀 ~ file: product-information.tsx:191 ~ isValid:", isValid);
+
+    setDisabled(!isValid);
+  }, [values]);
+  useEffect(() => {
+    if (formData) {
+      Object.entries(formData).forEach(
+        ([name, value]) => setValue(name, value));
+    }
+}, [setValue, formData]);
+
+  //watchers
+  const watchStartDate = watch("startDate");
+  const watchEndDate = watch("endDate");
+  const watchCurrency = watch("currency");
   return (
     <form id="productform" onSubmit={handleSubmit(onProceed)}>
       <div className="">
         <div className="mb-6 flex flex-col gap-[1px]">
-          <label className="w-[300px] pt-[10px]  text-base font-semibold text-[#636363]">
-            Product Name <span className="text-red-500">*</span>
-          </label>
+          <div className="flex itemx-center gap-2 w-[300px]">
+            {" "}
+            <label className=" pt-[10px]  flex text-base font-semibold text-[#636363]">
+              Product Name{" "}
+              <span className="flex">
+                {" "}
+                <RedDot />
+              </span>
+            </label>
+            <FormToolTip tip={toolTips.productName} />
+          </div>
 
           <InputDiv>
             <div className="relative flex items-center max-w-[642px]">
@@ -202,7 +250,7 @@ export default function ProductInformation({
                 }}
                 placeholder="Enter Name"
                 maxLength={defaultLength}
-                defaultValue={formData?.productName}
+                value={formData?.productName}
                 aria-invalid={errors?.productName ? "true" : "false"}
               />
               <div className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]">
@@ -268,7 +316,7 @@ export default function ProductInformation({
                 }}
                 placeholder="Enter a slogan"
                 maxLength={defaultSloganLength}
-                defaultValue={formData?.slogan}
+                value={formData?.slogan}
                 aria-invalid={errors?.slogan ? "true" : "false"}
               />
               <div className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]">
@@ -299,18 +347,23 @@ export default function ProductInformation({
         </div>
 
         <div className="mb-6 flex flex-col gap-[13px]">
-          <label className="w-[300px] pt-[10px] text-base font-semibold text-[#636363]">
-            Product Description
-          </label>
+          <div className="flex  gap-2 w-[300px]">
+            {" "}
+            <label className=" pt-[10px] flex text-base font-semibold text-[#636363]">
+              Product Description{" "}
+              <span className="flex">
+                {" "}
+                <RedDot />
+              </span>
+            </label>
+          </div>
           <InputDiv>
             <textarea
               data-testid="product-description"
               placeholder="Enter description"
-              {...register("description", {
-                required: true,
-              })}
-              defaultValue={formData?.description}
-              className={`min-h-[150px] w-full rounded-md border border-[#8F8F8F] focus:outline-none px-3 py-[11px] placeholder:text-[#BCBBBB] resize-none${
+              {...register("description")}
+              value={formData?.description}
+              className={`min-h-[150px] w-full rounded-md border border-[#8F8F8F] focus:outline-none px-3 py-[11px] placeholder:text-[#BCBBBB] resize-none ${
                 errors?.description || error
                   ? "border-red-500 ring-1 ring-red-500"
                   : ""
@@ -328,27 +381,40 @@ export default function ProductInformation({
 
         <div className="flex gap-12">
           <div className="flex flex-col gap">
-            <label className="w-[300px] pt-[10px] text-base font-semibold text-[#636363]">
-              Product Life Cycle
-            </label>
+            <div className="flex  gap-2 w-[300px]">
+              {" "}
+              <label className=" pt-[10px]  text-base font-semibold text-[#636363]">
+                Product Life Cycle
+              </label>
+              <FormToolTip tip={toolTips.lifeCycle} />
+            </div>
 
             <div className="flex ">
               <FormDate
                 register={register}
                 inputName={"startDate"}
+                errors={errors}
                 handleChange={(value) => {
                   setValue("startDate", value);
                 }}
-                defaultValue={formData.startDate}
+                defaultValue={formData?.startDate}
+                minDate={new Date()}
+                trigger={trigger}
+                clearErrors={clearErrors}
               />
               -
               <FormDate
                 register={register}
                 inputName={"endDate"}
+                errors={errors}
+                minDate={watchStartDate}
+                trigger={trigger}
                 handleChange={(value) => {
                   setValue("endDate", value);
                 }}
-                defaultValue={formData.endDate}
+                defaultValue={formData?.endDate}
+                clearErrors={clearErrors}
+                
               />
             </div>
           </div>
@@ -357,37 +423,22 @@ export default function ProductInformation({
             {/* <InputDiv> */}
             <div className="w-[300px]">
               <BorderlessSelect
-                // clearErrors={() => clearErrors("currency")}
                 inputError={errors?.currency}
                 register={register}
+                errors={errors}
+                setValue={setValue}
                 inputName={"currency"}
                 labelName={"Product Currency"}
-                handleSelected={(value) => {
-                  setValue("currency", value.value);
-                }}
-                options={[
-                  {
-                    id: 1,
-                    text: "NGN",
-                    value: "NGN",
-                  },
-                  {
-                    id: 2,
-                    text: "USD",
-                    value: "USD",
-                  },
-                ]}
+                defaultValue={formData?.currency}
+                placeholder="Select currency"
+                clearErrors={clearErrors}
+                requiredField={true}
+                tip={toolTips.currency}
+                options={currencyOptions}
+                trigger={trigger}
               />
             </div>
-            {/* {errors?.currency && (
-                <span className="text-sm text-danger-500">
-                  {errors?.currency?.message}
-                </span>
-              )}
 
-              {error && (
-                <span className="text-sm text-danger-500">{error}</span>
-              )} */}
             {/* </InputDiv> */}
           </div>
         </div>
