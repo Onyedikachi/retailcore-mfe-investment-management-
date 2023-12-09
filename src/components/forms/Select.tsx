@@ -35,7 +35,7 @@ export default function Select({
             leaveTo="opacity-0"
           >
             <Listbox.Options className="absolute mt-1 max-h-60 w-[200px] overflow-auto bg-white py-1  focus:outline-none text-sm shadow-[0px_0px_4px_0px_#00000040] right-0 rounded-b-lg z-40">
-              {options.map(
+              {options?.map(
                 (
                   option: {
                     id: number;

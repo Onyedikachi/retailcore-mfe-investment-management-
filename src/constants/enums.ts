@@ -65,7 +65,7 @@ export enum Prompts {
   REMOVE_RECORD = "Do you want to remove this record?",
   CANCEL_PROCESS = "Do you want to cancel process?",
   CANCEL_CREATION = "Do you want to cancel product creation?",
-  CANCEL_MODIFICATION = "Do you want to cancel prodcut modification?",
+  CANCEL_MODIFICATION = "Do you want to cancel product modification?",
   CANCEL_PRODUCT_SETUP = "Do you want to cancel product setup?",
   PRODUCT_CREATION_REJECT = "Do you want to reject product creation?",
   PRODUCT_CREATION_APPROVE = "Do you want to approve product creation?",

@@ -62,7 +62,7 @@ export default function MultiSelect({
                     checked={isSelectAll}
                   />
                 </li>
-                {options.map((item) => (
+                {options?.map((item) => (
                   <li key={item.id} className="cursor-pointer">
                     <Checkbox
                       label={item.name}
