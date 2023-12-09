@@ -58,14 +58,15 @@ export default function PricingConfig({
     clearErrors,
     setValue,
     control,
-    setError: assignError,
+    setError,
     getValues,
     trigger,
+    resetField,
     formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(pricingConfigSchema),
     defaultValues: formData,
-    // values,
+    mode: "all",
   });
 
   const {
@@ -98,21 +99,112 @@ export default function PricingConfig({
     setFormData({ ...d });
     proceed();
   }
+
+  // Watch tenor
+  const watchinterestRateRangeType = watch("interestRateRangeType");
+
+  const watchApplicableTenorMin = watch("applicableTenorMin");
+  const watchApplicableTenorMinUnit = watch("applicableTenorMinUnit");
+  const watchApplicableTenorMax = watch("applicableTenorMax");
+  const watchApplicableTenorMaxUnit = watch("applicableTenorMaxUnit");
+
+  useEffect(() => {
+    if (watchApplicableTenorMax > 0) {
+      trigger("applicableTenorMin");
+      trigger("applicableTenorMax");
+    }
+  }, [
+    watchApplicableTenorMin,
+    watchApplicableTenorMinUnit,
+    watchApplicableTenorMax,
+    watchApplicableTenorMaxUnit,
+  ]);
+
+  // watch principal
+  const watchApplicablePrincipalMin = watch("applicablePrincipalMin");
+  const watchApplicablePrincipalMax = watch("applicablePrincipalMax");
+
+  useEffect(() => {
+    if (watchApplicablePrincipalMax > 0) {
+      trigger("applicablePrincipalMin");
+      trigger("applicablePrincipalMax");
+    }
+  }, [watchApplicablePrincipalMax, watchApplicablePrincipalMin]);
+
+  // watch principal
+  const watchInterestRateMin = watch("interestRateMin");
+  const watchInterestRateMax = watch("interestRateMax");
+  useEffect(() => {
+    if (
+      watchInterestRateMin > 0 &&
+      parseInt(watchinterestRateRangeType, 10) === 2
+    ) {
+      trigger("interestRateMax");
+      trigger("interestRateMin");
+    }
+  }, [watchInterestRateMax, watchInterestRateMin]);
+
+  useEffect(() => {
+    register("interestRateMax");
+    register("interestRateMin");
+    resetField("interestRateMax", { keepError: false });
+    resetField("interestRateMin", { keepError: false });
+  }, [watchinterestRateRangeType]);
+
+
+  const checkValidations = () => {
+    setError(`interestRateConfigModels[${0}].min`, {
+      type: "manual",
+      message: "Item is required",
+    });
+  };
+  const watchInterestRateConfigModels = watch("interestRateConfigModels");
+ 
+  const valuesInterestRateConfigModels = getValues("interestRateConfigModels");
+ 
+  useEffect(() => {
+    console.log("🚀 ~ file: pricing-config.tsx:163 ~ valuesInterestRateConfigModels:", valuesInterestRateConfigModels)
+    console.log("🚀 ~ file: pricing-config.tsx:162 ~ watchInterestRateConfigModels:", watchInterestRateConfigModels)
+  
+    // valuesInterestRateConfigModels.forEach((item, index) => {
+    //   console.log("min:", item.min);
+    //   console.log("max:", item.max);
+  
+    //   if (parseInt(watchinterestRateRangeType, 10) < 2) {
+    //     if (item.min > item.max) {
+    //       setError(`interestRateConfigModels[${index}].min`, {
+    //         type: "manual",
+    //         message: "Max must be greater than min",
+    //       });
+    //       setError(`interestRateConfigModels[${index}].max`, {
+    //         type: "manual",
+    //         message: "Max must be greater than min",
+    //       });
+    //     } else {
+    //       // Clear the manual errors if the condition is met
+    //       clearErrors(`interestRateConfigModels[${index}].min`);
+    //       clearErrors(`interestRateConfigModels[${index}].max`);
+    //     }
+    //   }
+    // });
+  }, [valuesInterestRateConfigModels, watchinterestRateRangeType,watchInterestRateConfigModels]);
+
   const values = getValues();
 
   useEffect(() => {
-    console.log("🚀 ~ file: product-information.tsx:191 ~ isValid:", isValid);
-
-    console.log(
-      "🚀 ~ file: pricing-config.tsx:153 ~ useEffect ~ errors:",
-      errors
-    );
     setDisabled(!isValid);
-    // if (values?.interestRateRangeType) {
-    //   pricingConfigSchema?.validate(values, {
-    //     context: { interestRateRangeType: values?.interestRateRangeType },
-    //   });
-    // }
+    if (values?.interestRateRangeType) {
+      pricingConfigSchema
+        ?.validate(values, {
+          context: { interestRateRangeType: watchinterestRateRangeType },
+        })
+        .catch(() => {
+          // console.log(
+          //   "🚀 ~ file: pricing-config.tsx:116 ~ useEffect ~ err:",
+          //   err
+          // );
+        });
+    }
   }, [values]);
   useEffect(() => {
     if (formData) {
@@ -121,7 +213,7 @@ export default function PricingConfig({
       );
     }
   }, [setValue, formData]);
-  const watchinterestRateRangeType = watch("interestRateRangeType");
+
   return (
     <form id="pricingconfig" onSubmit={handleSubmit(onProceed)}>
       <div className="flex flex-col gap-10">
@@ -203,6 +295,7 @@ export default function PricingConfig({
                 setValue={setValue}
                 trigger={trigger}
                 clearErrors={clearErrors}
+                isCurrency
               />
             </div>{" "}
             -
@@ -218,6 +311,7 @@ export default function PricingConfig({
                 setValue={setValue}
                 trigger={trigger}
                 clearErrors={clearErrors}
+                isCurrency
               />
             </div>{" "}
           </div>
@@ -232,10 +326,12 @@ export default function PricingConfig({
                     id={varyOption.id}
                     name="interestRateRangeType"
                     type="radio"
-                    value={varyOption?.value}
-                    {...register("interestRateRangeType")}
-                    defaultChecked={
-                      varyOption.value === watchinterestRateRangeType
+                    value={Number(varyOption.value)}
+                    onChange={(e) =>
+                      setValue("interestRateRangeType", Number(e.target.value))
+                    }
+                    checked={
+                      getValues("interestRateRangeType") === varyOption.value
                     }
                     className="h-4 w-4 border-gray-300 accent-sterling-red-800"
                   />
@@ -276,6 +372,9 @@ export default function PricingConfig({
                             formData?.interestRateConfigModels?.[index]?.min
                           }
                           clearErrors={clearErrors}
+                          isPercent
+                          isCurrency
+                          disableGroupSeparators
 
                           // defaultValue={range.min}
                         />
@@ -298,6 +397,9 @@ export default function PricingConfig({
                           setValue={setValue}
                           trigger={trigger}
                           clearErrors={clearErrors}
+                          isPercent
+                          isCurrency
+                          disableGroupSeparators
                         />
                       </div>{" "}
                     </div>
@@ -323,6 +425,7 @@ export default function PricingConfig({
                             setValue={setValue}
                             trigger={trigger}
                             clearErrors={clearErrors}
+                            isCurrency
                           />
                         </div>{" "}
                         -
@@ -344,6 +447,7 @@ export default function PricingConfig({
                             setValue={setValue}
                             trigger={trigger}
                             clearErrors={clearErrors}
+                            isCurrency
                           />
                         </div>{" "}
                       </>
@@ -371,7 +475,6 @@ export default function PricingConfig({
                             setValue={setValue}
                             trigger={trigger}
                             clearErrors={clearErrors}
-                            type="number"
                           />
                           <div className="w-[90px]">
                             <BorderlessSelect
@@ -498,6 +601,10 @@ export default function PricingConfig({
                   trigger={trigger}
                   defaultValue={formData?.interestRateMin}
                   clearErrors={clearErrors}
+                  max={100}
+                  isPercent
+                  isCurrency
+                  disableGroupSeparators
 
                   // defaultValue={range.min}
                 />
@@ -514,6 +621,10 @@ export default function PricingConfig({
                   setValue={setValue}
                   trigger={trigger}
                   clearErrors={clearErrors}
+                  max={100}
+                  isPercent
+                  isCurrency
+                  disableGroupSeparators
                 />
               </div>{" "}
             </div>
@@ -527,15 +638,15 @@ export default function PricingConfig({
 
           <div className="w-[300px]">
             <BorderlessSelect
-              inputError={errors?.interestComputation}
-              register={register}
-              inputName={"interestComputation"}
+              inputError={errors?.interestComputationMethod}
+              inputName={"interestComputationMethod"}
               options={interestComputationDaysOptions}
-              defaultValue={formData?.interestComputation}
+              defaultValue={formData?.interestComputationMethod}
               errors={errors}
-              setValue={setValue}
               trigger={trigger}
               clearErrors={clearErrors}
+              setValue={() => {}}
+              disabled
             />
           </div>
         </div>

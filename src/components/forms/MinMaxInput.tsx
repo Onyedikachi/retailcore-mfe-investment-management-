@@ -1,4 +1,5 @@
 import React from "react";
+import CurrencyInput from "react-currency-input-field";
 interface MinMaxProps {
   label?: string;
   hasButton?: boolean;
@@ -15,6 +16,11 @@ interface MinMaxProps {
   error?: string;
   disabled?: boolean;
   type?: string;
+  isPercent?: boolean;
+  isCurrency?: boolean;
+  placeholder?: string;
+  max? : number
+  disableGroupSeparators?: boolean
 }
 export default function MinMaxInput({
   label,
@@ -32,6 +38,11 @@ export default function MinMaxInput({
   error,
   disabled = false,
   type = "text",
+  isPercent = false,
+  isCurrency,
+  placeholder = "0",
+  max,
+  disableGroupSeparators
 }: MinMaxProps) {
   return (
     <div>
@@ -41,26 +52,51 @@ export default function MinMaxInput({
 
         <div className="w-full flex flex-col gap-2">
           <div className="relative flex items-center max-w-[642px]">
-            <input
-              type={type}
-              disabled={disabled}
-              data-testid="min-max-input"
-              className={`placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] ${
-                (errors && errors[inputName]) || error
-                  ? "border-red-600"
-                  : "border-[#8F8F8F]"
-              }`}
-              onChange={(e) => {
-                clearErrors(inputName);
-                setValue(inputName, e.target.valueAsNumber);
-                trigger(inputName);
-              }}
-              placeholder="0"
-              // maxLength={defaultLength}
-              {...register(inputName, { required: true })}
-              defaultValue={defaultValue}
-              // aria-invalid={errors?.name ? "true" : "false"}
-            />
+            {!isCurrency && (
+              <input
+                type={type}
+                disabled={disabled}
+                data-testid="min-max-input"
+                className={`placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] ${
+                  (errors && errors[inputName]) || error
+                    ? "border-red-600"
+                    : "border-[#8F8F8F]"
+                }`}
+                // onChange={(e) => {
+                //   clearErrors(inputName);
+                //   setValue(inputName, e.target.valueAsNumber);
+                //   trigger(inputName);
+                // }}
+                placeholder="0"
+                // maxLength={defaultLength}
+                max={max}
+                {...register(inputName, { required: true })}
+                defaultValue={defaultValue}
+                // aria-invalid={errors?.name ? "true" : "false"}
+              />
+            )}
+            {isCurrency && (
+              <CurrencyInput
+                id={inputName}
+                name={inputName}
+                placeholder={placeholder}
+                defaultValue={defaultValue}
+                decimalsLimit={2}
+                disableGroupSeparators={disableGroupSeparators}
+                onValueChange={(value, name) => {
+                
+                  clearErrors(inputName);
+                  setValue(inputName, value);
+                  trigger(inputName);
+                }}
+                className={`placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] ${
+                  (errors && errors[inputName]) || error
+                    ? "border-red-600"
+                    : "border-[#8F8F8F]"
+                }`}
+              />
+            )}
+            {isPercent && <span className="absolute right-1">%</span>}
             <div className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]">
               {hasButton && (
                 <span>

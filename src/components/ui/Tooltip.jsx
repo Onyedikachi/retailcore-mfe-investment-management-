@@ -51,7 +51,9 @@ const Tooltip = ({
         {children ? (
           children
         ) : (
-          <button className="bg-transparent p-0">{title}</button>
+          <button type="button" className="bg-transparent p-0">
+            {title}
+          </button>
         )}
       </Tippy>
     </div>
