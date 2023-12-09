@@ -73,14 +73,14 @@ export const handleProductsDropdown = (
   } else {
     let options = DropDownOptions[status];
     if (!permissions?.includes("RE_OR_DEACTIVATE_INVESTMENT_PRODUCT")) {
-      options = options.filter(
+      options = options?.filter(
         (i: any) =>
           i.text.toLowerCase() !== "deactivate" &&
           i.text.toLowerCase() !== "activate"
       );
     }
     if (!permissions?.includes("CREATE_INVESTMENT_PRODUCT")) {
-      options = options.filter(
+      options = options?.filter(
         (i: any) =>
           i.text.toLowerCase() !== "modify" && i.text.toLowerCase() !== "clone"
       );

@@ -11,9 +11,14 @@ exports[`Checkbox matches snapshot 1`] = `
         data-testid="Test"
         type="checkbox"
       />
-      <span>
+      <span
+        class="whitespace-nowrap block"
+      >
         Test
       </span>
+      <span
+        class="whitespace-nowrap text-xs text-[#aaa]"
+      />
     </label>
   </div>
 </DocumentFragment>

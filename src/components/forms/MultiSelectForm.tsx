@@ -48,7 +48,7 @@ export default function MultiSelectForm({
 
   const handleAll = (val) => {
     if (val) {
-      setSelectedOptions(options.map((i) => i.value));
+      setSelectedOptions(options?.map((i) => i.value));
     } else {
       setSelectedOptions([]);
     }
@@ -102,7 +102,7 @@ export default function MultiSelectForm({
                     checked={isSelectAll}
                   />
                 </li>
-                {options.map((item) => (
+                {options?.map((item) => (
                   <li
                     key={item.value}
                     className="cursor-pointer hover:bg-[#F9E5E5] py-[10px] px-6"

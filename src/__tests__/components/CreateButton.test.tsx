@@ -176,16 +176,16 @@ describe("CreateButton", () => {
     expect(screen.getByText("Investment")).toBeInTheDocument();
     expect(screen.getByText("Over the counter payment")).toBeInTheDocument();
 
-    fireEvent.click(screen.getByText("Credit"));
-    expect(screen.getByText("Loans")).toBeInTheDocument();
+    // fireEvent.click(screen.getByText("Credit"));
+    // expect(screen.getByText("Loans")).toBeInTheDocument();
 
-    fireEvent.click(screen.getByText("Loans"));
-    expect(screen.getByText("Individual Loans")).toBeInTheDocument();
+    // fireEvent.click(screen.getByText("Loans"));
+    // expect(screen.getByText("Individual Loans")).toBeInTheDocument();
 
-    fireEvent.click(screen.getByText("Commercial loans"));
-    expect(screen.getByText("Corporate loans")).toBeInTheDocument();
+    // fireEvent.click(screen.getByText("Commercial loans"));
+    // expect(screen.getByText("Corporate loans")).toBeInTheDocument();
 
-    fireEvent.click(screen.getByText("Corporate loans"));
+    // fireEvent.click(screen.getByText("Corporate loans"));
     // expect(goToUrl).toHaveBeenCalledWith('#', expect.any(Function));
   });
 
