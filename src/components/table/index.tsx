@@ -22,7 +22,10 @@ import RequestDeactivation from "../modals/RequestDeactivation";
 import ProductDetail from "../modals/ProductDetail";
 import { StatusCategoryType } from "@app/types";
 import { useNavigate } from "react-router-dom";
-import { useDeleteProductRequestMutation } from "@app/api";
+import {
+  useActivateProductMutation,
+  useDeleteProductRequestMutation,
+} from "@app/api";
 
 interface TableProps {
   headers: any[];
@@ -235,10 +238,25 @@ export default function TableComponent<TableProps>({
     deleteRequest,
     { isSuccess, isError, error, isLoading: deleteLoading },
   ] = useDeleteProductRequestMutation();
+  const [
+    activateProduct,
+    {
+      isSuccess: activateSuccess,
+      isError: activateIsError,
+      error: activateError,
+      isLoading: activateIsLoading,
+    },
+  ] = useActivateProductMutation();
 
   const handleConfirm = () => {
     if (action.toLowerCase().includes("delete")) {
       deleteRequest(detail.id);
+    }
+    if (action.toLowerCase() === Actions.DEACTIVATE) {
+      setIsDeactivationOpen(true);
+    }
+    if (action.toLowerCase() === Actions.ACTIVATE) {
+      activateProduct({ id: detail?.id });
     }
   };
 
@@ -247,12 +265,26 @@ export default function TableComponent<TableProps>({
       setSuccessText(Messages.PRODUCT_DELETE_SUCCESS);
       setIsSuccessOpen(true);
     }
+    if (activateSuccess) {
+      setSuccessText(
+        role === "superadmin"
+          ? Messages.PRODUCT_ACTIVATE_SUCCESS
+          : Messages.ADMIN_PRODUCT_ACTIVATE_SUCCESS
+      );
+      setIsSuccessOpen(true);
+    }
     if (isError) {
-      setFailedText(Messages.PRODUCT_DELETE_SUCCESS);
+      setFailedText(Messages.PRODUCT_DELETE_FAILED);
       setFailedSubtext(error?.message?.message);
       setFailed(true);
     }
-  }, [isSuccess, isError, error]);
+
+    if (activateIsError) {
+      setFailedText(Messages.PRODUCT_ACTIVATE_FAILED);
+      setFailedSubtext(activateError?.message?.message);
+      setFailed(true);
+    }
+  }, [isSuccess, isError, error, activateSuccess, activateIsError]);
 
   return (
     <div>
@@ -435,6 +467,7 @@ export default function TableComponent<TableProps>({
           isOpen={isDeactivationOpen}
           setIsOpen={setIsDeactivationOpen}
           onConfirm={() => {}}
+          detail={detail}
           // setReason={() => {}}
         />
       )}
@@ -447,7 +480,12 @@ export default function TableComponent<TableProps>({
           // setReason={() => {}}
         />
       )}
-      {deleteLoading && <Loader isOpen={deleteLoading} text={"Submitting"} />}
+      {(deleteLoading || activateIsLoading) && (
+        <Loader
+          isOpen={deleteLoading || activateIsLoading}
+          text={"Submitting"}
+        />
+      )}
     </div>
   );
 }

@@ -41,6 +41,7 @@ export default function Select({
   useEffect(() => {
     if (defaultValue !== null) {
       setSelected(options.find((i) => i.value === defaultValue));
+     
     }
   }, [defaultValue]);
 

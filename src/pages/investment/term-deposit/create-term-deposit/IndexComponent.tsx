@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { paths } from "@app/routes/paths";
 import { Confirm, Failed, Success } from "@app/components/modals";
-import { useCreateProductMutation, useGetProductDetailQuery } from "@app/api";
+import { useCreateProductMutation, useGetRequestDetailQuery } from "@app/api";
 import {
   Breadcrumbs,
   Loader,
@@ -19,6 +19,7 @@ import {
 import { termDepositFormSteps } from "@app/constants";
 import Preview from "@app/components/pages/term-deposit/forms/preview";
 import { Messages } from "@app/constants/enums";
+import { convertKeysToLowerCase } from "@app/utils/convertKeysToLowerCase";
 
 export function handleNext(step, setStep, termDepositFormSteps) {
   step < termDepositFormSteps.length && setStep(step + 1);
@@ -135,13 +136,16 @@ export default function CreateTermDeposit() {
   const [createProduct, { isLoading, isSuccess, isError, reset, error }] =
     useCreateProductMutation();
 
-  const { data: modifyData, isLoading: modifyIsLoadin } =
-    useGetProductDetailQuery(
-      {
-        id,
-      },
-      { skip: !id }
-    );
+  const {
+    data: requestData,
+    isLoading: requestIsLoading,
+    isSuccess: requestIsSuccess,
+  } = useGetRequestDetailQuery(
+    {
+      id,
+    },
+    { skip: !id }
+  );
   function handleNav() {
     step < termDepositFormSteps.length
       ? handleNext(step, setStep, termDepositFormSteps)
@@ -260,6 +264,13 @@ export default function CreateTermDeposit() {
       productData
     );
   }, [productData]);
+  useEffect(() => {
+    if (requestIsSuccess) {
+      const data = JSON.parse(requestData?.data?.metaInfo);
+
+      setProductData(convertKeysToLowerCase({ ...data }));
+    }
+  }, [requestIsSuccess]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -279,7 +290,7 @@ export default function CreateTermDeposit() {
   }, [isSuccess, isError, error]);
   return (
     <div>
-      {!stage && (
+      {!stage && !requestIsLoading && (
         <div className="flex flex-col min-h-[100vh] ">
           <div className="px-[37px] py-[11px] bg-white">
             <h1 className="text-[#747373] text-[24px] font-bold mb-7 uppercase">

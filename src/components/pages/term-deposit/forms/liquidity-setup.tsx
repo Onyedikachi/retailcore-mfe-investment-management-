@@ -83,6 +83,14 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
     );
     // setDisabled(!isValid);
   }, [values]);
+  useEffect(() => {
+    if (formData) {
+      Object.entries(formData).forEach(([name, value]) =>
+        setValue(name, value)
+      );
+   
+    }
+  }, [setValue, formData]);
   const watchPartLiquidationPenalty = watch("part_LiquidationPenalty");
   const watchEarlyLiquidationPenalty = watch("early_LiquidationPenalty");
   return (
@@ -96,7 +104,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
             setValue={setValue}
             trigger={trigger}
             register={register}
-            defaultValue={formData.part_AllowPartLiquidation}
+            defaultValue={formData?.part_AllowPartLiquidation}
           >
             {type.label === "Allow Part Liquidation" ? (
               <div>
@@ -112,7 +120,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                           setValue={setValue}
                           trigger={trigger}
                           clearErrors={clearErrors}
-                          defaultValue={formData.part_MaxPartLiquidation}
+                          defaultValue={formData?.part_MaxPartLiquidation}
                         />
                       </div>
 
@@ -130,7 +138,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                         <input
                           type="checkbox"
                           name="part_RequireNoticeBeforeLiquidation"
-                          // checked={formData.part_RequireNoticeBeforeLiquidation}
+                          // checked={formData?.part_RequireNoticeBeforeLiquidation}
                           {...register("part_RequireNoticeBeforeLiquidation")}
                           className="accent-sterling-red-800"
                         />
@@ -150,7 +158,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                           setValue={setValue}
                           trigger={trigger}
                           clearErrors={clearErrors}
-                          defaultValue={formData.part_NoticePeriod}
+                          defaultValue={formData?.part_NoticePeriod}
                           type="number"
                           disabled={
                             !watch("part_RequireNoticeBeforeLiquidation")
@@ -174,7 +182,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                             setValue={setValue}
                             trigger={trigger}
                             clearErrors={clearErrors}
-                            defaultValue={formData.part_NoticePeriodUnit}
+                            defaultValue={formData?.part_NoticePeriodUnit}
                             options={IntervalOptions}
                             disabled={
                               !watch("part_RequireNoticeBeforeLiquidation")
@@ -200,7 +208,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                           setValue={setValue}
                           trigger={trigger}
                           clearErrors={clearErrors}
-                          defaultValue={formData.part_LiquidationPenalty}
+                          defaultValue={formData?.part_LiquidationPenalty}
                           options={LiquidityOptions}
                         />
                       </div>{" "}
@@ -213,7 +221,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                             setValue={setValue}
                             trigger={trigger}
                             clearErrors={clearErrors}
-                            defaultValue={formData.part_LiquidationPenaltyPercentage}
+                            defaultValue={formData?.part_LiquidationPenaltyPercentage}
                           />
                         </div>
                       )}
@@ -230,7 +238,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                             setValue={setValue}
                             trigger={trigger}
                             clearErrors={clearErrors}
-                            defaultValue={formData.part_SpecialInterestRate}
+                            defaultValue={formData?.part_SpecialInterestRate}
                           />
                         </div>
                       </div>
@@ -296,7 +304,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                               setValue={setValue}
                               trigger={trigger}
                               clearErrors={clearErrors}
-                              defaultValue={formData.part_LiquidationPenalty}
+                              defaultValue={formData?.part_LiquidationPenalty}
                               options={ApplyOptions}
                             />
                           </div>
@@ -317,7 +325,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                               setValue={setValue}
                               trigger={trigger}
                               clearErrors={clearErrors}
-                              defaultValue={formData.part_LiquidationPenalty}
+                              defaultValue={formData?.part_LiquidationPenalty}
                               options={ApplyOptions}
                             />
                           </div>
@@ -337,7 +345,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                               setValue={setValue}
                               trigger={trigger}
                               clearErrors={clearErrors}
-                              defaultValue={formData.part_SpecialInterestRate}
+                              defaultValue={formData?.part_SpecialInterestRate}
                             />
                           </div>
                         </div>
@@ -354,7 +362,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                       <input
                         type="checkbox"
                         name="part_RequireNoticeBeforeLiquidation"
-                        // checked={formData.early_RequireNoticeBeforeLiquidation}
+                        // checked={formData?.early_RequireNoticeBeforeLiquidation}
                         {...register("early_RequireNoticeBeforeLiquidation")}
                         className="accent-sterling-red-800"
                       />
@@ -374,7 +382,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                         setValue={setValue}
                         trigger={trigger}
                         clearErrors={clearErrors}
-                        defaultValue={formData.early_NoticePeriod}
+                        defaultValue={formData?.early_NoticePeriod}
                         type="number"
                       />
                     </div>
@@ -395,7 +403,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                           setValue={setValue}
                           trigger={trigger}
                           clearErrors={clearErrors}
-                          defaultValue={formData.early_NoticePeriodUnit}
+                          defaultValue={formData?.early_NoticePeriodUnit}
                           options={IntervalOptions}
                           disabled={
                             !watch("early_RequireNoticeBeforeLiquidation")
@@ -421,7 +429,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                         setValue={setValue}
                         trigger={trigger}
                         clearErrors={clearErrors}
-                        defaultValue={formData.early_LiquidationPenalty}
+                        defaultValue={formData?.early_LiquidationPenalty}
                         options={LiquidityOptions.filter((i) => i.value !== 5)}
                       />
                     </div>
@@ -434,7 +442,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                           setValue={setValue}
                           trigger={trigger}
                           clearErrors={clearErrors}
-                          defaultValue={formData.early_LiquidationPenaltyPercentage}
+                          defaultValue={formData?.early_LiquidationPenaltyPercentage}
                         />
                       </div>
                     )}
@@ -451,7 +459,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                           setValue={setValue}
                           trigger={trigger}
                           clearErrors={clearErrors}
-                          defaultValue={formData.part_SpecialInterestRate}
+                          defaultValue={formData?.part_SpecialInterestRate}
                         />
                       </div>
                     </div>
@@ -516,7 +524,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                             setValue={setValue}
                             trigger={trigger}
                             clearErrors={clearErrors}
-                            defaultValue={formData.part_LiquidationPenalty}
+                            defaultValue={formData?.part_LiquidationPenalty}
                             options={ApplyOptions}
                           />
                         </div>
@@ -537,7 +545,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                             setValue={setValue}
                             trigger={trigger}
                             clearErrors={clearErrors}
-                            defaultValue={formData.part_LiquidationPenalty}
+                            defaultValue={formData?.part_LiquidationPenalty}
                             options={ApplyOptions}
                           />
                         </div>
@@ -557,7 +565,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                             setValue={setValue}
                             trigger={trigger}
                             clearErrors={clearErrors}
-                            defaultValue={formData.part_SpecialInterestRate}
+                            defaultValue={formData?.part_SpecialInterestRate}
                             type="number"
                           />
                         </div>
