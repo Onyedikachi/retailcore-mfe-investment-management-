@@ -114,6 +114,10 @@ export default function AccountingEntriesAndEvents({
     reset();
     setClearField(!clearFields);
   };
+  useEffect(() => {
+    if (formData) {
+    }
+  }, [setValue, formData]);
   return (
     <form id="entriesandevents" onSubmit={handleSubmit(onProceed)}>
       <div>

@@ -84,9 +84,9 @@ export default function PricingConfig({
       principalMin: 0,
       principalMax: null,
       tenorMin: 0,
-      tenorMinUnit: 0,
+      tenorMinUnit: 1,
       tenorMax: null,
-      tenorMaxUnit: null,
+      tenorMaxUnit: 1,
     });
   };
 
@@ -114,6 +114,13 @@ export default function PricingConfig({
     //   });
     // }
   }, [values]);
+  useEffect(() => {
+    if (formData) {
+      Object.entries(formData).forEach(([name, value]) =>
+        setValue(name, value)
+      );
+    }
+  }, [setValue, formData]);
   const watchinterestRateRangeType = watch("interestRateRangeType");
   return (
     <form id="pricingconfig" onSubmit={handleSubmit(onProceed)}>
@@ -130,7 +137,7 @@ export default function PricingConfig({
                   setValue={setValue}
                   trigger={trigger}
                   clearErrors={clearErrors}
-                  defaultValue={formData.applicableTenorMin}
+                  defaultValue={formData?.applicableTenorMin}
                   type="number"
                 />
               </div>
@@ -139,7 +146,7 @@ export default function PricingConfig({
                   inputError={errors?.applicableTenorMinUnit}
                   register={register}
                   inputName={"applicableTenorMinUnit"}
-                  defaultValue={formData.applicableTenorMinUnit}
+                  defaultValue={formData?.applicableTenorMinUnit}
                   options={IntervalOptions}
                   errors={errors}
                   setValue={setValue}
@@ -156,7 +163,7 @@ export default function PricingConfig({
                   label={"Max"}
                   register={register}
                   inputName={"applicableTenorMax"}
-                  defaultValue={formData.applicableTenorMax}
+                  defaultValue={formData?.applicableTenorMax}
                   errors={errors}
                   setValue={setValue}
                   trigger={trigger}
@@ -170,7 +177,7 @@ export default function PricingConfig({
                   inputError={errors?.applicableTenorMaxUnit}
                   register={register}
                   inputName={"applicableTenorMaxUnit"}
-                  defaultValue={formData.applicableTenorMaxUnit}
+                  defaultValue={formData?.applicableTenorMaxUnit}
                   options={IntervalOptions}
                   errors={errors}
                   setValue={setValue}
@@ -191,7 +198,7 @@ export default function PricingConfig({
                 currency={productData?.productInfo?.currency}
                 register={register}
                 inputName={"applicablePrincipalMin"}
-                defaultValue={formData.applicablePrincipalMin}
+                defaultValue={formData?.applicablePrincipalMin}
                 errors={errors}
                 setValue={setValue}
                 trigger={trigger}
@@ -206,7 +213,7 @@ export default function PricingConfig({
                 currency={productData?.productInfo?.currency}
                 register={register}
                 inputName={"applicablePrincipalMax"}
-                defaultValue={formData.applicablePrincipalMax}
+                defaultValue={formData?.applicablePrincipalMax}
                 errors={errors}
                 setValue={setValue}
                 trigger={trigger}
@@ -524,7 +531,7 @@ export default function PricingConfig({
               register={register}
               inputName={"interestComputation"}
               options={interestComputationDaysOptions}
-              defaultValue={formData.interestComputation}
+              defaultValue={formData?.interestComputation}
               errors={errors}
               setValue={setValue}
               trigger={trigger}

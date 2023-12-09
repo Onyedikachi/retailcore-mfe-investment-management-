@@ -7,7 +7,7 @@ import { FormToolTip } from "@app/components";
 import { BorderlessSelect, DateSelect } from "@app/components/forms";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import {RedDot} from '@app/components/forms'
+import { RedDot } from "@app/components/forms";
 
 import {
   ProductInformationFormSchema,
@@ -39,13 +39,11 @@ export function handleValidatingName(
     });
 
     setIsNameOkay(false);
-
   }
   if (nameIsSuccess && charLeft < 47) {
     // trigger("productName");
     clearErrors("productName");
     setIsNameOkay(true);
-   
   }
 }
 
@@ -118,7 +116,6 @@ export default function ProductInformation({
   setDisabled,
   proceed,
 }) {
-  //
   //useForm
   const {
     register,
@@ -195,6 +192,12 @@ export default function ProductInformation({
 
     setDisabled(!isValid);
   }, [values]);
+  useEffect(() => {
+    if (formData) {
+      Object.entries(formData).forEach(
+        ([name, value]) => setValue(name, value));
+    }
+}, [setValue, formData]);
 
   //watchers
   const watchStartDate = watch("startDate");
@@ -207,7 +210,11 @@ export default function ProductInformation({
           <div className="flex itemx-center gap-2 w-[300px]">
             {" "}
             <label className=" pt-[10px]  flex text-base font-semibold text-[#636363]">
-              Product Name <span className="flex"> <RedDot /></span>
+              Product Name{" "}
+              <span className="flex">
+                {" "}
+                <RedDot />
+              </span>
             </label>
             <FormToolTip tip={toolTips.productName} />
           </div>
@@ -243,7 +250,7 @@ export default function ProductInformation({
                 }}
                 placeholder="Enter Name"
                 maxLength={defaultLength}
-                defaultValue={formData?.productName}
+                value={formData?.productName}
                 aria-invalid={errors?.productName ? "true" : "false"}
               />
               <div className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]">
@@ -309,7 +316,7 @@ export default function ProductInformation({
                 }}
                 placeholder="Enter a slogan"
                 maxLength={defaultSloganLength}
-                defaultValue={formData?.slogan}
+                value={formData?.slogan}
                 aria-invalid={errors?.slogan ? "true" : "false"}
               />
               <div className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]">
@@ -340,18 +347,22 @@ export default function ProductInformation({
         </div>
 
         <div className="mb-6 flex flex-col gap-[13px]">
-        <div className="flex  gap-2 w-[300px]">
-              {" "}
-              <label className=" pt-[10px] flex text-base font-semibold text-[#636363]">
-                Product Description <span className="flex"> <RedDot /></span>
-              </label>
-            </div>
+          <div className="flex  gap-2 w-[300px]">
+            {" "}
+            <label className=" pt-[10px] flex text-base font-semibold text-[#636363]">
+              Product Description{" "}
+              <span className="flex">
+                {" "}
+                <RedDot />
+              </span>
+            </label>
+          </div>
           <InputDiv>
             <textarea
               data-testid="product-description"
               placeholder="Enter description"
               {...register("description")}
-              defaultValue={formData?.description}
+              value={formData?.description}
               className={`min-h-[150px] w-full rounded-md border border-[#8F8F8F] focus:outline-none px-3 py-[11px] placeholder:text-[#BCBBBB] resize-none ${
                 errors?.description || error
                   ? "border-red-500 ring-1 ring-red-500"
@@ -373,7 +384,7 @@ export default function ProductInformation({
             <div className="flex  gap-2 w-[300px]">
               {" "}
               <label className=" pt-[10px]  text-base font-semibold text-[#636363]">
-                Product Life Cycle 
+                Product Life Cycle
               </label>
               <FormToolTip tip={toolTips.lifeCycle} />
             </div>
@@ -386,7 +397,7 @@ export default function ProductInformation({
                 handleChange={(value) => {
                   setValue("startDate", value);
                 }}
-                defaultValue={formData.startDate}
+                defaultValue={formData?.startDate}
                 minDate={new Date()}
                 trigger={trigger}
                 clearErrors={clearErrors}
@@ -401,8 +412,9 @@ export default function ProductInformation({
                 handleChange={(value) => {
                   setValue("endDate", value);
                 }}
-                defaultValue={formData.endDate}
+                defaultValue={formData?.endDate}
                 clearErrors={clearErrors}
+                
               />
             </div>
           </div>
@@ -417,7 +429,7 @@ export default function ProductInformation({
                 setValue={setValue}
                 inputName={"currency"}
                 labelName={"Product Currency"}
-                defaultValue={formData.currency}
+                defaultValue={formData?.currency}
                 placeholder="Select currency"
                 clearErrors={clearErrors}
                 requiredField={true}
