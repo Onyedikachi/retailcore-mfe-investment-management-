@@ -79,7 +79,7 @@ export default function QuickLinks() {
     }
   }, [quickLinks]);
   return (
-    <div className="border border-[#E5E9EB] rounded-lg bg-white px-[13px] py-8 w-[300px]">
+    <div data-testid='quick-links' className="border border-[#E5E9EB] rounded-lg bg-white px-[13px] py-8 w-[300px]">
       <h1 className="uppercase text-xl mb-5 font-medium">Quick Links</h1>
       <hr className="border-[#ddd] mb-[15px]" />
       {isOpen && (
