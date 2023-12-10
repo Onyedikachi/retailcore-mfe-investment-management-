@@ -193,17 +193,12 @@ export default function PricingConfig({
 
   useEffect(() => {
     setDisabled(!isValid);
+       console.log(
+            "🚀 ~ file: pricing-config.tsx:116 ~ useEffect ~ err:",
+            errors
+          );
     if (values?.interestRateRangeType) {
-      pricingConfigSchema
-        ?.validate(values, {
-          context: { interestRateRangeType: watchinterestRateRangeType },
-        })
-        .catch(() => {
-          // console.log(
-          //   "🚀 ~ file: pricing-config.tsx:116 ~ useEffect ~ err:",
-          //   err
-          // );
-        });
+     
     }
   }, [values]);
   useEffect(() => {
@@ -214,6 +209,15 @@ export default function PricingConfig({
     }
   }, [setValue, formData]);
 
+  pricingConfigSchema.validate(values, {
+    context: { interestRateRangeType: 0 },
+  })
+  .catch(() => {
+    // console.log(
+    //   "🚀 ~ file: pricing-config.tsx:116 ~ useEffect ~ err:",
+    //   err
+    // );
+  });
   return (
     <form id="pricingconfig" onSubmit={handleSubmit(onProceed)}>
       <div className="flex flex-col gap-10">

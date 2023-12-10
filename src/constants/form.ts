@@ -4,6 +4,7 @@ import { productNameRegex } from "./investment";
 import { CustomerCategoryType } from "./enums";
 import { InterestRateRangeType } from "./testenums";
 import { convertToDays } from "@app/utils/convertToDays";
+import { ValidationError } from "yup";
 
 export const ProductInformationFormSchema = yup.object({
   productName: yup
@@ -81,7 +82,7 @@ const interestRateConfigModelSchema = yup.object().shape({
     )
     .nullable()
     .when("$interestRateRangeType", {
-      is: (val) => val === InterestRateRangeType.VaryByPrincipal,
+      is: (val) => val == InterestRateRangeType.VaryByPrincipal,
       then: (schema) => schema.required().moreThan(yup.ref("min")),
       otherwise: (schema) => schema.nullable(),
     }),
@@ -163,6 +164,7 @@ const interestRateConfigModelSchema = yup.object().shape({
       otherwise: yup.number().typeError("Invalid value").nullable(),
     }),
 });
+
 export const pricingConfigSchema = yup.object({
   interestRateRangeType: yup.number().integer().required(),
   applicableTenorMax: yup
@@ -280,87 +282,108 @@ export const pricingConfigSchema = yup.object({
     .test({
       test: function (value) {
         const rateType = this.parent.interestRateRangeType;
+        let errors = [];
+
         for (let i = 1; i < value.length; i++) {
-          const prevMax = value[i - 1]?.max;
-          const prevPrincipalMax = value[i - 1]?.principalMax;
-          const prevTenorMax = value[i - 1]?.tenorMax;
+          const prev = value[i - 1];
+          const current = value[i];
 
-          const currentMin = value[i]?.min;
-          const currentTenorMin = value[i]?.tenorMin;
-          const currentPrincipalMin = value[i]?.principalMin;
+          if (rateType < 2) {
+            if (
+              prev?.max !== undefined &&
+              current?.min !== undefined &&
+              current.min <= prev.max
+            ) {
+              errors.push(
+                new ValidationError(
+                  "Must be greater than previous slab",
+                  current,
+                  `interestRateConfigModels[${i}].min`
+                )
+              );
+            }
 
-          // const latestPrincipalMin = value[i - 1]?.principalMin;
-          // const latestPrincipalMax = value[i - 1]?.principalMax;
-          // const latestTenorMin = value[i - 1]?.tenorMin;
-          // const latestTenorMax = value[i - 1]?.tenorMax;
-          // const latestMin = value[i - 1]?.min;
-          // const latestMax = value[i - 1]?.max;
+            if (
+              current?.min !== undefined &&
+              current?.max !== undefined &&
+              current.max < current.min
+            ) {
+              errors.push(
+                new ValidationError(
+                  "Must be greater than min",
+                  current,
+                  `interestRateConfigModels[${i}].max`
+                )
+              );
+            }
 
-          if (
-            prevMax !== undefined &&
-            currentMin !== undefined &&
-            currentMin <= prevMax
-          ) {
-            return this.createError({
-              message: "Value  must be greater than previous slab",
-              path: `interestRateConfigModels[${i}].min`,
-            });
+            if (rateType === 0) {
+              if (
+                prev?.principalMax !== undefined &&
+                current?.principalMin !== undefined &&
+                current.principalMin <= prev.principalMax
+              ) {
+                errors.push(
+                  new ValidationError(
+                    "Must be greater than previous slab",
+                    current,
+                    `interestRateConfigModels[${i}].principalMin`
+                  )
+                );
+              }
+
+              if (
+                current?.principalMin !== undefined &&
+                current?.principalMax !== undefined &&
+                current.principalMax < current.principalMin
+              ) {
+                errors.push(
+                  new ValidationError(
+                    "Must be greater than min",
+                    current,
+                    `interestRateConfigModels[${i}].principalMax`
+                  )
+                );
+              }
+            }
+
+            if (rateType === 1) {
+              if (
+                prev?.tenorMax !== undefined &&
+                current?.tenorMin !== undefined &&
+                current.tenorMin <= prev.tenorMax
+              ) {
+                errors.push(
+                  new ValidationError(
+                    "Must be greater than previous slab",
+                    current,
+                    `interestRateConfigModels[${i}].tenorMin`
+                  )
+                );
+              }
+
+              if (
+                current?.tenorMin !== undefined &&
+                current?.tenorMax !== undefined &&
+                current.tenorMax < current.tenorMin
+              ) {
+                errors.push(
+                  new ValidationError(
+                    "Must be greater than min",
+                    current,
+                    `interestRateConfigModels[${i}].tenorMax`
+                  )
+                );
+              }
+            }
           }
 
-          if (
-            prevTenorMax !== undefined &&
-            currentTenorMin !== undefined &&
-            currentTenorMin <= prevTenorMax
-          ) {
-            return this.createError({
-              message: "Value  must be greater than previous slab",
-              path: `interestRateConfigModels[${i}].tenorMin`,
-            });
-          }
-          if (
-            prevPrincipalMax !== undefined &&
-            currentPrincipalMin !== undefined &&
-            currentPrincipalMin <= prevPrincipalMax
-          ) {
-            return this.createError({
-              message: "Value  must be greater than previous slab",
-              path: `interestRateConfigModels[${i}].principalMin`,
-            });
-          }
+          console.log("🚀 ~ file: form.ts:375 ~ errors:", errors);
 
-          // if (
-          //   latestPrincipalMax !== undefined &&
-          //   latestPrincipalMin !== undefined &&
-          //   latestPrincipalMax < latestPrincipalMin
-          // ) {
-          //   return this.createError({
-          //     message: "Value must be greater than min ",
-          //     path: `interestRateConfigModels[${i - 1}].principalMax`,
-          //   });
-          // }
-          // if (
-          //   latestTenorMax !== undefined &&
-          //   latestTenorMin !== undefined &&
-          //   latestTenorMax < latestTenorMin
-          // ) {
-          //   return this.createError({
-          //     message: "Value must be greater than min ",
-          //     path: `interestRateConfigModels[${i - 1}].tenorMax`,
-          //   });
-          // }
-
-          // if (
-          //   latestMax !== undefined &&
-          //   latestMin !== undefined &&
-          //   latestMax < latestMin
-          // ) {
-          //   return this.createError({
-          //     message: "Value must be greater than min ",
-          //     path: `interestRateConfigModels[${i - 1}].max`,
-          //   });
-          // }
+          if (errors.length > 0) {
+            return new ValidationError(errors);
+          }
         }
-
         return true;
       },
     }),
