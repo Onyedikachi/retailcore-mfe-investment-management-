@@ -68,6 +68,12 @@ export default function CreateButton({ children }) {
         }
       >
         <div className="relative">
+          <div
+            data-testid="click-element-test"
+            className="fixed top-0 h-2 w-2 bg-transparent z-[-4px]"
+          >
+            {" "}
+          </div>
           <span onClick={() => setIsOpen(true)}>{children}</span>
 
           {/* First level  */}

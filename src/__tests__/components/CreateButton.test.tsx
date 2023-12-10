@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import OutsideClickHandler from "react-outside-click-handler";
 import CreateButton, {
   closeButton,
   goToUrl,
@@ -111,6 +112,56 @@ describe("closeButton", () => {
     ).not.toThrow();
   });
 });
+
+// test("closes the component when clicked outside", () => {
+//   const setIsOpen = jest.fn();
+//   const setSecondActive = jest.fn();
+//   const setFourthActive = jest.fn();
+//   const setThirdActive = jest.fn();
+//   const setFirstActive = jest.fn();
+
+//   const { getByTestId } = render(
+//     <OutsideClickHandler
+//       onOutsideClick={() =>
+//         closeButton(
+//           setIsOpen,
+//           setSecondActive,
+//           setFourthActive,
+//           setThirdActive,
+//           setFirstActive
+//         )
+//       }
+//     >
+//       <CreateButton
+//         children={
+//           <div>
+//             {/* <div
+//               data-testid="click-element-test"
+//               // className="fixed top-0 h-2 w-2 bg-transparent z-[-4px]"
+//             >
+//               {" "}
+//             </div> */}
+//             <button>Create new product</button>
+//           </div>
+//         }
+//       />
+//       {/* Your component content goes here */}
+//     </OutsideClickHandler>
+//   );
+
+//   // Assume you have a testId on an element that should trigger the outside click
+//   const outsideElement = getByTestId("click-element-test");
+
+//   // Simulate a click outside the component
+//   fireEvent.click(outsideElement);
+
+//   // Assertions
+//   expect(setIsOpen).toHaveBeenCalledWith(false);
+//   expect(setSecondActive).toHaveBeenCalledWith("");
+//   expect(setFourthActive).toHaveBeenCalledWith("");
+//   expect(setThirdActive).toHaveBeenCalledWith("");
+//   expect(setFirstActive).toHaveBeenCalledWith("");
+// });
 
 describe("goToUrl", () => {
   // navigates to the provided URL using the provided navigate function
