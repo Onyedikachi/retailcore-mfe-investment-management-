@@ -235,6 +235,7 @@ export default function ProductInformation({
                   maxLength: 50,
                 })}
                 onChange={(e) => {
+                  setValue("productName", e.target.value);
                   handleName(
                     validateName,
                     e.target.value,
@@ -391,7 +392,7 @@ export default function ProductInformation({
 
         <div className="flex gap-12">
           <div className="flex flex-col gap">
-            <div className="flex  gap-2 w-[300px]">
+            <div className="flex  gap-x-2 w-[300px]">
               {" "}
               <label className=" pt-[10px]  text-base font-semibold text-[#636363]">
                 Product Life Cycle
@@ -399,7 +400,7 @@ export default function ProductInformation({
               <FormToolTip tip={toolTips.lifeCycle} />
             </div>
 
-            <div className="flex ">
+            <div className="flex gap-x-4">
               <FormDate
                 register={register}
                 inputName={"startDate"}
