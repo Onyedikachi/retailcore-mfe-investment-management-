@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import DropDown from "@app/components/DropDown";
 import { MultiSelect, DateSelect } from "@app/components/forms";
 import moment from "moment";
@@ -169,6 +170,7 @@ export default function TableComponent<TableProps>({
   const [failedText, setFailedText] = useState("");
   const [isDetailOpen, setDetailOpen] = useState(false);
 
+  const notify = (toastMessage) => toast.error(toastMessage);
   // function getdata(item, key) {}
   const handleAction = (action, items) => {
     console.log("🚀 ~ file: index.tsx:171 ~ handleAction ~ action:", action);
@@ -214,7 +216,7 @@ export default function TableComponent<TableProps>({
       return;
     }
     if (action.toLowerCase() === Actions.CONTINUE_REQUEST) {
-       navigate(
+      navigate(
         `/product-factory/investment/${encodeURIComponent(
           "term deposit"
         )}/continue/?id=${items.id}?type=draft`
@@ -259,11 +261,17 @@ export default function TableComponent<TableProps>({
       activateProduct({ id: detail?.id });
     }
     if (action.toLowerCase() === Actions.MODIFY) {
-      navigate(
-        `/product-factory/investment/${encodeURIComponent(
-          "term deposit"
-        )}/modify/?id=${detail.id}`
-      );
+      
+      console.log("🚀 ~ file: index.tsx:265 ~ handleConfirm ~ permissions:", permissions)
+      if (!permissions?.includes("CREATE_INVESTMENT_PRODUCT")) {
+        notify("You do not have permission to make changes!");
+      } else {
+        navigate(
+          `/product-factory/investment/${encodeURIComponent(
+            "term deposit"
+          )}/modify/?id=${detail.id}`
+        );
+      }
     }
   };
 
@@ -301,6 +309,7 @@ export default function TableComponent<TableProps>({
         hasMore={hasMore}
         loader={""}
       >
+        <ToastContainer />
         <div className="w-full min-h-[500px] max-h-[700px] overflow-auto">
           <table className="w-full relative">
             <thead

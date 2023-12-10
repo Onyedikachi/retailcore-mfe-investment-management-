@@ -144,7 +144,7 @@ export const investmentApi: any = createApi({
       query: (data) => {
         if (!data.id) return;
         return {
-          url: `${urls.REQUESTS}/${data.id}}`,
+          url: `${urls.REQUESTS}/${data.id}`,
           method: "get",
         };
       },

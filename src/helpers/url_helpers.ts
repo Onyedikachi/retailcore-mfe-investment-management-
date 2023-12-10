@@ -3,7 +3,7 @@ const urls = {
   PRODUCT_CREATE: "/product/add",
 
   // Requests
-  REQUESTS: "/productrequest",
+  REQUESTS: "/ProductRequest",
   REQUEST_STATS: "/productrequest/stats",
   REQUEST_ACTIVITY_LOG: "/productrequest/activitylog",
 
