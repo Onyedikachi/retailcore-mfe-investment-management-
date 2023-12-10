@@ -406,8 +406,9 @@ export const liquiditySetupSchema = yup
     part_NoticePeriod: yup
       .number()
       .typeError("Invalid value")
+      .max(10, "Max of 10 days")
       .when("part_RequireNoticeBeforeLiquidation", {
-        is: (val) => val === true,
+        is: true,
         then: (schema) => schema.required("Provide a notice period"),
         otherwise: (schema) => schema.nullable(),
       }),
@@ -423,6 +424,7 @@ export const liquiditySetupSchema = yup
     part_LiquidationPenaltyPercentage: yup
       .number()
       .typeError("Invalid value")
+      .max(100, "Value exceeded")
       .when("part_LiquidationPenalty", {
         is: (val) => parseInt(val, 10) === 2,
         then: (schema) => schema.required("Provide value"),
@@ -436,6 +438,7 @@ export const liquiditySetupSchema = yup
     early_NoticePeriod: yup
       .number()
       .typeError("Invalid value")
+      .max(7, "Max of 7 days")
       .when("early_RequireNoticeBeforeLiquidation", {
         is: (val) => val === true,
         then: (schema) => schema.required("Provide a notice period"),
@@ -453,6 +456,7 @@ export const liquiditySetupSchema = yup
     early_LiquidationPenaltyPercentage: yup
       .number()
       .typeError("Invalid value")
+      .max(100, "Value exceeded")
       .when("early_LiquidationPenalty", {
         is: (val) => parseInt(val, 10) === 2,
         then: (schema) => schema.required("Provide value"),
@@ -503,37 +507,65 @@ export const customerTypeOptions = [
   {
     id: 1,
     text: "Limited liability company",
-    value: "Limited liability company",
+    value: {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "name": "string",
+      "amount": 0
+    },
   },
   {
     id: 2,
     text: "Partnership",
-    value: "Partnership",
+    value: {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "name": "string",
+      "amount": 0
+    },
   },
   {
-    id: 2,
+    id: 3,
     text: "Religous body",
-    value: "Religous body",
+    value: {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "name": "string",
+      "amount": 0
+    },
   },
   {
-    id: 2,
+    id: 4,
     text: "Club/Association",
-    value: "Club/Association",
+    value: {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "name": "string",
+      "amount": 0
+    },
   },
   {
     id: 2,
     text: "Trust",
-    value: "trust",
+    value: {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "name": "string",
+      "amount": 0
+    },
   },
   {
     id: 2,
     text: "Public entry",
-    value: "public entry",
+    value: {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "name": "string",
+      "amount": 0
+    },
   },
   {
     id: 2,
     text: "SME",
-    value: "sme",
+    value: {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "name": "string",
+      "amount": 0
+    },
   },
 ];
 

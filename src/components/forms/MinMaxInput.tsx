@@ -19,8 +19,8 @@ interface MinMaxProps {
   isPercent?: boolean;
   isCurrency?: boolean;
   placeholder?: string;
-  max? : number
-  disableGroupSeparators?: boolean
+  max?: number;
+  disableGroupSeparators?: boolean;
 }
 export default function MinMaxInput({
   label,
@@ -42,7 +42,7 @@ export default function MinMaxInput({
   isCurrency,
   placeholder = "0",
   max,
-  disableGroupSeparators
+  disableGroupSeparators,
 }: MinMaxProps) {
   return (
     <div>
@@ -62,17 +62,16 @@ export default function MinMaxInput({
                     ? "border-red-600"
                     : "border-[#8F8F8F]"
                 }`}
-                // onChange={(e) => {
-                //   clearErrors(inputName);
-                //   setValue(inputName, e.target.valueAsNumber);
-                //   trigger(inputName);
-                // }}
+                onChange={(e) => {
+                  clearErrors(inputName);
+                  setValue(inputName, e.target.valueAsNumber);
+                  trigger(inputName);
+                }}
                 placeholder="0"
                 // maxLength={defaultLength}
                 max={max}
-                {...register(inputName, { required: true })}
+                // {...register(inputName, { required: true })}
                 defaultValue={defaultValue}
-                // aria-invalid={errors?.name ? "true" : "false"}
               />
             )}
             {isCurrency && (
@@ -84,7 +83,6 @@ export default function MinMaxInput({
                 decimalsLimit={2}
                 disableGroupSeparators={disableGroupSeparators}
                 onValueChange={(value, name) => {
-                
                   clearErrors(inputName);
                   setValue(inputName, value);
                   trigger(inputName);
