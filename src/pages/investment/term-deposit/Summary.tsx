@@ -95,7 +95,7 @@ export default function Summary() {
             <Container>
               <ProductDetail
                 detail={productData?.data}
-                oldData={productData?.data}
+                oldData={null}
               />
             </Container>
           </div>

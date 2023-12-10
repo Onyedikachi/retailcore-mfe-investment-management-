@@ -151,7 +151,6 @@ export default function PricingConfig({
     resetField("interestRateMin", { keepError: false });
   }, [watchinterestRateRangeType]);
 
-
   const checkValidations = () => {
     setError(`interestRateConfigModels[${0}].min`, {
       type: "manual",
@@ -159,17 +158,23 @@ export default function PricingConfig({
     });
   };
   const watchInterestRateConfigModels = watch("interestRateConfigModels");
- 
+
   const valuesInterestRateConfigModels = getValues("interestRateConfigModels");
- 
+
   useEffect(() => {
-    console.log("🚀 ~ file: pricing-config.tsx:163 ~ valuesInterestRateConfigModels:", valuesInterestRateConfigModels)
-    console.log("🚀 ~ file: pricing-config.tsx:162 ~ watchInterestRateConfigModels:", watchInterestRateConfigModels)
-  
+    console.log(
+      "🚀 ~ file: pricing-config.tsx:163 ~ valuesInterestRateConfigModels:",
+      valuesInterestRateConfigModels
+    );
+    console.log(
+      "🚀 ~ file: pricing-config.tsx:162 ~ watchInterestRateConfigModels:",
+      watchInterestRateConfigModels
+    );
+
     // valuesInterestRateConfigModels.forEach((item, index) => {
     //   console.log("min:", item.min);
     //   console.log("max:", item.max);
-  
+
     //   if (parseInt(watchinterestRateRangeType, 10) < 2) {
     //     if (item.min > item.max) {
     //       setError(`interestRateConfigModels[${index}].min`, {
@@ -187,23 +192,18 @@ export default function PricingConfig({
     //     }
     //   }
     // });
-  }, [valuesInterestRateConfigModels, watchinterestRateRangeType,watchInterestRateConfigModels]);
+  }, [
+    valuesInterestRateConfigModels,
+    watchinterestRateRangeType,
+    watchInterestRateConfigModels,
+  ]);
 
   const values = getValues();
 
   useEffect(() => {
     setDisabled(!isValid);
+
     if (values?.interestRateRangeType) {
-      pricingConfigSchema
-        ?.validate(values, {
-          context: { interestRateRangeType: watchinterestRateRangeType },
-        })
-        .catch(() => {
-          // console.log(
-          //   "🚀 ~ file: pricing-config.tsx:116 ~ useEffect ~ err:",
-          //   err
-          // );
-        });
     }
   }, [values]);
   useEffect(() => {
@@ -213,6 +213,12 @@ export default function PricingConfig({
       );
     }
   }, [setValue, formData]);
+
+  // pricingConfigSchema
+  //   .validate(values, {
+  //     context: values,
+  //   })
+  //   .catch((err) => {});
 
   return (
     <form id="pricingconfig" onSubmit={handleSubmit(onProceed)}>
@@ -574,7 +580,7 @@ export default function PricingConfig({
                 </div>
               ))}
 
-              <div className="flex justify-end">
+              <div className="flex justify-end mt-1">
                 <div
                   className="flex items-center gap-4 cursor-pointer text-[##636363] ml-auto"
                   onClick={addField}

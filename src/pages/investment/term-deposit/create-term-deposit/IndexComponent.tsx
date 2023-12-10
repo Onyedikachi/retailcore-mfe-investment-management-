@@ -37,7 +37,7 @@ export default function CreateTermDeposit() {
   const [searchParams] = useSearchParams();
   const stage = searchParams.get("stage");
   const id = searchParams.get("id");
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(1);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [subText, setSubText] = useState("");
   const [successText, setSuccessText] = useState("");
@@ -73,12 +73,12 @@ export default function CreateTermDeposit() {
       interestRateConfigModels: [
         {
           min: 0,
-          max: 0,
+          max: null,
           principalMin: 0,
-          principalMax: 0,
+          principalMax: null,
           tenorMin: 0,
           tenorMinUnit: 1,
-          tenorMax: 0,
+          tenorMax: null,
           tenorMaxUnit: 1,
         },
       ],
@@ -93,14 +93,16 @@ export default function CreateTermDeposit() {
       part_NoticePeriodUnit: 1,
       part_LiquidationPenalty: 0,
       part_LiquidationPenaltyPercentage: 0,
+      part_SpecificCharges: [],
+      part_specialInterestRate: 0,
       early_AllowEarlyLiquidation: false,
       early_RequireNoticeBeforeLiquidation: false,
       early_NoticePeriod: 0,
       early_NoticePeriodUnit: 1,
       early_LiquidationPenalty: 0,
       early_LiquidationPenaltyPercentage: 0,
-      specialInterestRate: 0,
-      specialCharges: [],
+      early_specialInterestRate: 0,
+      early_SpecificCharges: [],
     },
     productGlMappings: [],
     interestComputationMethod: 0,
@@ -262,6 +264,7 @@ export default function CreateTermDeposit() {
               liquidation: liquidation,
             })
           }
+          setDisabled={setDisabled}
         />
       );
       formRef = "liquiditysetup";
