@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import DatePicker, { CalendarContainer } from "react-datepicker";
-import { FaRegCalendarAlt } from "react-icons/fa";
+import { FaCalendar, FaRegCalendarAlt } from "react-icons/fa";
 import "react-datepicker/dist/react-datepicker.css";
 
 interface FormDateProps {
@@ -82,6 +82,7 @@ const FormDate: React.FC<FormDateProps> = ({
             errors && errors[inputName] ? "border-red-600" : "border-[#8F8F8F]"
           }`}
         />
+       <span className="absolute right-[2px]"> <FaCalendar /></span>
       </div>
       {errors && errors[inputName] && (
         <span className="text-sm text-danger-500">
