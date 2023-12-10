@@ -73,14 +73,14 @@ export const handleProductsDropdown = (
   } else {
     let options = DropDownOptions[status];
     if (!permissions?.includes("RE_OR_DEACTIVATE_INVESTMENT_PRODUCT")) {
-      options = options.filter(
+      options = options?.filter(
         (i: any) =>
           i.text.toLowerCase() !== "deactivate" &&
           i.text.toLowerCase() !== "activate"
       );
     }
     if (!permissions?.includes("CREATE_INVESTMENT_PRODUCT")) {
-      options = options.filter(
+      options = options?.filter(
         (i: any) =>
           i.text.toLowerCase() !== "modify" && i.text.toLowerCase() !== "clone"
       );
@@ -214,10 +214,10 @@ export default function TableComponent<TableProps>({
       return;
     }
     if (action.toLowerCase() === Actions.CONTINUE_REQUEST) {
-      s: navigate(
+       navigate(
         `/product-factory/investment/${encodeURIComponent(
           "term deposit"
-        )}/modify/?id=${items.id}?type=draft`
+        )}/continue/?id=${items.id}?type=draft`
       );
       return;
     }
@@ -257,6 +257,13 @@ export default function TableComponent<TableProps>({
     }
     if (action.toLowerCase() === Actions.ACTIVATE) {
       activateProduct({ id: detail?.id });
+    }
+    if (action.toLowerCase() === Actions.MODIFY) {
+      navigate(
+        `/product-factory/investment/${encodeURIComponent(
+          "term deposit"
+        )}/modify/?id=${detail.id}`
+      );
     }
   };
 

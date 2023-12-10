@@ -2,7 +2,18 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import TopBar, { Tabs } from "../../components/TopBar";
 import React from "react";
 import { InvestmentContext, AppContext } from "../../utils/context"; // Update with the actual path
+import { renderWithProviders } from "../../utils/test-util";
 
+const navigate = jest.fn();
+jest.mock("../../__mocks__/api/mockReactRouterDom");
+jest.mock("react-router-dom", () => ({
+  BrowserRouter: ({ children }) => <div>{children}</div>,
+  Link: ({ to, children }) => <a href={to}>{children}</a>,
+  useNavigate: jest.fn(),
+}));
+jest
+  .spyOn(require("react-router-dom"), "useNavigate")
+  .mockReturnValue(navigate);
 describe("Tabs", () => {
   // Renders a list of tabs with titles and urls
   it("should render a list of tabs with titles and urls", () => {
@@ -80,7 +91,7 @@ jest.mock("../../components/CreateButton", () => ({
 
 
 test("renders TopBar component", () => {
-  render(
+  renderWithProviders(
     <InvestmentContext.Provider value={mockInvestmentContext}>
       <AppContext.Provider value={mockAppContext}>
         <TopBar />

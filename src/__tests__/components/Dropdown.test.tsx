@@ -126,7 +126,7 @@ describe("Dropdown", () => {
     const button = getByTestId("trigger");
     fireEvent.click(button);
     // Initially, no option should have the active class
-    options.forEach((option) => {
+    options?.forEach((option) => {
       const optionButton = screen.getByText(option.text);
       expect(optionButton).not.toHaveClass("bg-[#F9E5E5]");
     });

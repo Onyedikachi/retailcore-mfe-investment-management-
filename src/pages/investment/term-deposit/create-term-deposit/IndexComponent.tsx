@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { paths } from "@app/routes/paths";
 import { Confirm, Failed, Success } from "@app/components/modals";
-import { useCreateProductMutation, useGetRequestDetailQuery } from "@app/api";
+import {
+  useCreateProductMutation,
+  useGetRequestDetailQuery,
+  useGetProductDetailQuery,
+} from "@app/api";
 import {
   Breadcrumbs,
   Loader,
@@ -146,6 +150,40 @@ export default function CreateTermDeposit() {
     },
     { skip: !id }
   );
+
+  const {
+    data: productDetails,
+    isLoading: productDetailsIsLoading,
+    isSuccess: productDetailsIsSuccess,
+  } = useGetProductDetailQuery(
+    {
+      id,
+    },
+    { skip: !id }
+  );
+
+  useEffect(() => {
+    if (productDetailsIsSuccess) {
+      console.log(
+        "🚀 ~ file: IndexComponent.tsx:164 ~ useEffect ~ productDetails:",
+        productDetails?.data
+      );
+      setProductData({
+        productInfo: productDetails?.data?.productInfo,
+        customerEligibility: productDetails?.data?.customerEligibility,
+        pricingConfiguration: productDetails?.data?.pricingConfiguration,
+        liquidation: productDetails?.data?.liquidation,
+        productGlMappings: [],
+        interestComputationMethod: 0,
+        TermDepositLiabilityAccount: "",
+        InterestAccrualAccount: "",
+        InterestExpenseAccount: "",
+        isDraft: false,
+        productType: 0,
+      });
+    }
+  }, [productDetails]);
+
   function handleNav() {
     step < termDepositFormSteps.length
       ? handleNext(step, setStep, termDepositFormSteps)
@@ -267,6 +305,10 @@ export default function CreateTermDeposit() {
   useEffect(() => {
     if (requestIsSuccess) {
       const data = JSON.parse(requestData?.data?.metaInfo);
+      console.log(
+        "🚀 ~ file: IndexComponent.tsx:270 ~ useEffect ~ data:",
+        data
+      );
 
       setProductData(convertKeysToLowerCase({ ...data }));
     }
@@ -281,10 +323,6 @@ export default function CreateTermDeposit() {
     if (isError) {
       setFailedText(Messages.PRODUCT_DRAFT_FAILED);
       setFailedSubtext(error?.message?.message);
-      console.log(
-        "🚀 ~ file: IndexComponent.tsx:287 ~ useEffect ~ error:",
-        error
-      );
       setFailed(true);
     }
   }, [isSuccess, isError, error]);

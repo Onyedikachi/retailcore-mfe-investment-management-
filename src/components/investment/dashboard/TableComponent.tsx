@@ -56,14 +56,14 @@ export const handleDropdown = (
   } else {
     let options = DropDownOptions[setOptionsByStatus(status)];
     if (!permissions?.includes("CREATE_PRODUCT")) {
-      options = options.filter(
+      options = options?.filter(
         (i: any) =>
           i.text.toLowerCase() !== "deactivate" &&
           i.text.toLowerCase() !== "activate"
       );
     }
     if (!permissions?.includes("CREATE_PRODUCT")) {
-      options = options.filter((i: any) => i.text.toLowerCase() !== "modify");
+      options = options?.filter((i: any) => i.text.toLowerCase() !== "modify");
     }
     return options;
   }

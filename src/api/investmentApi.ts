@@ -144,7 +144,7 @@ export const investmentApi: any = createApi({
       query: (data) => {
         if (!data.id) return;
         return {
-          url: `${urls.REQUESTS}/${data.id}}`,
+          url: `${urls.REQUESTS}/${data.id}`,
           method: "get",
         };
       },
@@ -222,7 +222,23 @@ export const investmentApi: any = createApi({
         return {
           url: `${urls.PRODUCT}/reactivate/${data.id}`,
           method: "put",
-         
+        };
+      },
+    }),
+
+    approveProduct: builder.mutation<{ id: string }, { id: string }>({
+      query: (data) => {
+        return {
+          url: `${urls.REQUESTS}/approve/${data.id}`,
+          method: "put",
+        };
+      },
+    }),
+    rejectProduct: builder.mutation<{ id: string }, { id: string }>({
+      query: (data) => {
+        return {
+          url: `${urls.REQUESTS}/reject/${data.id}`,
+          method: "put",
         };
       },
     }),
@@ -269,4 +285,6 @@ export const {
   useGetProductRequestActivityLogQuery,
   useGetProductDetailQuery,
   useGetRequestDetailQuery,
+  useApproveProductMutation,
+  useRejectProductMutation,
 } = investmentApi;

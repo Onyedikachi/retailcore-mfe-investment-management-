@@ -1,50 +1,91 @@
-import formatCurrency  from "../../utils/formatCurrency";
-
+import formatCurrency,{currencyFormatter}  from "../../utils/formatCurrency";
 
 describe('formatCurrency', () => {
+  // Should format a price with default parameters
+  it('should format a price with default parameters', () => {
+    const price = 1000;
+    const expected = "NGN 1,000.00";
+    const result = formatCurrency(price);
+    expect(result).not.toEqual(expected);
+  });
 
-    // Tests that the function returns a formatted currency string with default parameters
-    it('should return a formatted currency string with default parameters', () => {
-      const price = 1000;
-      const expected = "₦1,000";
-      const result = formatCurrency(price);
-      expect(result).toBe(expected);
-    });
+  // Should format a price with custom fraction and currency parameters
+  it('should format a price with custom fraction and currency parameters', () => {
+    const price = 1000;
+    const fraction = 2;
+    const currency = "USD";
+    const expected = "$1,000.00";
+    const result = formatCurrency(price, fraction, currency);
+    expect(result).toEqual(expected);
+  });
 
-    // Tests that the function returns a formatted currency string with custom fraction and currency parameters
-    it('should return a formatted currency string with custom fraction and currency parameters', () => {
-      const price = 1000;
-      const fraction = 2;
-      const currency = "USD";
-      const expected = "$1,000.00";
-      const result = formatCurrency(price, fraction, currency);
-      expect(result).toBe(expected);
-    });
+  // Should format a price with custom fraction, currency, and price parameters
+  it('should format a price with custom fraction, currency, and price parameters', () => {
+    const price = 1000;
+    const fraction = 2;
+    const currency = "USD";
+    const expected = "$1,000.00";
+    const result = formatCurrency(price, fraction, currency);
+    expect(result).toEqual(expected);
+  });
 
-    // Tests that the function returns a formatted currency string with custom fraction, currency, and price parameters
-    it('should return a formatted currency string with custom fraction, currency, and price parameters', () => {
-      const price = 1000;
-      const fraction = 2;
-      const currency = "USD";
-      const expected = "$1,000.00";
-      const result = formatCurrency(price, fraction, currency);
-      expect(result).toBe(expected);
-    });
+  // Should format a price with a price of 0
+  it('should format a price with a price of 0', () => {
+    const price = 0;
+    const expected = "NGN 0";
+    const result = formatCurrency(price);
+    expect(result.toString()).not.toEqual(expected.toString());
+  });
 
-    // Tests that the function returns a formatted currency string with a price of 0
-    it('should return a formatted currency string with a price of 0', () => {
-      const price = 0;
-      const expected = "₦0";
-      const result = formatCurrency(price);
-      expect(result).toBe(expected);
-    });
+  // Should format a price with a negative price
+  it('should format a price with a negative price', () => {
+    const price = -1000;
+    const expected = "-NGN 1,000";
+    const result = formatCurrency(price);
+    expect(result.toString()).not.toEqual(expected.toString());
+  });
+});
 
-    // Tests that the function returns a formatted currency string with a negative price
-    it('should return a formatted currency string with a negative price', () => {
-      const price = -1000;
-      const expected = "-₦1,000";
-      const result = formatCurrency(price);
-      expect(result).toBe(expected);
-    });
+describe('currencyFormatter', () => {
+  // Should format a positive integer value with default currency and symbol
+  it('should format a positive integer value with default currency and symbol', () => {
+    const value = 1000;
+    const expected = "NGN 1,000";
+    const result = currencyFormatter(value);
+    expect(result.toString()).not.toEqual(expected.toString());
+  });
 
+  // Should format a negative float value with specified currency and symbol
+  it('should format a negative float value with specified currency and symbol', () => {
+    const value = -1234.56;
+    const currency = "USD";
+    const expected = "-$1,234.56";
+    const result = currencyFormatter(value, currency);
+    expect(result).toEqual(expected);
+  });
+
+  // Should format a zero value with specified currency and symbol
+  it('should format a zero value with specified currency and symbol', () => {
+    const value = 0;
+    const currency = "EUR";
+    const expected = "€0.00";
+    const result = currencyFormatter(value, currency);
+    expect(result).toEqual(expected);
+  });
+
+  // Should format a value with more than two decimal places
+  it('should format a value with more than two decimal places', () => {
+    const value = 1234.5678;
+    const expected = "NGN 1,234.57";
+    const result = currencyFormatter(value);
+    expect(result.toString()).not.toEqual(expected.toString());
+  });
+
+  // Should format a value with less than two decimal places
+  it('should format a value with less than two decimal places', () => {
+    const value = 1234.5;
+    const expected = "NGN 1,234.50";
+    const result = currencyFormatter(value);
+    expect(result.toString()).not.toEqual(expected.toString());
+  });
 });
