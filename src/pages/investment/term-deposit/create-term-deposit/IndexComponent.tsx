@@ -173,13 +173,13 @@ export default function CreateTermDeposit() {
         customerEligibility: productDetails?.data?.customerEligibility,
         pricingConfiguration: productDetails?.data?.pricingConfiguration,
         liquidation: productDetails?.data?.liquidation,
-        productGlMappings: [],
-        interestComputationMethod: 0,
-        TermDepositLiabilityAccount: "",
-        InterestAccrualAccount: "",
-        InterestExpenseAccount: "",
-        isDraft: false,
-        productType: 0,
+        productGlMappings: productDetails?.data?.productGlMappings,
+        interestComputationMethod: productDetails?.data?.interestComputationMethod,
+        TermDepositLiabilityAccount: productDetails?.data?.TermDepositLiabilityAccount,
+        InterestAccrualAccount: productDetails?.data?.InterestAccrualAccount,
+        InterestExpenseAccount: productDetails?.data?.InterestExpenseAccount,
+        isDraft: productDetails?.data?.isDraft,
+        productType: productDetails?.data?.productType,
       });
     }
   }, [productDetails]);
