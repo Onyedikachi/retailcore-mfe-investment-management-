@@ -37,7 +37,7 @@ export default function CreateTermDeposit() {
   const [searchParams] = useSearchParams();
   const stage = searchParams.get("stage");
   const id = searchParams.get("id");
-  const [step, setStep] = useState(4);
+  const [step, setStep] = useState(1);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [subText, setSubText] = useState("");
   const [successText, setSuccessText] = useState("");
@@ -56,7 +56,7 @@ export default function CreateTermDeposit() {
     },
     customerEligibility: {
       ageGroupMin: 0,
-      ageGroupMax: null,
+      ageGroupMax: 0,
       requireDocument: [],
       corporateCustomerType: [],
       customerCategory: null,
@@ -73,17 +73,17 @@ export default function CreateTermDeposit() {
       interestRateConfigModels: [
         {
           min: 0,
-          max: null,
+          max: 0,
           principalMin: 0,
-          principalMax: null,
+          principalMax: 0,
           tenorMin: 0,
           tenorMinUnit: 1,
-          tenorMax: null,
+          tenorMax: 0,
           tenorMaxUnit: 1,
         },
       ],
       interestRateMin: 0,
-      interestRateMax: null,
+      interestRateMax: 0,
     },
     liquidation: {
       part_AllowPartLiquidation: false,

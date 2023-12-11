@@ -37,6 +37,7 @@ export default function CustomerEligibilityCriteria({
     clearErrors,
     trigger,
     setValue,
+    resetField,
     setError: assignError,
     getValues,
     formState: { errors, isValid },
@@ -53,6 +54,10 @@ export default function CustomerEligibilityCriteria({
   const values = getValues();
 
   const handleCheckedRequirement = (document) => {
+    console.log(
+      "🚀 ~ file: customer-eligibilty-criteria.tsx:56 ~ handleCheckedRequirement ~ document:",
+      document
+    );
     const isDocumentToggled = toggledRequirements.some(
       (d) => d.id === document.id
     );
@@ -105,7 +110,32 @@ export default function CustomerEligibilityCriteria({
       setSelectedRequirements(formData?.requireDocument);
     }
   }, [setValue, formData]);
+
   const watchCustomerCategory = watch("customerCategory");
+  const watchageGroupMin = watch("ageGroupMin");
+  const watchageGroupMax = watch("ageGroupMax");
+
+  useEffect(() => {
+    const fieldsToRegister = [
+      "ageGroupMin",
+      "ageGroupMax",
+      "corporateCustomerType",
+    ];
+
+    fieldsToRegister.forEach((fieldName) => {
+      clearErrors(fieldName);
+      // resetField(fieldName, { keepError: false });
+    });
+  }, [watchCustomerCategory]);
+
+  useEffect(() => {
+    trigger("ageGroupMax");
+  }, [watchageGroupMin]);
+
+  useEffect(() => {
+    trigger("ageGroupMin");
+  }, [watchageGroupMax]);
+
   return (
     <div>
       <form id="customereligibilitycriteria" onSubmit={handleSubmit(onProceed)}>
@@ -180,9 +210,11 @@ export default function CustomerEligibilityCriteria({
           </div>
         </div>
         <div className="flex justify-end mt-10">
-          <div
+          <button
+          type="button"
+            disabled={!watchCustomerCategory}
             onClick={() => setIsRequirementsOpen(true)}
-            className="cursor-pointer flex items-center gap-[10px]"
+            className="cursor-pointer flex items-center gap-[10px] disabled:opacity-60 disabled:cursor-not-allowed"
           >
             <svg
               width="29"
@@ -239,7 +271,7 @@ export default function CustomerEligibilityCriteria({
             <span className="font-medium text-[#636363]">
               Select requirements
             </span>
-          </div>
+          </button>
         </div>
         <div>
           <SelectedRequirementsTable
