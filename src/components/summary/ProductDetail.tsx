@@ -473,19 +473,60 @@ export default function ProductDetail({ detail, oldData }: any) {
                 Early Liquidation
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                <span className="block">
-                  Require notice of{" "}
-                  <span className="font-medium text-[#16252A]">
-                    {detail?.liquidation?.early_NoticePeriod}{" "}
-                    {Interval[detail?.liquidation?.early_NoticePeriodUnit]}
-                  </span>{" "}
-                  before liquidation
-                </span>
-                <span className="block">
-                  {" "}
-                  <span className=" text-[#16252A]">Penalty</span> Take a charge
-                  of {detail?.liquidation?.early_LiquidationPenaltyPercentage}%
-                </span>
+                {detail?.liquidation?.early_AllowEarlyLiquidation ? (
+                  <span className="font-normal block">
+                    {detail?.liquidation
+                      ?.early_RequireNoticeBeforeLiquidation && (
+                      <span>
+                        <span>Require notice of</span>{" "}
+                        <span className="font-bold">
+                          {detail?.liquidation?.early_NoticePeriod}
+
+                          {Interval[detail?.liquidation?.early_NoticePeriodUnit]}
+                        </span>{" "}
+                        <span>before liquidation</span>
+                      </span>
+                    )}
+                    {
+                      <p className="font-normal">
+                        <span className="font-bold">Penalty:</span>{" "}
+                        <span>
+                          {liquidities[
+                            detail?.liquidation?.early_LiquidationPenalty
+                          ] == "none" &&
+                            liquidities[
+                              detail?.liquidation?.early_LiquidationPenalty
+                            ]}
+                        </span>
+                        <span>
+                          {liquidities[
+                            detail?.liquidation?.early_LiquidationPenalty
+                          ] == "ForfietAll" && "Forfeit all accrued interest"}
+                        </span>
+                        <span>
+                          {liquidities[
+                            detail?.liquidation?.early_LiquidationPenalty
+                          ] == "ForfietPortion" &&
+                            `Forfeit a portion of accrued interest - ${detail?.liquidation?.early_LiquidationPenaltyPercentage}%`}
+                        </span>
+                        <span>
+                          {liquidities[
+                            detail?.liquidation?.early_LiquidationPenalty
+                          ] == "RecalculateInterest" &&
+                            `Recalculate accrued interest of ${detail?.liquidation?.part_specialInterestRate}`}
+                        </span>
+                        <span>
+                          {liquidities[
+                            detail?.liquidation?.early_LiquidationPenalty
+                          ] == "TakeCharge" && "Take a charge"}
+                        </span>
+                      </p>
+                    }
+                   
+                  </span>
+                ) : (
+                  "Not Applicable"
+                )}
               </div>
             </div>
           </div>
