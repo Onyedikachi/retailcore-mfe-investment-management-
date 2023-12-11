@@ -341,38 +341,49 @@ export default function ProductDetail({ detail, oldData }: any) {
                     detail?.pricingConfiguration
                   )})`
                 )}
-                   {detail?.pricingConfiguration?.interestRateRangeType == 0 && (
+                {detail?.pricingConfiguration?.interestRateRangeType == 0 && (
                   <div className="flex flex-col">
-                    <span className="block  mb-2 text-[#636363]">
-                      {" "}
-                      3 - 10% for principal between 1 - 2 months
-                    </span>
-                    <span className="block  mb-2 text-[#636363]">
-                      {" "}
-                      3 - 10% for principal between 1 - 2 months
-                    </span>
+                    {detail?.pricingConfiguration?.interestRateConfigModels?.map(
+                      (configModel, index) => (
+                        <span
+                          key={index}
+                          className="block  mb-2 text-[#636363]"
+                        >
+                          {" "}
+                          {`${configModel.min} - ${configModel.max}%`}{" "}
+                          for principal between{" "}
+                          {`${configModel.principalMin} - ${configModel.principalMax}`}{" "}
+                          months
+                        </span>
+                      )
+                    )}
                   </div>
                 )}
 
                 {detail?.pricingConfiguration?.interestRateRangeType == 1 && (
                   <div className="flex flex-col">
-                    <span className="block  mb-2 text-[#636363]">
-                      {" "}
-                      3 - 10% for tenor between 1 - 2 months
-                    </span>
-                    <span className="block  mb-2 text-[#636363]">
-                      {" "}
-                      3 - 10% for tenor between 1 - 2 months
-                    </span>
+                     {detail?.pricingConfiguration?.interestRateConfigModels?.map(
+                      (configModel, index) => (
+                        <span
+                          key={index}
+                          className="block  mb-2 text-[#636363]"
+                        >
+                          {" "}
+                          {`${configModel.min} - ${configModel.max}`}{" "}
+                          for tenor between{" "}
+                          {`${configModel.tenorMin} ${Interval[configModel.tenorMinUnit]} - ${configModel.tenorMax} ${Interval[configModel.tenorMaxUnit]}`}{" "}
+                          
+                        </span>
+                      )
+                    )}
                   </div>
                 )}
-                 {detail?.pricingConfiguration?.interestRateRangeType == 2 && (
+                {detail?.pricingConfiguration?.interestRateRangeType == 2 && (
                   <div className="flex flex-col">
                     <span className="block  mb-2 text-[#636363]">
                       {" "}
-                      {`${detail?.pricingConfiguration?.interestRateMin} - ${detail?.pricingConfiguration?.interestRateMax}%`} 
+                      {`${detail?.pricingConfiguration?.interestRateMin} - ${detail?.pricingConfiguration?.interestRateMax}%`}
                     </span>
-                  
                   </div>
                 )}
               </div>
