@@ -1,4 +1,4 @@
-export const MODULENAME = 'ProductFactory'
+export const MODULENAME = "ProductFactory";
 
 export const StatusCategories = [
   {
@@ -55,10 +55,20 @@ export const StatusRequests = [
     type: "draft",
     color: "#AAAAAA",
   },
+  {
+    id: 1,
+    type: "pending",
+    color: "#3FA2F7",
+  },
+  {
+    id: 3,
+    type: "rejected",
+    color: "#CF2A2A",
+  },
 ];
 export const CheckerStatusRequests = [
   {
-    id: 1,
+    id: null,
     type: "all",
     color: "#252C32",
   },
@@ -68,17 +78,17 @@ export const CheckerStatusRequests = [
     color: "#2FB755",
   },
   {
-    id: 3,
+    id: 1,
     type: "pending",
     color: "#3FA2F7",
   },
   {
-    id: 4,
+    id: 3,
     type: "rejected",
     color: "#CF2A2A",
   },
   {
-    id: 5,
+    id: 0,
     type: "draft",
     color: "#AAAAAA",
   },
@@ -391,8 +401,6 @@ export const interestComputationDaysOptions = [
     text: "Actual/365",
     value: 2,
   },
- 
-  
 ];
 export const LiquidityOptions = [
   {
@@ -447,4 +455,4 @@ export const ApplyOptions = [
     text: "The sum of:",
     value: "The sum of:",
   },
-]
+];

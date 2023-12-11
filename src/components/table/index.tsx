@@ -27,6 +27,7 @@ import {
   useActivateProductMutation,
   useDeleteProductRequestMutation,
 } from "@app/api";
+import Button from "../Button";
 
 interface TableProps {
   headers: any[];
@@ -230,7 +231,21 @@ export default function TableComponent<TableProps>({
         : navigate(
             `/product-factory/investment/${encodeURIComponent(
               "term deposit"
-            )}/process-summary/preview/${items.id}?category=request`
+            )}/process-summary/preview/${
+              items.id
+            }?category=request`
+          );
+      return;
+    }
+    if (action.toLowerCase() === "review") {
+      category === StatusCategoryType.AllProducts
+        ? setDetailOpen(true)
+        : navigate(
+            `/product-factory/investment/${encodeURIComponent(
+              "term deposit"
+            )}/process-summary/verdict/${
+              items.id
+            }?category=request`
           );
       return;
     }
@@ -306,15 +321,14 @@ export default function TableComponent<TableProps>({
   return (
     <div>
       {" "}
-      <ToastContainer />
-      
-        {" "}
-        <InfiniteScroll
-          dataLength={tableRows?.length}
-          next={fetchMoreData}
-          hasMore={hasMore}
-          loader={""}
-        ><div className="relative min-h-[600px] max-h-[70vh] overflow-y-auto">
+      <ToastContainer />{" "}
+      <InfiniteScroll
+        dataLength={tableRows?.length}
+        next={fetchMoreData}
+        hasMore={hasMore}
+        loader={""}
+      >
+        <div className="relative min-h-[600px] max-h-[70vh] overflow-y-auto">
           <table className="w-full relative">
             <thead
               className={`${
@@ -401,24 +415,49 @@ export default function TableComponent<TableProps>({
                               )}
                             </>
                           ) : (
-                            <ActionsCellContent
-                              dropDownOptions={
-                                type === "all products"
-                                  ? handleProductsDropdown(
-                                      item.state,
-                                      isChecker,
-                                      dropDownOptions,
-                                      item.islocked,
-                                      permissions
-                                    )
-                                  : handleDropdown(
-                                      item.requestStatus,
-                                      item.requestType,
-                                      permissions
-                                    )
-                              }
-                              onClick={(e: any) => handleAction(e, item)}
-                            />
+                            <div>
+                              {!isChecker ? (
+                                <ActionsCellContent
+                                  dropDownOptions={
+                                    type === "all products"
+                                      ? handleProductsDropdown(
+                                          item.state,
+                                          isChecker,
+                                          dropDownOptions,
+                                          item.islocked,
+                                          permissions
+                                        )
+                                      : handleDropdown(
+                                          item.requestStatus,
+                                          item.requestType,
+                                          permissions
+                                        )
+                                  }
+                                  onClick={(e: any) => handleAction(e, item)}
+                                />
+                              ) : (
+                                <>
+                               
+                                  {item?.requestStatus === "in-review" ? (
+                                    <Button
+                                      onClick={() =>
+                                        handleAction("review", item)
+                                      }
+                                      className="px-[7px] py-[6px] text-sm font-normal bg-white shadow-[0px_2px_8px_0px_rgba(0,0,0,0.25)] text-[#636363]"
+                                    >
+                                      Review
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      onClick={() => handleAction("view", item)}
+                                      className="px-[7px] py-[6px] text-sm font-normal bg-white shadow-[0px_2px_8px_0px_rgba(0,0,0,0.25)] text-[#636363]"
+                                    >
+                                      View
+                                    </Button>
+                                  )}
+                                </>
+                              )}
+                            </div>
                           )}
                         </span>
                       </td>
@@ -447,10 +486,9 @@ export default function TableComponent<TableProps>({
               </tbody>
             )}
           </table>
-          </div>
-          {isLoading && <BottomBarLoader />}
-        </InfiniteScroll>{" "}
-     
+        </div>
+        {isLoading && <BottomBarLoader />}
+      </InfiniteScroll>{" "}
       {isConfirmOpen && (
         <Confirm
           text={confirmText}
