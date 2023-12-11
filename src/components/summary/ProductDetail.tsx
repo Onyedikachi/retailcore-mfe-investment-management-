@@ -205,30 +205,6 @@ export default function ProductDetail({ detail, oldData }: any) {
 
             <div className=" flex gap-[54px]">
               <div className="w-[300px]   text-base font-medium text-[#636363]">
-                Tenure
-              </div>
-              <div className="w-full text-base font-normal text-[#636363]">
-                {oldData && oldData?.tenure !== detail.tenure && (
-                  <span className="block  line-through mb-2 text-[#aaa]">
-                    {" "}
-                    {oldData?.tenure}
-                  </span>
-                )}
-                <span className="flex itmes-center">
-                  {" "}
-                  {detail?.tenure}{" "}
-                  {oldData && oldData?.tenure !== detail?.tenure && (
-                    <span className="block text-success-500 pl-[2px]">
-                      {" "}
-                      New
-                    </span>
-                  )}
-                </span>
-              </div>
-            </div>
-
-            <div className=" flex gap-[54px]">
-              <div className="w-[300px]   text-base font-medium text-[#636363]">
                 Product life cycle
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
@@ -300,7 +276,7 @@ export default function ProductDetail({ detail, oldData }: any) {
               </div>
               <div className="w-full text-base font-normal text-[#636363] flex flex-wrap gap-x-1 gap-y-1">
                 {detail?.customerEligibility.requireDocument.map((i) => (
-                  <span className="font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
+                  <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
                     {" "}
                     {i?.name}
                   </span>
@@ -360,14 +336,56 @@ export default function ProductDetail({ detail, oldData }: any) {
                 Applicable Interest Rate Range
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                <span className="block  mb-2 text-[#636363]">
-                  {" "}
-                  3 - 10% for tenr between 1 - 2 months
-                </span>
-                <span className="block  mb-2 text-[#636363]">
-                  {" "}
-                  3 - 10% for tenr between 1 - 2 months
-                </span>
+                {console.log(
+                  `🚀 ~ file: ProductDetail.tsx:364 ~ ProductDetail ~ detail.pricingConfiguration:, (${JSON.stringify(
+                    detail?.pricingConfiguration
+                  )})`
+                )}
+                {detail?.pricingConfiguration?.interestRateRangeType == 0 && (
+                  <div className="flex flex-col">
+                    {detail?.pricingConfiguration?.interestRateConfigModels?.map(
+                      (configModel, index) => (
+                        <span
+                          key={index}
+                          className="block  mb-2 text-[#636363]"
+                        >
+                          {" "}
+                          {`${configModel.min} - ${configModel.max}%`}{" "}
+                          for principal between{" "}
+                          {`${configModel.principalMin} - ${configModel.principalMax}`}{" "}
+                          months
+                        </span>
+                      )
+                    )}
+                  </div>
+                )}
+
+                {detail?.pricingConfiguration?.interestRateRangeType == 1 && (
+                  <div className="flex flex-col">
+                     {detail?.pricingConfiguration?.interestRateConfigModels?.map(
+                      (configModel, index) => (
+                        <span
+                          key={index}
+                          className="block  mb-2 text-[#636363]"
+                        >
+                          {" "}
+                          {`${configModel.min} - ${configModel.max}`}{" "}
+                          for tenor between{" "}
+                          {`${configModel.tenorMin} ${Interval[configModel.tenorMinUnit]} - ${configModel.tenorMax} ${Interval[configModel.tenorMaxUnit]}`}{" "}
+                          
+                        </span>
+                      )
+                    )}
+                  </div>
+                )}
+                {detail?.pricingConfiguration?.interestRateRangeType == 2 && (
+                  <div className="flex flex-col">
+                    <span className="block  mb-2 text-[#636363]">
+                      {" "}
+                      {`${detail?.pricingConfiguration?.interestRateMin} - ${detail?.pricingConfiguration?.interestRateMax}%`}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
