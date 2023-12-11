@@ -1,10 +1,11 @@
 import * as yup from "yup";
 import uuid from "react-uuid";
-import { productNameRegex } from "./investment";
+import { IntervalOptions, productNameRegex } from "./investment";
 import { CustomerCategoryType } from "./enums";
 import { InterestRateRangeType } from "./testenums";
 import { convertToDays } from "@app/utils/convertToDays";
 import { ValidationError } from "yup";
+import { currencyFormatter } from "@app/utils/formatCurrency";
 
 export const ProductInformationFormSchema = yup.object({
   productName: yup
@@ -65,108 +66,19 @@ const interestRateConfigModelSchema = yup.object().shape({
   min: yup
     .number()
     .typeError("Invalid value")
-    .max(100, "Maximum value exceeded"),
-  // .transform((originalValue, originalObject) =>
-  //   originalValue === undefined
-  //     ? originalValue
-  //     : parseFloat(originalValue?.toFixed(2))
-  // ),
+    .max(100, "Maximum value exceeded")
+    .nullable(),
   max: yup
     .number()
     .typeError("Invalid value")
     .max(100, "Maximum value exceeded")
-
-    .nullable()
-    .when("$interestRateRangeType", {
-      is: (val) => val == InterestRateRangeType.VaryByPrincipal,
-      then: (schema) => schema.required().moreThan(yup.ref("min")),
-      otherwise: (schema) => schema.nullable(),
-    }),
-  tenorMin: yup
-    .number()
-    .typeError("Invalid value")
-    .when("$interestRateRangeType", {
-      is: (category) => {
-        InterestRateRangeType.VaryByTenor === parseInt(category, 10);
-      },
-      then: yup.number().required("Required").typeError("Invalid value"),
-      otherwise: yup.number().typeError("Invalid value").nullable(),
-    }),
-
-  tenorMax: yup
-    .number()
-    .typeError("Invalid value")
-    .when("$interestRateRangeType", {
-     
-      is: (category) => {
-        InterestRateRangeType.VaryByTenor === parseInt(category, 10);
-      },
-      then: yup
-        .number()
-        .typeError("Invalid value")
-        .test(
-          "max-less-than-min",
-          "Max must be greater than Min",
-          function (value) {
-            const tenorMin = this.parent.tenorMin;
-            return (
-              value === undefined || tenorMin === undefined || value > tenorMin
-            );
-          }
-        ),
-      otherwise: yup.number().typeError("Invalid value").nullable(),
-    }),
-  tenorMinUnit: yup
-    .number()
-    .typeError("Invalid value")
-    .when("$interestRateRangeType", {
-      is: InterestRateRangeType.VaryByTenor,
-      then: yup.number().required("Required").typeError("Invalid value"),
-      otherwise: yup.number().typeError("Invalid value").nullable(),
-    }),
-
-  tenorMaxUnit: yup
-    .number()
-    .typeError("Invalid value")
-    .when("$interestRateRangeType", {
-      is: InterestRateRangeType.VaryByTenor,
-      then: yup.number().required("Required").typeError("Invalid value"),
-      otherwise: yup.number().typeError("Invalid value").nullable(),
-    }),
-
-  principalMin: yup
-    .number()
-    .typeError("Invalid value")
-    .when("$interestRateRangeType", {
-      is: InterestRateRangeType.VaryByPrincipal,
-      then: yup.number().typeError("Invalid value").required("Required"),
-      otherwise: yup.number().typeError("Invalid value").nullable(),
-    }),
-
-  principalMax: yup
-    .number()
-    .typeError("Invalid value")
-    .when("$interestRateRangeType", {
-      is: (category) => {
-        InterestRateRangeType.VaryByPrincipal === parseInt(category, 10);
-      },
-      then: yup
-        .number()
-        .typeError("Invalid value")
-        .test(
-          "max-less-than-min",
-          "Max must be greater than Min",
-          function (value) {
-            const principalMin = this.parent.principalMin;
-            return (
-              value === undefined ||
-              principalMin === undefined ||
-              value > principalMin
-            );
-          }
-        ),
-      otherwise: yup.number().typeError("Invalid value").nullable(),
-    }),
+    .nullable(),
+  tenorMin: yup.number().typeError("Invalid value").nullable(),
+  tenorMax: yup.number().typeError("Invalid value").nullable(),
+  tenorMinUnit: yup.number().typeError("Invalid value").nullable(),
+  tenorMaxUnit: yup.number().typeError("Invalid value").nullable(),
+  principalMin: yup.number().typeError("Invalid value").nullable(),
+  principalMax: yup.number().typeError("Invalid value").nullable(),
 });
 
 export const pricingConfigSchema = yup.object({
@@ -275,113 +187,236 @@ export const pricingConfigSchema = yup.object({
   interestRateConfigModels: yup
     .array()
     .of(interestRateConfigModelSchema)
-    .test({
-      test: function (value) {
-        const rateType = this.parent.interestRateRangeType;
-        let errors = [];
+    .test("slab-validation", function (value) {
+      const rateType = this.parent.interestRateRangeType;
+      const appPrinMin = this.parent.applicablePrincipalMin;
 
-        for (let i = 1; i < value.length; i++) {
-          const prev = value[i - 1];
-          const current = value[i];
+      const appTenorMin = this.parent.applicableTenorMin;
+      const appTenorMinUnit = this.parent.applicableTenorMinUnit;
+      const appPrinMax = this.parent.applicablePrincipalMax;
+      const appTenorMax = this.parent.applicableTenorMax;
+      const appTenorMaxUnit = this.parent.applicableTenorMaxUnit;
+      let errors = [];
 
-          if (rateType < 2) {
+      for (let i = 0; i < value.length; i++) {
+        const prev = value[i - 1];
+        const current = value[i];
+        const last = value[value.length - 1];
+        const first = value[0];
+
+        if (rateType < 2) {
+          if (
+            [current?.min, current?.max].some(
+              (val) => val === undefined || isNaN(val) || val === null
+            )
+          ) {
+            const newerror = new ValidationError(
+              "Invalid value",
+              current,
+              `interestRateConfigModels[${i}].${
+                current?.min === undefined ||
+                isNaN(current?.min) ||
+                current?.min === null
+                  ? "min"
+                  : "max"
+              }`
+            );
+
+            errors.push(newerror);
+          }
+          if (
+            prev?.max !== undefined &&
+            current?.min !== undefined &&
+            current.min <= prev.max
+          ) {
+            errors.push(
+              new ValidationError(
+                "Minimum value must be greater than the previous slab's maximum value.",
+                current,
+                `interestRateConfigModels[${i}].min`
+              )
+            );
+          }
+
+          if (
+            current?.min !== undefined &&
+            current?.max !== undefined &&
+            current.max <= current.min
+          ) {
+            errors.push(
+              new ValidationError(
+                "Maximum value must be greater than the minimum value.",
+                current,
+                `interestRateConfigModels[${i}].max`
+              )
+            );
+          }
+
+          if (rateType === 0) {
             if (
-              prev?.max !== undefined &&
-              current?.min !== undefined &&
-              current.min <= prev.max
+              [current?.principalMax, current?.principalMin].some(
+                (val) => val === undefined || isNaN(val) || val === null
+              )
+            ) {
+              const newerror = new ValidationError(
+                "Invalid value",
+                current,
+                `interestRateConfigModels[${i}].${
+                  current?.principalMin === undefined ||
+                  isNaN(current?.principalMin) ||
+                  current?.principalMin === null
+                    ? "principalMin"
+                    : "principalMax"
+                }`
+              );
+
+              errors.push(newerror);
+            }
+            if (
+              prev?.principalMax !== undefined &&
+              current?.principalMin !== undefined &&
+              current.principalMin <= prev.principalMax
             ) {
               errors.push(
                 new ValidationError(
-                  "Must be greater than previous slab",
+                  "Principal minimum value must be greater than the previous slab's maximum principal value.",
                   current,
-                  `interestRateConfigModels[${i}].min`
+                  `interestRateConfigModels[${i}].principalMin`
                 )
               );
             }
 
             if (
-              current?.min !== undefined &&
-              current?.max !== undefined &&
-              current.max < current.min
+              current?.principalMin !== undefined &&
+              current?.principalMax !== undefined &&
+              current.principalMax <= current.principalMin
             ) {
               errors.push(
                 new ValidationError(
-                  "Must be greater than min",
+                  "Principal maximum value must be greater than the minimum principal value.",
                   current,
-                  `interestRateConfigModels[${i}].max`
+                  `interestRateConfigModels[${i}].principalMax`
                 )
               );
             }
-            
 
-            if (rateType === 0) {
-              if (
-                prev?.principalMax !== undefined &&
-                current?.principalMin !== undefined &&
-                current.principalMin <= prev.principalMax
-              ) {
-                errors.push(
-                  new ValidationError(
-                    "Must be greater than previous slab",
-                    current,
-                    `interestRateConfigModels[${i}].principalMin`
-                  )
-                );
-              }
-
-              if (
-                current?.principalMin !== undefined &&
-                current?.principalMax !== undefined &&
-                current.principalMax < current.principalMin
-              ) {
-                errors.push(
-                  new ValidationError(
-                    "Must be greater than min",
-                    current,
-                    `interestRateConfigModels[${i}].principalMax`
-                  )
-                );
-              }
+            if (
+              appPrinMax !== undefined &&
+              last?.principalMax !== undefined &&
+              last.principalMax > appPrinMax
+            ) {
+              errors.push(
+                new ValidationError(
+                  `Maximum principal is ${currencyFormatter(appPrinMax)}`,
+                  last,
+                  `interestRateConfigModels[${value.length - 1}].principalMax`
+                )
+              );
             }
 
-            if (rateType === 1) {
-              if (
-                prev?.tenorMax !== undefined &&
-                current?.tenorMin !== undefined &&
-                current.tenorMin <= prev.tenorMax
-              ) {
-                errors.push(
-                  new ValidationError(
-                    "Must be greater than previous slab",
-                    current,
-                    `interestRateConfigModels[${i}].tenorMin`
-                  )
-                );
-              }
-
-              if (
-                current?.tenorMin !== undefined &&
-                current?.tenorMax !== undefined &&
-                current.tenorMax < current.tenorMin
-              ) {
-                errors.push(
-                  new ValidationError(
-                    "Must be greater than min",
-                    current,
-                    `interestRateConfigModels[${i}].tenorMax`
-                  )
-                );
-              }
+            if (
+              appPrinMin !== undefined &&
+              first?.principalMin !== undefined &&
+              first.principalMin < appPrinMin
+            ) {
+              errors.push(
+                new ValidationError(
+                  `Minimum principal is ${currencyFormatter(appPrinMin)}`,
+                  first,
+                  `interestRateConfigModels[${0}].principalMin`
+                )
+              );
             }
           }
 
-   
-          if (errors.length > 0) {
-            return new ValidationError(errors);
+          if (rateType === 1) {
+            if (
+              [current?.tenorMax, current?.tenorMin].some(
+                (val) => val === undefined || isNaN(val) || val === null
+              )
+            ) {
+              const newerror = new ValidationError(
+                "Invalid value",
+                current,
+                `interestRateConfigModels[${i}].${
+                  current?.tenorMin === undefined ||
+                  isNaN(current?.tenorMin) ||
+                  current?.tenorMin === null
+                    ? "tenorMin"
+                    : "tenorMax"
+                }`
+              );
+
+              errors.push(newerror);
+            }
+
+            if (
+              prev?.tenorMax !== undefined &&
+              current?.tenorMin !== undefined &&
+              convertToDays(current.tenorMin, current.tenorMinUnit) <=
+                convertToDays(prev.tenorMax, prev.tenorMaxUnit)
+            ) {
+              errors.push(
+                new ValidationError(
+                  "Tenor minimum value must be greater than the previous slab's maximum tenor value.",
+                  current,
+                  `interestRateConfigModels[${i}].tenorMin`
+                )
+              );
+            }
+
+            if (
+              current?.tenorMin !== undefined &&
+              current?.tenorMax !== undefined &&
+              convertToDays(current.tenorMax, current.tenorMaxUnit) <=
+                convertToDays(current.tenorMin, current.tenorMinUnit)
+            ) {
+              errors.push(
+                new ValidationError(
+                  "Tenor maximum value must be greater than the minimum tenor value.",
+                  current,
+                  `interestRateConfigModels[${i}].tenorMax`
+                )
+              );
+            }
+
+            if (
+              appTenorMax !== undefined &&
+              last?.tenorMax !== undefined &&
+              convertToDays(last.tenorMax, last.tenorMaxUnit) >
+                convertToDays(appTenorMax, appTenorMaxUnit)
+            ) {
+              errors.push(
+                new ValidationError(
+                  `Maximum tenor  is ${appTenorMax} ${IntervalOptions[appTenorMaxUnit-1].text}`,
+                  last,
+                  `interestRateConfigModels[${value.length - 1}].tenorMax`
+                )
+              );
+            }
+            if (
+              appTenorMin !== undefined &&
+              first?.tenorMin !== undefined &&
+              convertToDays(first.tenorMin, first.tenorMinUnit) <
+                convertToDays(appTenorMin, appTenorMinUnit)
+            ) {
+              errors.push(
+                new ValidationError(
+                  `Minimum tenor is ${appTenorMin} ${IntervalOptions[appTenorMinUnit-1].text}`,
+                  first,
+                  `interestRateConfigModels[${0}].tenorMin`
+                )
+              );
+            }
           }
         }
-        return true;
-      },
+      }
+
+      if (errors.length > 0) {
+        return new ValidationError(errors);
+      }
+
+      return true;
     }),
 });
 

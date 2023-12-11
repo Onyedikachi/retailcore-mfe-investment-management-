@@ -62,11 +62,10 @@ export default function PricingConfig({
     getValues,
     trigger,
     resetField,
-    formState: { errors, isValid },
+    formState: { errors, isValid,touchedFields,dirtyFields },
   } = useForm({
     resolver: yupResolver(pricingConfigSchema),
     defaultValues: formData,
-    mode: "all",
   });
 
   const {
@@ -151,61 +150,11 @@ export default function PricingConfig({
     resetField("interestRateMin", { keepError: false });
   }, [watchinterestRateRangeType]);
 
-  const checkValidations = () => {
-    setError(`interestRateConfigModels[${0}].min`, {
-      type: "manual",
-      message: "Item is required",
-    });
-  };
-  const watchInterestRateConfigModels = watch("interestRateConfigModels");
-
-  const valuesInterestRateConfigModels = getValues("interestRateConfigModels");
-
-  useEffect(() => {
-    console.log(
-      "🚀 ~ file: pricing-config.tsx:163 ~ valuesInterestRateConfigModels:",
-      valuesInterestRateConfigModels
-    );
-    console.log(
-      "🚀 ~ file: pricing-config.tsx:162 ~ watchInterestRateConfigModels:",
-      watchInterestRateConfigModels
-    );
-
-    // valuesInterestRateConfigModels.forEach((item, index) => {
-    //   console.log("min:", item.min);
-    //   console.log("max:", item.max);
-
-    //   if (parseInt(watchinterestRateRangeType, 10) < 2) {
-    //     if (item.min > item.max) {
-    //       setError(`interestRateConfigModels[${index}].min`, {
-    //         type: "manual",
-    //         message: "Max must be greater than min",
-    //       });
-    //       setError(`interestRateConfigModels[${index}].max`, {
-    //         type: "manual",
-    //         message: "Max must be greater than min",
-    //       });
-    //     } else {
-    //       // Clear the manual errors if the condition is met
-    //       clearErrors(`interestRateConfigModels[${index}].min`);
-    //       clearErrors(`interestRateConfigModels[${index}].max`);
-    //     }
-    //   }
-    // });
-  }, [
-    valuesInterestRateConfigModels,
-    watchinterestRateRangeType,
-    watchInterestRateConfigModels,
-  ]);
-
   const values = getValues();
 
   useEffect(() => {
     setDisabled(!isValid);
-
-    console.log("🚀 ~ file: pricing-config.tsx:206 ~ useEffect ~ errors:", errors)
-    if (values?.interestRateRangeType) {
-    }
+   
   }, [values]);
   useEffect(() => {
     if (formData) {
@@ -214,12 +163,6 @@ export default function PricingConfig({
       );
     }
   }, [setValue, formData]);
-
-  // pricingConfigSchema
-  //   .validate(values, {
-  //     context: values,
-  //   })
-  //   .catch((err) => {});
 
   return (
     <form id="pricingconfig" onSubmit={handleSubmit(onProceed)}>
@@ -560,7 +503,7 @@ export default function PricingConfig({
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                       >
-                        <g clip-path="url(#clip0_49301_99370)">
+                        <g clipPath="url(#clip0_49301_99370)">
                           <path
                             d="M0.160156 2.207L2.95316 5L0.160156 7.793L2.36716 10L5.16016 7.207L7.95316 10L10.1602 7.793L7.36716 5L10.1602 2.207L7.95316 0L5.16016 2.793L2.36716 0L0.160156 2.207Z"
                             fill="#CF2A2A"
