@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
   <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/forms/FormDate.test.tsx">
-    <testCase name="FormDate component should update date on date change" duration="63"/>
+    <testCase name="FormDate component should update date on date change" duration="72"/>
+    <testCase name="FormDate component should display error message when there is an error" duration="19"/>
   </file>
 </testExecutions>

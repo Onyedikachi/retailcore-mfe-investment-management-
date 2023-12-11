@@ -29,24 +29,25 @@ describe('FormDate component', () => {
     expect(datePickerInput.value).toBe("01/01/2023");
   });
 
-  // test('should display error message when there is an error', () => {
-  //   const errors = {
-  //     testDate: { message: 'Invalid date' },
-  //   };
+  test('should display error message when there is an error', () => {
+    const errors = {
+      testDate: { message: 'Invalid date' },
+    };
 
-  //   render(
-  //     <FormDate
-  //     trigger={()=> {}}
-  //       inputName="testDate"
-  //       errors={errors}
-  //       defaultValue="2023-12-31T00:00:00.000Z"
-  //     />
-  //   );
+    render(
+      <FormDate
+        trigger={()=> {}}
+        handleChange={jest.fn()}
+        inputName="testDate"
+        errors={errors}
+        defaultValue="2023-12-31T00:00:00.000Z"
+      />
+    );
 
-  //   // Find the error message
-  //   const errorMessage = screen.getByText('Invalid date');
+    // Find the error message
+    const errorMessage = screen.getByText('Invalid date');
 
-  //   // Check if the error message is displayed
-  //   expect(errorMessage).toBeInTheDocument();
-  // });
+    // Check if the error message is displayed
+    expect(errorMessage).toBeInTheDocument();
+  });
 });
