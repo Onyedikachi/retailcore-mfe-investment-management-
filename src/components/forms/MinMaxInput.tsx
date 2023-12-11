@@ -76,6 +76,7 @@ export default function MinMaxInput({
             )}
             {isCurrency && (
               <CurrencyInput
+              
                 id={inputName}
                 name={inputName}
                 placeholder={placeholder}
