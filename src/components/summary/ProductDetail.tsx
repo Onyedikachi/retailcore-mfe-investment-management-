@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import { FaEye } from "react-icons/fa";
 import moment from "moment";
-import { CustomerCategory, Interval, ProductTypes } from "@app/constants";
+import {
+  CustomerCategory,
+  Interval,
+  liquidities,
+  ProductTypes,
+} from "@app/constants";
 import { currencyFormatter } from "@app/utils/formatCurrency";
 
 export function DebitCreditTable() {
@@ -357,7 +362,7 @@ export default function ProductDetail({ detail, oldData }: any) {
                           {`${configModel.min} - ${configModel.max}%`} for
                           principal between{" "}
                           {`${configModel.principalMin} - ${configModel.principalMax}`}{" "}
-                          months
+                          {detail?.productInfo?.currency}
                         </span>
                       )
                     )}
@@ -407,12 +412,60 @@ export default function ProductDetail({ detail, oldData }: any) {
                 Part Liquidation
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                <span className="font-normal block">
-                  Maximum of {detail?.liquidation?.part_MaxPartLiquidation}%{" "}
-                  {detail?.liquidation?.part_LiquidationPenalty === "pay" && (
-                    <span> with penalty</span>
-                  )}
-                </span>
+                {detail?.liquidation?.part_AllowPartLiquidation ? (
+                  <span className="font-normal block">
+                    {detail?.liquidation
+                      ?.part_RequireNoticeBeforeLiquidation && (
+                      <span>
+                        <span>Require notice of</span>{" "}
+                        <span className="font-bold">
+                          {detail?.liquidation?.part_NoticePeriod}
+
+                          {Interval[detail?.liquidation?.part_NoticePeriodUnit]}
+                        </span>{" "}
+                        <span>before liquidation</span>
+                      </span>
+                    )}
+                    {
+                      <p className="font-normal">
+                        <span className="font-bold">Penalty:</span>{" "}
+                        <span>
+                          {liquidities[
+                            detail?.liquidation?.part_LiquidationPenalty
+                          ] == "none" &&
+                            liquidities[
+                              detail?.liquidation?.part_LiquidationPenalty
+                            ]}
+                        </span>
+                        <span>
+                          {liquidities[
+                            detail?.liquidation?.part_LiquidationPenalty
+                          ] == "ForfietAll" && "Forfeit all accrued interest"}
+                        </span>
+                        <span>
+                          {liquidities[
+                            detail?.liquidation?.part_LiquidationPenalty
+                          ] == "ForfietPortion" &&
+                            `Forfeit a portion of accrued interest - ${detail?.liquidation?.part_LiquidationPenaltyPercentage}%`}
+                        </span>
+                        <span>
+                          {liquidities[
+                            detail?.liquidation?.part_LiquidationPenalty
+                          ] == "RecalculateInterest" &&
+                            `Recalculate accrued interest of ${detail?.liquidation?.part_specialInterestRate}`}
+                        </span>
+                        <span>
+                          {liquidities[
+                            detail?.liquidation?.part_LiquidationPenalty
+                          ] == "TakeCharge" && "Take a charge"}
+                        </span>
+                      </p>
+                    }
+                    Maximum of {detail?.liquidation?.part_MaxPartLiquidation}%
+                  </span>
+                ) : (
+                  "Not Applicable"
+                )}
               </div>
             </div>
             <div className=" flex gap-[54px]">
@@ -420,19 +473,60 @@ export default function ProductDetail({ detail, oldData }: any) {
                 Early Liquidation
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                <span className="block">
-                  Require notice of{" "}
-                  <span className="font-medium text-[#16252A]">
-                    {detail?.liquidation?.early_NoticePeriod}{" "}
-                    {Interval[detail?.liquidation?.early_NoticePeriodUnit]}
-                  </span>{" "}
-                  before liquidation
-                </span>
-                <span className="block">
-                  {" "}
-                  <span className=" text-[#16252A]">Penalty</span> Take a charge
-                  of {detail?.liquidation?.early_LiquidationPenaltyPercentage}%
-                </span>
+                {detail?.liquidation?.early_AllowEarlyLiquidation ? (
+                  <span className="font-normal block">
+                    {detail?.liquidation
+                      ?.early_RequireNoticeBeforeLiquidation && (
+                      <span>
+                        <span>Require notice of</span>{" "}
+                        <span className="font-bold">
+                          {detail?.liquidation?.early_NoticePeriod}
+
+                          {Interval[detail?.liquidation?.early_NoticePeriodUnit]}
+                        </span>{" "}
+                        <span>before liquidation</span>
+                      </span>
+                    )}
+                    {
+                      <p className="font-normal">
+                        <span className="font-bold">Penalty:</span>{" "}
+                        <span>
+                          {liquidities[
+                            detail?.liquidation?.early_LiquidationPenalty
+                          ] == "none" &&
+                            liquidities[
+                              detail?.liquidation?.early_LiquidationPenalty
+                            ]}
+                        </span>
+                        <span>
+                          {liquidities[
+                            detail?.liquidation?.early_LiquidationPenalty
+                          ] == "ForfietAll" && "Forfeit all accrued interest"}
+                        </span>
+                        <span>
+                          {liquidities[
+                            detail?.liquidation?.early_LiquidationPenalty
+                          ] == "ForfietPortion" &&
+                            `Forfeit a portion of accrued interest - ${detail?.liquidation?.early_LiquidationPenaltyPercentage}%`}
+                        </span>
+                        <span>
+                          {liquidities[
+                            detail?.liquidation?.early_LiquidationPenalty
+                          ] == "RecalculateInterest" &&
+                            `Recalculate accrued interest of ${detail?.liquidation?.part_specialInterestRate}`}
+                        </span>
+                        <span>
+                          {liquidities[
+                            detail?.liquidation?.early_LiquidationPenalty
+                          ] == "TakeCharge" && "Take a charge"}
+                        </span>
+                      </p>
+                    }
+                   
+                  </span>
+                ) : (
+                  "Not Applicable"
+                )}
               </div>
             </div>
           </div>
