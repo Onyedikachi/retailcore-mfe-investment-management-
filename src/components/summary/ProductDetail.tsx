@@ -258,18 +258,23 @@ export default function ProductDetail({ detail, oldData }: any) {
                 </span>
               </div>
             </div>
-            <div className=" flex gap-[54px]">
-              <div className="w-[300px]   text-base font-medium text-[#636363]">
-                Age group eligibility
+            {
+              detail?.productInfo?.customerCategory == 0 && (
+                <div className=" flex gap-[54px]">
+                <div className="w-[300px]   text-base font-medium text-[#636363]">
+                  Age group eligibility
+                </div>
+                <div className="w-full text-base font-normal text-[#636363]">
+                  <span className="flex itmes-center">
+                    {" "}
+                    {detail?.customerEligibility.ageGroupMin}
+                    {" - "} {detail?.customerEligibility.ageGroupMax}
+                  </span>
+                </div>
               </div>
-              <div className="w-full text-base font-normal text-[#636363]">
-                <span className="flex itmes-center">
-                  {" "}
-                  {detail?.customerEligibility.ageGroupMin}
-                  {" - "} {detail?.customerEligibility.ageGroupMax}
-                </span>
-              </div>
-            </div>
+              )
+            }
+          
             <div className=" flex gap-[54px]">
               <div className="w-[300px]   text-base font-medium text-[#636363]">
                 Documentation required
