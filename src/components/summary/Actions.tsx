@@ -5,7 +5,7 @@ import ModifySvg from "@app/assets/images/ModifySvg";
 import CancelSvg from "@app/assets/images/CancelSvg";
 import { IoArrowUndo } from "react-icons/io5";
 import ShareButton from "../ShareButton";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Confirm, Failed, Prompt, Success } from "../modals";
 import { AppContext } from "@app/utils";
 import { useApproveProductMutation, useRejectProductMutation } from "@app/api";
@@ -21,7 +21,9 @@ export default function Actions({
   handleCancel,
 }: any) {
   const { role, permissions } = useContext(AppContext);
+  const navigate = useNavigate()
   const [searchParams] = useSearchParams();
+  const { tab, type, id } = useParams();
   const sub_type = searchParams.get("sub_type");
   const { process } = useParams();
   const [action, setAction] = useState("");
@@ -96,10 +98,13 @@ export default function Actions({
   };
   const handleConfirm = () => {
     if (action === "approve") {
-      approveProduct();
+      approveProduct({ id });
     }
     if (action === "reject") {
-      rejectProduct();
+      rejectProduct({ id });
+    }
+    if (action === "cancel") {
+      navigate("/product-factory/investment?category=requests")
     }
   };
 
@@ -109,11 +114,7 @@ export default function Actions({
       setIsSuccessOpen(true);
     }
     if (approveSuccess) {
-      setSuccessText(
-        role === "superadmin"
-          ? Messages.PRODUCT_CREATE_APPROVED
-          : Messages.ADMIN_PRODUCT_CREATE_SUCCESS
-      );
+      setSuccessText(Messages.PRODUCT_CREATE_APPROVED);
       setIsSuccessOpen(true);
     }
     if (rejectIsError) {
@@ -137,42 +138,41 @@ export default function Actions({
   return (
     <div className=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-[60px] py-[40px]  ">
       {/* Submission  */}
-      {(process === "create" ||
-        process === "modify") && (
-          <div className=" flex  gap-6">
-            <button
-              onClick={handleCancel}
-              type="button"
-              className="max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"
-            >
-              <CancelSvg />
+      {(process === "create" || process === "modify") && (
+        <div className=" flex  gap-6">
+          <button
+            onClick={handleCancel}
+            type="button"
+            className="max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"
+          >
+            <CancelSvg />
 
-              <div className=" text-gray-500 text-base font-medium leading-normal">
-                Cancel
-              </div>
-            </button>
+            <div className=" text-gray-500 text-base font-medium leading-normal">
+              Cancel
+            </div>
+          </button>
 
-            <Button
-              onClick={handleModify}
-              className="ml-auto max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"
-            >
-              <ModifySvg />
-              <span className="text-gray-500 text-base font-medium leading-normal">
-                Modify
-              </span>
-            </Button>
+          <Button
+            onClick={handleModify}
+            className="ml-auto max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"
+          >
+            <ModifySvg />
+            <span className="text-gray-500 text-base font-medium leading-normal">
+              Modify
+            </span>
+          </Button>
 
-            <button
-              onClick={handleSubmit}
-              disabled={false}
-              type="submit"
-              className="px-10 py-[5px] flex items-center gap-2 justify-center text-[#ffffff] bg-sterling-red-800 rounded-lg active:scale-95"
-            >
-              <SubmitSvg />
-              <span className=" font-medium text-base">Submit</span>
-            </button>
-          </div>
-        )}
+          <button
+            onClick={handleSubmit}
+            disabled={false}
+            type="submit"
+            className="px-10 py-[5px] flex items-center gap-2 justify-center text-[#ffffff] bg-sterling-red-800 rounded-lg active:scale-95"
+          >
+            <SubmitSvg />
+            <span className=" font-medium text-base">Submit</span>
+          </button>
+        </div>
+      )}
       {/* Preview  */}
       {process == "preview" && (
         <div className=" flex  gap-x-6 justify-end">
@@ -355,6 +355,7 @@ export default function Actions({
           subtext={failedSubText}
           isOpen={isFailed}
           setIsOpen={setFailed}
+          canRetry
         />
       )}
       {(approveLoading || rejectLoading) && (

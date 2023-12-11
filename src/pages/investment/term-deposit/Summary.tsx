@@ -14,7 +14,9 @@ import {
   useGetProductActivityLogQuery,
   useGetProductDetailQuery,
   useGetProductRequestActivityLogQuery,
+  useGetRequestDetailQuery,
 } from "@app/api";
+import { rangeLabels } from "@app/constants";
 export function Container({ children }) {
   return (
     <div className="rounded-[10px] border border-[#EEE] px-12 py-10">
@@ -25,7 +27,7 @@ export function Container({ children }) {
 export default function Summary() {
   const [searchParams] = useSearchParams();
   const { tab, type, id } = useParams();
-  console.log("🚀 ~ file: Summary.tsx:28 ~ Summary ~ id:", id)
+  console.log("🚀 ~ file: Summary.tsx:28 ~ Summary ~ id:", id);
   const category = searchParams.get("category");
   const links = [
     {
@@ -76,6 +78,16 @@ export default function Summary() {
       { productrequestId: id },
       { skip: category === "product" }
     );
+  const {
+    data: requestDetail,
+    isLoading: requestDetailIsLoading,
+    isSuccess: requestDetailIsSuccess,
+  } = useGetRequestDetailQuery(
+    {
+      id,
+    },
+    { skip: category === "product" }
+  );
 
   return (
     <div className="flex flex-col min-h-[100vh] ">
@@ -90,13 +102,19 @@ export default function Summary() {
           <div className="max-h-[600px] overflow-y-auto flex flex-col gap-5">
             <ProcessingStatusSlider
               rangeLabels={["Pending submission", "Approved"]}
+              leftClass={rangeLabels[requestDetail?.data?.requestStatus]?.leftClass}
+              rightClass={rangeLabels[requestDetail?.data?.requestStatus]?.rightClass}
             />
-            <ReviewStatus status={"r"} reason={"r"} type={""} text="failed" />
-            <Container>
-              <ProductDetail
-                detail={productData?.data}
-                oldData={null}
+            {requestDetail?.data?.requestType !== 1 &&  requestDetail?.data?.requestStatus !== 1 && (
+              <ReviewStatus
+                status={requestDetail?.data?.requestStatus}
+                reason={requestDetail?.data?.requestType}
+                type={requestDetail?.data?.requestType}
+                text={requestDetail?.data?.lastComment}
               />
+            )}
+            <Container>
+              <ProductDetail detail={productData?.data} oldData={null} />
             </Container>
           </div>
 

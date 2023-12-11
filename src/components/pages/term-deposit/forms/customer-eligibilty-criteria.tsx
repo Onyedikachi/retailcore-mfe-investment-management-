@@ -211,8 +211,8 @@ export default function CustomerEligibilityCriteria({
         </div>
         <div className="flex justify-end mt-10">
           <button
-          type="button"
-            disabled={!watchCustomerCategory}
+            type="button"
+            disabled={watchCustomerCategory === null}
             onClick={() => setIsRequirementsOpen(true)}
             className="cursor-pointer flex items-center gap-[10px] disabled:opacity-60 disabled:cursor-not-allowed"
           >
