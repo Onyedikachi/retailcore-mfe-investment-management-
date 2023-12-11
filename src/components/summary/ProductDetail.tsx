@@ -83,6 +83,12 @@ export default function ProductDetail({ detail, oldData }: any) {
   //   setProductInfo(formData?.productInfo);
   // }, [formData]);
 
+  console.log(
+    `🚀 ~ file: ProductDetail.tsx:86 ~ ProductDetail ~ detail:, (${JSON.stringify(
+      detail
+    )})`
+  );
+
   return (
     <div>
       <h3 className="text-[#636363] text-[18px] font-semibold mb-[56px]">
@@ -258,9 +264,8 @@ export default function ProductDetail({ detail, oldData }: any) {
                 </span>
               </div>
             </div>
-            {
-              detail?.productInfo?.customerCategory == 0 && (
-                <div className=" flex gap-[54px]">
+            {detail?.productInfo?.customerCategory == 0 && (
+              <div className=" flex gap-[54px]">
                 <div className="w-[300px]   text-base font-medium text-[#636363]">
                   Age group eligibility
                 </div>
@@ -272,9 +277,8 @@ export default function ProductDetail({ detail, oldData }: any) {
                   </span>
                 </div>
               </div>
-              )
-            }
-          
+            )}
+
             <div className=" flex gap-[54px]">
               <div className="w-[300px]   text-base font-medium text-[#636363]">
                 Documentation required
@@ -341,11 +345,6 @@ export default function ProductDetail({ detail, oldData }: any) {
                 Applicable Interest Rate Range
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                {console.log(
-                  `🚀 ~ file: ProductDetail.tsx:364 ~ ProductDetail ~ detail.pricingConfiguration:, (${JSON.stringify(
-                    detail?.pricingConfiguration
-                  )})`
-                )}
                 {detail?.pricingConfiguration?.interestRateRangeType == 0 && (
                   <div className="flex flex-col">
                     {detail?.pricingConfiguration?.interestRateConfigModels?.map(
@@ -355,8 +354,8 @@ export default function ProductDetail({ detail, oldData }: any) {
                           className="block  mb-2 text-[#636363]"
                         >
                           {" "}
-                          {`${configModel.min} - ${configModel.max}%`}{" "}
-                          for principal between{" "}
+                          {`${configModel.min} - ${configModel.max}%`} for
+                          principal between{" "}
                           {`${configModel.principalMin} - ${configModel.principalMax}`}{" "}
                           months
                         </span>
@@ -367,17 +366,20 @@ export default function ProductDetail({ detail, oldData }: any) {
 
                 {detail?.pricingConfiguration?.interestRateRangeType == 1 && (
                   <div className="flex flex-col">
-                     {detail?.pricingConfiguration?.interestRateConfigModels?.map(
+                    {detail?.pricingConfiguration?.interestRateConfigModels?.map(
                       (configModel, index) => (
                         <span
                           key={index}
                           className="block  mb-2 text-[#636363]"
                         >
                           {" "}
-                          {`${configModel.min} - ${configModel.max}`}{" "}
-                          for tenor between{" "}
-                          {`${configModel.tenorMin} ${Interval[configModel.tenorMinUnit]} - ${configModel.tenorMax} ${Interval[configModel.tenorMaxUnit]}`}{" "}
-                          
+                          {`${configModel.min} - ${configModel.max}`} for tenor
+                          between{" "}
+                          {`${configModel.tenorMin} ${
+                            Interval[configModel.tenorMinUnit]
+                          } - ${configModel.tenorMax} ${
+                            Interval[configModel.tenorMaxUnit]
+                          }`}{" "}
                         </span>
                       )
                     )}
@@ -435,7 +437,7 @@ export default function ProductDetail({ detail, oldData }: any) {
             </div>
           </div>
         </div>
-        <div className="flex flex-col">
+        <div className="!hidden flex flex-col">
           <h4 className="text-[#636363] text-[16px] font-medium mb-[27px]">
             Charges & Taxes
           </h4>
