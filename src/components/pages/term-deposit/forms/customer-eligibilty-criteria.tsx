@@ -53,6 +53,7 @@ export default function CustomerEligibilityCriteria({
   const values = getValues();
 
   const handleCheckedRequirement = (document) => {
+    console.log("🚀 ~ file: customer-eligibilty-criteria.tsx:56 ~ handleCheckedRequirement ~ document:", document)
     const isDocumentToggled = toggledRequirements.some(
       (d) => d.id === document.id
     );
@@ -180,9 +181,10 @@ export default function CustomerEligibilityCriteria({
           </div>
         </div>
         <div className="flex justify-end mt-10">
-          <div
+          <button
+            disabled={!watchCustomerCategory}
             onClick={() => setIsRequirementsOpen(true)}
-            className="cursor-pointer flex items-center gap-[10px]"
+            className="cursor-pointer flex items-center gap-[10px] disabled:opacity-60 disabled:cursor-not-allowed"
           >
             <svg
               width="29"
@@ -239,7 +241,7 @@ export default function CustomerEligibilityCriteria({
             <span className="font-medium text-[#636363]">
               Select requirements
             </span>
-          </div>
+          </button>
         </div>
         <div>
           <SelectedRequirementsTable

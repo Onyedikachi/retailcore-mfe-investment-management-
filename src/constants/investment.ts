@@ -420,11 +420,11 @@ export const LiquidityOptions = [
     text: "Take a charge",
     value: 4,
   },
-  {
-    id: "ComparePenalties",
-    text: "Compare Penalties",
-    value: 5,
-  },
+  // {
+  //   id: "ComparePenalties",
+  //   text: "Compare Penalties",
+  //   value: 5,
+  // },
 ];
 export const ApplyOptions = [
   {
