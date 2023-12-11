@@ -29,10 +29,11 @@ export function handleValidatingName(
   nameError,
   trigger,
   charLeft,
-  clearErrors
+  clearErrors,
 ) {
   if (nameIsError) {
-    trigger("productName");
+
+    // trigger("productName");
     assignError("productName", {
       type: "custom",
       message: nameError?.message?.Message,
@@ -162,7 +163,8 @@ export default function ProductInformation({
       nameError,
       trigger,
       charLeft,
-      clearErrors
+      clearErrors,
+  
     );
   }, [nameIsSuccess, nameIsError]);
   function compareValues() {
@@ -188,10 +190,11 @@ export default function ProductInformation({
   }
 
   useEffect(() => {
-    console.log("🚀 ~ file: product-information.tsx:191 ~ isValid:", isValid);
-
     setDisabled(!isValid);
+    
+
   }, [values]);
+
   useEffect(() => {
     if (formData) {
       Object.entries(formData).forEach(([name, value]) =>
@@ -203,8 +206,7 @@ export default function ProductInformation({
   //watchers
   const watchStartDate = new Date(watch("startDate"));
   watchStartDate.setDate(watchStartDate.getDate() + 1);
-  const watchEndDate = watch("endDate");
-  const watchCurrency = watch("currency");
+
   return (
     <form id="productform" onSubmit={handleSubmit(onProceed)}>
       <div className="">
@@ -230,10 +232,6 @@ export default function ProductInformation({
                 } ${
                   isNameOkay && !errors?.productName ? "border-success-500" : ""
                 }`}
-                {...register("productName", {
-                  required: true,
-                  maxLength: 50,
-                })}
                 onChange={(e) => {
                   setValue("productName", e.target.value);
                   handleName(
