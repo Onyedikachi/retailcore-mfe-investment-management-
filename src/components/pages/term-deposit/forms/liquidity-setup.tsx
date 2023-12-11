@@ -153,6 +153,7 @@ export default function LiquiditySetup({
                           clearErrors={clearErrors}
                           defaultValue={formData?.part_MaxPartLiquidation}
                           isCurrency
+                          max={100}
                         />
                       </div>
 

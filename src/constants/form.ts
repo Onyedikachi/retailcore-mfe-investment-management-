@@ -430,7 +430,8 @@ export const liquiditySetupSchema = yup
         is: true,
         then: (schema) => schema.required("Provide value"),
         otherwise: (schema) => schema.nullable(),
-      }),
+      })
+      .max(100, "Value exceeded"),
     part_RequireNoticeBeforeLiquidation: yup
       .boolean()
       .typeError("Invalid value"),
