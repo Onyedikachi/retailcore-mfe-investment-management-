@@ -261,8 +261,10 @@ export default function TableComponent<TableProps>({
       activateProduct({ id: detail?.id });
     }
     if (action.toLowerCase() === Actions.MODIFY) {
-      
-      console.log("🚀 ~ file: index.tsx:265 ~ handleConfirm ~ permissions:", permissions)
+      console.log(
+        "🚀 ~ file: index.tsx:265 ~ handleConfirm ~ permissions:",
+        permissions
+      );
       if (!permissions?.includes("CREATE_INVESTMENT_PRODUCT")) {
         notify("You do not have permission to make changes!");
       } else {
@@ -303,14 +305,16 @@ export default function TableComponent<TableProps>({
 
   return (
     <div>
-      <InfiniteScroll
-        dataLength={tableRows?.length}
-        next={fetchMoreData}
-        hasMore={hasMore}
-        loader={""}
-      >
-        <ToastContainer />
-        <div className="w-full min-h-[500px] max-h-[700px] overflow-auto">
+      {" "}
+      <ToastContainer />
+      
+        {" "}
+        <InfiniteScroll
+          dataLength={tableRows?.length}
+          next={fetchMoreData}
+          hasMore={hasMore}
+          loader={""}
+        ><div className="relative min-h-[600px] max-h-[70vh] overflow-y-auto">
           <table className="w-full relative">
             <thead
               className={`${
@@ -443,10 +447,10 @@ export default function TableComponent<TableProps>({
               </tbody>
             )}
           </table>
-
+          </div>
           {isLoading && <BottomBarLoader />}
-        </div>
-      </InfiniteScroll>
+        </InfiniteScroll>{" "}
+     
       {isConfirmOpen && (
         <Confirm
           text={confirmText}
@@ -477,7 +481,6 @@ export default function TableComponent<TableProps>({
           setIsOpen={setFailed}
         />
       )}
-
       {isDeactivationOpen && (
         <RequestDeactivation
           isOpen={isDeactivationOpen}

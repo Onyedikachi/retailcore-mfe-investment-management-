@@ -160,11 +160,14 @@ export default function TableComponent({
   handleSearch,
   query,
   setQuery,
+  hasMore,
+  fetchMoreData
 }: any) {
   const { category, setStatus, isChecker } = useContext(InvestmentContext);
   const { permissions } = useContext(AppContext);
   const [users, setUsers] = useState([]);
   const [searchResults, setSearchResults] = useState<any[]>([]);
+
   const [options, setOptions] = React.useState({
     fieldSeparator: ",",
     quoteStrings: '"',
@@ -241,7 +244,7 @@ export default function TableComponent({
           };
         })
       );
-
+  
     return () => {
       setSearchResults([]);
     };
@@ -313,6 +316,7 @@ export default function TableComponent({
       value
     );
   };
+
   return (
     <section className="w-full h-full">
       {/* Table Top bar  */}
@@ -376,7 +380,6 @@ export default function TableComponent({
                 requestHeader.map((i) => {
                   if (i.key === "created_By" || i.key === "approved_By") {
                     i.options = users;
-                  
                   }
                   return i;
                 }),
@@ -390,8 +393,8 @@ export default function TableComponent({
         }
         page={1}
         total={20}
-        fetchMoreData={undefined}
-        hasMore={false}
+        fetchMoreData={fetchMoreData}
+        hasMore={hasMore}
         getOptionData={getOptionData}
         isLoading={isLoading}
         dropDownOptions={DropDownOptions}
