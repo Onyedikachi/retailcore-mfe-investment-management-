@@ -27,7 +27,6 @@ export function Container({ children }) {
 export default function Summary() {
   const [searchParams] = useSearchParams();
   const { tab, type, id } = useParams();
-  console.log("🚀 ~ file: Summary.tsx:28 ~ Summary ~ id:", id);
   const category = searchParams.get("category");
   const links = [
     {
