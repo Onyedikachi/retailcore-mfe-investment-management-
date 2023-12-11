@@ -54,6 +54,7 @@ export const DropdownButton = ({ options, handleClick }: any) => {
     </DropDown>
   );
 };
+
 export const handleProductsDropdown = (
   status: string,
   isChecker,
@@ -169,7 +170,6 @@ export default function TableComponent<TableProps>({
   const [failedSubText, setFailedSubtext] = useState("");
   const [failedText, setFailedText] = useState("");
   const [isDetailOpen, setDetailOpen] = useState(false);
-
   const notify = (toastMessage) => toast.error(toastMessage);
   // function getdata(item, key) {}
   const handleAction = (action, items) => {
@@ -240,6 +240,7 @@ export default function TableComponent<TableProps>({
     deleteRequest,
     { isSuccess, isError, error, isLoading: deleteLoading },
   ] = useDeleteProductRequestMutation();
+  useEffect(() => console.log(deleteLoading, isLoading), [deleteLoading, isLoading])
   const [
     activateProduct,
     {
@@ -249,6 +250,7 @@ export default function TableComponent<TableProps>({
       isLoading: activateIsLoading,
     },
   ] = useActivateProductMutation();
+
 
   const handleConfirm = () => {
     if (action.toLowerCase().includes("delete")) {

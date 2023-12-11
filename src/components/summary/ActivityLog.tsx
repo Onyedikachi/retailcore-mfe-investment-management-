@@ -31,7 +31,7 @@ export default function ActivityLog({
 
       {!isLoading &&  (
         <div className="flex flex-col">
-          {!activities  && (
+          {activities.length == 0  && (
             <span className="mt-[25px] mb-[56px] font-normal text-sm text-[#AAA]">
               No activity found
             </span>
