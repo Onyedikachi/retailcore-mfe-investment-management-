@@ -482,6 +482,7 @@ export default function PricingConfig({
                             setValue={setValue}
                             trigger={trigger}
                             clearErrors={clearErrors}
+                            type="number"
                           />
                           <div className="w-[90px]">
                             <BorderlessSelect
