@@ -145,6 +145,7 @@ export default function LiquiditySetup({
                       <div className="w-[180px]">
                         <MinMaxInput
                           register={register}
+                          isPercent={true}
                           inputName={"part_MaxPartLiquidation"}
                           errors={errors}
                           setValue={setValue}
