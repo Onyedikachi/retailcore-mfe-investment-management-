@@ -11,8 +11,6 @@ import {
   ProductOptions,
   RequestOptions,
 } from "@app/constants";
-import { useSearchParams } from "react-router-dom";
-// import { useGetRequestAnalyticsQuery } from "@app/api/requestApi";
 
 export function filterAllProductsOptions(): any[] {
   return StatusTypes;
@@ -23,7 +21,9 @@ export function filterCheckerOptions(): any[] {
 }
 
 export function filterDefaultOptions(): any[] {
-  return StatusRequests.filter((i) => i.type !== "pending" && i.type !== "rejected");
+  return StatusRequests.filter(
+    (i) => i.type !== "pending" && i.type !== "rejected"
+  );
 }
 
 // Main sorting function
@@ -210,8 +210,7 @@ export default function StatusCard({
   handleChange,
 }: any): React.JSX.Element {
   // const { permissions } = useContext(AppContext);
-  const [searchParams] = useSearchParams();
-  const queryCategory = searchParams.get("category");
+
   const [activeType, setActiveType] = useState<string | undefined>("all");
   const [productFilter, setProductFilter] = useState<string | undefined>(
     "created_by_me"
@@ -234,8 +233,12 @@ export default function StatusCard({
   }
 
   useEffect(() => {
+    handleChange({ selected: selected?.value, category, activeType: "all" });
+  }, [selected?.value]);
+
+  useEffect(() => {
     handleChange({ selected: selected?.value, category, activeType });
-  }, [selected?.value, category, activeType]);
+  }, [category, activeType]);
 
   useEffect(() => {
     if (status === "") {
@@ -246,6 +249,7 @@ export default function StatusCard({
   useEffect(() => {
     setActiveType("all");
   }, [selected]);
+
 
   useEffect(() => {
     handlePermission(

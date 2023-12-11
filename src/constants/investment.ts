@@ -456,3 +456,22 @@ export const ApplyOptions = [
     value: "The sum of:",
   },
 ];
+
+export const rangeLabels = {
+  0: {
+    leftClass: "",
+    rightClass: "",
+  },
+  1: {
+    leftClass: "opacity-40",
+    rightClass: "",
+  },
+  2: {
+    leftClass: "opacity-40",
+    rightClass: "opacity-40",
+  },
+  3: {
+    leftClass: "opacity-40",
+    rightClass: "opacity-40",
+  },
+};

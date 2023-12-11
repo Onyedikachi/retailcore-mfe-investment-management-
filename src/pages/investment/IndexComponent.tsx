@@ -21,6 +21,7 @@ import {
   TypeFilterOptions,
 } from "@app/constants";
 import { sortTabStatus } from "@app/utils/sortTabStatus";
+import { useSearchParams } from "react-router-dom";
 
 export function handleToggle(selected, setIsChecker, setHideCreate) {
   if (
@@ -33,10 +34,6 @@ export function handleToggle(selected, setIsChecker, setHideCreate) {
     setIsChecker(false);
     setHideCreate(false);
   }
-  // setQuery({
-  //   ...query,
-  //   status_In: null,
-  // });
 }
 
 export const handleChange = (
@@ -82,7 +79,8 @@ export default function IndexComponent() {
   const [category, setCategory] = useState<string>(
     StatusCategoryType?.AllProducts
   );
-
+  const [searchParams] = useSearchParams();
+  const queryCategory = searchParams.get("category");
   const [selected, setSelected] = useState<any>("");
   const [isChecker, setIsChecker] = useState(false);
   const [, setHideCreate] = useState(false);
@@ -212,6 +210,14 @@ export default function IndexComponent() {
     query.requestType_In,
     query.initiator_In,
   ]);
+  useEffect(() => {
+    setCategory(
+      queryCategory === "requests"
+        ? StatusCategoryType.Requests
+        : StatusCategoryType.AllProducts
+    );
+    setSelected("created_by_me");
+  }, [queryCategory]);
 
   useEffect(() => {
     if (query.page === 1) {
