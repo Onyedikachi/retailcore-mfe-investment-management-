@@ -402,6 +402,14 @@ export const interestComputationDaysOptions = [
     value: 2,
   },
 ];
+
+export const liquidities = {
+  0: "None",
+  1: "ForfietAll",
+  2: "ForfietPortion",
+  3: "RecalculateInterest",
+  4: "TakeCharge",
+};
 export const LiquidityOptions = [
   {
     id: "none",

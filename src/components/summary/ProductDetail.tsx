@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import { FaEye } from "react-icons/fa";
 import moment from "moment";
-import { CustomerCategory, Interval, ProductTypes } from "@app/constants";
+import {
+  CustomerCategory,
+  Interval,
+  liquidities,
+  ProductTypes,
+} from "@app/constants";
 import { currencyFormatter } from "@app/utils/formatCurrency";
 
 export function DebitCreditTable() {
@@ -82,6 +87,12 @@ export default function ProductDetail({ detail, oldData }: any) {
 
   //   setProductInfo(formData?.productInfo);
   // }, [formData]);
+
+  console.log(
+    `🚀 ~ file: ProductDetail.tsx:86 ~ ProductDetail ~ detail:, (${JSON.stringify(
+      detail
+    )})`
+  );
 
   return (
     <div>
@@ -205,30 +216,6 @@ export default function ProductDetail({ detail, oldData }: any) {
 
             <div className=" flex gap-[54px]">
               <div className="w-[300px]   text-base font-medium text-[#636363]">
-                Tenure
-              </div>
-              <div className="w-full text-base font-normal text-[#636363]">
-                {oldData && oldData?.tenure !== detail.tenure && (
-                  <span className="block  line-through mb-2 text-[#aaa]">
-                    {" "}
-                    {oldData?.tenure}
-                  </span>
-                )}
-                <span className="flex itmes-center">
-                  {" "}
-                  {detail?.tenure}{" "}
-                  {oldData && oldData?.tenure !== detail?.tenure && (
-                    <span className="block text-success-500 pl-[2px]">
-                      {" "}
-                      New
-                    </span>
-                  )}
-                </span>
-              </div>
-            </div>
-
-            <div className=" flex gap-[54px]">
-              <div className="w-[300px]   text-base font-medium text-[#636363]">
                 Product life cycle
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
@@ -282,25 +269,28 @@ export default function ProductDetail({ detail, oldData }: any) {
                 </span>
               </div>
             </div>
-            <div className=" flex gap-[54px]">
-              <div className="w-[300px]   text-base font-medium text-[#636363]">
-                Age group eligibility
+            {detail?.productInfo?.customerCategory == 0 && (
+              <div className=" flex gap-[54px]">
+                <div className="w-[300px]   text-base font-medium text-[#636363]">
+                  Age group eligibility
+                </div>
+                <div className="w-full text-base font-normal text-[#636363]">
+                  <span className="flex itmes-center">
+                    {" "}
+                    {detail?.customerEligibility.ageGroupMin}
+                    {" - "} {detail?.customerEligibility.ageGroupMax}
+                  </span>
+                </div>
               </div>
-              <div className="w-full text-base font-normal text-[#636363]">
-                <span className="flex itmes-center">
-                  {" "}
-                  {detail?.customerEligibility.ageGroupMin}
-                  {" - "} {detail?.customerEligibility.ageGroupMax}
-                </span>
-              </div>
-            </div>
+            )}
+
             <div className=" flex gap-[54px]">
               <div className="w-[300px]   text-base font-medium text-[#636363]">
                 Documentation required
               </div>
               <div className="w-full text-base font-normal text-[#636363] flex flex-wrap gap-x-1 gap-y-1">
                 {detail?.customerEligibility.requireDocument.map((i) => (
-                  <span className="font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
+                  <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
                     {" "}
                     {i?.name}
                   </span>
@@ -360,14 +350,54 @@ export default function ProductDetail({ detail, oldData }: any) {
                 Applicable Interest Rate Range
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                <span className="block  mb-2 text-[#636363]">
-                  {" "}
-                  3 - 10% for tenr between 1 - 2 months
-                </span>
-                <span className="block  mb-2 text-[#636363]">
-                  {" "}
-                  3 - 10% for tenr between 1 - 2 months
-                </span>
+                {detail?.pricingConfiguration?.interestRateRangeType == 0 && (
+                  <div className="flex flex-col">
+                    {detail?.pricingConfiguration?.interestRateConfigModels?.map(
+                      (configModel, index) => (
+                        <span
+                          key={index}
+                          className="block  mb-2 text-[#636363]"
+                        >
+                          {" "}
+                          {`${configModel.min} - ${configModel.max}%`} for
+                          principal between{" "}
+                          {`${configModel.principalMin} - ${configModel.principalMax}`}{" "}
+                          {detail?.productInfo?.currency}
+                        </span>
+                      )
+                    )}
+                  </div>
+                )}
+
+                {detail?.pricingConfiguration?.interestRateRangeType == 1 && (
+                  <div className="flex flex-col">
+                    {detail?.pricingConfiguration?.interestRateConfigModels?.map(
+                      (configModel, index) => (
+                        <span
+                          key={index}
+                          className="block  mb-2 text-[#636363]"
+                        >
+                          {" "}
+                          {`${configModel.min} - ${configModel.max}`} for tenor
+                          between{" "}
+                          {`${configModel.tenorMin} ${
+                            Interval[configModel.tenorMinUnit]
+                          } - ${configModel.tenorMax} ${
+                            Interval[configModel.tenorMaxUnit]
+                          }`}{" "}
+                        </span>
+                      )
+                    )}
+                  </div>
+                )}
+                {detail?.pricingConfiguration?.interestRateRangeType == 2 && (
+                  <div className="flex flex-col">
+                    <span className="block  mb-2 text-[#636363]">
+                      {" "}
+                      {`${detail?.pricingConfiguration?.interestRateMin} - ${detail?.pricingConfiguration?.interestRateMax}%`}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -382,12 +412,60 @@ export default function ProductDetail({ detail, oldData }: any) {
                 Part Liquidation
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                <span className="font-normal block">
-                  Maximum of {detail?.liquidation?.part_MaxPartLiquidation}%{" "}
-                  {detail?.liquidation?.part_LiquidationPenalty === "pay" && (
-                    <span> with penalty</span>
-                  )}
-                </span>
+                {detail?.liquidation?.part_AllowPartLiquidation ? (
+                  <span className="font-normal block">
+                    {detail?.liquidation
+                      ?.part_RequireNoticeBeforeLiquidation && (
+                      <span>
+                        <span>Require notice of</span>{" "}
+                        <span className="font-bold">
+                          {detail?.liquidation?.part_NoticePeriod}
+
+                          {Interval[detail?.liquidation?.part_NoticePeriodUnit]}
+                        </span>{" "}
+                        <span>before liquidation</span>
+                      </span>
+                    )}
+                    {
+                      <p className="font-normal">
+                        <span className="font-bold">Penalty:</span>{" "}
+                        <span>
+                          {liquidities[
+                            detail?.liquidation?.part_LiquidationPenalty
+                          ] == "none" &&
+                            liquidities[
+                              detail?.liquidation?.part_LiquidationPenalty
+                            ]}
+                        </span>
+                        <span>
+                          {liquidities[
+                            detail?.liquidation?.part_LiquidationPenalty
+                          ] == "ForfietAll" && "Forfeit all accrued interest"}
+                        </span>
+                        <span>
+                          {liquidities[
+                            detail?.liquidation?.part_LiquidationPenalty
+                          ] == "ForfietPortion" &&
+                            `Forfeit a portion of accrued interest - ${detail?.liquidation?.part_LiquidationPenaltyPercentage}%`}
+                        </span>
+                        <span>
+                          {liquidities[
+                            detail?.liquidation?.part_LiquidationPenalty
+                          ] == "RecalculateInterest" &&
+                            `Recalculate accrued interest of ${detail?.liquidation?.part_specialInterestRate}`}
+                        </span>
+                        <span>
+                          {liquidities[
+                            detail?.liquidation?.part_LiquidationPenalty
+                          ] == "TakeCharge" && "Take a charge"}
+                        </span>
+                      </p>
+                    }
+                    Maximum of {detail?.liquidation?.part_MaxPartLiquidation}%
+                  </span>
+                ) : (
+                  "Not Applicable"
+                )}
               </div>
             </div>
             <div className=" flex gap-[54px]">
@@ -395,24 +473,65 @@ export default function ProductDetail({ detail, oldData }: any) {
                 Early Liquidation
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                <span className="block">
-                  Require notice of{" "}
-                  <span className="font-medium text-[#16252A]">
-                    {detail?.liquidation?.early_NoticePeriod}{" "}
-                    {Interval[detail?.liquidation?.early_NoticePeriodUnit]}
-                  </span>{" "}
-                  before liquidation
-                </span>
-                <span className="block">
-                  {" "}
-                  <span className=" text-[#16252A]">Penalty</span> Take a charge
-                  of {detail?.liquidation?.early_LiquidationPenaltyPercentage}%
-                </span>
+                {detail?.liquidation?.early_AllowEarlyLiquidation ? (
+                  <span className="font-normal block">
+                    {detail?.liquidation
+                      ?.early_RequireNoticeBeforeLiquidation && (
+                      <span>
+                        <span>Require notice of</span>{" "}
+                        <span className="font-bold">
+                          {detail?.liquidation?.early_NoticePeriod}
+
+                          {Interval[detail?.liquidation?.early_NoticePeriodUnit]}
+                        </span>{" "}
+                        <span>before liquidation</span>
+                      </span>
+                    )}
+                    {
+                      <p className="font-normal">
+                        <span className="font-bold">Penalty:</span>{" "}
+                        <span>
+                          {liquidities[
+                            detail?.liquidation?.early_LiquidationPenalty
+                          ] == "none" &&
+                            liquidities[
+                              detail?.liquidation?.early_LiquidationPenalty
+                            ]}
+                        </span>
+                        <span>
+                          {liquidities[
+                            detail?.liquidation?.early_LiquidationPenalty
+                          ] == "ForfietAll" && "Forfeit all accrued interest"}
+                        </span>
+                        <span>
+                          {liquidities[
+                            detail?.liquidation?.early_LiquidationPenalty
+                          ] == "ForfietPortion" &&
+                            `Forfeit a portion of accrued interest - ${detail?.liquidation?.early_LiquidationPenaltyPercentage}%`}
+                        </span>
+                        <span>
+                          {liquidities[
+                            detail?.liquidation?.early_LiquidationPenalty
+                          ] == "RecalculateInterest" &&
+                            `Recalculate accrued interest of ${detail?.liquidation?.part_specialInterestRate}`}
+                        </span>
+                        <span>
+                          {liquidities[
+                            detail?.liquidation?.early_LiquidationPenalty
+                          ] == "TakeCharge" && "Take a charge"}
+                        </span>
+                      </p>
+                    }
+                   
+                  </span>
+                ) : (
+                  "Not Applicable"
+                )}
               </div>
             </div>
           </div>
         </div>
-        <div className="flex flex-col">
+        <div className="!hidden flex flex-col">
           <h4 className="text-[#636363] text-[16px] font-medium mb-[27px]">
             Charges & Taxes
           </h4>
