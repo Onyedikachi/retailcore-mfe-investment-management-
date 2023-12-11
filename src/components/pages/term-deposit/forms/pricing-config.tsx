@@ -203,6 +203,7 @@ export default function PricingConfig({
   useEffect(() => {
     setDisabled(!isValid);
 
+    console.log("🚀 ~ file: pricing-config.tsx:206 ~ useEffect ~ errors:", errors)
     if (values?.interestRateRangeType) {
     }
   }, [values]);

@@ -19,7 +19,6 @@ import {
   StatusFilterOptions,
   StatusTypes,
   TypeFilterOptions,
-
 } from "@app/constants";
 import { sortTabStatus } from "@app/utils/sortTabStatus";
 
@@ -92,6 +91,7 @@ export default function IndexComponent() {
   const [isRefreshing, setRefreshing] = useState<boolean>(false);
   const [requestData, setRequestData] = useState<any[]>([]);
   const [productData, setProductData] = useState<any[]>([]);
+  const [hasMore, setHasMore] = useState(true);
   const [query, setQuery] = useState({
     filter_by: "",
     status_In: [],
@@ -186,6 +186,10 @@ export default function IndexComponent() {
   });
 
   React.useEffect(() => {
+    setQuery({
+      ...query,
+      page: 1,
+    });
     if (category === StatusCategoryType.AllProducts) {
       getProducts({ ...query, page: 1 });
       prodStatRefetch({ ...query, page: 1 });
@@ -202,40 +206,70 @@ export default function IndexComponent() {
     query.start_Date,
     query.end_Date,
     query.requestType_In,
-    query.initiator_In
+    query.initiator_In,
   ]);
 
   useEffect(() => {
-    isSuccess &&
-      setProductData(
-        data.results.map((i) => {
-          return {
+    if (query.page === 1) {
+      setProductData([]);
+      setRequestData([]);
+    }
+    if (isSuccess) {
+      setProductData((prevData) => [
+        ...prevData.concat(
+          data.results.map((i) => ({
             ...i,
-            state: StatusTypes.find((n) => n.id === i.state).type,
-            productType: ProductTypes.find((n) => n.id === i.productType).name,
-          };
-        })
-      );
-    isRequestSuccess &&
-      setRequestData(
-        request.results.map((i) => {
-          return {
+            state: StatusTypes.find((n) => n.id === i.state)?.type,
+            productType: ProductTypes.find((n) => n.id === i.productType)?.name,
+          }))
+        ),
+      ]);
+      !data?.next ? setHasMore(false) : setHasMore(true);
+    }
+    if (isRequestSuccess) {
+      setRequestData((prevData) => [
+        ...prevData.concat(
+          ...request.results.map((i) => ({
             ...i,
             requestStatus: StatusFilterOptions.find(
               (n) => n.value === i.requestStatus
-            ).name,
+            )?.name,
             requestType: TypeFilterOptions.find(
               (n) => n.value === i.requestType
-            ).name,
-          };
-        })
-      );
+            )?.name,
+          }))
+        ),
+      ]);
+      !request?.next ? setHasMore(false) : setHasMore(true);
+    }
+  }, [
+    data,
+    request,
+    isSuccess,
+    isRequestSuccess,
+    isError,
+    isRequestError,
+    query.page,
+  ]);
 
-    return () => {
-      setProductData([]);
-      setRequestData([]);
-    };
-  }, [data, request, isSuccess, isRequestSuccess, isError, isRequestError]);
+  const fetchMoreData = () => {
+    setTimeout(() => {
+      setQuery((prevQuery) => {
+        const updatedPage = prevQuery.page + 1;
+        if (category === StatusCategoryType.AllProducts) {
+          getProducts({ ...prevQuery, page: updatedPage });
+          prodStatRefetch({ ...prevQuery, page: updatedPage });
+        } else {
+          getRequests({ ...prevQuery, page: updatedPage });
+          requestRefetch({ ...prevQuery, page: updatedPage });
+        }
+        return {
+          ...prevQuery,
+          page: updatedPage,
+        };
+      });
+    }, 1000);
+  };
 
   return (
     <InvestmentContext.Provider value={value}>
@@ -266,11 +300,13 @@ export default function IndexComponent() {
                   )
                 }
                 handleSearch={(value) => handleSearch(value, query, setQuery)}
-                productData={productData}
-                requestData={requestData}
+                productData={useMemo(()=> productData, [productData])}
+                requestData={useMemo(()=> requestData, [requestData])}
                 isLoading={isLoading || isRequestLoading}
                 query={query}
                 setQuery={setQuery}
+                hasMore={hasMore}
+                fetchMoreData={fetchMoreData}
               />
             </div>
           </div>
