@@ -202,6 +202,9 @@ export default function ProductInformation({
       );
     }
   }, [setValue, formData]);
+  useEffect(() => {
+   trigger()
+  }, []);
 
   //watchers
   const watchStartDate = new Date(watch("startDate"));
