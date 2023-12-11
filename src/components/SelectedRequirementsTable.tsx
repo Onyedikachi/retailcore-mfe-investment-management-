@@ -23,6 +23,7 @@ export default function SelectedRequirementsTable({
   tableItems,
   deleteTableItem,
 }: SelectedRequirementsTable) {
+
   const headers = ["s/n", "DOCUMENTATION REQUIRED", ""];
   return (
     <div className="px-4 sm:px-6 lg:px-8">
@@ -42,7 +43,7 @@ export default function SelectedRequirementsTable({
                   ))}
                 </tr>
               </thead>
-              {tableItems.length > 0 ? (
+              {tableItems && tableItems?.length > 0 ? (
                 <tbody className="divide-y divide-gray-200 bg-white">
                   {tableItems.map((document, index) => (
                     <tr key={document.id} className="bg-[#F9F2F2]">

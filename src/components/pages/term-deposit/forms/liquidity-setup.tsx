@@ -130,11 +130,11 @@ export default function LiquiditySetup({
           <ToggleInputChildren
             key={type.label}
             label={type.label}
-            inputName="part_AllowPartLiquidation"
+            inputName={type.value}
             setValue={setValue}
             trigger={trigger}
             register={register}
-            defaultValue={formData?.part_AllowPartLiquidation}
+            defaultValue={formData[type.value]}
           >
             {type.label === "Allow Part Liquidation" ? (
               <div>

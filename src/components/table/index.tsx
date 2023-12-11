@@ -220,7 +220,7 @@ export default function TableComponent<TableProps>({
       navigate(
         `/product-factory/investment/${encodeURIComponent(
           "term deposit"
-        )}/continue/?id=${items.id}?type=draft`
+        )}/continue/?id=${items.id}&type=draft`
       );
       return;
     }

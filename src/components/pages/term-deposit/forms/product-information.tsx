@@ -15,7 +15,7 @@ import {
   toolTips,
 } from "@app/constants";
 import debounce from "lodash.debounce";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useValidateNameMutation } from "@app/api";
 import moment from "moment";
 const defaultLength = 50;
@@ -29,10 +29,9 @@ export function handleValidatingName(
   nameError,
   trigger,
   charLeft,
-  clearErrors,
+  clearErrors
 ) {
   if (nameIsError) {
-
     // trigger("productName");
     assignError("productName", {
       type: "custom",
@@ -137,6 +136,9 @@ export default function ProductInformation({
   //useState
   const values = getValues();
   const productFormRef = useRef();
+  const { process } = useParams();
+  console.log("🚀 ~ file: product-information.tsx:141 ~ process:", process);
+
   const [error, setError] = useState<string>("");
   const [charLeft, setCharLeft] = useState<number>(50);
   const [sloganCharLeft, setSloganCharLeft] = useState<number>(160);
@@ -163,8 +165,7 @@ export default function ProductInformation({
       nameError,
       trigger,
       charLeft,
-      clearErrors,
-  
+      clearErrors
     );
   }, [nameIsSuccess, nameIsError]);
   function compareValues() {
@@ -191,8 +192,6 @@ export default function ProductInformation({
 
   useEffect(() => {
     setDisabled(!isValid);
-    
-
   }, [values]);
 
   useEffect(() => {
@@ -200,11 +199,11 @@ export default function ProductInformation({
       Object.entries(formData).forEach(([name, value]) =>
         setValue(name, value)
       );
+      if (process === "continue") {
+        trigger();
+      }
     }
-  }, [setValue, formData]);
-  useEffect(() => {
-   trigger()
-  }, []);
+  }, [setValue, formData, process]);
 
   //watchers
   const watchStartDate = new Date(watch("startDate"));

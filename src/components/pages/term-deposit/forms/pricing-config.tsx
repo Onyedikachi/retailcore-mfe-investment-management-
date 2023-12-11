@@ -14,6 +14,7 @@ import { pricingConfigSchema } from "@app/constants";
 import { FormToolTip } from "@app/components";
 import { toolTips } from "@app/constants";
 import { RedDot } from "@app/components/forms";
+import { useParams } from "react-router-dom";
 
 const labels = [
   "Applicable Tenor",
@@ -51,6 +52,8 @@ export default function PricingConfig({
   setDisabled,
   productData,
 }) {
+ 
+  const { process } = useParams();
   const {
     register,
     handleSubmit,
@@ -161,6 +164,10 @@ export default function PricingConfig({
       Object.entries(formData).forEach(([name, value]) =>
         setValue(name, value)
       );
+      if ( process === "continue") {
+       
+        trigger();
+      }
     }
   }, [setValue, formData]);
 

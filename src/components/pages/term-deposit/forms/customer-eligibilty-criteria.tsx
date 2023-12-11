@@ -17,6 +17,7 @@ import { SelectRequirements } from "@app/components/modals";
 import { EntriesAndEventsSearch } from "@app/components/pages/term-deposit/forms";
 import { CustomerCategoryType } from "@app/constants/enums";
 import MultiSelectForm from "@app/components/forms/MultiSelectForm";
+import { useParams } from "react-router-dom";
 
 export default function CustomerEligibilityCriteria({
   formData,
@@ -24,6 +25,7 @@ export default function CustomerEligibilityCriteria({
   setDisabled,
   proceed,
 }) {
+  const { process } = useParams();
   const [documents, setDocuments] = useState([...documentOptions]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedRequirements, setSelectedRequirements] = useState([]);
@@ -54,10 +56,6 @@ export default function CustomerEligibilityCriteria({
   const values = getValues();
 
   const handleCheckedRequirement = (document) => {
-    console.log(
-      "🚀 ~ file: customer-eligibilty-criteria.tsx:56 ~ handleCheckedRequirement ~ document:",
-      document
-    );
     const isDocumentToggled = toggledRequirements.some(
       (d) => d.id === document.id
     );
@@ -107,20 +105,21 @@ export default function CustomerEligibilityCriteria({
       Object.entries(formData).forEach(([name, value]) =>
         setValue(name, value)
       );
-      setSelectedRequirements(formData?.requireDocument);
+
+      if (formData?.requireDocument && process === "continue") {
+        setSelectedRequirements(Object.values(formData?.requireDocument));
+        trigger();
+      }
+      // setDocuments(Object.values(formData?.requireDocument));
     }
-  }, [setValue, formData]);
+  }, [setValue, formData, setSelectedRequirements]);
 
   const watchCustomerCategory = watch("customerCategory");
   const watchageGroupMin = watch("ageGroupMin");
   const watchageGroupMax = watch("ageGroupMax");
 
   useEffect(() => {
-    const fieldsToRegister = [
-      "ageGroupMin",
-      "ageGroupMax",
-      "corporateCustomerType",
-    ];
+    const fieldsToRegister = ["ageGroupMin", "ageGroupMax", "customerType"];
 
     fieldsToRegister.forEach((fieldName) => {
       clearErrors(fieldName);
@@ -135,6 +134,13 @@ export default function CustomerEligibilityCriteria({
   useEffect(() => {
     trigger("ageGroupMin");
   }, [watchageGroupMax]);
+
+  useEffect(() => {
+    console.log(
+      "🚀 ~ file: customer-eligibilty-criteria.tsx:140 ~ useEffect ~ selectedRequirements:",
+      selectedRequirements
+    );
+  }, [selectedRequirements]);
 
   return (
     <div>
@@ -161,8 +167,8 @@ export default function CustomerEligibilityCriteria({
                 <MultiSelectForm
                   labelName={"Type of corporate customer"}
                   register={register}
-                  inputName={"corporateCustomerType"}
-                  defaultValue={formData?.corporateCustomerType}
+                  inputName={"customerType"}
+                  defaultValue={formData?.customerType}
                   errors={errors}
                   setValue={setValue}
                   options={customerTypeOptions}
