@@ -166,10 +166,7 @@ export default function CreateTermDeposit() {
 
   useEffect(() => {
     if (productDetailsIsSuccess) {
-      console.log(
-        "🚀 ~ file: IndexComponent.tsx:164 ~ useEffect ~ productDetails:",
-        productDetails?.data
-      );
+
       setProductData({
         productInfo: productDetails?.data?.productInfo,
         customerEligibility: productDetails?.data?.customerEligibility,

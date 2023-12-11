@@ -23,7 +23,7 @@ export function filterCheckerOptions(): any[] {
 }
 
 export function filterDefaultOptions(): any[] {
-  return StatusRequests;
+  return StatusRequests.filter((i) => i.type !== "pending" && i.type !== "rejected");
 }
 
 // Main sorting function

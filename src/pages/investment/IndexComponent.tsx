@@ -33,6 +33,10 @@ export function handleToggle(selected, setIsChecker, setHideCreate) {
     setIsChecker(false);
     setHideCreate(false);
   }
+  // setQuery({
+  //   ...query,
+  //   status_In: null,
+  // });
 }
 
 export const handleChange = (
@@ -300,8 +304,8 @@ export default function IndexComponent() {
                   )
                 }
                 handleSearch={(value) => handleSearch(value, query, setQuery)}
-                productData={useMemo(()=> productData, [productData])}
-                requestData={useMemo(()=> requestData, [requestData])}
+                productData={useMemo(() => productData, [productData])}
+                requestData={useMemo(() => requestData, [requestData])}
                 isLoading={isLoading || isRequestLoading}
                 query={query}
                 setQuery={setQuery}
