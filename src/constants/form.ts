@@ -34,21 +34,57 @@ export const CustomerEligibilityCriteriaSchema = yup
       .number()
       .typeError("Select a category")
       .required("Select a category"),
-    ageGroupMin: yup.number().typeError("Invalid value").min(0, "Min of  0"),
+    ageGroupMin: yup
+      .number()
+      .typeError("Invalid value")
+      .when("customerCategory", {
+        is: CustomerCategoryType.Individual,
+        then: yup
+          .number()
+          .typeError("Invalid value")
+          .required("Required")
+          .min(0, "Min of 0")  .test(
+            "min-less-than-max",
+            "Must be less than Max",
+            function (value) {
+              const ageGroupMax = this.parent.ageGroupMax;
+              return (
+                value === null ||
+                value === undefined ||
+                value === 0 ||
+                ageGroupMax === undefined ||
+                value < ageGroupMax
+              );
+            }
+          ),
+        otherwise: yup.number().typeError("Invalid value").nullable(),
+      }),
     ageGroupMax: yup
       .number()
       .typeError("Invalid value")
       .nullable()
-      .min(1, "Min of  0")
-      .test("min-less-than-max", "Must be greater than Min", function (value) {
-        const ageGroupMin = this.parent.ageGroupMin;
-        return (
-          value === null ||
-          value === undefined ||
-          value === 0 ||
-          ageGroupMin === undefined ||
-          value > ageGroupMin
-        );
+      .when(["customerCategory", "ageGroupMin"], {
+        is: (cat, min) =>
+          cat === CustomerCategoryType.Individual && min !== undefined,
+        then: yup
+          .number()
+          .typeError("Invalid value")
+          .required("Required")
+          .test(
+            "min-less-than-max",
+            "Must be greater than Min",
+            function (value) {
+              const ageGroupMin = this.parent.ageGroupMin;
+              return (
+                value === null ||
+                value === undefined ||
+                value === 0 ||
+                ageGroupMin === undefined ||
+                value > ageGroupMin
+              );
+            }
+          ),
+        otherwise: yup.number().typeError("Invalid value").nullable(),
       }),
 
     corporateCustomerType: yup.array().when("customerCategory", {
@@ -388,7 +424,9 @@ export const pricingConfigSchema = yup.object({
             ) {
               errors.push(
                 new ValidationError(
-                  `Maximum tenor  is ${appTenorMax} ${IntervalOptions[appTenorMaxUnit-1].text}`,
+                  `Maximum tenor  is ${appTenorMax} ${
+                    IntervalOptions[appTenorMaxUnit - 1].text
+                  }`,
                   last,
                   `interestRateConfigModels[${value.length - 1}].tenorMax`
                 )
@@ -402,7 +440,9 @@ export const pricingConfigSchema = yup.object({
             ) {
               errors.push(
                 new ValidationError(
-                  `Minimum tenor is ${appTenorMin} ${IntervalOptions[appTenorMinUnit-1].text}`,
+                  `Minimum tenor is ${appTenorMin} ${
+                    IntervalOptions[appTenorMinUnit - 1].text
+                  }`,
                   first,
                   `interestRateConfigModels[${0}].tenorMin`
                 )

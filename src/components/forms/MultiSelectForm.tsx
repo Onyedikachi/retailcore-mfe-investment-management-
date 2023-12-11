@@ -13,7 +13,7 @@ export function handleChange(id, value, selectedOptions, setSelectedOptions) {
     setSelectedOptions([...selectedOptions, value]);
   } else {
     const arrOptions = selectedOptions.filter((i) => i !== value);
-    setSelectedOptions(arrOptions.map((i) => i.value));
+    setSelectedOptions(arrOptions);
   }
 }
 export default function MultiSelectForm({
@@ -41,23 +41,22 @@ export default function MultiSelectForm({
     register(inputName);
     setValue(inputName, selectedOptions);
     clearErrors(inputName);
-   if(selectedOptions.length){
-    trigger(inputName);
-   }
+    if (selectedOptions.length) {
+      trigger(inputName);
+    }
   }, [selectedOptions]);
 
   const handleAll = (val) => {
     if (val) {
-      setSelectedOptions(options?.map((i) => i.value));
+      setSelectedOptions(options);
     } else {
       setSelectedOptions([]);
     }
   };
   // Change selected when changing status category
   useEffect(() => {
-    if (defaultValue?.length) {
-      setSelectedOptions(defaultValue);
-    }
+    setSelectedOptions(defaultValue);
+    console.log("🚀 ~ file: MultiSelectForm.tsx:59 ~ useEffect ~ defaultValue:", defaultValue)
   }, [defaultValue]);
   return (
     <div className="relative z-40 w-full">
@@ -68,13 +67,14 @@ export default function MultiSelectForm({
       </div>
       <OutsideClickHandler onOutsideClick={() => closeDropdown(setIsOpen)}>
         <button
+          type="button"
           className={`relative w-full cursor-pointer  bg-white py-1 pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm flex items-center justify-between ${
             errors && errors[inputName] ? "border-red-600" : "border-[#8F8F8F]"
           }`}
           onClick={() => setIsOpen(!isOpen)}
         >
           <span className="block max-w-max truncate flex-1">
-            {selectedOptions?.join(",") || (
+            {selectedOptions?.map((i) => i.text).join(",") || (
               <span className="text-[#aaa]">{placeholder}</span>
             )}
           </span>
@@ -104,18 +104,18 @@ export default function MultiSelectForm({
                 </li>
                 {options?.map((item) => (
                   <li
-                    key={item.value}
+                    key={item.text}
                     className="cursor-pointer hover:bg-[#F9E5E5] py-[10px] px-6"
                   >
                     <Checkbox
                       label={item.text}
                       checked={() =>
-                        selectedOptions?.some((i) => i === item.value)
+                        selectedOptions?.some((i) => i.text === item.text)
                       }
                       onChange={() =>
                         handleChange(
                           item.id,
-                          item.value,
+                          item,
                           selectedOptions,
                           setSelectedOptions
                         )

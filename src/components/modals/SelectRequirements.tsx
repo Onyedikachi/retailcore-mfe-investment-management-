@@ -39,6 +39,7 @@ export default function SelectRequirements({
             </span>{" "}
           </div>{" "}
           <button
+            type="button"
             data-testid="cancel-btn"
             onClick={() => setIsOpen(false)}
             className="p-2 outline-none bg-transparent absolute right-6"
