@@ -26,35 +26,22 @@ const formStepItems = [
 describe("FormStepComponent", () => {
   // Renders the correct number of form step items
   it("should render the correct number of form step items when formStepItems is not empty", () => {
-    // const wrapper = shallow(
-    //   <FormStepComponent formStepItems={formStepItems} step={1} />
-    // );
-    // expect(wrapper.find(".flex.flex-col.items-center.w-[172px]").length).toBe(
-        //   formStepItems.length
-        // );
         render(
           <FormStepComponent formStepItems={formStepItems} step={1} />
         )
-        const steps = screen.getAllByTestId("form-step-label");
-        expect(steps.length).toBe(formStepItems.length)
+        const formSteps = screen.getAllByTestId("form-step-label");
+        expect(formSteps.length).toBe(formStepItems.length)
   });
 
-  // Renders the correct label for each form step item
-//   it("should render the correct label for each form step item when formStepItems is not empty", () => {
-//     const wrapper = shallow(
-//       <FormStepComponent formStepItems={formStepItems} step={2} />
-//     );
-//     formStepItems.forEach((item, index) => {
-//       expect(
-//         wrapper
-//           .find(
-//             ".uppercase.text-center.text-[#636363].leading-[1px].text-sm.font-normal"
-//           )
-//           .at(index)
-//           .text()
-//       ).toBe(item.label);
-//     });
-//   });
+//   Renders the correct label for each form step item
+  it("should render the correct label for each form step item when formStepItems is not empty", () => {
+    render(
+        <FormStepComponent formStepItems={formStepItems} step={1} />
+    )
+    const formStepLabels = screen.getAllByTestId("form-step-label").map(label => label.textContent);
+    const formStepItemLabels = formStepItems.map(item => item.label)
+    expect(formStepLabels).toEqual(formStepItemLabels);
+  });
 
 //   // Renders the correct index for each form step item
 //   it("should render the correct index for each form step item when formStepItems is not empty", () => {
