@@ -5,7 +5,12 @@ import { FaBan, FaEdit, FaPlayCircle, FaTimes } from "react-icons/fa";
 import moment from "moment";
 import ModalLayout from "./Layout";
 import BottomBarLoader from "../BottomBarLoader";
-import { CustomerCategory, Interval, ProductTypes } from "@app/constants";
+import {
+  CustomerCategory,
+  Interval,
+  ProductTypes,
+  liquidities,
+} from "@app/constants";
 import { currencyFormatter } from "@app/utils/formatCurrency";
 import { useGetProductDetailQuery } from "@app/api";
 import { AppContext } from "@app/utils";
@@ -24,17 +29,17 @@ export default function ProductDetail({
   handleClick,
   detail,
 }: Props) {
-  const data = [
-    "3% for principal between 0 and 200,000",
-    "4% for principal between 200,000 and 400,000",
-    "3% for principal between 400,000 and 600,000",
-    "3% for principal between 0 and 200,000",
-    "4% for principal between 200,000 and 400,000",
-    "3% for principal between 400,000 and 600,000",
-    "3% for principal between 0 and 200,000",
-    "4% for principal between 200,000 and 400,000",
-    "3% for principal between 400,000 and 600,000",
-  ];
+  // const data = [
+  //   "3% for principal between 0 and 200,000",
+  //   "4% for principal between 200,000 and 400,000",
+  //   "3% for principal between 400,000 and 600,000",
+  //   "3% for principal between 0 and 200,000",
+  //   "4% for principal between 200,000 and 400,000",
+  //   "3% for principal between 400,000 and 600,000",
+  //   "3% for principal between 0 and 200,000",
+  //   "4% for principal between 200,000 and 400,000",
+  //   "3% for principal between 400,000 and 600,000",
+  // ];
   const {
     data: productData,
     isLoading,
@@ -352,18 +357,83 @@ export default function ProductDetail({
                       <span className="font-bold block mb-[15px]">
                         Part Liquidation
                       </span>
-                      <span className="font-normal block">
-                        Maximum of{" "}
-                        {
-                          productData?.data?.liquidation
-                            ?.part_MaxPartLiquidation
-                        }
-                        %{" "}
+                      <div className="w-full text-base font-normal text-[#636363]">
                         {productData?.data?.liquidation
-                          ?.part_LiquidationPenalty === "pay" && (
-                          <span> with penalty</span>
+                          ?.part_AllowPartLiquidation ? (
+                          <span className="font-normal block">
+                            {productData?.data?.liquidation
+                              ?.part_RequireNoticeBeforeLiquidation && (
+                              <span>
+                                <span>Require notice of</span>{" "}
+                                <span className="font-bold">
+                                  {
+                                    productData?.data?.liquidation
+                                      ?.part_NoticePeriod
+                                  }
+
+                                  {
+                                    Interval[
+                                      productData?.data?.liquidation
+                                        ?.part_NoticePeriodUnit
+                                    ]
+                                  }
+                                </span>{" "}
+                                <span>before liquidation</span>
+                              </span>
+                            )}
+                            {
+                              <p className="font-normal">
+                                <span className="font-bold">Penalty:</span>{" "}
+                                <span>
+                                  {liquidities[
+                                    productData?.data?.liquidation
+                                      ?.part_LiquidationPenalty
+                                  ] == "none" &&
+                                    liquidities[
+                                      productData?.data?.liquidation
+                                        ?.part_LiquidationPenalty
+                                    ]}
+                                </span>
+                                <span>
+                                  {liquidities[
+                                    productData?.data?.liquidation
+                                      ?.part_LiquidationPenalty
+                                  ] == "ForfietAll" &&
+                                    "Forfeit all accrued interest"}
+                                </span>
+                                <span>
+                                  {liquidities[
+                                    productData?.data?.liquidation
+                                      ?.part_LiquidationPenalty
+                                  ] == "ForfietPortion" &&
+                                    `Forfeit a portion of accrued interest - ${productData?.data?.liquidation?.part_LiquidationPenaltyPercentage}%`}
+                                </span>
+                                <span>
+                                  {liquidities[
+                                    productData?.data?.liquidation
+                                      ?.part_LiquidationPenalty
+                                  ] == "RecalculateInterest" &&
+                                    `Recalculate accrued interest of ${productData?.data?.liquidation?.part_LiquidationPenaltyPercentage}%`}
+                                </span>
+                                <span>
+                                  {liquidities[
+                                    productData?.data?.liquidation
+                                      ?.part_LiquidationPenalty
+                                  ] == "TakeCharge" && "Take a charge"}
+                                </span>
+                              </p>
+                            }
+                            Maximum of{" "}
+                            {
+                              productData?.data?.liquidation
+                                ?.part_MaxPartLiquidation
+                            }
+                            % of principal
+                          </span>
+                        ) : (
+                          "Not Applicable"
                         )}
-                      </span>
+                      </div>
                     </div>
                   )}
                   {productData?.data?.liquidation
@@ -372,12 +442,73 @@ export default function ProductDetail({
                       <span className="font-bold block mb-[15px]">
                         Early Liquidation
                       </span>
-                      <span className="font-normal block">
-                        Allowed{" "}
-                        {productData?.data?.liquidation
-                          ?.early_LiquidationPenalty === "pay" &&
-                          "with penalty"}
-                      </span>
+                      <div className="w-full text-base font-normal text-[#636363]">
+                        {productData?.data?.liquidation?.early_AllowEarlyLiquidation ? (
+                          <span className="font-normal block">
+                            {productData?.data?.liquidation
+                              ?.early_RequireNoticeBeforeLiquidation && (
+                              <span>
+                                <span>Require notice of</span>{" "}
+                                <span className="font-bold">
+                                  {productData?.data?.liquidation?.early_NoticePeriod}
+
+                                  {
+                                    Interval[
+                                      productData?.data?.liquidation
+                                        ?.early_NoticePeriodUnit
+                                    ]
+                                  }
+                                </span>{" "}
+                                <span>before liquidation</span>
+                              </span>
+                            )}
+                            {
+                              <p className="font-normal">
+                                <span className="font-bold">Penalty:</span>{" "}
+                                <span>
+                                  {liquidities[
+                                    productData?.data?.liquidation
+                                      ?.early_LiquidationPenalty
+                                  ] == "none" &&
+                                    liquidities[
+                                      productData?.data?.liquidation
+                                        ?.early_LiquidationPenalty
+                                    ]}
+                                </span>
+                                <span>
+                                  {liquidities[
+                                    productData?.data?.liquidation
+                                      ?.early_LiquidationPenalty
+                                  ] == "ForfietAll" &&
+                                    "Forfeit all accrued interest"}
+                                </span>
+                                <span>
+                                  {liquidities[
+                                    productData?.data?.liquidation
+                                      ?.early_LiquidationPenalty
+                                  ] == "ForfietPortion" &&
+                                    `Forfeit a portion of accrued interest - ${productData?.data?.liquidation?.early_LiquidationPenaltyPercentage}%`}
+                                </span>
+                                <span>
+                                  {liquidities[
+                                    productData?.data?.liquidation
+                                      ?.early_LiquidationPenalty
+                                  ] == "RecalculateInterest" &&
+                                    `Recalculate accrued interest of ${productData?.data?.liquidation?.early_LiquidationPenaltyPercentage}%`}
+                                </span>
+                                <span>
+                                  {liquidities[
+                                    productData?.data?.liquidation
+                                      ?.early_LiquidationPenalty
+                                  ] == "TakeCharge" && "Take a charge"}
+                                </span>
+                              </p>
+                            }
+                          </span>
+                        ) : (
+                          "Not Applicable"
+                        )}
+                      </div>
                     </div>
                   )}
 
