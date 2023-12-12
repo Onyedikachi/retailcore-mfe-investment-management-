@@ -16,7 +16,7 @@ import {
   useGetProductRequestActivityLogQuery,
   useGetRequestDetailQuery,
 } from "@app/api";
-import { rangeLabels } from "@app/constants";
+import { rangeLabels, summaryLinks } from "@app/constants";
 export function Container({ children }) {
   return (
     <div className="rounded-[10px] border border-[#EEE] px-12 py-10">
@@ -28,37 +28,7 @@ export default function Summary() {
   const [searchParams] = useSearchParams();
   const { tab, type, id } = useParams();
   const category = searchParams.get("category");
-  const links = [
-    {
-      id: 1,
-      title: "Product Factory",
-      url: "/product-factory/dashboard/deposit",
-    },
-    {
-      id: 2,
-      title: "Investment",
-      url: "/product-factory/investment",
-    },
-    {
-      id: 3,
-      title: type,
-      url: "#",
-    },
-    {
-      id: 4,
-      title: "Process summary",
-      url: "#",
-    },
-  ];
-
-  const staticDetails = {
-    name: "Term deposit 1",
-    slogan: "We deposit",
-    description: "We really deposit",
-    currency: "NGN",
-    tenure: "12 years",
-    productLifeCycle: "",
-  };
+ 
 
   const [state, setState] = useState();
   // Fetch product data
@@ -94,7 +64,9 @@ export default function Summary() {
         <h1 className="text-[#747373] text-[24px] font-bold mb-7 uppercase">
           Process summary
         </h1>
-        <Breadcrumbs links={links} />
+        <Breadcrumbs  links={summaryLinks.map((i) =>
+            i.id === 3 ? { ...i, title: type } : i
+          )}/>
       </div>{" "}
       <div className="w-full flex gap-6 h-full px-[37px] py-[30px] bg-[#F7F7F7]">
         <div className="flex-1   bg-[#ffffff] rounded-md px-[100px] pt-[54px] pb-[49px] flex flex-col gap-5">

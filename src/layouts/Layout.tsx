@@ -20,14 +20,17 @@ const Layout = () => {
       setRole,
       permissions,
     }),
+    
     [role, setRole, permissions]
+   
   );
   useEffect(() => {
     auth$?.subscribe((value) => {
       setPermissions(
         value?.user?.user_permissions || []
+      
       );
-
+      console.log("🚀 ~ file: Layout.tsx:31 ~ auth$?.subscribe ~ value?.user?.user_permissions:", value?.user?.user_permissions)
       handleRole(setRole, value);
     });
   }, []);

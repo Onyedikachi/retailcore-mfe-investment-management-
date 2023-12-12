@@ -301,7 +301,7 @@ export default function ProductInformation({
                 data-testid="investment-slogan"
                 className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB] ${
                   errors?.slogan || error ? "border-red-500" : ""
-                }${isSloganOkay && !errors?.slogan ? "" : ""}`}
+                }`}
                 {...register("slogan", {
                   maxLength: 160,
                 })}

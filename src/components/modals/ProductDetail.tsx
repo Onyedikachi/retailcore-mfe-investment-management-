@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { IoArrowUndo } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { FaBan, FaEdit, FaPlayCircle, FaTimes } from "react-icons/fa";
@@ -8,6 +8,7 @@ import BottomBarLoader from "../BottomBarLoader";
 import { CustomerCategory, Interval, ProductTypes } from "@app/constants";
 import { currencyFormatter } from "@app/utils/formatCurrency";
 import { useGetProductDetailQuery } from "@app/api";
+import { AppContext } from "@app/utils";
 
 interface Props {
   isOpen: boolean;
@@ -38,6 +39,7 @@ export default function ProductDetail({
     id: detail.id,
   });
   const [open, setOpen] = useState(false);
+  const { permissions } = useContext(AppContext);
 
   // React.useEffect(()=>{
 
@@ -151,47 +153,50 @@ export default function ProductDetail({
                     <span className="font-normal block">
                       {
                         CustomerCategory[
-                          productData?.data?.productInfo?.customerCategory
+                          productData?.data?.customerEligibility
+                            ?.customerCategory
                         ]
                       }{" "}
                     </span>
                   </div>
                 </div>
                 <div className="border border-[#E5E9EB] rounded-lg py-[35px] px-[30px] flex justify-between items-center">
-                  {/* {!isChecker && permissions?.includes("CREATE_BRANCH") && ( */}
                   <div className="flex gap-x-6 items-center">
-                    <button
-                      data-testid="modify"
-                      onClick={() => {}}
-                      className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3`}
-                    >
-                      <FaEdit className="text-[#D4A62F]" /> Modify
-                    </button>
-
-                    {/* {permissions?.includes("CREATE_BRANCH") && ( */}
-                    <>
-                      {detail?.state !== "active" ? (
-                        <button
-                          type="button"
-                          data-testid="activate-btn"
-                          onClick={() => handleClick("activate", detail)}
-                          className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
-                        >
-                          <FaPlayCircle className="text-[#2FB755]" /> Activate
-                        </button>
-                      ) : (
-                        <button
-                          data-testid="deactivate-btn"
-                          onClick={() => handleClick("deactivate", detail)}
-                          className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
-                        >
-                          <FaBan className="text-sterling-red-800" /> Deactivate
-                        </button>
-                      )}
-                    </>
-                    {/* )} */}
+                    {permissions?.includes("CREATE_INVESTMENT_PRODUCT") && (
+                      <button
+                        data-testid="modify"
+                        onClick={() => handleClick("modify", detail)}
+                        className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3`}
+                      >
+                        <FaEdit className="text-[#D4A62F]" /> Modify
+                      </button>
+                    )}
+                    {permissions?.includes(
+                      "RE_OR_DEACTIVATE_INVESTMENT_PRODUCT"
+                    ) && (
+                      <>
+                        {detail?.state !== "active" ? (
+                          <button
+                            type="button"
+                            data-testid="activate-btn"
+                            onClick={() => handleClick("activate", detail)}
+                            className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
+                          >
+                            <FaPlayCircle className="text-[#2FB755]" /> Activate
+                          </button>
+                        ) : (
+                          <button
+                            data-testid="deactivate-btn"
+                            onClick={() => handleClick("deactivate", detail)}
+                            className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
+                          >
+                            <FaBan className="text-sterling-red-800" />{" "}
+                            Deactivate
+                          </button>
+                        )}
+                      </>
+                    )}
                   </div>
-                  {/* )} */}
 
                   <Link
                     to={`/product-factory/investment/${encodeURIComponent(

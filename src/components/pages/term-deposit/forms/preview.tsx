@@ -23,6 +23,7 @@ import { Confirm, Failed, Success } from "@app/components/modals";
 
 import { Messages, Prompts } from "@app/constants/enums";
 import { AppContext } from "@app/utils";
+import { summaryLinks } from "@app/constants";
 export function Container({ children }) {
   return (
     <div className="rounded-[10px] border border-[#EEE] px-12 py-10">
@@ -31,7 +32,6 @@ export function Container({ children }) {
   );
 }
 export default function Preview({ formData, oldData = null }: any) {
-  console.log("🚀 ~ file: preview.tsx:33 ~ Preview ~ formData:", formData);
   const { role } = useContext(AppContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -47,44 +47,13 @@ export default function Preview({ formData, oldData = null }: any) {
   const [failedSubText, setFailedSubtext] = useState("");
   const [failedText, setFailedText] = useState("");
 
-  const links = [
-    {
-      id: 1,
-      title: "Product Factory",
-      url: "/product-factory/dashboard/deposit",
-    },
-    {
-      id: 2,
-      title: "Investment",
-      url: "/product-factory/investment",
-    },
-    {
-      id: 3,
-      title: type,
-      url: "#",
-    },
-    {
-      id: 4,
-      title: "Process summary",
-      url: "#",
-    },
-  ];
-
-  const staticDetails = {
-    name: "Term deposit 1",
-    slogan: "We deposit",
-    description: "We really deposit",
-    currency: "NGN",
-    tenure: "12 years",
-    productLifeCycle: "",
-  };
-
   const [state, setState] = useState();
 
   const { data: activityData, isLoading: activityIsLoading } =
-    process !== "create"
-      ? useGetProductActivityLogQuery({ productid: id })
-      : { data: undefined, isLoading: false };
+    useGetProductActivityLogQuery(
+      { productid: id },
+      { ski: process === "create" }
+    );
 
   const [
     createProduct,
@@ -126,7 +95,11 @@ export default function Preview({ formData, oldData = null }: any) {
         <h1 className="text-[#747373] text-[24px] font-bold mb-7 uppercase">
           Process summary
         </h1>
-        <Breadcrumbs links={links} />
+        <Breadcrumbs
+          links={summaryLinks.map((i) =>
+            i.id === 3 ? { ...i, title: type } : i
+          )}
+        />
       </div>{" "}
       <div className="w-full flex gap-6 h-full px-[37px] py-[30px] bg-[#F7F7F7]">
         <div className="flex-1   bg-[#ffffff] rounded-md px-[100px] pt-[54px] pb-[49px] flex flex-col gap-5">
