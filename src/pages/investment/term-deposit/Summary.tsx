@@ -117,7 +117,7 @@ export default function Summary() {
             </Container>
           </div>
 
-          <Actions />
+          <Actions requestDetail={requestDetail?.data} />
         </div>
 
         <ActivityLog

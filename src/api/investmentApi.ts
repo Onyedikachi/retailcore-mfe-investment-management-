@@ -239,6 +239,7 @@ export const investmentApi: any = createApi({
         return {
           url: `${urls.REQUESTS}/reject/${data.id}`,
           method: "put",
+          body: data
         };
       },
     }),
