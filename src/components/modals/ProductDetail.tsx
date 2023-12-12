@@ -280,7 +280,9 @@ export default function ProductDetail({
                             (configModel, index) => (
                               <span
                                 key={index}
-                                className="block  mb-2 text-[#636363]"
+                                className={`${
+                                  index !== 0 && "hidden"
+                                } block  mb-2 text-[#636363]`}
                               >
                                 {" "}
                                 {`${configModel.min} - ${configModel.max}%`} for
@@ -305,7 +307,9 @@ export default function ProductDetail({
                             (configModel, index) => (
                               <span
                                 key={index}
-                                className="block  mb-2 text-[#636363]"
+                                className={`${
+                                  index !== 0 && "hidden"
+                                } block  mb-2 text-[#636363]`}
                               >
                                 {" "}
                                 {`${configModel.min} - ${configModel.max}%`} for
@@ -331,14 +335,16 @@ export default function ProductDetail({
                       )}
                     </div>
                     {productData?.data?.pricingConfiguration
-                      .interestRateRangeType !== 2 && (
-                      <button
-                        className="text-[#636363]  underline"
-                        onClick={() => setOpen(true)}
-                      >
-                        View more
-                      </button>
-                    )}
+                      .interestRateRangeType !== 0 ||
+                      (productData?.data?.pricingConfiguration
+                        .interestRateRangeType !== 1 && (
+                        <button
+                          className="text-[#636363]  underline"
+                          onClick={() => setOpen(true)}
+                        >
+                          View more
+                        </button>
+                      ))}
                   </div>
                   {productData?.data?.liquidation
                     ?.part_AllowPartLiquidation && (
