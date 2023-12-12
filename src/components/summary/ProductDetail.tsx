@@ -423,7 +423,7 @@ export default function ProductDetail({ detail, oldData }: any) {
                           className="block  mb-2 text-[#636363]"
                         >
                           {" "}
-                          {`${configModel.min} - ${configModel.max}`} for tenor
+                          {`${configModel.min} - ${configModel.max}%`} for tenor
                           between{" "}
                           {`${configModel.tenorMin} ${
                             Interval[configModel.tenorMinUnit]
@@ -506,7 +506,7 @@ export default function ProductDetail({ detail, oldData }: any) {
                         </span>
                       </p>
                     }
-                    Maximum of {detail?.liquidation?.part_MaxPartLiquidation}%
+                    Maximum of {detail?.liquidation?.part_MaxPartLiquidation}% of principal
                   </span>
                 ) : (
                   "Not Applicable"
@@ -638,7 +638,7 @@ export default function ProductDetail({ detail, oldData }: any) {
                 Principal Deposit
               </div> */}
               <div className="w-full text-base font-normal">
-                <DebitCreditTable dataTab={detail.productGlMappings}/>
+                <DebitCreditTable dataTab={detail?.productGlMappings}/>
               </div>
             </div>
           </div>
