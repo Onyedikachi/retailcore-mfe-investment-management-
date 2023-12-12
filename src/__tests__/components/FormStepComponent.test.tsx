@@ -59,40 +59,46 @@ describe("FormStepComponent", () => {
       <FormStepComponent step={1} />
     )
     expect(screen.getByTestId("form-step")).toBeInTheDocument();
+
   });
 
-  //   // Handles step value greater than the number of formStepItems
-  //   it("should handle step value greater than the number of formStepItems and render last form step item", () => {
-  //     const formStepItems = [
-  //       {
-  //         id: 1,
-  //         label: "First",
-  //         index: 1,
-  //       },
-  //       {
-  //         id: 2,
-  //         label: "Second",
-  //         index: 2,
-  //       },
-  //     ];
-  //     const step = 3;
-  //     const wrapper = shallow(
-  //       <FormStepComponent formStepItems={formStepItems} step={step} />
-  //     );
-  //     expect(wrapper.find(".flex.flex-col.items-center.w-[172px]").length).toBe(
-  //       1
-  //     );
-  //     expect(
-  //       wrapper
-  //         .find(
-  //           ".uppercase.text-center.text-[#636363].leading-[1px].text-sm.font-normal"
-  //         )
-  //         .text()
-  //     ).toBe(formStepItems[formStepItems.length - 1].label);
-  //     expect(wrapper.find(".text-[#636363]").text()).toBe(
-  //       formStepItems[formStepItems.length - 1].index.toString()
-  //     );
-  //   });
+    // Handles step value greater than the number of formStepItems
+    it("should handle step value greater than the number of formStepItems and render last form step item", () => {
+      const formStepItems = [
+        {
+          id: 1,
+          label: "First",
+          index: 1,
+        },
+        {
+          id: 2,
+          label: "Second",
+          index: 2,
+        },
+      ];
+      const step = 3;
+      render (
+        <FormStepComponent formStepItems={formStepItems} step={step} />
+      );
+      // screen.debug();
+      const items = screen.getAllByTestId("form-step");
+
+      expect(items.length).toBe(step-1)
+
+      // expect(wrapper.find(".flex.flex-col.items-center.w-[172px]").length).toBe(
+      //   1
+      // );
+      // expect(
+      //   wrapper
+      //     .find(
+      //       ".uppercase.text-center.text-[#636363].leading-[1px].text-sm.font-normal"
+      //     )
+      //     .text()
+      // ).toBe(formStepItems[formStepItems.length - 1].label);
+      // expect(wrapper.find(".text-[#636363]").text()).toBe(
+      //   formStepItems[formStepItems.length - 1].index.toString()
+      // );
+    });
 
   //   // Handles step value less than 1
   //   it("should handle step value less than 1 and render first form step item", () => {

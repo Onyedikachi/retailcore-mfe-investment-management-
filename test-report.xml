@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
   <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/FormStepComponent.test.tsx">
-    <testCase name="FormStepComponent should render the correct number of form step items when formStepItems is not empty" duration="44"/>
-    <testCase name="FormStepComponent should render the correct label for each form step item when formStepItems is not empty" duration="12"/>
-    <testCase name="FormStepComponent should render the correct index for each form step item when formStepItems is not empty" duration="9"/>
+    <testCase name="FormStepComponent should render the correct number of form step items when formStepItems is not empty" duration="47"/>
+    <testCase name="FormStepComponent should render the correct label for each form step item when formStepItems is not empty" duration="10"/>
+    <testCase name="FormStepComponent should render the correct index for each form step item when formStepItems is not empty" duration="8"/>
     <testCase name="FormStepComponent should handle empty formStepItems array and render default form step item" duration="5"/>
+    <testCase name="FormStepComponent should handle step value greater than the number of formStepItems and render last form step item" duration="6"/>
   </file>
 </testExecutions>
