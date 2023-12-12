@@ -74,7 +74,7 @@ export function DebitCreditTable({dataTab}) {
       </thead>
   
       <tbody>
-        {dataTab.map((i, index) => (
+        {dataTab?.map((i, index) => (
           <tr
             key={i.creditBalance}
             className="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"
@@ -181,7 +181,7 @@ export default function ProductDetail({ detail, oldData }: any) {
               <div className="w-full text-base font-normal text-[#636363]">
                 {oldData &&
                   oldData?.productInfo?.slogan !==
-                    detail.productInfo?.slogan && (
+                    detail?.productInfo?.slogan && (
                     <span className="block  line-through mb-2 text-[#aaa]">
                       {" "}
                       {oldData?.productInfo?.slogan}
@@ -576,7 +576,7 @@ export default function ProductDetail({ detail, oldData }: any) {
             </div>
           </div>
         </div>
-        <div className="!hidden flex flex-col">
+        <div className="!hidden  flex-col">
           <h4 className="text-[#636363] text-[16px] font-medium mb-[27px]">
             Charges & Taxes
           </h4>
