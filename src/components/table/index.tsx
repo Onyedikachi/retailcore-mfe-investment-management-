@@ -347,7 +347,7 @@ export default function TableComponent<TableProps>({
                       <div className="relative flex items-center gap-x-20 justify-between">
                         <span className="relative">
                           {label}{" "}
-                          {key === "updatedOn" && (
+                          {key === "updated_At" && (
                             <span className="absolute block bg-[#CF2A2A] h-[6px] w-[6px] rounded-full -right-[6px] top-[1px]"></span>
                           )}
                         </span>
@@ -394,7 +394,7 @@ export default function TableComponent<TableProps>({
                             <>
                               {typeof item[header.key] !== "object" &&
                                 header.key !== "state" &&
-                                header.key !== "updatedOn" &&
+                                header.key !== "updated_At" &&
                                 header.key !== "requestStatus" && (
                                   <TextCellContent value={item[header.key]} />
                                 )}
@@ -407,7 +407,7 @@ export default function TableComponent<TableProps>({
                                   isChecker={isChecker}
                                 />
                               )}
-                              {header.key === "updatedOn" && (
+                              {header.key === "updated_At" && (
                                 <UpdatedOnCellContent
                                   value={item[header.key]}
                                 />

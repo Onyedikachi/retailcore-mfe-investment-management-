@@ -31,7 +31,7 @@ export default function ActivityLog({
 
       {!isLoading &&  (
         <div className="flex flex-col">
-          {activities.length == 0  && (
+          {activities?.length == 0  && (
             <span className="mt-[25px] mb-[56px] font-normal text-sm text-[#AAA]">
               No activity found
             </span>
@@ -47,14 +47,14 @@ export default function ActivityLog({
                   >
                     <div
                       className={`relative ${
-                        index !== activities.length - 1
+                        index !== activities?.length - 1
                           ? "before:content-[''] before:absolute before:h-[100px] before:w-[1px] before:border-l before:z-[1] before:left-1/2 before:translate-x-[-50%] before:border-[#AAAAAA]"
                           : "" // If it's the last item, don't apply the before content
                       } ${
-                        activities[activities.length - 1].description
+                        activities[activities?.length - 1].description
                           .toLowerCase()
                           .includes("pending") &&
-                        index === activities.length - 2
+                        index === activities?.length - 2
                           ? "before:border-dashed"
                           : ""
                       } `}
