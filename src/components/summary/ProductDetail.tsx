@@ -406,8 +406,8 @@ export default function ProductDetail({ detail, oldData }: any) {
                           {" "}
                           {`${configModel.min} - ${configModel.max}%`} for
                           principal between{" "}
-                          {`${configModel.principalMin} - ${configModel.principalMax}`}{" "}
-                          {detail?.productInfo?.currency}
+                          {`${currencyFormatter(configModel.principalMin, detail?.productInfo?.currency)} - ${currencyFormatter(configModel.principalMax, detail?.productInfo?.currency)}`}{" "}
+                          {/* {detail?.productInfo?.currency} */}
                         </span>
                       )
                     )}
