@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { paths } from "@app/routes/paths";
 import { Confirm, Failed, Success } from "@app/components/modals";
 import {
   useCreateProductMutation,
   useGetRequestDetailQuery,
   useGetProductDetailQuery,
+  useModifyProductMutation,
 } from "@app/api";
 import {
   Breadcrumbs,
@@ -34,6 +35,7 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
 }
 
 export default function CreateTermDeposit() {
+  const { process } = useParams();
   const [searchParams] = useSearchParams();
   const stage = searchParams.get("stage");
   const id = searchParams.get("id");
@@ -141,8 +143,19 @@ export default function CreateTermDeposit() {
       url: "#",
     },
   ];
+
   const [createProduct, { isLoading, isSuccess, isError, reset, error }] =
     useCreateProductMutation();
+
+  const [
+    modifyProduct,
+    {
+      isLoading: modifyLoading,
+      isSuccess: modifySuccess,
+      isError: modifyIsError,
+      error: modifyError,
+    },
+  ] = useModifyProductMutation();
 
   const {
     data: requestData,
@@ -196,7 +209,11 @@ export default function CreateTermDeposit() {
 
   const handleDraft = () => {
     setIsConfirmOpen(false);
-    createProduct({ ...productData, isDraft: true });
+    if (process === "modify") {
+      modifyProduct({ ...productData, isDraft: true, id });
+    } else {
+      createProduct({ ...productData, isDraft: true });
+    }
   };
 
   let component;
@@ -303,33 +320,52 @@ export default function CreateTermDeposit() {
   useEffect(() => {
     if (requestIsSuccess) {
       const data = JSON.parse(requestData?.data?.metaInfo);
-      console.log("🚀 ~ file: IndexComponent.tsx:306 ~ useEffect ~ data:", data)
 
       setProductData({
         ...data,
         pricingConfiguration: {
           ...data.pricingConfiguration,
           interestComputationMethod: 2,
-        
         },
-       
       });
-      
     }
   }, [requestIsSuccess]);
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess || modifySuccess) {
       setSuccessText(Messages.PRODUCT_DRAFT_SUCCESS);
       setIsSuccessOpen(true);
     }
 
-    if (isError) {
+    if (isError || modifyIsError) {
       setFailedText(Messages.PRODUCT_DRAFT_FAILED);
-      setFailedSubtext(error?.message?.message);
+      setFailedSubtext(
+        isError ? error?.message?.message : modifyError?.message?.message
+      );
       setFailed(true);
     }
-  }, [isSuccess, isError, error]);
+  }, [isSuccess, isError, error, modifyIsError, modifySuccess, modifyError]);
+  function handleLinks(links, process) {
+    const extraLinks = [
+      {
+        id: 3,
+        title: "Term Deposit",
+        url: "/product-factory/investment",
+      },
+      {
+        id: 4,
+        title: productData?.productInfo?.productName,
+        url: "#",
+      },
+    ];
+    if (process === "continue" || process === "modify") {
+      let filteredLinks = links.filter((i) => i.id !== 3);
+      return [...filteredLinks, ...extraLinks];
+    }
+
+    return links;
+  }
+
   return (
     <div>
       {!stage && !requestIsLoading && (
@@ -338,7 +374,7 @@ export default function CreateTermDeposit() {
             <h1 className="text-[#747373] text-[24px] font-bold mb-7 uppercase">
               New Term Deposit Product
             </h1>
-            <Breadcrumbs links={links} />
+            <Breadcrumbs links={handleLinks(links, process)} />
           </div>
           {/* {productData.productInfo.productName} */}
           <div className="h-full px-[37px] py-[30px] bg-[#F7F7F7]">
@@ -392,7 +428,7 @@ export default function CreateTermDeposit() {
               </div>
             </div>
           </div>
-          <Loader isOpen={isLoading} text={"Submitting"} />
+          <Loader isOpen={isLoading || modifyLoading} text={"Submitting"} />
           {/* //Modals */}
           {isConfirmOpen && (
             <Confirm

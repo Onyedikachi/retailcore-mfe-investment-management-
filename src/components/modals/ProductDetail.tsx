@@ -171,9 +171,10 @@ export default function ProductDetail({
                         <FaEdit className="text-[#D4A62F]" /> Modify
                       </button>
                     )}
-                    {permissions?.includes(
+                    {(permissions?.includes(
                       "RE_OR_DEACTIVATE_INVESTMENT_PRODUCT"
-                    ) && (
+                    ) ||
+                      permissions?.includes("CREATE_INVESTMENT_PRODUCT")) && (
                       <>
                         {detail?.state !== "active" ? (
                           <button

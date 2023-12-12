@@ -18,6 +18,7 @@ import {
 import {
   useGetProductActivityLogQuery,
   useCreateProductMutation,
+  useModifyProductMutation,
 } from "@app/api";
 import { Confirm, Failed, Success } from "@app/components/modals";
 
@@ -59,6 +60,15 @@ export default function Preview({ formData, oldData = null }: any) {
     createProduct,
     { isLoading: createProductLoading, isSuccess, isError, reset, error },
   ] = useCreateProductMutation();
+  const [
+    modifyProduct,
+    {
+      isLoading: modifyLoading,
+      isSuccess: modifySuccess,
+      isError: modifyIsError,
+      error: modifyError,
+    },
+  ] = useModifyProductMutation();
 
   const handleModify = () => {
     navigate(-1);
@@ -69,11 +79,16 @@ export default function Preview({ formData, oldData = null }: any) {
     return;
   };
   const handleSubmit = () => {
-    createProduct({ ...formData, isDraft: false });
+    if (process === "modify") {
+      modifyProduct({ ...formData, isDraft: false, id });
+    } else {
+      createProduct({ ...formData, isDraft: false });
+    }
+
     // navigate(paths.INVESTMENT_DASHBOARD);
   };
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess || modifySuccess) {
       setSuccessText(
         role === "superadmin"
           ? Messages.PRODUCT_CREATE_SUCCESS
@@ -82,12 +97,14 @@ export default function Preview({ formData, oldData = null }: any) {
       setIsSuccessOpen(true);
     }
 
-    if (isError) {
+    if (isError || modifyIsError) {
       setFailedText(Messages.ADMIN_PRODUCT_CREATE_FAILED);
-      setFailedSubtext(error?.message?.message);
+      setFailedSubtext(
+        isError ? error?.message?.message : modifyError?.message?.message
+      );
       setFailed(true);
     }
-  }, [isSuccess, isError, error]);
+  }, [isSuccess, isError, error, modifySuccess, modifyIsError, modifyError]);
 
   return (
     <div className="flex flex-col min-h-[100vh] ">
@@ -160,7 +177,10 @@ export default function Preview({ formData, oldData = null }: any) {
           canRetry
         />
       )}
-      <Loader isOpen={createProductLoading} text={"Submitting"} />
+      <Loader
+        isOpen={createProductLoading || modifyLoading}
+        text={"Submitting"}
+      />
     </div>
   );
 }

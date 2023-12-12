@@ -106,7 +106,7 @@ export default function CustomerEligibilityCriteria({
         setValue(name, value)
       );
 
-      if (formData?.requireDocument && process === "continue") {
+      if (formData?.requireDocument && (process === "continue" || process === "modify")) {
         setSelectedRequirements(formData?.requireDocument);
 
         trigger();
