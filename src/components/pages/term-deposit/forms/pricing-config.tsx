@@ -52,7 +52,6 @@ export default function PricingConfig({
   setDisabled,
   productData,
 }) {
- 
   const { process } = useParams();
   const {
     register,
@@ -65,7 +64,7 @@ export default function PricingConfig({
     getValues,
     trigger,
     resetField,
-    formState: { errors, isValid,touchedFields,dirtyFields },
+    formState: { errors, isValid, touchedFields, dirtyFields },
   } = useForm({
     resolver: yupResolver(pricingConfigSchema),
     defaultValues: formData,
@@ -157,15 +156,13 @@ export default function PricingConfig({
 
   useEffect(() => {
     setDisabled(!isValid);
-   
   }, [values]);
   useEffect(() => {
     if (formData) {
       Object.entries(formData).forEach(([name, value]) =>
         setValue(name, value)
       );
-      if ( process === "continue") {
-       
+      if (process === "continue" || process === "modify") {
         trigger();
       }
     }

@@ -199,7 +199,7 @@ export default function ProductInformation({
       Object.entries(formData).forEach(([name, value]) =>
         setValue(name, value)
       );
-      if (process === "continue") {
+      if (process === "continue" || process === "modify") {
         trigger();
       }
     }
