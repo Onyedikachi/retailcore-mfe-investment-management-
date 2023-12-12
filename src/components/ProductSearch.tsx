@@ -6,7 +6,7 @@ export function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function CustomComboSelect({
+export default function ProductSearch({
   placeholder,
   options,
   handleOptions,

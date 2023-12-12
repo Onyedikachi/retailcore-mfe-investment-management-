@@ -16,7 +16,9 @@ import TableComponent, {
 import { FaBars } from "react-icons/fa";
 import { shallow } from "enzyme";
 import { handleColorState, handleUserView } from "../../../utils";
-
+import { Provider } from "react-redux";
+import { store } from "../../../__mocks__/api/store-mock";
+import * as hooks from '../../../api';
 class ResizeObserver {
   observe() {}
   unobserve() {}
@@ -24,7 +26,7 @@ class ResizeObserver {
 }
 
 const navigate = jest.fn();
-jest.mock("../../__mocks__/api/mockReactRouterDom");
+jest.mock("../../../__mocks__/api/mockReactRouterDom");
 jest.mock("react-router-dom", () => ({
   BrowserRouter: ({ children }) => <div>{children}</div>,
   Link: ({ to, children }) => <a href={to}>{children}</a>,
@@ -119,6 +121,7 @@ describe("handleProductsDropdown", () => {
   });
 });
 
+
 describe("TableComponent", () => {
   window.ResizeObserver = ResizeObserver;
   // Renders a table with headers and rows based on the input data
@@ -138,19 +141,21 @@ describe("TableComponent", () => {
 
     // Act
     render(
-      <TableComponent
-        headers={headers}
-        tableRows={tableRows}
-        page={1}
-        total={3}
-        fetchMoreData={() => {}}
-        hasMore={true}
-        getOptionData={() => {}}
-        isLoading={false}
-        dropDownOptions={[]}
-        dropDownClick={() => {}}
-        onChangeDate={() => {}}
-      />
+      <Provider store={store}>
+        <TableComponent
+          headers={headers}
+          tableRows={tableRows}
+          page={1}
+          total={3}
+          fetchMoreData={() => {}}
+          hasMore={true}
+          getOptionData={() => {}}
+          isLoading={false}
+          dropDownOptions={[]}
+          dropDownClick={() => {}}
+          onChangeDate={() => {}}
+        />
+      </Provider>
     );
 
     // Assert
@@ -166,27 +171,29 @@ describe("TableComponent", () => {
   it("should display a loading indicator when data is being fetched", () => {
     // Arrange
     const headers = [{ label: "Name", key: "name" }];
-
+    
     const tableRows = [];
 
     render(
-      <TableComponent
-        headers={headers}
-        tableRows={tableRows}
-        page={1}
-        total={0}
-        fetchMoreData={() => {}}
-        hasMore={true}
-        getOptionData={() => {}}
-        isLoading={true}
-        dropDownOptions={[]}
-        dropDownClick={() => {}}
-        onChangeDate={() => {}}
-      />
+      <Provider store={store}>
+        <TableComponent
+          headers={headers}
+          tableRows={tableRows}
+          page={1}
+          total={0}
+          fetchMoreData={() => {}}
+          hasMore={true}
+          getOptionData={() => {}}
+          isLoading={true}
+          dropDownOptions={[]}
+          dropDownClick={() => {}}
+          onChangeDate={() => {}}
+        />
+      </Provider>
     );
 
     // Assert
-    expect(screen.getByTestId("loader")).toBeInTheDocument();
+    expect(screen.getByTestId("bottom-bar-loader")).toBeInTheDocument();
   });
 });
 describe("TextCellContent", () => {

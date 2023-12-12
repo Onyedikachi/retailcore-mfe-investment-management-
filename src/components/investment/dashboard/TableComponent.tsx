@@ -92,7 +92,7 @@ export function handleDownload(downloadData, isChecker, csvExporter, category) {
         obj.status = i?.requestStatus;
       }
 
-      obj["updated on"] = moment(i.updatedOn).format("DD MMM YYYY, hh:mm A");
+      obj["updated on"] = moment(i.updated_At).format("DD MMM YYYY, hh:mm A");
 
       return obj;
     });
@@ -104,7 +104,7 @@ export function handleDownload(downloadData, isChecker, csvExporter, category) {
         "product code": i?.productCode || "",
         "product type": i?.productType || "",
         state: i?.state || "",
-        "updated on": moment(i.updatedOn).format("DD MMM YYYY, hh:mm A"),
+        "updated on": moment(i.updated_At).format("DD MMM YYYY, hh:mm A"),
       };
 
       return obj;

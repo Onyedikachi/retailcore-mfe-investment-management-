@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BorderlessSelect } from "@app/components/forms";
-import { FormToolTip } from "@app/components";
+import { FormToolTip, ProductSearch } from "@app/components";
 import { toolTips } from "@app/constants";
 import { Button, SelectedRequirementsTable } from "@app/components";
 import { MinMaxInput, InfoLabel } from "@app/components/forms";
@@ -14,10 +14,10 @@ import {
   documentOptions,
 } from "@app/constants";
 import { SelectRequirements } from "@app/components/modals";
-import { EntriesAndEventsSearch } from "@app/components/pages/term-deposit/forms";
 import { CustomerCategoryType } from "@app/constants/enums";
 import MultiSelectForm from "@app/components/forms/MultiSelectForm";
 import { useParams } from "react-router-dom";
+import { FaSearch } from "react-icons/fa";
 
 export default function CustomerEligibilityCriteria({
   formData,
@@ -108,10 +108,9 @@ export default function CustomerEligibilityCriteria({
 
       if (formData?.requireDocument && process === "continue") {
         setSelectedRequirements(formData?.requireDocument);
-       
+
         trigger();
       }
-     
     }
   }, [setValue, formData, setSelectedRequirements]);
 
@@ -315,11 +314,19 @@ export default function CustomerEligibilityCriteria({
                   </span>
                   <div className="w-full">
                     {" "}
-                    <EntriesAndEventsSearch
-                      placeholder={"Search"}
-                      handleOptions={handleOptions}
-                      options={documentOptions}
-                    />
+                    <div className="relative w-full flex items-center border-b border-[#AAAAAA] gap-x-1">
+                      <button className="w-8 h-8 p-1 flex items-center justify-center">
+                        <FaSearch className="text-[#48535B]" />
+                      </button>
+                      <input
+                        onChange={(e) => setSearchQuery(e.target.value.toLowerCase())}
+                        value={searchQuery}
+                        type="search"
+                        data-testid="search"
+                        placeholder="Search"
+                        className={` flex-1 bg-transparent peer placeholder:text-base h-8 py-2 pl-1 pr-4 placeholder:text-[#AAAAAA] outline-none  w-full `}
+                      />
+                    </div>
                   </div>
                   <div className="flex flex-col gap-[5px]">
                     <div className="p-5 max-h-[282px] overflow-y-auto">
@@ -350,7 +357,7 @@ export default function CustomerEligibilityCriteria({
 
                         <div className="grid gap-y-2 max-h-[298px] overflow-y-auto pr-6">
                           {documents
-                            .filter((i: any) => i.name.includes(searchQuery))
+                            .filter((i: any) => i.name.toLowerCase().includes(searchQuery.toLowerCase()))
                             ?.map((document, index) => (
                               <div key={document.id} className="ml-[28px]">
                                 <div className="relative flex items-start">

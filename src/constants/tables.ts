@@ -495,7 +495,7 @@ export const productHeader = [
   },
   {
     label: "updated on",
-    key: "updatedOn",
+    key: "updated_At",
     options: [],
     hasSelect: false,
     hasDateSelect: true,
@@ -552,7 +552,7 @@ export const requestHeader = [
   },
   {
     label: "updated on",
-    key: "updatedOn",
+    key: "updated_At",
     options: [
       {
         id: 1,

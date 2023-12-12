@@ -5,7 +5,7 @@ export const ProductData = [
     productCode: "TM-01",
     description: "Leading with excellent customer search for the item",
     state: "active",
-    updatedOn: new Date(),
+    updated_At: new Date(),
     isNew: false,
     isNameEdited: true,
   },
@@ -15,7 +15,7 @@ export const ProductData = [
     productCode: "TM-02",
     description: "Leading with excellent customer  search for the item",
     state: "inactive",
-    updatedOn: new Date(),
+    updated_At: new Date(),
     isNew: false,
     isNameEdited: false,
   },
@@ -25,7 +25,7 @@ export const ProductData = [
     productCode: "TM-03",
     description: "Leading with excellent customer  search for the item",
     state: "active",
-    updatedOn: new Date(),
+    updated_At: new Date(),
     isNew: true,
     isNameEdited: false,
   },
@@ -86,7 +86,7 @@ export const RequestData = [
     type: "Creation",
     initiator: "John wick",
     status: "approved",
-    updatedOn: new Date(),
+    updated_At: new Date(),
   },
   {
     id: 6,
@@ -94,7 +94,7 @@ export const RequestData = [
     type: "Creation",
     initiator: "John wick",
     status: "in-review",
-    updatedOn: new Date(),
+    updated_At: new Date(),
   },
   {
     id: 2,
@@ -102,7 +102,7 @@ export const RequestData = [
     type: "Bulk Creation",
     initiator: "John wick",
     status: "in-review",
-    updatedOn: new Date(),
+    updated_At: new Date(),
   },
   {
     id: 3,
@@ -110,7 +110,7 @@ export const RequestData = [
     type: "Deactivation",
     initiator: "John wick",
     status: "in-issue",
-    updatedOn: new Date(),
+    updated_At: new Date(),
   },
   {
     id: 4,
@@ -118,7 +118,7 @@ export const RequestData = [
     type: "Activation",
     initiator: "John wick",
     status: "draft",
-    updatedOn: new Date(),
+    updated_At: new Date(),
   },
   {
     id: 5,
@@ -126,7 +126,7 @@ export const RequestData = [
     type: "Modification",
     initiator: "John wick",
     status: "approved",
-    updatedOn: new Date(),
+    updated_At: new Date(),
   },
 ];
 
@@ -139,7 +139,7 @@ export const BulkValidation = [
     type: "Creation",
     initiator: "John wick",
     status: "Failed",
-    updatedOn: new Date(),
+    updated_At: new Date(),
   },
   {
     id: 2,
@@ -149,7 +149,7 @@ export const BulkValidation = [
     type: "Creation",
     initiator: "John wick",
     status: "Failed",
-    updatedOn: new Date(),
+    updated_At: new Date(),
   },
   {
     id: 3,
@@ -159,7 +159,7 @@ export const BulkValidation = [
     type: "Creation",
     initiator: "John wick",
     status: "Failed",
-    updatedOn: new Date(),
+    updated_At: new Date(),
   },
   {
     id: 4,
@@ -169,7 +169,7 @@ export const BulkValidation = [
     type: "Creation",
     initiator: "John wick",
     status: "Failed",
-    updatedOn: new Date(),
+    updated_At: new Date(),
   },
   {
     id: 5,
@@ -179,7 +179,7 @@ export const BulkValidation = [
     type: "Creation",
     initiator: "John wick",
     status: "Failed",
-    updatedOn: new Date(),
+    updated_At: new Date(),
   },
 ];
 
@@ -190,7 +190,7 @@ export const BulkValidationSummary = [
     productCode: "TM-03",
     description: "Creation of Product Royal",
 
-    updatedOn: new Date(),
+    updated_At: new Date(),
   },
 ];
 

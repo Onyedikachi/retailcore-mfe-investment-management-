@@ -8,7 +8,6 @@ import urls from "../helpers/url_helpers";
 import { cleanObject } from "@app/utils/cleanObject";
 // baseQuery: axiosBaseQuery({ serviceKey: "investment" }),
 
-console.log(process.env);
 export const investmentApi: any = createApi({
   reducerPath: "investmentApi",
   baseQuery: axiosBaseQuery({ serviceKey: "investment" }),
@@ -239,6 +238,7 @@ export const investmentApi: any = createApi({
         return {
           url: `${urls.REQUESTS}/reject/${data.id}`,
           method: "put",
+          body: data
         };
       },
     }),
