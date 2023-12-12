@@ -186,7 +186,7 @@ describe("handleDropdown", () => {
 
 describe("handleHeaders", () => {
   it("should filter out 'created_by' when isChecker is true", () => {
-    const headers = [{ key: "created_by" }, { key: "other_key" }];
+    const headers = [{ label: "initiator", key: "created_by" }, { key: "other_key" }];
     const isChecker = true;
 
     const result = handleHeaders(headers, isChecker);
@@ -195,7 +195,7 @@ describe("handleHeaders", () => {
   });
 
   it("should filter out 'approved_By' when isChecker is false", () => {
-    const headers = [{ key: "approved_By" }, { key: "other_key" }];
+    const headers = [{ label: "reviewer", key: "approved_By" }, { key: "other_key"}];
     const isChecker = false;
 
     const result = handleHeaders(headers, isChecker);
