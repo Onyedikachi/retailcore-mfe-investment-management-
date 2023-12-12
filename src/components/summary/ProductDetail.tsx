@@ -497,7 +497,7 @@ export default function ProductDetail({ detail, oldData }: any) {
                           {liquidities[
                             detail?.liquidation?.part_LiquidationPenalty
                           ] == "RecalculateInterest" &&
-                            `Recalculate accrued interest of ${detail?.liquidation?.part_specialInterestRate}`}
+                            `Recalculate accrued interest of ${detail?.liquidation?.part_LiquidationPenaltyPercentage}%`}
                         </span>
                         <span>
                           {liquidities[
@@ -558,7 +558,7 @@ export default function ProductDetail({ detail, oldData }: any) {
                           {liquidities[
                             detail?.liquidation?.early_LiquidationPenalty
                           ] == "RecalculateInterest" &&
-                            `Recalculate accrued interest of ${detail?.liquidation?.early_specialInterestRate}`}
+                            `Recalculate accrued interest of ${detail?.liquidation?.early_LiquidationPenaltyPercentage}%`}
                         </span>
                         <span>
                           {liquidities[
