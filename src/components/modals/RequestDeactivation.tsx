@@ -98,7 +98,7 @@ export default function RequestDeactivation({
             </label>
             <FormUpload
               data-testid="input"
-              accept={["png", "jpg", "jpeg", "xls", "xlsx"]}
+              accept={[ ".xls", ".xlsx"]}
               onUploadComplete={(value) => {
                 setUrl(value);
               }}
