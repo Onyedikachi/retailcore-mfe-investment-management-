@@ -80,56 +80,36 @@ describe("FormStepComponent", () => {
       render (
         <FormStepComponent formStepItems={formStepItems} step={step} />
       );
-      // screen.debug();
       const items = screen.getAllByTestId("form-step");
 
-      expect(items.length).toBe(step-1)
-
-      // expect(wrapper.find(".flex.flex-col.items-center.w-[172px]").length).toBe(
-      //   1
-      // );
-      // expect(
-      //   wrapper
-      //     .find(
-      //       ".uppercase.text-center.text-[#636363].leading-[1px].text-sm.font-normal"
-      //     )
-      //     .text()
-      // ).toBe(formStepItems[formStepItems.length - 1].label);
-      // expect(wrapper.find(".text-[#636363]").text()).toBe(
-      //   formStepItems[formStepItems.length - 1].index.toString()
-      // );
+      expect(items.length).toBe(formStepItems.length)
+      expect(screen.getAllByTestId("form-step-item-index")[1].textContent).toBe(formStepItems[formStepItems.length-1].index+"")
     });
 
   //   // Handles step value less than 1
-  //   it("should handle step value less than 1 and render first form step item", () => {
-  //     const formStepItems = [
-  //       {
-  //         id: 1,
-  //         label: "First",
-  //         index: 1,
-  //       },
-  //       {
-  //         id: 2,
-  //         label: "Second",
-  //         index: 2,
-  //       },
-  //     ];
-  //     const step = 0;
-  //     const wrapper = shallow(
-  //       <FormStepComponent formStepItems={formStepItems} step={step} />
-  //     );
-  //     expect(wrapper.find(".flex.flex-col.items-center.w-[172px]").length).toBe(
-  //       1
-  //     );
-  //     expect(
-  //       wrapper
-  //         .find(
-  //           ".uppercase.text-center.text-[#636363].leading-[1px].text-sm.font-normal"
-  //         )
-  //         .text()
-  //     ).toBe(formStepItems[0].label);
-  //     expect(wrapper.find(".text-[#636363]").text()).toBe(
-  //       formStepItems[0].index.toString()
-  //     );
-  //   });
+    it("should handle step value less than 1 and render first form step item", () => {
+      const formStepItems = [
+        {
+          id: 1,
+          label: "First",
+          index: 1,
+        },
+        {
+          id: 2,
+          label: "Second",
+          index: 2,
+        },
+      ];
+      const step = 0;
+
+      render (
+        <FormStepComponent formStepItems={formStepItems} step={step} />
+      );
+      const items = screen.getAllByTestId("form-step");
+
+      expect(items.length).toBe(formStepItems.length)
+      
+      expect(screen.getAllByTestId("form-step-item-index")[0].textContent).toBe(formStepItems[0].index+"")
+      
+    });
 });
