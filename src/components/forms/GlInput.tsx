@@ -142,8 +142,9 @@ export default function EntriesAndEventsSearchResults({
     });
   };
   useEffect(() => {
-    setQuery(defaultValue);
-    console.log("🚀 ~ file: GlInput.tsx:146 ~ useEffect ~ defaultValue:", defaultValue)
+    if (defaultValue) {
+      setQuery(defaultValue);
+    }
   }, [defaultValue]);
 
   useEffect(() => {
