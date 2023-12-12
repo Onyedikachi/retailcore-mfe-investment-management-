@@ -38,7 +38,7 @@ export default function CreateTermDeposit() {
   const stage = searchParams.get("stage");
   const id = searchParams.get("id");
 
-  const [step, setStep] = useState(4);
+  const [step, setStep] = useState(1);
 
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [subText, setSubText] = useState("");
@@ -303,18 +303,16 @@ export default function CreateTermDeposit() {
   useEffect(() => {
     if (requestIsSuccess) {
       const data = JSON.parse(requestData?.data?.metaInfo);
+      console.log("🚀 ~ file: IndexComponent.tsx:306 ~ useEffect ~ data:", data)
 
-      const convertedData = convertKeysToLowerCase({ ...data });
-      console.log("🚀 ~ file: IndexComponent.tsx:306 ~ useEffect ~ convertedData:", convertedData)
       setProductData({
-        ...convertedData,
+        ...data,
         pricingConfiguration: {
-          ...convertedData.pricingConfiguration,
+          ...data.pricingConfiguration,
           interestComputationMethod: 2,
-          interestRateConfigModels: Object.values(
-            convertedData?.pricingConfiguration?.interestRateConfigModels
-          ),
+        
         },
+       
       });
       
     }

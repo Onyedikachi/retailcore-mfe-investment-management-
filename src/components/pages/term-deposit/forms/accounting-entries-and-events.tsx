@@ -22,10 +22,6 @@ export default function AccountingEntriesAndEvents({
   setFormData,
   setDisabled,
 }) {
-  console.log(
-    "🚀 ~ file: accounting-entries-and-events.tsx:25 ~ formData:",
-    formData
-  );
   const [mapOptions, setMapOptions] = useState([]);
   const [clearFields, setClearField] = useState(false);
   const {
@@ -69,6 +65,10 @@ export default function AccountingEntriesAndEvents({
   ];
   // glMappingSchema
   const handleClick = (key, menu, name, subname) => {
+    console.log(
+      "🚀 ~ file: accounting-entries-and-events.tsx:69 ~ handleClick ~ key:",
+      key
+    );
     const data = {
       accountName: subname,
       accountId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -93,12 +93,14 @@ export default function AccountingEntriesAndEvents({
   const values = getValues();
 
   function onProceed(d: any) {
-    setFormData({ data: d, mapOptions });
+    // setFormData({ data: d, mapOptions });
     proceed();
   }
+  useEffect(() => {
+    setFormData({ data: formData, mapOptions });
+  }, [mapOptions]);
 
   useEffect(() => {
-    // setDisabled(!isValid);
     if (mapOptions.length === 3) {
       setDisabled(false);
     }
@@ -115,11 +117,16 @@ export default function AccountingEntriesAndEvents({
     setClearField(!clearFields);
   };
   useEffect(() => {
-    if (formData) {
-   
-    setValue("TermDepositLiabilityAccount", formData?.TermDepositLiabilityAccount)
-    setValue("InterestAccrualAccount", formData?.InterestAccrualAccount)
-    setValue("InterestExpenseAccount", formData?.InterestExpenseAccount)
+    if (formData?.productGlMappings?.length) {
+      setMapOptions(formData?.productGlMappings);
+      formData?.productGlMappings?.forEach((item: any) => {
+        const key = GlMappingOptions?.find(
+          (i) => item?.glAccountType === i?.id
+        )?.key;
+
+        // @ts-ignore
+        setValue(key, item?.glAccountType);
+      });
     }
   }, [setValue, formData]);
   return (
@@ -154,7 +161,10 @@ export default function AccountingEntriesAndEvents({
                         <GlInput
                           handleClick={handleClick}
                           inputName={type.key}
-                          defaultValue={formData[type.key]}
+                          defaultValue={
+                            mapOptions.find((i) => i?.glAccountType === type.id)
+                              ?.accountName
+                          }
                           register={register}
                           trigger={trigger}
                           errors={errors}

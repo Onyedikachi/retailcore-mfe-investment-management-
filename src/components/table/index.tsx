@@ -328,7 +328,7 @@ export default function TableComponent<TableProps>({
         hasMore={hasMore}
         loader={""}
       >
-        <div className="relative min-h-[600px] max-h-[70vh] overflow-y-auto">
+        <div className="relative min-h-[400px] max-h-[70vh] overflow-y-auto">
           <table className="w-full relative">
             <thead
               className={`${

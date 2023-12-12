@@ -107,10 +107,11 @@ export default function CustomerEligibilityCriteria({
       );
 
       if (formData?.requireDocument && process === "continue") {
-        setSelectedRequirements(Object.values(formData?.requireDocument));
+        setSelectedRequirements(formData?.requireDocument);
+       
         trigger();
       }
-      // setDocuments(Object.values(formData?.requireDocument));
+     
     }
   }, [setValue, formData, setSelectedRequirements]);
 
@@ -281,7 +282,7 @@ export default function CustomerEligibilityCriteria({
         </div>
         <div>
           <SelectedRequirementsTable
-            tableItems={selectedRequirements}
+            tableItems={selectedRequirements || []}
             deleteTableItem={deleteRequirementItem}
           />
         </div>
