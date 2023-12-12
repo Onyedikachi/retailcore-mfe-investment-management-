@@ -71,13 +71,13 @@ export default function FormStepComponent({
               item.index === formStepItems.length ? (
                 <div className="rounded-full h-[33px] w-[33px] flex items-center justify-center border border-[#AAAAAA] bg-[#2FB755] p-1">
                   <div className="bg-white rounded-full h-[22.69px] w-[22.69px] flex items-center justify-center border border-[#AAAAAA]">
-                    <span className="text-[#2FB755]">{item.index}</span>
+                    <span className="text-[#2FB755]" data-testid="form-step-item-index" >{item.index}</span>
                   </div>
                 </div>
               ) : (
                 <div className="bg-[#636363] rounded-full h-[33px] w-[33px] flex items-center justify-center border border-[#AAAAAA]  p-1">
                   <div className="bg-white rounded-full h-[22.69px] w-[22.69px] flex items-center justify-center border border-[#AAAAAA]">
-                    <span className="text-[#636363]">{item.index}</span>
+                    <span className="text-[#636363]" data-testid="form-step-item-index">{item.index}</span>
                   </div>
                 </div>
               ))}
@@ -86,20 +86,20 @@ export default function FormStepComponent({
               item.index === formStepItems[0].index ? (
                 <div className="rounded-full h-[33px] w-[33px] flex items-center justify-center border border-[#AAAAAA] bg-[#2FB755] p-1">
                   <div className="bg-white rounded-full h-[22.69px] w-[22.69px] flex items-center justify-center border border-[#AAAAAA]">
-                    <span className="text-[#2FB755]">{item.index}</span>
+                    <span className="text-[#2FB755]" data-testid="form-step-item-index">{item.index}</span>
                   </div>
                 </div>
               ) : (
                 <div className="bg-white rounded-full h-[33px] w-[33px] flex items-center justify-center border border-[#AAAAAA] p-1">
                   <div className="bg-white rounded-full h-[22.69px] w-[22.69px] flex items-center justify-center border border-[#AAAAAA]">
-                    <span className="text-[#636363]">{item.index}</span>
+                    <span className="text-[#636363]" data-testid="form-step-item-index">{item.index}</span>
                   </div>
                 </div>
               ))}
             {item.index == step && (
               <div className="rounded-full h-[33px] w-[33px] flex items-center justify-center border border-[#AAAAAA] bg-[#2FB755] p-1">
                 <div className="bg-white rounded-full h-[22.69px] w-[22.69px] flex items-center justify-center border border-[#AAAAAA]">
-                  <span className="text-[#2FB755]">{item.index}</span>
+                  <span className="text-[#2FB755]" data-testid="form-step-item-index">{item.index}</span>
                 </div>
               </div>
             )}
@@ -114,7 +114,7 @@ export default function FormStepComponent({
 
           {/* Step label */}
           <div className="w-full px-4 text-center">
-            <span data-testid="form-step-label" className="uppercase text-center text-[#636363] leading-[1px] text-xs font-normal ">
+            <span data-testid="form-step-item-label" className="uppercase text-center text-[#636363] leading-[1px] text-xs font-normal ">
               {item.label}
             </span>
           </div>

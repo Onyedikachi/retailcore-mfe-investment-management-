@@ -29,7 +29,7 @@ describe("FormStepComponent", () => {
         render(
           <FormStepComponent formStepItems={formStepItems} step={1} />
         )
-        const formSteps = screen.getAllByTestId("form-step-label");
+        const formSteps = screen.getAllByTestId("form-step-item-label");
         expect(formSteps.length).toBe(formStepItems.length)
   });
 
@@ -38,22 +38,19 @@ describe("FormStepComponent", () => {
     render(
         <FormStepComponent formStepItems={formStepItems} step={1} />
     )
-    const formStepLabels = screen.getAllByTestId("form-step-label").map(label => label.textContent);
-    const formStepItemLabels = formStepItems.map(item => item.label)
-    expect(formStepLabels).toEqual(formStepItemLabels);
+    const formStepLabels = screen.getAllByTestId("form-step-item-label").map(label => label.textContent);
+    expect(formStepLabels).toEqual(formStepItems.map(item => item.label));
   });
 
-//   // Renders the correct index for each form step item
-//   it("should render the correct index for each form step item when formStepItems is not empty", () => {
-//     const wrapper = shallow(
-//       <FormStepComponent formStepItems={formStepItems} step={0} />
-//     );
-//     formStepItems.forEach((item, index) => {
-//       expect(wrapper.find(".text-[#636363]").at(index).text()).toBe(
-//         item.index.toString()
-//       );
-//     });
-//   });
+  // Renders the correct index for each form step item
+  it("should render the correct index for each form step item when formStepItems is not empty", () => {
+    render(
+        <FormStepComponent formStepItems={formStepItems} step={1} />
+    )
+    const formStepsIndexes = screen.getAllByTestId("form-step-item-index").map(indexElement => indexElement.textContent);
+    expect(formStepsIndexes).toEqual(formStepItems.map(a => a.index+""))// a.index+"" converts items from int to String
+
+  });
 
 //   // Handles empty formStepItems array
 //   it("should handle empty formStepItems array and render default form step item", () => {
