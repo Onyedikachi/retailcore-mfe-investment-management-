@@ -161,7 +161,7 @@ export default function TableComponent({
   query,
   setQuery,
   hasMore,
-  fetchMoreData
+  fetchMoreData,
 }: any) {
   const { category, setStatus, isChecker } = useContext(InvestmentContext);
   const { permissions } = useContext(AppContext);
@@ -244,7 +244,7 @@ export default function TableComponent({
           };
         })
       );
-  
+
     return () => {
       setSearchResults([]);
     };
@@ -305,8 +305,12 @@ export default function TableComponent({
   const onChangeDate = (value: any) => {
     setQuery({
       ...query,
-      start_Date: value.startDate,
-      end_Date: value.endDate,
+      start_Date: value.startDate
+        ? moment(value.startDate).format("yyyy-MM-DD")
+        : null,
+      end_Date: value.endDate
+        ? moment(value.endDate).format("yyyy-MM-DD")
+        : null,
     });
   };
 

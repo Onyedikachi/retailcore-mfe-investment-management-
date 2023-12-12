@@ -121,13 +121,13 @@ export default function ProductDetail({ detail, oldData }: any) {
                 <span className="flex itmes-center">
                   {" "}
                   {detail?.productInfo?.productName}{" "}
-                  {oldData?.productInfo?.productName !==
+                  {/* {oldData?.productInfo?.productName !==
                     detail?.productInfo?.productName && (
                     <span className="block text-success-500 pl-[2px]">
                       {" "}
                       New
                     </span>
-                  )}
+                  )} */}
                 </span>
               </div>
             </div>
@@ -248,19 +248,20 @@ export default function ProductDetail({ detail, oldData }: any) {
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
                 {oldData &&
-                  oldData?.productInfo?.customerCategory !==
-                    detail.productInfo?.customerCategory && (
+                  oldData?.customerEligibility?.customerCategory !==
+                    detail.customerEligibility?.customerCategory && (
                     <span className="block  line-through mb-2 text-[#aaa]">
                       {" "}
-                      {oldData?.productInfo?.customerCategory}
+                      {oldData?.customerEligibility?.customerCategory}
                     </span>
                   )}
                 <span className="flex itmes-center">
+                 
                   {" "}
-                  {CustomerCategory[detail?.productInfo?.customerCategory]}{" "}
+                  {CustomerCategory[detail?.customerEligibility?.customerCategory]}{" "}
                   {oldData &&
-                    oldData?.productInfo?.customerCategory !==
-                      detail?.productInfo?.customerCategory && (
+                    oldData?.customerEligibility?.customerCategory !==
+                      detail?.customerEligibility?.customerCategory && (
                       <span className="block text-success-500 pl-[2px]">
                         {" "}
                         New

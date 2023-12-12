@@ -56,12 +56,8 @@ export default function LiquiditySetup({
     defaultValues: formData,
     // values,
   });
-  const [partOptionCharges, setPartOptionCharges] = useState([
-    ...formData?.part_SpecificCharges,
-  ]);
-  const [earlyOptionCharges, setEarlyOptionCharges] = useState([
-    ...formData?.early_SpecificCharges,
-  ]);
+  const [partOptionCharges, setPartOptionCharges] = useState([]);
+  const [earlyOptionCharges, setEarlyOptionCharges] = useState([]);
 
   function handleSelected({ inputName, selectedOptions }) {
     if (inputName === "part_SpecificCharges") {
@@ -99,8 +95,8 @@ export default function LiquiditySetup({
         setValue(name, value)
       );
 
-      setEarlyOptionCharges(formData?.early_SpecificCharges)
-      setPartOptionCharges(formData?.part_SpecificCharges)
+      setEarlyOptionCharges(formData?.early_SpecificCharges);
+      setPartOptionCharges(formData?.part_SpecificCharges);
     }
   }, [setValue, formData]);
   const watchPartLiquidationPenalty = watch("part_LiquidationPenalty");
@@ -130,11 +126,11 @@ export default function LiquiditySetup({
           <ToggleInputChildren
             key={type.label}
             label={type.label}
-            inputName="part_AllowPartLiquidation"
+            inputName={type.value}
             setValue={setValue}
             trigger={trigger}
             register={register}
-            defaultValue={formData?.part_AllowPartLiquidation}
+            defaultValue={formData[type.value]}
           >
             {type.label === "Allow Part Liquidation" ? (
               <div>

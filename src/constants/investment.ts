@@ -471,8 +471,8 @@ export const rangeLabels = {
     rightClass: "",
   },
   1: {
-    leftClass: "opacity-40",
-    rightClass: "",
+    leftClass: "",
+    rightClass: "opacity-40",
   },
   2: {
     leftClass: "opacity-40",

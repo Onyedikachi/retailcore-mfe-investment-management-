@@ -38,7 +38,7 @@ export default function CreateTermDeposit() {
   const stage = searchParams.get("stage");
   const id = searchParams.get("id");
 
-  const [step, setStep] = useState(4);
+  const [step, setStep] = useState(1);
 
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [subText, setSubText] = useState("");
@@ -60,7 +60,7 @@ export default function CreateTermDeposit() {
       ageGroupMin: 0,
       ageGroupMax: 0,
       requireDocument: [],
-      corporateCustomerType: [],
+      customerType: [],
       customerCategory: null,
     },
     pricingConfiguration: {
@@ -107,7 +107,7 @@ export default function CreateTermDeposit() {
       early_SpecificCharges: [],
     },
     productGlMappings: [],
-    interestComputationMethod: 0,
+    interestComputationMethod: 2,
     TermDepositLiabilityAccount: "",
     InterestAccrualAccount: "",
     InterestExpenseAccount: "",
@@ -168,15 +168,16 @@ export default function CreateTermDeposit() {
 
   useEffect(() => {
     if (productDetailsIsSuccess) {
-
       setProductData({
         productInfo: productDetails?.data?.productInfo,
         customerEligibility: productDetails?.data?.customerEligibility,
         pricingConfiguration: productDetails?.data?.pricingConfiguration,
         liquidation: productDetails?.data?.liquidation,
         productGlMappings: productDetails?.data?.productGlMappings,
-        interestComputationMethod: productDetails?.data?.interestComputationMethod,
-        TermDepositLiabilityAccount: productDetails?.data?.TermDepositLiabilityAccount,
+        interestComputationMethod:
+          productDetails?.data?.interestComputationMethod,
+        TermDepositLiabilityAccount:
+          productDetails?.data?.TermDepositLiabilityAccount,
         InterestAccrualAccount: productDetails?.data?.InterestAccrualAccount,
         InterestExpenseAccount: productDetails?.data?.InterestExpenseAccount,
         isDraft: productDetails?.data?.isDraft,
@@ -298,21 +299,22 @@ export default function CreateTermDeposit() {
         />
       );
   }
-  useEffect(() => {
-    console.log(
-      "🚀 ~ file: IndexComponent.tsx:258 ~ useEffect ~ productData:",
-      productData
-    );
-  }, [productData]);
+
   useEffect(() => {
     if (requestIsSuccess) {
       const data = JSON.parse(requestData?.data?.metaInfo);
-      console.log(
-        "🚀 ~ file: IndexComponent.tsx:270 ~ useEffect ~ data:",
-        data
-      );
+      console.log("🚀 ~ file: IndexComponent.tsx:306 ~ useEffect ~ data:", data)
 
-      setProductData(convertKeysToLowerCase({ ...data }));
+      setProductData({
+        ...data,
+        pricingConfiguration: {
+          ...data.pricingConfiguration,
+          interestComputationMethod: 2,
+        
+        },
+       
+      });
+      
     }
   }, [requestIsSuccess]);
 

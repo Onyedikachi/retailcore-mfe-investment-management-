@@ -663,9 +663,11 @@ export const documentOptions = [
 export const liquidationTypes = [
   {
     label: "Allow Part Liquidation",
+    value: "part_AllowPartLiquidation"
   },
   {
     label: "Allow Early Liquidation",
+    value: "early_AllowEarlyLiquidation"
   },
 ];
 
