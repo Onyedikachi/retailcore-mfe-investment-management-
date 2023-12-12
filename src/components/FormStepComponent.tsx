@@ -114,7 +114,7 @@ export default function FormStepComponent({
 
           {/* Step label */}
           <div className="w-full px-4 text-center">
-            <span className="uppercase text-center text-[#636363] leading-[1px] text-xs font-normal ">
+            <span data-testid="form-step-label" className="uppercase text-center text-[#636363] leading-[1px] text-xs font-normal ">
               {item.label}
             </span>
           </div>

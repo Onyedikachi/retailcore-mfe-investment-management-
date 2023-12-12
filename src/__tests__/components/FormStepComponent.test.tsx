@@ -1,40 +1,45 @@
-// import React from "react";
-// import { FormStepComponent } from "../../components";
-// import { fireEvent, render, screen } from "@testing-library/react";
-// import { shallow } from "enzyme";
+import React from "react";
+import { FormStepComponent } from "../../components";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { shallow } from "enzyme";
 
-// const formStepItems = [
-//   {
-//     id: 1,
-//     label: "First",
-//     index: 1,
-//   },
-//   {
-//     id: 2,
-//     label: "Second",
-//     index: 2,
-//   },
-//   {
-//     id: 3,
-//     label: "Third",
-//     index: 3,
-//   },
-// ];
+const formStepItems = [
+  {
+    id: 1,
+    label: "First",
+    index: 1,
+  },
+  {
+    id: 2,
+    label: "Second",
+    index: 2,
+  },
+  {
+    id: 3,
+    label: "Third",
+    index: 3
+  },
+];
 
-// 
 
-// describe("FormStepComponent", () => {
-//   // Renders the correct number of form step items
-//   it("should render the correct number of form step items when formStepItems is not empty", () => {
-//     const wrapper = shallow(
-//       <FormStepComponent formStepItems={formStepItems} step={1} />
-//     );
-//     expect(wrapper.find(".flex.flex-col.items-center.w-[172px]").length).toBe(
-//       formStepItems.length
-//     );
-//   });
 
-//   // Renders the correct label for each form step item
+describe("FormStepComponent", () => {
+  // Renders the correct number of form step items
+  it("should render the correct number of form step items when formStepItems is not empty", () => {
+    // const wrapper = shallow(
+    //   <FormStepComponent formStepItems={formStepItems} step={1} />
+    // );
+    // expect(wrapper.find(".flex.flex-col.items-center.w-[172px]").length).toBe(
+        //   formStepItems.length
+        // );
+        render(
+          <FormStepComponent formStepItems={formStepItems} step={1} />
+        )
+        const steps = screen.getAllByTestId("form-step-label");
+        expect(steps.length).toBe(formStepItems.length)
+  });
+
+  // Renders the correct label for each form step item
 //   it("should render the correct label for each form step item when formStepItems is not empty", () => {
 //     const wrapper = shallow(
 //       <FormStepComponent formStepItems={formStepItems} step={2} />
@@ -136,4 +141,4 @@
 //       formStepItems[0].index.toString()
 //     );
 //   });
-// });
+});
