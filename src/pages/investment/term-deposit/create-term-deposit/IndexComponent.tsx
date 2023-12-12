@@ -56,14 +56,14 @@ export default function CreateTermDeposit() {
       startDate: new Date(),
       endDate: null,
       currency: "NGN",
-      customerCategory: null,
+      customerCategory: 0,
     },
     customerEligibility: {
       ageGroupMin: 0,
       ageGroupMax: 0,
       requireDocument: [],
       customerType: [],
-      customerCategory: null,
+      customerCategory: 0,
     },
     pricingConfiguration: {
       interestRateRangeType: 0,
