@@ -506,7 +506,7 @@ export default function ProductDetail({ detail, oldData }: any) {
                         </span>
                       </p>
                     }
-                    Maximum of {detail?.liquidation?.part_MaxPartLiquidation}%
+                    Maximum of {detail?.liquidation?.part_MaxPartLiquidation}% of principal
                   </span>
                 ) : (
                   "Not Applicable"
