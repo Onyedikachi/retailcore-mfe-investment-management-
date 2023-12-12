@@ -55,6 +55,7 @@ export const DropdownButton = ({ options, handleClick }: any) => {
     </DropDown>
   );
 };
+
 export const handleProductsDropdown = (
   status: string,
   isChecker,
@@ -170,7 +171,6 @@ export default function TableComponent<TableProps>({
   const [failedSubText, setFailedSubtext] = useState("");
   const [failedText, setFailedText] = useState("");
   const [isDetailOpen, setDetailOpen] = useState(false);
-
   const notify = (toastMessage) => toast.error(toastMessage);
   // function getdata(item, key) {}
   const handleAction = (action, items) => {
@@ -255,6 +255,7 @@ export default function TableComponent<TableProps>({
     deleteRequest,
     { isSuccess, isError, error, isLoading: deleteLoading },
   ] = useDeleteProductRequestMutation();
+  useEffect(() => console.log(deleteLoading, isLoading), [deleteLoading, isLoading])
   const [
     activateProduct,
     {
@@ -264,6 +265,7 @@ export default function TableComponent<TableProps>({
       isLoading: activateIsLoading,
     },
   ] = useActivateProductMutation();
+
 
   const handleConfirm = () => {
     if (action.toLowerCase().includes("delete")) {
@@ -345,7 +347,7 @@ export default function TableComponent<TableProps>({
                       <div className="relative flex items-center gap-x-20 justify-between">
                         <span className="relative">
                           {label}{" "}
-                          {key === "updatedOn" && (
+                          {key === "updated_At" && (
                             <span className="absolute block bg-[#CF2A2A] h-[6px] w-[6px] rounded-full -right-[6px] top-[1px]"></span>
                           )}
                         </span>
@@ -392,7 +394,7 @@ export default function TableComponent<TableProps>({
                             <>
                               {typeof item[header.key] !== "object" &&
                                 header.key !== "state" &&
-                                header.key !== "updatedOn" &&
+                                header.key !== "updated_At" &&
                                 header.key !== "requestStatus" && (
                                   <TextCellContent value={item[header.key]} />
                                 )}
@@ -405,7 +407,7 @@ export default function TableComponent<TableProps>({
                                   isChecker={isChecker}
                                 />
                               )}
-                              {header.key === "updatedOn" && (
+                              {header.key === "updated_At" && (
                                 <UpdatedOnCellContent
                                   value={item[header.key]}
                                 />

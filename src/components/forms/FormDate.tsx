@@ -70,6 +70,7 @@ const FormDate: React.FC<FormDateProps> = ({
           data-testid="date-picker"
           selected={date}
           onChange={(date) => {
+            handleChange(date)
             setDate(date);
             clearErrors && clearErrors(inputName);
             trigger && trigger(inputName)
