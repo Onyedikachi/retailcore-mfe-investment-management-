@@ -9,8 +9,17 @@ import {
 } from "@app/constants";
 import { currencyFormatter } from "@app/utils/formatCurrency";
 
-export function DebitCreditTable() {
+export function DebitCreditTable({dataTab}) {
   const headers = [
+    {
+      title: "S|N",
+      key: "S|N",
+    },
+    {
+      title: "event",
+      key: "event",
+    },
+    
     {
       title: "debit",
       key: "debit",
@@ -20,20 +29,35 @@ export function DebitCreditTable() {
       key: "credit",
     },
   ];
-  const dataTab = [
-    {
-      debitAccount: "ASTCAJHgsU12",
-      debitBalance: "Current Account Balances",
-      creditAccount: "Current Account Balances",
-      creditBalance: "ASTCA4gJHU12",
-    },
-    {
-      debitAccount: "ASTCAJ4HU12",
-      debitBalance: "Savings Account Balances",
-      creditAccount: "Savings Account Balances",
-      creditBalance: "ASTCAJfHU12",
-    },
-  ];
+
+  const accountTypes = ['Term deposit account', 'Interest accural account', 'Interest expense account',]
+ 
+  // [
+    // {
+    //   event: 'Term deposit account',
+    //   debitAccount: "ASTCAJHgsU12",
+    //   debitBalance: "Current Account Balances",
+    //   creditAccount: "Current Account Balances",
+    //   creditBalance: "ASTCA4gJHU12",
+    // },
+    // {
+    //   event: 'Interest accural account',
+    //   debitAccount: "ASTCAJ4HU12",
+    //   debitBalance: "Savings Account Balances",
+    //   creditAccount: "Savings Account Balances",
+    //   creditBalance: "ASTCAJfHU12",
+    // },
+    // {
+    //   event: 'Interest expense account',
+    //   debitAccount: "ASTCAJ4HU12",
+    //   debitBalance: "Savings Account Balances",
+    //   creditAccount: "Savings Account Balances",
+    //   creditBalance: "ASTCAJfHU12",
+    // },
+
+
+   
+  // ];
   return (
     <table>
       <thead>
@@ -48,24 +72,43 @@ export function DebitCreditTable() {
           ))}
         </tr>
       </thead>
+  
       <tbody>
-        {dataTab.map((i) => (
+        {dataTab?.map((i, index) => (
           <tr
             key={i.creditBalance}
             className="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"
           >
-            <td className="text-sm font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative text-left">
+               <td className="text-sm font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative text-left">
               <span>
-                <span className="block">{i.debitBalance}</span>
-                <span className="text-[#aaa]">{i.debitAccount}</span>
+             
+                <span className="text-[#aaa] capitalize">{index + 1}</span>
+              </span>
+            </td>
+             <td className="text-sm font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative text-left">
+              <span>
+             
+                <span className="text-[#aaa] capitalize">{accountTypes[i.glAccountType]}</span>
               </span>
             </td>
             <td className="text-sm font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative text-left">
+              <span>
+               
+                <span className="text-[#aaa]">{i.accountName}</span>
+              </span>
+            </td>
+            <td className="text-sm font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative text-left">
+              <span>
+               
+                <span className="text-[#aaa]">{i.accountName}</span>
+              </span>
+            </td>
+            {/* <td className="text-sm font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative text-left">
               <span>
                 <span className="block">{i.creditBalance}</span>
                 <span className="text-[#aaa]">{i.creditAccount}</span>
               </span>
-            </td>
+            </td> */}
           </tr>
         ))}
       </tbody>
@@ -138,7 +181,7 @@ export default function ProductDetail({ detail, oldData }: any) {
               <div className="w-full text-base font-normal text-[#636363]">
                 {oldData &&
                   oldData?.productInfo?.slogan !==
-                    detail.productInfo?.slogan && (
+                    detail?.productInfo?.slogan && (
                     <span className="block  line-through mb-2 text-[#aaa]">
                       {" "}
                       {oldData?.productInfo?.slogan}
@@ -270,7 +313,8 @@ export default function ProductDetail({ detail, oldData }: any) {
                 </span>
               </div>
             </div>
-            {detail?.productInfo?.customerCategory == 0 && (
+           
+            {detail?.productInfo?.customerCategory == 0 || detail?.customerEligibility?.customerCategory == 0 && (
               <div className=" flex gap-[54px]">
                 <div className="w-[300px]   text-base font-medium text-[#636363]">
                   Age group eligibility
@@ -279,7 +323,7 @@ export default function ProductDetail({ detail, oldData }: any) {
                   <span className="flex itmes-center">
                     {" "}
                     {detail?.customerEligibility.ageGroupMin}
-                    {" - "} {detail?.customerEligibility.ageGroupMax}
+                    {" - "} {detail?.customerEligibility.ageGroupMax ? detail?.customerEligibility.ageGroupMax : 'Unspecified'}
                   </span>
                 </div>
               </div>
@@ -379,7 +423,7 @@ export default function ProductDetail({ detail, oldData }: any) {
                           className="block  mb-2 text-[#636363]"
                         >
                           {" "}
-                          {`${configModel.min} - ${configModel.max}`} for tenor
+                          {`${configModel.min} - ${configModel.max}%`} for tenor
                           between{" "}
                           {`${configModel.tenorMin} ${
                             Interval[configModel.tenorMinUnit]
@@ -453,7 +497,7 @@ export default function ProductDetail({ detail, oldData }: any) {
                           {liquidities[
                             detail?.liquidation?.part_LiquidationPenalty
                           ] == "RecalculateInterest" &&
-                            `Recalculate accrued interest of ${detail?.liquidation?.part_specialInterestRate}`}
+                            `Recalculate accrued interest of ${detail?.liquidation?.part_LiquidationPenaltyPercentage}%`}
                         </span>
                         <span>
                           {liquidities[
@@ -462,7 +506,7 @@ export default function ProductDetail({ detail, oldData }: any) {
                         </span>
                       </p>
                     }
-                    Maximum of {detail?.liquidation?.part_MaxPartLiquidation}%
+                    Maximum of {detail?.liquidation?.part_MaxPartLiquidation}% of principal
                   </span>
                 ) : (
                   "Not Applicable"
@@ -514,7 +558,7 @@ export default function ProductDetail({ detail, oldData }: any) {
                           {liquidities[
                             detail?.liquidation?.early_LiquidationPenalty
                           ] == "RecalculateInterest" &&
-                            `Recalculate accrued interest of ${detail?.liquidation?.part_specialInterestRate}`}
+                            `Recalculate accrued interest of ${detail?.liquidation?.early_LiquidationPenaltyPercentage}%`}
                         </span>
                         <span>
                           {liquidities[
@@ -532,7 +576,7 @@ export default function ProductDetail({ detail, oldData }: any) {
             </div>
           </div>
         </div>
-        <div className="!hidden flex flex-col">
+        <div className="!hidden  flex-col">
           <h4 className="text-[#636363] text-[16px] font-medium mb-[27px]">
             Charges & Taxes
           </h4>
@@ -590,11 +634,11 @@ export default function ProductDetail({ detail, oldData }: any) {
           </h4>
           <div className="grid grid-cols-1 gap-[25px] px-12">
             <div className=" flex gap-[54px]">
-              <div className="w-[300px]   text-base font-medium text-[#636363]">
+              {/* <div className="w-[300px]   text-base font-medium text-[#636363]">
                 Principal Deposit
-              </div>
+              </div> */}
               <div className="w-full text-base font-normal">
-                <DebitCreditTable />
+                <DebitCreditTable dataTab={detail?.productGlMappings}/>
               </div>
             </div>
           </div>
