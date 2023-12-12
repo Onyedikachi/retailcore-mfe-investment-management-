@@ -48,7 +48,7 @@ export default function ActivityLog({
                     <div
                       className={`relative ${
                         index !== activities.length - 1 || process === "verdict"
-                          ? "before:content-[''] before:absolute before:h-[80px] before:w-[1px] before:border-l before:z-[1] before:left-1/2 before:translate-x-[-50%] before:border-[#AAAAAA]"
+                          ? "before:content-[''] before:absolute before:h-[110px] before:w-[1px] before:border-l before:z-[1] before:left-1/2 before:translate-x-[-50%] before:border-[#AAAAAA]"
                           : "" // If it's the last item, don't apply the before content
                       } ${
                         (activities[activities.length - 1].description
@@ -60,6 +60,7 @@ export default function ActivityLog({
                       } `}
                     >
                       {item.description.toLowerCase().includes("pending") ? (
+                         <div className="bg-white w-[25px] h-[25px] rounded-full z-[999]">
                         <svg
                           width="25"
                           height="26"
@@ -103,8 +104,10 @@ export default function ActivityLog({
                             </clipPath>
                           </defs>
                         </svg>
+                        </div>
                       ) : (
-                        <svg
+                        <div className="bg-white w-[25px] h-[25px] rounded-full z-[999]">
+                          <svg
                           width="25"
                           height="25"
                           viewBox="0 0 25 25"
@@ -122,6 +125,7 @@ export default function ActivityLog({
                             strokeWidth="0.5"
                           />
                         </svg>
+                        </div>
                       )}
                     </div>
                     <div className="flex-1">

@@ -5,11 +5,17 @@ import ModifySvg from "@app/assets/images/ModifySvg";
 import CancelSvg from "@app/assets/images/CancelSvg";
 import { IoArrowUndo } from "react-icons/io5";
 import ShareButton from "../ShareButton";
-import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { Confirm, Failed, Prompt, Success } from "../modals";
 import { AppContext } from "@app/utils";
 import { useApproveProductMutation, useRejectProductMutation } from "@app/api";
 import { Messages, Prompts } from "@app/constants/enums";
+import Rejection from "../modals/Rejection";
 
 export const handlePrint = () => {
   window.print();
@@ -19,9 +25,10 @@ export default function Actions({
   handleSubmit,
   handleModify,
   handleCancel,
+  requestDetail,
 }: any) {
   const { role, permissions } = useContext(AppContext);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { tab, type, id } = useParams();
   const sub_type = searchParams.get("sub_type");
@@ -35,7 +42,9 @@ export default function Actions({
   const [subText, setSubText] = useState("");
   const [successText, setSuccessText] = useState("");
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
-
+  const [isRejection, setRejection] = useState(false);
+  const [reason, setReason] = useState("");
+  const [routeTo, setRouteTo] = useState<any>(null);
   const [
     approveProduct,
     {
@@ -101,13 +110,17 @@ export default function Actions({
       approveProduct({ id });
     }
     if (action === "reject") {
-      rejectProduct({ id });
+      setRejection(true);
     }
     if (action === "cancel") {
-      navigate("/product-factory/investment?category=requests")
+      navigate("/product-factory/investment?category=requests");
     }
   };
 
+  const handleRejection=()=>{
+    setRejection(false);
+    rejectProduct({ reason, id, routeTo });
+  }
   useEffect(() => {
     if (rejectSuccess) {
       setSuccessText(Messages.PRODUCT_CREATE_REJECTED);
@@ -356,6 +369,17 @@ export default function Actions({
           isOpen={isFailed}
           setIsOpen={setFailed}
           canRetry
+        />
+      )}
+      {isRejection && (
+        <Rejection
+          isOpen={isRejection}
+          setIsOpen={setRejection}
+          creatorId={requestDetail?.initiatorId}
+          onConfirm={() => handleRejection()}
+          setReason={setReason}
+          reason={reason}
+          setRouteTo={setRouteTo}
         />
       )}
       {(approveLoading || rejectLoading) && (
