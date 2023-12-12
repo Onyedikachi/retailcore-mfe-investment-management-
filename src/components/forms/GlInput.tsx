@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import { FaSearch } from "react-icons/fa";
+import { tabLinks } from "@app/constants";
 
 export function closeDropdown(setIsOpen) {
   setIsOpen(false);
@@ -18,114 +19,7 @@ export default function EntriesAndEventsSearchResults({
 }: any) {
   const [query, setQuery] = useState("");
   const [isOpen, setOpen] = useState(false);
-  const tabLinks = [
-    {
-      name: "Assets",
-      menu: [
-        {
-          name: "Current Assets [ASTCAS]",
-          subMenu: [
-            { name: "Current Account balances [ASTCAS23421]" },
-            { name: "Savings Account balances [ASTCAS23422]" },
-            { name: "Cash Receipt balances [ASTCAS23423]" },
-            { name: "Current Account balances [ASTCAS23424]" },
-            { name: "Current Account balances [ASTCAS23424]" },
-          ],
-          isOpen: false,
-        },
-        {
-          name: "Non Current Asets",
-          subMenu: [{ name: "subMenu name2" }],
-          isOpen: false,
-        },
-      ],
-    },
-    {
-      name: "Liabilities",
-      menu: [
-        {
-          name: "Current Liabilities [ASTCAS]",
-          subMenu: [
-            { name: "Current Account balances [ASTCAS23421]" },
-            { name: "Savings Account balances [ASTCAS23422]" },
-            { name: "Cash Receipt balances [ASTCAS23423]" },
-            { name: "Current Account balances [ASTCAS23424]" },
-            { name: "Current Account balances [ASTCAS23424]" },
-          ],
-          isOpen: false,
-        },
-        {
-          name: "Non Current Liabilities",
-          subMenu: [{ name: "subMenu name2" }],
-          isOpen: false,
-        },
-      ],
-    },
-    {
-      name: "Equities",
-      menu: [
-        {
-          name: "Current Equities [ASTCAS]",
-          subMenu: [
-            { name: "Current Account balances [ASTCAS23421]" },
-            { name: "Savings Account balances [ASTCAS23422]" },
-            { name: "Cash Receipt balances [ASTCAS23423]" },
-            { name: "Current Account balances [ASTCAS23424]" },
-            { name: "Current Account balances [ASTCAS23424]" },
-          ],
-          isOpen: false,
-        },
-        {
-          name: "Non Current Equities",
-          subMenu: [{ name: "subMenu name2" }],
-          isOpen: false,
-        },
-      ],
-    },
-    {
-      name: "Revenues",
-      menu: [
-        {
-          name: "Current Revenues [ASTCAS]",
-          subMenu: [
-            { name: "Current Account balances [ASTCAS23421]" },
-            { name: "Savings Account balances [ASTCAS23422]" },
-            { name: "Cash Receipt balances [ASTCAS23423]" },
-            { name: "Current Account balances [ASTCAS23424]" },
-            { name: "Current Account balances [ASTCAS23424]" },
-          ],
-          isOpen: false,
-        },
-        {
-          name: "Non Current Revenues",
-          subMenu: [{ name: "subMenu name2" }],
-          isOpen: false,
-        },
-      ],
-    },
-    {
-      name: "Expenses",
-      menu: [
-        {
-          name: "Current Expenses [ASTCAS]",
-          subMenu: [
-            { name: "Current Account balances [ASTCAS23421]" },
-            { name: "Savings Account balances [ASTCAS23422]" },
-            { name: "Cash Receipt balances [ASTCAS23423]" },
-            { name: "Current Account balances [ASTCAS23424]" },
-            { name: "Current Account balances [ASTCAS23424]" },
-          ],
-          isOpen: false,
-        },
-        {
-          name: "Non Current Expenses",
-          subMenu: [{ name: "subMenu name2" }],
-          isOpen: false,
-        },
-      ],
-    },
-  ];
-
+ 
   const [currentTab, setCurrentTab] = useState(tabLinks[0]);
   const [menus, setMenus] = useState(currentTab.menu);
 
