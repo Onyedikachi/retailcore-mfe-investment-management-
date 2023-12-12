@@ -1,26 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
   <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/QuickLinks.test.tsx">
-    <testCase name="QuickLinks should renderWithProviders a container with a title and a list of links" duration="249"/>
-    <testCase name="QuickLinks component renderWithProviderss QuickLinks component with suggested links" duration="19"/>
-    <testCase name="QuickLinks component closes the suggested links section when close button is clicked" duration="17"/>
-    <testCase name="QuickLinks component should fetch data from useGetLinksQuery hook and update state with received data" duration="52">
-      <failure message="ReferenceError: getByText is not defined"><![CDATA[ReferenceError: getByText is not defined
-    at Object.<anonymous> (/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/QuickLinks.test.tsx:116:5)
-    at Promise.then.completed (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/utils.js:391:28)
-    at new Promise (<anonymous>)
-    at callAsyncCircusFn (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/utils.js:316:10)
-    at _callCircusTest (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/run.js:218:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/run.js:155:3)
-    at _runTestsForDescribeBlock (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/run.js:66:9)
-    at _runTestsForDescribeBlock (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/run.js:60:9)
-    at run (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/run.js:25:3)
-    at runAndTransformResultsToJestFormat (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:170:21)
-    at jestAdapter (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:82:19)
-    at runTestInternal (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-runner/build/runTest.js:389:16)
-    at runTest (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-runner/build/runTest.js:475:34)
-    at Object.worker (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-runner/build/testWorker.js:133:12)]]></failure>
-    </testCase>
+    <testCase name="QuickLinks should renderWithProviders a container with a title and a list of links" duration="214"/>
+    <testCase name="QuickLinks component renderWithProviderss QuickLinks component with suggested links" duration="21"/>
+    <testCase name="QuickLinks component closes the suggested links section when close button is clicked" duration="30"/>
+    <testCase name="should renderWithProviders a message when isOpen state is true" duration="23"/>
   </file>
 </testExecutions>
