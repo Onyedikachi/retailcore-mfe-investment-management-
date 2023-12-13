@@ -147,7 +147,6 @@ export function Tabs() {
   );
 }
 export default function TopBar() {
-  const { isChecker, category } = useContext(InvestmentContext);
   const { permissions } = useContext(AppContext);
 
   return (
@@ -161,7 +160,11 @@ export default function TopBar() {
         </h1>
 
         <CreateButton>
-          <button data-testid="create-btn" className="btn bg-sterling-red-800">
+          <button
+            disabled={!permissions.length}
+            data-testid="create-btn"
+            className="btn bg-sterling-red-800"
+          >
             <span className="p-[5px]">
               <HiPlus fontSize={14} />
             </span>{" "}

@@ -30,7 +30,7 @@ export function SearchValues({
     setInputValue(item?.name);
     setSearchTerm(item?.name);
     setShowBox(false);
-    handleSearch(item.name, item);
+    handleSearch(item?.name, item);
   };
 
   return (
@@ -43,11 +43,11 @@ export function SearchValues({
       </span>
       <span>
         <span className="block max-w-max truncate text-[#636363] capitalize">
-          {item.name}
+          {item?.name}
         </span>
         {type === "multi" && (
           <span className="block text-xs max-w-max truncate text-[#636363] capitalize">
-            {item.name}
+            {item?.name}
           </span>
         )}
         <span className="block text-xs text-[#aaa]">{item?.code}</span>
@@ -70,7 +70,7 @@ export function SearchItem({
         <div>
           <span className="px-2 mb-3 text-xs text-[#aaa] flex gap-x-[6px] items-center">
             <FaCaretDown className="text-[#636363] rotate-[-45deg] capitalize" />{" "}
-            {item.title}
+            {item?.title}
           </span>
 
           <div className="">
@@ -150,7 +150,7 @@ export default function SearchInput({
   const debouncedSetSearchTerm = debounce((value) => setSearchTerm(value), 0);
 
   useEffect(() => {
-    if (!inputValue.length && handleSearch) {
+    if (!inputValue?.length && handleSearch) {
       handleSearch("");
       setSearchResults([]);
     }
@@ -203,7 +203,7 @@ export default function SearchInput({
                   {searchResults?.length > 0 ? (
                     <ul className="grid gap-y-[10px]">
                       {searchResults?.map((item, indrx) => (
-                        <li key={`${indrx.toString()}+${item.id}`}>
+                        <li key={`${indrx.toString()}+${item?.id}`}>
                           <SearchItem
                             type={type}
                             item={item}

@@ -75,7 +75,7 @@ export const StatusButton = ({
 };
 
 export const count = (item, analyticsData) => {
-  switch (item.type.toLowerCase()) {
+  switch (item?.type?.toLowerCase()) {
     case "all":
       return analyticsData?.data?.All || 0;
     case "active":
@@ -121,7 +121,7 @@ export const StatusCategoryButton = ({
       data-testid={`${item.type}-btn`}
       onClick={() => handleClick(setCategory, item, setSelected, category)}
       className={`${
-        category.toLowerCase() === item.type.toLowerCase()
+        category?.toLowerCase() === item?.type?.toLowerCase()
           ? "!bg-white font-semibold text-[20px]"
           : "hover:bg-gray-50 bg-[#EFEFEF]"
       }  px-4 py-[19px] text-[18px] text-[#636363] text-left flex gap-x-[5px] items-center leading-[24px] w-full capitalize border-[#D0D5DD] border-b last-of-type:border-b-0`}

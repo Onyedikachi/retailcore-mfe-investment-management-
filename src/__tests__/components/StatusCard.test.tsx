@@ -2,8 +2,6 @@ import StatusCard, { StatusButton, StatusCategoryButton, handleActiveType, handl
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
-import permissions from "../../constants/permissions";
-import {ProductionOptions, RequestOptions} from "../../constants/investment";
 
 describe("StatusCard", () => {
     it("Renders without error", () => {
@@ -58,7 +56,7 @@ describe("sortOptions", () => {
 describe("StatusCategoryButton", () => {
     it("Renders without error", () => {
         render(<StatusCategoryButton item={{type: 'rejected'}} category="rejected"/>)
-        expect(screen.getByTestId("rejected-btn")).toHaveClass("bg-white font-semibold text-[20px]");
+        expect(screen.getByTestId("rejected-btn")).toHaveClass("!bg-white font-semibold text-[20px] px-4 py-[19px] text-[18px] text-[#636363] text-left flex gap-x-[5px] items-center leading-[24px] w-full capitalize border-[#D0D5DD] border-b last-of-type:border-b-0");
         expect(screen.getByTestId("rejected-btn")).toHaveTextContent("rejected");
     })
 })
