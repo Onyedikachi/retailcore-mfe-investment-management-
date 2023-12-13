@@ -23,7 +23,8 @@ export default function FormToolTip({ tip }: { tip?: any }) {
             {/* <h1 className="text-base bg-slate-900 dark:bg-slate-600 dark:bg-opacity-70 text-white rounded-t px-[9px] mt-[-5px] mx-[-9px] mb-3 py-2">
                     Popover Top
                   </h1> */}
-            {tip && <span className="">{tip}</span>}
+            <span>{tip}</span>
+            {tip && <span data-testid="tip" className="">{tip}</span>}
           </div>
         }
       ></Tooltip>

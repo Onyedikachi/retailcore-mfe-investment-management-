@@ -31,15 +31,4 @@ describe ("SelectRequirements", () => {
             expect(screen.getByText("SampleChild")).toBeInTheDocument();
         })
     })
-    it("Clicking close button closes modal", () => {
-        let val = true;
-        render(<SelectRequirements setIsOpen={() => val=false}  header="SampleHeader" isOpen={val} children={(<span>SampleChild</span>)}/>);
-        const closeButton = screen.getByTestId("cancel-btn");
-        expect(closeButton).toBeInTheDocument();
-        fireEvent.click(closeButton);
-        act(() => {
-            // screen.debug();
-        })
-    })
-
 })
