@@ -16,10 +16,10 @@ export function closeBox(setSearchResults, setShowBox) {
 
 export function SearchValues({ type, item, setInputValue, setSearchTerm, setShowBox, handleSearch }) {
   const handleClick = () => {
-    setInputValue(item.name);
-    setSearchTerm(item.name);
+    setInputValue(item?.name);
+    setSearchTerm(item?.name);
     setShowBox(false);
-    handleSearch(item.name);
+    handleSearch(item?.name);
   };
 
   return (
@@ -28,11 +28,11 @@ export function SearchValues({ type, item, setInputValue, setSearchTerm, setShow
         <FaSearch className="text-[#48535B]" />
       </span>
       <span>
-        <span className="block max-w-max truncate text-[#636363] capitalize">{item.name}</span>
+        <span className="block max-w-max truncate text-[#636363] capitalize">{item?.name}</span>
         {type === "general" && (
-          <span className="block text-xs max-w-max truncate text-[#636363] capitalize">{item.name}</span>
+          <span className="block text-xs max-w-max truncate text-[#636363] capitalize">{item?.name}</span>
         )}
-        <span className="block text-xs text-[#aaa]">{item.code}</span>
+        <span className="block text-xs text-[#aaa]">{item?.code}</span>
       </span>
     </div>
   );
@@ -152,7 +152,7 @@ export default function SearchInput({
                   {searchResults?.length > 0 ? (
                     <ul className="grid gap-y-[10px]">
                       {searchResults?.map((item) => (
-                        <li key={item.id}>
+                        <li key={item?.id}>
                           <SearchItem
                             type={type}
                             item={item}
