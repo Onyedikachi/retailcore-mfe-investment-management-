@@ -99,7 +99,7 @@ export const investmentApi: any = createApi({
     modifyProduct: builder.mutation<any, any>({
       query: (data) => {
         return {
-          url: `${urls.PRODUCT}/modify/${data.id}`,
+          url: `${urls.PRODUCT}/edit`,
           method: "put",
           body: data,
         };
