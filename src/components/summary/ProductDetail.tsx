@@ -21,45 +21,18 @@ export function DebitCreditTable({dataTab}) {
     },
     
     {
-      title: "debit",
-      key: "debit",
+      title: "specified ledger",
+      key: "specified ledger",
     },
-    {
-      title: "credit",
-      key: "credit",
-    },
+ 
   ];
 
   const accountTypes = ['Term deposit account', 'Interest accural account', 'Interest expense account',]
  
-  // [
-    // {
-    //   event: 'Term deposit account',
-    //   debitAccount: "ASTCAJHgsU12",
-    //   debitBalance: "Current Account Balances",
-    //   creditAccount: "Current Account Balances",
-    //   creditBalance: "ASTCA4gJHU12",
-    // },
-    // {
-    //   event: 'Interest accural account',
-    //   debitAccount: "ASTCAJ4HU12",
-    //   debitBalance: "Savings Account Balances",
-    //   creditAccount: "Savings Account Balances",
-    //   creditBalance: "ASTCAJfHU12",
-    // },
-    // {
-    //   event: 'Interest expense account',
-    //   debitAccount: "ASTCAJ4HU12",
-    //   debitBalance: "Savings Account Balances",
-    //   creditAccount: "Savings Account Balances",
-    //   creditBalance: "ASTCAJfHU12",
-    // },
+ 
 
-
-   
-  // ];
   return (
-    <table>
+    <table className='w-full'>
       <thead>
         <tr>
           {headers.map((i) => (
@@ -97,18 +70,7 @@ export function DebitCreditTable({dataTab}) {
                 <span className="text-[#aaa]">{i.accountName}</span>
               </span>
             </td>
-            <td className="text-sm font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative text-left">
-              <span>
-               
-                <span className="text-[#aaa]">{i.accountName}</span>
-              </span>
-            </td>
-            {/* <td className="text-sm font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative text-left">
-              <span>
-                <span className="block">{i.creditBalance}</span>
-                <span className="text-[#aaa]">{i.creditAccount}</span>
-              </span>
-            </td> */}
+        
           </tr>
         ))}
       </tbody>
