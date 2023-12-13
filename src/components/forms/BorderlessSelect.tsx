@@ -122,7 +122,7 @@ export default function Select({
                   >
                     {({ selected }) => (
                       <>
-                        <span
+                        <span data-testid="select-option"
                           className={`block whitespace-nowrap  ${
                             selected ? "font-medium" : "font-normal"
                           }`}

@@ -8,6 +8,7 @@ export default function Step() {
       viewBox="0 0 25 26"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      data-testid="step-svg"
     >
       <g clipPath="url(#clip0_43830_668055)">
         <circle cx="12.5" cy="13" r="12" fill="white" stroke="#AAAAAA" />

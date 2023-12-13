@@ -26,7 +26,7 @@ export default function SelectedRequirementsTable({
 
   const headers = ["s/n", "DOCUMENTATION REQUIRED", ""];
   return (
-    <div className="px-4 sm:px-6 lg:px-8">
+    <div data-testid="selected-requirements-table" className="px-4 sm:px-6 lg:px-8">
       <div className="mt-8 flow-root">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle">
@@ -50,7 +50,7 @@ export default function SelectedRequirementsTable({
                       <td className="w-[50px] capitalize whitespace-nowrap py-4 pl-4 pr-3 text-base font-medium text-[#636363] sm:pl-6 lg:pl-8">
                         {index + 1}
                       </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-base text-[#636363]">
+                      <td data-testid="document-item" className="whitespace-nowrap px-3 py-4 text-base text-[#636363]">
                         {document.name}
                       </td>
 

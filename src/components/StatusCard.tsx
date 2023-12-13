@@ -67,7 +67,7 @@ export const StatusButton = ({
       <span className="text-2xl xl:text-4xl text-[#252C32] font-semibold">
         {!isLoading && count(item, analyticsData)}
         {isLoading && (
-          <div className="mt-3 spinner-border h-6 w-6 border-t border-danger-500 rounded-full animate-spin"></div>
+          <div data-testid="loading" className="mt-3 spinner-border h-6 w-6 border-t border-danger-500 rounded-full animate-spin"></div>
         )}
       </span>
     </button>

@@ -47,7 +47,7 @@ export default function EntriesAndEventsSearchResults({
 
   return (
     <OutsideClickHandler onOutsideClick={() => closeDropdown(setOpen)}>
-      <div className="w-full">
+      <div className="w-full" data-testid="gli">
         <div className="relative bg-[#fff] w-full">
           <div
             className="flex items-center  border-b border-[#8F8F8F]"
@@ -58,7 +58,7 @@ export default function EntriesAndEventsSearchResults({
             </span>{" "}
             <input
               placeholder={placeholder}
-              data-testid="input"
+              data-testid="gli-input"
               className="w-full  ring-0 outline-none bg-transparent"
               onChange={(event) => setQuery(event.target.value)}
               value={query}

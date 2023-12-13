@@ -27,8 +27,8 @@ export function SearchValues({
   handleSearch,
 }) {
   const handleClick = () => {
-    setInputValue(item.name);
-    setSearchTerm(item.name);
+    setInputValue(item?.name);
+    setSearchTerm(item?.name);
     setShowBox(false);
     handleSearch(item.name, item);
   };
@@ -50,7 +50,7 @@ export function SearchValues({
             {item.name}
           </span>
         )}
-        <span className="block text-xs text-[#aaa]">{item.code}</span>
+        <span className="block text-xs text-[#aaa]">{item?.code}</span>
       </span>
     </div>
   );
