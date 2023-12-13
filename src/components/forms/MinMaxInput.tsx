@@ -95,7 +95,7 @@ export default function MinMaxInput({
                 }`}
               />
             )}
-            {isPercent && <span className="absolute right-1">%</span>}
+            {isPercent && <span data-testid='percent' className="absolute right-1">%</span>}
             <div className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]">
               {hasButton && (
                 <span>
