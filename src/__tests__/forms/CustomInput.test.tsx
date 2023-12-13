@@ -11,6 +11,5 @@ describe("CustomInput", () => {
     it("Renders maxLength div if MaxLength is specified", () => {
         render(<CustomInput maxLength={43}/>)
         expect(screen.getByTestId("maxLength").textContent).toBe("0/43");
-
     })
 })

@@ -50,7 +50,7 @@ describe("QuickLinks component", () => {
 
     // Check if the suggested link is renderWithProvidersed
     const link = screen.getByText("Product management");
-    
+
     // Check if the links are renderWithProvidersed with the correct URLs
     expect(link).toBeInTheDocument();
     expect(link.tagName).toBe("SPAN");
@@ -70,70 +70,67 @@ describe("QuickLinks component", () => {
       screen.queryByText("Suggested from your activity")
     ).not.toBeInTheDocument();
   });
-  
+
 
   // Fetches data from useGetLinksQuery hook and updates state with received data
-  // it("should fetch data from useGetLinksQuery hook and update state with received data", () => {
-  //   // Mock the useGetLinksQuery hook to return data
-  //   const mockData = {
-  //     data: [
-  //       {
-  //         isDefault: false,
-  //         count: 2,
-  //         name: "Link 1",
-  //         category: "Category 1",
-  //         link: "link-1",
-  //       },
-  //       {
-  //         isDefault: false,
-  //         count: 3,
-  //         name: "Link 2",
-  //         category: "Category 2",
-  //         link: "link-2",
-  //       },
-  //     ],
-  //     isLoading: false,
-  //     isFetching: false,
-  //   };
-  //   // jest.mock("@app/api", () => ({
-  //   //   useGetLinksQuery: jest.fn(() => {
-  //   //     return mockData;
-  //   //   }),
-  //   //   useUpdateLinkMutation: jest.fn(),
-  //   //   useAddLinkMutation: jest.fn(),
-  //   // }));
-
-    
-
-  //   // Import the QuickLinks component
-
-  //   // Render the QuickLinks component
-  //   renderWithProviders(<QuickLinks />);
-
-  //   screen.debug();
-
-  //   // Assert that the links are renderWithProvidersed with the received data
-  //   expect(getByText("Link 1")).toBeInTheDocument();
-  //   expect(getByText("Link 2")).toBeInTheDocument();
-  // });
-  
-});
-  it("should renderWithProviders a message when isOpen state is true", () => {
-    // Mock the useState hook to set isOpen state to true
-    jest.mock("react", () => ({
-      ...jest.requireActual("react"),
-      useState: jest.fn(() => [true, jest.fn()]),
+  it("should fetch data from useGetLinksQuery hook and update state with received data", () => {
+    // Mock the useGetLinksQuery hook to return data
+    const mockData = {
+      data: [
+        {
+          isDefault: false,
+          count: 2,
+          name: "Link 1",
+          category: "Category 1",
+          link: "link-1",
+        },
+        {
+          isDefault: false,
+          count: 3,
+          name: "Link 2",
+          category: "Category 2",
+          link: "link-2",
+        },
+      ],
+      isLoading: false,
+      isFetching: false,
+    };
+    jest.mock("@app/api", () => ({
+      useGetLinksQuery: jest.fn(() => {
+        return mockData;
+      }),
+      useUpdateLinkMutation: jest.fn(),
+      useAddLinkMutation: jest.fn(),
     }));
 
+
+
     // Import the QuickLinks component
-    // const QuickLinks = require("../src/components/QuickLinks").default;
 
     // Render the QuickLinks component
-    const { getByText } = renderWithProviders(<QuickLinks />);
+    const {getByText} = renderWithProviders(<QuickLinks />);
 
-    // Assert that the message is renderWithProvidersed
-    expect(getByText("Suggested from your activity")).toBeInTheDocument();
+    // Assert that the links are renderWithProvidersed with the received data
+    expect(getByText("Link 1")).toBeInTheDocument();
+    expect(getByText("Link 2")).toBeInTheDocument();
   });
+
+it("should renderWithProviders a message when isOpen state is true", () => {
+  // Mock the useState hook to set isOpen state to true
+  jest.mock("react", () => ({
+    ...jest.requireActual("react"),
+    useState: jest.fn(() => [true, jest.fn()]),
+  }));
+
+  // Import the QuickLinks component
+  // const QuickLinks = require("../src/components/QuickLinks").default;
+
+  // Render the QuickLinks component
+  const { getByText } = renderWithProviders(<QuickLinks />);
+
+  // Assert that the message is renderWithProvidersed
+  expect(getByText("Suggested from your activity")).toBeInTheDocument();
+});
 
 //   // Renders default link when useGetLinksQuery hook returns null
 //   it("should renderWithProviders default link when useGetLinksQuery hook returns null", () => {
@@ -592,4 +589,4 @@ describe("QuickLinks component", () => {
 //       new Error("Update link error")
 //     );
 //   });
-// });
+});
