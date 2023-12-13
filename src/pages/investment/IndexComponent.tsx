@@ -15,9 +15,7 @@ import {
   useGetRequestStatsQuery,
 } from "@app/api";
 import {
-  ProductOptions,
   ProductTypes,
-  RequestOptions,
   StatusFilterOptions,
   StatusTypes,
   TypeFilterOptions,
@@ -83,8 +81,14 @@ export default function IndexComponent() {
   );
   const [searchParams] = useSearchParams();
   const queryCategory = searchParams.get("category");
-  const filter = searchParams.get("filter");
-  const [selected, setSelected] = useState<any>("");
+  const productId = searchParams.get("productId");
+  const preview = searchParams.get("preview");
+  const [selected, setSelected] = useState<any>({
+    id: 1,
+    text: "Created by me",
+    value: "created_by_me",
+    disabled: false,
+  });
   const [isChecker, setIsChecker] = useState(false);
   const [, setHideCreate] = useState(false);
   const [status, setStatus] = useState("");
@@ -92,13 +96,15 @@ export default function IndexComponent() {
   const [search, setSearch] = useState("");
   const [type, setType] = useState("");
   const [initiator, setInitiator] = useState("");
+  const [detail, setDetail] = useState<any>(null);
+  const [isDetailOpen, setDetailOpen] = useState(false);
   const [duration, setDuration] = useState("");
   const [isRefreshing, setRefreshing] = useState<boolean>(false);
   const [requestData, setRequestData] = useState<any[]>([]);
   const [productData, setProductData] = useState<any[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [query, setQuery] = useState({
-    filter_by: "",
+    filter_by: selected?.value,
     status_In: null,
     search: "",
     start_Date: null,
@@ -131,6 +137,10 @@ export default function IndexComponent() {
       duration,
       isRefreshing,
       setRefreshing,
+      isDetailOpen,
+      setDetailOpen,
+      detail,
+      setDetail,
     }),
     [
       selected,
@@ -153,6 +163,10 @@ export default function IndexComponent() {
       duration,
       isRefreshing,
       setRefreshing,
+      isDetailOpen,
+      setDetailOpen,
+      detail,
+      setDetail,
     ]
   );
 
@@ -214,21 +228,6 @@ export default function IndexComponent() {
     query.initiator_In,
   ]);
   useEffect(() => {
-    if (filter) {
-      const selectedItem =
-        category === StatusCategoryType?.AllProducts
-          ? ProductOptions.find((i) => i.value === filter)
-          : RequestOptions.find((i) => i.value === filter);
-
-      setSelected(selectedItem);
-      setQuery({
-        ...query,
-        filter_by: filter,
-      });
-    }
-  }, []);
-
-  useEffect(() => {
     setCategory(
       queryCategory === "requests"
         ? StatusCategoryType.Requests
@@ -278,6 +277,13 @@ export default function IndexComponent() {
     isRequestError,
     query.page,
   ]);
+
+  useEffect(() => {
+    if (preview === "search_product") {
+      setDetail({ id: productId });
+      setDetailOpen(true);
+    }
+  }, [preview, productId]);
 
   const fetchMoreData = () => {
     setTimeout(() => {

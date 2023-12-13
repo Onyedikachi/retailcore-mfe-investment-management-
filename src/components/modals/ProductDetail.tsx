@@ -38,6 +38,7 @@ export default function ProductDetail({
   const { data: productData, isLoading } = useGetProductDetailQuery({
     id: detail.id,
   });
+  console.log("🚀 ~ file: ProductDetail.tsx:41 ~ productData:", productData)
   const [open, setOpen] = useState(false);
   const { permissions } = useContext(AppContext);
 
@@ -78,7 +79,7 @@ export default function ProductDetail({
             <div className="grid grid-cols-2 gap-x-5 text-left px-10 py-11">
               <div className="flex flex-col justify-between gap-y-3">
                 <div className="p-6 flex flex-col gap-y-[35px] max-h-[463px] overflow-y-auto">
-                  {detail?.status === "R" && (
+                  {/* {detail?.status === "R" && (
                     <div>
                       <span className="font-bold block mb-[15px]">
                         Reason for Deactivation
@@ -87,7 +88,7 @@ export default function ProductDetail({
                         {detail?.reason}
                       </span>
                     </div>
-                  )}
+                  )} */}
                   <div>
                     <span className="font-bold block mb-[15px]">
                       Product Type
@@ -165,7 +166,7 @@ export default function ProductDetail({
                     {permissions?.includes("CREATE_INVESTMENT_PRODUCT") && (
                       <button
                         data-testid="modify"
-                        onClick={() => handleClick("modify", detail)}
+                        onClick={() => handleClick("modify", productData?.data)}
                         className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3`}
                       >
                         <FaEdit className="text-[#D4A62F]" /> Modify
@@ -175,11 +176,11 @@ export default function ProductDetail({
                       "RE_OR_DEACTIVATE_INVESTMENT_PRODUCT"
                     ) && (
                       <>
-                        {detail?.state !== "active" ? (
+                        {productData?.data?.state === 1 ? (
                           <button
                             type="button"
                             data-testid="activate-btn"
-                            onClick={() => handleClick("activate", detail)}
+                            onClick={() => handleClick("activate", productData?.data)}
                             className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
                           >
                             <FaPlayCircle className="text-[#2FB755]" /> Activate
@@ -187,7 +188,7 @@ export default function ProductDetail({
                         ) : (
                           <button
                             data-testid="deactivate-btn"
-                            onClick={() => handleClick("deactivate", detail)}
+                            onClick={() => handleClick("deactivate", productData?.data)}
                             className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
                           >
                             <FaBan className="text-sterling-red-800" />{" "}
@@ -201,7 +202,7 @@ export default function ProductDetail({
                   <Link
                     to={`/product-factory/investment/${encodeURIComponent(
                       "term deposit"
-                    )}/process-summary/preview/${detail.id}?category=product`}
+                    )}/process-summary/preview/${productData?.data.id}?category=product`}
                   >
                     <button
                       className={`group flex items-center whitespace-nowrap py-[1px] text-base text-[#636363] gap-x-3 underline outline-none`}
@@ -263,7 +264,7 @@ export default function ProductDetail({
                     <span className="font-bold block mb-[15px]">
                       Interest Rate
                     </span>
-                    <span className="font-normal block">{detail?.slogan}</span>
+                    <span className="font-normal block">{productData?.data?.slogan}</span>
                     <button
                       className="text-[#636363]  underline"
                       onClick={() => setOpen(true)}

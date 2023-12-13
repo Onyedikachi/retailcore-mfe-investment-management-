@@ -298,7 +298,7 @@ export default function StatusCard({
             />
           ))}
         </div>
-
+       
         <div>
           <Select
             options={
@@ -306,7 +306,7 @@ export default function StatusCard({
                 ? filteredProductOptions
                 : filteredRequestOptions
             }
-            value={selected}
+         
             handleSelected={(value: any) => handleSelected(value)}
           />
         </div>

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { HiPlus } from "react-icons/hi";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Button from "./Button";
 import { InvestmentContext, AppContext } from "../utils/context";
 import { StatusCategoryType } from "@app/constants/enums";
@@ -29,11 +29,13 @@ export const getSearchResult = (
 };
 
 export function Tabs() {
-  const { selected } = useContext(InvestmentContext);
+  const location = useLocation();
+  const { selected, setDetailOpen, setDetail } = useContext(InvestmentContext);
   const [active, setActtive] = useState("investment");
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const navigate = useNavigate();
+
   const tabOptions = [
     {
       title: "deposit",
@@ -83,8 +85,16 @@ export function Tabs() {
     };
   }, [data, isSuccess]);
   function handleSearch(value, item) {
-    console.log("🚀 ~ file: TopBar.tsx:80 ~ handleSearch ~ item:", item);
-    console.log("🚀 ~ file: TopBar.tsx:80 ~ handleSearch ~ value:", value);
+    if (item) {
+      if (location.pathname.includes("/investment")) {
+        setDetail(item);
+        setDetailOpen(true);
+      } else {
+        navigate(
+          `/product-factory/investment?preview=search_product&productId=${item.id}`
+        );
+      }
+    }
   }
   return (
     <div className="flex justify-between">
