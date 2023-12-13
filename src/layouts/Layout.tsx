@@ -30,7 +30,7 @@ const Layout = () => {
         value?.user?.user_permissions || []
       
       );
-      console.log("🚀 ~ file: Layout.tsx:31 ~ auth$?.subscribe ~ value?.user?.user_permissions:", value?.user?.user_permissions)
+     
       handleRole(setRole, value);
     });
   }, []);

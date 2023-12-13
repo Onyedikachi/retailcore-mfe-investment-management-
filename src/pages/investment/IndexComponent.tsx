@@ -15,7 +15,9 @@ import {
   useGetRequestStatsQuery,
 } from "@app/api";
 import {
+  ProductOptions,
   ProductTypes,
+  RequestOptions,
   StatusFilterOptions,
   StatusTypes,
   TypeFilterOptions,
@@ -81,6 +83,7 @@ export default function IndexComponent() {
   );
   const [searchParams] = useSearchParams();
   const queryCategory = searchParams.get("category");
+  const filter = searchParams.get("filter");
   const [selected, setSelected] = useState<any>("");
   const [isChecker, setIsChecker] = useState(false);
   const [, setHideCreate] = useState(false);
@@ -96,7 +99,7 @@ export default function IndexComponent() {
   const [hasMore, setHasMore] = useState(true);
   const [query, setQuery] = useState({
     filter_by: "",
-    status_In: [],
+    status_In: null,
     search: "",
     start_Date: null,
     end_Date: null,
@@ -211,12 +214,26 @@ export default function IndexComponent() {
     query.initiator_In,
   ]);
   useEffect(() => {
+    if (filter) {
+      const selectedItem =
+        category === StatusCategoryType?.AllProducts
+          ? ProductOptions.find((i) => i.value === filter)
+          : RequestOptions.find((i) => i.value === filter);
+
+      setSelected(selectedItem);
+      setQuery({
+        ...query,
+        filter_by: filter,
+      });
+    }
+  }, []);
+
+  useEffect(() => {
     setCategory(
       queryCategory === "requests"
         ? StatusCategoryType.Requests
         : StatusCategoryType.AllProducts
     );
-    setSelected("created_by_me");
   }, [queryCategory]);
 
   useEffect(() => {

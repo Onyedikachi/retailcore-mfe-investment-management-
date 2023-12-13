@@ -6,21 +6,27 @@ import { SelectProps } from "@app/types";
 export default function Select({
   options,
   handleSelected,
+  value,
 }: SelectProps): React.JSX.Element {
   const [selected, setSelected] = useState(options[0]);
 
-  useEffect(() => {
-    handleSelected(selected);
-  }, [selected, handleSelected]);
+  // useEffect(() => {
+  //   handleSelected(selected);
+  // }, [selected, handleSelected]);
 
   // Change selected when changing status category
   useEffect(() => {
     setSelected(options[0]);
   }, [options]);
 
+  useEffect(() => {
+    if (!value) return;
+    setSelected(options.find((i) => i.value == value.value));
+  }, [value]);
+
   return (
     <div role="combobox" className="min-w-[150px]">
-      <Listbox value={selected} onChange={setSelected}>
+      <Listbox value={selected} onChange={handleSelected}>
         <div className="relative mt-1">
           <Listbox.Button className="relative w-full cursor-pointer rounded-[6px] bg-white py-1 pl-2 pr-10 text-left border border-[#D0D5DD] focus:outline-none  text-[#252C32] text-sm">
             <span className="block truncate">{selected?.text}</span>
@@ -51,7 +57,11 @@ export default function Select({
                     className={({ active }) =>
                       `relative  select-none py-2 px-6  text-[#636363] hover:bg-gray-50  ${
                         active ? "bg-red-50" : ""
-                      } ${option?.disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`
+                      } ${
+                        option?.disabled
+                          ? "opacity-50 cursor-not-allowed"
+                          : "cursor-pointer"
+                      }`
                     }
                     value={option}
                   >

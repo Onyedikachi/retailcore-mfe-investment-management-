@@ -51,6 +51,7 @@ export default function PricingConfig({
   setFormData,
   setDisabled,
   productData,
+  initiateDraft,
 }) {
   const { process } = useParams();
   const {
@@ -167,7 +168,11 @@ export default function PricingConfig({
       }
     }
   }, [setValue, formData]);
-
+  useEffect(() => {
+    if (initiateDraft) {
+      setFormData({ ...values });
+    }
+  }, [initiateDraft]);
   return (
     <form id="pricingconfig" onSubmit={handleSubmit(onProceed)}>
       <div className="flex flex-col gap-10">

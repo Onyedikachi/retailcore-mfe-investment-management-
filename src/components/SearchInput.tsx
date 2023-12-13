@@ -3,7 +3,11 @@ import { FaCaretDown, FaSearch } from "react-icons/fa";
 import debounce from "lodash.debounce";
 import OutsideClickHandler from "react-outside-click-handler";
 
-export const handleInputChange = (event, setInputValue, debouncedSetSearchTerm) => {
+export const handleInputChange = (
+  event,
+  setInputValue,
+  debouncedSetSearchTerm
+) => {
   const newValue = event.target.value;
   setInputValue(newValue);
   debouncedSetSearchTerm(newValue);
@@ -14,23 +18,37 @@ export function closeBox(setSearchResults, setShowBox) {
   setShowBox(false);
 }
 
-export function SearchValues({ type, item, setInputValue, setSearchTerm, setShowBox, handleSearch }) {
+export function SearchValues({
+  type,
+  item,
+  setInputValue,
+  setSearchTerm,
+  setShowBox,
+  handleSearch,
+}) {
   const handleClick = () => {
     setInputValue(item.name);
     setSearchTerm(item.name);
     setShowBox(false);
-    handleSearch(item.name);
+    handleSearch(item.name, item);
   };
 
   return (
-    <div onClick={handleClick} className="flex gap-x-2 cursor-pointer hover:bg-[#F9E5E5] py-1 px-2">
+    <div
+      onClick={handleClick}
+      className="flex gap-x-2 cursor-pointer hover:bg-[#F9E5E5] py-1 px-2"
+    >
       <span className="flex w-6 h-6 items-center justify-center">
         <FaSearch className="text-[#48535B]" />
       </span>
       <span>
-        <span className="block max-w-max truncate text-[#636363] capitalize">{item.name}</span>
-        {type === "general" && (
-          <span className="block text-xs max-w-max truncate text-[#636363] capitalize">{item.name}</span>
+        <span className="block max-w-max truncate text-[#636363] capitalize">
+          {item.name}
+        </span>
+        {type === "multi" && (
+          <span className="block text-xs max-w-max truncate text-[#636363] capitalize">
+            {item.name}
+          </span>
         )}
         <span className="block text-xs text-[#aaa]">{item.code}</span>
       </span>
@@ -38,39 +56,65 @@ export function SearchValues({ type, item, setInputValue, setSearchTerm, setShow
   );
 }
 
-export function SearchItem({ item, type, setInputValue, setSearchTerm, setShowBox, handleSearch }) {
+export function SearchItem({
+  item,
+  type,
+  setInputValue,
+  setSearchTerm,
+  setShowBox,
+  handleSearch,
+}) {
   return (
     <div>
-      {type === "general" && (
-        <span className="px-2 mb-3 text-xs text-[#aaa] flex gap-x-[6px] items-center">
-          <FaCaretDown className="text-[#636363] rotate-[-45deg]" /> Deposit
-        </span>
-      )}
-      <div className="">
-        {item?.products?.length > 0 ? (
-          <>
-          {item?.products?.map((val) => (
+      {type === "multi" ? (
+        <div>
+          <span className="px-2 mb-3 text-xs text-[#aaa] flex gap-x-[6px] items-center">
+            <FaCaretDown className="text-[#636363] rotate-[-45deg] capitalize" />{" "}
+            {item.title}
+          </span>
+
+          <div className="">
+            {item?.data?.map((val, index) => (
+              <SearchValues
+                key={`${index.toString()}+${val.code}`}
+                item={val}
+                type={type}
+                setInputValue={setInputValue}
+                setSearchTerm={setSearchTerm}
+                setShowBox={setShowBox}
+                handleSearch={handleSearch}
+              />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="">
+          {item?.products?.length > 0 ? (
+            <>
+              {item?.products?.map((val, index) => (
+                <SearchValues
+                  key={`${index.toString()}+${val.code}`}
+                  item={val}
+                  type={type}
+                  setInputValue={setInputValue}
+                  setSearchTerm={setSearchTerm}
+                  setShowBox={setShowBox}
+                  handleSearch={handleSearch}
+                />
+              ))}
+            </>
+          ) : (
             <SearchValues
-              item={val}
+              item={item}
               type={type}
               setInputValue={setInputValue}
               setSearchTerm={setSearchTerm}
               setShowBox={setShowBox}
               handleSearch={handleSearch}
             />
-          ))}
-        </>
-        ) : (
-          <SearchValues
-            item={item}
-            type={type}
-            setInputValue={setInputValue}
-            setSearchTerm={setSearchTerm}
-            setShowBox={setShowBox}
-            handleSearch={handleSearch}
-          />
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -97,7 +141,7 @@ export default function SearchInput({
   searchResults?: any[];
   setSearchResults?: (e: any) => void;
   searchLoading?: boolean;
-  handleSearch?: (e: string) => void;
+  handleSearch?: (e: string, item?: any) => void;
   type?: string;
 }) {
   const [inputValue, setInputValue] = useState("");
@@ -108,13 +152,18 @@ export default function SearchInput({
   useEffect(() => {
     if (!inputValue.length && handleSearch) {
       handleSearch("");
+      setSearchResults([]);
     }
   }, [inputValue]);
 
   return (
-    <OutsideClickHandler onOutsideClick={() => closeBox(setSearchResults, setShowBox)}>
+    <OutsideClickHandler
+      onOutsideClick={() => closeBox(setSearchResults, setShowBox)}
+    >
       <div
-        className={`z-[99] border-b border-[#AAAAAA]  flex items-center relative bg-transparent shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] ${fullW ? "" : "max-w-[340px]"} ${
+        className={`z-[99] border-b border-[#AAAAAA]  flex items-center relative bg-transparent shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] ${
+          fullW ? "" : "max-w-[340px]"
+        } ${
           hideBorder
             ? ""
             : "after:content-[''] after:w-1 after:h-[80%] after:absolute after:border-r after:right-[-15px] after:top-1/2 after:translate-y-[-50%] after:border-[#E5E9EB]"
@@ -125,7 +174,9 @@ export default function SearchInput({
         </button>
         <div className="relative group flex-1">
           <input
-            onChange={(e) => handleInputChange(e, setInputValue, debouncedSetSearchTerm)}
+            onChange={(e) =>
+              handleInputChange(e, setInputValue, debouncedSetSearchTerm)
+            }
             onKeyDown={() => setShowBox(true)}
             value={inputValue}
             type="search"
@@ -151,8 +202,8 @@ export default function SearchInput({
                 <div>
                   {searchResults?.length > 0 ? (
                     <ul className="grid gap-y-[10px]">
-                      {searchResults?.map((item) => (
-                        <li key={item.id}>
+                      {searchResults?.map((item, indrx) => (
+                        <li key={`${indrx.toString()}+${item.id}`}>
                           <SearchItem
                             type={type}
                             item={item}
@@ -169,7 +220,9 @@ export default function SearchInput({
                       {inputValue ? (
                         <div className="text-center py-1 text-sm font-light opacity-80 max-w-[320px]">
                           No results for{" "}
-                          <span className="font-medium opacity-100">"{inputValue}"</span>
+                          <span className="font-medium opacity-100">
+                            "{inputValue}"
+                          </span>
                         </div>
                       ) : (
                         <div className="text-center py-1 text-sm font-light opacity-80 ">

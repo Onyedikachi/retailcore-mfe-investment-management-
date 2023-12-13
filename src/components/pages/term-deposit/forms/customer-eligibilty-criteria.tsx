@@ -24,6 +24,7 @@ export default function CustomerEligibilityCriteria({
   setFormData,
   setDisabled,
   proceed,
+  initiateDraft,
 }) {
   const { process } = useParams();
   const [documents, setDocuments] = useState([...documentOptions]);
@@ -100,13 +101,21 @@ export default function CustomerEligibilityCriteria({
   useEffect(() => {
     setDisabled(!isValid);
   }, [values]);
+
   useEffect(() => {
     if (formData) {
+      console.log(
+        "🚀 ~ file: customer-eligibilty-criteria.tsx:106 ~ useEffect ~ formData:",
+        formData.requireDocument
+      );
       Object.entries(formData).forEach(([name, value]) =>
         setValue(name, value)
       );
 
-      if (formData?.requireDocument && (process === "continue" || process === "modify")) {
+      if (
+        formData?.requireDocument &&
+        (process === "continue" || process === "modify")
+      ) {
         setSelectedRequirements(formData?.requireDocument);
 
         trigger();
@@ -134,14 +143,17 @@ export default function CustomerEligibilityCriteria({
   useEffect(() => {
     trigger("ageGroupMin");
   }, [watchageGroupMax]);
+  useEffect(() => {
+    if (watchCustomerCategory !== null) {
+      trigger();
+    }
+  }, [watchCustomerCategory]);
 
   useEffect(() => {
-    console.log(
-      "🚀 ~ file: customer-eligibilty-criteria.tsx:140 ~ useEffect ~ selectedRequirements:",
-      selectedRequirements
-    );
-  }, [selectedRequirements]);
-
+    if (initiateDraft) {
+      setFormData({ ...values, requireDocument: selectedRequirements });
+    }
+  }, [initiateDraft]);
   return (
     <div>
       <form id="customereligibilitycriteria" onSubmit={handleSubmit(onProceed)}>
@@ -207,6 +219,7 @@ export default function CustomerEligibilityCriteria({
                       clearErrors={clearErrors}
                       trigger={trigger}
                       type="number"
+                      placeholder="Unspecified"
                     />
                   </div>
                 </div>
@@ -319,7 +332,9 @@ export default function CustomerEligibilityCriteria({
                         <FaSearch className="text-[#48535B]" />
                       </button>
                       <input
-                        onChange={(e) => setSearchQuery(e.target.value.toLowerCase())}
+                        onChange={(e) =>
+                          setSearchQuery(e.target.value.toLowerCase())
+                        }
                         value={searchQuery}
                         type="search"
                         data-testid="search"
@@ -357,7 +372,11 @@ export default function CustomerEligibilityCriteria({
 
                         <div className="grid gap-y-2 max-h-[298px] overflow-y-auto pr-6">
                           {documents
-                            .filter((i: any) => i.name.toLowerCase().includes(searchQuery.toLowerCase()))
+                            .filter((i: any) =>
+                              i.name
+                                .toLowerCase()
+                                .includes(searchQuery.toLowerCase())
+                            )
                             ?.map((document, index) => (
                               <div key={document.id} className="ml-[28px]">
                                 <div className="relative flex items-start">

@@ -7,6 +7,7 @@ import {
   useGetRequestDetailQuery,
   useGetProductDetailQuery,
   useModifyProductMutation,
+  useModifyRequestMutation,
 } from "@app/api";
 import {
   Breadcrumbs,
@@ -48,6 +49,7 @@ export default function CreateTermDeposit() {
   const [isFailed, setFailed] = useState(false);
   const [failedSubText, setFailedSubtext] = useState("");
   const [failedText, setFailedText] = useState("");
+  const [initiateDraft, setInitiateDraft] = useState(false);
   const [productData, setProductData] = useState({
     productInfo: {
       productName: "",
@@ -56,14 +58,13 @@ export default function CreateTermDeposit() {
       startDate: new Date(),
       endDate: null,
       currency: "NGN",
-      customerCategory: 0,
     },
     customerEligibility: {
       ageGroupMin: 0,
-      ageGroupMax: 0,
+      ageGroupMax: null,
       requireDocument: [],
       customerType: [],
-      customerCategory: 0,
+      customerCategory: null,
     },
     pricingConfiguration: {
       interestRateRangeType: 0,
@@ -157,6 +158,16 @@ export default function CreateTermDeposit() {
     },
   ] = useModifyProductMutation();
 
+  const [
+    modifyRequest,
+    {
+      isLoading: modifyRequestLoading,
+      isSuccess: modifyRequestSuccess,
+      isError: modifyRequestIsError,
+      error: modifyRequestError,
+    },
+  ] = useModifyRequestMutation();
+
   const {
     data: requestData,
     isLoading: requestIsLoading,
@@ -211,13 +222,25 @@ export default function CreateTermDeposit() {
     setIsConfirmOpen(false);
     if (process === "modify") {
       modifyProduct({ ...productData, isDraft: true, id });
-    } else {
+    }
+    if (process === "create") {
       createProduct({ ...productData, isDraft: true });
+    }
+    if (process === "continue") {
+      modifyRequest({ ...productData, isDraft: true, id });
     }
   };
 
   let component;
   let formRef;
+
+  useEffect(() => {
+    if (initiateDraft) {
+      setTimeout(() => {
+        setInitiateDraft(false);
+      }, 1500);
+    }
+  }, [initiateDraft]);
 
   switch (step) {
     case 1:
@@ -229,6 +252,7 @@ export default function CreateTermDeposit() {
             setProductData({ ...productData, productInfo: productInfo })
           }
           setDisabled={setDisabled}
+          initiateDraft={initiateDraft}
         />
       );
       formRef = "productform";
@@ -243,12 +267,12 @@ export default function CreateTermDeposit() {
               ...productData,
               productInfo: {
                 ...productData.productInfo,
-                customerCategory: customerEligibility.customerCategory,
               },
               customerEligibility: customerEligibility,
             })
           }
           setDisabled={setDisabled}
+          initiateDraft={initiateDraft}
         />
       );
       formRef = "customereligibilitycriteria";
@@ -266,6 +290,7 @@ export default function CreateTermDeposit() {
           productData={productData}
           proceed={handleNav}
           setDisabled={setDisabled}
+          initiateDraft={initiateDraft}
         />
       );
       formRef = "pricingconfig";
@@ -282,6 +307,7 @@ export default function CreateTermDeposit() {
             })
           }
           setDisabled={setDisabled}
+          initiateDraft={initiateDraft}
         />
       );
       formRef = "liquiditysetup";
@@ -299,6 +325,7 @@ export default function CreateTermDeposit() {
             })
           }
           setDisabled={setDisabled}
+          initiateDraft={initiateDraft}
         />
       );
       formRef = "entriesandevents";
@@ -313,6 +340,7 @@ export default function CreateTermDeposit() {
             setProductData({ ...productData, productInfo: productInfo })
           }
           setDisabled={setDisabled}
+          initiateDraft
         />
       );
   }
@@ -320,11 +348,15 @@ export default function CreateTermDeposit() {
   useEffect(() => {
     if (requestIsSuccess) {
       const data = JSON.parse(requestData?.data?.metaInfo);
+      console.log(
+        "🚀 ~ file: IndexComponent.tsx:321 ~ useEffect ~ data:",
+        data
+      );
 
       setProductData({
         ...data,
         pricingConfiguration: {
-          ...data.pricingConfiguration,
+          ...data?.pricingConfiguration,
           interestComputationMethod: 2,
         },
       });
@@ -332,19 +364,30 @@ export default function CreateTermDeposit() {
   }, [requestIsSuccess]);
 
   useEffect(() => {
-    if (isSuccess || modifySuccess) {
+    if (isSuccess || modifySuccess || modifyRequestSuccess) {
       setSuccessText(Messages.PRODUCT_DRAFT_SUCCESS);
       setIsSuccessOpen(true);
     }
 
-    if (isError || modifyIsError) {
+    if (isError || modifyIsError || modifyRequestIsError) {
       setFailedText(Messages.PRODUCT_DRAFT_FAILED);
       setFailedSubtext(
-        isError ? error?.message?.message : modifyError?.message?.message
+        error?.message?.message ||
+          modifyError?.message?.message ||
+          modifyRequestError?.message?.message
       );
       setFailed(true);
     }
-  }, [isSuccess, isError, error, modifyIsError, modifySuccess, modifyError]);
+  }, [
+    isSuccess,
+    isError,
+    error,
+    modifyIsError,
+    modifySuccess,
+    modifyError,
+    modifyRequestSuccess,
+    modifyRequestIsError,
+  ]);
   function handleLinks(links, process) {
     const extraLinks = [
       {
@@ -365,6 +408,12 @@ export default function CreateTermDeposit() {
 
     return links;
   }
+  useEffect(() => {
+    // console.log(
+    //   "🚀 ~ file: IndexComponent.tsx:379 ~ CreateTermDeposit ~ productData:",
+    //   productData
+    // );
+  }, [productData]);
 
   return (
     <div>
@@ -407,7 +456,10 @@ export default function CreateTermDeposit() {
                   <div className="flex justify-end gap-6">
                     <Button
                       type="button"
-                      onClick={() => setIsConfirmOpen(true)}
+                      onClick={() => {
+                        setIsConfirmOpen(true);
+                        setInitiateDraft(!initiateDraft);
+                      }}
                       className="text-gray-500 px-10 py-1 font-medium text-base bg-white border border-[#D8DAE5] leading-[24px] disabled:bg-transparent"
                     >
                       Save As Draft
@@ -428,7 +480,7 @@ export default function CreateTermDeposit() {
               </div>
             </div>
           </div>
-          <Loader isOpen={isLoading || modifyLoading} text={"Submitting"} />
+          <Loader isOpen={isLoading || modifyLoading || modifyRequestLoading} text={"Submitting"} />
           {/* //Modals */}
           {isConfirmOpen && (
             <Confirm

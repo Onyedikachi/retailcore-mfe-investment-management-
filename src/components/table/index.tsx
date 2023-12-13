@@ -157,7 +157,7 @@ export default function TableComponent<TableProps>({
   noData = "No data available",
 }) {
   const { role, permissions } = useContext(AppContext);
-  const { isChecker, category } = useContext(InvestmentContext);
+  const { isChecker, category, selected } = useContext(InvestmentContext);
   const [action, setAction] = useState("");
   const navigate = useNavigate();
   const [detail, setDetail] = useState<any>(null);
@@ -220,7 +220,7 @@ export default function TableComponent<TableProps>({
       navigate(
         `/product-factory/investment/${encodeURIComponent(
           "term deposit"
-        )}/continue/?id=${items.id}&type=draft`
+        )}/continue/?id=${items.id}&type=draft&filter=${selected.value}`
       );
       return;
     }
@@ -233,7 +233,7 @@ export default function TableComponent<TableProps>({
               "term deposit"
             )}/process-summary/preview/${
               items.id
-            }?category=request`
+            }?category=request&filter=${selected.value}`
           );
       return;
     }
@@ -245,7 +245,7 @@ export default function TableComponent<TableProps>({
               "term deposit"
             )}/process-summary/verdict/${
               items.id
-            }?category=request`
+            }?category=request&filter=${selected.value}`
           );
       return;
     }
@@ -288,7 +288,7 @@ export default function TableComponent<TableProps>({
         navigate(
           `/product-factory/investment/${encodeURIComponent(
             "term deposit"
-          )}/modify/?id=${detail.id}`
+          )}/modify/?id=${detail.id}&filter=${selected.value}`
         );
       }
     }
