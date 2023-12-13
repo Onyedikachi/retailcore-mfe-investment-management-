@@ -33,6 +33,7 @@ export function Container({ children }) {
   );
 }
 export default function Preview({ formData, oldData = null }: any) {
+  console.log("🚀 ~ file: preview.tsx:36 ~ Preview ~ formData:", formData)
   const { role } = useContext(AppContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -80,7 +81,7 @@ export default function Preview({ formData, oldData = null }: any) {
   };
   const handleSubmit = () => {
     if (process === "modify") {
-      modifyProduct({ ...formData, isDraft: false, id });
+      modifyProduct({ ...formData, isDraft: false, id, productCode: formData.productCode });
     } else {
       createProduct({ ...formData, isDraft: false });
     }
