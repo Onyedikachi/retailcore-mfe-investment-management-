@@ -81,7 +81,7 @@ export default function Preview({ formData, oldData = null }: any) {
   };
   const handleSubmit = () => {
     if (process === "modify") {
-      modifyProduct({ ...formData, isDraft: false, id, productCode: formData.productCode });
+      modifyProduct({ ...formData, isDraft: false, id,  });
     } else {
       createProduct({ ...formData, isDraft: false });
     }
