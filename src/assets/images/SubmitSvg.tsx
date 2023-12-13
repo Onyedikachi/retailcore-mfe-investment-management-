@@ -9,6 +9,7 @@ export default function SubmitSvg() {
       height="24"
       viewBox="0 0 25 24"
       fill="none"
+      data-testid="submit-svg"
     >
       <g clipPath="url(#clip0_11464_1130)">
         <path
