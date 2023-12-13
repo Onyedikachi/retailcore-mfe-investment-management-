@@ -99,7 +99,16 @@ export const investmentApi: any = createApi({
     modifyProduct: builder.mutation<any, any>({
       query: (data) => {
         return {
-          url: `${urls.PRODUCT}/edit`,
+          url: `${urls.PRODUCT}/edit/${data.id}`,
+          method: "put",
+          body: data,
+        };
+      },
+    }),
+    modifyRequest: builder.mutation<any, any>({
+      query: (data) => {
+        return {
+          url: `${urls.REQUESTS}/edit/${data.id}`,
           method: "put",
           body: data,
         };
@@ -273,6 +282,7 @@ export const {
   useActivateProductMutation,
   useDeactivateProductMutation,
   useModifyProductMutation,
+  useModifyRequestMutation,
   useGetPostRequestsMutation,
   useGetPostProductsMutation,
   useGetLedgersQuery,

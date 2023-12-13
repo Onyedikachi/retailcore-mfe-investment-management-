@@ -8,6 +8,7 @@ export default function ModifySvg() {
       height="24"
       viewBox="0 0 25 24"
       fill="none"
+      data-testid="modify-svg"
     >
       <path
         fillRule="evenodd"

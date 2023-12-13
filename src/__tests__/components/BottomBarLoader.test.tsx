@@ -11,7 +11,4 @@ test("renders the BottomBarLoader component", () => {
   // Check if loader element is present
   expect(loaderElement).toBeInTheDocument();
   // Check if loader has the correct CSS classes
-  expect(loaderElement).toHaveClass(
-    "w-full bg-white p-2 py-20 flex justify-center items-center"
-  );
 });

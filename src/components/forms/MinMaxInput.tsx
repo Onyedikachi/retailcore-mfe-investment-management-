@@ -67,7 +67,7 @@ export default function MinMaxInput({
                   setValue(inputName, e.target.valueAsNumber);
                   trigger(inputName);
                 }}
-                placeholder="0"
+                placeholder={placeholder}
                 // maxLength={defaultLength}
                 max={max}
                 // {...register(inputName, { required: true })}

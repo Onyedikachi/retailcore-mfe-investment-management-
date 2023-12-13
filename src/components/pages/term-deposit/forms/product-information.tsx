@@ -41,7 +41,7 @@ export function handleValidatingName(
     setIsNameOkay(false);
   }
   if (nameIsSuccess && charLeft < 47) {
-    // trigger("productName");
+    trigger("productName");
     clearErrors("productName");
     setIsNameOkay(true);
   }
@@ -80,7 +80,7 @@ export function handleName(
         return;
       }
       validateName({ productName: watchName, productId: id || null });
-    }, timer)();
+    }, 1000)();
   } else {
     setError("");
     setIsNameOkay(false);
@@ -115,6 +115,7 @@ export default function ProductInformation({
   setFormData,
   setDisabled,
   proceed,
+  initiateDraft,
 }) {
   //useForm
   const {
@@ -137,15 +138,15 @@ export default function ProductInformation({
   const values = getValues();
   const productFormRef = useRef();
   const { process } = useParams();
-  console.log("🚀 ~ file: product-information.tsx:141 ~ process:", process);
-
   const [error, setError] = useState<string>("");
   const [charLeft, setCharLeft] = useState<number>(50);
   const [sloganCharLeft, setSloganCharLeft] = useState<number>(160);
   const [currentName, setCurrentName] = useState("");
   const [isNameOkay, setIsNameOkay] = useState<boolean>(false);
   const [isSloganOkay, setIsSloganOkay] = useState<boolean>(false);
-  const { id, productId } = useParams();
+  const { productId } = useParams();
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id");
   const [
     validateName,
     {
@@ -189,7 +190,16 @@ export default function ProductInformation({
     });
     proceed();
   }
-
+  useEffect(() => {
+    if (initiateDraft) {
+      setFormData({
+        ...values,
+        startDate:
+          values.startDate && moment(values.startDate).format("yyyy-MM-DD"),
+        endDate: values.endDate && moment(values.endDate).format("yyyy-MM-DD"),
+      });
+    }
+  }, [initiateDraft]);
   useEffect(() => {
     setDisabled(!isValid);
   }, [values]);
@@ -201,14 +211,34 @@ export default function ProductInformation({
       );
       if (process === "continue" || process === "modify") {
         trigger();
+       if(formData.productName && id){
+        validateName({
+          productName: formData.productName,
+          productId: id || productId || null,
+        });
+       }
+        
       }
     }
-  }, [setValue, formData, process]);
+  }, [setValue, formData, process, id]);
 
   //watchers
   const watchStartDate = new Date(watch("startDate"));
+  const watchProductName = watch("productName");
+  const watchProductDesc = watch("description");
+  const watchCurrency = watch("currency");
   watchStartDate.setDate(watchStartDate.getDate() + 1);
 
+  useEffect(() => {
+    if (
+      watchCurrency &&
+      watchStartDate &&
+      watchProductName &&
+      watchProductDesc
+    ) {
+      trigger();
+    }
+  }, []);
   return (
     <form id="productform" onSubmit={handleSubmit(onProceed)}>
       <div className="">
@@ -425,6 +455,7 @@ export default function ProductInformation({
                 }}
                 defaultValue={formData?.endDate}
                 clearErrors={clearErrors}
+                placeholder="Unspecified"
               />
             </div>
           </div>

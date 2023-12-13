@@ -32,6 +32,7 @@ export default function Actions({
   const [searchParams] = useSearchParams();
   const { tab, type, id } = useParams();
   const sub_type = searchParams.get("sub_type");
+  const filter = searchParams.get("filter");
   const { process } = useParams();
   const [action, setAction] = useState("");
   const [confirmText, setConfirmText] = useState("");
@@ -113,14 +114,18 @@ export default function Actions({
       setRejection(true);
     }
     if (action === "cancel") {
-      navigate("/product-factory/investment?category=requests");
+      navigate(
+        `/product-factory/investment?category=requests${
+          filter ? "&filter=" + filter : ""
+        }`
+      );
     }
   };
 
-  const handleRejection=()=>{
+  const handleRejection = () => {
     setRejection(false);
     rejectProduct({ reason, id, routeTo });
-  }
+  };
   useEffect(() => {
     if (rejectSuccess) {
       setSuccessText(Messages.PRODUCT_CREATE_REJECTED);
@@ -218,7 +223,11 @@ export default function Actions({
             url={window.location.href}
           />
 
-          <Link to="/product-factory/investment">
+          <Link
+            to={`/product-factory/investment?category=requests${
+              filter ? "&filter=" + filter : ""
+            }`}
+          >
             <Button
               data-testid="gotodashboard"
               className="cursor-pointer max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"

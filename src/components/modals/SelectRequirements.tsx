@@ -31,7 +31,7 @@ export default function SelectRequirements({
 }: SelectRequirementsProps): React.JSX.Element {
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
-      <div className="w-[527px] p-6 rounded-lg bg-white text-left shadow-[0px_20px_24px_0px_rgba(16,24,40,0.08),_0px_8px_8px_0px_rgba(16,24,40,0.03)]">
+      <div data-testid="select-requirement-modal" className="w-[527px] p-6 rounded-lg bg-white text-left shadow-[0px_20px_24px_0px_rgba(16,24,40,0.08),_0px_8px_8px_0px_rgba(16,24,40,0.03)]">
         <div className="flex justify-between items-start mb-[12px]">
           <div className="flex-1 items-center flex  border-b uppercase pb-3">
             <span className="text-[#747373] font-bold text-[24px]">

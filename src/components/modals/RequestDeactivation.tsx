@@ -55,7 +55,7 @@ export default function RequestDeactivation({
     }
     if (isError) {
       setFailedText(Messages.PRODUCT_DEACTIVATE_FAILED);
-      setFailedSubtext(error?.message?.message);
+      setFailedSubtext(error?.message?.message || error?.message?.Message);
       setFailed(true);
     }
   }, [isSuccess, isError, error]);

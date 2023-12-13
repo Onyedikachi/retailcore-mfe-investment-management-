@@ -157,10 +157,17 @@ export default function TableComponent<TableProps>({
   noData = "No data available",
 }) {
   const { role, permissions } = useContext(AppContext);
-  const { isChecker, category } = useContext(InvestmentContext);
+  const {
+    isChecker,
+    category,
+    selected,
+    isDetailOpen,
+    setDetailOpen,
+    detail,
+    setDetail,
+  } = useContext(InvestmentContext);
   const [action, setAction] = useState("");
   const navigate = useNavigate();
-  const [detail, setDetail] = useState<any>(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [isDeactivationOpen, setIsDeactivationOpen] = useState(false);
@@ -170,7 +177,7 @@ export default function TableComponent<TableProps>({
   const [isFailed, setFailed] = useState(false);
   const [failedSubText, setFailedSubtext] = useState("");
   const [failedText, setFailedText] = useState("");
-  const [isDetailOpen, setDetailOpen] = useState(false);
+
   const notify = (toastMessage) => toast.error(toastMessage);
   // function getdata(item, key) {}
   const handleAction = (action, items) => {
@@ -220,7 +227,7 @@ export default function TableComponent<TableProps>({
       navigate(
         `/product-factory/investment/${encodeURIComponent(
           "term deposit"
-        )}/continue/?id=${items.id}&type=draft`
+        )}/continue/?id=${items.id}&type=draft&filter=${selected.value}`
       );
       return;
     }
@@ -231,9 +238,9 @@ export default function TableComponent<TableProps>({
         : navigate(
             `/product-factory/investment/${encodeURIComponent(
               "term deposit"
-            )}/process-summary/preview/${
-              items.id
-            }?category=request`
+            )}/process-summary/preview/${items.id}?category=request&filter=${
+              selected.value
+            }`
           );
       return;
     }
@@ -243,9 +250,9 @@ export default function TableComponent<TableProps>({
         : navigate(
             `/product-factory/investment/${encodeURIComponent(
               "term deposit"
-            )}/process-summary/verdict/${
-              items.id
-            }?category=request`
+            )}/process-summary/verdict/${items.id}?category=request&filter=${
+              selected.value
+            }`
           );
       return;
     }
@@ -255,7 +262,10 @@ export default function TableComponent<TableProps>({
     deleteRequest,
     { isSuccess, isError, error, isLoading: deleteLoading },
   ] = useDeleteProductRequestMutation();
-  useEffect(() => console.log(deleteLoading, isLoading), [deleteLoading, isLoading])
+  useEffect(
+    () => console.log(deleteLoading, isLoading),
+    [deleteLoading, isLoading]
+  );
   const [
     activateProduct,
     {
@@ -265,7 +275,6 @@ export default function TableComponent<TableProps>({
       isLoading: activateIsLoading,
     },
   ] = useActivateProductMutation();
-
 
   const handleConfirm = () => {
     if (action.toLowerCase().includes("delete")) {
@@ -288,7 +297,7 @@ export default function TableComponent<TableProps>({
         navigate(
           `/product-factory/investment/${encodeURIComponent(
             "term deposit"
-          )}/modify/?id=${detail.id}`
+          )}/modify/?id=${detail.id}&filter=${selected.value}`
         );
       }
     }
@@ -439,7 +448,6 @@ export default function TableComponent<TableProps>({
                                 />
                               ) : (
                                 <>
-                               
                                   {item?.requestStatus === "in-review" ? (
                                     <Button
                                       onClick={() =>

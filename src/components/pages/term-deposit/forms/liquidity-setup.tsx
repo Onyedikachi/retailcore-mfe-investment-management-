@@ -38,6 +38,7 @@ export default function LiquiditySetup({
   formData,
   setFormData,
   setDisabled,
+  initiateDraft,
 }) {
   const {
     register,
@@ -118,7 +119,14 @@ export default function LiquiditySetup({
     watch("part_AllowPartLiquidation"),
     watch("early_AllowPartLiquidation"),
   ]);
-
+  useEffect(() => {
+    if (initiateDraft) {
+    setFormData({
+      ...values,
+      early_SpecificCharges: earlyOptionCharges,
+      part_SpecificCharges: partOptionCharges,
+    });}
+  }, [initiateDraft]);
   return (
     <form id="liquiditysetup" onSubmit={handleSubmit(onProceed)}>
       <div className="flex flex-col gap-14">

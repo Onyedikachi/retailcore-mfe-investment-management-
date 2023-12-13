@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 export function InputDivs({ children, label }) {
   return (
     <div className="flex gap-[10px] items-center">
-      <span className="min-w-[250px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium">
+      <span data-testid="input-div" className="min-w-[250px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium">
         {label} <RedDot />
       </span>
       <div>{children}</div>
@@ -21,6 +21,7 @@ export default function AccountingEntriesAndEvents({
   formData,
   setFormData,
   setDisabled,
+  initiateDraft,
 }) {
   const [mapOptions, setMapOptions] = useState([]);
   const [clearFields, setClearField] = useState(false);
@@ -65,7 +66,6 @@ export default function AccountingEntriesAndEvents({
   ];
   // glMappingSchema
   const handleClick = (key, menu, name, subname) => {
-  
     const data = {
       accountName: subname,
       accountId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -95,7 +95,7 @@ export default function AccountingEntriesAndEvents({
   }
   useEffect(() => {
     setFormData({ data: formData, mapOptions });
-  }, [mapOptions]);
+  }, [mapOptions, initiateDraft]);
 
   useEffect(() => {
     if (mapOptions.length === 3) {
@@ -127,7 +127,7 @@ export default function AccountingEntriesAndEvents({
     }
   }, [setValue, formData]);
   return (
-    <form id="entriesandevents" onSubmit={handleSubmit(onProceed)}>
+    <form id="entriesandevents" data-testid="entriesandevents" onSubmit={handleSubmit(onProceed)}>
       <div>
         <div
           style={{
