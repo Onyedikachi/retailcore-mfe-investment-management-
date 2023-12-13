@@ -96,6 +96,7 @@ export default function CustomComboSelect({
                       "block truncate",
                       selected && "font-semibold"
                     )}
+                    data-testid = "combo-select-option"
                   >
                     {item.name}
                   </span>

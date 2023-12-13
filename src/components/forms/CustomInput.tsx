@@ -35,7 +35,7 @@ export default function CustomInput({
       />
       {maxLength > 0 && (
         <div className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]">
-          <span>
+          <span data-testid="maxLength">
             {0}/{maxLength}
           </span>{" "}
         </div>

@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 export function InputDivs({ children, label }) {
   return (
     <div className="flex gap-[10px] items-center">
-      <span className="min-w-[250px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium">
+      <span data-testid="input-div" className="min-w-[250px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium">
         {label} <RedDot />
       </span>
       <div>{children}</div>
@@ -127,7 +127,7 @@ export default function AccountingEntriesAndEvents({
     }
   }, [setValue, formData]);
   return (
-    <form id="entriesandevents" onSubmit={handleSubmit(onProceed)}>
+    <form id="entriesandevents" data-testid="entriesandevents" onSubmit={handleSubmit(onProceed)}>
       <div>
         <div
           style={{
