@@ -186,34 +186,6 @@ export const handlers = [
       );
     }
   }),
-  rest.get(`${baseUrl}/location/countries`, (req, res, ctx) => {
-    // const { filter } = req.params;
-    // Simulate different responses based on the investmentId
-    if (ctx.status == 200) {
-      return res(ctx.json(response.requestAnalyticsResponse));
-    } else {
-      return res(
-        ctx.status(404),
-        ctx.json({
-          error: "Data not found",
-        })
-      );
-    }
-  }),
-  rest.get(`${baseUrl}/location/lga`, (req, res, ctx) => {
-    // const { filter } = req.params;
-    // Simulate different responses based on the investmentId
-    if (ctx.status == 200) {
-      return res(ctx.json(response.requestAnalyticsResponse));
-    } else {
-      return res(
-        ctx.status(404),
-        ctx.json({
-          error: "Data not found",
-        })
-      );
-    }
-  }),
   rest.post(`${baseUrl}/validate-name`, (req, res, ctx) => {
     if (ctx.status == 200) {
       return res(ctx.json({ success: true }));
@@ -253,24 +225,6 @@ export const handlers = [
       // Simulate different responses based on the investmentId
       if (ctx.status == 200) {
         return res(ctx.json(response.requestAnalyticsResponse));
-      } else {
-        return res(
-          ctx.status(500),
-          ctx.json({
-            status: "error",
-            error: "Something went wrong",
-          })
-        );
-      }
-    }
-  ),
-  rest.get(
-    `https://utilities-api.dev.bepeerless.co/v1/product/product-details`,
-    (req, res, ctx) => {
-      // const { filter } = req.params;
-      // Simulate different responses based on the investmentId
-      return res(ctx.json(response.requestAnalyticsResponse));
-      if (ctx.status == 200) {
       } else {
         return res(
           ctx.status(500),
