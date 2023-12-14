@@ -256,5 +256,23 @@ export const handlers = [
       }
     }
   ),
+  rest.get(
+    `https://utilities-api.dev.bepeerless.co/v1/product/product-details`,
+    (req, res, ctx) => {
+      // const { filter } = req.params;
+      // Simulate different responses based on the investmentId
+      if (ctx.status == 200) {
+        return res(ctx.json(response.requestAnalyticsResponse));
+      } else {
+        return res(
+          ctx.status(500),
+          ctx.json({
+            status: "error",
+            error: "Something went wrong",
+          })
+        );
+      }
+    }
+  ),
   // Add more handlers for different endpoints as needed
 ];

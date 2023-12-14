@@ -1,0 +1,370 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LiquiditySetup Renders without error 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <form
+        id="liquiditysetup"
+      >
+        <div
+          class="flex flex-col gap-14"
+        >
+          <div
+            class="rounded-[5px] px-10 flex flex-col gap-[40px] py-5"
+            style="box-shadow: 0px 0px 1px 0px rgba(26, 32, 36, 0.32), 0px 1px 2px 0px rgba(91, 104, 113, 0.32);"
+          >
+            <div
+              class="flex items-center gap-[10px]"
+            >
+              <span
+                class="capitalize min-w-[300px] flex items-center gap-[5px] text-[##636363] text-base font-medium"
+              >
+                Allow Part Liquidation
+                <div
+                  class="flex items-end cursor-pointer"
+                >
+                  <div
+                    class="flex items-end !bg-white"
+                  >
+                    <button
+                      aria-expanded="false"
+                      class="bg-transparent p-0"
+                      type="button"
+                    >
+                      <div
+                        class="w-[18px] h-[18px] text-[#636363]"
+                      >
+                        <svg
+                          fill="currentColor"
+                          height="1em"
+                          stroke="currentColor"
+                          stroke-width="0"
+                          version="1.1"
+                          viewBox="0 0 16 16"
+                          width="1em"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                          />
+                          <path
+                            d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                          />
+                          <path
+                            d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                          />
+                        </svg>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </span>
+              <button
+                aria-checked="false"
+                class="bg-transparent border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
+                data-headlessui-state=""
+                id="headlessui-switch-1"
+                role="switch"
+                tabindex="0"
+                type="button"
+                value="false"
+              >
+                <span
+                  class="sr-only"
+                >
+                  Use setting
+                </span>
+                <span
+                  aria-hidden="true"
+                  class="translate-x-0  bg-white  pointer-events-none inline-block h-[14px] w-[14px] transform rounded-full border border-[#CF2A2A] shadow ring-0 transition duration-200 ease-in-out"
+                />
+              </button>
+            </div>
+          </div>
+          <div
+            class="rounded-[5px] px-10 flex flex-col gap-[40px] py-5"
+            style="box-shadow: 0px 0px 1px 0px rgba(26, 32, 36, 0.32), 0px 1px 2px 0px rgba(91, 104, 113, 0.32);"
+          >
+            <div
+              class="flex items-center gap-[10px]"
+            >
+              <span
+                class="capitalize min-w-[300px] flex items-center gap-[5px] text-[##636363] text-base font-medium"
+              >
+                Allow Early Liquidation
+                <div
+                  class="flex items-end cursor-pointer"
+                >
+                  <div
+                    class="flex items-end !bg-white"
+                  >
+                    <button
+                      aria-expanded="false"
+                      class="bg-transparent p-0"
+                      type="button"
+                    >
+                      <div
+                        class="w-[18px] h-[18px] text-[#636363]"
+                      >
+                        <svg
+                          fill="currentColor"
+                          height="1em"
+                          stroke="currentColor"
+                          stroke-width="0"
+                          version="1.1"
+                          viewBox="0 0 16 16"
+                          width="1em"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                          />
+                          <path
+                            d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                          />
+                          <path
+                            d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                          />
+                        </svg>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </span>
+              
+              <button
+                aria-checked=""
+                class="bg-transparent border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
+                id="headlessui-switch-2"
+                role="switch"
+                tabindex="0"
+                type="button"
+                value=""
+              >
+                <span
+                  class="sr-only"
+                >
+                  Use setting
+                </span>
+                <span
+                  aria-hidden="true"
+                  class="translate-x-0  bg-white  pointer-events-none inline-block h-[14px] w-[14px] transform rounded-full border border-[#CF2A2A] shadow ring-0 transition duration-200 ease-in-out"
+                />
+              </button>
+            </div>
+            
+          </div>
+        </div>
+      </form>
+    </div>
+  </body>,
+  "container": <div>
+    <form
+      id="liquiditysetup"
+    >
+      <div
+        class="flex flex-col gap-14"
+      >
+        <div
+          class="rounded-[5px] px-10 flex flex-col gap-[40px] py-5"
+          style="box-shadow: 0px 0px 1px 0px rgba(26, 32, 36, 0.32), 0px 1px 2px 0px rgba(91, 104, 113, 0.32);"
+        >
+          <div
+            class="flex items-center gap-[10px]"
+          >
+            <span
+              class="capitalize min-w-[300px] flex items-center gap-[5px] text-[##636363] text-base font-medium"
+            >
+              Allow Part Liquidation
+              <div
+                class="flex items-end cursor-pointer"
+              >
+                <div
+                  class="flex items-end !bg-white"
+                >
+                  <button
+                    aria-expanded="false"
+                    class="bg-transparent p-0"
+                    type="button"
+                  >
+                    <div
+                      class="w-[18px] h-[18px] text-[#636363]"
+                    >
+                      <svg
+                        fill="currentColor"
+                        height="1em"
+                        stroke="currentColor"
+                        stroke-width="0"
+                        version="1.1"
+                        viewBox="0 0 16 16"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                        />
+                        <path
+                          d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                        />
+                        <path
+                          d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                        />
+                      </svg>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </span>
+            <button
+              aria-checked="false"
+              class="bg-transparent border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
+              data-headlessui-state=""
+              id="headlessui-switch-1"
+              role="switch"
+              tabindex="0"
+              type="button"
+              value="false"
+            >
+              <span
+                class="sr-only"
+              >
+                Use setting
+              </span>
+              <span
+                aria-hidden="true"
+                class="translate-x-0  bg-white  pointer-events-none inline-block h-[14px] w-[14px] transform rounded-full border border-[#CF2A2A] shadow ring-0 transition duration-200 ease-in-out"
+              />
+            </button>
+          </div>
+        </div>
+        <div
+          class="rounded-[5px] px-10 flex flex-col gap-[40px] py-5"
+          style="box-shadow: 0px 0px 1px 0px rgba(26, 32, 36, 0.32), 0px 1px 2px 0px rgba(91, 104, 113, 0.32);"
+        >
+          <div
+            class="flex items-center gap-[10px]"
+          >
+            <span
+              class="capitalize min-w-[300px] flex items-center gap-[5px] text-[##636363] text-base font-medium"
+            >
+              Allow Early Liquidation
+              <div
+                class="flex items-end cursor-pointer"
+              >
+                <div
+                  class="flex items-end !bg-white"
+                >
+                  <button
+                    aria-expanded="false"
+                    class="bg-transparent p-0"
+                    type="button"
+                  >
+                    <div
+                      class="w-[18px] h-[18px] text-[#636363]"
+                    >
+                      <svg
+                        fill="currentColor"
+                        height="1em"
+                        stroke="currentColor"
+                        stroke-width="0"
+                        version="1.1"
+                        viewBox="0 0 16 16"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                        />
+                        <path
+                          d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                        />
+                        <path
+                          d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                        />
+                      </svg>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </span>
+            
+            <button
+              aria-checked=""
+              class="bg-transparent border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
+              id="headlessui-switch-2"
+              role="switch"
+              tabindex="0"
+              type="button"
+              value=""
+            >
+              <span
+                class="sr-only"
+              >
+                Use setting
+              </span>
+              <span
+                aria-hidden="true"
+                class="translate-x-0  bg-white  pointer-events-none inline-block h-[14px] w-[14px] transform rounded-full border border-[#CF2A2A] shadow ring-0 transition duration-200 ease-in-out"
+              />
+            </button>
+          </div>
+          
+        </div>
+      </div>
+    </form>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

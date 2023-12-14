@@ -25,7 +25,5 @@ describe("MultiSelect", () => {
         render(<MultiSelect label="My Label" children="Test Child" options={options} getOptions={getOptions} />)
         fireEvent.click(screen.getByText("Test Child"))
         expect(screen.getByText("option 1")).toBeInTheDocument()
-
-        screen.debug()
     })
 })
