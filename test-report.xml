@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
   <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/IndexComponent.test.tsx">
-    <testCase name="IndexComponent Renders without error" duration="94">
-      <failure message="TypeError: (0 , _reactRouterDom.useSearchParams) is not a function or its return value is not iterable"><![CDATA[TypeError: (0 , _reactRouterDom.useSearchParams) is not a function or its return value is not iterable
-    at CreateTermDeposit (/Users/work/Documents/retailcore-mfe-investment-management/src/pages/investment/term-deposit/create-term-deposit/IndexComponent.tsx:37:41)
+    <testCase name="IndexComponent Renders without error" duration="633">
+      <failure message="TypeError: Cannot destructure property &apos;process&apos; of &apos;(0 , _reactRouterDom.useParams)(...)&apos; as it is undefined."><![CDATA[TypeError: Cannot destructure property 'process' of '(0 , _reactRouterDom.useParams)(...)' as it is undefined.
+    at CreateTermDeposit (/Users/work/Documents/retailcore-mfe-investment-management/src/pages/investment/term-deposit/create-term-deposit/IndexComponent.tsx:39:11)
     at renderWithHooks (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:14985:18)
     at mountIndeterminateComponent (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:17811:13)
     at beginWork (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:19049:16)

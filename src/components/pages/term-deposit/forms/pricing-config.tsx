@@ -51,8 +51,8 @@ export default function PricingConfig({
   setFormData,
   setDisabled,
   productData,
+  initiateDraft,
 }) {
- 
   const { process } = useParams();
   const {
     register,
@@ -65,7 +65,7 @@ export default function PricingConfig({
     getValues,
     trigger,
     resetField,
-    formState: { errors, isValid,touchedFields,dirtyFields },
+    formState: { errors, isValid, touchedFields, dirtyFields },
   } = useForm({
     resolver: yupResolver(pricingConfigSchema),
     defaultValues: formData,
@@ -157,20 +157,22 @@ export default function PricingConfig({
 
   useEffect(() => {
     setDisabled(!isValid);
-   
   }, [values]);
   useEffect(() => {
     if (formData) {
       Object.entries(formData).forEach(([name, value]) =>
         setValue(name, value)
       );
-      if ( process === "continue") {
-       
+      if (process === "continue" || process === "modify") {
         trigger();
       }
     }
   }, [setValue, formData]);
-
+  useEffect(() => {
+    if (initiateDraft) {
+      setFormData({ ...values });
+    }
+  }, [initiateDraft]);
   return (
     <form id="pricingconfig" onSubmit={handleSubmit(onProceed)}>
       <div className="flex flex-col gap-10">
@@ -331,7 +333,7 @@ export default function PricingConfig({
                           clearErrors={clearErrors}
                           isPercent
                           isCurrency
-                          disableGroupSeparators
+                          disablegroupseparators
 
                           // defaultValue={range.min}
                         />
@@ -356,7 +358,7 @@ export default function PricingConfig({
                           clearErrors={clearErrors}
                           isPercent
                           isCurrency
-                          disableGroupSeparators
+                          disablegroupseparators
                         />
                       </div>{" "}
                     </div>
@@ -562,7 +564,7 @@ export default function PricingConfig({
                   max={100}
                   isPercent
                   isCurrency
-                  disableGroupSeparators
+                  disablegroupseparators
 
                   // defaultValue={range.min}
                 />
@@ -582,7 +584,7 @@ export default function PricingConfig({
                   max={100}
                   isPercent
                   isCurrency
-                  disableGroupSeparators
+                  disablegroupseparators
                 />
               </div>{" "}
             </div>

@@ -21,6 +21,7 @@ export default function AccountingEntriesAndEvents({
   formData,
   setFormData,
   setDisabled,
+  initiateDraft,
 }) {
   const [mapOptions, setMapOptions] = useState([]);
   const [clearFields, setClearField] = useState(false);
@@ -65,7 +66,6 @@ export default function AccountingEntriesAndEvents({
   ];
   // glMappingSchema
   const handleClick = (key, menu, name, subname) => {
-  
     const data = {
       accountName: subname,
       accountId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -95,7 +95,7 @@ export default function AccountingEntriesAndEvents({
   }
   useEffect(() => {
     setFormData({ data: formData, mapOptions });
-  }, [mapOptions]);
+  }, [mapOptions, initiateDraft]);
 
   useEffect(() => {
     if (mapOptions.length === 3) {

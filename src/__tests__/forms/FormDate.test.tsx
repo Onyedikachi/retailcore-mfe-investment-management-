@@ -14,11 +14,12 @@ describe('FormDate component', () => {
         handleChange={handleChangeMock}
         defaultValue="2023-12-31T00:00:00.000Z"
         trigger={()=> {}}
+        placeholder="dd/mm/yyyy"
       />
     );
 
     // Find the date picker input
-    const datePickerInput = screen.getByPlaceholderText("dd/mm/yyyy");
+    const datePickerInput = screen.getByPlaceholderText("dd/mm/yyyy") as HTMLInputElement;;
 
     // Simulate a user changing the date
     fireEvent.change(datePickerInput, { target: { value: '01/01/2023' } });
@@ -26,7 +27,7 @@ describe('FormDate component', () => {
     // Check if the handleChange function is called with the updated date
 
     // expect(handleChangeMock).toHaveBeenCalledWith(new Date('01/01/2023'));
-    expect(datePickerInput.value).toBe("01/01/2023");
+    expect(datePickerInput?.value).toBe("01/01/2023");
   });
 
   test('should display error message when there is an error', () => {

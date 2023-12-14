@@ -1,6 +1,6 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { HiPlus } from "react-icons/hi";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Button from "./Button";
 import { InvestmentContext, AppContext } from "../utils/context";
 import { StatusCategoryType } from "@app/constants/enums";
@@ -12,8 +12,8 @@ import { useNavigate } from "react-router-dom";
 export const getSearchResult = (
   value,
   getProducts,
-
-  setSearchResults
+  setSearchResults,
+  selected
 ) => {
   if (!value.length) {
     setSearchResults([]);
@@ -24,15 +24,18 @@ export const getSearchResult = (
     search: value,
     page: 1,
     page_Size: 25,
-    filter_by: "created_by_me",
+    filter_by: selected.value,
   });
 };
 
 export function Tabs() {
+  const location = useLocation();
+  const { selected, setDetailOpen, setDetail } = useContext(InvestmentContext);
   const [active, setActtive] = useState("investment");
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const navigate = useNavigate();
+
   const tabOptions = [
     {
       title: "deposit",
@@ -52,9 +55,9 @@ export function Tabs() {
     },
   ];
 
-  function handleTabClick (tab){
-    setActtive(tab.title)
-    navigate(tab.url)
+  function handleTabClick(tab) {
+    setActtive(tab.title);
+    navigate(tab.url);
   }
 
   const [
@@ -62,7 +65,37 @@ export function Tabs() {
     { data, isSuccess, isError, error, isLoading: searchLoading },
   ] = useGetPostProductsMutation();
 
-  function handleSearch(value) {}
+  useEffect(() => {
+    isSuccess &&
+      setSearchResults([
+        {
+          title: "Investment",
+          data: data.results.map((i) => {
+            return {
+              ...i,
+              name: i.productName,
+              code: i.productCode,
+            };
+          }),
+        },
+      ]);
+
+    return () => {
+      setSearchResults([]);
+    };
+  }, [data, isSuccess]);
+  function handleSearch(value, item) {
+    if (item) {
+      if (location.pathname.includes("/investment")) {
+        setDetail(item);
+        setDetailOpen(true);
+      } else {
+        navigate(
+          `/product-factory/investment?preview=search_product&productId=${item.id}`
+        );
+      }
+    }
+  }
   return (
     <div className="flex justify-between">
       <ul className="flex gap-x-8">
@@ -70,7 +103,7 @@ export function Tabs() {
           <li
             key={tab.title}
             onClick={() => {
-              handleTabClick(tab)
+              handleTabClick(tab);
             }}
             data-testid={tab.title}
             className={`${
@@ -98,21 +131,22 @@ export function Tabs() {
               value,
               getProducts,
 
-              setSearchResults
+              setSearchResults,
+              selected
             )
           }
           placeholder="Search by product"
           searchResults={searchResults}
           setSearchResults={setSearchResults}
           searchLoading={searchLoading}
-          handleSearch={(value) => handleSearch(value)}
+          handleSearch={(value, item) => handleSearch(value, item)}
+          type="multi"
         />
       </div>
     </div>
   );
 }
 export default function TopBar() {
-  const { isChecker, category } = useContext(InvestmentContext);
   const { permissions } = useContext(AppContext);
 
   return (
@@ -126,12 +160,16 @@ export default function TopBar() {
         </h1>
 
         <CreateButton>
-          <Button data-testid="create-btn" className="bg-sterling-red-800">
+          <button
+            disabled={!permissions.length}
+            data-testid="create-btn"
+            className="btn bg-sterling-red-800"
+          >
             <span className="p-[5px]">
               <HiPlus fontSize={14} />
             </span>{" "}
             Create new product
-          </Button>
+          </button>
         </CreateButton>
       </div>
       <Tabs />

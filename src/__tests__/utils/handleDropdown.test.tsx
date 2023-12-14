@@ -155,3 +155,73 @@ describe('handleDropdown', () => {
     expect(result).not.toEqual([]);
   });
 });
+
+
+describe('handleDropdown', () => {
+
+  // Returns an empty array if either status or type is falsy
+  it('should return an empty array when status is falsy', () => {
+    const status = "";
+    const type = "create";
+    const permissions = ["CREATE_PRODUCT"];
+
+    const result = handleDropdown(status, type, permissions);
+
+    expect(result).toEqual([]);
+  });
+
+  // Returns an empty array if either status or type is falsy
+  it('should return an empty array when type is falsy', () => {
+    const status = "approved";
+    const type = "";
+    const permissions = ["CREATE_PRODUCT"];
+
+    const result = handleDropdown(status, type, permissions);
+
+    expect(result).toEqual([]);
+  });
+
+  // Returns an array of options based on whether type is in creationMap or not
+  it('should return an array of options when type is in creationMap', () => {
+    const status = "approved";
+    const type = "create";
+    const permissions = ["CREATE_PRODUCT"];
+
+    const result = handleDropdown(status, type, permissions);
+
+    expect(result).toEqual([
+      {
+        id: "",
+        text: "View",
+        icon: "FaEye",
+      },
+    ]);
+  });
+
+  // Returns an array of options based on whether type is in creationMap or not
+  it('should return an array of options when type is not in creationMap', () => {
+    const status = "approved";
+    const type = "activate";
+    const permissions = ["CREATE_PRODUCT"];
+
+    const result = handleDropdown(status, type, permissions);
+
+    expect(result).not.toEqual([
+      {
+        id: "",
+        text: "View",
+        icon: "FaEye",
+      },
+      {
+        id: "",
+        text: "Modify",
+        icon: "FaEdit",
+      },
+      {
+        id: "",
+        text: "Delete Request",
+        icon: "FaTrash",
+      },
+    ]);
+  });
+});

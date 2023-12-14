@@ -81,7 +81,14 @@ export default function IndexComponent() {
   );
   const [searchParams] = useSearchParams();
   const queryCategory = searchParams.get("category");
-  const [selected, setSelected] = useState<any>("");
+  const productId = searchParams.get("productId");
+  const preview = searchParams.get("preview");
+  const [selected, setSelected] = useState<any>({
+    id: 1,
+    text: "Created by me",
+    value: "created_by_me",
+    disabled: false,
+  });
   const [isChecker, setIsChecker] = useState(false);
   const [, setHideCreate] = useState(false);
   const [status, setStatus] = useState("");
@@ -89,14 +96,16 @@ export default function IndexComponent() {
   const [search, setSearch] = useState("");
   const [type, setType] = useState("");
   const [initiator, setInitiator] = useState("");
+  const [detail, setDetail] = useState<any>(null);
+  const [isDetailOpen, setDetailOpen] = useState(false);
   const [duration, setDuration] = useState("");
   const [isRefreshing, setRefreshing] = useState<boolean>(false);
   const [requestData, setRequestData] = useState<any[]>([]);
   const [productData, setProductData] = useState<any[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [query, setQuery] = useState({
-    filter_by: "",
-    status_In: [],
+    filter_by: selected?.value,
+    status_In: null,
     search: "",
     start_Date: null,
     end_Date: null,
@@ -128,6 +137,10 @@ export default function IndexComponent() {
       duration,
       isRefreshing,
       setRefreshing,
+      isDetailOpen,
+      setDetailOpen,
+      detail,
+      setDetail,
     }),
     [
       selected,
@@ -150,6 +163,10 @@ export default function IndexComponent() {
       duration,
       isRefreshing,
       setRefreshing,
+      isDetailOpen,
+      setDetailOpen,
+      detail,
+      setDetail,
     ]
   );
 
@@ -216,7 +233,6 @@ export default function IndexComponent() {
         ? StatusCategoryType.Requests
         : StatusCategoryType.AllProducts
     );
-    setSelected("created_by_me");
   }, [queryCategory]);
 
   useEffect(() => {
@@ -261,6 +277,13 @@ export default function IndexComponent() {
     isRequestError,
     query.page,
   ]);
+
+  useEffect(() => {
+    if (preview === "search_product") {
+      setDetail({ id: productId });
+      setDetailOpen(true);
+    }
+  }, [preview, productId]);
 
   const fetchMoreData = () => {
     setTimeout(() => {

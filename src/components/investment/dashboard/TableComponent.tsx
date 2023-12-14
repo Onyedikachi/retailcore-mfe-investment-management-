@@ -124,7 +124,8 @@ export const getSearchResult = (
   getProducts,
   getRequests,
   category,
-  setSearchResults
+  setSearchResults,
+  selected
 ) => {
   if (!value.length) {
     setSearchResults([]);
@@ -135,14 +136,14 @@ export const getSearchResult = (
       search: value,
       page: 1,
       page_Size: 25,
-      filter_by: "created_by_me",
+      filter_by: selected?.value,
     });
   } else {
     getRequests({
       search: value,
       page: 1,
       page_Size: 25,
-      filter_by: "created_by_me",
+      filter_by: selected?.value,
     });
   }
 };
@@ -163,7 +164,8 @@ export default function TableComponent({
   hasMore,
   fetchMoreData,
 }: any) {
-  const { category, setStatus, isChecker } = useContext(InvestmentContext);
+  const { category, setStatus, isChecker, selected } =
+    useContext(InvestmentContext);
   const { permissions } = useContext(AppContext);
   const [users, setUsers] = useState([]);
   const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -226,6 +228,7 @@ export default function TableComponent({
 
   useEffect(() => {
     isSuccess &&
+      category === StatusCategoryType?.AllProducts &&
       setSearchResults(
         data.results.map((i) => {
           return {
@@ -236,6 +239,7 @@ export default function TableComponent({
         })
       );
     isRequestSuccess &&
+      category === StatusCategoryType?.Requests &&
       setSearchResults(
         request.results.map((i) => {
           return {
@@ -332,11 +336,12 @@ export default function TableComponent({
               getProducts,
               getRequests,
               category,
-              setSearchResults
+              setSearchResults,
+              selected
             )
           }
           placeholder={`Search by product name${
-            category === StatusCategoryType.Requests ? "/code" : ""
+            category !== StatusCategoryType.Requests ? "/code" : ""
           }`}
           searchResults={searchResults}
           setSearchResults={setSearchResults}

@@ -30,9 +30,10 @@ export default function Actions({
   const { role, permissions } = useContext(AppContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { tab, type, id } = useParams();
+
   const sub_type = searchParams.get("sub_type");
-  const { process } = useParams();
+  const filter = searchParams.get("filter");
+  const {id, process } = useParams() || {};
   const [action, setAction] = useState("");
   const [confirmText, setConfirmText] = useState("");
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -113,14 +114,18 @@ export default function Actions({
       setRejection(true);
     }
     if (action === "cancel") {
-      navigate("/product-factory/investment?category=requests");
+      navigate(
+        `/product-factory/investment?category=requests${
+          filter ? "&filter=" + filter : ""
+        }`
+      );
     }
   };
 
-  const handleRejection=()=>{
+  const handleRejection = () => {
     setRejection(false);
     rejectProduct({ reason, id, routeTo });
-  }
+  };
   useEffect(() => {
     if (rejectSuccess) {
       setSuccessText(Messages.PRODUCT_CREATE_REJECTED);
@@ -149,7 +154,7 @@ export default function Actions({
     approveIsError,
   ]);
   return (
-    <div className=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-[60px] py-[40px]  ">
+    <div data-testid="actions-div" className=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-[60px] py-[40px]  ">
       {/* Submission  */}
       {(process === "create" || process === "modify") && (
         <div className=" flex  gap-6">
@@ -218,7 +223,11 @@ export default function Actions({
             url={window.location.href}
           />
 
-          <Link to="/product-factory/investment">
+          <Link
+            to={`/product-factory/investment?category=requests${
+              filter ? "&filter=" + filter : ""
+            }`}
+          >
             <Button
               data-testid="gotodashboard"
               className="cursor-pointer max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"

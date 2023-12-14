@@ -75,7 +75,7 @@ export const StatusButton = ({
 };
 
 export const count = (item, analyticsData) => {
-  switch (item.type.toLowerCase()) {
+  switch (item?.type?.toLowerCase()) {
     case "all":
       return analyticsData?.data?.All || 0;
     case "active":
@@ -99,19 +99,34 @@ export const count = (item, analyticsData) => {
   }
 };
 
-export const StatusCategoryButton = ({ item, category, setCategory }: any) => {
+export const handleClick = (setCategory, item, setSelected, category) => {
+  setCategory(item.type);
+  setSelected(
+    category === StatusCategoryType?.AllProducts
+      ? ProductOptions[0]
+      : RequestOptions[0]
+  );
+};
+
+export const StatusCategoryButton = ({
+  item,
+  category,
+  setCategory,
+  setSelected,
+}: any) => {
   return (
     <button
       type="button"
       name={item.type}
       data-testid={`${item.type}-btn`}
-      onClick={() => setCategory(item.type)}
+      onClick={() => handleClick(setCategory, item, setSelected, category)}
       className={`${
-        category === item.type
-          ? "bg-white font-semibold text-[20px]"
-          : " hover:bg-gray-50"
-      } px-4 py-[19px] text-[18px] text-[#636363] text-left flex gap-x-[5px] items-center leading-[24px] w-full capitalize border-[#D0D5DD] border-b last-of-type:border-b-0`}
+        category?.toLowerCase() === item?.type?.toLowerCase()
+          ? "!bg-white font-semibold text-[20px]"
+          : "hover:bg-gray-50 bg-[#EFEFEF]"
+      }  px-4 py-[19px] text-[18px] text-[#636363] text-left flex gap-x-[5px] items-center leading-[24px] w-full capitalize border-[#D0D5DD] border-b last-of-type:border-b-0`}
     >
+      {" "}
       <AiFillCaretRight
         className={`${
           category === item.type ? "visible" : "invisible"
@@ -164,9 +179,7 @@ export function handlePermission(
   if (!permissions?.length) return;
   if (
     permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS") ||
-    permissions?.includes(
-      "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
-    )
+    permissions?.includes("CREATE_INVESTMENT_PRODUCT")
   ) {
     setFilteredProductOptions(ProductOptions);
   } else {
@@ -184,9 +197,7 @@ export function handlePermission(
   }
   if (
     permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS") ||
-    permissions?.includes(
-      "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
-    )
+    permissions?.includes("CREATE_INVESTMENT_PRODUCT")
   ) {
     setFilteredRequestOptions(RequestOptions);
   } else {
@@ -250,7 +261,6 @@ export default function StatusCard({
     setActiveType("all");
   }, [selected]);
 
-
   useEffect(() => {
     handlePermission(
       setFilteredRequestOptions,
@@ -262,13 +272,14 @@ export default function StatusCard({
   }, [permissions, category]);
   return (
     <div className="flex border border-[#E5E9EB] rounded-lg">
-      <div className="bg-[#EFEFEF] w-[208px] rounded-l-lg border-r border-[#D0D5DD] overflow-hidden">
+      <div className=" w-[208px] rounded-l-lg border-r border-[#D0D5DD] overflow-hidden">
         {StatusCategories.map((item, idx) => (
           <StatusCategoryButton
             key={item.id}
             item={item}
             category={category}
             setCategory={setCategory}
+            setSelected={setSelected}
           />
         ))}
       </div>
@@ -287,6 +298,7 @@ export default function StatusCard({
             />
           ))}
         </div>
+       
         <div>
           <Select
             options={
@@ -294,6 +306,7 @@ export default function StatusCard({
                 ? filteredProductOptions
                 : filteredRequestOptions
             }
+         
             handleSelected={(value: any) => handleSelected(value)}
           />
         </div>

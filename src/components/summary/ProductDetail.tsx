@@ -21,45 +21,18 @@ export function DebitCreditTable({dataTab}) {
     },
     
     {
-      title: "debit",
-      key: "debit",
+      title: "specified ledger",
+      key: "specified ledger",
     },
-    {
-      title: "credit",
-      key: "credit",
-    },
+ 
   ];
 
   const accountTypes = ['Term deposit account', 'Interest accural account', 'Interest expense account',]
  
-  // [
-    // {
-    //   event: 'Term deposit account',
-    //   debitAccount: "ASTCAJHgsU12",
-    //   debitBalance: "Current Account Balances",
-    //   creditAccount: "Current Account Balances",
-    //   creditBalance: "ASTCA4gJHU12",
-    // },
-    // {
-    //   event: 'Interest accural account',
-    //   debitAccount: "ASTCAJ4HU12",
-    //   debitBalance: "Savings Account Balances",
-    //   creditAccount: "Savings Account Balances",
-    //   creditBalance: "ASTCAJfHU12",
-    // },
-    // {
-    //   event: 'Interest expense account',
-    //   debitAccount: "ASTCAJ4HU12",
-    //   debitBalance: "Savings Account Balances",
-    //   creditAccount: "Savings Account Balances",
-    //   creditBalance: "ASTCAJfHU12",
-    // },
+ 
 
-
-   
-  // ];
   return (
-    <table>
+    <table className='w-full'>
       <thead>
         <tr>
           {headers.map((i) => (
@@ -74,7 +47,7 @@ export function DebitCreditTable({dataTab}) {
       </thead>
   
       <tbody>
-        {dataTab.map((i, index) => (
+        {dataTab?.map((i, index) => (
           <tr
             key={i.creditBalance}
             className="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"
@@ -97,18 +70,7 @@ export function DebitCreditTable({dataTab}) {
                 <span className="text-[#aaa]">{i.accountName}</span>
               </span>
             </td>
-            <td className="text-sm font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative text-left">
-              <span>
-               
-                <span className="text-[#aaa]">{i.accountName}</span>
-              </span>
-            </td>
-            {/* <td className="text-sm font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative text-left">
-              <span>
-                <span className="block">{i.creditBalance}</span>
-                <span className="text-[#aaa]">{i.creditAccount}</span>
-              </span>
-            </td> */}
+        
           </tr>
         ))}
       </tbody>
@@ -181,7 +143,7 @@ export default function ProductDetail({ detail, oldData }: any) {
               <div className="w-full text-base font-normal text-[#636363]">
                 {oldData &&
                   oldData?.productInfo?.slogan !==
-                    detail.productInfo?.slogan && (
+                    detail?.productInfo?.slogan && (
                     <span className="block  line-through mb-2 text-[#aaa]">
                       {" "}
                       {oldData?.productInfo?.slogan}
@@ -406,8 +368,8 @@ export default function ProductDetail({ detail, oldData }: any) {
                           {" "}
                           {`${configModel.min} - ${configModel.max}%`} for
                           principal between{" "}
-                          {`${configModel.principalMin} - ${configModel.principalMax}`}{" "}
-                          {detail?.productInfo?.currency}
+                          {`${currencyFormatter(configModel.principalMin, detail?.productInfo?.currency)} - ${currencyFormatter(configModel.principalMax, detail?.productInfo?.currency)}`}{" "}
+                          {/* {detail?.productInfo?.currency} */}
                         </span>
                       )
                     )}
@@ -423,7 +385,7 @@ export default function ProductDetail({ detail, oldData }: any) {
                           className="block  mb-2 text-[#636363]"
                         >
                           {" "}
-                          {`${configModel.min} - ${configModel.max}`} for tenor
+                          {`${configModel.min} - ${configModel.max}%`} for tenor
                           between{" "}
                           {`${configModel.tenorMin} ${
                             Interval[configModel.tenorMinUnit]
@@ -497,7 +459,7 @@ export default function ProductDetail({ detail, oldData }: any) {
                           {liquidities[
                             detail?.liquidation?.part_LiquidationPenalty
                           ] == "RecalculateInterest" &&
-                            `Recalculate accrued interest of ${detail?.liquidation?.part_specialInterestRate}`}
+                            `Recalculate accrued interest of ${detail?.liquidation?.part_LiquidationPenaltyPercentage}%`}
                         </span>
                         <span>
                           {liquidities[
@@ -506,7 +468,7 @@ export default function ProductDetail({ detail, oldData }: any) {
                         </span>
                       </p>
                     }
-                    Maximum of {detail?.liquidation?.part_MaxPartLiquidation}%
+                    Maximum of {detail?.liquidation?.part_MaxPartLiquidation}% of principal
                   </span>
                 ) : (
                   "Not Applicable"
@@ -558,7 +520,7 @@ export default function ProductDetail({ detail, oldData }: any) {
                           {liquidities[
                             detail?.liquidation?.early_LiquidationPenalty
                           ] == "RecalculateInterest" &&
-                            `Recalculate accrued interest of ${detail?.liquidation?.early_specialInterestRate}`}
+                            `Recalculate accrued interest of ${detail?.liquidation?.early_LiquidationPenaltyPercentage}%`}
                         </span>
                         <span>
                           {liquidities[
@@ -576,7 +538,7 @@ export default function ProductDetail({ detail, oldData }: any) {
             </div>
           </div>
         </div>
-        <div className="!hidden flex flex-col">
+        <div className="!hidden  flex-col">
           <h4 className="text-[#636363] text-[16px] font-medium mb-[27px]">
             Charges & Taxes
           </h4>
@@ -638,7 +600,7 @@ export default function ProductDetail({ detail, oldData }: any) {
                 Principal Deposit
               </div> */}
               <div className="w-full text-base font-normal">
-                <DebitCreditTable dataTab={detail.productGlMappings}/>
+                <DebitCreditTable dataTab={detail?.productGlMappings}/>
               </div>
             </div>
           </div>

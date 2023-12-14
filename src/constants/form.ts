@@ -37,51 +37,55 @@ export const CustomerEligibilityCriteriaSchema = yup
     ageGroupMin: yup
       .number()
       .typeError("Invalid value")
+      .nullable()
       .when("customerCategory", {
         is: CustomerCategoryType.Individual,
         then: yup
           .number()
           .typeError("Invalid value")
           .required("Required")
-          .min(0, "Min of 0")  .test(
-            "min-less-than-max",
-            "Must be less than Max",
-            function (value) {
-              const ageGroupMax = this.parent.ageGroupMax;
-              return (
-                value === null ||
-                value === undefined ||
-                value === 0 ||
-                ageGroupMax === undefined ||
-                value < ageGroupMax
-              );
-            }
-          ),
+          .min(0, "Min of 0")
+          .test("min-less-than-max", "Must be less than Max", function (value) {
+            const ageGroupMax = this.parent.ageGroupMax;
+            return (
+              value === null ||
+              value === undefined ||
+              value === 0 ||
+              ageGroupMax === undefined ||
+              value < ageGroupMax
+            );
+          }),
         otherwise: yup.number().typeError("Invalid value").nullable(),
       }),
     ageGroupMax: yup
-      .number()
-      .typeError("Invalid value")
+      .mixed()
       .nullable()
       .when(["customerCategory", "ageGroupMin"], {
         is: (cat, min) =>
           cat === CustomerCategoryType.Individual && min !== undefined,
         then: yup
-          .number()
-          .typeError("Invalid value")
-          .required("Required")
+          .mixed()
+          .transform((value, originalValue) =>
+            originalValue === "" ? null : value
+          )
+          .nullable()
           .test(
             "min-less-than-max",
             "Must be greater than Min",
             function (value) {
               const ageGroupMin = this.parent.ageGroupMin;
-              return (
-                value === null ||
-                value === undefined ||
-                value === 0 ||
-                ageGroupMin === undefined ||
-                value > ageGroupMin
-              );
+              if (value >= 1) {
+                return (
+                  value === null ||
+                  value === undefined ||
+                  value === 0 ||
+                  ageGroupMin === undefined ||
+                  value > ageGroupMin
+                );
+              }
+
+              // If value is less than 1, consider it invalid
+              return true;
             }
           ),
         otherwise: yup.number().typeError("Invalid value").nullable(),
@@ -663,11 +667,11 @@ export const documentOptions = [
 export const liquidationTypes = [
   {
     label: "Allow Part Liquidation",
-    value: "part_AllowPartLiquidation"
+    value: "part_AllowPartLiquidation",
   },
   {
     label: "Allow Early Liquidation",
-    value: "early_AllowEarlyLiquidation"
+    value: "early_AllowEarlyLiquidation",
   },
 ];
 

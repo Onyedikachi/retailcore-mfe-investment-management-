@@ -20,7 +20,7 @@ interface MinMaxProps {
   isCurrency?: boolean;
   placeholder?: string;
   max?: number;
-  disableGroupSeparators?: boolean;
+  disablegroupseparators?: boolean;
 }
 export default function MinMaxInput({
   label,
@@ -42,7 +42,7 @@ export default function MinMaxInput({
   isCurrency,
   placeholder = "0",
   max,
-  disableGroupSeparators,
+  disablegroupseparators,
 }: MinMaxProps) {
   return (
     <div>
@@ -67,7 +67,7 @@ export default function MinMaxInput({
                   setValue(inputName, e.target.valueAsNumber);
                   trigger(inputName);
                 }}
-                placeholder="0"
+                placeholder={placeholder}
                 // maxLength={defaultLength}
                 max={max}
                 // {...register(inputName, { required: true })}
@@ -82,7 +82,7 @@ export default function MinMaxInput({
                 placeholder={placeholder}
                 defaultValue={defaultValue}
                 decimalsLimit={2}
-                disableGroupSeparators={disableGroupSeparators}
+                disableGroupSeparators={disablegroupseparators}
                 onValueChange={(value, name) => {
                   clearErrors(inputName);
                   setValue(inputName, value);
