@@ -100,10 +100,10 @@ export default function Preview({ formData, previousData = null }: any) {
   };
   const handleSubmit = () => {
     if (process === "modify") {
-      modifyProduct({ ...formData, isDraft: false, id, meta: previousData });
+      modifyProduct({ ...formData, isDraft: false, id, updateInfo: previousData });
     }
     if (process === "withdraw_modify") {
-      modifyRequest({ ...formData, isDraft: false, id, meta: previousData });
+      modifyRequest({ ...formData, isDraft: false, id, updateInfo: previousData });
     }
 
     if (process === "create" || process === "continue" || process === "clone") {
