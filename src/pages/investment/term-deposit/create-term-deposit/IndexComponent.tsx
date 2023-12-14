@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { paths } from "@app/routes/paths";
 import { Confirm, Failed, Success } from "@app/components/modals";
@@ -40,8 +40,9 @@ export default function CreateTermDeposit() {
   const [searchParams] = useSearchParams();
   const stage = searchParams.get("stage");
   const id = searchParams.get("id");
-
-  const [step, setStep] = useState(4);
+  const activeId = useRef(null);
+  const previousData = useRef({});
+  const [step, setStep] = useState(1);
 
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [subText, setSubText] = useState("");
@@ -192,6 +193,23 @@ export default function CreateTermDeposit() {
 
   useEffect(() => {
     if (productDetailsIsSuccess) {
+      activeId.current = productDetails?.data?.id;
+      if (process === "modify") {
+        previousData.current = {
+          ...previousData.current,
+          productName: productDetails?.data?.productInfo.productName,
+          prodType: productDetails?.data?.productInfo.productType,
+          state: productDetails?.data?.productInfo.state,
+          description: productDetails?.data?.productInfo.description,
+          slogan: productDetails?.data?.productInfo.slogan,
+          currency: productDetails?.data?.productInfo.currency,
+          requestStatus: null,
+          requestType: null,
+          request: "",
+          initiatorId: "",
+          approved_By_Id: "",
+        };
+      }
       setProductData({
         productInfo: productDetails?.data?.productInfo,
         customerEligibility: productDetails?.data?.customerEligibility,
@@ -253,6 +271,7 @@ export default function CreateTermDeposit() {
           }
           setDisabled={setDisabled}
           initiateDraft={initiateDraft}
+          activeId={activeId}
         />
       );
       formRef = "productform";
@@ -341,6 +360,7 @@ export default function CreateTermDeposit() {
           }
           setDisabled={setDisabled}
           initiateDraft
+          activeId={activeId}
         />
       );
   }
@@ -348,11 +368,23 @@ export default function CreateTermDeposit() {
   useEffect(() => {
     if (requestIsSuccess) {
       const data = JSON.parse(requestData?.data?.metaInfo);
-      console.log(
-        "🚀 ~ file: IndexComponent.tsx:321 ~ useEffect ~ data:",
-        data
-      );
-
+   
+      if (process === "withdraw_modify") {
+        previousData.current = {
+          ...previousData.current,
+          productName: data?.productInfo.productName,
+          description: data?.productInfo.description,
+          slogan: data?.productInfo.slogan,
+          currency: data?.productInfo.currency,
+          prodType: data?.productType,
+          state: data?.state,
+          requestStatus: requestData?.data?.requestStatus,
+          requestType: requestData?.data?.requestType,
+          request: requestData?.data?.request,
+          initiatorId: requestData?.data?.initiatorId,
+          approved_By_Id: requestData?.data?.approved_By_Id,
+        };
+      }
       setProductData({
         ...data,
         pricingConfiguration: {
@@ -401,7 +433,11 @@ export default function CreateTermDeposit() {
         url: "#",
       },
     ];
-    if (process === "continue" || process === "modify" || process === "withdraw_modify") {
+    if (
+      process === "continue" ||
+      process === "modify" ||
+      process === "withdraw_modify"
+    ) {
       let filteredLinks = links.filter((i) => i.id !== 3);
       return [...filteredLinks, ...extraLinks];
     }
@@ -409,11 +445,11 @@ export default function CreateTermDeposit() {
     return links;
   }
   useEffect(() => {
-    // console.log(
-    //   "🚀 ~ file: IndexComponent.tsx:379 ~ CreateTermDeposit ~ productData:",
-    //   productData
-    // );
-  }, [productData]);
+    console.log(
+      "🚀 ~ file: IndexComponent.tsx:379 ~ CreateTermDeposit ~ previousData.current:",
+      previousData.current
+    );
+  }, [previousData.current]);
 
   return (
     <div>
@@ -480,7 +516,10 @@ export default function CreateTermDeposit() {
               </div>
             </div>
           </div>
-          <Loader isOpen={isLoading || modifyLoading || modifyRequestLoading} text={"Submitting"} />
+          <Loader
+            isOpen={isLoading || modifyLoading || modifyRequestLoading}
+            text={"Submitting"}
+          />
           {/* //Modals */}
           {isConfirmOpen && (
             <Confirm
@@ -510,7 +549,7 @@ export default function CreateTermDeposit() {
           )}
         </div>
       )}
-      {stage && stage === "summary" && <Preview formData={productData} />}
+      {stage && stage === "summary" && <Preview formData={productData} previousData={previousData.current} />}
     </div>
   );
 }

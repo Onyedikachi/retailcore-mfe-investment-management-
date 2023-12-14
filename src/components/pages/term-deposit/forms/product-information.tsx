@@ -116,6 +116,7 @@ export default function ProductInformation({
   setDisabled,
   proceed,
   initiateDraft,
+  activeId
 }) {
   //useForm
   const {
@@ -209,15 +210,19 @@ export default function ProductInformation({
       Object.entries(formData).forEach(([name, value]) =>
         setValue(name, value)
       );
-      if (process === "continue" || process === "modify" || process === "withdraw_modify" || process === "clone") {
+      if (
+        process === "continue" ||
+        process === "modify" ||
+        process === "withdraw_modify" ||
+        process === "clone"
+      ) {
         trigger();
-       if(formData.productName && id){
-        validateName({
-          productName: formData.productName,
-          productId: id || productId || null,
-        });
-       }
-        
+        if (formData.productName && id) {
+          validateName({
+            productName: formData.productName,
+            productId:activeId.current || id || productId || null,
+          });
+        }
       }
     }
   }, [setValue, formData, process, id]);
@@ -278,7 +283,7 @@ export default function ProductInformation({
                     setCurrentName,
                     compareValues,
                     500,
-                    productId
+                    activeId.current || productId || id
                   );
                 }}
                 placeholder="Enter Name"

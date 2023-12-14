@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react"
 import { InfoLabel } from "../../components/forms"
+import React from "react"
 
 describe("InfoLabel",() => {
     it("Renders without errors", () => {

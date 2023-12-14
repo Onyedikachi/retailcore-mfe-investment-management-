@@ -33,7 +33,7 @@ export function Container({ children }) {
     </div>
   );
 }
-export default function Preview({ formData, oldData = null }: any) {
+export default function Preview({ formData, previousData = null }: any) {
   console.log("🚀 ~ file: preview.tsx:36 ~ Preview ~ formData:", formData);
   const { role } = useContext(AppContext);
   const navigate = useNavigate();
@@ -100,10 +100,10 @@ export default function Preview({ formData, oldData = null }: any) {
   };
   const handleSubmit = () => {
     if (process === "modify") {
-      modifyProduct({ ...formData, isDraft: false, id });
+      modifyProduct({ ...formData, isDraft: false, id, updateInfo: previousData });
     }
     if (process === "withdraw_modify") {
-      modifyRequest({ ...formData, isDraft: false, id });
+      modifyRequest({ ...formData, isDraft: false, id, updateInfo: previousData });
     }
 
     if (process === "create" || process === "continue" || process === "clone") {
@@ -133,7 +133,9 @@ export default function Preview({ formData, oldData = null }: any) {
       setFailedSubtext(
         error?.message?.message ||
           modifyError?.message?.message ||
-          modifyRequestError?.message?.message
+          modifyRequestError?.message?.message || error?.message?.Message ||
+          modifyError?.message?.Message ||
+          modifyRequestError?.message?.Message
       );
       setFailed(true);
     }
@@ -172,7 +174,7 @@ export default function Preview({ formData, oldData = null }: any) {
               <ReviewStatus status={"r"} reason={"r"} type={""} text="failed" />
             )}
             <Container>
-              <ProductDetail detail={formData} oldData={oldData} />
+              <ProductDetail detail={formData} previousData={previousData} />
             </Container>
           </div>
           <Actions
@@ -221,7 +223,7 @@ export default function Preview({ formData, oldData = null }: any) {
         />
       )}
       <Loader
-        isOpen={createProductLoading || modifyLoading}
+        isOpen={createProductLoading || modifyLoading || modifyRequestLoading}
         text={"Submitting"}
       />
     </div>
