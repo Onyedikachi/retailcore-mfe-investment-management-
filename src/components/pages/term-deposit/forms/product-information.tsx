@@ -245,7 +245,7 @@ export default function ProductInformation({
     }
   }, []);
   return (
-    <form id="productform" onSubmit={handleSubmit(onProceed)}>
+    <form id="productform" data-testid="submit-button" onSubmit={handleSubmit(onProceed)}>
       <div className="">
         <div className="mb-6 flex flex-col gap-[1px]">
           <div className="flex itemx-center gap-2 w-[300px]">
@@ -291,7 +291,7 @@ export default function ProductInformation({
                 defaultValue={formData?.productName}
                 aria-invalid={errors?.productName ? "true" : "false"}
               />
-              <div className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]">
+              <div data-testid="product-name-char-count" className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]">
                 <span>
                   {" "}
                   {charLeft}/{defaultLength}

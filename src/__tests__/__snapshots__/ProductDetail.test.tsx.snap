@@ -1,0 +1,1045 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProductDetail Works 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div>
+        <h3
+          class="text-[#636363] text-[18px] font-semibold mb-[56px]"
+        >
+          Term Deposit Product Details
+        </h3>
+        <div
+          class="grid gap-y-[56px]"
+        >
+          <div
+            class="flex flex-col"
+          >
+            <h4
+              class="text-[#636363] text-[16px] font-medium mb-[27px]"
+            >
+              Product Information
+            </h4>
+            <div
+              class="grid grid-cols-1 gap-[25px] px-12"
+            >
+              <div
+                class=" flex gap-[54px]"
+              >
+                <div
+                  class="w-[300px]   text-base font-medium text-[#636363]"
+                >
+                  Product Name
+                </div>
+                <div
+                  class="w-full text-base font-normal text-[#636363]"
+                >
+                  <span
+                    class="flex itmes-center"
+                  >
+                     
+                    
+                     
+                  </span>
+                </div>
+              </div>
+              <div
+                class=" flex gap-[54px]"
+              >
+                <div
+                  class="w-[300px]   text-base font-medium text-[#636363]"
+                >
+                  Slogan
+                </div>
+                <div
+                  class="w-full text-base font-normal text-[#636363]"
+                >
+                  <span
+                    class="flex itmes-center"
+                  >
+                     
+                    
+                     
+                  </span>
+                </div>
+              </div>
+              <div
+                class=" flex gap-[54px]"
+              >
+                <div
+                  class="w-[300px]   text-base font-medium text-[#636363]"
+                >
+                  Product Description
+                </div>
+                <div
+                  class="w-full text-base font-normal text-[#636363]"
+                >
+                  <span
+                    class="flex itmes-center"
+                  >
+                     
+                    
+                     
+                  </span>
+                </div>
+              </div>
+              <div
+                class=" flex gap-[54px]"
+              >
+                <div
+                  class="w-[300px]   text-base font-medium text-[#636363]"
+                >
+                  Product Currency
+                </div>
+                <div
+                  class="w-full text-base font-normal text-[#636363]"
+                >
+                  <span
+                    class="flex itmes-center"
+                  >
+                     
+                    NGN
+                     
+                  </span>
+                </div>
+              </div>
+              <div
+                class=" flex gap-[54px]"
+              >
+                <div
+                  class="w-[300px]   text-base font-medium text-[#636363]"
+                >
+                  Product life cycle
+                </div>
+                <div
+                  class="w-full text-base font-normal text-[#636363]"
+                >
+                  <span
+                    class="flex itmes-center"
+                  >
+                     
+                    <span
+                      class="font-normal block"
+                    >
+                      14 Dec 2023
+                       
+                      -
+                       
+                      Unspecified
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex flex-col"
+          >
+            <h4
+              class="text-[#636363] text-[16px] font-medium mb-[27px]"
+            >
+              Customer Information Requirement
+            </h4>
+            <div
+              class="grid grid-cols-1 gap-[25px] px-12"
+            >
+              <div
+                class=" flex gap-[54px]"
+              >
+                <div
+                  class="w-[300px]   text-base font-medium text-[#636363]"
+                >
+                  Customer group category
+                </div>
+                <div
+                  class="w-full text-base font-normal text-[#636363]"
+                >
+                  <span
+                    class="flex itmes-center"
+                  >
+                     
+                     
+                  </span>
+                </div>
+              </div>
+              <div
+                class=" flex gap-[54px]"
+              >
+                <div
+                  class="w-[300px]   text-base font-medium text-[#636363]"
+                >
+                  Documentation required
+                </div>
+                <div
+                  class="w-full text-base font-normal text-[#636363] flex flex-wrap gap-x-1 gap-y-1"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex flex-col"
+          >
+            <h4
+              class="text-[#636363] text-[16px] font-medium mb-[27px]"
+            >
+              Pricing Configuration
+            </h4>
+            <div
+              class="grid grid-cols-1 gap-[25px] px-12"
+            >
+              <div
+                class=" flex gap-[54px]"
+              >
+                <div
+                  class="w-[300px]   text-base font-medium text-[#636363]"
+                >
+                  Applicable Tenor
+                </div>
+                <div
+                  class="w-full text-base font-normal text-[#636363]"
+                >
+                  <span
+                    class="block  mb-2 text-[#636363]"
+                  >
+                    <span
+                      class="font-normal block"
+                    >
+                      0 days
+                       
+                      -
+                       
+                      0 days
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div
+                class=" flex gap-[54px]"
+              >
+                <div
+                  class="w-[300px]   text-base font-medium text-[#636363]"
+                >
+                  Applicable Principal
+                </div>
+                <div
+                  class="w-full text-base font-normal text-[#636363]"
+                >
+                  <span
+                    class="block  mb-2 text-[#636363]"
+                  >
+                    NGN 0.00
+                     
+                    and above
+                  </span>
+                </div>
+              </div>
+              <div
+                class=" flex gap-[54px]"
+              >
+                <div
+                  class="w-[300px]   text-base font-medium text-[#636363]"
+                >
+                  Applicable Interest Rate Range
+                </div>
+                <div
+                  class="w-full text-base font-normal text-[#636363]"
+                >
+                  <div
+                    class="flex flex-col"
+                  >
+                    <span
+                      class="block  mb-2 text-[#636363]"
+                    >
+                       
+                      0 - 0%
+                       for principal between
+                       
+                      0 - 0
+                       
+                      NGN
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex flex-col"
+          >
+            <h4
+              class="text-[#636363] text-[16px] font-medium mb-[27px]"
+            >
+              Early & Part Liquidation Setup
+            </h4>
+            <div
+              class="grid grid-cols-1 gap-[25px] px-12"
+            >
+              <div
+                class=" flex gap-[54px]"
+              >
+                <div
+                  class="w-[300px]   text-base font-medium text-[#636363]"
+                >
+                  Part Liquidation
+                </div>
+                <div
+                  class="w-full text-base font-normal text-[#636363]"
+                >
+                  Not Applicable
+                </div>
+              </div>
+              <div
+                class=" flex gap-[54px]"
+              >
+                <div
+                  class="w-[300px]   text-base font-medium text-[#636363]"
+                >
+                  Early Liquidation
+                </div>
+                <div
+                  class="w-full text-base font-normal text-[#636363]"
+                >
+                  Not Applicable
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="!hidden flex flex-col"
+          >
+            <h4
+              class="text-[#636363] text-[16px] font-medium mb-[27px]"
+            >
+              Charges & Taxes
+            </h4>
+            <div
+              class="grid grid-cols-1 gap-[25px] px-12"
+            >
+              <div
+                class=" flex gap-[54px]"
+              >
+                <div
+                  class="w-[300px]   text-base font-medium text-[#636363]"
+                >
+                  Prinicipal Deposit
+                </div>
+                <div
+                  class="w-full"
+                >
+                  <div
+                    class="w-full text-base font-normal text-[#636363] mb-5"
+                  >
+                    <span
+                      class="block  text-base mb-2 "
+                    >
+                       
+                      Applicable charges
+                    </span>
+                    <div
+                      class="flex gap-x-1 gap-y-1 flex-wrap"
+                    >
+                      <span
+                        class="bg-[#E0E0E0] px-[15px] py-[6px] rounded-full flex items-center gap-x-4"
+                      >
+                        <span
+                          class="flex flex-col items-center justify-center text-xs"
+                        >
+                          <span
+                            class="font-medium text-[#16252A]"
+                          >
+                             
+                            Deposit fee
+                          </span>
+                          <span>
+                            NGN 40000
+                          </span>
+                        </span>
+                        <svg
+                          fill="currentColor"
+                          height="1em"
+                          stroke="currentColor"
+                          stroke-width="0"
+                          viewBox="0 0 576 512"
+                          width="1em"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    class="w-full text-base font-normal text-[#636363]"
+                  >
+                    <span
+                      class="block  text-base mb-2 "
+                    >
+                       
+                      Applicable Taxes
+                    </span>
+                    <div
+                      class="flex gap-x-1 gap-y-1 flex-wrap"
+                    >
+                      <span
+                        class="bg-[#E0E0E0] px-[15px] py-[6px] rounded-full flex items-center gap-x-4"
+                      >
+                        <span
+                          class="flex flex-col items-center justify-center text-xs"
+                        >
+                          <span
+                            class="font-medium text-[#16252A]"
+                          >
+                             
+                            Deposit fee
+                          </span>
+                          <span>
+                            NGN 40000
+                          </span>
+                        </span>
+                        <svg
+                          fill="currentColor"
+                          height="1em"
+                          stroke="currentColor"
+                          stroke-width="0"
+                          viewBox="0 0 576 512"
+                          width="1em"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex flex-col"
+          >
+            <h4
+              class="text-[#636363] text-[16px] font-medium mb-[27px]"
+            >
+              Account Entries
+            </h4>
+            <div
+              class="grid grid-cols-1 gap-[25px] px-12"
+            >
+              <div
+                class=" flex gap-[54px]"
+              >
+                <div
+                  class="w-full text-base font-normal"
+                >
+                  <table>
+                    <thead>
+                      <tr>
+                        <th
+                          class="relative uppercase font-bold text-sm text-[#AAAAAA] px-4 py-5 after:content-[''] text-left after:w-1 after:h-[18px] after:absolute after:border-r after:left-0 after:top-1/2 after:translate-y-[-50%] after:border-[#AAAAAA]/75 first-of-type:after:content-none last-of-type:after:content-none border-b border-[#C2C9D1]/30 whitespace-nowrap"
+                        >
+                          S|N
+                        </th>
+                        <th
+                          class="relative uppercase font-bold text-sm text-[#AAAAAA] px-4 py-5 after:content-[''] text-left after:w-1 after:h-[18px] after:absolute after:border-r after:left-0 after:top-1/2 after:translate-y-[-50%] after:border-[#AAAAAA]/75 first-of-type:after:content-none last-of-type:after:content-none border-b border-[#C2C9D1]/30 whitespace-nowrap"
+                        >
+                          event
+                        </th>
+                        <th
+                          class="relative uppercase font-bold text-sm text-[#AAAAAA] px-4 py-5 after:content-[''] text-left after:w-1 after:h-[18px] after:absolute after:border-r after:left-0 after:top-1/2 after:translate-y-[-50%] after:border-[#AAAAAA]/75 first-of-type:after:content-none last-of-type:after:content-none border-b border-[#C2C9D1]/30 whitespace-nowrap"
+                        >
+                          debit
+                        </th>
+                        <th
+                          class="relative uppercase font-bold text-sm text-[#AAAAAA] px-4 py-5 after:content-[''] text-left after:w-1 after:h-[18px] after:absolute after:border-r after:left-0 after:top-1/2 after:translate-y-[-50%] after:border-[#AAAAAA]/75 first-of-type:after:content-none last-of-type:after:content-none border-b border-[#C2C9D1]/30 whitespace-nowrap"
+                        >
+                          credit
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody />
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex flex-col"
+          >
+            <h4
+              class="text-[#636363] text-[16px] font-medium mb-[27px]"
+            >
+              Generated Product Code
+            </h4>
+            <div
+              class="grid grid-cols-1 gap-[25px] px-12"
+            >
+              <div
+                class=" flex gap-[54px]"
+              >
+                <div
+                  class="w-[300px]   text-base font-medium text-[#636363] uppercase"
+                >
+                  -
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div>
+      <h3
+        class="text-[#636363] text-[18px] font-semibold mb-[56px]"
+      >
+        Term Deposit Product Details
+      </h3>
+      <div
+        class="grid gap-y-[56px]"
+      >
+        <div
+          class="flex flex-col"
+        >
+          <h4
+            class="text-[#636363] text-[16px] font-medium mb-[27px]"
+          >
+            Product Information
+          </h4>
+          <div
+            class="grid grid-cols-1 gap-[25px] px-12"
+          >
+            <div
+              class=" flex gap-[54px]"
+            >
+              <div
+                class="w-[300px]   text-base font-medium text-[#636363]"
+              >
+                Product Name
+              </div>
+              <div
+                class="w-full text-base font-normal text-[#636363]"
+              >
+                <span
+                  class="flex itmes-center"
+                >
+                   
+                  
+                   
+                </span>
+              </div>
+            </div>
+            <div
+              class=" flex gap-[54px]"
+            >
+              <div
+                class="w-[300px]   text-base font-medium text-[#636363]"
+              >
+                Slogan
+              </div>
+              <div
+                class="w-full text-base font-normal text-[#636363]"
+              >
+                <span
+                  class="flex itmes-center"
+                >
+                   
+                  
+                   
+                </span>
+              </div>
+            </div>
+            <div
+              class=" flex gap-[54px]"
+            >
+              <div
+                class="w-[300px]   text-base font-medium text-[#636363]"
+              >
+                Product Description
+              </div>
+              <div
+                class="w-full text-base font-normal text-[#636363]"
+              >
+                <span
+                  class="flex itmes-center"
+                >
+                   
+                  
+                   
+                </span>
+              </div>
+            </div>
+            <div
+              class=" flex gap-[54px]"
+            >
+              <div
+                class="w-[300px]   text-base font-medium text-[#636363]"
+              >
+                Product Currency
+              </div>
+              <div
+                class="w-full text-base font-normal text-[#636363]"
+              >
+                <span
+                  class="flex itmes-center"
+                >
+                   
+                  NGN
+                   
+                </span>
+              </div>
+            </div>
+            <div
+              class=" flex gap-[54px]"
+            >
+              <div
+                class="w-[300px]   text-base font-medium text-[#636363]"
+              >
+                Product life cycle
+              </div>
+              <div
+                class="w-full text-base font-normal text-[#636363]"
+              >
+                <span
+                  class="flex itmes-center"
+                >
+                   
+                  <span
+                    class="font-normal block"
+                  >
+                    14 Dec 2023
+                     
+                    -
+                     
+                    Unspecified
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex flex-col"
+        >
+          <h4
+            class="text-[#636363] text-[16px] font-medium mb-[27px]"
+          >
+            Customer Information Requirement
+          </h4>
+          <div
+            class="grid grid-cols-1 gap-[25px] px-12"
+          >
+            <div
+              class=" flex gap-[54px]"
+            >
+              <div
+                class="w-[300px]   text-base font-medium text-[#636363]"
+              >
+                Customer group category
+              </div>
+              <div
+                class="w-full text-base font-normal text-[#636363]"
+              >
+                <span
+                  class="flex itmes-center"
+                >
+                   
+                   
+                </span>
+              </div>
+            </div>
+            <div
+              class=" flex gap-[54px]"
+            >
+              <div
+                class="w-[300px]   text-base font-medium text-[#636363]"
+              >
+                Documentation required
+              </div>
+              <div
+                class="w-full text-base font-normal text-[#636363] flex flex-wrap gap-x-1 gap-y-1"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex flex-col"
+        >
+          <h4
+            class="text-[#636363] text-[16px] font-medium mb-[27px]"
+          >
+            Pricing Configuration
+          </h4>
+          <div
+            class="grid grid-cols-1 gap-[25px] px-12"
+          >
+            <div
+              class=" flex gap-[54px]"
+            >
+              <div
+                class="w-[300px]   text-base font-medium text-[#636363]"
+              >
+                Applicable Tenor
+              </div>
+              <div
+                class="w-full text-base font-normal text-[#636363]"
+              >
+                <span
+                  class="block  mb-2 text-[#636363]"
+                >
+                  <span
+                    class="font-normal block"
+                  >
+                    0 days
+                     
+                    -
+                     
+                    0 days
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div
+              class=" flex gap-[54px]"
+            >
+              <div
+                class="w-[300px]   text-base font-medium text-[#636363]"
+              >
+                Applicable Principal
+              </div>
+              <div
+                class="w-full text-base font-normal text-[#636363]"
+              >
+                <span
+                  class="block  mb-2 text-[#636363]"
+                >
+                  NGN 0.00
+                   
+                  and above
+                </span>
+              </div>
+            </div>
+            <div
+              class=" flex gap-[54px]"
+            >
+              <div
+                class="w-[300px]   text-base font-medium text-[#636363]"
+              >
+                Applicable Interest Rate Range
+              </div>
+              <div
+                class="w-full text-base font-normal text-[#636363]"
+              >
+                <div
+                  class="flex flex-col"
+                >
+                  <span
+                    class="block  mb-2 text-[#636363]"
+                  >
+                     
+                    0 - 0%
+                     for principal between
+                     
+                    0 - 0
+                     
+                    NGN
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex flex-col"
+        >
+          <h4
+            class="text-[#636363] text-[16px] font-medium mb-[27px]"
+          >
+            Early & Part Liquidation Setup
+          </h4>
+          <div
+            class="grid grid-cols-1 gap-[25px] px-12"
+          >
+            <div
+              class=" flex gap-[54px]"
+            >
+              <div
+                class="w-[300px]   text-base font-medium text-[#636363]"
+              >
+                Part Liquidation
+              </div>
+              <div
+                class="w-full text-base font-normal text-[#636363]"
+              >
+                Not Applicable
+              </div>
+            </div>
+            <div
+              class=" flex gap-[54px]"
+            >
+              <div
+                class="w-[300px]   text-base font-medium text-[#636363]"
+              >
+                Early Liquidation
+              </div>
+              <div
+                class="w-full text-base font-normal text-[#636363]"
+              >
+                Not Applicable
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="!hidden flex flex-col"
+        >
+          <h4
+            class="text-[#636363] text-[16px] font-medium mb-[27px]"
+          >
+            Charges & Taxes
+          </h4>
+          <div
+            class="grid grid-cols-1 gap-[25px] px-12"
+          >
+            <div
+              class=" flex gap-[54px]"
+            >
+              <div
+                class="w-[300px]   text-base font-medium text-[#636363]"
+              >
+                Prinicipal Deposit
+              </div>
+              <div
+                class="w-full"
+              >
+                <div
+                  class="w-full text-base font-normal text-[#636363] mb-5"
+                >
+                  <span
+                    class="block  text-base mb-2 "
+                  >
+                     
+                    Applicable charges
+                  </span>
+                  <div
+                    class="flex gap-x-1 gap-y-1 flex-wrap"
+                  >
+                    <span
+                      class="bg-[#E0E0E0] px-[15px] py-[6px] rounded-full flex items-center gap-x-4"
+                    >
+                      <span
+                        class="flex flex-col items-center justify-center text-xs"
+                      >
+                        <span
+                          class="font-medium text-[#16252A]"
+                        >
+                           
+                          Deposit fee
+                        </span>
+                        <span>
+                          NGN 40000
+                        </span>
+                      </span>
+                      <svg
+                        fill="currentColor"
+                        height="1em"
+                        stroke="currentColor"
+                        stroke-width="0"
+                        viewBox="0 0 576 512"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z"
+                        />
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+                <div
+                  class="w-full text-base font-normal text-[#636363]"
+                >
+                  <span
+                    class="block  text-base mb-2 "
+                  >
+                     
+                    Applicable Taxes
+                  </span>
+                  <div
+                    class="flex gap-x-1 gap-y-1 flex-wrap"
+                  >
+                    <span
+                      class="bg-[#E0E0E0] px-[15px] py-[6px] rounded-full flex items-center gap-x-4"
+                    >
+                      <span
+                        class="flex flex-col items-center justify-center text-xs"
+                      >
+                        <span
+                          class="font-medium text-[#16252A]"
+                        >
+                           
+                          Deposit fee
+                        </span>
+                        <span>
+                          NGN 40000
+                        </span>
+                      </span>
+                      <svg
+                        fill="currentColor"
+                        height="1em"
+                        stroke="currentColor"
+                        stroke-width="0"
+                        viewBox="0 0 576 512"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z"
+                        />
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex flex-col"
+        >
+          <h4
+            class="text-[#636363] text-[16px] font-medium mb-[27px]"
+          >
+            Account Entries
+          </h4>
+          <div
+            class="grid grid-cols-1 gap-[25px] px-12"
+          >
+            <div
+              class=" flex gap-[54px]"
+            >
+              <div
+                class="w-full text-base font-normal"
+              >
+                <table>
+                  <thead>
+                    <tr>
+                      <th
+                        class="relative uppercase font-bold text-sm text-[#AAAAAA] px-4 py-5 after:content-[''] text-left after:w-1 after:h-[18px] after:absolute after:border-r after:left-0 after:top-1/2 after:translate-y-[-50%] after:border-[#AAAAAA]/75 first-of-type:after:content-none last-of-type:after:content-none border-b border-[#C2C9D1]/30 whitespace-nowrap"
+                      >
+                        S|N
+                      </th>
+                      <th
+                        class="relative uppercase font-bold text-sm text-[#AAAAAA] px-4 py-5 after:content-[''] text-left after:w-1 after:h-[18px] after:absolute after:border-r after:left-0 after:top-1/2 after:translate-y-[-50%] after:border-[#AAAAAA]/75 first-of-type:after:content-none last-of-type:after:content-none border-b border-[#C2C9D1]/30 whitespace-nowrap"
+                      >
+                        event
+                      </th>
+                      <th
+                        class="relative uppercase font-bold text-sm text-[#AAAAAA] px-4 py-5 after:content-[''] text-left after:w-1 after:h-[18px] after:absolute after:border-r after:left-0 after:top-1/2 after:translate-y-[-50%] after:border-[#AAAAAA]/75 first-of-type:after:content-none last-of-type:after:content-none border-b border-[#C2C9D1]/30 whitespace-nowrap"
+                      >
+                        debit
+                      </th>
+                      <th
+                        class="relative uppercase font-bold text-sm text-[#AAAAAA] px-4 py-5 after:content-[''] text-left after:w-1 after:h-[18px] after:absolute after:border-r after:left-0 after:top-1/2 after:translate-y-[-50%] after:border-[#AAAAAA]/75 first-of-type:after:content-none last-of-type:after:content-none border-b border-[#C2C9D1]/30 whitespace-nowrap"
+                      >
+                        credit
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody />
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex flex-col"
+        >
+          <h4
+            class="text-[#636363] text-[16px] font-medium mb-[27px]"
+          >
+            Generated Product Code
+          </h4>
+          <div
+            class="grid grid-cols-1 gap-[25px] px-12"
+          >
+            <div
+              class=" flex gap-[54px]"
+            >
+              <div
+                class="w-[300px]   text-base font-medium text-[#636363] uppercase"
+              >
+                -
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "store": Object {
+    "@@observable": [Function],
+    "dispatch": [Function],
+    "getState": [Function],
+    "replaceReducer": [Function],
+    "subscribe": [Function],
+  },
+  "unmount": [Function],
+}
+`;
