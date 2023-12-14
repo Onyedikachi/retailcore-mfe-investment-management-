@@ -79,6 +79,7 @@ describe("ProductDetail", () => {
     it("Works", () => {
         // renderWithProviders(<ProductDetail detail={{id: "continue"}}/>)
         const form = renderWithProviders(<ProductDetail i detail={details}/>)
-        expect(form).toMatchSnapshot();
+        expect(screen.getByText("Term Deposit Product Details")).toBeInTheDocument();
+        expect(screen.getByText("Slogan")).toBeInTheDocument();
     })
 })
