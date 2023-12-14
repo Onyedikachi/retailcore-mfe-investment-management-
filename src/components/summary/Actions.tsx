@@ -94,10 +94,11 @@ export default function Actions({
       setConfirmText(Prompts.PRODUCT_MODIFY_REJECT);
     }
 
-    if (value === "cancel" && process === "create") {
+    if (value === "cancel" && (process === "create" ||  process === "clone" ||  process === "continue") ) {
+    
       setConfirmText(Prompts.CANCEL_CREATION);
     }
-    if (value === "cancel" && process === "modify") {
+    if (value === "cancel" && (process === "modify" || process === "withdraw_modify")) {
       setConfirmText(Prompts.CANCEL_MODIFICATION);
     }
     if (value === "cancel" && process === "verdict") {
@@ -156,7 +157,7 @@ export default function Actions({
   return (
     <div data-testid="actions-div" className=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-[60px] py-[40px]  ">
       {/* Submission  */}
-      {(process === "create" || process === "modify") && (
+      {(process === "create" || process === "modify" || process === "continue" ||  process === "withdraw_modify" ||  process === "clone") && (
         <div className=" flex  gap-6">
           <button
             onClick={handleCancel}

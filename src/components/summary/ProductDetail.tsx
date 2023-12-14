@@ -284,8 +284,8 @@ export default function ProductDetail({ detail, oldData }: any) {
                 <div className="w-full text-base font-normal text-[#636363]">
                   <span className="flex itmes-center">
                     {" "}
-                    {detail?.customerEligibility.ageGroupMin}
-                    {" - "} {detail?.customerEligibility.ageGroupMax ? detail?.customerEligibility.ageGroupMax : 'Unspecified'}
+                    {detail?.customerEligibility?.ageGroupMin}
+                    {" - "} {detail?.customerEligibility?.ageGroupMax ? detail?.customerEligibility?.ageGroupMax : 'Unspecified'}
                   </span>
                 </div>
               </div>
@@ -296,7 +296,7 @@ export default function ProductDetail({ detail, oldData }: any) {
                 Documentation required
               </div>
               <div className="w-full text-base font-normal text-[#636363] flex flex-wrap gap-x-1 gap-y-1">
-                {detail?.customerEligibility.requireDocument.map((i) => (
+                {detail?.customerEligibility?.requireDocument.map((i) => (
                   <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
                     {" "}
                     {i?.name}
@@ -341,7 +341,7 @@ export default function ProductDetail({ detail, oldData }: any) {
                 <span className="block  mb-2 text-[#636363]">
                   {currencyFormatter(
                     detail?.pricingConfiguration?.applicablePrincipalMin,
-                    detail?.productInfo.currency
+                    detail?.productInfo?.currency
                   )}{" "}
                   {detail?.pricingConfiguration?.applicablePrincipalMax
                     ? `- ${currencyFormatter(
@@ -366,9 +366,9 @@ export default function ProductDetail({ detail, oldData }: any) {
                           className="block  mb-2 text-[#636363]"
                         >
                           {" "}
-                          {`${configModel.min} - ${configModel.max}%`} for
+                          {`${configModel?.min} - ${configModel?.max}%`} for
                           principal between{" "}
-                          {`${currencyFormatter(configModel.principalMin, detail?.productInfo?.currency)} - ${currencyFormatter(configModel.principalMax, detail?.productInfo?.currency)}`}{" "}
+                          {`${currencyFormatter(configModel?.principalMin, detail?.productInfo?.currency)} - ${currencyFormatter(configModel?.principalMax, detail?.productInfo?.currency)}`}{" "}
                           {/* {detail?.productInfo?.currency} */}
                         </span>
                       )
@@ -385,12 +385,12 @@ export default function ProductDetail({ detail, oldData }: any) {
                           className="block  mb-2 text-[#636363]"
                         >
                           {" "}
-                          {`${configModel.min} - ${configModel.max}%`} for tenor
+                          {`${configModel?.min} - ${configModel?.max}%`} for tenor
                           between{" "}
-                          {`${configModel.tenorMin} ${
-                            Interval[configModel.tenorMinUnit]
-                          } - ${configModel.tenorMax} ${
-                            Interval[configModel.tenorMaxUnit]
+                          {`${configModel?.tenorMin} ${
+                            Interval[configModel?.tenorMinUnit]
+                          } - ${configModel?.tenorMax} ${
+                            Interval[configModel?.tenorMaxUnit]
                           }`}{" "}
                         </span>
                       )

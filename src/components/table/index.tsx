@@ -286,11 +286,9 @@ export default function TableComponent<TableProps>({
     if (action.toLowerCase() === Actions.ACTIVATE) {
       activateProduct({ id: detail?.id });
     }
-    if (action.toLowerCase() === Actions.MODIFY) {
-      console.log(
-        "🚀 ~ file: index.tsx:265 ~ handleConfirm ~ permissions:",
-        permissions
-      );
+    if (
+      action.toLowerCase() === Actions.MODIFY
+    ) {
       if (!permissions?.includes("CREATE_INVESTMENT_PRODUCT")) {
         notify("You do not have permission to make changes!");
       } else {
@@ -298,6 +296,21 @@ export default function TableComponent<TableProps>({
           `/product-factory/investment/${encodeURIComponent(
             "term deposit"
           )}/modify/?id=${detail.id}&filter=${selected.value}`
+        );
+      }
+    }
+
+    if (
+    
+      action.toLowerCase() === Actions.WITHDARW_MODIFY
+    ) {
+      if (!permissions?.includes("CREATE_INVESTMENT_PRODUCT")) {
+        notify("You do not have permission to make changes!");
+      } else {
+        navigate(
+          `/product-factory/investment/${encodeURIComponent(
+            "term deposit"
+          )}/withdraw_modify/?id=${detail.id}&filter=${selected.value}`
         );
       }
     }

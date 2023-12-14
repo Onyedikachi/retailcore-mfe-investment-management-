@@ -10,9 +10,10 @@ export default function Select({
 }: SelectProps): React.JSX.Element {
   const [selected, setSelected] = useState(options[0]);
 
-  // useEffect(() => {
-  //   handleSelected(selected);
-  // }, [selected, handleSelected]);
+  useEffect(() => {
+    handleSelected(selected);
+    // setSelected(selected);
+  }, [selected]);
 
   // Change selected when changing status category
   useEffect(() => {

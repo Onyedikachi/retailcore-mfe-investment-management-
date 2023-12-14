@@ -223,10 +223,10 @@ export default function CreateTermDeposit() {
     if (process === "modify") {
       modifyProduct({ ...productData, isDraft: true, id });
     }
-    if (process === "create") {
+    if (process === "create" || process === "clone") {
       createProduct({ ...productData, isDraft: true });
     }
-    if (process === "continue") {
+    if (process === "continue" || process === "withdraw_modify") {
       modifyRequest({ ...productData, isDraft: true, id });
     }
   };
@@ -401,7 +401,7 @@ export default function CreateTermDeposit() {
         url: "#",
       },
     ];
-    if (process === "continue" || process === "modify") {
+    if (process === "continue" || process === "modify" || process === "withdraw_modify") {
       let filteredLinks = links.filter((i) => i.id !== 3);
       return [...filteredLinks, ...extraLinks];
     }

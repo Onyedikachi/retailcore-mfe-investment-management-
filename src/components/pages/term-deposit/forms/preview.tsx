@@ -19,6 +19,7 @@ import {
   useGetProductActivityLogQuery,
   useCreateProductMutation,
   useModifyProductMutation,
+  useModifyRequestMutation,
 } from "@app/api";
 import { Confirm, Failed, Success } from "@app/components/modals";
 
@@ -33,7 +34,7 @@ export function Container({ children }) {
   );
 }
 export default function Preview({ formData, oldData = null }: any) {
-  console.log("🚀 ~ file: preview.tsx:36 ~ Preview ~ formData:", formData)
+  console.log("🚀 ~ file: preview.tsx:36 ~ Preview ~ formData:", formData);
   const { role } = useContext(AppContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -71,41 +72,82 @@ export default function Preview({ formData, oldData = null }: any) {
     },
   ] = useModifyProductMutation();
 
+  const [
+    modifyRequest,
+    {
+      isLoading: modifyRequestLoading,
+      isSuccess: modifyRequestSuccess,
+      isError: modifyRequestIsError,
+      error: modifyRequestError,
+    },
+  ] = useModifyRequestMutation();
+
   const handleModify = () => {
     navigate(-1);
   };
   const handleCancel = () => {
-    setConfirmText(Prompts.CANCEL_CREATION);
+    if (process === "create") {
+      setConfirmText(Prompts.CANCEL_CREATION);
+    }
+    if (process === "modify" || process === "withdraw_modify") {
+      setConfirmText(Prompts.CANCEL_MODIFICATION);
+    }
+    if (process === "verdict" || process === "continue") {
+      setConfirmText(Prompts.CANCEL_PROCESS);
+    }
     setIsConfirmOpen(true);
     return;
   };
   const handleSubmit = () => {
     if (process === "modify") {
-      modifyProduct({ ...formData, isDraft: false, id,  });
-    } else {
+      modifyProduct({ ...formData, isDraft: false, id });
+    }
+    if (process === "withdraw_modify") {
+      modifyRequest({ ...formData, isDraft: false, id });
+    }
+
+    if (process === "create" || process === "continue" || process === "clone") {
       createProduct({ ...formData, isDraft: false });
     }
 
     // navigate(paths.INVESTMENT_DASHBOARD);
   };
   useEffect(() => {
-    if (isSuccess || modifySuccess) {
+    if (isSuccess || modifySuccess || modifyRequestSuccess) {
       setSuccessText(
         role === "superadmin"
-          ? Messages.PRODUCT_CREATE_SUCCESS
+          ? isSuccess
+            ? Messages.PRODUCT_CREATE_SUCCESS
+            : Messages.PRODUCT_MODIFY_SUCCESS
           : Messages.ADMIN_PRODUCT_CREATE_SUCCESS
       );
       setIsSuccessOpen(true);
     }
 
-    if (isError || modifyIsError) {
-      setFailedText(Messages.ADMIN_PRODUCT_CREATE_FAILED);
+    if (isError || modifyIsError || modifyRequestIsError) {
+      setFailedText(
+        isError
+          ? Messages.ADMIN_PRODUCT_CREATE_FAILED
+          : Messages.ADMIN_PRODUCT_MODIFY_FAILED
+      );
       setFailedSubtext(
-        isError ? error?.message?.message : modifyError?.message?.message
+        error?.message?.message ||
+          modifyError?.message?.message ||
+          modifyRequestError?.message?.message
       );
       setFailed(true);
     }
-  }, [isSuccess, isError, error, modifySuccess, modifyIsError, modifyError]);
+  }, [
+    isSuccess,
+    isError,
+    error,
+    modifySuccess,
+    modifyIsError,
+    modifyError,
+    modifyRequestError,
+    modifyRequestIsError,
+    modifyRequestSuccess,
+  ]);
 
   return (
     <div className="flex flex-col min-h-[100vh] ">
@@ -126,7 +168,7 @@ export default function Preview({ formData, oldData = null }: any) {
               rangeLabels={["Pending submission", "Approved"]}
               rightClass="opacity-50"
             />
-            {process !== "create" && (
+            {process === "preview" && (
               <ReviewStatus status={"r"} reason={"r"} type={""} text="failed" />
             )}
             <Container>
@@ -155,7 +197,7 @@ export default function Preview({ formData, oldData = null }: any) {
           setIsOpen={setIsConfirmOpen}
           onConfirm={() => {
             setIsConfirmOpen(false);
-            navigate("/product-factory/investment");
+            navigate("/product-factory/investment?category=requests");
           }}
           onCancel={() => {
             setIsConfirmOpen(false);
