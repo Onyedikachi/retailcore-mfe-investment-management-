@@ -30,10 +30,10 @@ export default function Actions({
   const { role, permissions } = useContext(AppContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { tab, type, id } = useParams();
+
   const sub_type = searchParams.get("sub_type");
   const filter = searchParams.get("filter");
-  const { process } = useParams();
+  const {id, process } = useParams() || {};
   const [action, setAction] = useState("");
   const [confirmText, setConfirmText] = useState("");
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -154,7 +154,7 @@ export default function Actions({
     approveIsError,
   ]);
   return (
-    <div className=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-[60px] py-[40px]  ">
+    <div data-testid="actions-div" className=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-[60px] py-[40px]  ">
       {/* Submission  */}
       {(process === "create" || process === "modify") && (
         <div className=" flex  gap-6">

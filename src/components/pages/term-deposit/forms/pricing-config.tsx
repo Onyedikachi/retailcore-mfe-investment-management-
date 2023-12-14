@@ -333,7 +333,7 @@ export default function PricingConfig({
                           clearErrors={clearErrors}
                           isPercent
                           isCurrency
-                          disableGroupSeparators
+                          disablegroupseparators
 
                           // defaultValue={range.min}
                         />
@@ -358,7 +358,7 @@ export default function PricingConfig({
                           clearErrors={clearErrors}
                           isPercent
                           isCurrency
-                          disableGroupSeparators
+                          disablegroupseparators
                         />
                       </div>{" "}
                     </div>
@@ -564,7 +564,7 @@ export default function PricingConfig({
                   max={100}
                   isPercent
                   isCurrency
-                  disableGroupSeparators
+                  disablegroupseparators
 
                   // defaultValue={range.min}
                 />
@@ -584,7 +584,7 @@ export default function PricingConfig({
                   max={100}
                   isPercent
                   isCurrency
-                  disableGroupSeparators
+                  disablegroupseparators
                 />
               </div>{" "}
             </div>

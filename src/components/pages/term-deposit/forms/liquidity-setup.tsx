@@ -261,7 +261,7 @@ export default function LiquiditySetup({
                               formData?.part_LiquidationPenaltyPercentage
                             }
                             isCurrency
-                            disableGroupSeparators
+                            disablegroupseparators
                             isPercent
                             max={100}
                           />
@@ -284,7 +284,7 @@ export default function LiquiditySetup({
                               formData?.early_LiquidationPenaltyPercentage
                             }
                             isCurrency
-                            disableGroupSeparators
+                            disablegroupseparators
                             isPercent
                             max={100}
                           />
@@ -395,7 +395,7 @@ export default function LiquiditySetup({
                               clearErrors={clearErrors}
                               defaultValue={formData?.part_SpecialInterestRate}
                               isCurrency
-                              disableGroupSeparators
+                              disablegroupseparators
                               isPercent
                               max={100}
                             />
@@ -497,7 +497,7 @@ export default function LiquiditySetup({
                             formData?.early_LiquidationPenaltyPercentage
                           }
                           isCurrency
-                          disableGroupSeparators
+                          disablegroupseparators
                           isPercent
                         />
                       </div>
@@ -519,7 +519,7 @@ export default function LiquiditySetup({
                             formData?.early_LiquidationPenaltyPercentage
                           }
                           isCurrency
-                          disableGroupSeparators
+                          disablegroupseparators
                           isPercent
                           max={100}
                         />
@@ -629,7 +629,7 @@ export default function LiquiditySetup({
                             clearErrors={clearErrors}
                             defaultValue={formData?.early_SpecialInterestRate}
                             isCurrency
-                            disableGroupSeparators
+                            disablegroupseparators
                             isPercent
                             max={100}
                           />
