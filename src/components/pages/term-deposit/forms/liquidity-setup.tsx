@@ -61,25 +61,26 @@ export default function LiquiditySetup({
   const [partOptionCharges, setPartOptionCharges] = useState([]);
   const [earlyOptionCharges, setEarlyOptionCharges] = useState([]);
   const { data: chargesData } = useGetChargesQuery();
-  const [chargeOptions, setChargeOptions] = useState([])
- 
-useEffect(() => {
-  //if fetched charges data changes then map the data
-  const options = chargesData?.data?.records?.map((item) =>
-      item?.charge_value?.map((chargeValue) => ({
-        id: chargeValue.charge_id,
-        text: chargeValue.charge_type,
+  const [chargeOptions, setChargeOptions] = useState([]);
 
-       value: {
-        charge_type: chargeValue.charge_type,
-        charge_amount: chargeValue.charge_amount,
-       }
-      }))
-    ).flat();
+  useEffect(() => {
+    //if fetched charges data changes then map the data
+    const options = chargesData?.data?.records
+      ?.map((item) =>
+        item?.charge_value?.map((chargeValue) => ({
+          id: chargeValue.charge_id,
+          text: chargeValue.charge_type,
+          sub: chargeValue.charge_amount,
+          value: {
+            charge_type: chargeValue.charge_type,
+            charge_amount: chargeValue.charge_amount,
+          },
+        }))
+      )
+      .flat();
 
-    setChargeOptions(options)
-}, [chargesData])
-
+    setChargeOptions(options);
+  }, [chargesData]);
 
   function handleSelected({ inputName, selectedOptions }) {
     if (inputName === "part_SpecificCharges") {
@@ -320,6 +321,7 @@ useEffect(() => {
                       <div className="">
                         <div className="w-[300px] flex items-center mb-4">
                           <MultiSelectForm2
+                            isCharge={true}
                             labelName=""
                             placeholder="Search and select"
                             register={register}
@@ -555,6 +557,7 @@ useEffect(() => {
                     <div className="">
                       <div className="w-[300px] flex items-center mb-4">
                         <MultiSelectForm2
+                          isCharge={true}
                           labelName=""
                           placeholder="Search and select"
                           register={register}

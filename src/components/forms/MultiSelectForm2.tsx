@@ -33,6 +33,7 @@ export default function MultiSelectForm2({
   setValue,
   clearErrors,
   trigger,
+  isCharge = false
 }: BorderlessSelectProps): React.JSX.Element {
   const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
