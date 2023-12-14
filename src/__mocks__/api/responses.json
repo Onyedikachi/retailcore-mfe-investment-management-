@@ -1,5 +1,99 @@
 {
   "response": {
+    "getProductDetail":{
+      "succeeded": true,
+      "message": "product details",
+      "errors": null,
+      "data": {
+          "id": "0e061078-ccb7-431d-b696-e76db9909fff",
+          "productCode": "f038",
+          "state": 2,
+          "productInfo": {
+              "productName": "Film Creation continued and modified",
+              "slogan": "FXCilm",
+              "description": "THis is a description",
+              "startDate": "2023-12-14T00:00:00Z",
+              "endDate": null,
+              "currency": "NGN"
+          },
+          "customerEligibility": {
+              "customerCategory": 0,
+              "customerType": [],
+              "ageGroupMin": 0,
+              "ageGroupMax": null,
+              "requireDocument": [
+                  {
+                      "id": "503d796f-b275-09bc-e28a-53caef6edb71",
+                      "name": "Customer Photo"
+                  },
+                  {
+                      "id": "1c2c862d-99dd-7623-3743-361b5d4084c1",
+                      "name": "Signature"
+                  }
+              ]
+          },
+          "pricingConfiguration": {
+              "applicableTenorMin": 0,
+              "applicableTenorMinUnit": 1,
+              "applicableTenorMax": 365,
+              "applicableTenorMaxUnit": 1,
+              "applicablePrincipalMin": 0,
+              "applicablePrincipalMax": 10000000,
+              "interestRateRangeType": 0,
+              "interestRateConfigModels": [
+                  {
+                      "min": 0,
+                      "max": 5,
+                      "principalMin": 0,
+                      "principalMax": 20000,
+                      "tenorMin": 0,
+                      "tenorMinUnit": 1,
+                      "tenorMax": 0,
+                      "tenorMaxUnit": 1
+                  }
+              ],
+              "interestRateMin": 0,
+              "interestRateMax": 0,
+              "interestComputationMethod": 2
+          },
+          "liquidation": {
+              "part_AllowPartLiquidation": true,
+              "part_MaxPartLiquidation": 2,
+              "part_RequireNoticeBeforeLiquidation": true,
+              "part_NoticePeriod": 4,
+              "part_NoticePeriodUnit": 1,
+              "part_LiquidationPenalty": 1,
+              "part_LiquidationPenaltyPercentage": 0,
+              "part_SpecificCharges": [],
+              "early_AllowEarlyLiquidation": true,
+              "early_RequireNoticeBeforeLiquidation": true,
+              "early_NoticePeriod": 5,
+              "early_NoticePeriodUnit": 1,
+              "early_LiquidationPenalty": 2,
+              "early_LiquidationPenaltyPercentage": 24,
+              "early_SpecificCharges": []
+          },
+          "productGlMappings": [
+              {
+                  "accountName": "Current Account balances [ASTCAS23421]",
+                  "accountId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                  "glAccountType": 0
+              },
+              {
+                  "accountName": "Current Account balances [ASTCAS23421]",
+                  "accountId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                  "glAccountType": 1
+              },
+              {
+                  "accountName": "Current Account balances [ASTCAS23421]",
+                  "accountId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                  "glAccountType": 2
+              }
+          ],
+          "isDraft": false,
+          "productType": 0
+      }
+  },
     "getInvestmentResponse": {
       "succeeded": true,
       "msg": "Investment found",

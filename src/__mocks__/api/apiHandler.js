@@ -3,9 +3,17 @@ import { rest } from "msw";
 import { response } from "./responses.json";
 
 const baseUrl =
-  "https://dev2-retailcore-teams-management-api.dev.bepeerless.co/v1";
+  "https://retailcore-investment-management-api.dev.bepeerless.co/v1";
 const utilBaseUrl = `https://utilities-api.dev.bepeerless.co/v1`;
 export const handlers = [
+  rest.put(
+    "https://retailcore-investment-management-api.dev.bepeerless.co/v1/product/product-details?id=0e061078-ccb7-431d-b696-e76db9909fff",
+    (req, res, ctx) => {
+      // Access query parameters using req.url.searchParams
+      // Mock the response for the getPostProducts endpoint
+      return res(ctx.status(200), ctx.json(response.getProductDetail));
+    }
+  ),
   rest.get(`${baseUrl}/investments`, (req, res, ctx) => {
     // Simulate different responses based on the investmentId
     if (ctx.status == 200) {

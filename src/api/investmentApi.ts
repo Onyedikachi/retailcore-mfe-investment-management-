@@ -1,9 +1,9 @@
-import { axiosBaseQuery, getToken } from "@Sterling/shared";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { axiosBaseQuery } from "@Sterling/shared";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import { REHYDRATE } from "redux-persist";
 import { IGetProducts, ICreateProduct } from "./types/investmentApi.types";
 
-import { parseQueryParams } from "../utils/parseQueryParams";
+
 import urls from "../helpers/url_helpers";
 import { cleanObject } from "@app/utils/cleanObject";
 // baseQuery: axiosBaseQuery({ serviceKey: "investment" }),
@@ -43,12 +43,11 @@ export const investmentApi: any = createApi({
       query: () => {
         return {
           url: `https://product-mgt-api.dev.bepeerless.co/v1/charges/state?state=active`,
-          method: "get"
-        }
-      }
-
+          method: "get",
+        };
+      },
     }),
-   
+
     getPostProducts: builder.mutation<
       IGetProducts,
       {
@@ -257,7 +256,7 @@ export const investmentApi: any = createApi({
         return {
           url: `${urls.REQUESTS}/reject/${data.id}`,
           method: "put",
-          body: data
+          body: data,
         };
       },
     }),
