@@ -41,7 +41,7 @@ export default function CreateTermDeposit() {
   const stage = searchParams.get("stage");
   const id = searchParams.get("id");
 
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(4);
 
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [subText, setSubText] = useState("");
