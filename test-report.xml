@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/ui/Tooltip.test.tsx">
-    <testCase name="Tooltip Should render without error" duration="48"/>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Pages/investment/TestComponents.test.tsx">
+    <testCase name="TestComponents should render FormStepComponent with correct step and formStepItems" duration="57"/>
   </file>
 </testExecutions>
