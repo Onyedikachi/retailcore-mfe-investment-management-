@@ -261,8 +261,8 @@ export const handlers = [
     (req, res, ctx) => {
       // const { filter } = req.params;
       // Simulate different responses based on the investmentId
+      return res(ctx.json(response.requestAnalyticsResponse));
       if (ctx.status == 200) {
-        return res(ctx.json(response.requestAnalyticsResponse));
       } else {
         return res(
           ctx.status(500),
