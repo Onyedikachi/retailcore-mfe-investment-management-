@@ -1,0 +1,711 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProductInformation Renders without error 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div>
+        <form
+          id="customereligibilitycriteria"
+        >
+          <div
+            class="flex gap-[18px] flex-wrap"
+          >
+            <div
+              class="flex gap-[25px]"
+            >
+              <div
+                class="w-[300px]"
+              >
+                <div
+                  class=" min-w-full"
+                  role="combobox"
+                >
+                  <div
+                    class="flex  gap-2 min-w-[300px]"
+                  >
+                     
+                    <label
+                      class="flex  text-base font-semibold text-[#636363]"
+                    >
+                      Customer Category
+                      <div>
+                        <svg
+                          data-testid="red-dot"
+                          fill="none"
+                          height="5"
+                          viewBox="0 0 5 5"
+                          width="5"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle
+                            cx="2.5"
+                            cy="2.5"
+                            fill="#CF2A2A"
+                            r="2.5"
+                          />
+                        </svg>
+                      </div>
+                    </label>
+                    <div
+                      class="flex items-end cursor-pointer"
+                    >
+                      <div
+                        class="flex items-end !bg-white"
+                      >
+                        <button
+                          aria-expanded="false"
+                          class="bg-transparent p-0"
+                          type="button"
+                        >
+                          <div
+                            class="w-[18px] h-[18px] text-[#636363]"
+                          >
+                            <svg
+                              fill="currentColor"
+                              height="1em"
+                              stroke="currentColor"
+                              stroke-width="0"
+                              version="1.1"
+                              viewBox="0 0 16 16"
+                              width="1em"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                              />
+                              <path
+                                d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                              />
+                              <path
+                                d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                              />
+                            </svg>
+                          </div>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="relative mt-1"
+                    data-headlessui-state=""
+                  >
+                    <button
+                      aria-expanded="false"
+                      aria-haspopup="listbox"
+                      class="relative w-full cursor-pointer  bg-white py-1  pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm border-[#8F8F8F]"
+                      data-headlessui-state=""
+                      id="headlessui-listbox-button-1"
+                      type="button"
+                    >
+                      <span
+                        class="block truncate"
+                      >
+                        <span
+                          class="text-[#aaa]"
+                        >
+                          Select customer category
+                        </span>
+                      </span>
+                      <span
+                        class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-xs"
+                      >
+                        <svg
+                          fill="none"
+                          height="10"
+                          viewBox="0 0 15 10"
+                          width="15"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15 0H0L7.14286 9.47368L15 0Z"
+                            fill="#636363"
+                          />
+                        </svg>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex justify-end mt-10"
+          >
+            <button
+              class="cursor-pointer flex items-center gap-[10px] disabled:opacity-60 disabled:cursor-not-allowed"
+              type="button"
+            >
+              <svg
+                fill="none"
+                height="28"
+                viewBox="0 0 29 28"
+                width="29"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g
+                  filter="url(#filter0_d_48843_94577)"
+                >
+                  <circle
+                    cx="14.5605"
+                    cy="14"
+                    fill="#636363"
+                    r="10"
+                  />
+                </g>
+                <path
+                  d="M13.5615 13H7.56152V13.5V14H13.5615V20H14.0615H14.5615V14H20.5615V13.5V13H14.5615V7H14.0615H13.5615V13Z"
+                  stroke="white"
+                />
+                <defs>
+                  <filter
+                    color-interpolation-filters="sRGB"
+                    filterUnits="userSpaceOnUse"
+                    height="28"
+                    id="filter0_d_48843_94577"
+                    width="28"
+                    x="0.560547"
+                    y="0"
+                  >
+                    <feflood
+                      flood-opacity="0"
+                      result="BackgroundImageFix"
+                    />
+                    <fecolormatrix
+                      in="SourceAlpha"
+                      result="hardAlpha"
+                      type="matrix"
+                      values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                    />
+                    <feoffset />
+                    <fegaussianblur
+                      stdDeviation="2"
+                    />
+                    <fecomposite
+                      in2="hardAlpha"
+                      operator="out"
+                    />
+                    <fecolormatrix
+                      type="matrix"
+                      values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+                    />
+                    <feblend
+                      in2="BackgroundImageFix"
+                      mode="normal"
+                      result="effect1_dropShadow_48843_94577"
+                    />
+                    <feblend
+                      in="SourceGraphic"
+                      in2="effect1_dropShadow_48843_94577"
+                      mode="normal"
+                      result="shape"
+                    />
+                  </filter>
+                </defs>
+              </svg>
+              <span
+                class="font-medium text-[#636363]"
+              >
+                Select requirements
+              </span>
+            </button>
+          </div>
+          <div>
+            <div
+              class="px-4 sm:px-6 lg:px-8"
+              data-testid="selected-requirements-table"
+            >
+              <div
+                class="mt-8 flow-root"
+              >
+                <div
+                  class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8"
+                >
+                  <div
+                    class="inline-block min-w-full py-2 align-middle"
+                  >
+                    <table
+                      class="min-w-full divide-y divide-gray-200"
+                    >
+                      <thead>
+                        <tr>
+                          <th
+                            class="text-left relative uppercase font-bold text-sm text-[#AAAAAA] px-4 py-5 after:content-[''] after:w-1 after:h-[18px] after:absolute after:border-r after:left-0 after:top-1/2 after:translate-y-[-50%] after:border-[#AAAAAA]/75 first-of-type:after:content-none last-of-type:after:content-none border-b border-[#C2C9D1]/30 whitespace-nowrap"
+                          >
+                            s/n
+                          </th>
+                          <th
+                            class="text-left relative uppercase font-bold text-sm text-[#AAAAAA] px-4 py-5 after:content-[''] after:w-1 after:h-[18px] after:absolute after:border-r after:left-0 after:top-1/2 after:translate-y-[-50%] after:border-[#AAAAAA]/75 first-of-type:after:content-none last-of-type:after:content-none border-b border-[#C2C9D1]/30 whitespace-nowrap"
+                          >
+                            DOCUMENTATION REQUIRED
+                          </th>
+                          <th
+                            class="text-left relative uppercase font-bold text-sm text-[#AAAAAA] px-4 py-5 after:content-[''] after:w-1 after:h-[18px] after:absolute after:border-r after:left-0 after:top-1/2 after:translate-y-[-50%] after:border-[#AAAAAA]/75 first-of-type:after:content-none last-of-type:after:content-none border-b border-[#C2C9D1]/30 whitespace-nowrap"
+                          />
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          class="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"
+                        >
+                          <td
+                            class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize  truncate relative text-left"
+                          >
+                            No document selected
+                          </td>
+                          <td
+                            class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize truncate relative text-left"
+                          />
+                          <td
+                            class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize truncate relative text-left"
+                          />
+                        </tr>
+                        <tr
+                          class="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"
+                        >
+                          <td
+                            class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize  truncate relative text-left"
+                          />
+                          <td
+                            class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize truncate relative text-left"
+                          />
+                          <td
+                            class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize truncate relative text-left"
+                          />
+                        </tr>
+                        <tr
+                          class="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"
+                        >
+                          <td
+                            class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize  truncate relative text-left"
+                          />
+                          <td
+                            class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize truncate relative text-left"
+                          />
+                          <td
+                            class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize truncate relative text-left"
+                          />
+                        </tr>
+                        <tr
+                          class="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"
+                        >
+                          <td
+                            class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize  truncate relative text-left"
+                          />
+                          <td
+                            class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize truncate relative text-left"
+                          />
+                          <td
+                            class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize truncate relative text-left"
+                          />
+                        </tr>
+                        <tr
+                          class="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"
+                        >
+                          <td
+                            class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize  truncate relative text-left"
+                          />
+                          <td
+                            class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize truncate relative text-left"
+                          />
+                          <td
+                            class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize truncate relative text-left"
+                          />
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="max-w-[527px]"
+          />
+        </form>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div>
+      <form
+        id="customereligibilitycriteria"
+      >
+        <div
+          class="flex gap-[18px] flex-wrap"
+        >
+          <div
+            class="flex gap-[25px]"
+          >
+            <div
+              class="w-[300px]"
+            >
+              <div
+                class=" min-w-full"
+                role="combobox"
+              >
+                <div
+                  class="flex  gap-2 min-w-[300px]"
+                >
+                   
+                  <label
+                    class="flex  text-base font-semibold text-[#636363]"
+                  >
+                    Customer Category
+                    <div>
+                      <svg
+                        data-testid="red-dot"
+                        fill="none"
+                        height="5"
+                        viewBox="0 0 5 5"
+                        width="5"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle
+                          cx="2.5"
+                          cy="2.5"
+                          fill="#CF2A2A"
+                          r="2.5"
+                        />
+                      </svg>
+                    </div>
+                  </label>
+                  <div
+                    class="flex items-end cursor-pointer"
+                  >
+                    <div
+                      class="flex items-end !bg-white"
+                    >
+                      <button
+                        aria-expanded="false"
+                        class="bg-transparent p-0"
+                        type="button"
+                      >
+                        <div
+                          class="w-[18px] h-[18px] text-[#636363]"
+                        >
+                          <svg
+                            fill="currentColor"
+                            height="1em"
+                            stroke="currentColor"
+                            stroke-width="0"
+                            version="1.1"
+                            viewBox="0 0 16 16"
+                            width="1em"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                            />
+                            <path
+                              d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                            />
+                            <path
+                              d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                            />
+                          </svg>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="relative mt-1"
+                  data-headlessui-state=""
+                >
+                  <button
+                    aria-expanded="false"
+                    aria-haspopup="listbox"
+                    class="relative w-full cursor-pointer  bg-white py-1  pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm border-[#8F8F8F]"
+                    data-headlessui-state=""
+                    id="headlessui-listbox-button-1"
+                    type="button"
+                  >
+                    <span
+                      class="block truncate"
+                    >
+                      <span
+                        class="text-[#aaa]"
+                      >
+                        Select customer category
+                      </span>
+                    </span>
+                    <span
+                      class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-xs"
+                    >
+                      <svg
+                        fill="none"
+                        height="10"
+                        viewBox="0 0 15 10"
+                        width="15"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M15 0H0L7.14286 9.47368L15 0Z"
+                          fill="#636363"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex justify-end mt-10"
+        >
+          <button
+            class="cursor-pointer flex items-center gap-[10px] disabled:opacity-60 disabled:cursor-not-allowed"
+            type="button"
+          >
+            <svg
+              fill="none"
+              height="28"
+              viewBox="0 0 29 28"
+              width="29"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g
+                filter="url(#filter0_d_48843_94577)"
+              >
+                <circle
+                  cx="14.5605"
+                  cy="14"
+                  fill="#636363"
+                  r="10"
+                />
+              </g>
+              <path
+                d="M13.5615 13H7.56152V13.5V14H13.5615V20H14.0615H14.5615V14H20.5615V13.5V13H14.5615V7H14.0615H13.5615V13Z"
+                stroke="white"
+              />
+              <defs>
+                <filter
+                  color-interpolation-filters="sRGB"
+                  filterUnits="userSpaceOnUse"
+                  height="28"
+                  id="filter0_d_48843_94577"
+                  width="28"
+                  x="0.560547"
+                  y="0"
+                >
+                  <feflood
+                    flood-opacity="0"
+                    result="BackgroundImageFix"
+                  />
+                  <fecolormatrix
+                    in="SourceAlpha"
+                    result="hardAlpha"
+                    type="matrix"
+                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                  />
+                  <feoffset />
+                  <fegaussianblur
+                    stdDeviation="2"
+                  />
+                  <fecomposite
+                    in2="hardAlpha"
+                    operator="out"
+                  />
+                  <fecolormatrix
+                    type="matrix"
+                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+                  />
+                  <feblend
+                    in2="BackgroundImageFix"
+                    mode="normal"
+                    result="effect1_dropShadow_48843_94577"
+                  />
+                  <feblend
+                    in="SourceGraphic"
+                    in2="effect1_dropShadow_48843_94577"
+                    mode="normal"
+                    result="shape"
+                  />
+                </filter>
+              </defs>
+            </svg>
+            <span
+              class="font-medium text-[#636363]"
+            >
+              Select requirements
+            </span>
+          </button>
+        </div>
+        <div>
+          <div
+            class="px-4 sm:px-6 lg:px-8"
+            data-testid="selected-requirements-table"
+          >
+            <div
+              class="mt-8 flow-root"
+            >
+              <div
+                class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8"
+              >
+                <div
+                  class="inline-block min-w-full py-2 align-middle"
+                >
+                  <table
+                    class="min-w-full divide-y divide-gray-200"
+                  >
+                    <thead>
+                      <tr>
+                        <th
+                          class="text-left relative uppercase font-bold text-sm text-[#AAAAAA] px-4 py-5 after:content-[''] after:w-1 after:h-[18px] after:absolute after:border-r after:left-0 after:top-1/2 after:translate-y-[-50%] after:border-[#AAAAAA]/75 first-of-type:after:content-none last-of-type:after:content-none border-b border-[#C2C9D1]/30 whitespace-nowrap"
+                        >
+                          s/n
+                        </th>
+                        <th
+                          class="text-left relative uppercase font-bold text-sm text-[#AAAAAA] px-4 py-5 after:content-[''] after:w-1 after:h-[18px] after:absolute after:border-r after:left-0 after:top-1/2 after:translate-y-[-50%] after:border-[#AAAAAA]/75 first-of-type:after:content-none last-of-type:after:content-none border-b border-[#C2C9D1]/30 whitespace-nowrap"
+                        >
+                          DOCUMENTATION REQUIRED
+                        </th>
+                        <th
+                          class="text-left relative uppercase font-bold text-sm text-[#AAAAAA] px-4 py-5 after:content-[''] after:w-1 after:h-[18px] after:absolute after:border-r after:left-0 after:top-1/2 after:translate-y-[-50%] after:border-[#AAAAAA]/75 first-of-type:after:content-none last-of-type:after:content-none border-b border-[#C2C9D1]/30 whitespace-nowrap"
+                        />
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        class="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"
+                      >
+                        <td
+                          class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize  truncate relative text-left"
+                        >
+                          No document selected
+                        </td>
+                        <td
+                          class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize truncate relative text-left"
+                        />
+                        <td
+                          class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize truncate relative text-left"
+                        />
+                      </tr>
+                      <tr
+                        class="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"
+                      >
+                        <td
+                          class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize  truncate relative text-left"
+                        />
+                        <td
+                          class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize truncate relative text-left"
+                        />
+                        <td
+                          class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize truncate relative text-left"
+                        />
+                      </tr>
+                      <tr
+                        class="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"
+                      >
+                        <td
+                          class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize  truncate relative text-left"
+                        />
+                        <td
+                          class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize truncate relative text-left"
+                        />
+                        <td
+                          class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize truncate relative text-left"
+                        />
+                      </tr>
+                      <tr
+                        class="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"
+                      >
+                        <td
+                          class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize  truncate relative text-left"
+                        />
+                        <td
+                          class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize truncate relative text-left"
+                        />
+                        <td
+                          class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize truncate relative text-left"
+                        />
+                      </tr>
+                      <tr
+                        class="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"
+                      >
+                        <td
+                          class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize  truncate relative text-left"
+                        />
+                        <td
+                          class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize truncate relative text-left"
+                        />
+                        <td
+                          class="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize truncate relative text-left"
+                        />
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="max-w-[527px]"
+        />
+      </form>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "store": Object {
+    "@@observable": [Function],
+    "dispatch": [Function],
+    "getState": [Function],
+    "replaceReducer": [Function],
+    "subscribe": [Function],
+  },
+  "unmount": [Function],
+}
+`;

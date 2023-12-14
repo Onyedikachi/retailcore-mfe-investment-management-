@@ -1,7 +1,7 @@
 // src/setupTests.js
 import "whatwg-fetch";
 import { server } from "./__mocks__/api/apiServer";
-import { linkApi, investmentApi } from "@app/api";
+import { linkApi, investmentApi, authApi } from "@app/api";
 import { store } from "@app/config/store";
 // setupTests.js
 import { configure } from 'enzyme';
@@ -23,6 +23,7 @@ afterEach(() => {
   // This is the solution to clear RTK Query cache after each test
   mockstore.dispatch(linkApi.util.resetApiState());
   mockstore.dispatch(investmentApi.util.resetApiState());
+  mockstore.dispatch(authApi.util.resetApiState());
 
 });
 
