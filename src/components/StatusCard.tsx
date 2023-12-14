@@ -197,7 +197,7 @@ export function handlePermission(
   }
   if (
     permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS") ||
-    permissions?.includes("CREATE_INVESTMENT_PRODUCT")
+    permissions?.includes("AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS")
   ) {
     setFilteredRequestOptions(RequestOptions);
   } else {
@@ -298,7 +298,7 @@ export default function StatusCard({
             />
           ))}
         </div>
-       
+      
         <div>
           <Select
             options={
@@ -308,6 +308,7 @@ export default function StatusCard({
             }
          
             handleSelected={(value: any) => handleSelected(value)}
+            value={selected}
           />
         </div>
       </div>

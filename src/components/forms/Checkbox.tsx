@@ -26,16 +26,21 @@ const Checkbox: React.FC<CheckboxProps> = ({
 
   return (
     <div>
-      <label className="flex gap-x-3 items-center text-[#636363] text-sm cursor-pointer font-normal capitalize">
+      <label className={`flex gap-x-3 ${sublabel ? 'items-start' : 'items-center'} text-[#636363] text-sm cursor-pointer font-normal capitalize`}>
         <input
           type="checkbox"
           checked={isChecked}
           onChange={handleChange}
-          className="accent-sterling-red-800"
+          className={`${sublabel ? 'mt-1' : ''} accent-sterling-red-800`}
           data-testid={label}
         />
-        <span className="whitespace-nowrap block">{label}</span>
-        <span className="whitespace-nowrap text-xs text-[#aaa]">{sublabel}</span>
+        <div className="flex flex-col">
+          {" "}
+          <span className="whitespace-nowrap block">{label}</span>
+          <span className="whitespace-nowrap text-xs text-[#aaa]">
+            {sublabel}
+          </span>
+        </div>
       </label>
     </div>
   );

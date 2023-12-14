@@ -29,33 +29,20 @@ export default function ProductDetail({
   handleClick,
   detail,
 }: Props) {
-  // const data = [
-  //   "3% for principal between 0 and 200,000",
-  //   "4% for principal between 200,000 and 400,000",
-  //   "3% for principal between 400,000 and 600,000",
-  //   "3% for principal between 0 and 200,000",
-  //   "4% for principal between 200,000 and 400,000",
-  //   "3% for principal between 400,000 and 600,000",
-  //   "3% for principal between 0 and 200,000",
-  //   "4% for principal between 200,000 and 400,000",
-  //   "3% for principal between 400,000 and 600,000",
-  // ];
+
   const {
     data: productData,
     isLoading,
     isSuccess,
   } = useGetProductDetailQuery({
-    id: detail.id,
+    id: detail?.id,
   });
-  console.log("🚀 ~ file: ProductDetail.tsx:41 ~ productData:", productData)
+
   const [open, setOpen] = useState(false);
   const { permissions } = useContext(AppContext);
 
   React.useEffect(() => {
-    console.log(
-      "🚀 ~ file: ProductDetail.tsx:46 ~ React.useEffect ~ productData:",
-      productData
-    );
+
   }, [isSuccess]);
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -529,7 +516,7 @@ export default function ProductDetail({
           </div>
         )}
         {isLoading && (
-          <div className="h-[500px] flex items-center justify-center">
+          <div className="h-[500px] flex items-center justify-center" data-testid="loading-spinner">
             <div className="spinner-border h-11 w-11 border-t border-danger-500 rounded-full animate-spin"></div>
           </div>
         )}

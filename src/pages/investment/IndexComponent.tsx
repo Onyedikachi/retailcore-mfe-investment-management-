@@ -191,16 +191,16 @@ export default function IndexComponent() {
   const {
     data: prodStatData,
     refetch: prodStatRefetch,
-    isLoading: prodStatLoading,
-  } = useGetProductStatsQuery(query, {
+    isFetching: prodStatLoading,
+  } = useGetProductStatsQuery({ ...query, filter_by: selected?.value }, {
     skip: category !== StatusCategoryType.AllProducts,
   });
 
   const {
     data: requestStatData,
     refetch: requestRefetch,
-    isLoading: requestStatLoading,
-  } = useGetRequestStatsQuery(query, {
+    isFetching: requestStatLoading,
+  } = useGetRequestStatsQuery({ ...query, filter_by: selected?.value }, {
     skip: category !== StatusCategoryType.Requests,
   });
 
@@ -210,11 +210,11 @@ export default function IndexComponent() {
       page: 1,
     });
     if (category === StatusCategoryType.AllProducts) {
-      getProducts({ ...query, page: 1 });
-      prodStatRefetch({ ...query, page: 1 });
+      getProducts({ ...query, page: 1, filter_by: selected?.value });
+      // prodStatRefetch({ ...query, page: 1, filter_by: selected?.value });
     } else {
-      getRequests({ ...query, page: 1 });
-      requestRefetch({ ...query, page: 1 });
+      getRequests({ ...query, page: 1 , filter_by: selected?.value});
+      // requestRefetch({ ...query, page: 1, filter_by: selected?.value });
     }
   }, [
     category,

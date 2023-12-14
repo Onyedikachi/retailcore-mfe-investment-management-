@@ -77,7 +77,7 @@ export function DebitCreditTable({dataTab}) {
     </table>
   );
 }
-export default function ProductDetail({ detail, oldData }: any) {
+export default function ProductDetail({ detail, previousData }: any) {
   const [isNewDescription, setDescription] = useState(false);
   // const [productInfo, setProductInfo] = useState({
   //   productName: "",
@@ -115,24 +115,24 @@ export default function ProductDetail({ detail, oldData }: any) {
                 Product Name
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                {oldData &&
-                  oldData?.productInfo?.productName !==
+                {previousData &&
+                  previousData?.productName !==
                     detail?.productInfo?.productName && (
                     <span className="block  line-through mb-2 text-[#aaa]">
                       {" "}
-                      {oldData?.productInfo?.productName}
+                      {previousData?.productName}
                     </span>
                   )}
                 <span className="flex itmes-center">
                   {" "}
                   {detail?.productInfo?.productName}{" "}
-                  {/* {oldData?.productInfo?.productName !==
+                  {previousData?.productName !==
                     detail?.productInfo?.productName && (
                     <span className="block text-success-500 pl-[2px]">
                       {" "}
                       New
                     </span>
-                  )} */}
+                  )}
                 </span>
               </div>
             </div>
@@ -141,19 +141,19 @@ export default function ProductDetail({ detail, oldData }: any) {
                 Slogan
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                {oldData &&
-                  oldData?.productInfo?.slogan !==
+                {previousData && previousData?.slogan &&
+                  previousData?.slogan !==
                     detail?.productInfo?.slogan && (
                     <span className="block  line-through mb-2 text-[#aaa]">
                       {" "}
-                      {oldData?.productInfo?.slogan}
+                      {previousData?.slogan}
                     </span>
                   )}
                 <span className="flex itmes-center">
                   {" "}
                   {detail?.productInfo?.slogan}{" "}
-                  {oldData &&
-                    oldData?.productInfo?.slogan !==
+                  {previousData && previousData?.slogan &&
+                    previousData?.slogan !==
                       detail?.productInfo?.slogan && (
                       <span className="block text-success-500 pl-[2px]">
                         {" "}
@@ -169,19 +169,19 @@ export default function ProductDetail({ detail, oldData }: any) {
                 Product Description
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                {oldData &&
-                  oldData?.productInfo?.description !==
+                {previousData && previousData?.description &&
+                  previousData?.description !==
                     detail?.productInfo?.description && (
                     <span className="block  line-through mb-2 text-[#aaa]">
                       {" "}
-                      {oldData?.productInfo?.description}
+                      {previousData?.description}
                     </span>
                   )}
                 <span className="flex itmes-center">
                   {" "}
                   {detail?.productInfo?.description}{" "}
-                  {oldData &&
-                    oldData?.productInfo?.description !==
+                  {previousData && previousData?.description &&
+                    previousData?.description !==
                       detail?.productInfo?.description && (
                       <span className="block text-success-500 pl-[2px]">
                         {" "}
@@ -196,19 +196,19 @@ export default function ProductDetail({ detail, oldData }: any) {
                 Product Currency
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                {oldData &&
-                  oldData?.productInfo?.currency !==
+                {previousData && previousData?.currency &&
+                  previousData?.currency !==
                     detail?.productInfo?.currency && (
                     <span className="block  line-through mb-2 text-[#aaa]">
                       {" "}
-                      {oldData?.productInfo?.currency}
+                      {previousData?.currency}
                     </span>
                   )}
                 <span className="flex itmes-center">
                   {" "}
                   {detail?.productInfo?.currency}{" "}
-                  {oldData &&
-                    oldData?.productInfo?.currency !==
+                  {previousData && previousData?.currency &&
+                    previousData?.currency !==
                       detail?.productInfo?.currency && (
                       <span className="block text-success-500 pl-[2px]">
                         {" "}
@@ -252,20 +252,20 @@ export default function ProductDetail({ detail, oldData }: any) {
                 Customer group category
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                {oldData &&
-                  oldData?.customerEligibility?.customerCategory !==
+                {previousData && previousData?.customerCategory &&
+                  previousData?.customerCategory !==
                     detail.customerEligibility?.customerCategory && (
                     <span className="block  line-through mb-2 text-[#aaa]">
                       {" "}
-                      {oldData?.customerEligibility?.customerCategory}
+                      {CustomerCategory[previousData?.customerCategory]}
                     </span>
                   )}
                 <span className="flex itmes-center">
                  
                   {" "}
                   {CustomerCategory[detail?.customerEligibility?.customerCategory]}{" "}
-                  {oldData &&
-                    oldData?.customerEligibility?.customerCategory !==
+                  {previousData && previousData?.customerCategory &&
+                    previousData?.customerCategory !==
                       detail?.customerEligibility?.customerCategory && (
                       <span className="block text-success-500 pl-[2px]">
                         {" "}
@@ -284,8 +284,8 @@ export default function ProductDetail({ detail, oldData }: any) {
                 <div className="w-full text-base font-normal text-[#636363]">
                   <span className="flex itmes-center">
                     {" "}
-                    {detail?.customerEligibility.ageGroupMin}
-                    {" - "} {detail?.customerEligibility.ageGroupMax ? detail?.customerEligibility.ageGroupMax : 'Unspecified'}
+                    {detail?.customerEligibility?.ageGroupMin}
+                    {" - "} {detail?.customerEligibility?.ageGroupMax ? detail?.customerEligibility?.ageGroupMax : 'Unspecified'}
                   </span>
                 </div>
               </div>
@@ -296,7 +296,7 @@ export default function ProductDetail({ detail, oldData }: any) {
                 Documentation required
               </div>
               <div className="w-full text-base font-normal text-[#636363] flex flex-wrap gap-x-1 gap-y-1">
-                {detail?.customerEligibility.requireDocument.map((i) => (
+                {detail?.customerEligibility?.requireDocument.map((i) => (
                   <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
                     {" "}
                     {i?.name}
@@ -341,7 +341,7 @@ export default function ProductDetail({ detail, oldData }: any) {
                 <span className="block  mb-2 text-[#636363]">
                   {currencyFormatter(
                     detail?.pricingConfiguration?.applicablePrincipalMin,
-                    detail?.productInfo.currency
+                    detail?.productInfo?.currency
                   )}{" "}
                   {detail?.pricingConfiguration?.applicablePrincipalMax
                     ? `- ${currencyFormatter(
@@ -366,9 +366,9 @@ export default function ProductDetail({ detail, oldData }: any) {
                           className="block  mb-2 text-[#636363]"
                         >
                           {" "}
-                          {`${configModel.min} - ${configModel.max}%`} for
+                          {`${configModel?.min} - ${configModel?.max}%`} for
                           principal between{" "}
-                          {`${currencyFormatter(configModel.principalMin, detail?.productInfo?.currency)} - ${currencyFormatter(configModel.principalMax, detail?.productInfo?.currency)}`}{" "}
+                          {`${currencyFormatter(configModel?.principalMin, detail?.productInfo?.currency)} - ${currencyFormatter(configModel?.principalMax, detail?.productInfo?.currency)}`}{" "}
                           {/* {detail?.productInfo?.currency} */}
                         </span>
                       )
@@ -385,12 +385,12 @@ export default function ProductDetail({ detail, oldData }: any) {
                           className="block  mb-2 text-[#636363]"
                         >
                           {" "}
-                          {`${configModel.min} - ${configModel.max}%`} for tenor
+                          {`${configModel?.min} - ${configModel?.max}%`} for tenor
                           between{" "}
-                          {`${configModel.tenorMin} ${
-                            Interval[configModel.tenorMinUnit]
-                          } - ${configModel.tenorMax} ${
-                            Interval[configModel.tenorMaxUnit]
+                          {`${configModel?.tenorMin} ${
+                            Interval[configModel?.tenorMinUnit]
+                          } - ${configModel?.tenorMax} ${
+                            Interval[configModel?.tenorMaxUnit]
                           }`}{" "}
                         </span>
                       )

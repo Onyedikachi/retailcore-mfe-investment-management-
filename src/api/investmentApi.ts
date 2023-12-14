@@ -39,6 +39,16 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    getCharges: builder.query<any, any>({
+      query: () => {
+        return {
+          url: `https://product-mgt-api.dev.bepeerless.co/v1/charges/state?state=active`,
+          method: "get"
+        }
+      }
+
+    }),
+   
     getPostProducts: builder.mutation<
       IGetProducts,
       {
@@ -99,7 +109,7 @@ export const investmentApi: any = createApi({
     modifyProduct: builder.mutation<any, any>({
       query: (data) => {
         return {
-          url: `${urls.PRODUCT}/edit/${data.id}`,
+          url: `${urls.PRODUCT}/edit`,
           method: "put",
           body: data,
         };
@@ -293,6 +303,7 @@ export const {
   useDeleteProductRequestMutation,
   useGetProductActivityLogQuery,
   useGetProductRequestActivityLogQuery,
+  useGetChargesQuery,
   useGetProductDetailQuery,
   useGetRequestDetailQuery,
   useApproveProductMutation,

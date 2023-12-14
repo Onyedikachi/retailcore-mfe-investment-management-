@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+// import { computed } from "@preact/signals-react";
 import { ToggleInputChildren } from "@app/components/pages/term-deposit/forms";
 import { BorderlessSelect, MinMaxInput } from "@app/components/forms";
 import {
@@ -14,7 +15,7 @@ import MultiSelectForm2 from "@app/components/forms/MultiSelectForm2";
 import { FaTimes } from "react-icons/fa";
 import { liquidationTypes } from "@app/constants";
 import { partLiquidationPenaltyOptions, daysOptions } from "@app/constants";
-
+import { useGetChargesQuery } from "@app/api";
 // import { FormToolTip } from "@app/components";
 // import { toolTips } from "@app/constants";
 
@@ -59,6 +60,27 @@ export default function LiquiditySetup({
   });
   const [partOptionCharges, setPartOptionCharges] = useState([]);
   const [earlyOptionCharges, setEarlyOptionCharges] = useState([]);
+  const { data: chargesData } = useGetChargesQuery();
+  const [chargeOptions, setChargeOptions] = useState([]);
+
+  useEffect(() => {
+    //if fetched charges data changes then map the data
+    const options = chargesData?.data?.records
+      ?.map((item) =>
+        item?.charge_value?.map((chargeValue) => ({
+          id: chargeValue.charge_id,
+          text: chargeValue.charge_type,
+          sub: chargeValue.charge_amount,
+          value: {
+            charge_type: chargeValue.charge_type,
+            charge_amount: chargeValue.charge_amount,
+          },
+        }))
+      )
+      .flat();
+
+    setChargeOptions(options);
+  }, [chargesData]);
 
   function handleSelected({ inputName, selectedOptions }) {
     if (inputName === "part_SpecificCharges") {
@@ -71,6 +93,7 @@ export default function LiquiditySetup({
       // setValue("early_SpecificCharges", selectedOptions);
     }
   }
+
   function onProceed(d: any) {
     setFormData({
       ...d,
@@ -121,11 +144,12 @@ export default function LiquiditySetup({
   ]);
   useEffect(() => {
     if (initiateDraft) {
-    setFormData({
-      ...values,
-      early_SpecificCharges: earlyOptionCharges,
-      part_SpecificCharges: partOptionCharges,
-    });}
+      setFormData({
+        ...values,
+        early_SpecificCharges: earlyOptionCharges,
+        part_SpecificCharges: partOptionCharges,
+      });
+    }
   }, [initiateDraft]);
   return (
     <form id="liquiditysetup" onSubmit={handleSubmit(onProceed)}>
@@ -297,13 +321,14 @@ export default function LiquiditySetup({
                       <div className="">
                         <div className="w-[300px] flex items-center mb-4">
                           <MultiSelectForm2
+                            isCharge={true}
                             labelName=""
                             placeholder="Search and select"
                             register={register}
                             inputName={"part_SpecificCharges"}
                             errors={errors}
                             setValue={setValue}
-                            options={customerTypeOptions}
+                            options={chargeOptions}
                             allLabel="All"
                             clearErrors={clearErrors}
                             trigger={trigger}
@@ -532,13 +557,14 @@ export default function LiquiditySetup({
                     <div className="">
                       <div className="w-[300px] flex items-center mb-4">
                         <MultiSelectForm2
+                          isCharge={true}
                           labelName=""
                           placeholder="Search and select"
                           register={register}
                           inputName={"early_SpecificCharges"}
                           errors={errors}
                           setValue={setValue}
-                          options={customerTypeOptions}
+                          options={chargeOptions}
                           allLabel="All"
                           clearErrors={clearErrors}
                           trigger={trigger}

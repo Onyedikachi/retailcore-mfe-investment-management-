@@ -11,7 +11,7 @@ type IconType = {
 };
 const Icons = ({ icon, className, width, rotate, hFlip, vFlip }: IconType) => {
   return (
-    <>
+    <span data-testid="icon">
       <Icon
         width={width}
         rotate={rotate}
@@ -20,7 +20,7 @@ const Icons = ({ icon, className, width, rotate, hFlip, vFlip }: IconType) => {
         className={className}
         vFlip={vFlip}
       />
-    </>
+    </span>
   );
 };
 
