@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { InvestmentContext } from "../../utils/context";
 import { StatusCategoryType } from "../../constants/enums";
 import {
@@ -13,6 +14,7 @@ import {
   useGetPostRequestsMutation,
   useGetProductStatsQuery,
   useGetRequestStatsQuery,
+  useGetSystemAlertQuery
 } from "@app/api";
 import {
   ProductTypes,
@@ -76,6 +78,7 @@ export const handleSearch = (value, query, setQuery) => {
   });
 };
 export default function IndexComponent() {
+  const notify = (toastMessage) => toast.error(toastMessage);
   const [category, setCategory] = useState<string>(
     StatusCategoryType?.AllProducts
   );
@@ -277,6 +280,18 @@ export default function IndexComponent() {
     isRequestError,
     query.page,
   ]);
+
+  const {
+    data: systemAlertData,
+   isSuccess: systemAlertDataSuccess
+  } = useGetSystemAlertQuery()
+
+  useEffect(() => {
+    if(systemAlertDataSuccess){
+      notify(systemAlertData)
+    }
+
+  }, [systemAlertDataSuccess])
 
   useEffect(() => {
     if (preview === "search_product") {

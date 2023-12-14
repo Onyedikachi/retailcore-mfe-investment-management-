@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+
+
 import { paths } from "@app/routes/paths";
 import { Confirm, Failed, Success } from "@app/components/modals";
 import {
@@ -8,6 +10,7 @@ import {
   useGetProductDetailQuery,
   useModifyProductMutation,
   useModifyRequestMutation,
+  
 } from "@app/api";
 import {
   Breadcrumbs,
@@ -43,7 +46,6 @@ export default function CreateTermDeposit() {
   const activeId = useRef(null);
   const previousData = useRef({});
   const [step, setStep] = useState(4);
-
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [subText, setSubText] = useState("");
   const [successText, setSuccessText] = useState("");
@@ -179,6 +181,8 @@ export default function CreateTermDeposit() {
     },
     { skip: !id }
   );
+
+
 
   const {
     data: productDetails,

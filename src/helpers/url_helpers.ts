@@ -4,6 +4,7 @@ const urls = {
 
   // Requests
   REQUESTS: "/ProductRequest",
+  SYSTEM_ALERT: 'ProductRequest/alert',
   REQUEST_STATS: "/productrequest/stats",
   REQUEST_ACTIVITY_LOG: "/productrequest/activitylog",
 
