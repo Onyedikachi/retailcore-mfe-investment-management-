@@ -35,17 +35,14 @@ export default function ProductDetail({
     isLoading,
     isSuccess,
   } = useGetProductDetailQuery({
-    id: detail.id,
+    id: detail?.id,
   });
-  console.log("🚀 ~ file: ProductDetail.tsx:41 ~ productData:", productData)
+
   const [open, setOpen] = useState(false);
   const { permissions } = useContext(AppContext);
 
   React.useEffect(() => {
-    console.log(
-      "🚀 ~ file: ProductDetail.tsx:46 ~ React.useEffect ~ productData:",
-      productData
-    );
+
   }, [isSuccess]);
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
