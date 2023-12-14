@@ -99,7 +99,7 @@ describe("QuickLinks component", () => {
       useGetLinksQuery: jest.fn(() => {
         return mockData;
       }),
-      useUpdateLinkMutation: jest.fn(),
+      useUpdateLinkMutation: jest.fn().mockResolvedValue(mockData),
       useAddLinkMutation: jest.fn(),
     }));
 

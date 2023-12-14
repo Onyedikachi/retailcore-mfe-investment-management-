@@ -85,7 +85,7 @@ export default function Summary() {
             {process === "preview" && (
               <ReviewStatus
                 status={requestDetail?.data?.requestStatus}
-                reason={requestDetail?.data?.requestType}
+                reason={requestDetail?.data?.reason}
                 type={requestDetail?.data?.requestType}
                 text={requestDetail?.data?.lastComment}
               />
