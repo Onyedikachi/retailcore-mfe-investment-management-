@@ -80,7 +80,7 @@ export function handleName(
         return;
       }
       validateName({ productName: watchName, productId: id || null });
-    }, 1000)();
+    }, timer)();
   } else {
     setError("");
     setIsNameOkay(false);
@@ -116,7 +116,7 @@ export default function ProductInformation({
   setDisabled,
   proceed,
   initiateDraft,
-  activeId
+  activeId,
 }) {
   //useForm
   const {
@@ -220,7 +220,7 @@ export default function ProductInformation({
         if (formData.productName && id) {
           validateName({
             productName: formData.productName,
-            productId:activeId.current || id || productId || null,
+            productId: activeId.current || id || productId || null,
           });
         }
       }
@@ -244,8 +244,29 @@ export default function ProductInformation({
       trigger();
     }
   }, []);
+  const handleDebouncedNameChange = debounce((e) => {
+    setValue("productName", e.target.value);
+    handleName(
+      validateName,
+      e.target.value,
+      formData,
+      setCharLeft,
+      clearErrors,
+      setError,
+      setIsNameOkay,
+      setDisabled,
+      setCurrentName,
+      compareValues,
+      100,
+      activeId.current || productId || id
+    );
+  }, 800);
   return (
-    <form id="productform" data-testid="submit-button" onSubmit={handleSubmit(onProceed)}>
+    <form
+      id="productform"
+      data-testid="submit-button"
+      onSubmit={handleSubmit(onProceed)}
+    >
       <div className="">
         <div className="mb-6 flex flex-col gap-[1px]">
           <div className="flex itemx-center gap-2 w-[300px]">
@@ -270,28 +291,22 @@ export default function ProductInformation({
                   isNameOkay && !errors?.productName ? "border-success-500" : ""
                 }`}
                 onChange={(e) => {
-                  setValue("productName", e.target.value);
-                  handleName(
-                    validateName,
-                    e.target.value,
-                    formData,
-                    setCharLeft,
-                    clearErrors,
-                    setError,
-                    setIsNameOkay,
-                    setDisabled,
-                    setCurrentName,
-                    compareValues,
-                    500,
-                    activeId.current || productId || id
-                  );
+                  if (e.target.value.length < 4) {
+                    trigger("productName");
+                    setIsNameOkay(false);
+                  } else {
+                    handleDebouncedNameChange(e);
+                  }
                 }}
                 placeholder="Enter Name"
                 maxLength={defaultLength}
                 defaultValue={formData?.productName}
                 aria-invalid={errors?.productName ? "true" : "false"}
               />
-              <div data-testid="product-name-char-count" className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]">
+              <div
+                data-testid="product-name-char-count"
+                className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]"
+              >
                 <span>
                   {" "}
                   {charLeft}/{defaultLength}
@@ -301,7 +316,7 @@ export default function ProductInformation({
                     <FaCheckCircle className="text-success-500 text-xl" />
                   </span>
                 )}
-                {(error || errors?.productName) && (
+                {(errors?.productName) && (
                   <span>
                     <RiErrorWarningFill className="text-danger-500 text-xl w-5 h-5" />
                   </span>
@@ -390,6 +405,7 @@ export default function ProductInformation({
                 {" "}
                 <RedDot />
               </span>
+              <FormToolTip tip={toolTips.description} />
             </label>
           </div>
           <InputDiv>

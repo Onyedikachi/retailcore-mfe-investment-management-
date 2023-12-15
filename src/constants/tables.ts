@@ -168,11 +168,11 @@ export const DropDownOptions: any = {
       text: "View",
       icon: "FaEye",
     },
-    // {
-    //   id: "",
-    //   text: "Modify",
-    //   icon: "FaEdit",
-    // },
+    {
+      id: "",
+      text: "Modify",
+      icon: "FaEdit",
+    },
     {
       id: "",
       text: "Clone",

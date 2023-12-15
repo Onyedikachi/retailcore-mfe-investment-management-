@@ -7,7 +7,7 @@ import { liquidationTypes } from "@app/constants";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
-export default function ToggleInputChildren({
+export default function fToggleInputChildren({
   children,
   label,
   setValue,
@@ -19,6 +19,7 @@ export default function ToggleInputChildren({
   const [isOpen, setIsOpen] = useState(false);
 
   React.useEffect(() => {
+    console.log("default value ==" + defaultValue)
     if (defaultValue !== null) {
       setIsOpen(defaultValue);
     }
@@ -52,10 +53,11 @@ export default function ToggleInputChildren({
           className={classNames(
             isOpen ? "bg-[#CF2A2A]" : "bg-transparent",
             "border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
-          )}
-        >
+            )}
+            >
           <span className="sr-only">Use setting</span>
           <span
+          data-testid="switch"
             aria-hidden="true"
             className={classNames(
               isOpen ? "translate-x-[14px] bg-white" : "translate-x-0  bg-white ",

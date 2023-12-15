@@ -54,6 +54,7 @@ Object {
                   <button
                     aria-expanded="false"
                     class="bg-transparent p-0"
+                    data-testid="tooltip"
                     type="button"
                   >
                     <div
@@ -321,6 +322,7 @@ Object {
                   <button
                     aria-expanded="false"
                     class="bg-transparent p-0"
+                    data-testid="tooltip"
                     type="button"
                   >
                     <div
@@ -472,6 +474,7 @@ Object {
                   <button
                     aria-expanded="false"
                     class="bg-transparent p-0"
+                    data-testid="tooltip"
                     type="button"
                   >
                     <div
@@ -610,6 +613,7 @@ Object {
                   <button
                     aria-expanded="false"
                     class="bg-transparent p-0"
+                    data-testid="tooltip"
                     type="button"
                   >
                     <div
@@ -751,6 +755,7 @@ Object {
                 <button
                   aria-expanded="false"
                   class="bg-transparent p-0"
+                  data-testid="tooltip"
                   type="button"
                 >
                   <div
@@ -1018,6 +1023,7 @@ Object {
                 <button
                   aria-expanded="false"
                   class="bg-transparent p-0"
+                  data-testid="tooltip"
                   type="button"
                 >
                   <div
@@ -1169,6 +1175,7 @@ Object {
                 <button
                   aria-expanded="false"
                   class="bg-transparent p-0"
+                  data-testid="tooltip"
                   type="button"
                 >
                   <div
@@ -1307,6 +1314,7 @@ Object {
                 <button
                   aria-expanded="false"
                   class="bg-transparent p-0"
+                  data-testid="tooltip"
                   type="button"
                 >
                   <div
