@@ -1,27 +1,86 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
-import { useGetLinksQuery, useAddLinkMutation } from "@app/api";
+import {
+  useGetLinksQuery,
+  useUpdateLinkMutation,
+  useAddLinkMutation,
+} from "@app/api";
 
 export default function QuickLinks() {
   const [isOpen, setIsOpen] = useState(true);
-  const links = [
-    {
-      isDefault: true,
-      count: 1,
-      name: "Branch management dashbaord",
-      category: "BranchManagement",
-      link: "branch-management",
-    },
-  ];
-  // const { data, isLoading, isFetching } = useGetLinksQuery();
-  // const [addLink, { isLoading: addLoading }] = useAddLinkMutation();
+  const defaultLink = {
+    isDefault: true,
+    count: 1,
+    name: "Product management",
+    category: "ProductManagement",
+    link: "product-management",
+  };
+  const [links, setLinks] = useState([defaultLink]);
+  const {
+    data: quickLinks,
+    isLoading,
+    isFetching,
+    isSuccess: isLinksQuerySuccessful,
+  } = useGetLinksQuery();
+  const [updateLink] = useUpdateLinkMutation();
+
+  const [addLink] = useAddLinkMutation();
+  const baseUrl = "https://seabaas.dev.bepeerless.co";
+  // React.useEffect(() => {
+
+  //   return () => {
+  //     // Additional cleanup actions can be performed here
+  //   };
+  // }, []);
+
   React.useEffect(() => {
-    // addLink(links);
-  }, []);
+    if (isLinksQuerySuccessful) {
+      const moduleName = "Product Factory";
+      const moduleLink = `product-factory/investment`;
+      //get
+      if (quickLinks && quickLinks.data && quickLinks.data.length > 0) {
+        setLinks([defaultLink, ...quickLinks.data]);
+        
+      }
+      //check if quickLinks has link of this page
+      const hasPageLink =
+        quickLinks && quickLinks.data
+          ? quickLinks?.data.some(
+              (link) => link.link === `${baseUrl}/product-factory/investment`
+            )
+          : false;
+     
+
+      //add
+
+      if (
+        (quickLinks && !quickLinks.data) ||
+        quickLinks?.data?.length === 0 ||
+        !hasPageLink
+      ) {
+        addLink([
+          {
+            link: `product-factory/investment`,
+            name: "Product Factory",
+            category: "ProductFactory",
+
+            isDefault: true,
+          },
+        ]);
+      }
+      //update
+      if (hasPageLink) {
+        updateLink({
+          moduleName,
+          moduleLink,
+        });
+      }
+    }
+  }, [quickLinks]);
   return (
-    <div className="border border-[#E5E9EB] rounded-lg bg-white px-[13px] py-8 w-[300px]">
-      <h1 className="uppercase text-xl mb-5">Quick Links</h1>
+    <div data-testid='quick-links' className="border border-[#E5E9EB] rounded-lg bg-white px-[13px] py-8 w-[300px]">
+      <h1 className="uppercase text-xl mb-5 font-medium">Quick Links</h1>
       <hr className="border-[#ddd] mb-[15px]" />
       {isOpen && (
         <div className="relative bg-[#F9F2F2] mb-7  rounded-[6px] border border-[#E5E9EB] p-4">
@@ -44,10 +103,10 @@ export default function QuickLinks() {
       )}
       <div>
         <ul className="grid grid-cols-2 gap-11">
-          {Array.from(Array(1)).map((i, idx) => (
+          {links.map((item, idx) => (
             <li key={`idx-${idx + 1}`}>
               <Link
-                to="/"
+                to={item?.link}
                 role="link"
                 className="flex flex-col items-center justify-center text-center"
               >
@@ -70,7 +129,9 @@ export default function QuickLinks() {
                     />
                   </svg>
                 </span>
-                <span className="block text-sm">Workflow Configuration</span>
+                <span data-testid="link-name" className="block text-sm">
+                  {item.name}
+                </span>
               </Link>
             </li>
           ))}

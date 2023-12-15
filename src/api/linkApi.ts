@@ -2,7 +2,7 @@
 import { axiosBaseQuery, getToken } from "@Sterling/shared";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { REHYDRATE } from "redux-persist";
-
+import {MODULENAME} from '@app/constants'
 export const linkApi = createApi({
   reducerPath: "linkApi",
   baseQuery: fetchBaseQuery({
@@ -25,7 +25,7 @@ export const linkApi = createApi({
     getLinks: builder.query<any, any>({
       query: () => {
         return {
-          url: `/quick-link/all`,
+          url: `/quick-link/all/${MODULENAME}`,
           method: "get",
         };
       },
@@ -40,6 +40,15 @@ export const linkApi = createApi({
         };
       },
     }),
+    updateLink: builder.mutation<any, any>({
+      query: ({moduleName, moduleLink}) => {
+        return {
+          url: `/quick-link/update/${moduleName}/${moduleLink}`,
+          method: "patch",
+         
+        };
+      },
+    }),
     onQueryStarted() {
       // Clear previous errors when making the query
       linkApi.util.resetApiState(linkApi.endpoints.rejectRequest);
@@ -47,4 +56,4 @@ export const linkApi = createApi({
   }),
 });
 
-export const { useGetLinksQuery, useAddLinkMutation } = linkApi;
+export const { useGetLinksQuery, useAddLinkMutation, useUpdateLinkMutation } = linkApi;

@@ -344,6 +344,16 @@ button {
   width: 12px;
   margin-top: -0.5px;
 }
+.react-datepicker__day--disabled,
+.react-datepicker__month-text--disabled,
+.react-datepicker__quarter-text--disabled,
+.react-datepicker__year-text--disabled {
+  cursor: default;
+  color: #ccc !important;
+}
+.date-picker .react-datepicker__view-calendar-icon input {
+  padding: 6px 25px 5px 10px;
+}
 #form-file-upload {
   height: 16rem;
   width: 28rem;

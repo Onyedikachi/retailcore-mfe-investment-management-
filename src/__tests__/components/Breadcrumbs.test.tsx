@@ -8,7 +8,7 @@ import { Breadcrumbs } from "../../components";
 
 const links = [
   { id: 1, title: "Home", url: "/" },
-  { id: 2, title: "Branches", url: "/branches" },
+  { id: 2, title: "Productes", url: "/products" },
 ];
 const navigate = jest.fn();
 jest.mock("../../__mocks__/api/mockReactRouterDom");
@@ -35,7 +35,7 @@ describe("Breadcrumbs", () => {
     const { getByText, getByTestId } = render(<Breadcrumbs links={links} />);
 
     expect(getByText("Home")).toBeInTheDocument();
-    expect(getByText("Branches")).toBeInTheDocument();
+    expect(getByText("Productes")).toBeInTheDocument();
     const back = getByTestId("back button");
     fireEvent.click(back);
     expect(navigate).toHaveBeenCalledWith(-1);

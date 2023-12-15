@@ -23,7 +23,10 @@ export default function Confirm({
 }: ConfirmProps): React.JSX.Element {
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
-      <div className="w-[400px] p-6 rounded-lg bg-white text-left shadow-[0px_20px_24px_0px_rgba(16,24,40,0.08),_0px_8px_8px_0px_rgba(16,24,40,0.03)]">
+      <div
+        data-testid="confirm-modal"
+        className="w-[400px] p-6 rounded-lg bg-white text-left shadow-[0px_20px_24px_0px_rgba(16,24,40,0.08),_0px_8px_8px_0px_rgba(16,24,40,0.03)]"
+      >
         <div className="flex justify-between items-center mb-[15px]">
           <RiErrorWarningFill className="text-[30px] text-sterling-red-800" />
           <button
@@ -43,8 +46,7 @@ export default function Confirm({
             type="button"
             data-testid="cancel-btn-2"
             onClick={() => {
-              setIsOpen(false);
-              onCancel?.();
+              onCancel();
             }}
             className="rounded-lg text-base font-medium py-[5px] h-[44px] bg-white border border-[#D8DAE5] text-[#667085] w-full px-10"
           >
@@ -54,7 +56,6 @@ export default function Confirm({
             type="button"
             data-testid="submit-btn"
             onClick={() => {
-              setIsOpen(false);
               onConfirm();
             }}
             className="rounded-lg text-base font-medium py-[5px] h-[44px] bg-sterling-red-800 border border-sterling-red-800 text-white w-full px-10"

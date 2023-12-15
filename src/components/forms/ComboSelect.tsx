@@ -7,9 +7,9 @@ import Checkbox from "./Checkbox";
 const options = [
   {
     id: 1,
-    name: "Branch 1",
-    value: "Branch 1",
-    branchMembers: [
+    name: "Product 1",
+    value: "Product 1",
+    productMembers: [
       { id: 1, name: "John Snow", value: "John Snow" },
       { id: 2, name: "Jamie Lanister", value: "Jamie Lanister" },
       { id: 3, name: "Cersie Lanister", value: "Cersie Lanister" },
@@ -17,15 +17,15 @@ const options = [
   },
   {
     id: 2,
-    name: "Branch 2",
-    value: "Branch 2",
-    branchMembers: [{ id: 4, name: "Jamie Lanister", value: "Jamie Lanister" }],
+    name: "Product 2",
+    value: "Product 2",
+    productMembers: [{ id: 4, name: "Jamie Lanister", value: "Jamie Lanister" }],
   },
   {
     id: 3,
-    name: "Branch 3",
-    value: "Branch 3",
-    branchMembers: [
+    name: "Product 3",
+    value: "Product 3",
+    productMembers: [
       { id: 8, name: "Cersie Lanister", value: "Cersie Lanister" },
     ],
   },
@@ -41,126 +41,126 @@ export function closeDropdown(setIsOpen) {
   setIsOpen(false);
 }
 export function handleChange(id, setSelOptions, selOptions) {
-  if (!selOptions?.some((i) => i.branch === id)) {
+  if (!selOptions?.some((i) => i.product === id)) {
     setSelOptions([
       ...selOptions,
       {
-        branch: id,
+        product: id,
         members: [],
       },
     ]);
   } else {
-    const arrOptions = selOptions?.filter((i) => i?.branch !== id);
+    const arrOptions = selOptions?.filter((i) => i?.product !== id);
     setSelOptions(arrOptions);
   }
 }
 /**
  * Handles updating the selected options when a member is toggled.
- * @param {string} branchId - The id of the branch being updated
+ * @param {string} productId - The id of the product being updated
  * @param {string} memberId - The id of the member being toggled
  * @param {Function} setSelectedOptions - Callback to update the selected options state
  * @param {Array} selectedOptions - The current selected options state
  */
 export function handleMemberToggle(
-  branchId,
+  productId,
   memberId,
   setSelectedOptions,
   selectedOptions
 ) {
-  // Get index of the branch to update
-  const branchIndex = getBranchIndex(selectedOptions, branchId);
+  // Get index of the product to update
+  const productIndex = getProductIndex(selectedOptions, productId);
 
-  if (branchIndex === -1) {
-    // Branch not found - add new branch with member
-    const newBranch = createBranch(branchId, [memberId]);
-    return addNewBranch(selectedOptions, newBranch);
+  if (productIndex === -1) {
+    // Product not found - add new product with member
+    const newProduct = createProduct(productId, [memberId]);
+    return addNewProduct(selectedOptions, newProduct);
   } else {
-    // Branch found - update members
+    // Product found - update members
 
-    const branchToUpdate = selectedOptions[branchIndex];
+    const productToUpdate = selectedOptions[productIndex];
 
-    if (branchContainsMember(branchToUpdate, memberId)) {
+    if (productContainsMember(productToUpdate, memberId)) {
       // Member already selected, remove member
-      return removeMemberFromBranch(selectedOptions, branchIndex, memberId);
+      return removeMemberFromProduct(selectedOptions, productIndex, memberId);
     } else {
       // Member not selected, add member
-      return addMemberToBranch(selectedOptions, branchIndex, memberId);
+      return addMemberToProduct(selectedOptions, productIndex, memberId);
     }
   }
 }
 
 // Helper functions
 
-export function getBranchIndex(branches, branchId) {
-  return branches.findIndex((t) => t.branch === branchId);
+export function getProductIndex(products, productId) {
+  return products.findIndex((t) => t.product === productId);
 }
 
-export function createBranch(id, members) {
+export function createProduct(id, members) {
   return {
-    branch: id,
+    product: id,
     members,
   };
 }
 
-export function addNewBranch(branches, newBranch) {
-  return [...branches, newBranch];
+export function addNewProduct(products, newProduct) {
+  return [...products, newProduct];
 }
 
-export function branchContainsMember(branch, memberId) {
-  return branch.members.includes(memberId);
+export function productContainsMember(product, memberId) {
+  return product.members.includes(memberId);
 }
 
 /**
- * Adds a member to a branch in the selected options array
- * @param {Array} branches
- * @param {number} branchIndex
+ * Adds a member to a product in the selected options array
+ * @param {Array} products
+ * @param {number} productIndex
  * @param {string} memberId
- * @returns {Array} updated branches array
+ * @returns {Array} updated products array
  */
-export function addMemberToBranch(branches, branchIndex, memberId) {
-  const branchToUpdate = branches[branchIndex];
+export function addMemberToProduct(products, productIndex, memberId) {
+  const productToUpdate = products[productIndex];
 
-  const updatedBranch = {
-    ...branchToUpdate,
-    members: [...branchToUpdate.members, memberId],
+  const updatedProduct = {
+    ...productToUpdate,
+    members: [...productToUpdate.members, memberId],
   };
 
   return [
-    ...branches.slice(0, branchIndex),
-    updatedBranch,
-    ...branches.slice(branchIndex + 1),
+    ...products.slice(0, productIndex),
+    updatedProduct,
+    ...products.slice(productIndex + 1),
   ];
 }
 
 /**
- * Removes a member from a branch in the selected options array
- * @param {Array} branches
- * @param {number} branchIndex
+ * Removes a member from a product in the selected options array
+ * @param {Array} products
+ * @param {number} productIndex
  * @param {string} memberId
- * @returns {Array} updated branches array
+ * @returns {Array} updated products array
  */
-export function removeMemberFromBranch(branches, branchIndex, memberId) {
-  const branchToUpdate = branches[branchIndex];
+export function removeMemberFromProduct(products, productIndex, memberId) {
+  const productToUpdate = products[productIndex];
 
-  const updatedMembers = branchToUpdate.members.filter((id) => id !== memberId);
+  const updatedMembers = productToUpdate.members.filter((id) => id !== memberId);
 
-  const updatedBranch = {
-    ...branchToUpdate,
+  const updatedProduct = {
+    ...productToUpdate,
     members: updatedMembers,
   };
 
   if (updatedMembers.length === 0) {
-    // Last member removed, remove branch
+    // Last member removed, remove product
     return [
-      ...branches.slice(0, branchIndex),
-      ...branches.slice(branchIndex + 1),
+      ...products.slice(0, productIndex),
+      ...products.slice(productIndex + 1),
     ];
   } else {
-    // Update branch in place
+    // Update product in place
     return [
-      ...branches.slice(0, branchIndex),
-      updatedBranch,
-      ...branches.slice(branchIndex + 1),
+      ...products.slice(0, productIndex),
+      updatedProduct,
+      ...products.slice(productIndex + 1),
     ];
   }
 }
@@ -180,7 +180,7 @@ export default function ComboSelect({
       return;
     }
     setFilteredOptions(
-      options.filter((i) =>
+      options?.filter((i) =>
         i.value.toLowerCase().includes(search.toLowerCase())
       )
     );
@@ -191,8 +191,8 @@ export default function ComboSelect({
       ? setSelOptions(
           filteredOptions?.map((i) => {
             return {
-              branch: i.id,
-              members: i.branchMembers.map((m) => m.id),
+              product: i.id,
+              members: i.productMembers.map((m) => m.id),
             };
           })
         )
@@ -246,7 +246,7 @@ export default function ComboSelect({
                       data-testid={item.name}
                       label={item.name}
                       checked={() =>
-                        selOptions?.some((i) => i.branch === item.id)
+                        selOptions?.some((i) => i.product === item.id)
                       }
                       onChange={() =>
                         handleChange(
@@ -257,9 +257,9 @@ export default function ComboSelect({
                         )
                       }
                     />
-                    {selOptions?.some((i) => i.branch === item.id) && (
+                    {selOptions?.some((i) => i.product === item.id) && (
                       <ul className="pl-6 pt-2">
-                        {item.branchMembers.map((itx) => (
+                        {item.productMembers.map((itx) => (
                           <li key={itx.id}>
                             {" "}
                             <Checkbox
@@ -267,7 +267,7 @@ export default function ComboSelect({
                               data-testid={itx.name}
                               checked={() =>
                                 selOptions
-                                  ?.find((i) => i.branch === item.id)
+                                  ?.find((i) => i.product === item.id)
                                   ?.members?.includes(itx.id)
                               }
                               onChange={() =>

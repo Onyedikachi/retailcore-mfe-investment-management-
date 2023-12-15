@@ -7,13 +7,23 @@ exports[`Checkbox matches snapshot 1`] = `
       class="flex gap-x-3 items-center text-[#636363] text-sm cursor-pointer font-normal capitalize"
     >
       <input
-        class="accent-sterling-red-800"
+        class=" accent-sterling-red-800"
         data-testid="Test"
         type="checkbox"
       />
-      <span>
-        Test
-      </span>
+      <div
+        class="flex flex-col"
+      >
+         
+        <span
+          class="whitespace-nowrap block"
+        >
+          Test
+        </span>
+        <span
+          class="whitespace-nowrap text-xs text-[#aaa]"
+        />
+      </div>
     </label>
   </div>
 </DocumentFragment>

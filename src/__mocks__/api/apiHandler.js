@@ -9,7 +9,7 @@ export const handlers = [
   rest.get(`${baseUrl}/investments`, (req, res, ctx) => {
     // Simulate different responses based on the investmentId
     if (ctx.status == 200) {
-      return res(ctx.json(response.getInvestmentesResponse));
+      return res(ctx.json(response.getInvestmentsResponse));
     } else {
       return res(
         ctx.status(404),
@@ -22,7 +22,7 @@ export const handlers = [
   rest.get(`${baseUrl}/quick-link/all`, (req, res, ctx) => {
     // Simulate different responses based on the investmentId
     if (ctx.status == 200) {
-      return res(ctx.json(response.getInvestmentesResponse));
+      return res(ctx.json(response.getInvestmentsResponse));
     } else {
       return res(
         ctx.status(404),
@@ -34,7 +34,7 @@ export const handlers = [
   }),
   rest.post(`${baseUrl}/investment`, (req, res, ctx) => {
     if (ctx.status == 200) {
-      return res(ctx.json(response.getInvestmentesResponse));
+      return res(ctx.json(response.getInvestmentsResponse));
     } else {
       return res(
         ctx.status(404),
@@ -48,7 +48,7 @@ export const handlers = [
     // const { filter } = req.params;
     // Simulate different responses based on the investmentId
     if (ctx.status == 200) {
-      return res(ctx.json(response.getInvestmentesResponse));
+      return res(ctx.json(response.getInvestmentsResponse));
     } else {
       return res(
         ctx.status(404),
@@ -238,6 +238,7 @@ export const handlers = [
     }
   ),
 
+
   rest.post(
     `https://utilities-api.dev.bepeerless.co/v1/quick-link`,
     (req, res, ctx) => {
@@ -256,5 +257,6 @@ export const handlers = [
       }
     }
   ),
+  rest.get(`https://utilities-api.dev.bepeerless.co/v1/quick-link`)
   // Add more handlers for different endpoints as needed
 ];

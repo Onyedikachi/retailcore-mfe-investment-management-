@@ -1,0 +1,1497 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PricingConfig renders without errors 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <form
+        id="pricingconfig"
+      >
+        <div
+          class="flex flex-col gap-10"
+        >
+          <div
+            class="flex flex-col gap-[10px] "
+          >
+            <div
+              class="flex  gap-2 min-w-[300px]"
+            >
+               
+              <label
+                class=" flex text-base font-medium text-[#636363]"
+              >
+                Applicable Tenor
+                <span
+                  class="flex"
+                >
+                   
+                  <div>
+                    <svg
+                      data-testid="red-dot"
+                      fill="none"
+                      height="5"
+                      viewBox="0 0 5 5"
+                      width="5"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        cx="2.5"
+                        cy="2.5"
+                        fill="#CF2A2A"
+                        r="2.5"
+                      />
+                    </svg>
+                  </div>
+                </span>
+              </label>
+              <div
+                class="flex items-end cursor-pointer"
+              >
+                <div
+                  aria-describedby="tippy-tooltip-1"
+                  class="bg-white max-w-[320px]"
+                  data-tooltipped=""
+                  style="display: inline;"
+                >
+                  <div
+                    class="w-[18px] h-[18px] text-[#636363]"
+                  >
+                    <svg
+                      fill="currentColor"
+                      height="1em"
+                      stroke="currentColor"
+                      stroke-width="0"
+                      version="1.1"
+                      viewBox="0 0 16 16"
+                      width="1em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                      />
+                      <path
+                        d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                      />
+                      <path
+                        d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-6 py-5 flex flex-col gap-5 "
+            >
+              <div
+                class="flex items-center gap-[25px] mt-[14px]"
+              >
+                <div
+                  class="flex gap-[25px]"
+                >
+                  <div
+                    class="w-[200px]"
+                  >
+                    <div>
+                      <div
+                        class="undefined flex items-center gap-4"
+                      >
+                        <div>
+                          Min
+                        </div>
+                        <div
+                          class="w-full flex flex-col gap-2"
+                        >
+                          <div
+                            class="relative flex items-center max-w-[642px]"
+                          >
+                            <input
+                              class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                              data-testid="min-max-input"
+                              placeholder="0"
+                              type="number"
+                              value=""
+                            />
+                            <div
+                              class="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="w-[200px]"
+                  >
+                    <div
+                      class=" min-w-full"
+                      role="combobox"
+                    >
+                      <div
+                        class="flex  gap-2 min-w-[300px]"
+                      >
+                         
+                        <label
+                          class="flex  text-base font-semibold text-[#636363]"
+                        />
+                      </div>
+                      <div
+                        class="relative mt-1"
+                        data-headlessui-state=""
+                      >
+                        <button
+                          aria-expanded="false"
+                          aria-haspopup="listbox"
+                          class="relative w-full cursor-pointer  bg-white py-1  pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm border-[#8F8F8F]"
+                          data-headlessui-state=""
+                          id="headlessui-listbox-button-1"
+                          type="button"
+                        >
+                          <span
+                            class="block truncate"
+                          >
+                            <span
+                              class="text-[#aaa]"
+                            >
+                              Select duration
+                            </span>
+                          </span>
+                          <span
+                            class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-xs"
+                          >
+                            <svg
+                              fill="none"
+                              height="10"
+                              viewBox="0 0 15 10"
+                              width="15"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M15 0H0L7.14286 9.47368L15 0Z"
+                                fill="#636363"
+                              />
+                            </svg>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                 
+                -
+                <div
+                  class="flex gap-[25px]"
+                >
+                  <div
+                    class="w-[180px]"
+                  >
+                    <div>
+                      <div
+                        class="undefined flex items-center gap-4"
+                      >
+                        <div>
+                          Max
+                        </div>
+                        <div
+                          class="w-full flex flex-col gap-2"
+                        >
+                          <div
+                            class="relative flex items-center max-w-[642px]"
+                          >
+                            <input
+                              class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                              data-testid="min-max-input"
+                              placeholder="0"
+                              type="number"
+                              value=""
+                            />
+                            <div
+                              class="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="w-[180px]"
+                  >
+                    <div
+                      class=" min-w-full"
+                      role="combobox"
+                    >
+                      <div
+                        class="flex  gap-2 min-w-[300px]"
+                      >
+                         
+                        <label
+                          class="flex  text-base font-semibold text-[#636363]"
+                        />
+                      </div>
+                      <div
+                        class="relative mt-1"
+                        data-headlessui-state=""
+                      >
+                        <button
+                          aria-expanded="false"
+                          aria-haspopup="listbox"
+                          class="relative w-full cursor-pointer  bg-white py-1  pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm border-[#8F8F8F]"
+                          data-headlessui-state=""
+                          id="headlessui-listbox-button-2"
+                          type="button"
+                        >
+                          <span
+                            class="block truncate"
+                          >
+                            <span
+                              class="text-[#aaa]"
+                            >
+                              Select duration
+                            </span>
+                          </span>
+                          <span
+                            class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-xs"
+                          >
+                            <svg
+                              fill="none"
+                              height="10"
+                              viewBox="0 0 15 10"
+                              width="15"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M15 0H0L7.14286 9.47368L15 0Z"
+                                fill="#636363"
+                              />
+                            </svg>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                 
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex flex-col gap-[10px] "
+          >
+            <div
+              class="flex  gap-2 min-w-[300px]"
+            >
+               
+              <label
+                class=" flex text-base font-medium text-[#636363]"
+              >
+                Applicable Principal
+                <span
+                  class="flex"
+                >
+                   
+                  <div>
+                    <svg
+                      data-testid="red-dot"
+                      fill="none"
+                      height="5"
+                      viewBox="0 0 5 5"
+                      width="5"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        cx="2.5"
+                        cy="2.5"
+                        fill="#CF2A2A"
+                        r="2.5"
+                      />
+                    </svg>
+                  </div>
+                </span>
+              </label>
+              <div
+                class="flex items-end cursor-pointer"
+              >
+                <div
+                  aria-describedby="tippy-tooltip-2"
+                  class="bg-white max-w-[320px]"
+                  data-tooltipped=""
+                  style="display: inline;"
+                >
+                  <div
+                    class="w-[18px] h-[18px] text-[#636363]"
+                  >
+                    <svg
+                      fill="currentColor"
+                      height="1em"
+                      stroke="currentColor"
+                      stroke-width="0"
+                      version="1.1"
+                      viewBox="0 0 16 16"
+                      width="1em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                      />
+                      <path
+                        d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                      />
+                      <path
+                        d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-6 py-5 flex flex-col gap-5 "
+            >
+              <div
+                class="flex items-center gap-[25px] mt-[14px]"
+              >
+                <div
+                  class="flex gap-[25px]"
+                >
+                  <div>
+                    <div
+                      class="w-[300px] flex items-center gap-4"
+                    >
+                      <div>
+                        Min
+                      </div>
+                      <div
+                        class="w-full flex flex-col gap-2"
+                      >
+                        <div
+                          class="relative flex items-center max-w-[642px]"
+                        >
+                          <input
+                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                            id="applicablePrincipalMin"
+                            inputmode="decimal"
+                            name="applicablePrincipalMin"
+                            placeholder="0"
+                            type="text"
+                            value=""
+                          />
+                          <div
+                            class="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                 
+                -
+                <div
+                  class="flex gap-[25px]"
+                >
+                  <div>
+                    <div
+                      class="w-[300px] flex items-center gap-4"
+                    >
+                      <div>
+                        Max
+                      </div>
+                      <div
+                        class="w-full flex flex-col gap-2"
+                      >
+                        <div
+                          class="relative flex items-center max-w-[642px]"
+                        >
+                          <input
+                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                            id="applicablePrincipalMax"
+                            inputmode="decimal"
+                            name="applicablePrincipalMax"
+                            placeholder="0"
+                            type="text"
+                            value=""
+                          />
+                          <div
+                            class="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                 
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex flex-col gap-[10px] "
+          >
+            <div
+              class="flex  gap-2 min-w-[300px]"
+            >
+               
+              <label
+                class=" flex text-base font-medium text-[#636363]"
+              >
+                Applicable Interest Rate Range (Per Annum)
+                <span
+                  class="flex"
+                >
+                   
+                  <div>
+                    <svg
+                      data-testid="red-dot"
+                      fill="none"
+                      height="5"
+                      viewBox="0 0 5 5"
+                      width="5"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        cx="2.5"
+                        cy="2.5"
+                        fill="#CF2A2A"
+                        r="2.5"
+                      />
+                    </svg>
+                  </div>
+                </span>
+              </label>
+              <div
+                class="flex items-end cursor-pointer"
+              >
+                <div
+                  aria-describedby="tippy-tooltip-3"
+                  class="bg-white max-w-[320px]"
+                  data-tooltipped=""
+                  style="display: inline;"
+                >
+                  <div
+                    class="w-[18px] h-[18px] text-[#636363]"
+                  >
+                    <svg
+                      fill="currentColor"
+                      height="1em"
+                      stroke="currentColor"
+                      stroke-width="0"
+                      version="1.1"
+                      viewBox="0 0 16 16"
+                      width="1em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                      />
+                      <path
+                        d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                      />
+                      <path
+                        d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-6 py-5 flex flex-col gap-5 "
+            >
+              <div
+                class="flex gap-[51px] mb-[10px]"
+              >
+                <div
+                  class="flex items-center"
+                >
+                  <input
+                    class="h-4 w-4 border-gray-300 accent-sterling-red-800"
+                    id="Vary by principal"
+                    name="interestRateRangeType"
+                    type="radio"
+                    value="0"
+                  />
+                  <label
+                    class="ml-3 block text-base font-medium leading-6 text-[#636363]"
+                    for="Vary by principal"
+                  >
+                    Vary by principal
+                  </label>
+                </div>
+                <div
+                  class="flex items-center"
+                >
+                  <input
+                    class="h-4 w-4 border-gray-300 accent-sterling-red-800"
+                    id="Vary by tenor"
+                    name="interestRateRangeType"
+                    type="radio"
+                    value="1"
+                  />
+                  <label
+                    class="ml-3 block text-base font-medium leading-6 text-[#636363]"
+                    for="Vary by tenor"
+                  >
+                    Vary by tenor
+                  </label>
+                </div>
+                <div
+                  class="flex items-center"
+                >
+                  <input
+                    class="h-4 w-4 border-gray-300 accent-sterling-red-800"
+                    id="Do not vary by principal or tenor"
+                    name="interestRateRangeType"
+                    type="radio"
+                    value="2"
+                  />
+                  <label
+                    class="ml-3 block text-base font-medium leading-6 text-[#636363]"
+                    for="Do not vary by principal or tenor"
+                  >
+                    Do not vary by principal or tenor
+                  </label>
+                </div>
+              </div>
+              <div>
+                <div
+                  class="flex justify-end mt-1"
+                >
+                  <div
+                    class="flex items-center gap-4 cursor-pointer text-[##636363] ml-auto"
+                  >
+                    <span
+                      class="text-[20px]"
+                    >
+                       
+                      <svg
+                        fill="currentColor"
+                        height="1em"
+                        stroke="currentColor"
+                        stroke-width="0"
+                        viewBox="0 0 512 512"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M256 48C141.125 48 48 141.125 48 256s93.125 208 208 208 208-93.125 208-208S370.875 48 256 48zm107 229h-86v86h-42v-86h-86v-42h86v-86h42v86h86v42z"
+                        />
+                      </svg>
+                    </span>
+                     
+                    <span>
+                      Add slab
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex flex-col gap-[25px] "
+          >
+            <span
+              class="capitalize min-w-[300px] flex items-center gap-[5px] text-[##636363] text-base font-medium"
+            >
+              Interest Computation Days in Year Method
+              <div
+                class="flex items-end cursor-pointer"
+              >
+                <div
+                  aria-describedby="tippy-tooltip-4"
+                  class="bg-white max-w-[320px]"
+                  data-tooltipped=""
+                  style="display: inline;"
+                >
+                  <div
+                    class="w-[18px] h-[18px] text-[#636363]"
+                  >
+                    <svg
+                      fill="currentColor"
+                      height="1em"
+                      stroke="currentColor"
+                      stroke-width="0"
+                      version="1.1"
+                      viewBox="0 0 16 16"
+                      width="1em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                      />
+                      <path
+                        d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                      />
+                      <path
+                        d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div
+                aria-describedby="tippy-tooltip-5"
+                class="bg-white max-w-[320px]"
+                data-tooltipped=""
+                style="display: inline;"
+              >
+                <div
+                  class="w-[18px] h-[18px] text-[#636363]"
+                >
+                  <svg
+                    fill="currentColor"
+                    height="1em"
+                    stroke="currentColor"
+                    stroke-width="0"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                    />
+                    <path
+                      d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                    />
+                    <path
+                      d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </span>
+            <div
+              class="w-[300px]"
+            >
+              <div
+                class=" min-w-full"
+                role="combobox"
+              >
+                <div
+                  class="flex  gap-2 min-w-[300px]"
+                >
+                   
+                  <label
+                    class="flex  text-base font-semibold text-[#636363]"
+                  />
+                </div>
+                <div
+                  class="relative mt-1"
+                >
+                  <button
+                    aria-expanded="false"
+                    aria-haspopup="listbox"
+                    class="relative w-full cursor-pointer  bg-white py-1  pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm border-[#8F8F8F]"
+                    data-headlessui-state="disabled"
+                    disabled=""
+                    id="headlessui-listbox-button-3"
+                    type="button"
+                  >
+                    <span
+                      class="block truncate"
+                    >
+                      <span
+                        class="text-[#aaa]"
+                      >
+                        Select
+                      </span>
+                    </span>
+                    <span
+                      class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-xs"
+                    >
+                      <svg
+                        fill="none"
+                        height="10"
+                        viewBox="0 0 15 10"
+                        width="15"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M15 0H0L7.14286 9.47368L15 0Z"
+                          fill="#636363"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </body>,
+  "container": <div>
+    <form
+      id="pricingconfig"
+    >
+      <div
+        class="flex flex-col gap-10"
+      >
+        <div
+          class="flex flex-col gap-[10px] "
+        >
+          <div
+            class="flex  gap-2 min-w-[300px]"
+          >
+             
+            <label
+              class=" flex text-base font-medium text-[#636363]"
+            >
+              Applicable Tenor
+              <span
+                class="flex"
+              >
+                 
+                <div>
+                  <svg
+                    data-testid="red-dot"
+                    fill="none"
+                    height="5"
+                    viewBox="0 0 5 5"
+                    width="5"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="2.5"
+                      cy="2.5"
+                      fill="#CF2A2A"
+                      r="2.5"
+                    />
+                  </svg>
+                </div>
+              </span>
+            </label>
+            <div
+              class="flex items-end cursor-pointer"
+            >
+              <div
+                aria-describedby="tippy-tooltip-1"
+                class="bg-white max-w-[320px]"
+                data-tooltipped=""
+                style="display: inline;"
+              >
+                <div
+                  class="w-[18px] h-[18px] text-[#636363]"
+                >
+                  <svg
+                    fill="currentColor"
+                    height="1em"
+                    stroke="currentColor"
+                    stroke-width="0"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                    />
+                    <path
+                      d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                    />
+                    <path
+                      d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-6 py-5 flex flex-col gap-5 "
+          >
+            <div
+              class="flex items-center gap-[25px] mt-[14px]"
+            >
+              <div
+                class="flex gap-[25px]"
+              >
+                <div
+                  class="w-[200px]"
+                >
+                  <div>
+                    <div
+                      class="undefined flex items-center gap-4"
+                    >
+                      <div>
+                        Min
+                      </div>
+                      <div
+                        class="w-full flex flex-col gap-2"
+                      >
+                        <div
+                          class="relative flex items-center max-w-[642px]"
+                        >
+                          <input
+                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                            data-testid="min-max-input"
+                            placeholder="0"
+                            type="number"
+                            value=""
+                          />
+                          <div
+                            class="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="w-[200px]"
+                >
+                  <div
+                    class=" min-w-full"
+                    role="combobox"
+                  >
+                    <div
+                      class="flex  gap-2 min-w-[300px]"
+                    >
+                       
+                      <label
+                        class="flex  text-base font-semibold text-[#636363]"
+                      />
+                    </div>
+                    <div
+                      class="relative mt-1"
+                      data-headlessui-state=""
+                    >
+                      <button
+                        aria-expanded="false"
+                        aria-haspopup="listbox"
+                        class="relative w-full cursor-pointer  bg-white py-1  pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm border-[#8F8F8F]"
+                        data-headlessui-state=""
+                        id="headlessui-listbox-button-1"
+                        type="button"
+                      >
+                        <span
+                          class="block truncate"
+                        >
+                          <span
+                            class="text-[#aaa]"
+                          >
+                            Select duration
+                          </span>
+                        </span>
+                        <span
+                          class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-xs"
+                        >
+                          <svg
+                            fill="none"
+                            height="10"
+                            viewBox="0 0 15 10"
+                            width="15"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M15 0H0L7.14286 9.47368L15 0Z"
+                              fill="#636363"
+                            />
+                          </svg>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+               
+              -
+              <div
+                class="flex gap-[25px]"
+              >
+                <div
+                  class="w-[180px]"
+                >
+                  <div>
+                    <div
+                      class="undefined flex items-center gap-4"
+                    >
+                      <div>
+                        Max
+                      </div>
+                      <div
+                        class="w-full flex flex-col gap-2"
+                      >
+                        <div
+                          class="relative flex items-center max-w-[642px]"
+                        >
+                          <input
+                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                            data-testid="min-max-input"
+                            placeholder="0"
+                            type="number"
+                            value=""
+                          />
+                          <div
+                            class="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="w-[180px]"
+                >
+                  <div
+                    class=" min-w-full"
+                    role="combobox"
+                  >
+                    <div
+                      class="flex  gap-2 min-w-[300px]"
+                    >
+                       
+                      <label
+                        class="flex  text-base font-semibold text-[#636363]"
+                      />
+                    </div>
+                    <div
+                      class="relative mt-1"
+                      data-headlessui-state=""
+                    >
+                      <button
+                        aria-expanded="false"
+                        aria-haspopup="listbox"
+                        class="relative w-full cursor-pointer  bg-white py-1  pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm border-[#8F8F8F]"
+                        data-headlessui-state=""
+                        id="headlessui-listbox-button-2"
+                        type="button"
+                      >
+                        <span
+                          class="block truncate"
+                        >
+                          <span
+                            class="text-[#aaa]"
+                          >
+                            Select duration
+                          </span>
+                        </span>
+                        <span
+                          class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-xs"
+                        >
+                          <svg
+                            fill="none"
+                            height="10"
+                            viewBox="0 0 15 10"
+                            width="15"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M15 0H0L7.14286 9.47368L15 0Z"
+                              fill="#636363"
+                            />
+                          </svg>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+               
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex flex-col gap-[10px] "
+        >
+          <div
+            class="flex  gap-2 min-w-[300px]"
+          >
+             
+            <label
+              class=" flex text-base font-medium text-[#636363]"
+            >
+              Applicable Principal
+              <span
+                class="flex"
+              >
+                 
+                <div>
+                  <svg
+                    data-testid="red-dot"
+                    fill="none"
+                    height="5"
+                    viewBox="0 0 5 5"
+                    width="5"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="2.5"
+                      cy="2.5"
+                      fill="#CF2A2A"
+                      r="2.5"
+                    />
+                  </svg>
+                </div>
+              </span>
+            </label>
+            <div
+              class="flex items-end cursor-pointer"
+            >
+              <div
+                aria-describedby="tippy-tooltip-2"
+                class="bg-white max-w-[320px]"
+                data-tooltipped=""
+                style="display: inline;"
+              >
+                <div
+                  class="w-[18px] h-[18px] text-[#636363]"
+                >
+                  <svg
+                    fill="currentColor"
+                    height="1em"
+                    stroke="currentColor"
+                    stroke-width="0"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                    />
+                    <path
+                      d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                    />
+                    <path
+                      d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-6 py-5 flex flex-col gap-5 "
+          >
+            <div
+              class="flex items-center gap-[25px] mt-[14px]"
+            >
+              <div
+                class="flex gap-[25px]"
+              >
+                <div>
+                  <div
+                    class="w-[300px] flex items-center gap-4"
+                  >
+                    <div>
+                      Min
+                    </div>
+                    <div
+                      class="w-full flex flex-col gap-2"
+                    >
+                      <div
+                        class="relative flex items-center max-w-[642px]"
+                      >
+                        <input
+                          class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                          id="applicablePrincipalMin"
+                          inputmode="decimal"
+                          name="applicablePrincipalMin"
+                          placeholder="0"
+                          type="text"
+                          value=""
+                        />
+                        <div
+                          class="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+               
+              -
+              <div
+                class="flex gap-[25px]"
+              >
+                <div>
+                  <div
+                    class="w-[300px] flex items-center gap-4"
+                  >
+                    <div>
+                      Max
+                    </div>
+                    <div
+                      class="w-full flex flex-col gap-2"
+                    >
+                      <div
+                        class="relative flex items-center max-w-[642px]"
+                      >
+                        <input
+                          class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                          id="applicablePrincipalMax"
+                          inputmode="decimal"
+                          name="applicablePrincipalMax"
+                          placeholder="0"
+                          type="text"
+                          value=""
+                        />
+                        <div
+                          class="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+               
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex flex-col gap-[10px] "
+        >
+          <div
+            class="flex  gap-2 min-w-[300px]"
+          >
+             
+            <label
+              class=" flex text-base font-medium text-[#636363]"
+            >
+              Applicable Interest Rate Range (Per Annum)
+              <span
+                class="flex"
+              >
+                 
+                <div>
+                  <svg
+                    data-testid="red-dot"
+                    fill="none"
+                    height="5"
+                    viewBox="0 0 5 5"
+                    width="5"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="2.5"
+                      cy="2.5"
+                      fill="#CF2A2A"
+                      r="2.5"
+                    />
+                  </svg>
+                </div>
+              </span>
+            </label>
+            <div
+              class="flex items-end cursor-pointer"
+            >
+              <div
+                aria-describedby="tippy-tooltip-3"
+                class="bg-white max-w-[320px]"
+                data-tooltipped=""
+                style="display: inline;"
+              >
+                <div
+                  class="w-[18px] h-[18px] text-[#636363]"
+                >
+                  <svg
+                    fill="currentColor"
+                    height="1em"
+                    stroke="currentColor"
+                    stroke-width="0"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                    />
+                    <path
+                      d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                    />
+                    <path
+                      d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-6 py-5 flex flex-col gap-5 "
+          >
+            <div
+              class="flex gap-[51px] mb-[10px]"
+            >
+              <div
+                class="flex items-center"
+              >
+                <input
+                  class="h-4 w-4 border-gray-300 accent-sterling-red-800"
+                  id="Vary by principal"
+                  name="interestRateRangeType"
+                  type="radio"
+                  value="0"
+                />
+                <label
+                  class="ml-3 block text-base font-medium leading-6 text-[#636363]"
+                  for="Vary by principal"
+                >
+                  Vary by principal
+                </label>
+              </div>
+              <div
+                class="flex items-center"
+              >
+                <input
+                  class="h-4 w-4 border-gray-300 accent-sterling-red-800"
+                  id="Vary by tenor"
+                  name="interestRateRangeType"
+                  type="radio"
+                  value="1"
+                />
+                <label
+                  class="ml-3 block text-base font-medium leading-6 text-[#636363]"
+                  for="Vary by tenor"
+                >
+                  Vary by tenor
+                </label>
+              </div>
+              <div
+                class="flex items-center"
+              >
+                <input
+                  class="h-4 w-4 border-gray-300 accent-sterling-red-800"
+                  id="Do not vary by principal or tenor"
+                  name="interestRateRangeType"
+                  type="radio"
+                  value="2"
+                />
+                <label
+                  class="ml-3 block text-base font-medium leading-6 text-[#636363]"
+                  for="Do not vary by principal or tenor"
+                >
+                  Do not vary by principal or tenor
+                </label>
+              </div>
+            </div>
+            <div>
+              <div
+                class="flex justify-end mt-1"
+              >
+                <div
+                  class="flex items-center gap-4 cursor-pointer text-[##636363] ml-auto"
+                >
+                  <span
+                    class="text-[20px]"
+                  >
+                     
+                    <svg
+                      fill="currentColor"
+                      height="1em"
+                      stroke="currentColor"
+                      stroke-width="0"
+                      viewBox="0 0 512 512"
+                      width="1em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M256 48C141.125 48 48 141.125 48 256s93.125 208 208 208 208-93.125 208-208S370.875 48 256 48zm107 229h-86v86h-42v-86h-86v-42h86v-86h42v86h86v42z"
+                      />
+                    </svg>
+                  </span>
+                   
+                  <span>
+                    Add slab
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex flex-col gap-[25px] "
+        >
+          <span
+            class="capitalize min-w-[300px] flex items-center gap-[5px] text-[##636363] text-base font-medium"
+          >
+            Interest Computation Days in Year Method
+            <div
+              class="flex items-end cursor-pointer"
+            >
+              <div
+                aria-describedby="tippy-tooltip-4"
+                class="bg-white max-w-[320px]"
+                data-tooltipped=""
+                style="display: inline;"
+              >
+                <div
+                  class="w-[18px] h-[18px] text-[#636363]"
+                >
+                  <svg
+                    fill="currentColor"
+                    height="1em"
+                    stroke="currentColor"
+                    stroke-width="0"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                    />
+                    <path
+                      d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                    />
+                    <path
+                      d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div
+              aria-describedby="tippy-tooltip-5"
+              class="bg-white max-w-[320px]"
+              data-tooltipped=""
+              style="display: inline;"
+            >
+              <div
+                class="w-[18px] h-[18px] text-[#636363]"
+              >
+                <svg
+                  fill="currentColor"
+                  height="1em"
+                  stroke="currentColor"
+                  stroke-width="0"
+                  version="1.1"
+                  viewBox="0 0 16 16"
+                  width="1em"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                  />
+                  <path
+                    d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                  />
+                  <path
+                    d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                  />
+                </svg>
+              </div>
+            </div>
+          </span>
+          <div
+            class="w-[300px]"
+          >
+            <div
+              class=" min-w-full"
+              role="combobox"
+            >
+              <div
+                class="flex  gap-2 min-w-[300px]"
+              >
+                 
+                <label
+                  class="flex  text-base font-semibold text-[#636363]"
+                />
+              </div>
+              <div
+                class="relative mt-1"
+              >
+                <button
+                  aria-expanded="false"
+                  aria-haspopup="listbox"
+                  class="relative w-full cursor-pointer  bg-white py-1  pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm border-[#8F8F8F]"
+                  data-headlessui-state="disabled"
+                  disabled=""
+                  id="headlessui-listbox-button-3"
+                  type="button"
+                >
+                  <span
+                    class="block truncate"
+                  >
+                    <span
+                      class="text-[#aaa]"
+                    >
+                      Select
+                    </span>
+                  </span>
+                  <span
+                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-xs"
+                  >
+                    <svg
+                      fill="none"
+                      height="10"
+                      viewBox="0 0 15 10"
+                      width="15"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M15 0H0L7.14286 9.47368L15 0Z"
+                        fill="#636363"
+                      />
+                    </svg>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "store": Object {
+    "@@observable": [Function],
+    "dispatch": [Function],
+    "getState": [Function],
+    "replaceReducer": [Function],
+    "subscribe": [Function],
+  },
+  "unmount": [Function],
+}
+`;

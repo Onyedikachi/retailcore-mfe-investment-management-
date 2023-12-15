@@ -19,8 +19,7 @@ module.exports = (webpackConfigEnv, argv) => {
     devServer: {
       port: 8089,
       headers: {
-        "Access-Control-Allow-Origin":
-          "https://dev2-retailcore-mfe-root-config.dev.bepeerless.co",
+        "Access-Control-Allow-Origin": "https://seabaas.dev.bepeerless.co",
       },
       client: {
         webSocketURL: {

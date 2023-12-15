@@ -2,7 +2,14 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Menu } from "@headlessui/react";
-import { FaEye, FaEdit, FaTrash, FaPlayCircle, FaBan } from "react-icons/fa";
+import {
+  FaEye,
+  FaEdit,
+  FaTrash,
+  FaPlayCircle,
+  FaBan,
+  FaClone,
+} from "react-icons/fa";
 import { usePopper } from "../hooks/use-popper";
 
 export function handleIcons(value: string) {
@@ -17,6 +24,8 @@ export function handleIcons(value: string) {
       return <FaBan className="text-[#DC5A5D]" />;
     case "FaPlayCircle":
       return <FaPlayCircle className="text-[#2FB755]" />;
+    case "FaClone":
+      return <FaClone className="text-[#085CA5]" />;
   }
 }
 export default function TestDrop({
@@ -60,7 +69,7 @@ export default function TestDrop({
                       data-testid="menu-button"
                       name={item.text}
                       onClick={() => handleClick(item?.text)}
-                      className={` group flex w-full items-center whitespace-nowrap px-4 py-3 text-sm text-[#636363] gap-x-3 hover:bg-[#F9E5E5]`}
+                      className={` group flex w-full items-center whitespace-nowrap px-4 py-[11px] text-sm text-[#636363] gap-x-3 hover:bg-[#F9E5E5]`}
                     >
                       {handleIcons(item?.icon)} {item?.text}
                     </button>

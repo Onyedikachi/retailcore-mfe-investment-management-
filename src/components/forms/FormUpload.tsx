@@ -111,10 +111,10 @@ export const handleFileChange = (
     return;
   }
 
-  if (!accept?.includes(fileType)) {
-    setError("File type not supported , please delete and upload another file");
-    setHasError(true);
-  }
+  // if (!accept?.includes(fileType)) {
+  //   setError("File type not supported , please delete and upload another file");
+  //   setHasError(true);
+  // }
 
   const reader = new FileReader();
   reader.onload = () => {

@@ -21,10 +21,12 @@ export default function MultiSelect({
   options,
   children,
   getOptions,
+  label = "[Select all]",
 }: {
   options: any;
   children: ReactNode;
   getOptions: any;
+  label?: string;
 }): React.JSX.Element {
   const [isSelectAll] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -32,8 +34,14 @@ export default function MultiSelect({
 
   useEffect(() => {
     getOptions(selectedOptions);
-  }, [selectedOptions, isOpen]);
-
+  }, [selectedOptions]);
+  const handleAll = (val) => {
+    if (val) {
+      setSelectedOptions(options);
+    } else {
+      setSelectedOptions([]);
+    }
+  };
   return (
     <div className="relative max-w-max z-40">
       <OutsideClickHandler onOutsideClick={() => closeDropdown(setIsOpen)}>
@@ -49,14 +57,15 @@ export default function MultiSelect({
               <ul className="grid gap-y-3">
                 <li className="cursor-pointer">
                   <Checkbox
-                    label="[Select all]"
-                    onChange={() => setSelectedOptions(options)}
+                    label={label}
+                    onChange={handleAll}
                     checked={isSelectAll}
                   />
                 </li>
-                {options.map((item) => (
+                {options?.map((item) => (
                   <li key={item.id} className="cursor-pointer">
                     <Checkbox
+                      data-testid="select-item"
                       label={item.name}
                       checked={() =>
                         selectedOptions.some((i) => i.value === item.value)
