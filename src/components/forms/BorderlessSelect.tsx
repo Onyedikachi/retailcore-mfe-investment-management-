@@ -39,7 +39,7 @@ export default function Select({
   };
   // Change selected when changing status category
   useEffect(() => {
-    if (defaultValue !== null) {
+    if (defaultValue) {
       setSelected(options?.find((i) => i.value === defaultValue));
      
     }

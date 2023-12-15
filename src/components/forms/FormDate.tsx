@@ -85,7 +85,7 @@ const FormDate: React.FC<FormDateProps> = ({
             errors && errors[inputName] ? "border-red-600" : "border-[#8F8F8F]"
           }`}
         />
-       <span className="absolute right-[2px]"> <FaCalendar /></span>
+       <span className="absolute right-[2px]"> <FaRegCalendarAlt /></span>
       </div>
       {errors && errors[inputName] && (
         <span className="text-sm text-danger-500">

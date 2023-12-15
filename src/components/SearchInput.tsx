@@ -47,7 +47,7 @@ export function SearchValues({
         </span>
         {type === "multi" && (
           <span className="block text-xs max-w-max truncate text-[#636363] capitalize">
-            {item?.name}
+            {item?.slogan}
           </span>
         )}
         <span className="block text-xs text-[#aaa]">{item?.code}</span>

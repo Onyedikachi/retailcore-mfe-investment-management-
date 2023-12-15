@@ -691,9 +691,10 @@ export const toolTips = {
     "The allowed investment maturity duration at the point of booking the product for a customer",
   applicablePrincipal:
     "The allowed investment amount at the point of booking the product for the customer",
-  applicableInterestRange: "Interest Range",
-  interestComputation: "Interest Computation",
+  applicableInterestRange: "Specify the percentage a which interest will be charged on the loan amount",
+  interestComputation: "<div><p>30E/360: Counts the days from the calendar, but also introduces some changes on the months with 31 and 28 days.</p><p>Actual/360: Computes the interest daily by counting the number of days in the calendar, but using a fixed 360-day year length.</p><p>Actual/365: Calculates the interest daily by counting the number of days in the calendar and using a fixed 365-day year length</p></div>",
 
-  allowPartLiquidation: "Allow part",
-  allowEarlyLiquidation: "AllowEarly",
+  allowPartLiquidation: "Allows customers to access their investment funds without fully cashing out their investment.",
+  allowEarlyLiquidation: "Allows for withdrawing or closing the investment before its predetermined maturity date",
+  description: "Enter a description for this loan product"
 };

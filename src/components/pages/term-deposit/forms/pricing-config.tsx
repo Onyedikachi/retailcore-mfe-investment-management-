@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { RiInformationLine } from "react-icons/ri";
+import { ImInfo } from "react-icons/im";
+import { Tooltip } from "react-tippy";
+import "react-tippy/dist/tippy.css";
 import { IoMdAddCircle } from "react-icons/io";
 import { MinMaxInput } from "@app/components/forms";
 import { BorderlessSelect } from "@app/components/forms";
@@ -163,7 +165,12 @@ export default function PricingConfig({
       Object.entries(formData).forEach(([name, value]) =>
         setValue(name, value)
       );
-      if (process === "continue" || process === "modify" || process === "withdraw_modify" || process === "clone") {
+      if (
+        process === "continue" ||
+        process === "modify" ||
+        process === "withdraw_modify" ||
+        process === "clone"
+      ) {
         trigger();
       }
     }
@@ -447,7 +454,7 @@ export default function PricingConfig({
                                   ?.tenorMinUnit?.message
                               }
                               defaultValue={
-                                formData?.interestRateConfigModels[index]
+                                formData?.interestRateConfigModels[0]
                                   ?.tenorMinUnit
                               }
                               setValue={setValue}
@@ -488,7 +495,7 @@ export default function PricingConfig({
                                   ?.tenorMaxUnit?.message
                               }
                               defaultValue={
-                                formData?.interestRateConfigModels?.[index]
+                                formData?.interestRateConfigModels?.[0]
                                   ?.tenorMaxUnit
                               }
                               setValue={setValue}
@@ -594,6 +601,36 @@ export default function PricingConfig({
           <span className="capitalize min-w-[300px] flex items-center gap-[5px] text-[##636363] text-base font-medium">
             Interest Computation Days in Year Method
             <FormToolTip tip={toolTips.interestComputation} />
+            <Tooltip
+              theme="light"
+              distance={20}
+              size="small"
+              arrow
+              className="bg-white max-w-[320px]"
+              html={
+                <div className="text-left text-xs  max-w-[320px]">
+                  <p>
+                    <span className="font-semibold">30E/360:</span> Counts the
+                    days from the calendar, but also introduces some changes on
+                    the months with 31 and 28 days.
+                  </p>
+                  <p>
+                    <span className="font-semibold"> Actual/360:</span> Computes
+                    the interest daily by counting the number of days in the
+                    calendar, but using a fixed 360-day year length.
+                  </p>
+                  <p>
+                    <span className="font-semibold"> Actual/365:</span> Calculates
+                    the interest daily by counting the number of days in the
+                    calendar and using a fixed 365-day year length
+                  </p>
+                </div>
+              }
+            >
+              <div className="w-[18px] h-[18px] text-[#636363]">
+                <ImInfo />
+              </div>
+            </Tooltip>
           </span>
 
           <div className="w-[300px]">

@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+
+
 import { paths } from "@app/routes/paths";
 import { Confirm, Failed, Success } from "@app/components/modals";
 import {
@@ -8,6 +10,7 @@ import {
   useGetProductDetailQuery,
   useModifyProductMutation,
   useModifyRequestMutation,
+  
 } from "@app/api";
 import {
   Breadcrumbs,
@@ -43,7 +46,6 @@ export default function CreateTermDeposit() {
   const activeId = useRef(null);
   const previousData = useRef({});
   const [step, setStep] = useState(1);
-
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [subText, setSubText] = useState("");
   const [successText, setSuccessText] = useState("");
@@ -180,6 +182,8 @@ export default function CreateTermDeposit() {
     { skip: !id }
   );
 
+
+
   const {
     data: productDetails,
     isLoading: productDetailsIsLoading,
@@ -198,8 +202,8 @@ export default function CreateTermDeposit() {
         previousData.current = {
           ...previousData.current,
           productName: productDetails?.data?.productInfo.productName,
-          prodType: productDetails?.data?.productInfo.productType,
-          state: productDetails?.data?.productInfo.state,
+          prodType: productDetails?.data?.productType,
+          state: productDetails?.data?.state,
           description: productDetails?.data?.productInfo.description,
           slogan: productDetails?.data?.productInfo.slogan,
           currency: productDetails?.data?.productInfo.currency,
@@ -208,6 +212,7 @@ export default function CreateTermDeposit() {
           request: "",
           initiatorId: "",
           approved_By_Id: "",
+          date: new Date(),
         };
       }
       setProductData({
@@ -232,8 +237,9 @@ export default function CreateTermDeposit() {
     step < termDepositFormSteps.length
       ? handleNext(step, setStep, termDepositFormSteps)
       : navigate(
-          `/product-factory/investment/term-deposit/${process}?id=${id}&stage=summary`
-        );
+        `/product-factory/investment/term-deposit/${process}?${id ? `id=${id}&` : ''}stage=summary`
+      );
+      
   }
 
   const handleDraft = () => {
@@ -368,7 +374,7 @@ export default function CreateTermDeposit() {
   useEffect(() => {
     if (requestIsSuccess) {
       const data = JSON.parse(requestData?.data?.metaInfo);
-   
+
       if (process === "withdraw_modify") {
         previousData.current = {
           ...previousData.current,
@@ -549,7 +555,9 @@ export default function CreateTermDeposit() {
           )}
         </div>
       )}
-      {stage && stage === "summary" && <Preview formData={productData} previousData={previousData.current} />}
+      {stage && stage === "summary" && (
+        <Preview formData={productData} previousData={previousData.current} />
+      )}
     </div>
   );
 }

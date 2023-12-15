@@ -1,9 +1,9 @@
-import { axiosBaseQuery, getToken } from "@Sterling/shared";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { axiosBaseQuery } from "@Sterling/shared";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import { REHYDRATE } from "redux-persist";
 import { IGetProducts, ICreateProduct } from "./types/investmentApi.types";
 
-import { parseQueryParams } from "../utils/parseQueryParams";
+
 import urls from "../helpers/url_helpers";
 import { cleanObject } from "@app/utils/cleanObject";
 // baseQuery: axiosBaseQuery({ serviceKey: "investment" }),
@@ -43,10 +43,17 @@ export const investmentApi: any = createApi({
       query: () => {
         return {
           url: `https://product-mgt-api.dev.bepeerless.co/v1/charges/state?state=active`,
-          method: "get"
-        }
-      }
-
+          method: "get",
+        };
+      },
+    }),
+    getSystemAlert: builder.query<any, any>({
+      query: () => {
+        return {
+          url: `${urls.SYSTEM_ALERT}`,
+          method: "get",
+        };
+      },
     }),
    
     getPostProducts: builder.mutation<
@@ -215,7 +222,7 @@ export const investmentApi: any = createApi({
     >({
       query: (data) => {
         return {
-          url: `${urls.PRODUCT}/uploadsingledocument`,
+          url: `${urls.PRODUCT}/upload-document`,
           method: "post",
           body: data,
         };
@@ -257,7 +264,7 @@ export const investmentApi: any = createApi({
         return {
           url: `${urls.REQUESTS}/reject/${data.id}`,
           method: "put",
-          body: data
+          body: data,
         };
       },
     }),
@@ -295,7 +302,6 @@ export const {
   useModifyRequestMutation,
   useGetPostRequestsMutation,
   useGetPostProductsMutation,
-  useGetLedgersQuery,
   useGetProductActivitiesQuery,
   useGetProductByCodeQuery,
   useUploadDocumentMutation,
@@ -308,4 +314,5 @@ export const {
   useGetRequestDetailQuery,
   useApproveProductMutation,
   useRejectProductMutation,
+  useGetSystemAlertQuery
 } = investmentApi;

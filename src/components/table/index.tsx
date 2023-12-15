@@ -1,13 +1,16 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ToastContainer, toast } from "react-toastify";
+
+import { Tooltip } from "react-tippy";
+import "react-tippy/dist/tippy.css";
 import "react-toastify/dist/ReactToastify.css";
 import DropDown from "@app/components/DropDown";
 import { MultiSelect, DateSelect } from "@app/components/forms";
 import moment from "moment";
 import { BsFunnel } from "react-icons/bs";
-import { onChange } from "../forms/DateSelect";
 import BottomBarLoader from "../BottomBarLoader";
+// import Tooltip from "@app/components/ui/Tooltip";
 import {
   AppContext,
   InvestmentContext,
@@ -28,6 +31,7 @@ import {
   useDeleteProductRequestMutation,
 } from "@app/api";
 import Button from "../Button";
+import { ActiveFilterOptions } from "@app/constants";
 
 interface TableProps {
   headers: any[];
@@ -46,7 +50,26 @@ interface TableProps {
   type?: string;
   noData?: string;
 }
+export function handleUpdated(key, value, options) {
+  if (!options || !value) return;
 
+  const parseOptions = JSON.parse(options);
+  if (!parseOptions[key]) return;
+
+  if (key === "state") {
+    const newState = ActiveFilterOptions.find(
+      (n) => parseOptions[key] === n.value
+    )?.name;
+
+    if (newState === value) return null;
+  }
+
+  return value !== parseOptions[key]
+    ? `Updated on ${moment(parseOptions[key]?.date).format(
+        "DD MMM YYYY, hh:mm A"
+      )}`
+    : null;
+}
 // Extract Dropdown component for reusability
 export const DropdownButton = ({ options, handleClick }: any) => {
   return (
@@ -63,11 +86,6 @@ export const handleProductsDropdown = (
   locked = false,
   permissions: string[] = []
 ): any => {
-  // if (locked)
-  //   return DropDownOptions[status]?.filter(
-  //     (i: any) => i.text.toLowerCase() === "view"
-  //   );
-
   if (!status) return [];
   if (isChecker) {
     return DropDownOptions[status]?.filter(
@@ -95,13 +113,13 @@ export const handleProductsDropdown = (
 export const TextCellContent = ({ value }) => (
   <span className="relative">
     <span className="relative">{value || "-"}</span>
-    <span className="absolute block bg-[#CF2A2A] h-[6px] w-[6px] rounded-full -right-[6px] top-0"></span>
   </span>
 );
 
 export const ProductNameCellContent = ({ value }) => (
   <>
-    <span className="relative block font-medium text-sm text-[#aaaaaa] uppercase">
+    <br />
+    <span className="relative font-medium text-sm text-[#aaaaaa] uppercase">
       {value?.productCode || "-"}
     </span>
   </>
@@ -112,7 +130,6 @@ export const UpdatedOnCellContent = ({ value }) => (
     <span className=" relative">
       {moment(value).format("DD MMM YYYY, hh:mm A")}
     </span>
-    <span className="absolute block bg-[#CF2A2A] h-[6px] w-[6px] rounded-full -right-[6px] top-0"></span>
   </span>
 );
 
@@ -123,8 +140,6 @@ export const StateCellContent = ({ value }) => (
     )}`}
   >
     {value}
-
-    <span className="absolute block bg-[#CF2A2A] h-[6px] w-[6px] rounded-full -right-[6px] top-0"></span>
   </span>
 );
 export const StatusCellContent = ({ value, isChecker }) => (
@@ -134,7 +149,6 @@ export const StatusCellContent = ({ value, isChecker }) => (
     )}`}
   >
     {handleUserView(value, isChecker)} <FaEye />
-    <span className="absolute bg-[#CF2A2A] h-[6px] w-[6px] rounded-full -right-[6px] top-0"></span>
   </span>
 );
 
@@ -168,6 +182,7 @@ export default function TableComponent<TableProps>({
   } = useContext(InvestmentContext);
   const [action, setAction] = useState("");
   const navigate = useNavigate();
+  const previousData = useRef({});
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [isDeactivationOpen, setIsDeactivationOpen] = useState(false);
@@ -181,11 +196,25 @@ export default function TableComponent<TableProps>({
   const notify = (toastMessage) => toast.error(toastMessage);
   // function getdata(item, key) {}
   const handleAction = (action, items) => {
-    console.log("🚀 ~ file: index.tsx:171 ~ handleAction ~ action:", action);
     setAction(action);
     setDetail(items);
     dropDownClick(action, items);
     setSubText("");
+    previousData.current = {
+      ...previousData.current,
+      productName: items?.productName,
+      prodType: items?.productType,
+      state: items?.state,
+      description: items?.description,
+      slogan: items?.slogan,
+      currency: items?.currency,
+      requestStatus: null,
+      requestType: null,
+      request: "",
+      initiatorId: "",
+      approved_By_Id: "",
+      date: new Date(),
+    };
 
     if (action.toLowerCase() === Actions.DEACTIVATE) {
       setConfirmText(Prompts.PRODUCT_DEACTIVATE);
@@ -284,11 +313,16 @@ export default function TableComponent<TableProps>({
       setIsDeactivationOpen(true);
     }
     if (action.toLowerCase() === Actions.ACTIVATE) {
-      activateProduct({ id: detail?.id });
+      console.log(
+        "🚀 ~ file: index.tsx:319 ~ handleConfirm ~ previousData:",
+        previousData
+      );
+      activateProduct({
+        id: detail?.id,
+        recentlyUpdatedMeta: JSON.stringify(previousData),
+      });
     }
-    if (
-      action.toLowerCase() === Actions.MODIFY
-    ) {
+    if (action.toLowerCase() === Actions.MODIFY) {
       if (!permissions?.includes("CREATE_INVESTMENT_PRODUCT")) {
         notify("You do not have permission to make changes!");
       } else {
@@ -300,10 +334,7 @@ export default function TableComponent<TableProps>({
       }
     }
 
-    if (
-    
-      action.toLowerCase() === Actions.WITHDARW_MODIFY
-    ) {
+    if (action.toLowerCase() === Actions.WITHDARW_MODIFY) {
       if (!permissions?.includes("CREATE_INVESTMENT_PRODUCT")) {
         notify("You do not have permission to make changes!");
       } else {
@@ -369,9 +400,9 @@ export default function TableComponent<TableProps>({
                       <div className="relative flex items-center gap-x-20 justify-between">
                         <span className="relative">
                           {label}{" "}
-                          {key === "updated_At" && (
+                          {/* {key === "updated_At" && (
                             <span className="absolute block bg-[#CF2A2A] h-[6px] w-[6px] rounded-full -right-[6px] top-[1px]"></span>
-                          )}
+                          )} */}
                         </span>
 
                         <span>
@@ -411,7 +442,7 @@ export default function TableComponent<TableProps>({
                         className="text-base font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative"
                         key={idx.toString() + header.key}
                       >
-                        <span className="relative">
+                        <div className="relative max-w-max">
                           {header.key !== "actions" ? (
                             <>
                               {typeof item[header.key] !== "object" &&
@@ -482,7 +513,33 @@ export default function TableComponent<TableProps>({
                               )}
                             </div>
                           )}
-                        </span>
+                          {handleUpdated(
+                            header.key,
+                            item[header.key],
+                            item.recentlyUpdatedMeta
+                          ) && (
+                            <Tooltip
+                              size="small"
+                              arrow
+                              theme="light"
+                              distance={40}
+                              className="bg-white"
+                              html={
+                                <div className="text-[#636363] text-[10px] z-[999] whitespace-nowrap">
+                                  {handleUpdated(
+                                    header.key,
+                                    item[header.key],
+                                    item.recentlyUpdatedMeta
+                                  )}
+                                </div>
+                              }
+                            >
+                              <div className="h-[10px] w-[10px] flex items-center justify-center cursor-pointer">
+                                <span className="absolute h-[6px] w-[6px] -right-[6px] top-[1px] rounded-full bg-[#CF2A2A]"></span>
+                              </div>
+                            </Tooltip>
+                          )}{" "}
+                        </div>
                       </td>
                     ))}
                   </tr>

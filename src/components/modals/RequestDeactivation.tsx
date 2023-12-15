@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { IoArrowUndo } from "react-icons/io5";
 import { FaTimes } from "react-icons/fa";
 import ModalLayout from "./Layout";
@@ -30,6 +30,7 @@ export default function RequestDeactivation({
   const { role } = useContext(AppContext);
   const [reason, setReason] = useState("");
   const [url, setUrl] = useState("");
+  const previousData = useRef({});
   const [isFailed, setFailed] = useState(false);
   const [failedSubText, setFailedSubtext] = useState("");
   const [failedText, setFailedText] = useState("");
@@ -41,8 +42,30 @@ export default function RequestDeactivation({
     useDeactivateProductMutation();
 
   function handleDeactivate() {
-    deactivateProduct({ investmentProductId: detail.id, reason, url });
+    deactivateProduct({
+      investmentProductId: detail.id,
+      reason,
+      url,
+      recentlyUpdatedMeta: JSON.stringify(previousData),
+    });
   }
+  useEffect(() => {
+    previousData.current = {
+      ...previousData.current,
+      productName: detail?.productName,
+      prodType: detail?.productType,
+      state: detail?.state,
+      description: detail?.description,
+      slogan: detail?.slogan,
+      currency: detail?.currency,
+      requestStatus: null,
+      requestType: null,
+      request: "",
+      initiatorId: "",
+      approved_By_Id: "",
+      date: new Date(),
+    };
+  }, [detail]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -98,7 +121,7 @@ export default function RequestDeactivation({
             </label>
             <FormUpload
               data-testid="input"
-              accept={[ ]}
+              accept={[]}
               onUploadComplete={(value) => {
                 setUrl(value);
               }}
