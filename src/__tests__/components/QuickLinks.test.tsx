@@ -73,7 +73,7 @@ describe("QuickLinks component", () => {
 
 
   // Fetches data from useGetLinksQuery hook and updates state with received data
-  it("should fetch data from useGetLinksQuery hook and update state with received data", () => {
+  it("should fetch data from useGetLinksQuery hook and update state with received data", async () => {
     // Mock the useGetLinksQuery hook to return data
     const mockData = {
       data: [
@@ -95,87 +95,47 @@ describe("QuickLinks component", () => {
       isLoading: false,
       isFetching: false,
     };
-    jest.mock("@app/api", () => ({
-      useGetLinksQuery: jest.fn(() => {
-        return mockData;
-      }),
-      useUpdateLinkMutation: jest.fn().mockResolvedValue(mockData),
-      useAddLinkMutation: jest.fn(),
-    }));
+    
+
+
 
 
 
     // Import the QuickLinks component
 
     // Render the QuickLinks component
-    const {getByText} = renderWithProviders(<QuickLinks />);
+    const { getByText } = renderWithProviders(<QuickLinks />);
 
     // Assert that the links are renderWithProvidersed with the received data
-    // expect(getByText("Link 1")).toBeInTheDocument();
-    // expect(getByText("Link 2")).toBeInTheDocument();
+    waitFor(() => {
+      expect(getByText("Link 1")).toBeInTheDocument();
+      expect(getByText("Link 2")).toBeInTheDocument();
+    })
   });
 
-it("should renderWithProviders a message when isOpen state is true", () => {
-  // Mock the useState hook to set isOpen state to true
-  jest.mock("react", () => ({
-    ...jest.requireActual("react"),
-    useState: jest.fn(() => [true, jest.fn()]),
-  }));
+  it("should renderWithProviders a message when isOpen state is true", () => {
 
-  // Import the QuickLinks component
-  // const QuickLinks = require("../src/components/QuickLinks").default;
+    const { getByText } = renderWithProviders(<QuickLinks />);
 
-  // Render the QuickLinks component
-  const { getByText } = renderWithProviders(<QuickLinks />);
+    // Assert that the message is renderWithProvidersed
+    expect(getByText("Suggested from your activity")).toBeInTheDocument();
+  });
 
-  // Assert that the message is renderWithProvidersed
-  expect(getByText("Suggested from your activity")).toBeInTheDocument();
-});
+  //   // Renders default link when useGetLinksQuery hook returns null
+  it("should renderWithProviders default link when useGetLinksQuery hook returns null", () => {
 
-//   // Renders default link when useGetLinksQuery hook returns null
-//   it("should renderWithProviders default link when useGetLinksQuery hook returns null", () => {
-//     // Mock the useGetLinksQuery hook to return null
-//     jest.mock("@app/api", () => ({
-//       useGetLinksQuery: jest.fn(() => ({
-//         data: {
-//           data: [
-//             {
-//               name: "Link 1",
-//               link: "link1",
-//             },
-//             // {
-//             //   name: 'Link 2',
-//             //   link: 'link2',
-//             // },
-//           ],
-//         },
-//         isLoading: false,
-//         isFetching: false,
-//         isSuccess: true,
-//       })),
-//       useUpdateLinkMutation: jest.fn(),
-//       useAddLinkMutation: jest.fn(),
-//     }));
+    const { getByTestId } = renderWithProviders(
+      <MemoryRouter>
+        <InvestmentContext.Provider value={{ ...ProviderValue }}>
+          <QuickLinks />
+        </InvestmentContext.Provider>
+      </MemoryRouter>
+    );
+    expect(getByTestId("link-name")).toBeInTheDocument();
+    // Render the QuickLinks component
+    const { getByText } = renderWithProviders(<QuickLinks />);
+  });
 
-//     // Render the component
-//     const { getByTestId } = renderWithProviders(
-//       <MemoryRouter>
-//         <InvestmentContext.Provider value={{ ...ProviderValue }}>
-//           <QuickLinks />
-//         </InvestmentContext.Provider>
-//       </MemoryRouter>
-//     );
-//     // Assert that the component renders without errors
-//     expect(getByTestId("link-name")).toBeInTheDocument();
-//     // expect(getByTestId('Link 2')).toBeInTheDocument();
-//   });
-
-//     // Render the QuickLinks component
-//     const { getByText } = renderWithProviders(<QuickLinks />);
-
-//     // Assert that the default link is renderWithProvidersed
-//     expect(getByText("Product management")).toBeInTheDocument();
-//   });
 
 //   it("renderWithProviderss QuickLinks component with mocked useUpdateLinkMutation", () => {
 //     jest.mock("@app/api", () => ({
@@ -240,85 +200,36 @@ it("should renderWithProviders a message when isOpen state is true", () => {
 //     });
 //   });
 
-//   it("sets links state when quickLinks is available", async () => {
-//     const mockUseGetLinksQuery = jest.fn();
-//     useGetLinksQuery.mockReturnValue({
-//       data: {
-//         data: [
-//           // Your data structure here
-//         ],
-//       },
-//       isLoading: false,
-//       isFetching: false,
-//     });
+  it("sets links state when quickLinks is available", async () => {
+    const useGetLinksQuery = jest.fn();
+    useGetLinksQuery.mockReturnValue({
+      data: {
+        data: [
+          // Your data structure here
+        ],
+      },
+      isLoading: false,
+      isFetching: false,
+    });
 
-//     renderWithProviders(<QuickLinks />);
+    renderWithProviders(<QuickLinks />);
 
-//     // Wait for asynchronous operations (e.g., useEffect) to complete
-//     await waitFor(() => {});
+    // Wait for asynchronous operations (e.g., useEffect) to complete
+    await waitFor(() => {
+      expect(screen.getByTestId("link-name")).toBeInTheDocument()
+    });
 
-//     // You can check if setLinks has been called with the expected values
-//     // Note: Adjust this based on your actual data structure
-//     // expect(setLinks).toHaveBeenCalledWith([defaultLink, ...expectedLinks]);
-//   });
+    // You can check if setLinks has been called with the expected values
+    // Note: Adjust this based on your actual data structure
+  });
 
-//   describe("QuickLinks component", () => {
-//     test("should toggle the isOpen state when close button is clicked", () => {
-//       renderWithProviders(<QuickLinks />);
+  test("should set the baseUrl correctly", () => {
+    renderWithProviders(<QuickLinks />);
+    const baseUrl = "https://seabaas.dev.bepeerless.co";
 
-//       // Verify that the suggestion block is initially renderWithProvidersed when isOpen is true
-//       expect(
-//         screen.getByText("Suggested from your activity")
-//       ).toBeInTheDocument();
-
-//       // Click the close button to toggle isOpen
-//       fireEvent.click(screen.getByTestId("close"));
-
-//       // Verify that the suggestion block is not present after clicking close
-//       expect(
-//         screen.queryByText("Suggested from your activity")
-//       ).not.toBeInTheDocument();
-
-//       // Click the close button again to toggle isOpen back to true
-//       fireEvent.click(screen.getByTestId("close"));
-
-//       // Verify that the suggestion block is present after clicking close again
-//       expect(
-//         screen.getByText("Suggested from your activity")
-//       ).toBeInTheDocument();
-//     });
-//   });
-
-//   test("should set the baseUrl correctly", () => {
-//     renderWithProviders(<QuickLinks />);
-//     const baseUrl = "https://seabaas.dev.bepeerless.co";
-
-//     // Assuming baseUrl is used in the component, you can assert that it is set correctly
-//     expect(baseUrl).toBe("https://seabaas.dev.bepeerless.co");
-//   });
-
-//   test("should log an error when updateLink throws an error", async () => {
-//     // Mock the updateLink function to throw an error
-//     const mockUpdateLink = jest
-//       .fn()
-//       .mockRejectedValue(new Error("Update link error"));
-//     require("@app/api").useUpdateLinkMutation.mockReturnValue([mockUpdateLink]);
-
-//     renderWithProviders(<QuickLinks />);
-
-//     // Ensure that updateLinkCount is called
-//     await waitFor(() => {
-//       expect(mockUpdateLink).toHaveBeenCalled();
-//     });
-
-//     // Ensure that the error message is logged
-//     expect(console.error).toHaveBeenCalledWith(
-//       "Error creating link:",
-//       new Error("Update link error")
-//     );
-//   });
-// });
-
+    // Assuming baseUrl is used in the component, you can assert that it is set correctly
+    expect(baseUrl).toBe("https://seabaas.dev.bepeerless.co");
+  });
 // describe("QuickLinks", () => {
 // Renders a container with a title and a list of links.
 // it("should render a container with a title and a list of links", () => {

@@ -50,6 +50,7 @@ export default function EntriesAndEventsSearchResults({
       <div className="w-full" data-testid="gli">
         <div className="relative bg-[#fff] w-full">
           <div
+            data-testid="open-button"
             className="flex items-center  border-b border-[#8F8F8F]"
             onClick={() => setOpen(!isOpen)}
           >
@@ -130,7 +131,7 @@ export default function EntriesAndEventsSearchResults({
                             i.name.toLowerCase().includes(query.toLowerCase())
                           )
                           .map((subMenu, id) => (
-                            <p
+                            <p data-testid="glinput-button"
                               onClick={() => {
                                 register(inputName);
                                 handleClick(

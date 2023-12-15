@@ -1,717 +1,720 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/pages/investment/term-deposit/create-term-deposit/IndexComponent.test.tsx">
-    <testCase name="IndexComponent renders" duration="463"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/table/index.test.tsx">
-    <testCase name="handleProductsDropdown should return an array of dropdown options based on the status parameter" duration="5"/>
-    <testCase name="handleProductsDropdown should filter out options based on the isChecker parameter" duration="1"/>
-    <testCase name="handleProductsDropdown should filter out options based on the permissions parameter" duration="4"/>
-    <testCase name="TableComponent should render a table with headers and rows" duration="159"/>
-    <testCase name="TableComponent should display a loading indicator when data is being fetched" duration="16"/>
-    <testCase name="TextCellContent renders text content and dot correctly" duration="3"/>
-    <testCase name="TextCellContent renders &quot;-&quot; when value is falsy" duration="25"/>
-    <testCase name="TextCellContent should render nothing when value is null or undefined" duration="6"/>
-    <testCase name="ProductNameCellContent renders product code correctly" duration="18"/>
-    <testCase name="ProductNameCellContent renders &quot;-&quot; when product code is falsy" duration="4"/>
-    <testCase name="UpdatedOnCellContent should render the date and time in the correct format" duration="11"/>
-    <testCase name="UpdatedOnCellContent should render nothing when value is null or undefined" duration="3"/>
-    <testCase name="UpdatedOnCellContent should render nothing when value is not a valid date" duration="88"/>
-    <testCase name="UpdatedOnCellContent should render nothing when value is not a string or a date object" duration="3"/>
-    <testCase name="UpdatedOnCellContent should render the date and time in the correct format for a different timezone" duration="9"/>
-    <testCase name="StateCellContent should render a span element with the given value as its text content" duration="14"/>
-    <testCase name="StateCellContent should apply a class to the span element based on the value passed to the function" duration="3"/>
-    <testCase name="StatusCellContent should render a span element with the specific class based on the value passed as props" duration="16"/>
-    <testCase name="StatusCellContent should call handleUserView function to determine the text content of the span element" duration="4"/>
-    <testCase name="StatusCellContent should call handleColorState function to determine the background color of the span element" duration="46"/>
-    <testCase name="StatusCellContent should render a span element with the default class and value as text content when the value passed as props does not match any of the cases in handleUserView and handleColorState" duration="18"/>
-    <testCase name="StatusCellContent should default the isChecker prop to false if it is not a boolean" duration="4"/>
-    <testCase name="StatusCellContent should render a FaEye icon next to the text content" duration="7"/>
-    <testCase name="ActionsCellContent should render a DropdownButton component with the given dropDownOptions and onClick props" duration="72"/>
-    <testCase name="ActionsCellContent should render a DropdownButton component with empty options when dropDownOptions prop is not provided" duration="163"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/IndexComponent.test.tsx">
-    <testCase name="IndexComponent Renders without error" duration="760"/>
-    <testCase name="IndexComponent should display the TopBar component" duration="343"/>
-    <testCase name="handleToggle should set isChecker to true and hideCreate to true when selected option includes &quot;approved&quot;" duration="18"/>
-    <testCase name="handleToggle should set isChecker to true and hideCreate to true when selected option includes &quot;sent&quot;" duration="1"/>
-    <testCase name="handleToggle should set isChecker to false and hideCreate to false when selected option does not include &quot;approved&quot; or &quot;sent&quot;" duration="2"/>
-    <testCase name="handleToggle should not throw an error and change values to &apos;false&apos; when selected values when selected value is null" duration="1"/>
-    <testCase name="handleToggle should not throw an error and change values to &apos;false&apos; when selected values does not have a text property" duration="1"/>
-    <testCase name="handleToggle should not throw an error and change values to &apos;false&apos; when selected values when selected value has a null text property" duration="2"/>
-    <testCase name="handleChange should update query object with selected filter and reset page to 1" duration="4"/>
-    <testCase name="handleChange should set status_In property of query object to null when activeType is &quot;all&quot;" duration="1"/>
-    <testCase name="handleChange should update query object when activeType is not a valid string" duration="3"/>
-    <testCase name="handleChange should update query object when category is not a valid string" duration="1"/>
-    <testCase name="handleRefresh should call getProducts and prodStatRefetch with updated query when category is AllProducts" duration="1"/>
-    <testCase name="handleRefresh should call getRequests and requestRefetch with updated query when category is Requests" duration="1"/>
-    <testCase name="handleRefresh should call getRequests and RequestRefetch when category is undefined" duration="1"/>
-    <testCase name="handleRefresh should call getProducts and getStatRefresh when StatusCategory type === &apos;all products&apos; " duration="2"/>
-    <testCase name="handleSearch Should call setQuery with the provided values" duration="0"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/forms/Select.test.tsx">
-    <testCase name="Select renders without crashing" duration="66"/>
-    <testCase name="Select matches snapshot" duration="33"/>
-    <testCase name="Select shows the selected option" duration="19"/>
-    <testCase name="Select opens the dropdown when clicked" duration="99"/>
-    <testCase name="Select calls onChange when option selected" duration="174"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/forms/DateSelect.test.tsx">
-    <testCase name="DateSelect renders without errors" duration="294"/>
-    <testCase name="DateSelect Shows datePicker on button click" duration="447"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/product-information.test.tsx">
-    <testCase name="ProductInformation should render the form without errors" duration="257"/>
-    <testCase name="ProductInformation Changes values" duration="134"/>
-    <testCase name="ProductInformation should update character count for product name in real-time" duration="166"/>
-    <testCase name="ProductInformation should display negative character count message for product name with more than 50 characters" duration="133"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/liquidity-setup.test.tsx">
-    <testCase name="LiquiditySetup Renders without error" duration="406"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/forms/MultiSelect.test.tsx">
-    <testCase name="MultiSelect renders without crashing" duration="70"/>
-    <testCase name="MultiSelect opens and closes dropdown when clicked" duration="39"/>
-    <testCase name="MultiSelect should toggle dropdown when button is clicked" duration="96"/>
-    <testCase name="MultiSelect should select/deselect option when checkbox is clicked" duration="36"/>
-    <testCase name="MultiSelect should render correctly with an empty options array" duration="59"/>
-    <testCase name="MultiSelect should check select all" duration="28"/>
-    <testCase name="MultiSelect should update checkbox state when props change" duration="63"/>
-    <testCase name="closeDropdown should set isOpen state to false when setIsOpen is called with false" duration="2"/>
-    <testCase name="closeDropdown should handle setIsOpen being called with a boolean value" duration="1"/>
-    <testCase name="handleChange should add a new option to selectedOptions array when it does not exist" duration="2"/>
-    <testCase name="handleChange should remove an option from selectedOptions array when it already exists" duration="1"/>
-    <testCase name="handleChange should call setSelectedOptions with the same array when an option is already selected" duration="11"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/modals/RequestDeactivation.test.tsx">
-    <testCase name="RequestDeactivation should render the component without crashing" duration="160"/>
-    <testCase name="RequestDeactivation should display the deactivation request form" duration="117"/>
-    <testCase name="RequestDeactivation should allow user to input reason for deactivation" duration="117"/>
-    <testCase name="RequestDeactivation should display an error message when the deactivation request fails" duration="81"/>
-    <testCase name="RequestDeactivation should allow user to upload supporting documents" duration="92"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Pages/term-deposit/forms/preview.test.tsx">
-    <testCase name="Preview Renders without crashing" duration="321"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/pricing-config.test.tsx">
-    <testCase name="PricingConfig renders without errors" duration="315"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/FormStepComponent.test.tsx">
-    <testCase name="FormStepComponent should render the correct number of form step items when formStepItems is not empty" duration="28"/>
-    <testCase name="FormStepComponent should render the correct label for each form step item when formStepItems is not empty" duration="8"/>
-    <testCase name="FormStepComponent should render the correct index for each form step item when formStepItems is not empty" duration="16"/>
-    <testCase name="FormStepComponent should handle empty formStepItems array and render default form step item" duration="5"/>
-    <testCase name="FormStepComponent should handle step value greater than the number of formStepItems and render last form step item" duration="14"/>
-    <testCase name="FormStepComponent should handle step value less than 1 and render first form step item" duration="29"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/modals/Status.test.tsx">
-    <testCase name="Success Modal renders without crashing" duration="48"/>
-    <testCase name="Success Modal matches snapshot" duration="5"/>
-    <testCase name="Success Modal can close modal pathname !== /product-management" duration="125"/>
-    <testCase name="Success Modal can close modal when canclose is true" duration="52"/>
-    <testCase name="Prompt Modal renders without crashing" duration="2"/>
-    <testCase name="Prompt Modal matches snapshot" duration="7"/>
-    <testCase name="Prompt Modal can close modal pathname !== /product-management" duration="73"/>
-    <testCase name="Prompt Modal can close modal when canclose is true" duration="77"/>
-    <testCase name="Failed Modal matches snapshot" duration="13"/>
-    <testCase name="Failed Modal can close modal pathname !== /product-management" duration="242"/>
-    <testCase name="Failed Modal can close modal when canclose is true" duration="86"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/forms/ComboSelect.test.tsx">
-    <testCase name="ComboSelect renders without crashing" duration="73"/>
-    <testCase name="ComboSelect matches snapshot" duration="30"/>
-    <testCase name="ComboSelect should open the dropdown when the button is clicked" duration="91"/>
-    <testCase name="ComboSelect should update selected options when all products and their members are selected" duration="172"/>
-    <testCase name="ComboSelect should update selected options when a product and its members are deselected" duration="27"/>
-    <testCase name="ComboSelect should update selected options when all products and their members are deselected" duration="80"/>
-    <testCase name="ComboSelect should filter the options correctly when searching for a product" duration="77"/>
-    <testCase name="ComboSelect should update selected options when a product and its members are selected" duration="33"/>
-    <testCase name="closeDropdown should set isOpen state to false when called with setIsOpen(false)" duration="2"/>
-    <testCase name="closeDropdown should not throw an error when called with setIsOpen(undefined)" duration="2"/>
-    <testCase name="closeDropdown should not throw an error when called with setIsOpen(null)" duration="1"/>
-    <testCase name="closeDropdown should not throw an error when called with setIsOpen(0)" duration="1"/>
-    <testCase name="closeDropdown should not throw an error when called with setIsOpen(&quot;&quot;)" duration="1"/>
-    <testCase name="closeDropdown should not throw an error when called with setIsOpen({})" duration="1"/>
-    <testCase name="handleChange should add a new product to selOptions if it doesnt exist" duration="2"/>
-    <testCase name="handleChange should remove a product from selOptions if it already exists" duration="1"/>
-    <testCase name="productContainsMember should return true when the product contains the member" duration="1"/>
-    <testCase name="productContainsMember should return false when the product does not contain the member" duration="1"/>
-    <testCase name="productContainsMember should return false when the product is empty" duration="8"/>
-    <testCase name="productContainsMember should return false when the member is empty" duration="1"/>
-    <testCase name="productContainsMember should return false when the member is null" duration="1"/>
-    <testCase name="addNewProduct should return a new array with the new product added to the end of the input array" duration="1"/>
-    <testCase name="addNewProduct should not modify the input array" duration="1"/>
-    <testCase name="addNewProduct should work with an empty input array" duration="1"/>
-    <testCase name="createProduct should return an object with &quot;product&quot; and &quot;members&quot; properties when valid id and members are provided" duration="4"/>
-    <testCase name="createProduct should return an object with an empty &quot;members&quot; array when no members are provided" duration="1"/>
-    <testCase name="createProduct should handle special characters and spaces in id and member names" duration="1"/>
-    <testCase name="createProduct should handle a large number of members" duration="1"/>
-    <testCase name="createProduct should handle empty strings as id and member names" duration="11"/>
-    <testCase name="handleMemberToggle should add member to product when member is not selected" duration="0"/>
-    <testCase name="handleMemberToggle should remove member from product when member is already selected" duration="1"/>
-    <testCase name="handleMemberToggle should add product and member to selected options when product is not selected" duration="1"/>
-    <testCase name="handleMemberToggle should add member to product when product is already selected but with no members" duration="1"/>
-    <testCase name="handleMemberToggle should add member to product when product is already selected with other members" duration="1"/>
-    <testCase name="addMemberToProduct should add a member to a product with no existing members" duration="1"/>
-    <testCase name="addMemberToProduct should add a member to a product with existing members" duration="1"/>
-    <testCase name="addMemberToProduct should return the original products array if memberId is undefined" duration="1"/>
-    <testCase name="addMemberToProduct should return the original products array if memberId is already in the product" duration="1"/>
-    <testCase name="removeMemberFromProduct should remove a member from a product with multiple members" duration="1"/>
-    <testCase name="removeMemberFromProduct should remove a member from a product with only one member" duration="10"/>
-    <testCase name="removeMemberFromProduct should handle removing a non-existent member from a product" duration="1"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/summary/Actions.test.tsx">
-    <testCase name="Actions should renderWithProviders a div element with specific class and styling" duration="46"/>
-    <testCase name="Actions should call the corresponding functions when Cancel, Modify, or Submit buttons are clicked" duration="13"/>
-    <testCase name="Actions should call the corresponding functions when Print, Share, or Return to dashboard buttons are clicked" duration="23"/>
-    <testCase name="Actions should set the confirm text to &quot;Product creation approve&quot; when sub_type is not provided and action is &quot;approve&quot;" duration="19"/>
-    <testCase name="Actions should set the confirm text to &quot;Product creation reject&quot; when sub_type is not provided and action is &quot;reject&quot;" duration="7"/>
-    <testCase name="Actions should set the confirm text to &quot;Product activation approve&quot; when sub_type is &quot;activation&quot; and action is &quot;approve&quot;" duration="38"/>
-    <testCase name="Actions Should call initiate verdict" duration="103"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/ProductDetail.test.tsx">
-    <testCase name="ProductDetail Renders without crashing" duration="360"/>
-    <testCase name="ProductDetail should render data rows correctly" duration="16"/>
-    <testCase name="ProductDetail should handle no previous data available" duration="60"/>
-    <testCase name="DebitCreditable should render product details correctly" duration="216"/>
-    <testCase name="DebitCreditable should display an empty table when dataTab prop is an empty array" duration="4"/>
-    <testCase name="DebitCreditable should display the correct S|N value for each row" duration="13"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Dropdown.test.tsx">
-    <testCase name="Dropdown renders without crashing" duration="58"/>
-    <testCase name="Dropdown matches snapshot" duration="22"/>
-    <testCase name="Dropdown selects the right icon" duration="18"/>
-    <testCase name="Dropdown renders right icon when button is clicked" duration="171"/>
-    <testCase name="Dropdown applies active class to the selected option" duration="86"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/forms/FormUpload.test.tsx">
-    <testCase name="FormUpload renders without crashing" duration="40"/>
-    <testCase name="FormUpload matches snapshot" duration="27"/>
-    <testCase name="FormUpload should reset all state variables when handleReset is called" duration="17"/>
-    <testCase name="handleFileChange should select a file and set the file type correctly" duration="2"/>
-    <testCase name="handleFileChange should set an error message when the file size exceeds the maximum allowed size" duration="1"/>
-    <testCase name="handleFileChange should set an error message when no file is selected" duration="1"/>
-    <testCase name="handleFileChange should display an error message when selecting a file with an invalid extension" duration="2"/>
-    <testCase name="FormUpload should display error message when selecting a file with an unsupported file type" duration="22"/>
-    <testCase name="handleDrag should set dragActive to true when dragenter event is triggered" duration="1"/>
-    <testCase name="handleDrag should set dragActive to true when dragover event is triggered" duration="2"/>
-    <testCase name="handleDrag should set dragActive to false when dragleave event is triggered" duration="2"/>
-    <testCase name="handleReset should reset upload data to an empty array" duration="2"/>
-    <testCase name="handleReset should set status to null" duration="1"/>
-    <testCase name="handleDrop should read and process a valid file when dropped" duration="2"/>
-    <testCase name="handleDrop should process a file with a valid file type when dropped" duration="3"/>
-    <testCase name="handleDrop should read and process a file with a valid file type when dropped" duration="1"/>
-    <testCase name="handleDrop should process a file with a valid file type when dropped" duration="1"/>
-    <testCase name="handleDrop should process a file with a valid file type when dropped" duration="1"/>
-    <testCase name="handleDrop should set an error message when the file type is not supported" duration="1"/>
-    <testCase name="handleDrop should set the base64 image correctly when the file is read" duration="19"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/forms/FormDate.test.tsx">
-    <testCase name="FormDate component should update date on date change" duration="131"/>
-    <testCase name="FormDate component should display error message when there is an error" duration="18"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/forms/Checkbox.test.tsx">
-    <testCase name="Checkbox renders without crashing" duration="37"/>
-    <testCase name="Checkbox matches snapshot" duration="10"/>
-    <testCase name="Checkbox displays the label" duration="13"/>
-    <testCase name="Checkbox initially renders unchecked" duration="21"/>
-    <testCase name="Checkbox renders checked when checked prop is true" duration="13"/>
-    <testCase name="Checkbox calls onChange when clicked" duration="21"/>
-    <testCase name="Checkbox should not call onChange if not provided when handleChange is invoked" duration="29"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/forms/BorderlessSelect.test.tsx">
-    <testCase name="BorderlessSelect Renders without error" duration="68"/>
-    <testCase name="BorderlessSelect Shows options when input is clicked" duration="92"/>
-    <testCase name="BorderlessSelect indicates that input is required" duration="15"/>
-    <testCase name="BorderlessSelect indicates error" duration="21"/>
-    <testCase name="BorderlessSelect changes value when clicked and hides options" duration="59"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Button.test.tsx">
-    <testCase name="Button renders without crashing" duration="38"/>
-    <testCase name="Button renders children" duration="10"/>
-    <testCase name="Button applies custom className" duration="5"/>
-    <testCase name="Button can show loader" duration="27"/>
-    <testCase name="Button can hide loader" duration="3"/>
-    <testCase name="Button can render button elements" duration="4"/>
-    <testCase name="Button calls onClick handler" duration="13"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/modals/Rejection.test.tsx">
-    <testCase name="handleSuccess should set options for ProductSearch component when userIsSuccess is true and branchMembersData is not null or undefined" duration="6"/>
-    <testCase name="handleSuccess should not call setUsers when userIsSuccess is false" duration="1"/>
-    <testCase name="handleSuccess should call setUsers with an empty array when branchMembersData is an empty array" duration="1"/>
-    <testCase name="Rejection should render the Rejection modal with the correct UI and props" duration="424"/>
-    <testCase name="Rejection should display the correct title and labels for the form inputs" duration="103"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Breadcrumbs.test.tsx">
-    <testCase name="Breadcrumbs renders without crashing" duration="32"/>
-    <testCase name="Breadcrumbs matches snapshot" duration="16"/>
-    <testCase name="Breadcrumbs displays breadcrumb links" duration="30"/>
-    <testCase name="Breadcrumbs Can click on links" duration="5"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/summary/IndexComponent.test.tsx">
-    <testCase name="IndexComponent Renders without crashing" duration="92"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/App.test.tsx">
-    <testCase name="Test App Component If App is rendered wihout issues" duration="26"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/forms/MultiSelectForm.tsx">
-    <testCase name="MultiSelectForm should render a label with the provided labelName prop" duration="108"/>
-    <testCase name="MultiSelectForm should render a button with the provided placeholder prop" duration="10"/>
-    <testCase name="MultiSelectForm should open a dropdown with options when the button is clicked" duration="169"/>
-    <testCase name="MultiSelectForm should handle the case where no options are provided" duration="40"/>
-    <testCase name="MultiSelectForm should handle the case where no labelName prop is provided" duration="6"/>
-    <testCase name="MultiSelectForm should handle the case where no inputName prop is provided" duration="15"/>
-    <testCase name="handleChange should add a new value to selectedOptions array when it doesnt already exist" duration="3"/>
-    <testCase name="handleChange should remove a value from selectedOptions array when it already exists" duration="26"/>
-    <testCase name="handleChange should handle null or undefined value parameter" duration="1"/>
-    <testCase name="handleChange should handle null or undefined setSelectedOptions parameter" duration="42"/>
-    <testCase name="handleChange should handle null or undefined id parameter" duration="1"/>
-    <testCase name="closeDropdown should set isOpen state to false when called with setIsOpen(false)" duration="3"/>
-    <testCase name="closeDropdown should not throw an error when called with setIsOpen" duration="1"/>
-    <testCase name="closeDropdown should not have any side effects other than setting isOpen state to false" duration="1"/>
-    <testCase name="closeDropdown should not affect any other state or props" duration="6"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/investment/dashboard/TableComponent.test.tsx">
-    <testCase name="handleDropdown should return an array of options based on the status, isChecker, locked, and permissions parameters" duration="7"/>
-    <testCase name="handleDropdown should filter out &quot;deactivate&quot; and &quot;activate&quot; options if user does not have &quot;CREATE_PRODUCT&quot; permission" duration="2"/>
-    <testCase name="handleDropdown should filter out &quot;modify&quot; option if user does not have &quot;CREATE_PRODUCT&quot; permission and is not a checker" duration="2"/>
-    <testCase name="handleDropdown should return an array with only &quot;view&quot; option if locked parameter is true and &quot;view&quot; option exists" duration="2"/>
-    <testCase name="handleDropdown should return an empty array if locked parameter is true and &quot;view&quot; option does not exist" duration="1"/>
-    <testCase name="handleDropdown should return an array with only &quot;view&quot; option if isChecker parameter is true and &quot;view&quot; option exists" duration="1"/>
-    <testCase name="handleHeaders should filter out &apos;created_by&apos; when isChecker is true" duration="6"/>
-    <testCase name="handleHeaders should filter out &apos;approved_By&apos; when isChecker is false" duration="14"/>
-    <testCase name="handleDownload should generate CSV for requests category" duration="8"/>
-    <testCase name="handleDownload should generate CSV for product category" duration="2"/>
-    <testCase name="handleDownload should not generate CSV if downloadData is empty" duration="1"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/customer-eligibility-criteria.test.tsx">
-    <testCase name="ProductInformation Renders without error" duration="186"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/Sterling-investment.tsx">
-    <testCase name="microfrontend bootstraps the app" duration="29"/>
-    <testCase name="microfrontend mounts and unmounts" duration="16"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Pages/term-deposit/forms/accounting-entries-and-events.test.tsx">
-    <testCase name="AccountingEntriesAndEvents Renders without error" duration="137"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/modals/SelectRequirements.test.tsx">
-    <testCase name="SelectRequirements should render the modal layout with the given header and subtext" duration="218"/>
-    <testCase name="SelectRequirements should render the children components passed to it" duration="74"/>
-    <testCase name="SelectRequirements should render the select button when hideBtn is false" duration="34"/>
-    <testCase name="SelectRequirements should render the modal layout without subtext" duration="55"/>
-    <testCase name="SelectRequirements should render the modal layout without children components" duration="49"/>
-    <testCase name="SelectRequirements should render the modal layout without a cancel button" duration="45"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/ProductSearch.test.tsx">
-    <testCase name="search input calls setSearchTerm function with debounce on input change" duration="103"/>
-    <testCase name="classNames should concatenate all truthy class names into a single string" duration="2"/>
-    <testCase name="classNames should ignore all falsy class names" duration="1"/>
-    <testCase name="classNames should handle multiple truthy and falsy class names" duration="1"/>
-    <testCase name="classNames should handle empty input" duration="1"/>
-    <testCase name="classNames should handle input with only one truthy class name" duration="1"/>
-    <testCase name="ProductSearch renders without crashing" duration="109"/>
-    <testCase name="ProductSearch shows placeholder text" duration="118"/>
-    <testCase name="ProductSearch filters options by search query" duration="18"/>
-    <testCase name="ProductSearch renders the component with placeholder" duration="16"/>
-    <testCase name="ProductSearch displays options when typing in the input" duration="64"/>
-    <testCase name="ProductSearch applies the correct class when an option is active" duration="29"/>
-    <testCase name="ProductSearch applies the correct class when an option is selected" duration="34"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Loader.test.tsx">
-    <testCase name="Breadcrumbs renders without crashing" duration="44"/>
-    <testCase name="Breadcrumbs matches snapshot" duration="10"/>
-    <testCase name="Loader should render Loader component when isOpen is true" duration="334"/>
-    <testCase name="Loader should not render Loader component when isOpen is false" duration="5"/>
-    <testCase name="Loader should not throw an error when setIsOpen is not provided" duration="48"/>
-    <testCase name="Loader should spin the AiOutlineLoading icon when Loader component is rendered" duration="117"/>
-    <testCase name="Loader should display the text prop in the Loader component" duration="150"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/forms/MinMaxInput.test.tsx">
-    <testCase name="MinMaxInput should render an input field with default value and placeholder" duration="54"/>
-    <testCase name="MinMaxInput should allow user input and trigger change event" duration="11"/>
-    <testCase name="MinMaxInput should clear errors when input value changes" duration="4"/>
-    <testCase name="MinMaxInput should display red border when there is an error" duration="15"/>
-    <testCase name="MinMaxInput should not display red border when there is no error" duration="4"/>
-    <testCase name="MinMaxInput should display default placeholder if not provided" duration="3"/>
-    <testCase name="MinMaxInput renders without errors" duration="96"/>
-    <testCase name="MinMaxInput handles value change" duration="20"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/forms/InfoLabel.test.tsx">
-    <testCase name="InfoLabel Renders without errors" duration="42"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/StatusCard.test.tsx">
-    <testCase name="StatusCard Renders without error" duration="135"/>
-    <testCase name="StatusButton Renders without error" duration="19"/>
-    <testCase name="StatusButton Shows spinner while loading" duration="8"/>
-    <testCase name="sortOptions Sorts and returns expected options in &apos;all products&apos; category" duration="19"/>
-    <testCase name="sortOptions Sorts and returns expected options in &apos;requests&apos; category" duration="1"/>
-    <testCase name="StatusCategoryButton Renders without error" duration="9"/>
-    <testCase name="handleActiveType Sets status to &quot;&quot; when activeType === all " duration="5"/>
-    <testCase name="handleActiveType Sets status according to various activeTypes" duration="3"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/SearchInput.test.tsx">
-    <testCase name="handleInputChange should call setInputValue with the event target value" duration="11"/>
-    <testCase name="SearchInput should render search input field with default props" duration="27"/>
-    <testCase name="SearchInput applies custom CSS classes" duration="6"/>
-    <testCase name="SearchInput should update input field when user inputs a search term" duration="24"/>
-    <testCase name="SearchInput should update input field when user inputs a search term and isTruncated is true" duration="13"/>
-    <testCase name="closeBox should set search results to an empty array" duration="2"/>
-    <testCase name="closeBox should set show box state to false" duration="2"/>
-    <testCase name="closeBox should handle setSearchResults parameter not being a function" duration="70"/>
-    <testCase name="closeBox should handle setShowBox parameter not being a function" duration="1"/>
-    <testCase name="closeBox should handle multiple calls in a row" duration="2"/>
-    <testCase name="SearchValues should call handleClick when search item is clicked" duration="10"/>
-    <testCase name="SearchItem should render a div element with an empty className" duration="4"/>
-    <testCase name="SearchItem should render a span element with the specified className when type is &quot;general&quot;" duration="8"/>
-    <testCase name="SearchItem should render a div element when item.products.length &gt; 0" duration="6"/>
-    <testCase name="SearchItem should render a div element when item is undefined" duration="14"/>
-  </file>
   <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/modals/Confirm.test.tsx">
-    <testCase name="Confirm renders without crashing" duration="27"/>
-    <testCase name="Confirm should render a modal with the given text and subtext" duration="132"/>
-    <testCase name="Confirm should render a cancel buttons  and a confirm button" duration="50"/>
-    <testCase name="Confirm closes modal when cancel button 1 clicked" duration="62"/>
-    <testCase name="Confirm Calls onCancel when cancel button 2 clicked" duration="60"/>
-    <testCase name="Confirm should call onConfirm when confirm button is clicked" duration="59"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/forms/CustomComboSelect.test.tsx">
-    <testCase name="CustomComboSelect Renders without errors" duration="57"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/MiniTermDepositDetail.test.tsx">
-    <testCase name="MiniTermDepositDetail renders without error" duration="40"/>
-    <testCase name="MiniTermDepositDetail Indicates new data" duration="7"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/modals/Approved.test.tsx">
-    <testCase name="ApprovedSuccess Modal renders without crashing" duration="26"/>
-    <testCase name="ApprovedSuccess Modal matches snapshot" duration="6"/>
-    <testCase name="ApprovedSuccess Modal closes modal when cancel clicked" duration="114"/>
-    <testCase name="ApprovedSuccess Modal calls onConfirm when form submitted" duration="62"/>
+    <testCase name="Confirm renders without crashing" duration="90"/>
+    <testCase name="Confirm should render a modal with the given text and subtext" duration="395"/>
+    <testCase name="Confirm should render a cancel buttons  and a confirm button" duration="144"/>
+    <testCase name="Confirm closes modal when cancel button 1 clicked" duration="164"/>
+    <testCase name="Confirm Calls onCancel when cancel button 2 clicked" duration="277"/>
+    <testCase name="Confirm should call onConfirm when confirm button is clicked" duration="72"/>
   </file>
   <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/QuickLinks.test.tsx">
-    <testCase name="QuickLinks should renderWithProviders a container with a title and a list of links" duration="129"/>
-    <testCase name="QuickLinks component renderWithProviderss QuickLinks component with suggested links" duration="32"/>
-    <testCase name="QuickLinks component closes the suggested links section when close button is clicked" duration="46"/>
-    <testCase name="QuickLinks component should fetch data from useGetLinksQuery hook and update state with received data" duration="20"/>
-    <testCase name="QuickLinks component should renderWithProviders a message when isOpen state is true" duration="22"/>
+    <testCase name="QuickLinks should renderWithProviders a container with a title and a list of links" duration="579"/>
+    <testCase name="QuickLinks component renderWithProviderss QuickLinks component with suggested links" duration="109"/>
+    <testCase name="QuickLinks component closes the suggested links section when close button is clicked" duration="86"/>
+    <testCase name="QuickLinks component should fetch data from useGetLinksQuery hook and update state with received data" duration="62"/>
+    <testCase name="QuickLinks component should renderWithProviders a message when isOpen state is true" duration="74"/>
+    <testCase name="QuickLinks component should renderWithProviders default link when useGetLinksQuery hook returns null" duration="79"/>
+    <testCase name="QuickLinks component sets links state when quickLinks is available" duration="64"/>
+    <testCase name="QuickLinks component should set the baseUrl correctly" duration="67"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/IndexComponent.test.tsx">
+    <testCase name="IndexComponent Renders without error" duration="1370"/>
+    <testCase name="IndexComponent should display the TopBar component" duration="428"/>
+    <testCase name="handleToggle should set isChecker to true and hideCreate to true when selected option includes &quot;approved&quot;" duration="3"/>
+    <testCase name="handleToggle should set isChecker to true and hideCreate to true when selected option includes &quot;sent&quot;" duration="1"/>
+    <testCase name="handleToggle should set isChecker to false and hideCreate to false when selected option does not include &quot;approved&quot; or &quot;sent&quot;" duration="2"/>
+    <testCase name="handleToggle should not throw an error and change values to &apos;false&apos; when selected values when selected value is null" duration="2"/>
+    <testCase name="handleToggle should not throw an error and change values to &apos;false&apos; when selected values does not have a text property" duration="20"/>
+    <testCase name="handleToggle should not throw an error and change values to &apos;false&apos; when selected values when selected value has a null text property" duration="2"/>
+    <testCase name="handleChange should update query object with selected filter and reset page to 1" duration="1"/>
+    <testCase name="handleChange should set status_In property of query object to null when activeType is &quot;all&quot;" duration="2"/>
+    <testCase name="handleChange should update query object when activeType is not a valid string" duration="4"/>
+    <testCase name="handleChange should update query object when category is not a valid string" duration="2"/>
+    <testCase name="handleRefresh should call getProducts and prodStatRefetch with updated query when category is AllProducts" duration="1"/>
+    <testCase name="handleRefresh should call getRequests and requestRefetch with updated query when category is Requests" duration="2"/>
+    <testCase name="handleRefresh should call getRequests and RequestRefetch when category is undefined" duration="1"/>
+    <testCase name="handleRefresh should call getProducts and getStatRefresh when StatusCategory type === &apos;all products&apos; " duration="1"/>
+    <testCase name="handleSearch Should call setQuery with the provided values" duration="1"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Pages/term-deposit/forms/accounting-entries-and-events.test.tsx">
+    <testCase name="AccountingEntriesAndEvents Renders without error" duration="514"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/Sterling-investment.tsx">
+    <testCase name="microfrontend bootstraps the app" duration="5"/>
+    <testCase name="microfrontend mounts and unmounts" duration="78"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/product-information.test.tsx">
+    <testCase name="ProductInformation should render the form without errors" duration="506"/>
+    <testCase name="ProductInformation Changes values" duration="227"/>
+    <testCase name="ProductInformation should update character count for product name in real-time" duration="297"/>
+    <testCase name="ProductInformation should display negative character count message for product name with more than 50 characters" duration="166"/>
   </file>
   <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/TopBar.test.tsx">
-    <testCase name="Tabs should renderWithProviders a list of tabs with titles and urls" duration="58"/>
-    <testCase name="should set active tab and update search term" duration="32"/>
-    <testCase name="renderWithProviderss TopBar component" duration="31"/>
-    <testCase name="getSearchResult should call getProducts with correct parameters and set search results" duration="2"/>
-    <testCase name="getSearchResult should set search results to empty array when given empty string value" duration="1"/>
-    <testCase name="Tabs should renderWithProviders tabs with correct titles and styles" duration="21"/>
-    <testCase name="Tabs should update active tab and navigate to correct URL when a tab is clicked" duration="31"/>
-    <testCase name="TopBar should renderWithProviders the top bar component without errors" duration="19"/>
-    <testCase name="TopBar should display the Product Factory title" duration="15"/>
-    <testCase name="TopBar should display the Create new product button" duration="20"/>
-    <testCase name="TopBar should disable the Create new product button when permissions are not provided" duration="13"/>
+    <testCase name="Tabs should renderWithProviders a list of tabs with titles and urls" duration="212"/>
+    <testCase name="should set active tab and update search term" duration="52"/>
+    <testCase name="renderWithProviderss TopBar component" duration="134"/>
+    <testCase name="getSearchResult should call getProducts with correct parameters and set search results" duration="4"/>
+    <testCase name="getSearchResult should set search results to empty array when given empty string value" duration="2"/>
+    <testCase name="Tabs should renderWithProviders tabs with correct titles and styles" duration="87"/>
+    <testCase name="Tabs should update active tab and navigate to correct URL when a tab is clicked" duration="56"/>
+    <testCase name="TopBar should renderWithProviders the top bar component without errors" duration="163"/>
+    <testCase name="TopBar should display the Product Factory title" duration="77"/>
+    <testCase name="TopBar should display the Create new product button" duration="25"/>
+    <testCase name="TopBar should disable the Create new product button when permissions are not provided" duration="68"/>
   </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/DownloadButton.tsx">
-    <testCase name="DownloadButton should call handleDownload function when button is clicked" duration="85"/>
-    <testCase name="DownloadButton should display the text Download" duration="5"/>
-    <testCase name="DownloadButton should not throw an error when handleDownload is not provided" duration="4"/>
-    <testCase name="DownloadButton should have the correct class name, type attribute, text color, background color, and gap between icon and text" duration="17"/>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/modals/Status.test.tsx">
+    <testCase name="Success Modal renders without crashing" duration="70"/>
+    <testCase name="Success Modal matches snapshot" duration="32"/>
+    <testCase name="Success Modal can close modal pathname !== /product-management" duration="268"/>
+    <testCase name="Success Modal can close modal when canclose is true" duration="137"/>
+    <testCase name="Prompt Modal renders without crashing" duration="20"/>
+    <testCase name="Prompt Modal matches snapshot" duration="5"/>
+    <testCase name="Prompt Modal can close modal pathname !== /product-management" duration="54"/>
+    <testCase name="Prompt Modal can close modal when canclose is true" duration="128"/>
+    <testCase name="Failed Modal matches snapshot" duration="35"/>
+    <testCase name="Failed Modal can close modal pathname !== /product-management" duration="70"/>
+    <testCase name="Failed Modal can close modal when canclose is true" duration="95"/>
   </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/CreateButton.test.tsx">
-    <testCase name="closeButton should set isOpen state to false" duration="10"/>
-    <testCase name="closeButton should set secondActive, thirdActive, and fourthActive states to empty strings" duration="3"/>
-    <testCase name="closeButton should not return any value" duration="4"/>
-    <testCase name="closeButton should require function parameters" duration="1"/>
-    <testCase name="closeButton should not throw any errors" duration="1"/>
-    <testCase name="goToUrl should navigate to the provided URL" duration="1"/>
-    <testCase name="goToUrl should throw an error when url is null" duration="11"/>
-    <testCase name="goToUrl should throw an error when navigate function is not a function" duration="27"/>
-    <testCase name="goToUrl should handle relative URLs" duration="14"/>
-    <testCase name="CreateButton should render the component without crashing" duration="37"/>
-    <testCase name="CreateButton should open the dropdown menu when the button is clicked" duration="38"/>
-    <testCase name="CreateButton should close the dropdown menu when clicked outside" duration="21"/>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/customer-eligibility-criteria.test.tsx">
+    <testCase name="ProductInformation Renders without error" duration="429"/>
   </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/modals/Layout.test.tsx">
-    <testCase name="Layout renders children and opens and closes the modal" duration="383"/>
-    <testCase name="Layout should not render children when isOpen is false" duration="14"/>
-    <testCase name="Layout should render dialog with correct data-testid" duration="56"/>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/forms/Select.test.tsx">
+    <testCase name="Select renders without crashing" duration="104"/>
+    <testCase name="Select matches snapshot" duration="93"/>
+    <testCase name="Select shows the selected option" duration="20"/>
+    <testCase name="Select opens the dropdown when clicked" duration="129"/>
+    <testCase name="Select calls onChange when option selected" duration="488"/>
   </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Pages/investment/TestComponents.test.tsx">
-    <testCase name="TestComponents should render FormStepComponent with correct step and formStepItems" duration="60"/>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/modals/SelectRequirements.test.tsx">
+    <testCase name="SelectRequirements should render the modal layout with the given header and subtext" duration="316"/>
+    <testCase name="SelectRequirements should render the children components passed to it" duration="131"/>
+    <testCase name="SelectRequirements should render the select button when hideBtn is false" duration="302"/>
+    <testCase name="SelectRequirements should render the modal layout without subtext" duration="154"/>
+    <testCase name="SelectRequirements should render the modal layout without children components" duration="108"/>
+    <testCase name="SelectRequirements should render the modal layout without a cancel button" duration="217"/>
   </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/FormTooltip.test.tsx">
-    <testCase name="FormToolTip Renders without errors" duration="65"/>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/modals/Approved.test.tsx">
+    <testCase name="ApprovedSuccess Modal renders without crashing" duration="47"/>
+    <testCase name="ApprovedSuccess Modal matches snapshot" duration="34"/>
+    <testCase name="ApprovedSuccess Modal closes modal when cancel clicked" duration="449"/>
+    <testCase name="ApprovedSuccess Modal calls onConfirm when form submitted" duration="118"/>
   </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/ActivityLog.tsx">
-    <testCase name="renders the ActivityLog component with loading state" duration="47"/>
-    <testCase name="renders the ActivityLog component with no activities" duration="5"/>
-    <testCase name="renders the ActivityLog component with activities" duration="21"/>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/forms/MinMaxInput.test.tsx">
+    <testCase name="MinMaxInput should render an input field with default value and placeholder" duration="41"/>
+    <testCase name="MinMaxInput should allow user input and trigger change event" duration="12"/>
+    <testCase name="MinMaxInput should clear errors when input value changes" duration="31"/>
+    <testCase name="MinMaxInput should display red border when there is an error" duration="9"/>
+    <testCase name="MinMaxInput should not display red border when there is no error" duration="44"/>
+    <testCase name="MinMaxInput should display default placeholder if not provided" duration="38"/>
+    <testCase name="MinMaxInput renders without errors" duration="48"/>
+    <testCase name="MinMaxInput handles value change" duration="21"/>
   </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/layouts/AuthGuard.test.tsx">
-    <testCase name="AuthGuard shows content if authenticated" duration="46"/>
-    <testCase name="should return children when isAuthenticated is true" duration="75"/>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/table/index.test.tsx">
+    <testCase name="handleProductsDropdown should return an array of dropdown options based on the status parameter" duration="167"/>
+    <testCase name="handleProductsDropdown should filter out options based on the isChecker parameter" duration="2"/>
+    <testCase name="handleProductsDropdown should filter out options based on the permissions parameter" duration="1"/>
+    <testCase name="TableComponent should render a table with headers and rows" duration="217"/>
+    <testCase name="TableComponent should display a loading indicator when data is being fetched" duration="52"/>
+    <testCase name="TextCellContent renders text content and dot correctly" duration="23"/>
+    <testCase name="TextCellContent renders &quot;-&quot; when value is falsy" duration="4"/>
+    <testCase name="TextCellContent should render nothing when value is null or undefined" duration="9"/>
+    <testCase name="ProductNameCellContent renders product code correctly" duration="11"/>
+    <testCase name="ProductNameCellContent renders &quot;-&quot; when product code is falsy" duration="4"/>
+    <testCase name="UpdatedOnCellContent should render the date and time in the correct format" duration="7"/>
+    <testCase name="UpdatedOnCellContent should render nothing when value is null or undefined" duration="4"/>
+    <testCase name="UpdatedOnCellContent should render nothing when value is not a valid date" duration="98"/>
+    <testCase name="UpdatedOnCellContent should render nothing when value is not a string or a date object" duration="10"/>
+    <testCase name="UpdatedOnCellContent should render the date and time in the correct format for a different timezone" duration="14"/>
+    <testCase name="StateCellContent should render a span element with the given value as its text content" duration="12"/>
+    <testCase name="StateCellContent should apply a class to the span element based on the value passed to the function" duration="11"/>
+    <testCase name="StatusCellContent should render a span element with the specific class based on the value passed as props" duration="5"/>
+    <testCase name="StatusCellContent should call handleUserView function to determine the text content of the span element" duration="4"/>
+    <testCase name="StatusCellContent should call handleColorState function to determine the background color of the span element" duration="56"/>
+    <testCase name="StatusCellContent should render a span element with the default class and value as text content when the value passed as props does not match any of the cases in handleUserView and handleColorState" duration="11"/>
+    <testCase name="StatusCellContent should default the isChecker prop to false if it is not a boolean" duration="4"/>
+    <testCase name="StatusCellContent should render a FaEye icon next to the text content" duration="13"/>
+    <testCase name="ActionsCellContent should render a DropdownButton component with the given dropDownOptions and onClick props" duration="46"/>
+    <testCase name="ActionsCellContent should render a DropdownButton component with empty options when dropDownOptions prop is not provided" duration="152"/>
   </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/test-util.test.tsx">
-    <testCase name="renderWithProviders should render the UI with the Provider wrapper and the passed options" duration="27"/>
-    <testCase name="renderWithProviders should return the store and the rendered UI" duration="11"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/assets/images/Step.test.tsx">
-    <testCase name="Step Renders without error" duration="33"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/ui/CascadingDropdown.test.tsx">
-    <testCase name="CascadingDropdown should render a dropdown button with a label and a list of items" duration="49"/>
-    <testCase name="CascadingDropdown should display the list of items when the dropdown button is clicked" duration="13"/>
-    <testCase name="CascadingDropdown should allow the user to click on an item and navigate to its link" duration="15"/>
-    <testCase name="CascadingDropdown should render a dropdown button with a default label when no label is provided" duration="9"/>
-    <testCase name="CascadingDropdown should render a dropdown button with default classes when no classes are provided" duration="7"/>
-    <testCase name="CascadingDropdown should render a dropdown button with no items when no items are provided" duration="6"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/forms/MultiSelectForm2.tsx">
-    <testCase name="handleChange should add a new value to selectedOptions array when it doesnt already exist" duration="17"/>
-    <testCase name="handleChange should remove a value from selectedOptions array when it already exists" duration="2"/>
-    <testCase name="handleChange should handle null or undefined value parameter" duration="2"/>
-    <testCase name="handleChange should handle null or undefined setSelectedOptions parameter" duration="30"/>
-    <testCase name="handleChange should handle null or undefined id parameter" duration="2"/>
-    <testCase name="closeDropdown should set isOpen state to false when called with setIsOpen(false)" duration="1"/>
-    <testCase name="closeDropdown should not throw an error when called with setIsOpen" duration="1"/>
-    <testCase name="closeDropdown should not have any side effects other than setting isOpen state to false" duration="2"/>
-    <testCase name="closeDropdown should not affect any other state or props" duration="7"/>
-    <testCase name="MultiSelectForm2 should render a label with the provided labelName prop" duration="77"/>
-    <testCase name="MultiSelectForm2 should render a search input with the provided placeholder prop" duration="8"/>
-    <testCase name="MultiSelectForm2 should render a list of options with checkboxes" duration="12"/>
-    <testCase name="MultiSelectForm2 should render a default placeholder when no placeholder prop is provided" duration="5"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/handleDropdown.test.tsx">
-    <testCase name="handleDropdown should return an array of dropdown options when valid status and type are provided" duration="14"/>
-    <testCase name="handleDropdown should return an empty array when an invalid status is provided" duration="2"/>
-    <testCase name="handleDropdown should return an empty array when either status or type is falsy" duration="1"/>
-    <testCase name="handleDropdown should return an array of options based on status and type" duration="2"/>
-    <testCase name="handleDropdown should filter options based on permissions if CREATE_PRODUCT is not included" duration="1"/>
-    <testCase name="handleDropdown should return an empty array if status is not found in firstLevel" duration="2"/>
-    <testCase name="handleDropdown should return an empty array when either &quot;status&quot; or &quot;type&quot; is falsy" duration="1"/>
-    <testCase name="handleDropdown should return an array of options based on &quot;status&quot; and &quot;type&quot;" duration="3"/>
-    <testCase name="handleDropdown should filter options based on permissions if &quot;CREATE_PRODUCT&quot; is not included" duration="1"/>
-    <testCase name="handleDropdown should return an empty array if &quot;selectedType&quot; is falsy" duration="1"/>
-    <testCase name="handleDropdown should return an empty array if &quot;status&quot; is not found in &quot;DropDownOptions&quot;" duration="1"/>
-    <testCase name="handleDropdown should return an empty array if &quot;type&quot; is not found in &quot;creationMap&quot;" duration="1"/>
-    <testCase name="handleDropdown should return an empty array when status is falsy" duration="1"/>
-    <testCase name="handleDropdown should return an empty array when type is falsy" duration="21"/>
-    <testCase name="handleDropdown should return an array of options when type is in creationMap" duration="4"/>
-    <testCase name="handleDropdown should return an array of options when type is not in creationMap" duration="5"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/ReviewStatus.test.tsx">
-    <testCase name="ReviewStatus Renders without error" duration="47"/>
-    <testCase name="ReviewStatus Render for rejection case" duration="14"/>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/forms/Checkbox.test.tsx">
+    <testCase name="Checkbox renders without crashing" duration="38"/>
+    <testCase name="Checkbox matches snapshot" duration="29"/>
+    <testCase name="Checkbox displays the label" duration="19"/>
+    <testCase name="Checkbox initially renders unchecked" duration="17"/>
+    <testCase name="Checkbox renders checked when checked prop is true" duration="16"/>
+    <testCase name="Checkbox calls onChange when clicked" duration="19"/>
+    <testCase name="Checkbox should not call onChange if not provided when handleChange is invoked" duration="14"/>
   </file>
   <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/ShareButton.test.tsx">
-    <testCase name="ShareButton renders without crashing" duration="81"/>
-    <testCase name="ShareButton triggers the share action when clicked" duration="11"/>
+    <testCase name="ShareButton renders without crashing" duration="91"/>
+    <testCase name="ShareButton triggers the share action when clicked" duration="35"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/liquidity-setup.test.tsx">
+    <testCase name="LiquiditySetup Renders without error" duration="330"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/ProductSearch.test.tsx">
+    <testCase name="search input calls setSearchTerm function with debounce on input change" duration="82"/>
+    <testCase name="classNames should concatenate all truthy class names into a single string" duration="3"/>
+    <testCase name="classNames should ignore all falsy class names" duration="11"/>
+    <testCase name="classNames should handle multiple truthy and falsy class names" duration="1"/>
+    <testCase name="classNames should handle empty input" duration="2"/>
+    <testCase name="classNames should handle input with only one truthy class name" duration="1"/>
+    <testCase name="ProductSearch renders without crashing" duration="108"/>
+    <testCase name="ProductSearch shows placeholder text" duration="54"/>
+    <testCase name="ProductSearch filters options by search query" duration="23"/>
+    <testCase name="ProductSearch renders the component with placeholder" duration="29"/>
+    <testCase name="ProductSearch displays options when typing in the input" duration="35"/>
+    <testCase name="ProductSearch applies the correct class when an option is active" duration="27"/>
+    <testCase name="ProductSearch applies the correct class when an option is selected" duration="45"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/forms/DateSelect.test.tsx">
+    <testCase name="DateSelect renders without errors" duration="295"/>
+    <testCase name="DateSelect Shows datePicker on button click" duration="455"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/pricing-config.test.tsx">
+    <testCase name="PricingConfig renders without errors" duration="329"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/ReviewStatus.test.tsx">
+    <testCase name="ReviewStatus Renders without error" duration="45"/>
+    <testCase name="ReviewStatus Render for rejection case" duration="26"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/summary/Actions.test.tsx">
+    <testCase name="Actions should renderWithProviders a div element with specific class and styling" duration="73"/>
+    <testCase name="Actions should call the corresponding functions when Cancel, Modify, or Submit buttons are clicked" duration="25"/>
+    <testCase name="Actions should call the corresponding functions when Print, Share, or Return to dashboard buttons are clicked" duration="28"/>
+    <testCase name="Actions should set the confirm text to &quot;Product creation approve&quot; when sub_type is not provided and action is &quot;approve&quot;" duration="19"/>
+    <testCase name="Actions should set the confirm text to &quot;Product creation reject&quot; when sub_type is not provided and action is &quot;reject&quot;" duration="10"/>
+    <testCase name="Actions should set the confirm text to &quot;Product activation approve&quot; when sub_type is &quot;activation&quot; and action is &quot;approve&quot;" duration="83"/>
+    <testCase name="Actions Should call initiate verdict" duration="105"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/CreateButton.test.tsx">
+    <testCase name="closeButton should set isOpen state to false" duration="8"/>
+    <testCase name="closeButton should set secondActive, thirdActive, and fourthActive states to empty strings" duration="2"/>
+    <testCase name="closeButton should not return any value" duration="1"/>
+    <testCase name="closeButton should require function parameters" duration="2"/>
+    <testCase name="closeButton should not throw any errors" duration="11"/>
+    <testCase name="goToUrl should navigate to the provided URL" duration="1"/>
+    <testCase name="goToUrl should throw an error when url is null" duration="2"/>
+    <testCase name="goToUrl should throw an error when navigate function is not a function" duration="46"/>
+    <testCase name="goToUrl should handle relative URLs" duration="1"/>
+    <testCase name="CreateButton should render the component without crashing" duration="101"/>
+    <testCase name="CreateButton should open the dropdown menu when the button is clicked" duration="24"/>
+    <testCase name="CreateButton should close the dropdown menu when clicked outside" duration="13"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Button.test.tsx">
+    <testCase name="Button renders without crashing" duration="24"/>
+    <testCase name="Button renders children" duration="15"/>
+    <testCase name="Button applies custom className" duration="5"/>
+    <testCase name="Button can show loader" duration="7"/>
+    <testCase name="Button can hide loader" duration="3"/>
+    <testCase name="Button can render button elements" duration="4"/>
+    <testCase name="Button calls onClick handler" duration="11"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/handleUserView.test.tsx">
+    <testCase name="handleUserView should return &quot;in-review&quot; when value is &quot;P&quot; and checker is false" duration="8"/>
+    <testCase name="handleUserView should return &quot;pending&quot; when value is &quot;P&quot; and checker is true" duration="2"/>
+    <testCase name="handleUserView should return &quot;draft&quot; when value is &quot;D&quot;" duration="25"/>
+    <testCase name="handleUserView should return &quot;approved&quot; when value is &quot;A&quot;" duration="4"/>
+    <testCase name="handleUserView should return &quot;in-issue&quot; when value is &quot;I&quot; and checker is false" duration="1"/>
+    <testCase name="handleUserView should return &quot;rejected&quot; when value is &quot;I&quot; and checker is true" duration="1"/>
+    <testCase name="handleUserView should return &quot;in-issue&quot; when value is &quot;R&quot; and checker is false" duration="1"/>
+    <testCase name="handleUserView should return &quot;rejected&quot; when value is &quot;R&quot; and checker is true" duration="1"/>
+    <testCase name="handleUserView should return valye when value is &quot;T&quot; and checker is true" duration="1"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/pages/investment/term-deposit/create-term-deposit/IndexComponent.test.tsx">
+    <testCase name="IndexComponent renders" duration="553"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/summary/IndexComponent.test.tsx">
+    <testCase name="IndexComponent Renders without crashing" duration="218"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/modals/Layout.test.tsx">
+    <testCase name="Layout renders children and opens and closes the modal" duration="213"/>
+    <testCase name="Layout should not render children when isOpen is false" duration="3"/>
+    <testCase name="Layout should render dialog with correct data-testid" duration="33"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/App.test.tsx">
+    <testCase name="Test App Component If App is rendered wihout issues" duration="124"/>
   </file>
   <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/layouts/Layout.test.tsx">
-    <testCase name="Layout renders AuthGuard and Outlet components" duration="47"/>
-    <testCase name="handleRole should handle cases where is_superuser property is not a boolean" duration="2"/>
+    <testCase name="Layout renders AuthGuard and Outlet components" duration="48"/>
+    <testCase name="handleRole should handle cases where is_superuser property is not a boolean" duration="9"/>
     <testCase name="handleRole should handle cases where is_superuser property is not a boolean" duration="2"/>
     <testCase name="handleRole should handle cases where is_superuser property is not present in user object" duration="2"/>
   </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/handleColorState.test.tsx">
-    <testCase name="handleColorState should return the correct color state for the value &quot;approved&quot;" duration="6"/>
-    <testCase name="handleColorState should return the correct color state for the value &quot;A&quot;" duration="2"/>
-    <testCase name="handleColorState should return the correct color state for the value &quot;in-review&quot;" duration="1"/>
-    <testCase name="handleColorState should return the correct color state for the value &quot;P&quot;" duration="5"/>
-    <testCase name="handleColorState should return the correct color state for the value &quot;in-issue&quot;" duration="1"/>
-    <testCase name="handleColorState should return the correct color state for the value &quot;R&quot;" duration="1"/>
-    <testCase name="handleColorState should return the correct color state for the value &quot;draft&quot;" duration="1"/>
-    <testCase name="handleColorState should return the correct color state for the value &quot;D&quot;" duration="1"/>
-    <testCase name="handleColorState should return the correct color state for the value &quot;I&quot;" duration="1"/>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/requestType.test.tsx">
+    <testCase name="getRequestType should return &quot;bulk creation&quot; when type is &quot;BULK_CREATE&quot;" duration="6"/>
+    <testCase name="getRequestType should return &quot;creation&quot; when type is &quot;CREATE&quot;" duration="1"/>
+    <testCase name="getRequestType should return &quot;deactivation&quot; when type is &quot;DEACTIVATE&quot;" duration="2"/>
+    <testCase name="getRequestType should return &quot;reactivation&quot; when type is &quot;REACTIVATE&quot;" duration="2"/>
+    <testCase name="getRequestType should return &quot;modification&quot; when type is &quot;CHANGE&quot;" duration="1"/>
+    <testCase name="getRequestType should return &quot;configuration&quot; when type is &quot;CONFIGURATION&quot;" duration="1"/>
   </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/downloadFile.test.tsx">
-    <testCase name="downloadUsingFetch should download file" duration="26"/>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Breadcrumbs.test.tsx">
+    <testCase name="Breadcrumbs renders without crashing" duration="92"/>
+    <testCase name="Breadcrumbs matches snapshot" duration="23"/>
+    <testCase name="Breadcrumbs displays breadcrumb links" duration="25"/>
+    <testCase name="Breadcrumbs Can click on links" duration="13"/>
   </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/ui/Icon.test.tsx">
-    <testCase name="Icons should render an Icon component with the given props" duration="39"/>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/test-util.test.tsx">
+    <testCase name="renderWithProviders should render the UI with the Provider wrapper and the passed options" duration="34"/>
+    <testCase name="renderWithProviders should return the store and the rendered UI" duration="4"/>
   </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/SelectedRequirementsTable.test.tsx">
-    <testCase name="SelectedRequirementsTable Renders without errors" duration="43"/>
-    <testCase name="SelectedRequirementsTable Renders selected requirement list" duration="17"/>
-    <testCase name="SelectedRequirementsTable Shows message when list is empty" duration="12"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/assets/images/ModifySvg.test.tsx">
-    <testCase name="ModifySvg Renders without error" duration="35"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/AppWrapper.test.tsx">
-    <testCase name="AppWrapper Component renders children within the Provider component" duration="49"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/root.component.test.tsx">
-    <testCase name="Root component should be in the document" duration="25"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/lowerObjectKeys.test.tsx">
-    <testCase name="lowerObjectKeys should return an empty array when given an empty array" duration="12"/>
-    <testCase name="lowerObjectKeys should return an array of objects with lowerd keys when given an array of objects with lowercase keys" duration="2"/>
-    <testCase name="lowerObjectKeys should throw an error when given a non-array input" duration="5"/>
-    <testCase name="lowerObjectKeys should return an array of objects with lowerd keys when given an array of objects with mixed case keys" duration="4"/>
-    <testCase name="lowerObjectKeys should return an array of objects with lowerd keys when given an array of objects with only one key" duration="1"/>
-    <testCase name="lowerObjectKeys should return an array of objects with lowerd keys when given an array of objects with only non-string keys" duration="2"/>
-    <testCase name="lowerObjectKeys should handle objects without own properties" duration="1"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/assets/images/SubmitSvg.test.tsx">
-    <testCase name="SubmitSvg Renders without error" duration="33"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/MultiSelect.test.tsx">
-    <testCase name="MultiSelect Renders without error" duration="35"/>
-    <testCase name="MultiSelect Renders options" duration="45"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/cleanObject.test.tsx">
-    <testCase name="cleanObject should return an empty object when passed an empty object" duration="6"/>
-    <testCase name="cleanObject should return an object with all non-null, non-undefined, and non-empty string values" duration="2"/>
-    <testCase name="cleanObject should return an object with all non-null, non-undefined, and non-empty values of different types" duration="12"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/BottomBarLoader.test.tsx">
-    <testCase name="renders the BottomBarLoader component" duration="60"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/assets/images/excel.test.tsx">
-    <testCase name="ModifySvg Renders without error" duration="26"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/capitalizeObjectKeys.test.tsx">
-    <testCase name="capitalizeObjectKeys should return an empty array when given an empty array" duration="9"/>
-    <testCase name="capitalizeObjectKeys should return an array of objects with capitalized keys when given an array of objects with lowercase keys" duration="20"/>
-    <testCase name="capitalizeObjectKeys should throw an error when given a non-array input" duration="27"/>
-    <testCase name="capitalizeObjectKeys should return an array of objects with capitalized keys when given an array of objects with mixed case keys" duration="1"/>
-    <testCase name="capitalizeObjectKeys should return an array of objects with capitalized keys when given an array of objects with only one key" duration="2"/>
-    <testCase name="capitalizeObjectKeys should return an array of objects with capitalized keys when given an array of objects with only non-string keys" duration="1"/>
-    <testCase name="capitalizeObjectKeys should handle objects without own properties" duration="2"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/ucObjectKeys.test.tsx">
-    <testCase name="ucObjectKeys should throw an error when the input is not an array" duration="9"/>
-    <testCase name="ucObjectKeys should handle an array with non-object elements as input" duration="1"/>
-    <testCase name="ucObjectKeys should capitalize the keys of an array of objects with different keys" duration="1"/>
-    <testCase name="ucObjectKeys should capitalize the keys of an array of objects with same keys" duration="2"/>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/FormTooltip.test.tsx">
+    <testCase name="FormToolTip Renders without errors" duration="56"/>
   </file>
   <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/ui/Tooltip.test.tsx">
-    <testCase name="Tooltip Should render without error" duration="62"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/PreLoader.test.tsx">
-    <testCase name="renders the PreLoader component" duration="43"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/MultiRangeSlider.test.tsx">
-    <testCase name="Slider renders without crashing" duration="34"/>
-    <testCase name="Slider matches snapshot" duration="4"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/formatCurrency.test.tsx">
-    <testCase name="formatCurrency should format a price with default parameters" duration="16"/>
-    <testCase name="formatCurrency should format a price with custom fraction and currency parameters" duration="2"/>
-    <testCase name="formatCurrency should format a price with custom fraction, currency, and price parameters" duration="3"/>
-    <testCase name="formatCurrency should format a price with a price of 0" duration="9"/>
-    <testCase name="formatCurrency should format a price with a negative price" duration="3"/>
-    <testCase name="currencyFormatter should format a positive integer value with default currency and symbol" duration="2"/>
-    <testCase name="currencyFormatter should format a negative float value with specified currency and symbol" duration="1"/>
-    <testCase name="currencyFormatter should format a zero value with specified currency and symbol" duration="1"/>
-    <testCase name="currencyFormatter should format a value with more than two decimal places" duration="1"/>
-    <testCase name="currencyFormatter should format a value with less than two decimal places" duration="2"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/assets/images/CancelSvg.test.tsx">
-    <testCase name="CancelSvg Renders without error" duration="35"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/capitalizeFirstLetter.test.tsx">
-    <testCase name="capitalizeFirstLetter should capitalize the first letter of a string with one word" duration="8"/>
-    <testCase name="capitalizeFirstLetter should capitalize the first letter of the first word in a string with multiple words" duration="1"/>
-    <testCase name="capitalizeFirstLetter should return an empty string if the input is an empty string" duration="1"/>
-    <testCase name="capitalizeFirstLetter should return the input if its not a string" duration="1"/>
-    <testCase name="capitalizeFirstLetter should capitalize the first letter of a string with only one letter" duration="1"/>
-    <testCase name="capitalizeFirstLetter should capitalize the first letter of a string with non-alphabetic characters after the first letter" duration="1"/>
-    <testCase name="capitalizeFirstLetter should capitalize the first letter of a string with numbers as the first letter" duration="1"/>
-    <testCase name="capitalizeFirstLetter should capitalize the first letter of a string with a non-ASCII character as the first letter" duration="1"/>
-    <testCase name="capitalizeFirstLetter should capitalize the first letter of a string with a non-ASCII character after the first letter" duration="1"/>
-    <testCase name="capitalizeFirstLetter should capitalize the first letter of a string with multiple spaces between words" duration="3"/>
-    <testCase name="capitalizeFirstLetter should capitalize the first letter of a non-empty string" duration="1"/>
-    <testCase name="capitalizeFirstLetter should not modify an empty string" duration="2"/>
-    <testCase name="capitalizeFirstLetter should return the input if it&apos;s not a string" duration="2"/>
-    <testCase name="capitalizeFirstLetter should capitalize the first letter of a single-word string" duration="1"/>
-    <testCase name="capitalizeFirstLetter should capitalize the first letter of each word in a sentence" duration="3"/>
-    <testCase name="capitalizeFirstLetter should not modify a string with only non-alphabetic characters" duration="1"/>
-    <testCase name="capitalizeFirstLetter should handle mixed case strings" duration="1"/>
-    <testCase name="capitalizeFirstLetter should return a string with the first letter capitalized when input is a non-empty string" duration="1"/>
-    <testCase name="capitalizeFirstLetter should return an empty string when input is an empty string" duration="10"/>
-    <testCase name="capitalizeFirstLetter should return the input when it is not a string" duration="1"/>
-    <testCase name="capitalizeFirstLetter should return the input when it is null" duration="7"/>
-    <testCase name="capitalizeFirstLetter should return the input when it is undefined" duration="1"/>
-    <testCase name="capitalizeFirstLetter should return the input when it is a number" duration="1"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/countDuplicates.test.tsx">
-    <testCase name="countDuplicates should return 0 when there are no duplicates in the array" duration="6"/>
-    <testCase name="countDuplicates should return the correct number of duplicates when there are duplicates in the array" duration="2"/>
-    <testCase name="countDuplicates should handle arrays with multiple types of elements" duration="1"/>
-    <testCase name="countDuplicates should return 0 when the array is empty" duration="1"/>
-    <testCase name="countDuplicates should handle arrays with only one element" duration="2"/>
-    <testCase name="countDuplicates should handle arrays with only duplicate elements" duration="1"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/convertKeysToLowerCase.test.tsx">
-    <testCase name="convertKeysToLowerCase should convert all keys in a simple object to lowercase" duration="7"/>
-    <testCase name="convertKeysToLowerCase should convert all keys in a nested object to lowercase" duration="2"/>
-    <testCase name="convertKeysToLowerCase should return an empty object when given an empty object" duration="1"/>
-    <testCase name="convertKeysToLowerCase should convert keys with one character to lowercase" duration="13"/>
-    <testCase name="convertKeysToLowerCase should convert keys with all characters already lowercase" duration="1"/>
-    <testCase name="convertKeysToLowerCase should convert keys with all characters already uppercase" duration="1"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/parseQueryParams.test.tsx">
-    <testCase name="parseQueryParams should return an instance of URLSearchParams when called with valid query params" duration="6"/>
-    <testCase name="parseQueryParams should append all non-array query params to the URLSearchParams instance" duration="2"/>
-    <testCase name="parseQueryParams should append all items in an array query param to the URLSearchParams instance" duration="2"/>
-    <testCase name="parseQueryParams should set boolean query params to their corresponding key in the URLSearchParams instance" duration="2"/>
-    <testCase name="parseQueryParams should handle an empty query params object" duration="1"/>
-    <testCase name="parseQueryParams should handle a query params object with null or undefined values" duration="2"/>
+    <testCase name="Tooltip Should render without error" duration="57"/>
   </file>
   <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/getPercentage.test.tsx">
     <testCase name="getPercentage should return the correct percentage when total and success are positive integers" duration="6"/>
     <testCase name="getPercentage should return 100 when success is equal to total" duration="2"/>
-    <testCase name="getPercentage should return 0 when success is equal to 0" duration="2"/>
-    <testCase name="getPercentage should return the correct percentage when success is less than total" duration="1"/>
+    <testCase name="getPercentage should return 0 when success is equal to 0" duration="1"/>
+    <testCase name="getPercentage should return the correct percentage when success is less than total" duration="2"/>
   </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/isNewLocation.test.tsx">
-    <testCase name="isNewLocation should return false when oldData is null" duration="6"/>
-    <testCase name="isNewLocation should return false when oldData is undefined" duration="6"/>
-    <testCase name="isNewLocation should return false when all properties match" duration="1"/>
-    <testCase name="isNewLocation should return true when at least one property does not match" duration="2"/>
-    <testCase name="isNewLocation should return true when newData is null" duration="1"/>
-    <testCase name="isNewLocation should return true when oldData is null and newData is defined" duration="2"/>
-    <testCase name="isNewLocation should return false when oldData and newData are both null" duration="1"/>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/MultiRangeSlider.test.tsx">
+    <testCase name="Slider renders without crashing" duration="31"/>
+    <testCase name="Slider matches snapshot" duration="5"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/assets/images/ModifySvg.test.tsx">
+    <testCase name="ModifySvg Renders without error" duration="32"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/DownloadButton.tsx">
+    <testCase name="DownloadButton should call handleDownload function when button is clicked" duration="101"/>
+    <testCase name="DownloadButton should display the text Download" duration="24"/>
+    <testCase name="DownloadButton should not throw an error when handleDownload is not provided" duration="16"/>
+    <testCase name="DownloadButton should have the correct class name, type attribute, text color, background color, and gap between icon and text" duration="15"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/layouts/AuthGuard.test.tsx">
+    <testCase name="AuthGuard shows content if authenticated" duration="50"/>
+    <testCase name="should return children when isAuthenticated is true" duration="10"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/SelectedRequirementsTable.test.tsx">
+    <testCase name="SelectedRequirementsTable Renders without errors" duration="458"/>
+    <testCase name="SelectedRequirementsTable Renders selected requirement list" duration="36"/>
+    <testCase name="SelectedRequirementsTable Shows message when list is empty" duration="10"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/MiniTermDepositDetail.test.tsx">
+    <testCase name="MiniTermDepositDetail renders without error" duration="54"/>
+    <testCase name="MiniTermDepositDetail Indicates new data" duration="49"/>
   </file>
   <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/convertToDays.tsx">
-    <testCase name="convertToDays should return the input duration when type is 1" duration="7"/>
-    <testCase name="convertToDays should use the current date as a starting point for calculations" duration="2"/>
-    <testCase name="convertToDays should throw an error when an invalid duration type is provided" duration="5"/>
-    <testCase name="convertToDays should return 0 when duration is 0 and type is 2, 3 or 4" duration="1"/>
-    <testCase name="convertToDays should return NaN when duration is NaN and type is 2, 3 or 4" duration="2"/>
+    <testCase name="convertToDays should return the input duration when type is 1" duration="14"/>
+    <testCase name="convertToDays should use the current date as a starting point for calculations" duration="3"/>
+    <testCase name="convertToDays should throw an error when an invalid duration type is provided" duration="89"/>
+    <testCase name="convertToDays should return 0 when duration is 0 and type is 2, 3 or 4" duration="8"/>
+    <testCase name="convertToDays should return NaN when duration is NaN and type is 2, 3 or 4" duration="68"/>
   </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/handleUserView.test.tsx">
-    <testCase name="handleUserView should return &quot;in-review&quot; when value is &quot;P&quot; and checker is false" duration="6"/>
-    <testCase name="handleUserView should return &quot;pending&quot; when value is &quot;P&quot; and checker is true" duration="1"/>
-    <testCase name="handleUserView should return &quot;draft&quot; when value is &quot;D&quot;" duration="3"/>
-    <testCase name="handleUserView should return &quot;approved&quot; when value is &quot;A&quot;" duration="2"/>
-    <testCase name="handleUserView should return &quot;in-issue&quot; when value is &quot;I&quot; and checker is false" duration="1"/>
-    <testCase name="handleUserView should return &quot;rejected&quot; when value is &quot;I&quot; and checker is true" duration="2"/>
-    <testCase name="handleUserView should return &quot;in-issue&quot; when value is &quot;R&quot; and checker is false" duration="8"/>
-    <testCase name="handleUserView should return &quot;rejected&quot; when value is &quot;R&quot; and checker is true" duration="2"/>
-    <testCase name="handleUserView should return valye when value is &quot;T&quot; and checker is true" duration="2"/>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/ActivityLog.tsx">
+    <testCase name="renders the ActivityLog component with loading state" duration="52"/>
+    <testCase name="renders the ActivityLog component with no activities" duration="6"/>
+    <testCase name="renders the ActivityLog component with activities" duration="24"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/ui/Icon.test.tsx">
+    <testCase name="Icons should render an Icon component with the given props" duration="84"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/root.component.test.tsx">
+    <testCase name="Root component should be in the document" duration="40"/>
   </file>
   <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/sortTabStatus.test.tsx">
-    <testCase name="sortTabStatus should return the id of the status object when the category is &quot;Requests&quot; and the value matches a status object type" duration="7"/>
+    <testCase name="sortTabStatus should return the id of the status object when the category is &quot;Requests&quot; and the value matches a status object type" duration="21"/>
     <testCase name="sortTabStatus should return the id of the status object when the category is &quot;StatusTypes&quot; and the value matches a status object type" duration="2"/>
   </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/BottomBarLoader.test.tsx">
+    <testCase name="renders the BottomBarLoader component" duration="39"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/ui/CascadingDropdown.test.tsx">
+    <testCase name="CascadingDropdown should render a dropdown button with a label and a list of items" duration="51"/>
+    <testCase name="CascadingDropdown should display the list of items when the dropdown button is clicked" duration="9"/>
+    <testCase name="CascadingDropdown should allow the user to click on an item and navigate to its link" duration="33"/>
+    <testCase name="CascadingDropdown should render a dropdown button with a default label when no label is provided" duration="18"/>
+    <testCase name="CascadingDropdown should render a dropdown button with default classes when no classes are provided" duration="14"/>
+    <testCase name="CascadingDropdown should render a dropdown button with no items when no items are provided" duration="7"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/assets/images/SubmitSvg.test.tsx">
+    <testCase name="SubmitSvg Renders without error" duration="25"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/countDuplicates.test.tsx">
+    <testCase name="countDuplicates should return 0 when there are no duplicates in the array" duration="13"/>
+    <testCase name="countDuplicates should return the correct number of duplicates when there are duplicates in the array" duration="1"/>
+    <testCase name="countDuplicates should handle arrays with multiple types of elements" duration="1"/>
+    <testCase name="countDuplicates should return 0 when the array is empty" duration="1"/>
+    <testCase name="countDuplicates should handle arrays with only one element" duration="5"/>
+    <testCase name="countDuplicates should handle arrays with only duplicate elements" duration="2"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/modals/Rejection.test.tsx">
+    <testCase name="handleSuccess should set options for ProductSearch component when userIsSuccess is true and branchMembersData is not null or undefined" duration="7"/>
+    <testCase name="handleSuccess should not call setUsers when userIsSuccess is false" duration="2"/>
+    <testCase name="handleSuccess should call setUsers with an empty array when branchMembersData is an empty array" duration="2"/>
+    <testCase name="Rejection should render the Rejection modal with the correct UI and props" duration="625"/>
+    <testCase name="Rejection should display the correct title and labels for the form inputs" duration="144"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/assets/images/Step.test.tsx">
+    <testCase name="Step Renders without error" duration="45"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/modals/RequestDeactivation.test.tsx">
+    <testCase name="RequestDeactivation should render the component without crashing" duration="229"/>
+    <testCase name="RequestDeactivation should display the deactivation request form" duration="61"/>
+    <testCase name="RequestDeactivation should allow user to input reason for deactivation" duration="65"/>
+    <testCase name="RequestDeactivation should display an error message when the deactivation request fails" duration="197"/>
+    <testCase name="RequestDeactivation should allow user to upload supporting documents" duration="109"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/formatCurrency.test.tsx">
+    <testCase name="formatCurrency should format a price with default parameters" duration="6"/>
+    <testCase name="formatCurrency should format a price with custom fraction and currency parameters" duration="8"/>
+    <testCase name="formatCurrency should format a price with custom fraction, currency, and price parameters" duration="1"/>
+    <testCase name="formatCurrency should format a price with a price of 0" duration="2"/>
+    <testCase name="formatCurrency should format a price with a negative price" duration="1"/>
+    <testCase name="currencyFormatter should format a positive integer value with default currency and symbol" duration="1"/>
+    <testCase name="currencyFormatter should format a negative float value with specified currency and symbol" duration="2"/>
+    <testCase name="currencyFormatter should format a zero value with specified currency and symbol" duration="6"/>
+    <testCase name="currencyFormatter should format a value with more than two decimal places" duration="2"/>
+    <testCase name="currencyFormatter should format a value with less than two decimal places" duration="2"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/SearchInput.test.tsx">
+    <testCase name="handleInputChange should call setInputValue with the event target value" duration="15"/>
+    <testCase name="SearchInput should render search input field with default props" duration="41"/>
+    <testCase name="SearchInput applies custom CSS classes" duration="10"/>
+    <testCase name="SearchInput should update input field when user inputs a search term" duration="28"/>
+    <testCase name="SearchInput should update input field when user inputs a search term and isTruncated is true" duration="29"/>
+    <testCase name="closeBox should set search results to an empty array" duration="6"/>
+    <testCase name="closeBox should set show box state to false" duration="1"/>
+    <testCase name="closeBox should handle setSearchResults parameter not being a function" duration="59"/>
+    <testCase name="closeBox should handle setShowBox parameter not being a function" duration="2"/>
+    <testCase name="closeBox should handle multiple calls in a row" duration="1"/>
+    <testCase name="SearchValues should call handleClick when search item is clicked" duration="28"/>
+    <testCase name="SearchItem should render a div element with an empty className" duration="10"/>
+    <testCase name="SearchItem should render a span element with the specified className when type is &quot;general&quot;" duration="16"/>
+    <testCase name="SearchItem should render a div element when item.products.length &gt; 0" duration="15"/>
+    <testCase name="SearchItem should render a div element when item is undefined" duration="7"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/assets/images/excel.test.tsx">
+    <testCase name="ModifySvg Renders without error" duration="30"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/AppWrapper.test.tsx">
+    <testCase name="AppWrapper Component renders children within the Provider component" duration="55"/>
+  </file>
   <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/checkEmpty.test.tsx">
-    <testCase name="checkEmpty should return an empty array when all objects have all required properties" duration="6"/>
+    <testCase name="checkEmpty should return an empty array when all objects have all required properties" duration="15"/>
     <testCase name="checkEmpty should return an array with objects that have missing required properties" duration="2"/>
-    <testCase name="checkEmpty should return an empty array when uploadData is empty" duration="43"/>
+    <testCase name="checkEmpty should return an empty array when uploadData is empty" duration="1"/>
     <testCase name="checkEmpty should return an array with objects that have all required properties when uploadData contains only such objects" duration="1"/>
     <testCase name="checkEmpty should return an array with objects that have missing required properties when uploadData contains only such objects" duration="1"/>
-    <testCase name="checkEmpty should return an array with objects that have missing required properties when uploadData contains objects with missing and objects with all required properties" duration="1"/>
+    <testCase name="checkEmpty should return an array with objects that have missing required properties when uploadData contains objects with missing and objects with all required properties" duration="2"/>
   </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/requestType.test.tsx">
-    <testCase name="getRequestType should return &quot;bulk creation&quot; when type is &quot;BULK_CREATE&quot;" duration="6"/>
-    <testCase name="getRequestType should return &quot;creation&quot; when type is &quot;CREATE&quot;" duration="2"/>
-    <testCase name="getRequestType should return &quot;deactivation&quot; when type is &quot;DEACTIVATE&quot;" duration="1"/>
-    <testCase name="getRequestType should return &quot;reactivation&quot; when type is &quot;REACTIVATE&quot;" duration="1"/>
-    <testCase name="getRequestType should return &quot;modification&quot; when type is &quot;CHANGE&quot;" duration="1"/>
-    <testCase name="getRequestType should return &quot;configuration&quot; when type is &quot;CONFIGURATION&quot;" duration="1"/>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/lowerObjectKeys.test.tsx">
+    <testCase name="lowerObjectKeys should return an empty array when given an empty array" duration="52"/>
+    <testCase name="lowerObjectKeys should return an array of objects with lowerd keys when given an array of objects with lowercase keys" duration="2"/>
+    <testCase name="lowerObjectKeys should throw an error when given a non-array input" duration="40"/>
+    <testCase name="lowerObjectKeys should return an array of objects with lowerd keys when given an array of objects with mixed case keys" duration="7"/>
+    <testCase name="lowerObjectKeys should return an array of objects with lowerd keys when given an array of objects with only one key" duration="2"/>
+    <testCase name="lowerObjectKeys should return an array of objects with lowerd keys when given an array of objects with only non-string keys" duration="1"/>
+    <testCase name="lowerObjectKeys should handle objects without own properties" duration="2"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/PreLoader.test.tsx">
+    <testCase name="renders the PreLoader component" duration="36"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/assets/images/CancelSvg.test.tsx">
+    <testCase name="CancelSvg Renders without error" duration="34"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/forms/BorderlessSelect.test.tsx">
+    <testCase name="BorderlessSelect Renders without error" duration="138"/>
+    <testCase name="BorderlessSelect Shows options when input is clicked" duration="66"/>
+    <testCase name="BorderlessSelect indicates that input is required" duration="22"/>
+    <testCase name="BorderlessSelect indicates error" duration="27"/>
+    <testCase name="BorderlessSelect changes value when clicked and hides options" duration="64"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Pages/term-deposit/forms/preview.test.tsx">
+    <testCase name="Preview Renders without crashing" duration="396"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/handleDropdown.test.tsx">
+    <testCase name="handleDropdown should return an array of dropdown options when valid status and type are provided" duration="7"/>
+    <testCase name="handleDropdown should return an empty array when an invalid status is provided" duration="12"/>
+    <testCase name="handleDropdown should return an empty array when either status or type is falsy" duration="2"/>
+    <testCase name="handleDropdown should return an array of options based on status and type" duration="1"/>
+    <testCase name="handleDropdown should filter options based on permissions if CREATE_PRODUCT is not included" duration="2"/>
+    <testCase name="handleDropdown should return an empty array if status is not found in firstLevel" duration="1"/>
+    <testCase name="handleDropdown should return an empty array when either &quot;status&quot; or &quot;type&quot; is falsy" duration="2"/>
+    <testCase name="handleDropdown should return an array of options based on &quot;status&quot; and &quot;type&quot;" duration="12"/>
+    <testCase name="handleDropdown should filter options based on permissions if &quot;CREATE_PRODUCT&quot; is not included" duration="1"/>
+    <testCase name="handleDropdown should return an empty array if &quot;selectedType&quot; is falsy" duration="2"/>
+    <testCase name="handleDropdown should return an empty array if &quot;status&quot; is not found in &quot;DropDownOptions&quot;" duration="1"/>
+    <testCase name="handleDropdown should return an empty array if &quot;type&quot; is not found in &quot;creationMap&quot;" duration="1"/>
+    <testCase name="handleDropdown should return an empty array when status is falsy" duration="1"/>
+    <testCase name="handleDropdown should return an empty array when type is falsy" duration="1"/>
+    <testCase name="handleDropdown should return an array of options when type is in creationMap" duration="2"/>
+    <testCase name="handleDropdown should return an array of options when type is not in creationMap" duration="18"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/parseQueryParams.test.tsx">
+    <testCase name="parseQueryParams should return an instance of URLSearchParams when called with valid query params" duration="7"/>
+    <testCase name="parseQueryParams should append all non-array query params to the URLSearchParams instance" duration="2"/>
+    <testCase name="parseQueryParams should append all items in an array query param to the URLSearchParams instance" duration="4"/>
+    <testCase name="parseQueryParams should set boolean query params to their corresponding key in the URLSearchParams instance" duration="1"/>
+    <testCase name="parseQueryParams should handle an empty query params object" duration="1"/>
+    <testCase name="parseQueryParams should handle a query params object with null or undefined values" duration="1"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/forms/ComboSelect.test.tsx">
+    <testCase name="ComboSelect renders without crashing" duration="39"/>
+    <testCase name="ComboSelect matches snapshot" duration="24"/>
+    <testCase name="ComboSelect should open the dropdown when the button is clicked" duration="105"/>
+    <testCase name="ComboSelect should update selected options when all products and their members are selected" duration="58"/>
+    <testCase name="ComboSelect should update selected options when a product and its members are deselected" duration="38"/>
+    <testCase name="ComboSelect should update selected options when all products and their members are deselected" duration="54"/>
+    <testCase name="ComboSelect should filter the options correctly when searching for a product" duration="44"/>
+    <testCase name="ComboSelect should update selected options when a product and its members are selected" duration="45"/>
+    <testCase name="closeDropdown should set isOpen state to false when called with setIsOpen(false)" duration="2"/>
+    <testCase name="closeDropdown should not throw an error when called with setIsOpen(undefined)" duration="17"/>
+    <testCase name="closeDropdown should not throw an error when called with setIsOpen(null)" duration="1"/>
+    <testCase name="closeDropdown should not throw an error when called with setIsOpen(0)" duration="1"/>
+    <testCase name="closeDropdown should not throw an error when called with setIsOpen(&quot;&quot;)" duration="1"/>
+    <testCase name="closeDropdown should not throw an error when called with setIsOpen({})" duration="3"/>
+    <testCase name="handleChange should add a new product to selOptions if it doesnt exist" duration="2"/>
+    <testCase name="handleChange should remove a product from selOptions if it already exists" duration="5"/>
+    <testCase name="productContainsMember should return true when the product contains the member" duration="1"/>
+    <testCase name="productContainsMember should return false when the product does not contain the member" duration="1"/>
+    <testCase name="productContainsMember should return false when the product is empty" duration="1"/>
+    <testCase name="productContainsMember should return false when the member is empty" duration="1"/>
+    <testCase name="productContainsMember should return false when the member is null" duration="1"/>
+    <testCase name="addNewProduct should return a new array with the new product added to the end of the input array" duration="3"/>
+    <testCase name="addNewProduct should not modify the input array" duration="2"/>
+    <testCase name="addNewProduct should work with an empty input array" duration="2"/>
+    <testCase name="createProduct should return an object with &quot;product&quot; and &quot;members&quot; properties when valid id and members are provided" duration="1"/>
+    <testCase name="createProduct should return an object with an empty &quot;members&quot; array when no members are provided" duration="1"/>
+    <testCase name="createProduct should handle special characters and spaces in id and member names" duration="1"/>
+    <testCase name="createProduct should handle a large number of members" duration="2"/>
+    <testCase name="createProduct should handle empty strings as id and member names" duration="1"/>
+    <testCase name="handleMemberToggle should add member to product when member is not selected" duration="2"/>
+    <testCase name="handleMemberToggle should remove member from product when member is already selected" duration="1"/>
+    <testCase name="handleMemberToggle should add product and member to selected options when product is not selected" duration="1"/>
+    <testCase name="handleMemberToggle should add member to product when product is already selected but with no members" duration="1"/>
+    <testCase name="handleMemberToggle should add member to product when product is already selected with other members" duration="28"/>
+    <testCase name="addMemberToProduct should add a member to a product with no existing members" duration="1"/>
+    <testCase name="addMemberToProduct should add a member to a product with existing members" duration="1"/>
+    <testCase name="addMemberToProduct should return the original products array if memberId is undefined" duration="0"/>
+    <testCase name="addMemberToProduct should return the original products array if memberId is already in the product" duration="0"/>
+    <testCase name="removeMemberFromProduct should remove a member from a product with multiple members" duration="1"/>
+    <testCase name="removeMemberFromProduct should remove a member from a product with only one member" duration="1"/>
+    <testCase name="removeMemberFromProduct should handle removing a non-existent member from a product" duration="1"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/convertKeysToLowerCase.test.tsx">
+    <testCase name="convertKeysToLowerCase should convert all keys in a simple object to lowercase" duration="15"/>
+    <testCase name="convertKeysToLowerCase should convert all keys in a nested object to lowercase" duration="1"/>
+    <testCase name="convertKeysToLowerCase should return an empty object when given an empty object" duration="2"/>
+    <testCase name="convertKeysToLowerCase should convert keys with one character to lowercase" duration="1"/>
+    <testCase name="convertKeysToLowerCase should convert keys with all characters already lowercase" duration="4"/>
+    <testCase name="convertKeysToLowerCase should convert keys with all characters already uppercase" duration="2"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/forms/FormDate.test.tsx">
+    <testCase name="FormDate component should update date on date change" duration="102"/>
+    <testCase name="FormDate component should display error message when there is an error" duration="22"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Pages/investment/TestComponents.test.tsx">
+    <testCase name="TestComponents should render FormStepComponent with correct step and formStepItems" duration="69"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Dropdown.test.tsx">
+    <testCase name="Dropdown renders without crashing" duration="74"/>
+    <testCase name="Dropdown matches snapshot" duration="20"/>
+    <testCase name="Dropdown selects the right icon" duration="36"/>
+    <testCase name="Dropdown renders right icon when button is clicked" duration="195"/>
+    <testCase name="Dropdown applies active class to the selected option" duration="141"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/MultiSelect.test.tsx">
+    <testCase name="MultiSelect Renders without error" duration="49"/>
+    <testCase name="MultiSelect Renders options" duration="54"/>
   </file>
   <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/removeNullFromObj.test.tsx">
     <testCase name="removeNullEmptyKeys should return an empty object when the input object is empty" duration="7"/>
-    <testCase name="removeNullEmptyKeys should return the same object when it has no null, undefined, empty string, or empty array values" duration="3"/>
+    <testCase name="removeNullEmptyKeys should return the same object when it has no null, undefined, empty string, or empty array values" duration="2"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/handleColorState.test.tsx">
+    <testCase name="handleColorState should return the correct color state for the value &quot;approved&quot;" duration="7"/>
+    <testCase name="handleColorState should return the correct color state for the value &quot;A&quot;" duration="1"/>
+    <testCase name="handleColorState should return the correct color state for the value &quot;in-review&quot;" duration="4"/>
+    <testCase name="handleColorState should return the correct color state for the value &quot;P&quot;" duration="2"/>
+    <testCase name="handleColorState should return the correct color state for the value &quot;in-issue&quot;" duration="1"/>
+    <testCase name="handleColorState should return the correct color state for the value &quot;R&quot;" duration="1"/>
+    <testCase name="handleColorState should return the correct color state for the value &quot;draft&quot;" duration="1"/>
+    <testCase name="handleColorState should return the correct color state for the value &quot;D&quot;" duration="3"/>
+    <testCase name="handleColorState should return the correct color state for the value &quot;I&quot;" duration="2"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/forms/MultiSelect.test.tsx">
+    <testCase name="MultiSelect renders without crashing" duration="43"/>
+    <testCase name="MultiSelect opens and closes dropdown when clicked" duration="50"/>
+    <testCase name="MultiSelect should toggle dropdown when button is clicked" duration="156"/>
+    <testCase name="MultiSelect should select/deselect option when checkbox is clicked" duration="49"/>
+    <testCase name="MultiSelect should render correctly with an empty options array" duration="31"/>
+    <testCase name="MultiSelect should check select all" duration="35"/>
+    <testCase name="MultiSelect should update checkbox state when props change" duration="152"/>
+    <testCase name="closeDropdown should set isOpen state to false when setIsOpen is called with false" duration="9"/>
+    <testCase name="closeDropdown should handle setIsOpen being called with a boolean value" duration="3"/>
+    <testCase name="handleChange should add a new option to selectedOptions array when it does not exist" duration="2"/>
+    <testCase name="handleChange should remove an option from selectedOptions array when it already exists" duration="1"/>
+    <testCase name="handleChange should call setSelectedOptions with the same array when an option is already selected" duration="7"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/cleanObject.test.tsx">
+    <testCase name="cleanObject should return an empty object when passed an empty object" duration="7"/>
+    <testCase name="cleanObject should return an object with all non-null, non-undefined, and non-empty string values" duration="2"/>
+    <testCase name="cleanObject should return an object with all non-null, non-undefined, and non-empty values of different types" duration="2"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/ucObjectKeys.test.tsx">
+    <testCase name="ucObjectKeys should throw an error when the input is not an array" duration="22"/>
+    <testCase name="ucObjectKeys should handle an array with non-object elements as input" duration="3"/>
+    <testCase name="ucObjectKeys should capitalize the keys of an array of objects with different keys" duration="57"/>
+    <testCase name="ucObjectKeys should capitalize the keys of an array of objects with same keys" duration="2"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/forms/FormUpload.test.tsx">
+    <testCase name="FormUpload renders without crashing" duration="48"/>
+    <testCase name="FormUpload matches snapshot" duration="43"/>
+    <testCase name="FormUpload should reset all state variables when handleReset is called" duration="3"/>
+    <testCase name="handleFileChange should select a file and set the file type correctly" duration="3"/>
+    <testCase name="handleFileChange should set an error message when the file size exceeds the maximum allowed size" duration="6"/>
+    <testCase name="handleFileChange should set an error message when no file is selected" duration="2"/>
+    <testCase name="handleFileChange should display an error message when selecting a file with an invalid extension" duration="2"/>
+    <testCase name="FormUpload should display error message when selecting a file with an unsupported file type" duration="22"/>
+    <testCase name="handleDrag should set dragActive to true when dragenter event is triggered" duration="10"/>
+    <testCase name="handleDrag should set dragActive to true when dragover event is triggered" duration="2"/>
+    <testCase name="handleDrag should set dragActive to false when dragleave event is triggered" duration="1"/>
+    <testCase name="handleReset should reset upload data to an empty array" duration="2"/>
+    <testCase name="handleReset should set status to null" duration="1"/>
+    <testCase name="handleDrop should read and process a valid file when dropped" duration="2"/>
+    <testCase name="handleDrop should process a file with a valid file type when dropped" duration="43"/>
+    <testCase name="handleDrop should read and process a file with a valid file type when dropped" duration="2"/>
+    <testCase name="handleDrop should process a file with a valid file type when dropped" duration="2"/>
+    <testCase name="handleDrop should process a file with a valid file type when dropped" duration="1"/>
+    <testCase name="handleDrop should set an error message when the file type is not supported" duration="2"/>
+    <testCase name="handleDrop should set the base64 image correctly when the file is read" duration="14"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/capitalizeFirstLetter.test.tsx">
+    <testCase name="capitalizeFirstLetter should capitalize the first letter of a string with one word" duration="28"/>
+    <testCase name="capitalizeFirstLetter should capitalize the first letter of the first word in a string with multiple words" duration="2"/>
+    <testCase name="capitalizeFirstLetter should return an empty string if the input is an empty string" duration="2"/>
+    <testCase name="capitalizeFirstLetter should return the input if its not a string" duration="1"/>
+    <testCase name="capitalizeFirstLetter should capitalize the first letter of a string with only one letter" duration="2"/>
+    <testCase name="capitalizeFirstLetter should capitalize the first letter of a string with non-alphabetic characters after the first letter" duration="1"/>
+    <testCase name="capitalizeFirstLetter should capitalize the first letter of a string with numbers as the first letter" duration="88"/>
+    <testCase name="capitalizeFirstLetter should capitalize the first letter of a string with a non-ASCII character as the first letter" duration="6"/>
+    <testCase name="capitalizeFirstLetter should capitalize the first letter of a string with a non-ASCII character after the first letter" duration="47"/>
+    <testCase name="capitalizeFirstLetter should capitalize the first letter of a string with multiple spaces between words" duration="99"/>
+    <testCase name="capitalizeFirstLetter should capitalize the first letter of a non-empty string" duration="1"/>
+    <testCase name="capitalizeFirstLetter should not modify an empty string" duration="1"/>
+    <testCase name="capitalizeFirstLetter should return the input if it&apos;s not a string" duration="1"/>
+    <testCase name="capitalizeFirstLetter should capitalize the first letter of a single-word string" duration="1"/>
+    <testCase name="capitalizeFirstLetter should capitalize the first letter of each word in a sentence" duration="2"/>
+    <testCase name="capitalizeFirstLetter should not modify a string with only non-alphabetic characters" duration="1"/>
+    <testCase name="capitalizeFirstLetter should handle mixed case strings" duration="1"/>
+    <testCase name="capitalizeFirstLetter should return a string with the first letter capitalized when input is a non-empty string" duration="11"/>
+    <testCase name="capitalizeFirstLetter should return an empty string when input is an empty string" duration="1"/>
+    <testCase name="capitalizeFirstLetter should return the input when it is not a string" duration="1"/>
+    <testCase name="capitalizeFirstLetter should return the input when it is null" duration="0"/>
+    <testCase name="capitalizeFirstLetter should return the input when it is undefined" duration="1"/>
+    <testCase name="capitalizeFirstLetter should return the input when it is a number" duration="1"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/forms/CustomComboSelect.test.tsx">
+    <testCase name="CustomComboSelect Renders without errors" duration="57"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Loader.test.tsx">
+    <testCase name="Breadcrumbs renders without crashing" duration="19"/>
+    <testCase name="Breadcrumbs matches snapshot" duration="17"/>
+    <testCase name="Loader should render Loader component when isOpen is true" duration="331"/>
+    <testCase name="Loader should not render Loader component when isOpen is false" duration="10"/>
+    <testCase name="Loader should not throw an error when setIsOpen is not provided" duration="62"/>
+    <testCase name="Loader should spin the AiOutlineLoading icon when Loader component is rendered" duration="72"/>
+    <testCase name="Loader should display the text prop in the Loader component" duration="63"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/isNewLocation.test.tsx">
+    <testCase name="isNewLocation should return false when oldData is null" duration="18"/>
+    <testCase name="isNewLocation should return false when oldData is undefined" duration="4"/>
+    <testCase name="isNewLocation should return false when all properties match" duration="2"/>
+    <testCase name="isNewLocation should return true when at least one property does not match" duration="1"/>
+    <testCase name="isNewLocation should return true when newData is null" duration="1"/>
+    <testCase name="isNewLocation should return true when oldData is null and newData is defined" duration="1"/>
+    <testCase name="isNewLocation should return false when oldData and newData are both null" duration="1"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/StatusCard.test.tsx">
+    <testCase name="StatusCard Renders without error" duration="96"/>
+    <testCase name="StatusButton Renders without error" duration="14"/>
+    <testCase name="StatusButton Shows spinner while loading" duration="20"/>
+    <testCase name="sortOptions Sorts and returns expected options in &apos;all products&apos; category" duration="7"/>
+    <testCase name="sortOptions Sorts and returns expected options in &apos;requests&apos; category" duration="2"/>
+    <testCase name="StatusCategoryButton Renders without error" duration="10"/>
+    <testCase name="handleActiveType Sets status to &quot;&quot; when activeType === all " duration="2"/>
+    <testCase name="handleActiveType Sets status according to various activeTypes" duration="3"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/downloadFile.test.tsx">
+    <testCase name="downloadUsingFetch should download file" duration="14"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/utils/capitalizeObjectKeys.test.tsx">
+    <testCase name="capitalizeObjectKeys should return an empty array when given an empty array" duration="7"/>
+    <testCase name="capitalizeObjectKeys should return an array of objects with capitalized keys when given an array of objects with lowercase keys" duration="3"/>
+    <testCase name="capitalizeObjectKeys should throw an error when given a non-array input" duration="9"/>
+    <testCase name="capitalizeObjectKeys should return an array of objects with capitalized keys when given an array of objects with mixed case keys" duration="2"/>
+    <testCase name="capitalizeObjectKeys should return an array of objects with capitalized keys when given an array of objects with only one key" duration="2"/>
+    <testCase name="capitalizeObjectKeys should return an array of objects with capitalized keys when given an array of objects with only non-string keys" duration="1"/>
+    <testCase name="capitalizeObjectKeys should handle objects without own properties" duration="2"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/forms/InfoLabel.test.tsx">
+    <testCase name="InfoLabel Renders without errors" duration="53"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/investment/dashboard/TableComponent.test.tsx">
+    <testCase name="handleDropdown should return an array of options based on the status, isChecker, locked, and permissions parameters" duration="6"/>
+    <testCase name="handleDropdown should filter out &quot;deactivate&quot; and &quot;activate&quot; options if user does not have &quot;CREATE_PRODUCT&quot; permission" duration="12"/>
+    <testCase name="handleDropdown should filter out &quot;modify&quot; option if user does not have &quot;CREATE_PRODUCT&quot; permission and is not a checker" duration="2"/>
+    <testCase name="handleDropdown should return an array with only &quot;view&quot; option if locked parameter is true and &quot;view&quot; option exists" duration="1"/>
+    <testCase name="handleDropdown should return an empty array if locked parameter is true and &quot;view&quot; option does not exist" duration="5"/>
+    <testCase name="handleDropdown should return an array with only &quot;view&quot; option if isChecker parameter is true and &quot;view&quot; option exists" duration="1"/>
+    <testCase name="handleHeaders should filter out &apos;created_by&apos; when isChecker is true" duration="2"/>
+    <testCase name="handleHeaders should filter out &apos;approved_By&apos; when isChecker is false" duration="22"/>
+    <testCase name="handleDownload should generate CSV for requests category" duration="5"/>
+    <testCase name="handleDownload should generate CSV for product category" duration="2"/>
+    <testCase name="handleDownload should not generate CSV if downloadData is empty" duration="1"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/ProductDetail.test.tsx">
+    <testCase name="ProductDetail Renders without crashing" duration="396"/>
+    <testCase name="ProductDetail should render data rows correctly" duration="15"/>
+    <testCase name="ProductDetail should handle no previous data available" duration="88"/>
+    <testCase name="DebitCreditable should render product details correctly" duration="113"/>
+    <testCase name="DebitCreditable should display an empty table when dataTab prop is an empty array" duration="8"/>
+    <testCase name="DebitCreditable should display the correct S|N value for each row" duration="22"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/forms/MultiSelectForm.tsx">
+    <testCase name="MultiSelectForm should render a label with the provided labelName prop" duration="71"/>
+    <testCase name="MultiSelectForm should render a button with the provided placeholder prop" duration="9"/>
+    <testCase name="MultiSelectForm should open a dropdown with options when the button is clicked" duration="131"/>
+    <testCase name="MultiSelectForm should handle the case where no options are provided" duration="39"/>
+    <testCase name="MultiSelectForm should handle the case where no labelName prop is provided" duration="25"/>
+    <testCase name="MultiSelectForm should handle the case where no inputName prop is provided" duration="56"/>
+    <testCase name="handleChange should add a new value to selectedOptions array when it doesnt already exist" duration="3"/>
+    <testCase name="handleChange should remove a value from selectedOptions array when it already exists" duration="4"/>
+    <testCase name="handleChange should handle null or undefined value parameter" duration="2"/>
+    <testCase name="handleChange should handle null or undefined setSelectedOptions parameter" duration="206"/>
+    <testCase name="handleChange should handle null or undefined id parameter" duration="2"/>
+    <testCase name="closeDropdown should set isOpen state to false when called with setIsOpen(false)" duration="4"/>
+    <testCase name="closeDropdown should not throw an error when called with setIsOpen" duration="1"/>
+    <testCase name="closeDropdown should not have any side effects other than setting isOpen state to false" duration="9"/>
+    <testCase name="closeDropdown should not affect any other state or props" duration="2"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/forms/MultiSelectForm2.tsx">
+    <testCase name="handleChange should add a new value to selectedOptions array when it doesnt already exist" duration="137"/>
+    <testCase name="handleChange should remove a value from selectedOptions array when it already exists" duration="1"/>
+    <testCase name="handleChange should handle null or undefined value parameter" duration="2"/>
+    <testCase name="handleChange should handle null or undefined setSelectedOptions parameter" duration="17"/>
+    <testCase name="handleChange should handle null or undefined id parameter" duration="1"/>
+    <testCase name="closeDropdown should set isOpen state to false when called with setIsOpen(false)" duration="9"/>
+    <testCase name="closeDropdown should not throw an error when called with setIsOpen" duration="1"/>
+    <testCase name="closeDropdown should not have any side effects other than setting isOpen state to false" duration="1"/>
+    <testCase name="closeDropdown should not affect any other state or props" duration="2"/>
+    <testCase name="MultiSelectForm2 should render a label with the provided labelName prop" duration="49"/>
+    <testCase name="MultiSelectForm2 should render a search input with the provided placeholder prop" duration="25"/>
+    <testCase name="MultiSelectForm2 should render a list of options with checkboxes" duration="8"/>
+    <testCase name="MultiSelectForm2 should render a default placeholder when no placeholder prop is provided" duration="7"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/FormStepComponent.test.tsx">
+    <testCase name="FormStepComponent should render the correct number of form step items when formStepItems is not empty" duration="55"/>
+    <testCase name="FormStepComponent should render the correct label for each form step item when formStepItems is not empty" duration="69"/>
+    <testCase name="FormStepComponent should render the correct index for each form step item when formStepItems is not empty" duration="16"/>
+    <testCase name="FormStepComponent should handle empty formStepItems array and render default form step item" duration="7"/>
+    <testCase name="FormStepComponent should handle step value greater than the number of formStepItems and render last form step item" duration="9"/>
+    <testCase name="FormStepComponent should handle step value less than 1 and render first form step item" duration="7"/>
   </file>
   <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Pages/term-deposit/forms/toggle-input-children.test.tsx">
   </file>

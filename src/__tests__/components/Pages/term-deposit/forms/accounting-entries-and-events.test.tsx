@@ -1,7 +1,7 @@
 import React from 'react'
 import { fireEvent, render, screen, } from "@testing-library/react";
 import AccountingEntriesAndEvents, { InputDivs } from '../../../../../components/pages/term-deposit/forms/accounting-entries-and-events'
-import { act } from 'react-dom/test-utils';
+import { act } from 'react-dom/test-utils'
 
 describe('AccountingEntriesAndEvents', () => {
     const formD =  {
@@ -19,5 +19,8 @@ describe('AccountingEntriesAndEvents', () => {
         })
         expect(screen.getByTestId("entriesandevents")).toBeInTheDocument();
         expect(screen.getAllByTestId("input-div").length).toBe(3);
+        const openButton = screen.getAllByTestId("open-button")[0];
+        fireEvent.click(openButton);
+        expect(screen.getAllByTestId("gli-input").length).toBeGreaterThan(0);
     })
 });

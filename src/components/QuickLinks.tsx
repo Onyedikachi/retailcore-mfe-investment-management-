@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
 import {
@@ -33,6 +33,10 @@ export default function QuickLinks() {
   //     // Additional cleanup actions can be performed here
   //   };
   // }, []);
+
+  useEffect(() => {
+    console.log(isLoading, quickLinks)
+  }, [isLoading])
 
   React.useEffect(() => {
     if (isLinksQuerySuccessful) {
