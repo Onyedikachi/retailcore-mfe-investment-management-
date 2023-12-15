@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { linkApi, investmentApi, authApi } from "@app/api";
+import { linkApi, investmentApi, authApi, accountApi } from "@app/api";
 
 export const setupStore = (preloadedState) => {
   return configureStore({
@@ -7,6 +7,7 @@ export const setupStore = (preloadedState) => {
       [linkApi?.reducerPath]: linkApi?.reducer,
       [investmentApi?.reducerPath]: investmentApi?.reducer,
       [authApi?.reducerPath]: authApi?.reducer,
+      [accountApi?.reducerPath]: accountApi?.reducer,
     },
     preloadedState,
     middleware: (getDefaultMiddleware) =>
@@ -16,6 +17,7 @@ export const setupStore = (preloadedState) => {
       })
         .concat(linkApi?.middleware)
         .concat(authApi?.middleware)
+        .concat(accountApi.middleware)
         .concat(investmentApi?.middleware),
   });
 };

@@ -42,12 +42,6 @@ Object {
                      
                     Draft Box updated
                      
-                    <span
-                      class="block text-success-500 pl-[2px]"
-                    >
-                       
-                      New
-                    </span>
                   </span>
                 </div>
               </div>
@@ -350,35 +344,39 @@ Object {
                         before liquidation
                       </span>
                     </span>
-                    <p
+                    <div
                       class="font-normal"
                     >
-                      <span
-                        class="font-bold"
+                      <div
+                        class="flex gap-x-1"
                       >
-                        Penalty:
-                      </span>
-                       
-                      <span />
-                      <span />
-                      <span />
-                      <span />
-                      <span
-                        class="flex flex-wrap gap-x-1 my-1"
-                      >
-                        <span>
-                           
+                        <span
+                          class="font-bold"
+                        >
+                          Penalty:
+                        </span>
+                         
+                        <span />
+                        <span />
+                        <span />
+                        <span />
+                        <span
+                          class="flex flex-wrap gap-x-1 my-1"
+                        >
                           <span>
                              
-                            Take a charge
-                             
-                            <span
-                              class="flex flex-wrap"
-                            />
+                            <span>
+                               
+                              Take a charge
+                               
+                              <span
+                                class="flex flex-wrap"
+                              />
+                            </span>
                           </span>
                         </span>
-                      </span>
-                    </p>
+                      </div>
+                    </div>
                     Maximum of 
                     1
                     % of principal
@@ -416,8 +414,8 @@ Object {
                         before liquidation
                       </span>
                     </span>
-                    <p
-                      class="font-normal"
+                    <div
+                      class="font-normal flex gap-x-1"
                     >
                       <span
                         class="font-bold"
@@ -444,7 +442,7 @@ Object {
                           </span>
                         </span>
                       </span>
-                    </p>
+                    </div>
                   </span>
                 </div>
               </div>
@@ -788,12 +786,6 @@ Object {
                    
                   Draft Box updated
                    
-                  <span
-                    class="block text-success-500 pl-[2px]"
-                  >
-                     
-                    New
-                  </span>
                 </span>
               </div>
             </div>
@@ -1096,35 +1088,39 @@ Object {
                       before liquidation
                     </span>
                   </span>
-                  <p
+                  <div
                     class="font-normal"
                   >
-                    <span
-                      class="font-bold"
+                    <div
+                      class="flex gap-x-1"
                     >
-                      Penalty:
-                    </span>
-                     
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span
-                      class="flex flex-wrap gap-x-1 my-1"
-                    >
-                      <span>
-                         
+                      <span
+                        class="font-bold"
+                      >
+                        Penalty:
+                      </span>
+                       
+                      <span />
+                      <span />
+                      <span />
+                      <span />
+                      <span
+                        class="flex flex-wrap gap-x-1 my-1"
+                      >
                         <span>
                            
-                          Take a charge
-                           
-                          <span
-                            class="flex flex-wrap"
-                          />
+                          <span>
+                             
+                            Take a charge
+                             
+                            <span
+                              class="flex flex-wrap"
+                            />
+                          </span>
                         </span>
                       </span>
-                    </span>
-                  </p>
+                    </div>
+                  </div>
                   Maximum of 
                   1
                   % of principal
@@ -1162,8 +1158,8 @@ Object {
                       before liquidation
                     </span>
                   </span>
-                  <p
-                    class="font-normal"
+                  <div
+                    class="font-normal flex gap-x-1"
                   >
                     <span
                       class="font-bold"
@@ -1190,7 +1186,7 @@ Object {
                         </span>
                       </span>
                     </span>
-                  </p>
+                  </div>
                 </span>
               </div>
             </div>
