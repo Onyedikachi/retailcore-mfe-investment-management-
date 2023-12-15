@@ -214,6 +214,13 @@ describe("TextCellContent", () => {
     // Assert that "-" is rendered when the value is falsy
     expect(screen.getByText("-")).toBeInTheDocument();
   });
+
+  it("should render nothing when value is null or undefined", () => {
+    const value = null;
+    const { container } = render(<UpdatedOnCellContent value={value} />);
+    expect(container.firstChild).not.toBeNull();
+  });
+
 });
 
 describe("ProductNameCellContent", () => {
