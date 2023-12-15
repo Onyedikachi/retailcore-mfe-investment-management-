@@ -1,13 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ToastContainer, toast } from "react-toastify";
+
+import { Tooltip } from "react-tippy";
+import "react-tippy/dist/tippy.css";
 import "react-toastify/dist/ReactToastify.css";
 import DropDown from "@app/components/DropDown";
 import { MultiSelect, DateSelect } from "@app/components/forms";
 import moment from "moment";
 import { BsFunnel } from "react-icons/bs";
 import BottomBarLoader from "../BottomBarLoader";
-import Tooltip from "@app/components/ui/Tooltip";
+// import Tooltip from "@app/components/ui/Tooltip";
 import {
   AppContext,
   InvestmentContext,
@@ -57,10 +60,10 @@ export function handleUpdated(key, value, options) {
     const newState = ActiveFilterOptions.find(
       (n) => parseOptions[key] === n.value
     )?.name;
-   
+
     if (newState === value) return null;
   }
-   
+
   return value !== parseOptions[key]
     ? `Updated on ${moment(parseOptions[key]?.date).format(
         "DD MMM YYYY, hh:mm A"
@@ -83,7 +86,6 @@ export const handleProductsDropdown = (
   locked = false,
   permissions: string[] = []
 ): any => {
-
   if (!status) return [];
   if (isChecker) {
     return DropDownOptions[status]?.filter(
@@ -495,16 +497,12 @@ export default function TableComponent<TableProps>({
                             item.recentlyUpdatedMeta
                           ) && (
                             <Tooltip
-                              title={
-                                <span className="absolute h-[6px] w-[6px] -right-[6px] top-[1px] rounded-full bg-[#CF2A2A]"></span>
-                              }
-                              placement="bottom"
-                              className="btn btn-outline-dark !w-[280px]"
-                              allowHTML
-                              interactive
-                              theme="custom-light"
-                              maxWidth="250px"
-                              content={
+                              size="small"
+                              arrow
+                              theme="light"
+                              distance={40}
+                              className="bg-white"
+                              html={
                                 <div className="text-[#636363] text-[10px] z-[999] whitespace-nowrap">
                                   {handleUpdated(
                                     header.key,
@@ -513,7 +511,11 @@ export default function TableComponent<TableProps>({
                                   )}
                                 </div>
                               }
-                            ></Tooltip>
+                            >
+                             <div className="h-[10px] w-[10px] flex items-center justify-center cursor-pointer">
+                             <span className="absolute h-[6px] w-[6px] -right-[6px] top-[1px] rounded-full bg-[#CF2A2A]"></span>
+                             </div>
+                            </Tooltip>
                           )}{" "}
                         </div>
                       </td>
