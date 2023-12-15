@@ -43,6 +43,8 @@ export interface BorderlessSelectProps {
   trigger?: any;
   disabled?: boolean
   isCharge?: boolean
+  value? : any;
+  defaultProperty?: any
 }
 
 export interface ActiveFilterProps {}

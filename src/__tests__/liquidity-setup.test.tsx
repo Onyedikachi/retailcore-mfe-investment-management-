@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import LiquiditySetup from "../components/pages/term-deposit/forms/liquidity-setup"
 import {renderWithProviders} from "../__mocks__/api/Wrapper"
-import React from "react";
 
 const fData = {
     part_AllowPartLiquidation: false,
@@ -21,7 +20,7 @@ const fData = {
 
 describe("LiquiditySetup", () => {
     it ("Renders without error", () => {
-        const form = renderWithProviders(<LiquiditySetup proceed={jest.fn()} formData={fData} setDisabled={jest.fn()} setFormData={jest.fn()} initiateDraft={false}/>)
+        const form = renderWithProviders(<LiquiditySetup proceed={jest.fn()} formData={fData} setDisabled={jest.fn()}/>)
         expect(form).toMatchSnapshot()
     })
 })
