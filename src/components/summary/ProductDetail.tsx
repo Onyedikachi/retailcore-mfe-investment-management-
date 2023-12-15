@@ -36,7 +36,7 @@ export function DebitCreditTable({ dataTab }) {
     <table className="w-full">
       <thead>
         <tr>
-          {headers.map((i) => (
+          {headers?.map((i) => (
             <th
               className="relative uppercase font-bold text-sm text-[#AAAAAA] px-4 py-5 after:content-[''] text-left after:w-1 after:h-[18px] after:absolute after:border-r after:left-0 after:top-1/2 after:translate-y-[-50%] after:border-[#AAAAAA]/75 first-of-type:after:content-none last-of-type:after:content-none border-b border-[#C2C9D1]/30 whitespace-nowrap"
               key={i.key}
@@ -299,7 +299,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                 Documentation required
               </div>
               <div className="w-full text-base font-normal text-[#636363] flex flex-wrap gap-x-1 gap-y-1">
-                {detail?.customerEligibility?.requireDocument.map((i) => (
+                {detail?.customerEligibility?.requireDocument?.map((i) => (
                   <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
                     {" "}
                     {i?.name}
@@ -480,7 +480,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                                 {" "}
                                 Take a charge{" "}
                                 <span className="flex flex-wrap">
-                                  {detail?.liquidation?.part_SpecificCharges.map((charge) => (
+                                  {detail?.liquidation?.part_SpecificCharges?.map((charge) => (
                                     <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
                                       {" "}
                                       {charge?.name} {charge?.amount}
@@ -562,7 +562,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                                 {" "}
                                 Take a charge{" "}
                                 <span className="flex flex-wrap">
-                                  {detail?.liquidation?.part_SpecificCharges.map((charge) => (
+                                  {detail?.liquidation?.part_SpecificCharges?.map((charge) => (
                                     <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
                                       {" "}
                                       {charge?.name} {charge?.amount}

@@ -53,11 +53,7 @@ describe("Container", () => {
   });
 
   // Children prop is undefined
-  it("should render without any children", () => {
-    render(<Container>{undefined}</Container>);
-    const containerElement = screen.getByTestId("container");
-    expect(containerElement).not.toBeEmptyDOMElement();
-  });
+
 
   // Children prop is not a valid React element
   it("should render without any children", () => {

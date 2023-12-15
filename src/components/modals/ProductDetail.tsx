@@ -426,7 +426,7 @@ export default function ProductDetail({
                                           {liquidities[
                                             productData?.data?.liquidation
                                               ?.part_SpecificCharges
-                                          ].map((charge) => (
+                                          ]?.map((charge) => (
                                             <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
                                               {" "}
                                               {charge?.name} {charge?.amount}
@@ -529,7 +529,7 @@ export default function ProductDetail({
                                           {liquidities[
                                             productData?.data?.liquidation
                                               ?.early_SpecificCharges
-                                          ].map((charge) => (
+                                          ]?.map((charge) => (
                                             <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
                                               {" "}
                                               {charge?.name} {charge?.amount}

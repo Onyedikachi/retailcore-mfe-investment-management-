@@ -342,6 +342,7 @@ Object {
                         class="font-bold"
                       >
                         10
+                         
                         days
                       </span>
                        
@@ -362,8 +363,20 @@ Object {
                       <span />
                       <span />
                       <span />
-                      <span>
-                        Take a charge
+                      <span
+                        class="flex flex-wrap gap-x-1 my-1"
+                      >
+                        <span>
+                           
+                          <span>
+                             
+                            Take a charge
+                             
+                            <span
+                              class="flex flex-wrap"
+                            />
+                          </span>
+                        </span>
                       </span>
                     </p>
                     Maximum of 
@@ -395,6 +408,7 @@ Object {
                         class="font-bold"
                       >
                         3
+                         
                         days
                       </span>
                        
@@ -415,8 +429,20 @@ Object {
                       <span />
                       <span />
                       <span />
-                      <span>
-                        Take a charge
+                      <span
+                        class="flex flex-wrap gap-x-1 my-1"
+                      >
+                        <span>
+                           
+                          <span>
+                             
+                            Take a charge
+                             
+                            <span
+                              class="flex flex-wrap"
+                            />
+                          </span>
+                        </span>
                       </span>
                     </p>
                   </span>
@@ -1059,6 +1085,7 @@ Object {
                       class="font-bold"
                     >
                       10
+                       
                       days
                     </span>
                      
@@ -1079,8 +1106,20 @@ Object {
                     <span />
                     <span />
                     <span />
-                    <span>
-                      Take a charge
+                    <span
+                      class="flex flex-wrap gap-x-1 my-1"
+                    >
+                      <span>
+                         
+                        <span>
+                           
+                          Take a charge
+                           
+                          <span
+                            class="flex flex-wrap"
+                          />
+                        </span>
+                      </span>
                     </span>
                   </p>
                   Maximum of 
@@ -1112,6 +1151,7 @@ Object {
                       class="font-bold"
                     >
                       3
+                       
                       days
                     </span>
                      
@@ -1132,8 +1172,20 @@ Object {
                     <span />
                     <span />
                     <span />
-                    <span>
-                      Take a charge
+                    <span
+                      class="flex flex-wrap gap-x-1 my-1"
+                    >
+                      <span>
+                         
+                        <span>
+                           
+                          Take a charge
+                           
+                          <span
+                            class="flex flex-wrap"
+                          />
+                        </span>
+                      </span>
                     </span>
                   </p>
                 </span>
