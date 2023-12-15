@@ -6,21 +6,28 @@ import { SelectProps } from "@app/types";
 export default function Select({
   options,
   handleSelected,
+  value,
 }: SelectProps): React.JSX.Element {
   const [selected, setSelected] = useState(options[0]);
 
   useEffect(() => {
     handleSelected(selected);
-  }, [selected, handleSelected]);
+    // setSelected(selected);
+  }, [selected]);
 
   // Change selected when changing status category
   useEffect(() => {
     setSelected(options[0]);
   }, [options]);
 
+  useEffect(() => {
+    if (!value) return;
+    setSelected(options.find((i) => i.value == value.value));
+  }, [value]);
+
   return (
     <div role="combobox" className="min-w-[150px]">
-      <Listbox value={selected} onChange={setSelected}>
+      <Listbox value={selected} onChange={handleSelected}>
         <div className="relative mt-1">
           <Listbox.Button className="relative w-full cursor-pointer rounded-[6px] bg-white py-1 pl-2 pr-10 text-left border border-[#D0D5DD] focus:outline-none  text-[#252C32] text-sm">
             <span className="block truncate">{selected?.text}</span>
@@ -35,7 +42,7 @@ export default function Select({
             leaveTo="opacity-0"
           >
             <Listbox.Options className="absolute mt-1 max-h-60 w-[200px] overflow-auto bg-white py-1  focus:outline-none text-sm shadow-[0px_0px_4px_0px_#00000040] right-0 rounded-b-lg z-40">
-              {options.map(
+              {options?.map(
                 (
                   option: {
                     id: number;
@@ -51,7 +58,11 @@ export default function Select({
                     className={({ active }) =>
                       `relative  select-none py-2 px-6  text-[#636363] hover:bg-gray-50  ${
                         active ? "bg-red-50" : ""
-                      } ${option?.disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`
+                      } ${
+                        option?.disabled
+                          ? "opacity-50 cursor-not-allowed"
+                          : "cursor-pointer"
+                      }`
                     }
                     value={option}
                   >

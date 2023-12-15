@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { RiErrorWarningFill } from "react-icons/ri";
 import { FaCheckCircle } from "react-icons/fa";
 import { AiOutlineLoading } from "react-icons/ai";
-import { FormDate, CustomInput } from "@app/components/forms";
+import { FormDate } from "@app/components/forms";
 import { FormToolTip } from "@app/components";
 import { BorderlessSelect, DateSelect } from "@app/components/forms";
 import { useForm } from "react-hook-form";
@@ -15,7 +15,7 @@ import {
   toolTips,
 } from "@app/constants";
 import debounce from "lodash.debounce";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useValidateNameMutation } from "@app/api";
 import moment from "moment";
 const defaultLength = 50;
@@ -32,7 +32,7 @@ export function handleValidatingName(
   clearErrors
 ) {
   if (nameIsError) {
-    trigger("productName");
+    // trigger("productName");
     assignError("productName", {
       type: "custom",
       message: nameError?.message?.Message,
@@ -41,7 +41,7 @@ export function handleValidatingName(
     setIsNameOkay(false);
   }
   if (nameIsSuccess && charLeft < 47) {
-    // trigger("productName");
+    trigger("productName");
     clearErrors("productName");
     setIsNameOkay(true);
   }
@@ -115,6 +115,8 @@ export default function ProductInformation({
   setFormData,
   setDisabled,
   proceed,
+  initiateDraft,
+  activeId,
 }) {
   //useForm
   const {
@@ -134,14 +136,18 @@ export default function ProductInformation({
   });
 
   //useState
+  const values = getValues();
   const productFormRef = useRef();
+  const { process } = useParams();
   const [error, setError] = useState<string>("");
   const [charLeft, setCharLeft] = useState<number>(50);
   const [sloganCharLeft, setSloganCharLeft] = useState<number>(160);
   const [currentName, setCurrentName] = useState("");
   const [isNameOkay, setIsNameOkay] = useState<boolean>(false);
   const [isSloganOkay, setIsSloganOkay] = useState<boolean>(false);
-  const { id, productId } = useParams();
+  const { productId } = useParams();
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id");
   const [
     validateName,
     {
@@ -164,7 +170,6 @@ export default function ProductInformation({
       clearErrors
     );
   }, [nameIsSuccess, nameIsError]);
-  const values = getValues();
   function compareValues() {
     const name = getValues("name");
     // const conditions = [
@@ -186,25 +191,82 @@ export default function ProductInformation({
     });
     proceed();
   }
-
   useEffect(() => {
-    console.log("🚀 ~ file: product-information.tsx:191 ~ isValid:", isValid);
-
+    if (initiateDraft) {
+      setFormData({
+        ...values,
+        startDate:
+          values.startDate && moment(values.startDate).format("yyyy-MM-DD"),
+        endDate: values.endDate && moment(values.endDate).format("yyyy-MM-DD"),
+      });
+    }
+  }, [initiateDraft]);
+  useEffect(() => {
     setDisabled(!isValid);
   }, [values]);
+
   useEffect(() => {
     if (formData) {
-      Object.entries(formData).forEach(
-        ([name, value]) => setValue(name, value));
+      Object.entries(formData).forEach(([name, value]) =>
+        setValue(name, value)
+      );
+      if (
+        process === "continue" ||
+        process === "modify" ||
+        process === "withdraw_modify" ||
+        process === "clone"
+      ) {
+        trigger();
+        if (formData.productName && id) {
+          validateName({
+            productName: formData.productName,
+            productId: activeId.current || id || productId || null,
+          });
+        }
+      }
     }
-}, [setValue, formData]);
+  }, [setValue, formData, process, id]);
 
   //watchers
-  const watchStartDate = watch("startDate");
-  const watchEndDate = watch("endDate");
+  const watchStartDate = new Date(watch("startDate"));
+  const watchProductName = watch("productName");
+  const watchProductDesc = watch("description");
   const watchCurrency = watch("currency");
+  watchStartDate.setDate(watchStartDate.getDate() + 1);
+
+  useEffect(() => {
+    if (
+      watchCurrency &&
+      watchStartDate &&
+      watchProductName &&
+      watchProductDesc
+    ) {
+      trigger();
+    }
+  }, []);
+  const handleDebouncedNameChange = debounce((e) => {
+    setValue("productName", e.target.value);
+    handleName(
+      validateName,
+      e.target.value,
+      formData,
+      setCharLeft,
+      clearErrors,
+      setError,
+      setIsNameOkay,
+      setDisabled,
+      setCurrentName,
+      compareValues,
+      100,
+      activeId.current || productId || id
+    );
+  }, 800);
   return (
-    <form id="productform" onSubmit={handleSubmit(onProceed)}>
+    <form
+      id="productform"
+      data-testid="submit-button"
+      onSubmit={handleSubmit(onProceed)}
+    >
       <div className="">
         <div className="mb-6 flex flex-col gap-[1px]">
           <div className="flex itemx-center gap-2 w-[300px]">
@@ -228,32 +290,23 @@ export default function ProductInformation({
                 } ${
                   isNameOkay && !errors?.productName ? "border-success-500" : ""
                 }`}
-                {...register("productName", {
-                  required: true,
-                  maxLength: 50,
-                })}
                 onChange={(e) => {
-                  handleName(
-                    validateName,
-                    e.target.value,
-                    formData,
-                    setCharLeft,
-                    clearErrors,
-                    setError,
-                    setIsNameOkay,
-                    setDisabled,
-                    setCurrentName,
-                    compareValues,
-                    500,
-                    productId
-                  );
+                  if (e.target.value.length < 4) {
+                    trigger("productName");
+                    setIsNameOkay(false);
+                  } else {
+                    handleDebouncedNameChange(e);
+                  }
                 }}
                 placeholder="Enter Name"
                 maxLength={defaultLength}
-                value={formData?.productName}
+                defaultValue={formData?.productName}
                 aria-invalid={errors?.productName ? "true" : "false"}
               />
-              <div className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]">
+              <div
+                data-testid="product-name-char-count"
+                className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]"
+              >
                 <span>
                   {" "}
                   {charLeft}/{defaultLength}
@@ -263,7 +316,7 @@ export default function ProductInformation({
                     <FaCheckCircle className="text-success-500 text-xl" />
                   </span>
                 )}
-                {(error || errors?.productName) && (
+                {(errors?.productName) && (
                   <span>
                     <RiErrorWarningFill className="text-danger-500 text-xl w-5 h-5" />
                   </span>
@@ -298,11 +351,8 @@ export default function ProductInformation({
                 data-testid="investment-slogan"
                 className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB] ${
                   errors?.slogan || error ? "border-red-500" : ""
-                }${
-                  isSloganOkay && !errors?.slogan ? "border-success-500" : ""
                 }`}
                 {...register("slogan", {
-                  required: true,
                   maxLength: 160,
                 })}
                 onChange={(e) => {
@@ -316,7 +366,7 @@ export default function ProductInformation({
                 }}
                 placeholder="Enter a slogan"
                 maxLength={defaultSloganLength}
-                value={formData?.slogan}
+                defaultValue={formData?.slogan}
                 aria-invalid={errors?.slogan ? "true" : "false"}
               />
               <div className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]">
@@ -355,33 +405,45 @@ export default function ProductInformation({
                 {" "}
                 <RedDot />
               </span>
+              <FormToolTip tip={toolTips.description} />
             </label>
           </div>
           <InputDiv>
-            <textarea
-              data-testid="product-description"
-              placeholder="Enter description"
-              {...register("description")}
-              value={formData?.description}
-              className={`min-h-[150px] w-full rounded-md border border-[#8F8F8F] focus:outline-none px-3 py-[11px] placeholder:text-[#BCBBBB] resize-none ${
-                errors?.description || error
-                  ? "border-red-500 ring-1 ring-red-500"
-                  : ""
-              }${!errors?.description ? "border-success-500" : ""}`}
-            />
+            <div className="relative">
+              <textarea
+                data-testid="product-description"
+                placeholder="Enter description"
+                maxLength={250}
+                {...register("description", {
+                  required: true,
+                  maxLength: 250,
+                })}
+                defaultValue={values?.description}
+                className={`min-h-[150px] w-full rounded-md border border-[#8F8F8F] focus:outline-none px-3 py-[11px] placeholder:text-[#BCBBBB] resize-none ${
+                  errors?.description || error
+                    ? "border-red-500 ring-1 ring-red-500"
+                    : ""
+                }`}
+              />
+
+              {error && (
+                <span className="text-sm text-danger-500">{error}</span>
+              )}
+              <span className="absolute bottom-4 right-2 text-xs text-[#8F8F8F] flex items-center gap-x-1">
+                <span>{watch("description").length || 0}</span>/<span>250</span>
+              </span>
+            </div>
             {errors?.description && (
               <span className="text-sm text-danger-500">
                 {errors?.description?.message}
               </span>
             )}
-
-            {error && <span className="text-sm text-danger-500">{error}</span>}
           </InputDiv>
         </div>
 
         <div className="flex gap-12">
           <div className="flex flex-col gap">
-            <div className="flex  gap-2 w-[300px]">
+            <div className="flex  gap-x-2 w-[300px]">
               {" "}
               <label className=" pt-[10px]  text-base font-semibold text-[#636363]">
                 Product Life Cycle
@@ -389,7 +451,7 @@ export default function ProductInformation({
               <FormToolTip tip={toolTips.lifeCycle} />
             </div>
 
-            <div className="flex ">
+            <div className="flex gap-x-4">
               <FormDate
                 register={register}
                 inputName={"startDate"}
@@ -414,7 +476,7 @@ export default function ProductInformation({
                 }}
                 defaultValue={formData?.endDate}
                 clearErrors={clearErrors}
-                
+                placeholder="Unspecified"
               />
             </div>
           </div>

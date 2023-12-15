@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 export function InputDivs({ children, label }) {
   return (
     <div className="flex gap-[10px] items-center">
-      <span className="min-w-[250px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium">
+      <span data-testid="input-div" className="min-w-[250px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium">
         {label} <RedDot />
       </span>
       <div>{children}</div>
@@ -21,11 +21,8 @@ export default function AccountingEntriesAndEvents({
   formData,
   setFormData,
   setDisabled,
+  initiateDraft,
 }) {
-  console.log(
-    "🚀 ~ file: accounting-entries-and-events.tsx:25 ~ formData:",
-    formData
-  );
   const [mapOptions, setMapOptions] = useState([]);
   const [clearFields, setClearField] = useState(false);
   const {
@@ -93,12 +90,14 @@ export default function AccountingEntriesAndEvents({
   const values = getValues();
 
   function onProceed(d: any) {
-    setFormData({ data: d, mapOptions });
+    // setFormData({ data: d, mapOptions });
     proceed();
   }
+  useEffect(() => {
+    setFormData({ data: formData, mapOptions });
+  }, [mapOptions, initiateDraft]);
 
   useEffect(() => {
-    // setDisabled(!isValid);
     if (mapOptions.length === 3) {
       setDisabled(false);
     }
@@ -115,11 +114,20 @@ export default function AccountingEntriesAndEvents({
     setClearField(!clearFields);
   };
   useEffect(() => {
-    if (formData) {
+    if (formData?.productGlMappings?.length) {
+      setMapOptions(formData?.productGlMappings);
+      formData?.productGlMappings?.forEach((item: any) => {
+        const key = GlMappingOptions?.find(
+          (i) => item?.glAccountType === i?.id
+        )?.key;
+
+        // @ts-ignore
+        setValue(key, item?.glAccountType);
+      });
     }
   }, [setValue, formData]);
   return (
-    <form id="entriesandevents" onSubmit={handleSubmit(onProceed)}>
+    <form id="entriesandevents" data-testid="entriesandevents" onSubmit={handleSubmit(onProceed)}>
       <div>
         <div
           style={{
@@ -150,7 +158,10 @@ export default function AccountingEntriesAndEvents({
                         <GlInput
                           handleClick={handleClick}
                           inputName={type.key}
-                          defaultValue={formData[type.key]}
+                          defaultValue={
+                            mapOptions.find((i) => i?.glAccountType === type.id)
+                              ?.accountName
+                          }
                           register={register}
                           trigger={trigger}
                           errors={errors}

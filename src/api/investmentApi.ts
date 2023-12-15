@@ -1,14 +1,13 @@
-import { axiosBaseQuery, getToken } from "@Sterling/shared";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { axiosBaseQuery } from "@Sterling/shared";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import { REHYDRATE } from "redux-persist";
 import { IGetProducts, ICreateProduct } from "./types/investmentApi.types";
 
-import { parseQueryParams } from "../utils/parseQueryParams";
+
 import urls from "../helpers/url_helpers";
 import { cleanObject } from "@app/utils/cleanObject";
 // baseQuery: axiosBaseQuery({ serviceKey: "investment" }),
 
-console.log(process.env);
 export const investmentApi: any = createApi({
   reducerPath: "investmentApi",
   baseQuery: axiosBaseQuery({ serviceKey: "investment" }),
@@ -40,6 +39,23 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    getCharges: builder.query<any, any>({
+      query: () => {
+        return {
+          url: `https://product-mgt-api.dev.bepeerless.co/v1/charges/state?state=active`,
+          method: "get",
+        };
+      },
+    }),
+    getSystemAlert: builder.query<any, any>({
+      query: () => {
+        return {
+          url: `${urls.SYSTEM_ALERT}`,
+          method: "get",
+        };
+      },
+    }),
+   
     getPostProducts: builder.mutation<
       IGetProducts,
       {
@@ -100,7 +116,16 @@ export const investmentApi: any = createApi({
     modifyProduct: builder.mutation<any, any>({
       query: (data) => {
         return {
-          url: `${urls.PRODUCT}/modify/${data.id}`,
+          url: `${urls.PRODUCT}/edit`,
+          method: "put",
+          body: data,
+        };
+      },
+    }),
+    modifyRequest: builder.mutation<any, any>({
+      query: (data) => {
+        return {
+          url: `${urls.REQUESTS}/edit/${data.id}`,
           method: "put",
           body: data,
         };
@@ -144,7 +169,7 @@ export const investmentApi: any = createApi({
       query: (data) => {
         if (!data.id) return;
         return {
-          url: `${urls.REQUESTS}/${data.id}}`,
+          url: `${urls.REQUESTS}/${data.id}`,
           method: "get",
         };
       },
@@ -222,7 +247,24 @@ export const investmentApi: any = createApi({
         return {
           url: `${urls.PRODUCT}/reactivate/${data.id}`,
           method: "put",
-         
+        };
+      },
+    }),
+
+    approveProduct: builder.mutation<{ id: string }, { id: string }>({
+      query: (data) => {
+        return {
+          url: `${urls.REQUESTS}/approve/${data.id}`,
+          method: "put",
+        };
+      },
+    }),
+    rejectProduct: builder.mutation<{ id: string }, { id: string }>({
+      query: (data) => {
+        return {
+          url: `${urls.REQUESTS}/reject/${data.id}`,
+          method: "put",
+          body: data,
         };
       },
     }),
@@ -257,6 +299,7 @@ export const {
   useActivateProductMutation,
   useDeactivateProductMutation,
   useModifyProductMutation,
+  useModifyRequestMutation,
   useGetPostRequestsMutation,
   useGetPostProductsMutation,
   useGetLedgersQuery,
@@ -267,6 +310,10 @@ export const {
   useDeleteProductRequestMutation,
   useGetProductActivityLogQuery,
   useGetProductRequestActivityLogQuery,
+  useGetChargesQuery,
   useGetProductDetailQuery,
   useGetRequestDetailQuery,
+  useApproveProductMutation,
+  useRejectProductMutation,
+  useGetSystemAlertQuery
 } = investmentApi;

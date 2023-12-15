@@ -1,12 +1,21 @@
-import React, { useState } from "react";
-import { Button } from "@app/components";
+import React, { useContext, useEffect, useState } from "react";
+import { Button, Loader } from "@app/components";
 import SubmitSvg from "@app/assets/images/SubmitSvg";
 import ModifySvg from "@app/assets/images/ModifySvg";
 import CancelSvg from "@app/assets/images/CancelSvg";
 import { IoArrowUndo } from "react-icons/io5";
 import ShareButton from "../ShareButton";
-import { Link, useParams } from "react-router-dom";
-import { Confirm } from "../modals";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
+import { Confirm, Failed, Prompt, Success } from "../modals";
+import { AppContext } from "@app/utils";
+import { useApproveProductMutation, useRejectProductMutation } from "@app/api";
+import { Messages, Prompts } from "@app/constants/enums";
+import Rejection from "../modals/Rejection";
 
 export const handlePrint = () => {
   window.print();
@@ -16,13 +25,139 @@ export default function Actions({
   handleSubmit,
   handleModify,
   handleCancel,
+  requestDetail,
 }: any) {
-  const { process } = useParams();
-  const [cancel, setCancel] = useState(false);
+  const { role, permissions } = useContext(AppContext);
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const sub_type = searchParams.get("sub_type");
+  const filter = searchParams.get("filter");
+  const {id, process } = useParams() || {};
+  const [action, setAction] = useState("");
+  const [confirmText, setConfirmText] = useState("");
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [isFailed, setFailed] = useState(false);
+  const [failedSubText, setFailedSubtext] = useState("");
+  const [failedText, setFailedText] = useState("");
+  const [subText, setSubText] = useState("");
+  const [successText, setSuccessText] = useState("");
+  const [isSuccessOpen, setIsSuccessOpen] = useState(false);
+  const [isRejection, setRejection] = useState(false);
+  const [reason, setReason] = useState("");
+  const [routeTo, setRouteTo] = useState<any>(null);
+  const [
+    approveProduct,
+    {
+      isSuccess: approveSuccess,
+      isError: approveIsError,
+      error: approveError,
+      isLoading: approveLoading,
+    },
+  ] = useApproveProductMutation();
+
+  const [
+    rejectProduct,
+    {
+      isSuccess: rejectSuccess,
+      isError: rejectIsError,
+      error: rejectError,
+      isLoading: rejectLoading,
+    },
+  ] = useRejectProductMutation();
+
+  const initiateVeridict = (value) => {
+    setAction(value);
+    if (value === "approve" && !sub_type) {
+      setConfirmText(Prompts.PRODUCT_CREATION_APPROVE);
+    }
+    if (value === "reject" && !sub_type) {
+      setConfirmText(Prompts.PRODUCT_CREATION_REJECT);
+    }
+
+    if (value === "approve" && sub_type === "activation") {
+      setConfirmText(Prompts.PRODUCT_ACTIVATION_APPROVE);
+    }
+    if (value === "reject" && sub_type === "activation") {
+      setConfirmText(Prompts.PRODUCT_ACTIVATION_REJECT);
+    }
+    if (value === "approve" && sub_type === "deactivation") {
+      setConfirmText(Prompts.PRODUCT_DEACTIVATION_APPROVE);
+    }
+    if (value === "reject" && sub_type === "deactivation") {
+      setConfirmText(Prompts.PRODUCT_DEACTIVATION_REJECT);
+    }
+    if (value === "approve" && sub_type === "modification") {
+      setConfirmText(Prompts.PRODUCT_MODIFY_APPROVE);
+    }
+    if (value === "reject" && sub_type === "modification") {
+      setConfirmText(Prompts.PRODUCT_MODIFY_REJECT);
+    }
+
+    if (value === "cancel" && (process === "create" ||  process === "clone" ||  process === "continue") ) {
+    
+      setConfirmText(Prompts.CANCEL_CREATION);
+    }
+    if (value === "cancel" && (process === "modify" || process === "withdraw_modify")) {
+      setConfirmText(Prompts.CANCEL_MODIFICATION);
+    }
+    if (value === "cancel" && process === "verdict") {
+      setConfirmText(Prompts.CANCEL_PROCESS);
+    }
+
+    setIsConfirmOpen(true);
+  };
+  const handleConfirm = () => {
+    if (action === "approve") {
+      approveProduct({ id });
+    }
+    if (action === "reject") {
+      setRejection(true);
+    }
+    if (action === "cancel") {
+      navigate(
+        `/product-factory/investment?category=requests${
+          filter ? "&filter=" + filter : ""
+        }`
+      );
+    }
+  };
+
+  const handleRejection = () => {
+    setRejection(false);
+    rejectProduct({ reason, id, routeTo });
+  };
+  useEffect(() => {
+    if (rejectSuccess) {
+      setSuccessText(Messages.PRODUCT_CREATE_REJECTED);
+      setIsSuccessOpen(true);
+    }
+    if (approveSuccess) {
+      setSuccessText(Messages.PRODUCT_CREATE_APPROVED);
+      setIsSuccessOpen(true);
+    }
+    if (rejectIsError) {
+      setFailedText(Messages.PRODUCT_REJECT_FAILED);
+      setFailedSubtext(rejectError?.message?.message);
+      setFailed(true);
+    }
+
+    if (approveIsError) {
+      setFailedText(Messages.PRODUCT_APPROVE_FAILED);
+      setFailedSubtext(approveError?.message?.message);
+      setFailed(true);
+    }
+  }, [
+    rejectSuccess,
+    rejectIsError,
+    rejectError,
+    approveSuccess,
+    approveIsError,
+  ]);
   return (
-    <div className=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-[60px] py-[40px]  ">
+    <div data-testid="actions-div" className=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-[60px] py-[40px]  ">
       {/* Submission  */}
-      {process === "create" && (
+      {(process === "create" || process === "modify" || process === "continue" ||  process === "withdraw_modify" ||  process === "clone") && (
         <div className=" flex  gap-6">
           <button
             onClick={handleCancel}
@@ -89,7 +224,11 @@ export default function Actions({
             url={window.location.href}
           />
 
-          <Link to="/product-factory/investment">
+          <Link
+            to={`/product-factory/investment?category=requests${
+              filter ? "&filter=" + filter : ""
+            }`}
+          >
             <Button
               data-testid="gotodashboard"
               className="cursor-pointer max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"
@@ -127,94 +266,135 @@ export default function Actions({
         </div>
       )}
       {/* Approval/ Rejection  */}
-      {process === "verdict" && (
-        <div className="flex  gap-6">
-          <Button
-            data-testid="cancel"
-            className="cursor-pointer max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
+      {process === "verdict" &&
+        permissions.includes(
+          "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
+        ) && (
+          <div className="flex  gap-6">
+            <Button
+              onClick={() => initiateVeridict("cancel")}
+              data-testid="cancel"
+              className="cursor-pointer max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"
             >
-              <path
-                d="M8.4 17L12 13.4L15.6 17L17 15.6L13.4 12L17 8.4L15.6 7L12 10.6L8.4 7L7 8.4L10.6 12L7 15.6L8.4 17ZM12 22C10.6167 22 9.31667 21.7373 8.1 21.212C6.88333 20.6873 5.825 19.975 4.925 19.075C4.025 18.175 3.31267 17.1167 2.788 15.9C2.26267 14.6833 2 13.3833 2 12C2 10.6167 2.26267 9.31667 2.788 8.1C3.31267 6.88333 4.025 5.825 4.925 4.925C5.825 4.025 6.88333 3.31233 8.1 2.787C9.31667 2.26233 10.6167 2 12 2C13.3833 2 14.6833 2.26233 15.9 2.787C17.1167 3.31233 18.175 4.025 19.075 4.925C19.975 5.825 20.6873 6.88333 21.212 8.1C21.7373 9.31667 22 10.6167 22 12C22 13.3833 21.7373 14.6833 21.212 15.9C20.6873 17.1167 19.975 18.175 19.075 19.075C18.175 19.975 17.1167 20.6873 15.9 21.212C14.6833 21.7373 13.3833 22 12 22ZM12 20C14.2333 20 16.125 19.225 17.675 17.675C19.225 16.125 20 14.2333 20 12C20 9.76667 19.225 7.875 17.675 6.325C16.125 4.775 14.2333 4 12 4C9.76667 4 7.875 4.775 6.325 6.325C4.775 7.875 4 9.76667 4 12C4 14.2333 4.775 16.125 6.325 17.675C7.875 19.225 9.76667 20 12 20Z"
-                fill="#636363"
-              />
-            </svg>
-
-            <div className="mr-auto text-gray-500 text-base font-medium leading-normal">
-              Cancel
-            </div>
-          </Button>
-
-          <Button
-            data-testid="reject"
-            className="cursor-pointer ml-auto max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"
-          >
-            <svg
-              width="25"
-              height="24"
-              viewBox="0 0 25 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M12.5547 0C5.95469 0 0.554688 5.4 0.554688 12C0.554688 18.6 5.95469 24 12.5547 24C19.1547 24 24.5547 18.6 24.5547 12C24.5547 5.4 19.1547 0 12.5547 0ZM12.5547 2.66667C14.6214 2.66667 16.5547 3.4 18.1547 4.53333L5.08802 17.6C3.95469 16 3.22135 14.0667 3.22135 12C3.22135 6.86667 7.42135 2.66667 12.5547 2.66667ZM12.5547 21.3333C10.488 21.3333 8.55469 20.6 6.95469 19.4667L20.0214 6.4C21.1547 8 21.888 9.93333 21.888 12C21.888 17.1333 17.688 21.3333 12.5547 21.3333Z"
-                fill="#636363"
-              />
-            </svg>
-
-            <div className="text-gray-500 text-base font-medium leading-normal">
-              Reject
-            </div>
-          </Button>
-
-          <Button
-            data-testid="approve"
-            type="submit"
-            className="px-10 py-[5px] flex items-center gap-2 justify-center text-[#ffffff] bg-sterling-red-800 rounded-lg"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="25"
-              height="24"
-              viewBox="0 0 25 24"
-              fill="none"
-            >
-              <g clipPath="url(#clip0_11464_1130)">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
                 <path
-                  d="M2.55469 3V10L17.5547 12L2.55469 14V21L23.5547 12M22.5547 15.5L19.0547 19L17.0547 17L15.5547 18.5L19.0547 22L24.0547 17L22.5547 15.5Z"
-                  fill="white"
+                  d="M8.4 17L12 13.4L15.6 17L17 15.6L13.4 12L17 8.4L15.6 7L12 10.6L8.4 7L7 8.4L10.6 12L7 15.6L8.4 17ZM12 22C10.6167 22 9.31667 21.7373 8.1 21.212C6.88333 20.6873 5.825 19.975 4.925 19.075C4.025 18.175 3.31267 17.1167 2.788 15.9C2.26267 14.6833 2 13.3833 2 12C2 10.6167 2.26267 9.31667 2.788 8.1C3.31267 6.88333 4.025 5.825 4.925 4.925C5.825 4.025 6.88333 3.31233 8.1 2.787C9.31667 2.26233 10.6167 2 12 2C13.3833 2 14.6833 2.26233 15.9 2.787C17.1167 3.31233 18.175 4.025 19.075 4.925C19.975 5.825 20.6873 6.88333 21.212 8.1C21.7373 9.31667 22 10.6167 22 12C22 13.3833 21.7373 14.6833 21.212 15.9C20.6873 17.1167 19.975 18.175 19.075 19.075C18.175 19.975 17.1167 20.6873 15.9 21.212C14.6833 21.7373 13.3833 22 12 22ZM12 20C14.2333 20 16.125 19.225 17.675 17.675C19.225 16.125 20 14.2333 20 12C20 9.76667 19.225 7.875 17.675 6.325C16.125 4.775 14.2333 4 12 4C9.76667 4 7.875 4.775 6.325 6.325C4.775 7.875 4 9.76667 4 12C4 14.2333 4.775 16.125 6.325 17.675C7.875 19.225 9.76667 20 12 20Z"
+                  fill="#636363"
                 />
-              </g>
-              <defs>
-                <clipPath id="clip0_11464_1130">
-                  <rect
-                    width="24"
-                    height="24"
+              </svg>
+
+              <div className="mr-auto text-gray-500 text-base font-medium leading-normal">
+                Cancel
+              </div>
+            </Button>
+
+            <Button
+              onClick={() => initiateVeridict("reject")}
+              data-testid="reject"
+              className="cursor-pointer ml-auto max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"
+            >
+              <svg
+                width="25"
+                height="24"
+                viewBox="0 0 25 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12.5547 0C5.95469 0 0.554688 5.4 0.554688 12C0.554688 18.6 5.95469 24 12.5547 24C19.1547 24 24.5547 18.6 24.5547 12C24.5547 5.4 19.1547 0 12.5547 0ZM12.5547 2.66667C14.6214 2.66667 16.5547 3.4 18.1547 4.53333L5.08802 17.6C3.95469 16 3.22135 14.0667 3.22135 12C3.22135 6.86667 7.42135 2.66667 12.5547 2.66667ZM12.5547 21.3333C10.488 21.3333 8.55469 20.6 6.95469 19.4667L20.0214 6.4C21.1547 8 21.888 9.93333 21.888 12C21.888 17.1333 17.688 21.3333 12.5547 21.3333Z"
+                  fill="#636363"
+                />
+              </svg>
+
+              <div className="text-gray-500 text-base font-medium leading-normal">
+                Reject
+              </div>
+            </Button>
+
+            <Button
+              onClick={() => initiateVeridict("approve")}
+              data-testid="approve"
+              type="submit"
+              className="px-10 py-[5px] flex items-center gap-2 justify-center text-[#ffffff] bg-sterling-red-800 rounded-lg"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="25"
+                height="24"
+                viewBox="0 0 25 24"
+                fill="none"
+              >
+                <g clipPath="url(#clip0_11464_1130)">
+                  <path
+                    d="M2.55469 3V10L17.5547 12L2.55469 14V21L23.5547 12M22.5547 15.5L19.0547 19L17.0547 17L15.5547 18.5L19.0547 22L24.0547 17L22.5547 15.5Z"
                     fill="white"
-                    transform="translate(0.554688)"
                   />
-                </clipPath>
-              </defs>
-            </svg>
-            <span className=" font-medium text-base">Approve</span>
-          </Button>
-        </div>
-      )}
+                </g>
+                <defs>
+                  <clipPath id="clip0_11464_1130">
+                    <rect
+                      width="24"
+                      height="24"
+                      fill="white"
+                      transform="translate(0.554688)"
+                    />
+                  </clipPath>
+                </defs>
+              </svg>
+              <span className=" font-medium text-base">Approve</span>
+            </Button>
+          </div>
+        )}
 
       <Confirm
-        isOpen={cancel}
-        setIsOpen={setCancel}
-        text={""}
-        onConfirm={function (): void {
-          throw new Error("Function not implemented.");
+        text={confirmText}
+        subtext={subText}
+        isOpen={isConfirmOpen}
+        setIsOpen={setIsConfirmOpen}
+        onConfirm={() => {
+          setIsConfirmOpen(false);
+          handleConfirm();
+        }}
+        onCancel={() => {
+          setIsConfirmOpen(false);
         }}
       />
+      {isSuccessOpen && (
+        <Success
+          text={successText}
+          isOpen={isSuccessOpen}
+          setIsOpen={setIsSuccessOpen}
+        />
+      )}
+      {isFailed && (
+        <Failed
+          text={failedText}
+          subtext={failedSubText}
+          isOpen={isFailed}
+          setIsOpen={setFailed}
+          canRetry
+        />
+      )}
+      {isRejection && (
+        <Rejection
+          isOpen={isRejection}
+          setIsOpen={setRejection}
+          creatorId={requestDetail?.initiatorId}
+          onConfirm={() => handleRejection()}
+          setReason={setReason}
+          reason={reason}
+          setRouteTo={setRouteTo}
+        />
+      )}
+      {(approveLoading || rejectLoading) && (
+        <Loader isOpen={approveLoading || rejectLoading} text={"Submitting"} />
+      )}
     </div>
   );
 }

@@ -6,7 +6,7 @@ export function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function CustomComboSelect({
+export default function ProductSearch({
   placeholder,
   options,
   handleOptions,
@@ -30,7 +30,7 @@ export default function CustomComboSelect({
 
   useEffect(() => {
     if (value) {
-      const defaultVal = options.find((i) => i.id === value);
+      const defaultVal = options?.find((i) => i.id === value);
 
       defaultVal && setSelectedItem(defaultVal);
     }
@@ -40,7 +40,7 @@ export default function CustomComboSelect({
     if (query === "") {
       return options;
     } else {
-      return options.filter((item) => {
+      return options?.filter((item) => {
         return item.name.toLowerCase().includes(query.toLowerCase());
       });
     }

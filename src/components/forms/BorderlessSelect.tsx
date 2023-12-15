@@ -39,8 +39,8 @@ export default function Select({
   };
   // Change selected when changing status category
   useEffect(() => {
-    if (defaultValue !== null) {
-      setSelected(options.find((i) => i.value === defaultValue));
+    if (defaultValue) {
+      setSelected(options?.find((i) => i.value === defaultValue));
      
     }
   }, [defaultValue]);
@@ -96,7 +96,7 @@ export default function Select({
             leaveTo="opacity-0"
           >
             <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto z-[400] bg-white  focus:outline-none text-sm shadow-[0px_0px_4px_0px_#00000040] right-0 rounded-b-lg">
-              {options.map(
+              {options?.map(
                 (
                   option: {
                     id: number;
@@ -122,7 +122,7 @@ export default function Select({
                   >
                     {({ selected }) => (
                       <>
-                        <span
+                        <span data-testid="select-option"
                           className={`block whitespace-nowrap  ${
                             selected ? "font-medium" : "font-normal"
                           }`}

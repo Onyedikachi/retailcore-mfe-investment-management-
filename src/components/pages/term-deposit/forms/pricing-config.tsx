@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { RiInformationLine } from "react-icons/ri";
+import { ImInfo } from "react-icons/im";
+import { Tooltip } from "react-tippy";
+import "react-tippy/dist/tippy.css";
 import { IoMdAddCircle } from "react-icons/io";
 import { MinMaxInput } from "@app/components/forms";
 import { BorderlessSelect } from "@app/components/forms";
@@ -14,6 +16,7 @@ import { pricingConfigSchema } from "@app/constants";
 import { FormToolTip } from "@app/components";
 import { toolTips } from "@app/constants";
 import { RedDot } from "@app/components/forms";
+import { useParams } from "react-router-dom";
 
 const labels = [
   "Applicable Tenor",
@@ -50,7 +53,9 @@ export default function PricingConfig({
   setFormData,
   setDisabled,
   productData,
+  initiateDraft,
 }) {
+  const { process } = useParams();
   const {
     register,
     handleSubmit,
@@ -58,14 +63,14 @@ export default function PricingConfig({
     clearErrors,
     setValue,
     control,
-    setError: assignError,
+    setError,
     getValues,
     trigger,
-    formState: { errors, isValid },
+    resetField,
+    formState: { errors, isValid, touchedFields, dirtyFields },
   } = useForm({
     resolver: yupResolver(pricingConfigSchema),
     defaultValues: formData,
-    // values,
   });
 
   const {
@@ -98,30 +103,83 @@ export default function PricingConfig({
     setFormData({ ...d });
     proceed();
   }
+
+  // Watch tenor
+  const watchinterestRateRangeType = watch("interestRateRangeType");
+
+  const watchApplicableTenorMin = watch("applicableTenorMin");
+  const watchApplicableTenorMinUnit = watch("applicableTenorMinUnit");
+  const watchApplicableTenorMax = watch("applicableTenorMax");
+  const watchApplicableTenorMaxUnit = watch("applicableTenorMaxUnit");
+
+  useEffect(() => {
+    if (watchApplicableTenorMax > 0) {
+      trigger("applicableTenorMin");
+      trigger("applicableTenorMax");
+    }
+  }, [
+    watchApplicableTenorMin,
+    watchApplicableTenorMinUnit,
+    watchApplicableTenorMax,
+    watchApplicableTenorMaxUnit,
+  ]);
+
+  // watch principal
+  const watchApplicablePrincipalMin = watch("applicablePrincipalMin");
+  const watchApplicablePrincipalMax = watch("applicablePrincipalMax");
+
+  useEffect(() => {
+    if (watchApplicablePrincipalMax > 0) {
+      trigger("applicablePrincipalMin");
+      trigger("applicablePrincipalMax");
+    }
+  }, [watchApplicablePrincipalMax, watchApplicablePrincipalMin]);
+
+  // watch principal
+  const watchInterestRateMin = watch("interestRateMin");
+  const watchInterestRateMax = watch("interestRateMax");
+  useEffect(() => {
+    if (
+      watchInterestRateMin > 0 &&
+      parseInt(watchinterestRateRangeType, 10) === 2
+    ) {
+      trigger("interestRateMax");
+      trigger("interestRateMin");
+    }
+  }, [watchInterestRateMax, watchInterestRateMin]);
+
+  useEffect(() => {
+    register("interestRateMax");
+    register("interestRateMin");
+    resetField("interestRateMax", { keepError: false });
+    resetField("interestRateMin", { keepError: false });
+  }, [watchinterestRateRangeType]);
+
   const values = getValues();
 
   useEffect(() => {
-    console.log("🚀 ~ file: product-information.tsx:191 ~ isValid:", isValid);
-
-    console.log(
-      "🚀 ~ file: pricing-config.tsx:153 ~ useEffect ~ errors:",
-      errors
-    );
     setDisabled(!isValid);
-    // if (values?.interestRateRangeType) {
-    //   pricingConfigSchema?.validate(values, {
-    //     context: { interestRateRangeType: values?.interestRateRangeType },
-    //   });
-    // }
   }, [values]);
   useEffect(() => {
     if (formData) {
       Object.entries(formData).forEach(([name, value]) =>
         setValue(name, value)
       );
+      if (
+        process === "continue" ||
+        process === "modify" ||
+        process === "withdraw_modify" ||
+        process === "clone"
+      ) {
+        trigger();
+      }
     }
   }, [setValue, formData]);
-  const watchinterestRateRangeType = watch("interestRateRangeType");
+  useEffect(() => {
+    if (initiateDraft) {
+      setFormData({ ...values });
+    }
+  }, [initiateDraft]);
   return (
     <form id="pricingconfig" onSubmit={handleSubmit(onProceed)}>
       <div className="flex flex-col gap-10">
@@ -203,6 +261,7 @@ export default function PricingConfig({
                 setValue={setValue}
                 trigger={trigger}
                 clearErrors={clearErrors}
+                isCurrency
               />
             </div>{" "}
             -
@@ -218,6 +277,7 @@ export default function PricingConfig({
                 setValue={setValue}
                 trigger={trigger}
                 clearErrors={clearErrors}
+                isCurrency
               />
             </div>{" "}
           </div>
@@ -232,10 +292,12 @@ export default function PricingConfig({
                     id={varyOption.id}
                     name="interestRateRangeType"
                     type="radio"
-                    value={varyOption?.value}
-                    {...register("interestRateRangeType")}
-                    defaultChecked={
-                      varyOption.value === watchinterestRateRangeType
+                    value={Number(varyOption.value)}
+                    onChange={(e) =>
+                      setValue("interestRateRangeType", Number(e.target.value))
+                    }
+                    checked={
+                      getValues("interestRateRangeType") === varyOption.value
                     }
                     className="h-4 w-4 border-gray-300 accent-sterling-red-800"
                   />
@@ -276,6 +338,9 @@ export default function PricingConfig({
                             formData?.interestRateConfigModels?.[index]?.min
                           }
                           clearErrors={clearErrors}
+                          isPercent
+                          isCurrency
+                          disablegroupseparators
 
                           // defaultValue={range.min}
                         />
@@ -298,6 +363,9 @@ export default function PricingConfig({
                           setValue={setValue}
                           trigger={trigger}
                           clearErrors={clearErrors}
+                          isPercent
+                          isCurrency
+                          disablegroupseparators
                         />
                       </div>{" "}
                     </div>
@@ -323,6 +391,7 @@ export default function PricingConfig({
                             setValue={setValue}
                             trigger={trigger}
                             clearErrors={clearErrors}
+                            isCurrency
                           />
                         </div>{" "}
                         -
@@ -344,6 +413,7 @@ export default function PricingConfig({
                             setValue={setValue}
                             trigger={trigger}
                             clearErrors={clearErrors}
+                            isCurrency
                           />
                         </div>{" "}
                       </>
@@ -384,7 +454,7 @@ export default function PricingConfig({
                                   ?.tenorMinUnit?.message
                               }
                               defaultValue={
-                                formData?.interestRateConfigModels[index]
+                                formData?.interestRateConfigModels[0]
                                   ?.tenorMinUnit
                               }
                               setValue={setValue}
@@ -425,7 +495,7 @@ export default function PricingConfig({
                                   ?.tenorMaxUnit?.message
                               }
                               defaultValue={
-                                formData?.interestRateConfigModels?.[index]
+                                formData?.interestRateConfigModels?.[0]
                                   ?.tenorMaxUnit
                               }
                               setValue={setValue}
@@ -449,7 +519,7 @@ export default function PricingConfig({
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                       >
-                        <g clip-path="url(#clip0_49301_99370)">
+                        <g clipPath="url(#clip0_49301_99370)">
                           <path
                             d="M0.160156 2.207L2.95316 5L0.160156 7.793L2.36716 10L5.16016 7.207L7.95316 10L10.1602 7.793L7.36716 5L10.1602 2.207L7.95316 0L5.16016 2.793L2.36716 0L0.160156 2.207Z"
                             fill="#CF2A2A"
@@ -471,7 +541,7 @@ export default function PricingConfig({
                 </div>
               ))}
 
-              <div className="flex justify-end">
+              <div className="flex justify-end mt-1">
                 <div
                   className="flex items-center gap-4 cursor-pointer text-[##636363] ml-auto"
                   onClick={addField}
@@ -498,6 +568,10 @@ export default function PricingConfig({
                   trigger={trigger}
                   defaultValue={formData?.interestRateMin}
                   clearErrors={clearErrors}
+                  max={100}
+                  isPercent
+                  isCurrency
+                  disablegroupseparators
 
                   // defaultValue={range.min}
                 />
@@ -514,6 +588,10 @@ export default function PricingConfig({
                   setValue={setValue}
                   trigger={trigger}
                   clearErrors={clearErrors}
+                  max={100}
+                  isPercent
+                  isCurrency
+                  disablegroupseparators
                 />
               </div>{" "}
             </div>
@@ -523,19 +601,49 @@ export default function PricingConfig({
           <span className="capitalize min-w-[300px] flex items-center gap-[5px] text-[##636363] text-base font-medium">
             Interest Computation Days in Year Method
             <FormToolTip tip={toolTips.interestComputation} />
+            <Tooltip
+              theme="light"
+              distance={20}
+              size="small"
+              arrow
+              className="bg-white max-w-[320px]"
+              html={
+                <div className="text-left text-xs  max-w-[320px]">
+                  <p>
+                    <span className="font-semibold">30E/360:</span> Counts the
+                    days from the calendar, but also introduces some changes on
+                    the months with 31 and 28 days.
+                  </p>
+                  <p>
+                    <span className="font-semibold"> Actual/360:</span> Computes
+                    the interest daily by counting the number of days in the
+                    calendar, but using a fixed 360-day year length.
+                  </p>
+                  <p>
+                    <span className="font-semibold"> Actual/365:</span> Calculates
+                    the interest daily by counting the number of days in the
+                    calendar and using a fixed 365-day year length
+                  </p>
+                </div>
+              }
+            >
+              <div className="w-[18px] h-[18px] text-[#636363]">
+                <ImInfo />
+              </div>
+            </Tooltip>
           </span>
 
           <div className="w-[300px]">
             <BorderlessSelect
-              inputError={errors?.interestComputation}
-              register={register}
-              inputName={"interestComputation"}
+              inputError={errors?.interestComputationMethod}
+              inputName={"interestComputationMethod"}
               options={interestComputationDaysOptions}
-              defaultValue={formData?.interestComputation}
+              defaultValue={formData?.interestComputationMethod}
               errors={errors}
-              setValue={setValue}
               trigger={trigger}
               clearErrors={clearErrors}
+              setValue={() => {}}
+              disabled
             />
           </div>
         </div>

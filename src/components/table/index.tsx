@@ -1,12 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { ToastContainer, toast } from "react-toastify";
 
+import { Tooltip } from "react-tippy";
+import "react-tippy/dist/tippy.css";
+import "react-toastify/dist/ReactToastify.css";
 import DropDown from "@app/components/DropDown";
 import { MultiSelect, DateSelect } from "@app/components/forms";
 import moment from "moment";
 import { BsFunnel } from "react-icons/bs";
-import { onChange } from "../forms/DateSelect";
 import BottomBarLoader from "../BottomBarLoader";
+// import Tooltip from "@app/components/ui/Tooltip";
 import {
   AppContext,
   InvestmentContext,
@@ -26,6 +30,8 @@ import {
   useActivateProductMutation,
   useDeleteProductRequestMutation,
 } from "@app/api";
+import Button from "../Button";
+import { ActiveFilterOptions } from "@app/constants";
 
 interface TableProps {
   headers: any[];
@@ -44,7 +50,26 @@ interface TableProps {
   type?: string;
   noData?: string;
 }
+export function handleUpdated(key, value, options) {
+  if (!options || !value) return;
 
+  const parseOptions = JSON.parse(options);
+  if (!parseOptions[key]) return;
+
+  if (key === "state") {
+    const newState = ActiveFilterOptions.find(
+      (n) => parseOptions[key] === n.value
+    )?.name;
+
+    if (newState === value) return null;
+  }
+
+  return value !== parseOptions[key]
+    ? `Updated on ${moment(parseOptions[key]?.date).format(
+        "DD MMM YYYY, hh:mm A"
+      )}`
+    : null;
+}
 // Extract Dropdown component for reusability
 export const DropdownButton = ({ options, handleClick }: any) => {
   return (
@@ -53,6 +78,7 @@ export const DropdownButton = ({ options, handleClick }: any) => {
     </DropDown>
   );
 };
+
 export const handleProductsDropdown = (
   status: string,
   isChecker,
@@ -60,11 +86,6 @@ export const handleProductsDropdown = (
   locked = false,
   permissions: string[] = []
 ): any => {
-  // if (locked)
-  //   return DropDownOptions[status]?.filter(
-  //     (i: any) => i.text.toLowerCase() === "view"
-  //   );
-
   if (!status) return [];
   if (isChecker) {
     return DropDownOptions[status]?.filter(
@@ -73,14 +94,14 @@ export const handleProductsDropdown = (
   } else {
     let options = DropDownOptions[status];
     if (!permissions?.includes("RE_OR_DEACTIVATE_INVESTMENT_PRODUCT")) {
-      options = options.filter(
+      options = options?.filter(
         (i: any) =>
           i.text.toLowerCase() !== "deactivate" &&
           i.text.toLowerCase() !== "activate"
       );
     }
     if (!permissions?.includes("CREATE_INVESTMENT_PRODUCT")) {
-      options = options.filter(
+      options = options?.filter(
         (i: any) =>
           i.text.toLowerCase() !== "modify" && i.text.toLowerCase() !== "clone"
       );
@@ -92,13 +113,13 @@ export const handleProductsDropdown = (
 export const TextCellContent = ({ value }) => (
   <span className="relative">
     <span className="relative">{value || "-"}</span>
-    <span className="absolute block bg-[#CF2A2A] h-[6px] w-[6px] rounded-full -right-[6px] top-0"></span>
   </span>
 );
 
 export const ProductNameCellContent = ({ value }) => (
   <>
-    <span className="relative block font-medium text-sm text-[#aaaaaa] uppercase">
+    <br />
+    <span className="relative font-medium text-sm text-[#aaaaaa] uppercase">
       {value?.productCode || "-"}
     </span>
   </>
@@ -109,7 +130,6 @@ export const UpdatedOnCellContent = ({ value }) => (
     <span className=" relative">
       {moment(value).format("DD MMM YYYY, hh:mm A")}
     </span>
-    <span className="absolute block bg-[#CF2A2A] h-[6px] w-[6px] rounded-full -right-[6px] top-0"></span>
   </span>
 );
 
@@ -120,8 +140,6 @@ export const StateCellContent = ({ value }) => (
     )}`}
   >
     {value}
-
-    <span className="absolute block bg-[#CF2A2A] h-[6px] w-[6px] rounded-full -right-[6px] top-0"></span>
   </span>
 );
 export const StatusCellContent = ({ value, isChecker }) => (
@@ -131,7 +149,6 @@ export const StatusCellContent = ({ value, isChecker }) => (
     )}`}
   >
     {handleUserView(value, isChecker)} <FaEye />
-    <span className="absolute bg-[#CF2A2A] h-[6px] w-[6px] rounded-full -right-[6px] top-0"></span>
   </span>
 );
 
@@ -154,10 +171,17 @@ export default function TableComponent<TableProps>({
   noData = "No data available",
 }) {
   const { role, permissions } = useContext(AppContext);
-  const { isChecker, category } = useContext(InvestmentContext);
+  const {
+    isChecker,
+    category,
+    selected,
+    isDetailOpen,
+    setDetailOpen,
+    detail,
+    setDetail,
+  } = useContext(InvestmentContext);
   const [action, setAction] = useState("");
   const navigate = useNavigate();
-  const [detail, setDetail] = useState<any>(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [isDeactivationOpen, setIsDeactivationOpen] = useState(false);
@@ -167,8 +191,8 @@ export default function TableComponent<TableProps>({
   const [isFailed, setFailed] = useState(false);
   const [failedSubText, setFailedSubtext] = useState("");
   const [failedText, setFailedText] = useState("");
-  const [isDetailOpen, setDetailOpen] = useState(false);
 
+  const notify = (toastMessage) => toast.error(toastMessage);
   // function getdata(item, key) {}
   const handleAction = (action, items) => {
     console.log("🚀 ~ file: index.tsx:171 ~ handleAction ~ action:", action);
@@ -214,10 +238,10 @@ export default function TableComponent<TableProps>({
       return;
     }
     if (action.toLowerCase() === Actions.CONTINUE_REQUEST) {
-      s: navigate(
+      navigate(
         `/product-factory/investment/${encodeURIComponent(
           "term deposit"
-        )}/modify/?id=${items.id}?type=draft`
+        )}/continue/?id=${items.id}&type=draft&filter=${selected.value}`
       );
       return;
     }
@@ -228,7 +252,21 @@ export default function TableComponent<TableProps>({
         : navigate(
             `/product-factory/investment/${encodeURIComponent(
               "term deposit"
-            )}/process-summary/preview/${items.id}?category=request`
+            )}/process-summary/preview/${items.id}?category=request&filter=${
+              selected.value
+            }`
+          );
+      return;
+    }
+    if (action.toLowerCase() === "review") {
+      category === StatusCategoryType.AllProducts
+        ? setDetailOpen(true)
+        : navigate(
+            `/product-factory/investment/${encodeURIComponent(
+              "term deposit"
+            )}/process-summary/verdict/${items.id}?category=request&filter=${
+              selected.value
+            }`
           );
       return;
     }
@@ -238,6 +276,10 @@ export default function TableComponent<TableProps>({
     deleteRequest,
     { isSuccess, isError, error, isLoading: deleteLoading },
   ] = useDeleteProductRequestMutation();
+  useEffect(
+    () => console.log(deleteLoading, isLoading),
+    [deleteLoading, isLoading]
+  );
   const [
     activateProduct,
     {
@@ -257,6 +299,29 @@ export default function TableComponent<TableProps>({
     }
     if (action.toLowerCase() === Actions.ACTIVATE) {
       activateProduct({ id: detail?.id });
+    }
+    if (action.toLowerCase() === Actions.MODIFY) {
+      if (!permissions?.includes("CREATE_INVESTMENT_PRODUCT")) {
+        notify("You do not have permission to make changes!");
+      } else {
+        navigate(
+          `/product-factory/investment/${encodeURIComponent(
+            "term deposit"
+          )}/modify/?id=${detail.id}&filter=${selected.value}`
+        );
+      }
+    }
+
+    if (action.toLowerCase() === Actions.WITHDARW_MODIFY) {
+      if (!permissions?.includes("CREATE_INVESTMENT_PRODUCT")) {
+        notify("You do not have permission to make changes!");
+      } else {
+        navigate(
+          `/product-factory/investment/${encodeURIComponent(
+            "term deposit"
+          )}/withdraw_modify/?id=${detail.id}&filter=${selected.value}`
+        );
+      }
     }
   };
 
@@ -288,13 +353,15 @@ export default function TableComponent<TableProps>({
 
   return (
     <div>
+      {" "}
+      <ToastContainer />{" "}
       <InfiniteScroll
         dataLength={tableRows?.length}
         next={fetchMoreData}
         hasMore={hasMore}
         loader={""}
       >
-        <div className="w-full min-h-[500px] max-h-[700px] overflow-auto">
+        <div className="relative min-h-[400px] max-h-[70vh] overflow-y-auto">
           <table className="w-full relative">
             <thead
               className={`${
@@ -311,9 +378,9 @@ export default function TableComponent<TableProps>({
                       <div className="relative flex items-center gap-x-20 justify-between">
                         <span className="relative">
                           {label}{" "}
-                          {key === "updatedOn" && (
+                          {/* {key === "updated_At" && (
                             <span className="absolute block bg-[#CF2A2A] h-[6px] w-[6px] rounded-full -right-[6px] top-[1px]"></span>
-                          )}
+                          )} */}
                         </span>
 
                         <span>
@@ -353,12 +420,12 @@ export default function TableComponent<TableProps>({
                         className="text-base font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative"
                         key={idx.toString() + header.key}
                       >
-                        <span className="relative">
+                        <div className="relative max-w-max">
                           {header.key !== "actions" ? (
                             <>
                               {typeof item[header.key] !== "object" &&
                                 header.key !== "state" &&
-                                header.key !== "updatedOn" &&
+                                header.key !== "updated_At" &&
                                 header.key !== "requestStatus" && (
                                   <TextCellContent value={item[header.key]} />
                                 )}
@@ -371,7 +438,7 @@ export default function TableComponent<TableProps>({
                                   isChecker={isChecker}
                                 />
                               )}
-                              {header.key === "updatedOn" && (
+                              {header.key === "updated_At" && (
                                 <UpdatedOnCellContent
                                   value={item[header.key]}
                                 />
@@ -381,26 +448,76 @@ export default function TableComponent<TableProps>({
                               )}
                             </>
                           ) : (
-                            <ActionsCellContent
-                              dropDownOptions={
-                                type === "all products"
-                                  ? handleProductsDropdown(
-                                      item.state,
-                                      isChecker,
-                                      dropDownOptions,
-                                      item.islocked,
-                                      permissions
-                                    )
-                                  : handleDropdown(
-                                      item.requestStatus,
-                                      item.requestType,
-                                      permissions
-                                    )
-                              }
-                              onClick={(e: any) => handleAction(e, item)}
-                            />
+                            <div>
+                              {!isChecker ? (
+                                <ActionsCellContent
+                                  dropDownOptions={
+                                    type === "all products"
+                                      ? handleProductsDropdown(
+                                          item.state,
+                                          isChecker,
+                                          dropDownOptions,
+                                          item.islocked,
+                                          permissions
+                                        )
+                                      : handleDropdown(
+                                          item.requestStatus,
+                                          item.requestType,
+                                          permissions
+                                        )
+                                  }
+                                  onClick={(e: any) => handleAction(e, item)}
+                                />
+                              ) : (
+                                <>
+                                  {item?.requestStatus === "in-review" ? (
+                                    <Button
+                                      onClick={() =>
+                                        handleAction("review", item)
+                                      }
+                                      className="px-[7px] py-[6px] text-sm font-normal bg-white shadow-[0px_2px_8px_0px_rgba(0,0,0,0.25)] text-[#636363]"
+                                    >
+                                      Review
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      onClick={() => handleAction("view", item)}
+                                      className="px-[7px] py-[6px] text-sm font-normal bg-white shadow-[0px_2px_8px_0px_rgba(0,0,0,0.25)] text-[#636363]"
+                                    >
+                                      View
+                                    </Button>
+                                  )}
+                                </>
+                              )}
+                            </div>
                           )}
-                        </span>
+                          {handleUpdated(
+                            header.key,
+                            item[header.key],
+                            item.recentlyUpdatedMeta
+                          ) && (
+                            <Tooltip
+                              size="small"
+                              arrow
+                              theme="light"
+                              distance={40}
+                              className="bg-white"
+                              html={
+                                <div className="text-[#636363] text-[10px] z-[999] whitespace-nowrap">
+                                  {handleUpdated(
+                                    header.key,
+                                    item[header.key],
+                                    item.recentlyUpdatedMeta
+                                  )}
+                                </div>
+                              }
+                            >
+                             <div className="h-[10px] w-[10px] flex items-center justify-center cursor-pointer">
+                             <span className="absolute h-[6px] w-[6px] -right-[6px] top-[1px] rounded-full bg-[#CF2A2A]"></span>
+                             </div>
+                            </Tooltip>
+                          )}{" "}
+                        </div>
                       </td>
                     ))}
                   </tr>
@@ -427,10 +544,9 @@ export default function TableComponent<TableProps>({
               </tbody>
             )}
           </table>
-
-          {isLoading && <BottomBarLoader />}
         </div>
-      </InfiniteScroll>
+        {isLoading && <BottomBarLoader />}
+      </InfiniteScroll>{" "}
       {isConfirmOpen && (
         <Confirm
           text={confirmText}
@@ -461,7 +577,6 @@ export default function TableComponent<TableProps>({
           setIsOpen={setFailed}
         />
       )}
-
       {isDeactivationOpen && (
         <RequestDeactivation
           isOpen={isDeactivationOpen}

@@ -62,9 +62,10 @@ export default function MultiSelect({
                     checked={isSelectAll}
                   />
                 </li>
-                {options.map((item) => (
+                {options?.map((item) => (
                   <li key={item.id} className="cursor-pointer">
                     <Checkbox
+                      data-testid="select-item"
                       label={item.name}
                       checked={() =>
                         selectedOptions.some((i) => i.value === item.value)

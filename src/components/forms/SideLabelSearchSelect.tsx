@@ -1,7 +1,7 @@
 import React from "react";
 import {RedDot} from '@app/components/forms'
 import {
-  EntriesAndEventsSearch,
+
   EntriesAndEventsSearchResults,
 } from "@app/components/pages/term-deposit/forms";
 // import { InputDivs } from "@app/components/pages/term-deposit/forms/liquidity-setup";

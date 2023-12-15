@@ -168,11 +168,11 @@ export const DropDownOptions: any = {
       text: "View",
       icon: "FaEye",
     },
-    {
-      id: "",
-      text: "Modify",
-      icon: "FaEdit",
-    },
+    // {
+    //   id: "",
+    //   text: "Modify",
+    //   icon: "FaEdit",
+    // },
     {
       id: "",
       text: "Clone",
@@ -495,7 +495,7 @@ export const productHeader = [
   },
   {
     label: "updated on",
-    key: "updatedOn",
+    key: "updated_At",
     options: [],
     hasSelect: false,
     hasDateSelect: true,
@@ -552,7 +552,7 @@ export const requestHeader = [
   },
   {
     label: "updated on",
-    key: "updatedOn",
+    key: "updated_At",
     options: [
       {
         id: 1,

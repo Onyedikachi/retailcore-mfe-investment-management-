@@ -23,6 +23,10 @@ interface ContextProps {
   setRefreshing?: (e: boolean) => void;
   role?: string;
   setRole?: (e: string) => void;
+  isDetailOpen?: boolean;
+  setDetailOpen?: (e: any) => void;
+  detail?: any;
+  setDetail?: (e: any) => void;
 }
 
 interface branchDeactivationContextProps {
@@ -74,6 +78,10 @@ export const InvestmentContext = createContext<ContextProps>({
   setRefreshing: () => {},
   role: "",
   setRole: () => {},
+  isDetailOpen: false,
+  setDetailOpen: () => {},
+  detail: false,
+  setDetail: () => {},
 });
 
 export const ProductDeactivationContext =

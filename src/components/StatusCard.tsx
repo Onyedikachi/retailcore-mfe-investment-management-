@@ -11,8 +11,6 @@ import {
   ProductOptions,
   RequestOptions,
 } from "@app/constants";
-import { useSearchParams } from "react-router-dom";
-// import { useGetRequestAnalyticsQuery } from "@app/api/requestApi";
 
 export function filterAllProductsOptions(): any[] {
   return StatusTypes;
@@ -23,7 +21,9 @@ export function filterCheckerOptions(): any[] {
 }
 
 export function filterDefaultOptions(): any[] {
-  return StatusRequests;
+  return StatusRequests.filter(
+    (i) => i.type !== "pending" && i.type !== "rejected"
+  );
 }
 
 // Main sorting function
@@ -67,7 +67,7 @@ export const StatusButton = ({
       <span className="text-2xl xl:text-4xl text-[#252C32] font-semibold">
         {!isLoading && count(item, analyticsData)}
         {isLoading && (
-          <div className="mt-3 spinner-border h-6 w-6 border-t border-danger-500 rounded-full animate-spin"></div>
+          <div data-testid="loading" className="mt-3 spinner-border h-6 w-6 border-t border-danger-500 rounded-full animate-spin"></div>
         )}
       </span>
     </button>
@@ -75,7 +75,7 @@ export const StatusButton = ({
 };
 
 export const count = (item, analyticsData) => {
-  switch (item.type.toLowerCase()) {
+  switch (item?.type?.toLowerCase()) {
     case "all":
       return analyticsData?.data?.All || 0;
     case "active":
@@ -99,19 +99,34 @@ export const count = (item, analyticsData) => {
   }
 };
 
-export const StatusCategoryButton = ({ item, category, setCategory }: any) => {
+export const handleClick = (setCategory, item, setSelected, category) => {
+  setCategory(item.type);
+  setSelected(
+    category === StatusCategoryType?.AllProducts
+      ? ProductOptions[0]
+      : RequestOptions[0]
+  );
+};
+
+export const StatusCategoryButton = ({
+  item,
+  category,
+  setCategory,
+  setSelected,
+}: any) => {
   return (
     <button
       type="button"
       name={item.type}
       data-testid={`${item.type}-btn`}
-      onClick={() => setCategory(item.type)}
+      onClick={() => handleClick(setCategory, item, setSelected, category)}
       className={`${
-        category === item.type
-          ? "bg-white font-semibold text-[20px]"
-          : " hover:bg-gray-50"
-      } px-4 py-[19px] text-[18px] text-[#636363] text-left flex gap-x-[5px] items-center leading-[24px] w-full capitalize border-[#D0D5DD] border-b last-of-type:border-b-0`}
+        category?.toLowerCase() === item?.type?.toLowerCase()
+          ? "!bg-white font-semibold text-[20px]"
+          : "hover:bg-gray-50 bg-[#EFEFEF]"
+      }  px-4 py-[19px] text-[18px] text-[#636363] text-left flex gap-x-[5px] items-center leading-[24px] w-full capitalize border-[#D0D5DD] border-b last-of-type:border-b-0`}
     >
+      {" "}
       <AiFillCaretRight
         className={`${
           category === item.type ? "visible" : "invisible"
@@ -164,9 +179,7 @@ export function handlePermission(
   if (!permissions?.length) return;
   if (
     permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS") ||
-    permissions?.includes(
-      "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
-    )
+    permissions?.includes("CREATE_INVESTMENT_PRODUCT")
   ) {
     setFilteredProductOptions(ProductOptions);
   } else {
@@ -184,9 +197,7 @@ export function handlePermission(
   }
   if (
     permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS") ||
-    permissions?.includes(
-      "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
-    )
+    permissions?.includes("AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS")
   ) {
     setFilteredRequestOptions(RequestOptions);
   } else {
@@ -210,8 +221,7 @@ export default function StatusCard({
   handleChange,
 }: any): React.JSX.Element {
   // const { permissions } = useContext(AppContext);
-  const [searchParams] = useSearchParams();
-  const queryCategory = searchParams.get("category");
+
   const [activeType, setActiveType] = useState<string | undefined>("all");
   const [productFilter, setProductFilter] = useState<string | undefined>(
     "created_by_me"
@@ -234,8 +244,12 @@ export default function StatusCard({
   }
 
   useEffect(() => {
+    handleChange({ selected: selected?.value, category, activeType: "all" });
+  }, [selected?.value]);
+
+  useEffect(() => {
     handleChange({ selected: selected?.value, category, activeType });
-  }, [selected?.value, category, activeType]);
+  }, [category, activeType]);
 
   useEffect(() => {
     if (status === "") {
@@ -258,13 +272,14 @@ export default function StatusCard({
   }, [permissions, category]);
   return (
     <div className="flex border border-[#E5E9EB] rounded-lg">
-      <div className="bg-[#EFEFEF] w-[208px] rounded-l-lg border-r border-[#D0D5DD] overflow-hidden">
+      <div className=" w-[208px] rounded-l-lg border-r border-[#D0D5DD] overflow-hidden">
         {StatusCategories.map((item, idx) => (
           <StatusCategoryButton
             key={item.id}
             item={item}
             category={category}
             setCategory={setCategory}
+            setSelected={setSelected}
           />
         ))}
       </div>
@@ -283,6 +298,7 @@ export default function StatusCard({
             />
           ))}
         </div>
+      
         <div>
           <Select
             options={
@@ -290,7 +306,9 @@ export default function StatusCard({
                 ? filteredProductOptions
                 : filteredRequestOptions
             }
+         
             handleSelected={(value: any) => handleSelected(value)}
+            value={selected}
           />
         </div>
       </div>

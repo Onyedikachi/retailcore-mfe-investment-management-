@@ -23,9 +23,10 @@ export default function SelectedRequirementsTable({
   tableItems,
   deleteTableItem,
 }: SelectedRequirementsTable) {
+
   const headers = ["s/n", "DOCUMENTATION REQUIRED", ""];
   return (
-    <div className="px-4 sm:px-6 lg:px-8">
+    <div data-testid="selected-requirements-table" className="px-4 sm:px-6 lg:px-8">
       <div className="mt-8 flow-root">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle">
@@ -42,14 +43,14 @@ export default function SelectedRequirementsTable({
                   ))}
                 </tr>
               </thead>
-              {tableItems.length > 0 ? (
+              {tableItems && tableItems?.length > 0 ? (
                 <tbody className="divide-y divide-gray-200 bg-white">
                   {tableItems.map((document, index) => (
                     <tr key={document.id} className="bg-[#F9F2F2]">
                       <td className="w-[50px] capitalize whitespace-nowrap py-4 pl-4 pr-3 text-base font-medium text-[#636363] sm:pl-6 lg:pl-8">
                         {index + 1}
                       </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-base text-[#636363]">
+                      <td data-testid="document-item" className="whitespace-nowrap px-3 py-4 text-base text-[#636363]">
                         {document.name}
                       </td>
 
@@ -99,6 +100,7 @@ export default function SelectedRequirementsTable({
                       <td className="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize  truncate relative text-left">
                         {index === 0 && "No document selected"}
                       </td>
+                      <td className="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize truncate relative text-left"></td>
                       <td className="text-sm font-medium text-[#aaa] px-4 py-[6px] h-10 capitalize truncate relative text-left"></td>
                     </tr>
                   ))}

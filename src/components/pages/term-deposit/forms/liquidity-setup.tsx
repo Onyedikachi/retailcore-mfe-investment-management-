@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+// import { computed } from "@preact/signals-react";
 import { ToggleInputChildren } from "@app/components/pages/term-deposit/forms";
 import { BorderlessSelect, MinMaxInput } from "@app/components/forms";
 import {
@@ -14,7 +15,7 @@ import MultiSelectForm2 from "@app/components/forms/MultiSelectForm2";
 import { FaTimes } from "react-icons/fa";
 import { liquidationTypes } from "@app/constants";
 import { partLiquidationPenaltyOptions, daysOptions } from "@app/constants";
-
+import { useGetChargesQuery } from "@app/api";
 // import { FormToolTip } from "@app/components";
 // import { toolTips } from "@app/constants";
 
@@ -33,7 +34,13 @@ export function InputDivs({
     </div>
   );
 }
-export default function LiquiditySetup({ proceed, formData, setFormData }) {
+export default function LiquiditySetup({
+  proceed,
+  formData,
+  setFormData,
+  setDisabled,
+  initiateDraft,
+}) {
   const {
     register,
     handleSubmit,
@@ -42,6 +49,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
     setValue,
     control,
     setError: assignError,
+    resetField,
     getValues,
     trigger,
     formState: { errors, isValid },
@@ -52,47 +60,110 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
   });
   const [partOptionCharges, setPartOptionCharges] = useState([]);
   const [earlyOptionCharges, setEarlyOptionCharges] = useState([]);
+  const { data: chargesData } = useGetChargesQuery();
+  const [chargeOptions, setChargeOptions] = useState([]);
+
+  useEffect(() => {
+    //if fetched charges data changes then map the data
+    const options = chargesData?.data?.records
+      ?.map((item) =>
+        item?.charge_value?.map((chargeValue) => ({
+          id: chargeValue.charge_id,
+          text: chargeValue.charge_type,
+          sub: chargeValue.charge_amount,
+          value: {
+            id: chargeValue.charge_id,
+            name: chargeValue.charge_type,
+            amount: chargeValue.charge_amount,
+          },
+        }))
+      )
+      .flat();
+
+    setChargeOptions(options);
+  }, [chargesData]);
+  useEffect(() => {
+    console.log(
+      "🚀 ~ file: liquidity-setup.tsx:86 ~ useEffect ~  formData.part_SpecificCharges:",
+      formData.part_SpecificCharges
+    );
+  }, [formData]);
 
   function handleSelected({ inputName, selectedOptions }) {
-
-    if (inputName === "partCharges") {
+    console.log("🚀 ~ file: liquidity-setup.tsx:93 ~ handleSelected ~ inputName:", inputName)
+    
+    console.log("🚀 ~ file: liquidity-setup.tsx:93 ~ handleSelected ~ selectedOptions:", selectedOptions)
+    if (inputName === "part_SpecificCharges") {
       setPartOptionCharges(selectedOptions);
+      setValue("part_SpecificCharges", selectedOptions);
     }
 
-    if (inputName === "earlyCharges") {
+    if (inputName === "early_SpecificCharges") {
       setEarlyOptionCharges(selectedOptions);
+      setValue("early_SpecificCharges", selectedOptions);
     }
   }
-  function onProceed(d: any) {
 
-    setFormData({ ...d });
+  function onProceed(d: any) {
+    
+    console.log("🚀 ~ file: liquidity-setup.tsx:108 ~ onProceed ~ partOptionCharges:", partOptionCharges)
+    setFormData({
+      ...d,
+      early_SpecificCharges: earlyOptionCharges,
+      part_SpecificCharges: partOptionCharges,
+    });
+      console.log("🚀 ~ file: liquidity-setup.tsx:115 ~ onProceed ~ partOptionCharges:", partOptionCharges)
     proceed();
   }
   const values = getValues();
 
   useEffect(() => {
-    console.log("🚀 ~ file: product-information.tsx:191 ~ isValid:", isValid);
-    console.log(
-      "🚀 ~ file: pricing-config.tsx:139 ~ PricingConfig ~ values:",
-      values
-    );
+    setValue("part_SpecificCharges", partOptionCharges);
+    setValue("early_SpecificCharges", earlyOptionCharges);
+  }, [partOptionCharges, earlyOptionCharges]);
 
-    console.log(
-      "🚀 ~ file: pricing-config.tsx:153 ~ useEffect ~ errors:",
-      errors
-    );
-    // setDisabled(!isValid);
-  }, [values]);
+  useEffect(() => {
+    setDisabled(!isValid);
+  }, [values, errors]);
+
   useEffect(() => {
     if (formData) {
       Object.entries(formData).forEach(([name, value]) =>
         setValue(name, value)
       );
-   
+
+      setEarlyOptionCharges(formData?.early_SpecificCharges);
+      setPartOptionCharges(formData?.part_SpecificCharges);
     }
   }, [setValue, formData]);
   const watchPartLiquidationPenalty = watch("part_LiquidationPenalty");
   const watchEarlyLiquidationPenalty = watch("early_LiquidationPenalty");
+
+  useEffect(() => {
+    const resetNoticePeriod = (fieldName) => {
+      register(fieldName);
+      if (!watch(fieldName)) {
+        resetField(fieldName, { keepError: false });
+      }
+    };
+
+    resetNoticePeriod("part_NoticePeriod");
+    resetNoticePeriod("early_NoticePeriod");
+  }, [
+    watch("part_RequireNoticeBeforeLiquidation"),
+    watch("early_RequireNoticeBeforeLiquidation"),
+    watch("part_AllowPartLiquidation"),
+    watch("early_AllowPartLiquidation"),
+  ]);
+  useEffect(() => {
+    if (initiateDraft) {
+      setFormData({
+        ...values,
+        early_SpecificCharges: earlyOptionCharges,
+        part_SpecificCharges: partOptionCharges,
+      });
+    }
+  }, [initiateDraft]);
   return (
     <form id="liquiditysetup" onSubmit={handleSubmit(onProceed)}>
       <div className="flex flex-col gap-14">
@@ -100,11 +171,11 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
           <ToggleInputChildren
             key={type.label}
             label={type.label}
-            inputName="part_AllowPartLiquidation"
+            inputName={type.value}
             setValue={setValue}
             trigger={trigger}
             register={register}
-            defaultValue={formData?.part_AllowPartLiquidation}
+            defaultValue={formData[type.value]}
           >
             {type.label === "Allow Part Liquidation" ? (
               <div>
@@ -115,12 +186,15 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                       <div className="w-[180px]">
                         <MinMaxInput
                           register={register}
+                          isPercent={true}
                           inputName={"part_MaxPartLiquidation"}
                           errors={errors}
                           setValue={setValue}
                           trigger={trigger}
                           clearErrors={clearErrors}
                           defaultValue={formData?.part_MaxPartLiquidation}
+                          isCurrency
+                          max={100}
                         />
                       </div>
 
@@ -160,6 +234,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                           clearErrors={clearErrors}
                           defaultValue={formData?.part_NoticePeriod}
                           type="number"
+                          max={10}
                           disabled={
                             !watch("part_RequireNoticeBeforeLiquidation")
                           }
@@ -184,9 +259,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                             clearErrors={clearErrors}
                             defaultValue={formData?.part_NoticePeriodUnit}
                             options={IntervalOptions}
-                            disabled={
-                              !watch("part_RequireNoticeBeforeLiquidation")
-                            }
+                            disabled
                           />
                         </div>
 
@@ -221,7 +294,13 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                             setValue={setValue}
                             trigger={trigger}
                             clearErrors={clearErrors}
-                            defaultValue={formData?.part_LiquidationPenaltyPercentage}
+                            defaultValue={
+                              formData?.part_LiquidationPenaltyPercentage
+                            }
+                            isCurrency
+                            disablegroupseparators
+                            isPercent
+                            max={100}
                           />
                         </div>
                       )}
@@ -233,12 +312,18 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                         <div className="w-[300px]">
                           <MinMaxInput
                             register={register}
-                            inputName={"part_SpecialInterestRate"}
+                            inputName={"early_LiquidationPenaltyPercentage"}
                             errors={errors}
                             setValue={setValue}
                             trigger={trigger}
                             clearErrors={clearErrors}
-                            defaultValue={formData?.part_SpecialInterestRate}
+                            defaultValue={
+                              formData?.early_LiquidationPenaltyPercentage
+                            }
+                            isCurrency
+                            disablegroupseparators
+                            isPercent
+                            max={100}
                           />
                         </div>
                       </div>
@@ -249,13 +334,14 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                       <div className="">
                         <div className="w-[300px] flex items-center mb-4">
                           <MultiSelectForm2
+                            isCharge={true}
                             labelName=""
                             placeholder="Search and select"
                             register={register}
-                            inputName={"partCharges"}
+                            inputName={"part_SpecificCharges"}
                             errors={errors}
                             setValue={setValue}
-                            options={customerTypeOptions}
+                            options={chargeOptions}
                             allLabel="All"
                             clearErrors={clearErrors}
                             trigger={trigger}
@@ -269,7 +355,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                                 key={i}
                                 className="rounded-full px-[13px] py-[4px] text-xs bg-[#E0E0E0] flex gap-x-6 items-center text-[#16252A]"
                               >
-                                {i}{" "}
+                                {i?.name}{" "}
                                 <span
                                   onClick={() => {
                                     setPartOptionCharges(
@@ -346,6 +432,10 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                               trigger={trigger}
                               clearErrors={clearErrors}
                               defaultValue={formData?.part_SpecialInterestRate}
+                              isCurrency
+                              disablegroupseparators
+                              isPercent
+                              max={100}
                             />
                           </div>
                         </div>
@@ -384,6 +474,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                         clearErrors={clearErrors}
                         defaultValue={formData?.early_NoticePeriod}
                         type="number"
+                        max={7}
                       />
                     </div>
 
@@ -400,14 +491,12 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                           register={register}
                           inputName={"early_NoticePeriodUnit"}
                           errors={errors}
-                          setValue={setValue}
+                          // setValue={setValue}
                           trigger={trigger}
                           clearErrors={clearErrors}
                           defaultValue={formData?.early_NoticePeriodUnit}
                           options={IntervalOptions}
-                          disabled={
-                            !watch("early_RequireNoticeBeforeLiquidation")
-                          }
+                          disabled
                         />
                       </div>
 
@@ -442,7 +531,12 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                           setValue={setValue}
                           trigger={trigger}
                           clearErrors={clearErrors}
-                          defaultValue={formData?.early_LiquidationPenaltyPercentage}
+                          defaultValue={
+                            formData?.early_LiquidationPenaltyPercentage
+                          }
+                          isCurrency
+                          disablegroupseparators
+                          isPercent
                         />
                       </div>
                     )}
@@ -454,12 +548,18 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                       <div className="w-[300px]">
                         <MinMaxInput
                           register={register}
-                          inputName={"part_SpecialInterestRate"}
+                          inputName={"early_LiquidationPenaltyPercentage"}
                           errors={errors}
                           setValue={setValue}
                           trigger={trigger}
                           clearErrors={clearErrors}
-                          defaultValue={formData?.part_SpecialInterestRate}
+                          defaultValue={
+                            formData?.early_LiquidationPenaltyPercentage
+                          }
+                          isCurrency
+                          disablegroupseparators
+                          isPercent
+                          max={100}
                         />
                       </div>
                     </div>
@@ -470,16 +570,18 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                     <div className="">
                       <div className="w-[300px] flex items-center mb-4">
                         <MultiSelectForm2
+                          isCharge={true}
                           labelName=""
                           placeholder="Search and select"
                           register={register}
-                          inputName={"earlyCharges"}
+                          inputName={"early_SpecificCharges"}
                           errors={errors}
                           setValue={setValue}
-                          options={customerTypeOptions}
+                          options={chargeOptions}
                           allLabel="All"
                           clearErrors={clearErrors}
                           trigger={trigger}
+                          handleSelected={handleSelected}
                         />
                       </div>
                       {watchEarlyLiquidationPenalty === 4 && (
@@ -489,7 +591,7 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                               key={i}
                               className="rounded-full px-[13px] py-[4px] text-xs bg-[#E0E0E0] flex gap-x-6 items-center text-[#16252A]"
                             >
-                              {i}{" "}
+                              {i?.name}{" "}
                               <span
                                 onClick={() => {
                                   setEarlyOptionCharges(
@@ -517,14 +619,14 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                       <div className="">
                         <div className="w-[300px] flex items-center mb-4">
                           <BorderlessSelect
-                            inputError={errors?.part_LiquidationPenalty}
+                            inputError={errors?.early_LiquidationPenalty}
                             register={register}
-                            inputName={"part_LiquidationPenalty"}
+                            inputName={"early_LiquidationPenalty"}
                             errors={errors}
                             setValue={setValue}
                             trigger={trigger}
                             clearErrors={clearErrors}
-                            defaultValue={formData?.part_LiquidationPenalty}
+                            defaultValue={formData?.early_LiquidationPenalty}
                             options={ApplyOptions}
                           />
                         </div>
@@ -538,14 +640,14 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                       <div className="">
                         <div className="w-[300px] flex items-center mb-4">
                           <BorderlessSelect
-                            inputError={errors?.part_LiquidationPenalty}
+                            inputError={errors?.early_LiquidationPenalty}
                             register={register}
-                            inputName={"part_LiquidationPenalty"}
+                            inputName={"early_LiquidationPenalty"}
                             errors={errors}
                             setValue={setValue}
                             trigger={trigger}
                             clearErrors={clearErrors}
-                            defaultValue={formData?.part_LiquidationPenalty}
+                            defaultValue={formData?.early_LiquidationPenalty}
                             options={ApplyOptions}
                           />
                         </div>
@@ -560,13 +662,16 @@ export default function LiquiditySetup({ proceed, formData, setFormData }) {
                         <div className="w-[300px]">
                           <MinMaxInput
                             register={register}
-                            inputName={"part_SpecialInterestRate"}
+                            inputName={"early_SpecialInterestRate"}
                             errors={errors}
                             setValue={setValue}
                             trigger={trigger}
                             clearErrors={clearErrors}
-                            defaultValue={formData?.part_SpecialInterestRate}
-                            type="number"
+                            defaultValue={formData?.early_SpecialInterestRate}
+                            isCurrency
+                            disablegroupseparators
+                            isPercent
+                            max={100}
                           />
                         </div>
                       </div>

@@ -1,4 +1,4 @@
-export const MODULENAME = 'ProductFactory'
+export const MODULENAME = "ProductFactory";
 
 export const StatusCategories = [
   {
@@ -55,10 +55,20 @@ export const StatusRequests = [
     type: "draft",
     color: "#AAAAAA",
   },
+  {
+    id: 1,
+    type: "pending",
+    color: "#3FA2F7",
+  },
+  {
+    id: 3,
+    type: "rejected",
+    color: "#CF2A2A",
+  },
 ];
 export const CheckerStatusRequests = [
   {
-    id: 1,
+    id: null,
     type: "all",
     color: "#252C32",
   },
@@ -68,17 +78,17 @@ export const CheckerStatusRequests = [
     color: "#2FB755",
   },
   {
-    id: 3,
+    id: 1,
     type: "pending",
     color: "#3FA2F7",
   },
   {
-    id: 4,
+    id: 3,
     type: "rejected",
     color: "#CF2A2A",
   },
   {
-    id: 5,
+    id: 0,
     type: "draft",
     color: "#AAAAAA",
   },
@@ -354,40 +364,52 @@ export const IntervalOptions = [
     id: "1",
     text: "Day(s)",
     value: 1,
+    subvalue: "day",
   },
   {
     id: "2",
     text: "Week(s)",
     value: 2,
+    subvalue: "week",
   },
   {
     id: "3",
     text: "Month(s)",
     value: 3,
+    subvalue: "month",
   },
   {
     id: "4",
     text: "Year(s)",
     value: 4,
+    subvalue: "year",
   },
 ];
 export const interestComputationDaysOptions = [
   {
     id: "30E/360",
     text: "30E/360",
-    value: "30E/360",
+    value: 0,
   },
   {
     id: "Actual/360",
     text: "Actual/360",
-    value: "Actual/360",
+    value: 1,
   },
   {
     id: "Actual/365",
     text: "Actual/365",
-    value: "Actual/365",
+    value: 2,
   },
 ];
+
+export const liquidities = {
+  0: "None",
+  1: "ForfietAll",
+  2: "ForfietPortion",
+  3: "RecalculateInterest",
+  4: "TakeCharge",
+};
 export const LiquidityOptions = [
   {
     id: "none",
@@ -414,11 +436,11 @@ export const LiquidityOptions = [
     text: "Take a charge",
     value: 4,
   },
-  {
-    id: "ComparePenalties",
-    text: "Compare Penalties",
-    value: 5,
-  },
+  // {
+  //   id: "ComparePenalties",
+  //   text: "Compare Penalties",
+  //   value: 5,
+  // },
 ];
 export const ApplyOptions = [
   {
@@ -441,4 +463,154 @@ export const ApplyOptions = [
     text: "The sum of:",
     value: "The sum of:",
   },
-]
+];
+
+export const rangeLabels = {
+  0: {
+    leftClass: "",
+    rightClass: "",
+  },
+  1: {
+    leftClass: "",
+    rightClass: "opacity-40",
+  },
+  2: {
+    leftClass: "opacity-40",
+    rightClass: "opacity-40",
+  },
+  3: {
+    leftClass: "opacity-40",
+    rightClass: "opacity-40",
+  },
+};
+
+export  const tabLinks = [
+  {
+    name: "Assets",
+    menu: [
+      {
+        name: "Current Assets [ASTCAS]",
+        subMenu: [
+          { name: "Current Account balances [ASTCAS23421]" },
+          { name: "Savings Account balances [ASTCAS23422]" },
+          { name: "Cash Receipt balances [ASTCAS23423]" },
+          { name: "Current Account balances [ASTCAS23424]" },
+          { name: "Current Account balances [ASTCAS23424]" },
+        ],
+        isOpen: false,
+      },
+      {
+        name: "Non Current Asets",
+        subMenu: [{ name: "subMenu name2" }],
+        isOpen: false,
+      },
+    ],
+  },
+  {
+    name: "Liabilities",
+    menu: [
+      {
+        name: "Current Liabilities [ASTCAS]",
+        subMenu: [
+          { name: "Current Account balances [ASTCAS23421]" },
+          { name: "Savings Account balances [ASTCAS23422]" },
+          { name: "Cash Receipt balances [ASTCAS23423]" },
+          { name: "Current Account balances [ASTCAS23424]" },
+          { name: "Current Account balances [ASTCAS23424]" },
+        ],
+        isOpen: false,
+      },
+      {
+        name: "Non Current Liabilities",
+        subMenu: [{ name: "subMenu name2" }],
+        isOpen: false,
+      },
+    ],
+  },
+  {
+    name: "Equities",
+    menu: [
+      {
+        name: "Current Equities [ASTCAS]",
+        subMenu: [
+          { name: "Current Account balances [ASTCAS23421]" },
+          { name: "Savings Account balances [ASTCAS23422]" },
+          { name: "Cash Receipt balances [ASTCAS23423]" },
+          { name: "Current Account balances [ASTCAS23424]" },
+          { name: "Current Account balances [ASTCAS23424]" },
+        ],
+        isOpen: false,
+      },
+      {
+        name: "Non Current Equities",
+        subMenu: [{ name: "subMenu name2" }],
+        isOpen: false,
+      },
+    ],
+  },
+  {
+    name: "Revenues",
+    menu: [
+      {
+        name: "Current Revenues [ASTCAS]",
+        subMenu: [
+          { name: "Current Account balances [ASTCAS23421]" },
+          { name: "Savings Account balances [ASTCAS23422]" },
+          { name: "Cash Receipt balances [ASTCAS23423]" },
+          { name: "Current Account balances [ASTCAS23424]" },
+          { name: "Current Account balances [ASTCAS23424]" },
+        ],
+        isOpen: false,
+      },
+      {
+        name: "Non Current Revenues",
+        subMenu: [{ name: "subMenu name2" }],
+        isOpen: false,
+      },
+    ],
+  },
+  {
+    name: "Expenses",
+    menu: [
+      {
+        name: "Current Expenses [ASTCAS]",
+        subMenu: [
+          { name: "Current Account balances [ASTCAS23421]" },
+          { name: "Savings Account balances [ASTCAS23422]" },
+          { name: "Cash Receipt balances [ASTCAS23423]" },
+          { name: "Current Account balances [ASTCAS23424]" },
+          { name: "Current Account balances [ASTCAS23424]" },
+        ],
+        isOpen: false,
+      },
+      {
+        name: "Non Current Expenses",
+        subMenu: [{ name: "subMenu name2" }],
+        isOpen: false,
+      },
+    ],
+  },
+];
+
+export const summaryLinks = [
+  {
+    id: 1,
+    title: "Product Factory",
+    url: "/product-factory/dashboard/deposit",
+  },
+  {
+    id: 2,
+    title: "Investment",
+    url: "/product-factory/investment",
+  },
+  {
+    id: 3,
+    title: "#",
+    url: "#",
+  },
+  {
+    id: 4,
+    title: "Process summary",
+    url: "#",
+  },
+];

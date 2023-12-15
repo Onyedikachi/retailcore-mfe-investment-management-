@@ -56,14 +56,14 @@ export const handleDropdown = (
   } else {
     let options = DropDownOptions[setOptionsByStatus(status)];
     if (!permissions?.includes("CREATE_PRODUCT")) {
-      options = options.filter(
+      options = options?.filter(
         (i: any) =>
           i.text.toLowerCase() !== "deactivate" &&
           i.text.toLowerCase() !== "activate"
       );
     }
     if (!permissions?.includes("CREATE_PRODUCT")) {
-      options = options.filter((i: any) => i.text.toLowerCase() !== "modify");
+      options = options?.filter((i: any) => i.text.toLowerCase() !== "modify");
     }
     return options;
   }
@@ -92,7 +92,7 @@ export function handleDownload(downloadData, isChecker, csvExporter, category) {
         obj.status = i?.requestStatus;
       }
 
-      obj["updated on"] = moment(i.updatedOn).format("DD MMM YYYY, hh:mm A");
+      obj["updated on"] = moment(i.updated_At).format("DD MMM YYYY, hh:mm A");
 
       return obj;
     });
@@ -104,7 +104,7 @@ export function handleDownload(downloadData, isChecker, csvExporter, category) {
         "product code": i?.productCode || "",
         "product type": i?.productType || "",
         state: i?.state || "",
-        "updated on": moment(i.updatedOn).format("DD MMM YYYY, hh:mm A"),
+        "updated on": moment(i.updated_At).format("DD MMM YYYY, hh:mm A"),
       };
 
       return obj;
@@ -124,7 +124,8 @@ export const getSearchResult = (
   getProducts,
   getRequests,
   category,
-  setSearchResults
+  setSearchResults,
+  selected
 ) => {
   if (!value.length) {
     setSearchResults([]);
@@ -135,14 +136,14 @@ export const getSearchResult = (
       search: value,
       page: 1,
       page_Size: 25,
-      filter_by: "created_by_me",
+      filter_by: selected?.value,
     });
   } else {
     getRequests({
       search: value,
       page: 1,
       page_Size: 25,
-      filter_by: "created_by_me",
+      filter_by: selected?.value,
     });
   }
 };
@@ -160,11 +161,15 @@ export default function TableComponent({
   handleSearch,
   query,
   setQuery,
+  hasMore,
+  fetchMoreData,
 }: any) {
-  const { category, setStatus, isChecker } = useContext(InvestmentContext);
+  const { category, setStatus, isChecker, selected } =
+    useContext(InvestmentContext);
   const { permissions } = useContext(AppContext);
   const [users, setUsers] = useState([]);
   const [searchResults, setSearchResults] = useState<any[]>([]);
+
   const [options, setOptions] = React.useState({
     fieldSeparator: ",",
     quoteStrings: '"',
@@ -223,6 +228,7 @@ export default function TableComponent({
 
   useEffect(() => {
     isSuccess &&
+      category === StatusCategoryType?.AllProducts &&
       setSearchResults(
         data.results.map((i) => {
           return {
@@ -233,6 +239,7 @@ export default function TableComponent({
         })
       );
     isRequestSuccess &&
+      category === StatusCategoryType?.Requests &&
       setSearchResults(
         request.results.map((i) => {
           return {
@@ -302,8 +309,12 @@ export default function TableComponent({
   const onChangeDate = (value: any) => {
     setQuery({
       ...query,
-      start_Date: value.startDate,
-      end_Date: value.endDate,
+      start_Date: value.startDate
+        ? moment(value.startDate).format("yyyy-MM-DD")
+        : null,
+      end_Date: value.endDate
+        ? moment(value.endDate).format("yyyy-MM-DD")
+        : null,
     });
   };
 
@@ -313,6 +324,7 @@ export default function TableComponent({
       value
     );
   };
+
   return (
     <section className="w-full h-full">
       {/* Table Top bar  */}
@@ -324,11 +336,12 @@ export default function TableComponent({
               getProducts,
               getRequests,
               category,
-              setSearchResults
+              setSearchResults,
+              selected
             )
           }
           placeholder={`Search by product name${
-            category === StatusCategoryType.Requests ? "/code" : ""
+            category !== StatusCategoryType.Requests ? "/code" : ""
           }`}
           searchResults={searchResults}
           setSearchResults={setSearchResults}
@@ -376,7 +389,6 @@ export default function TableComponent({
                 requestHeader.map((i) => {
                   if (i.key === "created_By" || i.key === "approved_By") {
                     i.options = users;
-                  
                   }
                   return i;
                 }),
@@ -390,8 +402,8 @@ export default function TableComponent({
         }
         page={1}
         total={20}
-        fetchMoreData={undefined}
-        hasMore={false}
+        fetchMoreData={fetchMoreData}
+        hasMore={hasMore}
         getOptionData={getOptionData}
         isLoading={isLoading}
         dropDownOptions={DropDownOptions}

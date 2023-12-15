@@ -15,7 +15,7 @@ export default function ProcessingStatusSlider({
   return (
     <div className=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-[60px] pt-[40px] pb-[40px] ">
       <p className="text-[#636363] text-lg font-semibold">Processing Status:</p>
-      <div className={`w-full  mt-6 ${isDisabled ? "opacity-40" : ""}`}>
+      <div className={`w-full  mt-6`}>
         <div className="px-4 pb-2 flex items-center gap-x-[1px]">
           <img
             src={SliderLogo}

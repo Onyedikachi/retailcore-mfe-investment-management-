@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { InvestmentContext } from "../../utils/context";
 import { StatusCategoryType } from "../../constants/enums";
 import {
@@ -13,15 +14,16 @@ import {
   useGetPostRequestsMutation,
   useGetProductStatsQuery,
   useGetRequestStatsQuery,
+  useGetSystemAlertQuery,
 } from "@app/api";
 import {
   ProductTypes,
   StatusFilterOptions,
   StatusTypes,
   TypeFilterOptions,
-
 } from "@app/constants";
 import { sortTabStatus } from "@app/utils/sortTabStatus";
+import { useSearchParams } from "react-router-dom";
 
 export function handleToggle(selected, setIsChecker, setHideCreate) {
   if (
@@ -76,11 +78,20 @@ export const handleSearch = (value, query, setQuery) => {
   });
 };
 export default function IndexComponent() {
+  const notify = (toastMessage) => toast.error(toastMessage);
   const [category, setCategory] = useState<string>(
     StatusCategoryType?.AllProducts
   );
-
-  const [selected, setSelected] = useState<any>("");
+  const [searchParams] = useSearchParams();
+  const queryCategory = searchParams.get("category");
+  const productId = searchParams.get("productId");
+  const preview = searchParams.get("preview");
+  const [selected, setSelected] = useState<any>({
+    id: 1,
+    text: "Created by me",
+    value: "created_by_me",
+    disabled: false,
+  });
   const [isChecker, setIsChecker] = useState(false);
   const [, setHideCreate] = useState(false);
   const [status, setStatus] = useState("");
@@ -88,13 +99,16 @@ export default function IndexComponent() {
   const [search, setSearch] = useState("");
   const [type, setType] = useState("");
   const [initiator, setInitiator] = useState("");
+  const [detail, setDetail] = useState<any>(null);
+  const [isDetailOpen, setDetailOpen] = useState(false);
   const [duration, setDuration] = useState("");
   const [isRefreshing, setRefreshing] = useState<boolean>(false);
   const [requestData, setRequestData] = useState<any[]>([]);
   const [productData, setProductData] = useState<any[]>([]);
+  const [hasMore, setHasMore] = useState(true);
   const [query, setQuery] = useState({
-    filter_by: "",
-    status_In: [],
+    filter_by: selected?.value,
+    status_In: null,
     search: "",
     start_Date: null,
     end_Date: null,
@@ -126,6 +140,10 @@ export default function IndexComponent() {
       duration,
       isRefreshing,
       setRefreshing,
+      isDetailOpen,
+      setDetailOpen,
+      detail,
+      setDetail,
     }),
     [
       selected,
@@ -148,6 +166,10 @@ export default function IndexComponent() {
       duration,
       isRefreshing,
       setRefreshing,
+      isDetailOpen,
+      setDetailOpen,
+      detail,
+      setDetail,
     ]
   );
 
@@ -172,26 +194,36 @@ export default function IndexComponent() {
   const {
     data: prodStatData,
     refetch: prodStatRefetch,
-    isLoading: prodStatLoading,
-  } = useGetProductStatsQuery(query, {
-    skip: category !== StatusCategoryType.AllProducts,
-  });
+    isFetching: prodStatLoading,
+  } = useGetProductStatsQuery(
+    { ...query, filter_by: selected?.value },
+    {
+      skip: category !== StatusCategoryType.AllProducts,
+    }
+  );
 
   const {
     data: requestStatData,
     refetch: requestRefetch,
-    isLoading: requestStatLoading,
-  } = useGetRequestStatsQuery(query, {
-    skip: category !== StatusCategoryType.Requests,
-  });
+    isFetching: requestStatLoading,
+  } = useGetRequestStatsQuery(
+    { ...query, filter_by: selected?.value },
+    {
+      skip: category !== StatusCategoryType.Requests,
+    }
+  );
 
   React.useEffect(() => {
+    setQuery({
+      ...query,
+      page: 1,
+    });
     if (category === StatusCategoryType.AllProducts) {
-      getProducts({ ...query, page: 1 });
-      prodStatRefetch({ ...query, page: 1 });
+      getProducts({ ...query, page: 1, filter_by: selected?.value });
+      // prodStatRefetch({ ...query, page: 1, filter_by: selected?.value });
     } else {
-      getRequests({ ...query, page: 1 });
-      requestRefetch({ ...query, page: 1 });
+      getRequests({ ...query, page: 1, filter_by: selected?.value });
+      // requestRefetch({ ...query, page: 1, filter_by: selected?.value });
     }
   }, [
     category,
@@ -202,40 +234,93 @@ export default function IndexComponent() {
     query.start_Date,
     query.end_Date,
     query.requestType_In,
-    query.initiator_In
+    query.initiator_In,
   ]);
+  useEffect(() => {
+    setCategory(
+      queryCategory === "requests"
+        ? StatusCategoryType.Requests
+        : StatusCategoryType.AllProducts
+    );
+  }, [queryCategory]);
 
   useEffect(() => {
-    isSuccess &&
-      setProductData(
-        data.results.map((i) => {
-          return {
+    if (query.page === 1) {
+      setProductData([]);
+      setRequestData([]);
+    }
+    if (isSuccess) {
+      setProductData((prevData) => [
+        ...prevData.concat(
+          data.results.map((i) => ({
             ...i,
-            state: StatusTypes.find((n) => n.id === i.state).type,
-            productType: ProductTypes.find((n) => n.id === i.productType).name,
-          };
-        })
-      );
-    isRequestSuccess &&
-      setRequestData(
-        request.results.map((i) => {
-          return {
+            state: StatusTypes.find((n) => n.id === i.state)?.type,
+            productType: ProductTypes.find((n) => n.id === i.productType)?.name,
+          }))
+        ),
+      ]);
+      !data?.next ? setHasMore(false) : setHasMore(true);
+    }
+    if (isRequestSuccess) {
+      setRequestData((prevData) => [
+        ...prevData.concat(
+          ...request.results.map((i) => ({
             ...i,
             requestStatus: StatusFilterOptions.find(
               (n) => n.value === i.requestStatus
-            ).name,
+            )?.name,
             requestType: TypeFilterOptions.find(
               (n) => n.value === i.requestType
-            ).name,
-          };
-        })
-      );
+            )?.name,
+          }))
+        ),
+      ]);
+      !request?.next ? setHasMore(false) : setHasMore(true);
+    }
+  }, [
+    data,
+    request,
+    isSuccess,
+    isRequestSuccess,
+    isError,
+    isRequestError,
+    query.page,
+  ]);
 
-    return () => {
-      setProductData([]);
-      setRequestData([]);
-    };
-  }, [data, request, isSuccess, isRequestSuccess, isError, isRequestError]);
+  const { data: systemAlertData, isSuccess: systemAlertDataSuccess } =
+    useGetSystemAlertQuery();
+
+  useEffect(() => {
+    if (systemAlertDataSuccess) {
+      notify(systemAlertData);
+    }
+  }, [systemAlertDataSuccess]);
+
+  useEffect(() => {
+    if (preview === "search_product") {
+      setDetail({ id: productId });
+      setDetailOpen(true);
+    }
+  }, [preview, productId]);
+
+  const fetchMoreData = () => {
+    setTimeout(() => {
+      setQuery((prevQuery) => {
+        const updatedPage = prevQuery.page + 1;
+        if (category === StatusCategoryType.AllProducts) {
+          getProducts({ ...prevQuery, page: updatedPage });
+          prodStatRefetch({ ...prevQuery, page: updatedPage });
+        } else {
+          getRequests({ ...prevQuery, page: updatedPage });
+          requestRefetch({ ...prevQuery, page: updatedPage });
+        }
+        return {
+          ...prevQuery,
+          page: updatedPage,
+        };
+      });
+    }, 1000);
+  };
 
   return (
     <InvestmentContext.Provider value={value}>
@@ -266,11 +351,13 @@ export default function IndexComponent() {
                   )
                 }
                 handleSearch={(value) => handleSearch(value, query, setQuery)}
-                productData={productData}
-                requestData={requestData}
+                productData={useMemo(() => productData, [productData])}
+                requestData={useMemo(() => requestData, [requestData])}
                 isLoading={isLoading || isRequestLoading}
                 query={query}
                 setQuery={setQuery}
+                hasMore={hasMore}
+                fetchMoreData={fetchMoreData}
               />
             </div>
           </div>

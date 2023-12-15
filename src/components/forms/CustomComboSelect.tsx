@@ -5,7 +5,7 @@ export function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 export function handleDefault(defaultValue, options, setSelectedItem) {
-  if (!defaultValue || !options.length) return;
+  if (!defaultValue || !options?.length) return;
   const res = options?.find(
     (i) => i?.name?.toLowerCase() === defaultValue?.toLowerCase()
   );
@@ -50,7 +50,7 @@ export default function CustomComboSelect({
     if (query === "") {
       return options;
     } else {
-      return options.filter((item) =>
+      return options?.filter((item) =>
         item.name.toLowerCase().includes(query.toLowerCase())
       );
     }
@@ -96,6 +96,7 @@ export default function CustomComboSelect({
                       "block truncate",
                       selected && "font-semibold"
                     )}
+                    data-testid = "combo-select-option"
                   >
                     {item.name}
                   </span>

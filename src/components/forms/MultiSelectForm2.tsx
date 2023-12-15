@@ -10,6 +10,8 @@ export function closeDropdown(setIsOpen) {
 }
 
 export function handleChange(id, value, selectedOptions, setSelectedOptions) {
+  console.log("🚀 ~ file: MultiSelectForm2.tsx:13 ~ handleChange ~ value:", value)
+  
   if (!selectedOptions?.some((i) => i === value)) {
     setSelectedOptions([...selectedOptions, value]);
   } else {
@@ -33,6 +35,7 @@ export default function MultiSelectForm2({
   setValue,
   clearErrors,
   trigger,
+  isCharge = false
 }: BorderlessSelectProps): React.JSX.Element {
   const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -53,8 +56,10 @@ export default function MultiSelectForm2({
   // Change selected when changing status category
   useEffect(() => {
     if (value?.length) {
+      console.log("🚀 ~ file: MultiSelectForm2.tsx:57 ~ useEffect ~ value:", value)
       setSelectedOptions(value);
     }
+    
   }, [value]);
   return (
     <div className="relative z-40 w-full">
@@ -110,6 +115,7 @@ export default function MultiSelectForm2({
                         label={item.text}
                         sublabel={item.sub}
                         checked={() =>
+
                           selectedOptions?.some((i) => i === item.value)
                         }
                         onChange={() =>

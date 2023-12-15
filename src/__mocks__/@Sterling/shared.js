@@ -19,7 +19,7 @@ export const ProductData = [
     productCode: "TM-01",
     description: "Leading with excellent customer se...",
     state: 1,
-    updatedOn: new Date(),
+    updated_At: new Date(),
   },
   {
     id: 2,
@@ -27,7 +27,7 @@ export const ProductData = [
     productCode: "TM-02",
     description: "Leading with excellent customer se...",
     state: 0,
-    updatedOn: new Date(),
+    updated_At: new Date(),
   },
   {
     id: 3,
@@ -35,6 +35,6 @@ export const ProductData = [
     productCode: "TM-03",
     description: "Leading with excellent customer se...",
     state: 1,
-    updatedOn: new Date(),
+    updated_At: new Date(),
   },
 ];

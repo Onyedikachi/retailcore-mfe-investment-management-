@@ -9,8 +9,6 @@ import {
 } from "@app/components/summary";
 import { Breadcrumbs, Loader, Button } from "@app/components";
 import {
-  Navigate,
-  useLocation,
   useNavigate,
   useParams,
   useSearchParams,
@@ -18,11 +16,14 @@ import {
 import {
   useGetProductActivityLogQuery,
   useCreateProductMutation,
+  useModifyProductMutation,
+  useModifyRequestMutation,
 } from "@app/api";
 import { Confirm, Failed, Success } from "@app/components/modals";
 
 import { Messages, Prompts } from "@app/constants/enums";
 import { AppContext } from "@app/utils";
+import { summaryLinks } from "@app/constants";
 export function Container({ children }) {
   return (
     <div className="rounded-[10px] border border-[#EEE] px-12 py-10">
@@ -30,8 +31,8 @@ export function Container({ children }) {
     </div>
   );
 }
-export default function Preview({ formData, oldData = null }: any) {
-  console.log("🚀 ~ file: preview.tsx:33 ~ Preview ~ formData:", formData);
+export default function Preview({ formData, previousData = null }: any) {
+  console.log("🚀 ~ file: preview.tsx:36 ~ Preview ~ previousData:", previousData);
   const { role } = useContext(AppContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -47,86 +48,118 @@ export default function Preview({ formData, oldData = null }: any) {
   const [failedSubText, setFailedSubtext] = useState("");
   const [failedText, setFailedText] = useState("");
 
-  const links = [
-    {
-      id: 1,
-      title: "Product Factory",
-      url: "/product-factory/dashboard/deposit",
-    },
-    {
-      id: 2,
-      title: "Investment",
-      url: "/product-factory/investment",
-    },
-    {
-      id: 3,
-      title: type,
-      url: "#",
-    },
-    {
-      id: 4,
-      title: "Process summary",
-      url: "#",
-    },
-  ];
-
-  const staticDetails = {
-    name: "Term deposit 1",
-    slogan: "We deposit",
-    description: "We really deposit",
-    currency: "NGN",
-    tenure: "12 years",
-    productLifeCycle: "",
-  };
-
   const [state, setState] = useState();
 
   const { data: activityData, isLoading: activityIsLoading } =
-    process !== "create"
-      ? useGetProductActivityLogQuery({ productid: id })
-      : { data: undefined, isLoading: false };
+    useGetProductActivityLogQuery(
+      { productid: id },
+      { ski: process === "create" }
+    );
 
   const [
     createProduct,
     { isLoading: createProductLoading, isSuccess, isError, reset, error },
   ] = useCreateProductMutation();
+  const [
+    modifyProduct,
+    {
+      isLoading: modifyLoading,
+      isSuccess: modifySuccess,
+      isError: modifyIsError,
+      error: modifyError,
+    },
+  ] = useModifyProductMutation();
+
+  const [
+    modifyRequest,
+    {
+      isLoading: modifyRequestLoading,
+      isSuccess: modifyRequestSuccess,
+      isError: modifyRequestIsError,
+      error: modifyRequestError,
+    },
+  ] = useModifyRequestMutation();
 
   const handleModify = () => {
     navigate(-1);
   };
   const handleCancel = () => {
-    setConfirmText(Prompts.CANCEL_CREATION);
+    if (process === "create") {
+      setConfirmText(Prompts.CANCEL_CREATION);
+    }
+    if (process === "modify" || process === "withdraw_modify") {
+      setConfirmText(Prompts.CANCEL_MODIFICATION);
+    }
+    if (process === "verdict" || process === "continue") {
+      setConfirmText(Prompts.CANCEL_PROCESS);
+    }
     setIsConfirmOpen(true);
     return;
   };
   const handleSubmit = () => {
-    createProduct({ ...formData, isDraft: false });
+    if (process === "modify") {
+      modifyProduct({ ...formData, isDraft: false, id, recentlyUpdatedMeta: JSON.stringify(previousData) });
+    }
+    if (process === "withdraw_modify") {
+      modifyRequest({ ...formData, isDraft: false, id, recentlyUpdatedMeta: JSON.stringify(previousData)  });
+    }
+
+    if (process === "create" || process === "continue" || process === "clone") {
+      createProduct({ ...formData, isDraft: false });
+    }
+
     // navigate(paths.INVESTMENT_DASHBOARD);
   };
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess || modifySuccess || modifyRequestSuccess) {
       setSuccessText(
         role === "superadmin"
-          ? Messages.PRODUCT_CREATE_SUCCESS
+          ? isSuccess
+            ? Messages.PRODUCT_CREATE_SUCCESS
+            : Messages.PRODUCT_MODIFY_SUCCESS
           : Messages.ADMIN_PRODUCT_CREATE_SUCCESS
       );
       setIsSuccessOpen(true);
     }
 
-    if (isError) {
-      setFailedText(Messages.ADMIN_PRODUCT_CREATE_FAILED);
-      setFailedSubtext(error?.message?.message);
+    if (isError || modifyIsError || modifyRequestIsError) {
+      setFailedText(
+        isError
+          ? Messages.ADMIN_PRODUCT_CREATE_FAILED
+          : Messages.ADMIN_PRODUCT_MODIFY_FAILED
+      );
+      setFailedSubtext(
+        error?.message?.message ||
+          modifyError?.message?.message ||
+          modifyRequestError?.message?.message || error?.message?.Message ||
+          modifyError?.message?.Message ||
+          modifyRequestError?.message?.Message
+      );
       setFailed(true);
     }
-  }, [isSuccess, isError, error]);
+  }, [
+    isSuccess,
+    isError,
+    error,
+    modifySuccess,
+    modifyIsError,
+    modifyError,
+    modifyRequestError,
+    modifyRequestIsError,
+    modifyRequestSuccess,
+  ]);
 
   return (
-    <div className="flex flex-col min-h-[100vh] ">
+    <div data-testid="preview" className="flex flex-col min-h-[100vh] ">
       <div className="px-[37px] py-[11px] bg-white">
         <h1 className="text-[#747373] text-[24px] font-bold mb-7 uppercase">
           Process summary
         </h1>
-        <Breadcrumbs links={links} />
+        <Breadcrumbs
+          links={summaryLinks.map((i) =>
+            i.id === 3 ? { ...i, title: type } : i
+          )}
+        />
       </div>{" "}
       <div className="w-full flex gap-6 h-full px-[37px] py-[30px] bg-[#F7F7F7]">
         <div className="flex-1   bg-[#ffffff] rounded-md px-[100px] pt-[54px] pb-[49px] flex flex-col gap-5">
@@ -135,11 +168,11 @@ export default function Preview({ formData, oldData = null }: any) {
               rangeLabels={["Pending submission", "Approved"]}
               rightClass="opacity-50"
             />
-            {process !== "create" && (
+            {process === "preview" && (
               <ReviewStatus status={"r"} reason={"r"} type={""} text="failed" />
             )}
             <Container>
-              <ProductDetail detail={formData} oldData={oldData} />
+              <ProductDetail detail={formData} previousData={previousData} />
             </Container>
           </div>
           <Actions
@@ -164,7 +197,7 @@ export default function Preview({ formData, oldData = null }: any) {
           setIsOpen={setIsConfirmOpen}
           onConfirm={() => {
             setIsConfirmOpen(false);
-            navigate("/product-factory/investment");
+            navigate("/product-factory/investment?category=requests");
           }}
           onCancel={() => {
             setIsConfirmOpen(false);
@@ -187,7 +220,10 @@ export default function Preview({ formData, oldData = null }: any) {
           canRetry
         />
       )}
-      <Loader isOpen={createProductLoading} text={"Submitting"} />
+      <Loader
+        isOpen={createProductLoading || modifyLoading || modifyRequestLoading}
+        text={"Submitting"}
+      />
     </div>
   );
 }

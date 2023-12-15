@@ -180,7 +180,7 @@ export default function ComboSelect({
       return;
     }
     setFilteredOptions(
-      options.filter((i) =>
+      options?.filter((i) =>
         i.value.toLowerCase().includes(search.toLowerCase())
       )
     );

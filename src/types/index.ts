@@ -22,6 +22,7 @@ export interface ButtonProps {
 export interface SelectProps {
   options: any[];
   handleSelected: (value) => void;
+  value?: any;
 }
 export interface BorderlessSelectProps {
   options: any[];
@@ -41,6 +42,7 @@ export interface BorderlessSelectProps {
   error?: any;
   trigger?: any;
   disabled?: boolean
+  isCharge?: boolean
 }
 
 export interface ActiveFilterProps {}

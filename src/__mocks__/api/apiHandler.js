@@ -238,6 +238,7 @@ export const handlers = [
     }
   ),
 
+
   rest.post(
     `https://utilities-api.dev.bepeerless.co/v1/quick-link`,
     (req, res, ctx) => {
@@ -256,5 +257,6 @@ export const handlers = [
       }
     }
   ),
+  rest.get(`https://utilities-api.dev.bepeerless.co/v1/quick-link`)
   // Add more handlers for different endpoints as needed
 ];
