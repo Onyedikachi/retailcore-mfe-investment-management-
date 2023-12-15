@@ -19,7 +19,7 @@ export default function EntriesAndEventsSearchResults({
 }: any) {
   const [query, setQuery] = useState("");
   const [isOpen, setOpen] = useState(false);
- 
+
   const [currentTab, setCurrentTab] = useState(tabLinks[0]);
   const [menus, setMenus] = useState(currentTab.menu);
 
@@ -131,6 +131,7 @@ export default function EntriesAndEventsSearchResults({
                           )
                           .map((subMenu, id) => (
                             <p
+                              data-testid="gli-input-option"
                               onClick={() => {
                                 register(inputName);
                                 handleClick(

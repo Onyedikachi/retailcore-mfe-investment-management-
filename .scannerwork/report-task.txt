@@ -1,6 +1,6 @@
-projectKey=Work
+projectKey=Investment-management
 serverUrl=http://localhost:9000
-serverVersion=10.3.0.82913
-dashboardUrl=http://localhost:9000/dashboard?id=Work
-ceTaskId=AYxs-JmsaxKMLgbt79wc
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AYxs-JmsaxKMLgbt79wc
+serverVersion=10.0.0.68432
+dashboardUrl=http://localhost:9000/dashboard?id=Investment-management
+ceTaskId=AYxuBRIuW942tDUVs13i
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AYxuBRIuW942tDUVs13i
