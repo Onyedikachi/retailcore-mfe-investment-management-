@@ -8,11 +8,7 @@ import {
   ReviewStatus,
 } from "@app/components/summary";
 import { Breadcrumbs, Loader, Button } from "@app/components";
-import {
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import {
   useGetProductActivityLogQuery,
   useCreateProductMutation,
@@ -32,7 +28,6 @@ export function Container({ children }) {
   );
 }
 export default function Preview({ formData, previousData = null }: any) {
-  console.log("🚀 ~ file: preview.tsx:36 ~ Preview ~ previousData:", previousData);
   const { role } = useContext(AppContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -98,10 +93,20 @@ export default function Preview({ formData, previousData = null }: any) {
   };
   const handleSubmit = () => {
     if (process === "modify") {
-      modifyProduct({ ...formData, isDraft: false, id, recentlyUpdatedMeta: JSON.stringify(previousData) });
+      modifyProduct({
+        ...formData,
+        isDraft: false,
+        id,
+        recentlyUpdatedMeta: JSON.stringify(previousData),
+      });
     }
     if (process === "withdraw_modify") {
-      modifyRequest({ ...formData, isDraft: false, id, recentlyUpdatedMeta: JSON.stringify(previousData)  });
+      modifyRequest({
+        ...formData,
+        isDraft: false,
+        id,
+        recentlyUpdatedMeta: JSON.stringify(previousData),
+      });
     }
 
     if (process === "create" || process === "continue" || process === "clone") {
@@ -131,7 +136,8 @@ export default function Preview({ formData, previousData = null }: any) {
       setFailedSubtext(
         error?.message?.message ||
           modifyError?.message?.message ||
-          modifyRequestError?.message?.message || error?.message?.Message ||
+          modifyRequestError?.message?.message ||
+          error?.message?.Message ||
           modifyError?.message?.Message ||
           modifyRequestError?.message?.Message
       );
@@ -209,6 +215,7 @@ export default function Preview({ formData, previousData = null }: any) {
           text={successText}
           isOpen={isSuccessOpen}
           setIsOpen={setIsSuccessOpen}
+          canCreate={process === "create"}
         />
       )}
       {isFailed && (

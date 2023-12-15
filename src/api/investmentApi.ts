@@ -222,7 +222,7 @@ export const investmentApi: any = createApi({
     >({
       query: (data) => {
         return {
-          url: `${urls.PRODUCT}/uploadsingledocument`,
+          url: `${urls.PRODUCT}/upload-document`,
           method: "post",
           body: data,
         };
@@ -302,7 +302,6 @@ export const {
   useModifyRequestMutation,
   useGetPostRequestsMutation,
   useGetPostProductsMutation,
-  useGetLedgersQuery,
   useGetProductActivitiesQuery,
   useGetProductByCodeQuery,
   useUploadDocumentMutation,

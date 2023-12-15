@@ -50,7 +50,7 @@ export function DebitCreditTable({ dataTab }) {
       <tbody>
         {dataTab?.map((i, index) => (
           <tr
-            key={i}
+            key={i?.accountId}
             className="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"
           >
             <td className="text-sm font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative text-left">
@@ -117,13 +117,15 @@ export default function ProductDetail({ detail, previousData }: any) {
                 <span className="flex itmes-center">
                   {" "}
                   {detail?.productInfo?.productName}{" "}
-                  {previousData?.productName !==
-                    detail?.productInfo?.productName && (
-                    <span className="block text-success-500 pl-[2px]">
-                      {" "}
-                      New
-                    </span>
-                  )}
+                  {previousData &&
+                    previousData?.productName &&
+                    previousData?.productName !==
+                      detail?.productInfo?.productName && (
+                      <span className="block text-success-500 pl-[2px]">
+                        {" "}
+                        New
+                      </span>
+                    )}
                 </span>
               </div>
             </div>
@@ -435,63 +437,66 @@ export default function ProductDetail({ detail, previousData }: any) {
                       <span>
                         <span>Require notice of</span>{" "}
                         <span className="font-bold">
-                          {detail?.liquidation?.part_NoticePeriod}
-                          {" "}
+                          {detail?.liquidation?.part_NoticePeriod}{" "}
                           {Interval[detail?.liquidation?.part_NoticePeriodUnit]}
                         </span>{" "}
                         <span>before liquidation</span>
                       </span>
                     )}
                     {
-                      <p className="font-normal">
-                        <span className="font-bold">Penalty:</span>{" "}
-                        <span>
-                          {liquidities[
-                            detail?.liquidation?.part_LiquidationPenalty
-                          ] == "none" &&
-                            liquidities[
+                      <div className="font-normal">
+                        <div className="flex gap-x-1">
+                          <span className="font-bold">Penalty:</span>{" "}
+                          <span>
+                            {liquidities[
                               detail?.liquidation?.part_LiquidationPenalty
-                            ]}
-                        </span>
-                        <span>
-                          {liquidities[
-                            detail?.liquidation?.part_LiquidationPenalty
-                          ] == "ForfietAll" && "Forfeit all accrued interest"}
-                        </span>
-                        <span>
-                          {liquidities[
-                            detail?.liquidation?.part_LiquidationPenalty
-                          ] == "ForfietPortion" &&
-                            `Forfeit a portion of accrued interest - ${detail?.liquidation?.part_LiquidationPenaltyPercentage}%`}
-                        </span>
-                        <span>
-                          {liquidities[
-                            detail?.liquidation?.part_LiquidationPenalty
-                          ] == "RecalculateInterest" &&
-                            `Recalculate accrued interest of ${detail?.liquidation?.part_LiquidationPenaltyPercentage}%`}
-                        </span>
-                        <span className="flex flex-wrap gap-x-1 my-1">
-                          {liquidities[
-                            detail?.liquidation?.part_LiquidationPenalty
-                          ] == "TakeCharge" && (
-                            <span>
-                              {" "}
+                            ] == "none" &&
+                              liquidities[
+                                detail?.liquidation?.part_LiquidationPenalty
+                              ]}
+                          </span>
+                          <span>
+                            {liquidities[
+                              detail?.liquidation?.part_LiquidationPenalty
+                            ] == "ForfietAll" && "Forfeit all accrued interest"}
+                          </span>
+                          <span>
+                            {liquidities[
+                              detail?.liquidation?.part_LiquidationPenalty
+                            ] == "ForfietPortion" &&
+                              `Forfeit a portion of accrued interest - ${detail?.liquidation?.part_LiquidationPenaltyPercentage}%`}
+                          </span>
+                          <span>
+                            {liquidities[
+                              detail?.liquidation?.part_LiquidationPenalty
+                            ] == "RecalculateInterest" &&
+                              `Recalculate accrued interest of ${detail?.liquidation?.part_LiquidationPenaltyPercentage}%`}
+                          </span>
+                          <span className="flex flex-wrap gap-x-1 my-1">
+                            {liquidities[
+                              detail?.liquidation?.part_LiquidationPenalty
+                            ] == "TakeCharge" && (
                               <span>
                                 {" "}
-                                Take a charge{" "}
-                                <span className="flex flex-wrap">
-                                  {detail?.liquidation?.part_SpecificCharges?.map((charge) => (
-                                    <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
-                                      {" "}
-                                      {charge?.name} {charge?.amount}
-                                    </span>
-                                  ))}
+                                <span>
+                                  {" "}
+                                  Take a charge{" "}
+                                  <span className="flex flex-wrap">
+                                    {detail?.liquidation?.part_SpecificCharges?.map(
+                                      (charge) => (
+                                        <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
+                                          {" "}
+                                          {charge?.name} {charge?.amount}
+                                        </span>
+                                      )
+                                    )}
+                                  </span>
                                 </span>
                               </span>
-                            </span>
-                          )}
-                        </span>
-                      </p>
+                            )}
+                          </span>
+                        </div>
+                      </div>
                     }
                     Maximum of {detail?.liquidation?.part_MaxPartLiquidation}%
                     of principal
@@ -513,8 +518,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                       <span>
                         <span>Require notice of</span>{" "}
                         <span className="font-bold">
-                          {detail?.liquidation?.early_NoticePeriod}
-                          {" "}
+                          {detail?.liquidation?.early_NoticePeriod}{" "}
                           {
                             Interval[
                               detail?.liquidation?.early_NoticePeriodUnit
@@ -525,7 +529,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                       </span>
                     )}
                     {
-                      <p className="font-normal">
+                      <div className="font-normal flex gap-x-1">
                         <span className="font-bold">Penalty:</span>{" "}
                         <span>
                           {liquidities[
@@ -562,18 +566,20 @@ export default function ProductDetail({ detail, previousData }: any) {
                                 {" "}
                                 Take a charge{" "}
                                 <span className="flex flex-wrap">
-                                  {detail?.liquidation?.part_SpecificCharges?.map((charge) => (
-                                    <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
-                                      {" "}
-                                      {charge?.name} {charge?.amount}
-                                    </span>
-                                  ))}
+                                  {detail?.liquidation?.part_SpecificCharges?.map(
+                                    (charge) => (
+                                      <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
+                                        {" "}
+                                        {charge?.name} {charge?.amount}
+                                      </span>
+                                    )
+                                  )}
                                 </span>
                               </span>
                             </span>
                           )}
                         </span>
-                      </p>
+                      </div>
                     }
                   </span>
                 ) : (
