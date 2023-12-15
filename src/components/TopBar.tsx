@@ -23,7 +23,7 @@ export const getSearchResult = (
   getProducts({
     search: value,
     page: 1,
-    page_Size: 25,
+    page_Size: 100,
     filter_by: selected.value,
   });
 };

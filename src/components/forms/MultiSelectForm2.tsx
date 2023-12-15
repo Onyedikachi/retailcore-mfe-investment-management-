@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState, useEffect, ReactNode } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import Checkbox from "./Checkbox";
@@ -10,8 +9,6 @@ export function closeDropdown(setIsOpen) {
 }
 
 export function handleChange(id, value, selectedOptions, setSelectedOptions) {
-  console.log("🚀 ~ file: MultiSelectForm2.tsx:13 ~ handleChange ~ value:", value)
-  
   if (!selectedOptions?.some((i) => i === value)) {
     setSelectedOptions([...selectedOptions, value]);
   } else {
@@ -19,6 +16,29 @@ export function handleChange(id, value, selectedOptions, setSelectedOptions) {
     setSelectedOptions(arrOptions.map((i) => i.value));
   }
 }
+export const handleClick = (
+  register,
+  inputName,
+  setValue,
+  selectedOptions,
+  clearErrors,
+  trigger,
+  closeDropdown,
+  setIsOpen,
+  handleSelected,
+  setSearch
+) => {
+  register(inputName);
+  setValue && setValue(inputName, selectedOptions);
+  handleSelected && handleSelected({ inputName, selectedOptions });
+  clearErrors(inputName);
+  if (selectedOptions.length) {
+    trigger(inputName);
+  }
+  setSearch("");
+  closeDropdown(setIsOpen);
+};
+
 export default function MultiSelectForm2({
   options,
   handleSelected,
@@ -35,31 +55,17 @@ export default function MultiSelectForm2({
   setValue,
   clearErrors,
   trigger,
-  isCharge = false
+  isCharge = false,
 }: BorderlessSelectProps): React.JSX.Element {
   const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
 
-  const handleClick = () => {
-    register(inputName);
-    setValue && setValue(inputName, selectedOptions);
-    handleSelected && handleSelected({ inputName, selectedOptions });
-    clearErrors(inputName);
-    if (selectedOptions.length) {
-      trigger(inputName);
-    }
-    setSearch("");
-    closeDropdown(setIsOpen);
-  };
-
   // Change selected when changing status category
   useEffect(() => {
     if (value?.length) {
-      console.log("🚀 ~ file: MultiSelectForm2.tsx:57 ~ useEffect ~ value:", value)
       setSelectedOptions(value);
     }
-    
   }, [value]);
   return (
     <div className="relative z-40 w-full">
@@ -82,7 +88,7 @@ export default function MultiSelectForm2({
           <input
             placeholder={placeholder}
             className={`relative flex-1 outline-none px-3`}
-            onChange={(e)=> setSearch(e.target.value)}
+            onChange={(e) => setSearch(e.target.value)}
             value={search}
           />
           <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-xs">
@@ -114,10 +120,7 @@ export default function MultiSelectForm2({
                       <Checkbox
                         label={item.text}
                         sublabel={item.sub}
-                        checked={() =>
-
-                          selectedOptions?.some((i) => i === item.value)
-                        }
+                        checked={selectedOptions?.some((i) => i === item.value)}
                         onChange={() =>
                           handleChange(
                             item.id,
@@ -131,7 +134,20 @@ export default function MultiSelectForm2({
                   ))}
               </ul>
               <span
-                onClick={handleClick}
+                onClick={() =>
+                  handleClick(
+                    register,
+                    inputName,
+                    setValue,
+                    selectedOptions,
+                    clearErrors,
+                    trigger,
+                    closeDropdown,
+                    setIsOpen,
+                    handleSelected,
+                    setSearch
+                  )
+                }
                 className="text-sm text-danger-500 block mt-2 py-[10px] px-6"
               >
                 Add selected charge

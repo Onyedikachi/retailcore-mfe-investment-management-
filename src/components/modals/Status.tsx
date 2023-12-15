@@ -14,6 +14,7 @@ interface SuccessProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   canClose?: boolean;
+  canCreate?: boolean
 }
 
 export function Success({
@@ -21,6 +22,7 @@ export function Success({
   isOpen,
   setIsOpen,
   canClose = false,
+  canCreate = false
 }: SuccessProps): React.JSX.Element {
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,12 +30,12 @@ export function Success({
 
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
-      <div className="relative h-[400px] w-[556px] flex flex-col justify-between px-10 py-8 rounded-lg bg-white text-center items-center">
+      <div className="relative h-[400px] w-[606px] flex flex-col justify-between px-10 py-8 rounded-lg bg-white text-center items-center">
         <div className="flex justify-center items-center">
           <HiCheckCircle className="text-[80px] text-[#2FB755]" />{" "}
         </div>
         <p className="font-normal text-2xl">{text}</p>
-        <div className="flex justify-between items-center gap-x-[6px]">
+        <div className="flex justify-between items-center gap-x-[6px] w-full">
           {location?.pathname === "/product-factory/investment" ? (
             <Button
               onClick={() =>
@@ -58,10 +60,23 @@ export function Success({
               }
               type="button"
               data-testid="dashboard-link"
-              className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-10 text-[#667085] outline-none"
+              className={`text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full text-[#667085] outline-none`}
             >
               <IoIosUndo className="text-sterling-red-800 text-4xl" /> Return to
               dashboard
+            </Button>
+          )}
+
+          {canCreate && (
+            <Button
+              onClick={() =>
+                navigate("/product-factory/investment/term deposit/create")
+              }
+              type="button"
+              data-testid="dashboard-link"
+              className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full text-[#667085] outline-none"
+            >
+              Create another product  <FaAngleRight className="text-sterling-red-800 text-2xl" />
             </Button>
           )}
         </div>
@@ -96,7 +111,7 @@ export function Failed({
   setIsOpen,
   canClose = false,
   canRetry = false,
-  canProceed = false
+  canProceed = false,
 }: FailedProps): React.JSX.Element {
   const navigate = useNavigate();
   const location = useLocation();
@@ -108,7 +123,11 @@ export function Failed({
         </div>
         <p className="font-normal text-2xl">{text}</p>
         <p className="font-normal text-base mb-[26px]">{subtext}</p>
-        <div className={`flex  items-center gap-x-10 w-full ${!canProceed && !canRetry?"justify-center":"justify-between"}`}>
+        <div
+          className={`flex  items-center gap-x-10 w-full ${
+            !canProceed && !canRetry ? "justify-center" : "justify-between"
+          }`}
+        >
           <div>
             {location?.pathname === "/product-factory/investment" ? (
               <Button
@@ -149,7 +168,7 @@ export function Failed({
               </Button>
             </div>
           )}
-           {canProceed && (
+          {canProceed && (
             <div>
               {" "}
               <Button
@@ -189,7 +208,7 @@ interface PromptProps {
   canClose?: boolean;
 }
 
-export function Prompt({ 
+export function Prompt({
   heading,
   text1,
   text2,

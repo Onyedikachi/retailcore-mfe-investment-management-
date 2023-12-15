@@ -8,6 +8,7 @@ import { renderWithProviders } from "../../../utils/test-util";
 import MultiSelectForm, {
   closeDropdown,
   handleChange,
+  handleClick,
 } from "../../../components/forms/MultiSelectForm2";
 import MultiSelectForm2 from "../../../components/forms/MultiSelectForm2";
 
@@ -182,4 +183,94 @@ describe("MultiSelectForm2", () => {
 
 
 
+});
+
+describe('handleClick', () => {
+
+  // Registers inputName
+  it('should register inputName when called', () => {
+    const register = jest.fn();
+    const inputName = 'testInput';
+    const setValue = jest.fn();
+    const selectedOptions = [];
+    const clearErrors = jest.fn();
+    const trigger = jest.fn();
+    const closeDropdown = jest.fn();
+    const setIsOpen = jest.fn();
+    const handleSelected = jest.fn();
+    const setSearch = jest.fn();
+
+    handleClick(
+      register,
+      inputName,
+      setValue,
+      selectedOptions,
+      clearErrors,
+      trigger,
+      closeDropdown,
+      setIsOpen,
+      handleSelected,
+      setSearch
+    );
+
+    expect(register).toHaveBeenCalledWith(inputName);
+  });
+
+  // Sets value for inputName to selectedOptions
+  it('should set value for inputName to selectedOptions when called', () => {
+    const register = jest.fn();
+    const inputName = 'testInput';
+    const setValue = jest.fn();
+    const selectedOptions = ['option1', 'option2'];
+    const clearErrors = jest.fn();
+    const trigger = jest.fn();
+    const closeDropdown = jest.fn();
+    const setIsOpen = jest.fn();
+    const handleSelected = jest.fn();
+    const setSearch = jest.fn();
+
+    handleClick(
+      register,
+      inputName,
+      setValue,
+      selectedOptions,
+      clearErrors,
+      trigger,
+      closeDropdown,
+      setIsOpen,
+      handleSelected,
+      setSearch
+    );
+
+    expect(setValue).toHaveBeenCalledWith(inputName, selectedOptions);
+  });
+
+  // Calls handleSelected with inputName and selectedOptions
+  it('should call handleSelected with inputName and selectedOptions when called', () => {
+    const register = jest.fn();
+    const inputName = 'testInput';
+    const setValue = jest.fn();
+    const selectedOptions = ['option1', 'option2'];
+    const clearErrors = jest.fn();
+    const trigger = jest.fn();
+    const closeDropdown = jest.fn();
+    const setIsOpen = jest.fn();
+    const handleSelected = jest.fn();
+    const setSearch = jest.fn();
+
+    handleClick(
+      register,
+      inputName,
+      setValue,
+      selectedOptions,
+      clearErrors,
+      trigger,
+      closeDropdown,
+      setIsOpen,
+      handleSelected,
+      setSearch
+    );
+
+    expect(handleSelected).toHaveBeenCalledWith({ inputName, selectedOptions });
+  });
 });
