@@ -472,30 +472,30 @@ export default function ProductDetail({ detail, previousData }: any) {
                             ] == "RecalculateInterest" &&
                               `Recalculate accrued interest of ${detail?.liquidation?.part_LiquidationPenaltyPercentage}%`}
                           </span>
-                        </div>
-                        <span className="flex flex-wrap gap-x-1 my-1">
-                          {liquidities[
-                            detail?.liquidation?.part_LiquidationPenalty
-                          ] == "TakeCharge" && (
-                            <span>
-                              {" "}
+                          <span className="flex flex-wrap gap-x-1 my-1">
+                            {liquidities[
+                              detail?.liquidation?.part_LiquidationPenalty
+                            ] == "TakeCharge" && (
                               <span>
                                 {" "}
-                                Take a charge{" "}
-                                <span className="flex flex-wrap">
-                                  {detail?.liquidation?.part_SpecificCharges?.map(
-                                    (charge) => (
-                                      <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
-                                        {" "}
-                                        {charge?.name} {charge?.amount}
-                                      </span>
-                                    )
-                                  )}
+                                <span>
+                                  {" "}
+                                  Take a charge{" "}
+                                  <span className="flex flex-wrap">
+                                    {detail?.liquidation?.part_SpecificCharges?.map(
+                                      (charge) => (
+                                        <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
+                                          {" "}
+                                          {charge?.name} {charge?.amount}
+                                        </span>
+                                      )
+                                    )}
+                                  </span>
                                 </span>
                               </span>
-                            </span>
-                          )}
-                        </span>
+                            )}
+                          </span>
+                        </div>
                       </div>
                     }
                     Maximum of {detail?.liquidation?.part_MaxPartLiquidation}%
@@ -529,7 +529,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                       </span>
                     )}
                     {
-                      <p className="font-normal">
+                      <div className="font-normal flex gap-x-1">
                         <span className="font-bold">Penalty:</span>{" "}
                         <span>
                           {liquidities[
@@ -579,7 +579,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                             </span>
                           )}
                         </span>
-                      </p>
+                      </div>
                     }
                   </span>
                 ) : (

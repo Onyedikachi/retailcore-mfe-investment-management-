@@ -412,32 +412,32 @@ export default function ProductDetail({
                                     ] == "RecalculateInterest" &&
                                       `Recalculate accrued interest of ${productData?.data?.liquidation?.part_LiquidationPenaltyPercentage}%`}
                                   </span>
-                                </div>
-                                <span>
-                                  {liquidities[
-                                    productData?.data?.liquidation
-                                      ?.part_LiquidationPenalty
-                                  ] == "TakeCharge" && (
-                                    <span>
-                                      {" "}
+                                  <span>
+                                    {liquidities[
+                                      productData?.data?.liquidation
+                                        ?.part_LiquidationPenalty
+                                    ] == "TakeCharge" && (
                                       <span>
                                         {" "}
-                                        Take a charge{" "}
-                                        <span className="flex flex-wrap my-1">
-                                          {liquidities[
-                                            productData?.data?.liquidation
-                                              ?.part_SpecificCharges
-                                          ]?.map((charge) => (
-                                            <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
-                                              {" "}
-                                              {charge?.name} {charge?.amount}
-                                            </span>
-                                          ))}
+                                        <span>
+                                          {" "}
+                                          Take a charge{" "}
+                                          <span className="flex flex-wrap my-1">
+                                            {liquidities[
+                                              productData?.data?.liquidation
+                                                ?.part_SpecificCharges
+                                            ]?.map((charge) => (
+                                              <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
+                                                {" "}
+                                                {charge?.name} {charge?.amount}
+                                              </span>
+                                            ))}
+                                          </span>
                                         </span>
                                       </span>
-                                    </span>
-                                  )}
-                                </span>
+                                    )}
+                                  </span>{" "}
+                                </div>
                               </div>
                             }
                             Maximum of{" "}
@@ -517,32 +517,32 @@ export default function ProductDetail({
                                     ] == "RecalculateInterest" &&
                                       `Recalculate accrued interest of ${productData?.data?.liquidation?.early_LiquidationPenaltyPercentage}%`}
                                   </span>
-                                </div>
-                                <span>
-                                  {liquidities[
-                                    productData?.data?.liquidation
-                                      ?.early_LiquidationPenalty
-                                  ] == "TakeCharge" && (
-                                    <span>
-                                      {" "}
+                                  <span>
+                                    {liquidities[
+                                      productData?.data?.liquidation
+                                        ?.early_LiquidationPenalty
+                                    ] == "TakeCharge" && (
                                       <span>
                                         {" "}
-                                        Take a charge{" "}
-                                        <span className="flex flex-wrap my-1">
-                                          {liquidities[
-                                            productData?.data?.liquidation
-                                              ?.early_SpecificCharges
-                                          ]?.map((charge) => (
-                                            <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
-                                              {" "}
-                                              {charge?.name} {charge?.amount}
-                                            </span>
-                                          ))}
+                                        <span>
+                                          {" "}
+                                          Take a charge{" "}
+                                          <span className="flex flex-wrap my-1">
+                                            {liquidities[
+                                              productData?.data?.liquidation
+                                                ?.early_SpecificCharges
+                                            ]?.map((charge) => (
+                                              <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
+                                                {" "}
+                                                {charge?.name} {charge?.amount}
+                                              </span>
+                                            ))}
+                                          </span>
                                         </span>
                                       </span>
-                                    </span>
-                                  )}
-                                </span>
+                                    )}
+                                  </span>{" "}
+                                </div>
                               </div>
                             }
                           </span>
