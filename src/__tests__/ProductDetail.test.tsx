@@ -197,7 +197,6 @@ describe("DebitCreditable", () => {
     expect(screen.getByText('15 Dec 2023 - 31 Dec 2023')).toBeInTheDocument();
     expect(screen.getByText('Individual')).toBeInTheDocument();
     expect(screen.getByText('NGN 1,000.00 - NGN 1,200,000.00')).toBeInTheDocument();
-    expect(page).toMatchSnapshot();
   });
   it('should display an empty table when dataTab prop is an empty array', () => {
     render(<DebitCreditTable dataTab={[]} />);

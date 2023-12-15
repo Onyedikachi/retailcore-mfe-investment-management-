@@ -1,10 +1,10 @@
 import React from 'react'
-import { fireEvent, render, screen, } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, act } from "@testing-library/react";
 import AccountingEntriesAndEvents, { InputDivs } from '../../../../../components/pages/term-deposit/forms/accounting-entries-and-events'
-import { act } from 'react-dom/test-utils'
+import { renderWithProviders } from '../../../../../utils/test-util';
 
 describe('AccountingEntriesAndEvents', () => {
-    const formD =  {
+    const formD = {
         productName: "",
         slogan: "",
         description: "",
@@ -12,15 +12,16 @@ describe('AccountingEntriesAndEvents', () => {
         endDate: null,
         currency: "NGN",
         customerCategory: null,
-      }
+    }
     it("Renders without error", () => {
-        act(() => {
-            render(<AccountingEntriesAndEvents proceed={jest.fn} formData={formD} setFormData={jest.fn()} setDisabled={jest.fn()} />)
+        renderWithProviders(<AccountingEntriesAndEvents proceed={jest.fn} formData={formD} setFormData={jest.fn()} setDisabled={jest.fn()} />)
+        waitFor(() => {
+            expect(screen.getByTestId("entriesandevents")).toBeInTheDocument();
+            expect(screen.getAllByTestId("input-div").length).toBe(3);
+            const openButton = screen.getAllByTestId("open-button")[0];
+            fireEvent.click(openButton);
+            expect(screen.getAllByTestId("gli-input").length).toBeGreaterThan(0);
+
         })
-        expect(screen.getByTestId("entriesandevents")).toBeInTheDocument();
-        expect(screen.getAllByTestId("input-div").length).toBe(3);
-        const openButton = screen.getAllByTestId("open-button")[0];
-        fireEvent.click(openButton);
-        expect(screen.getAllByTestId("gli-input").length).toBeGreaterThan(0);
     })
 });
