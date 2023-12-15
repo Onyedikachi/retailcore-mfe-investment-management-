@@ -447,7 +447,7 @@ export default function PricingConfig({
                                   ?.tenorMinUnit?.message
                               }
                               defaultValue={
-                                formData?.interestRateConfigModels[index]
+                                formData?.interestRateConfigModels[0]
                                   ?.tenorMinUnit
                               }
                               setValue={setValue}
@@ -488,7 +488,7 @@ export default function PricingConfig({
                                   ?.tenorMaxUnit?.message
                               }
                               defaultValue={
-                                formData?.interestRateConfigModels?.[index]
+                                formData?.interestRateConfigModels?.[0]
                                   ?.tenorMaxUnit
                               }
                               setValue={setValue}

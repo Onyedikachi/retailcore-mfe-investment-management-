@@ -9,8 +9,6 @@ import {
 } from "@app/components/summary";
 import { Breadcrumbs, Loader, Button } from "@app/components";
 import {
-  Navigate,
-  useLocation,
   useNavigate,
   useParams,
   useSearchParams,
@@ -34,7 +32,7 @@ export function Container({ children }) {
   );
 }
 export default function Preview({ formData, previousData = null }: any) {
-  console.log("🚀 ~ file: preview.tsx:36 ~ Preview ~ formData:", formData);
+  console.log("🚀 ~ file: preview.tsx:36 ~ Preview ~ previousData:", previousData);
   const { role } = useContext(AppContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -100,10 +98,10 @@ export default function Preview({ formData, previousData = null }: any) {
   };
   const handleSubmit = () => {
     if (process === "modify") {
-      modifyProduct({ ...formData, isDraft: false, id, updateInfo: previousData });
+      modifyProduct({ ...formData, isDraft: false, id, recentlyUpdatedMeta: JSON.stringify(previousData) });
     }
     if (process === "withdraw_modify") {
-      modifyRequest({ ...formData, isDraft: false, id, updateInfo: previousData });
+      modifyRequest({ ...formData, isDraft: false, id, recentlyUpdatedMeta: JSON.stringify(previousData)  });
     }
 
     if (process === "create" || process === "continue" || process === "clone") {

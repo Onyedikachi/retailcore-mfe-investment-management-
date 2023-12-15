@@ -51,7 +51,11 @@ const Tooltip = ({
         {children ? (
           children
         ) : (
-          <button data-testid="tooltip" type="button" className="bg-transparent p-0">
+          <button
+            data-testid="tooltip"
+            type="button"
+            className="bg-transparent p-0"
+          >
             {title}
           </button>
         )}

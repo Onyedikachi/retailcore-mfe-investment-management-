@@ -6,8 +6,8 @@ import DropDown from "@app/components/DropDown";
 import { MultiSelect, DateSelect } from "@app/components/forms";
 import moment from "moment";
 import { BsFunnel } from "react-icons/bs";
-import { onChange } from "../forms/DateSelect";
 import BottomBarLoader from "../BottomBarLoader";
+import Tooltip from "@app/components/ui/Tooltip";
 import {
   AppContext,
   InvestmentContext,
@@ -28,6 +28,7 @@ import {
   useDeleteProductRequestMutation,
 } from "@app/api";
 import Button from "../Button";
+import { ActiveFilterOptions } from "@app/constants";
 
 interface TableProps {
   headers: any[];
@@ -46,7 +47,26 @@ interface TableProps {
   type?: string;
   noData?: string;
 }
+export function handleUpdated(key, value, options) {
+  if (!options || !value) return;
 
+  const parseOptions = JSON.parse(options);
+  if (!parseOptions[key]) return;
+
+  if (key === "state") {
+    const newState = ActiveFilterOptions.find(
+      (n) => parseOptions[key] === n.value
+    )?.name;
+   
+    if (newState === value) return null;
+  }
+   
+  return value !== parseOptions[key]
+    ? `Updated on ${moment(parseOptions[key]?.date).format(
+        "DD MMM YYYY, hh:mm A"
+      )}`
+    : null;
+}
 // Extract Dropdown component for reusability
 export const DropdownButton = ({ options, handleClick }: any) => {
   return (
@@ -63,10 +83,6 @@ export const handleProductsDropdown = (
   locked = false,
   permissions: string[] = []
 ): any => {
-  // if (locked)
-  //   return DropDownOptions[status]?.filter(
-  //     (i: any) => i.text.toLowerCase() === "view"
-  //   );
 
   if (!status) return [];
   if (isChecker) {
@@ -95,13 +111,13 @@ export const handleProductsDropdown = (
 export const TextCellContent = ({ value }) => (
   <span className="relative">
     <span className="relative">{value || "-"}</span>
-    <span className="absolute block bg-[#CF2A2A] h-[6px] w-[6px] rounded-full -right-[6px] top-0"></span>
   </span>
 );
 
 export const ProductNameCellContent = ({ value }) => (
   <>
-    <span className="relative block font-medium text-sm text-[#aaaaaa] uppercase">
+    <br />
+    <span className="relative font-medium text-sm text-[#aaaaaa] uppercase">
       {value?.productCode || "-"}
     </span>
   </>
@@ -112,7 +128,6 @@ export const UpdatedOnCellContent = ({ value }) => (
     <span className=" relative">
       {moment(value).format("DD MMM YYYY, hh:mm A")}
     </span>
-    <span className="absolute block bg-[#CF2A2A] h-[6px] w-[6px] rounded-full -right-[6px] top-0"></span>
   </span>
 );
 
@@ -123,8 +138,6 @@ export const StateCellContent = ({ value }) => (
     )}`}
   >
     {value}
-
-    <span className="absolute block bg-[#CF2A2A] h-[6px] w-[6px] rounded-full -right-[6px] top-0"></span>
   </span>
 );
 export const StatusCellContent = ({ value, isChecker }) => (
@@ -134,7 +147,6 @@ export const StatusCellContent = ({ value, isChecker }) => (
     )}`}
   >
     {handleUserView(value, isChecker)} <FaEye />
-    <span className="absolute bg-[#CF2A2A] h-[6px] w-[6px] rounded-full -right-[6px] top-0"></span>
   </span>
 );
 
@@ -286,9 +298,7 @@ export default function TableComponent<TableProps>({
     if (action.toLowerCase() === Actions.ACTIVATE) {
       activateProduct({ id: detail?.id });
     }
-    if (
-      action.toLowerCase() === Actions.MODIFY
-    ) {
+    if (action.toLowerCase() === Actions.MODIFY) {
       if (!permissions?.includes("CREATE_INVESTMENT_PRODUCT")) {
         notify("You do not have permission to make changes!");
       } else {
@@ -300,10 +310,7 @@ export default function TableComponent<TableProps>({
       }
     }
 
-    if (
-    
-      action.toLowerCase() === Actions.WITHDARW_MODIFY
-    ) {
+    if (action.toLowerCase() === Actions.WITHDARW_MODIFY) {
       if (!permissions?.includes("CREATE_INVESTMENT_PRODUCT")) {
         notify("You do not have permission to make changes!");
       } else {
@@ -369,9 +376,9 @@ export default function TableComponent<TableProps>({
                       <div className="relative flex items-center gap-x-20 justify-between">
                         <span className="relative">
                           {label}{" "}
-                          {key === "updated_At" && (
+                          {/* {key === "updated_At" && (
                             <span className="absolute block bg-[#CF2A2A] h-[6px] w-[6px] rounded-full -right-[6px] top-[1px]"></span>
-                          )}
+                          )} */}
                         </span>
 
                         <span>
@@ -411,7 +418,7 @@ export default function TableComponent<TableProps>({
                         className="text-base font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative"
                         key={idx.toString() + header.key}
                       >
-                        <span className="relative">
+                        <div className="relative max-w-max">
                           {header.key !== "actions" ? (
                             <>
                               {typeof item[header.key] !== "object" &&
@@ -482,7 +489,33 @@ export default function TableComponent<TableProps>({
                               )}
                             </div>
                           )}
-                        </span>
+                          {handleUpdated(
+                            header.key,
+                            item[header.key],
+                            item.recentlyUpdatedMeta
+                          ) && (
+                            <Tooltip
+                              title={
+                                <span className="absolute h-[6px] w-[6px] -right-[6px] top-[1px] rounded-full bg-[#CF2A2A]"></span>
+                              }
+                              placement="bottom"
+                              className="btn btn-outline-dark !w-[280px]"
+                              allowHTML
+                              interactive
+                              theme="custom-light"
+                              maxWidth="250px"
+                              content={
+                                <div className="text-[#636363] text-[10px] z-[999] whitespace-nowrap">
+                                  {handleUpdated(
+                                    header.key,
+                                    item[header.key],
+                                    item.recentlyUpdatedMeta
+                                  )}
+                                </div>
+                              }
+                            ></Tooltip>
+                          )}{" "}
+                        </div>
                       </td>
                     ))}
                   </tr>
