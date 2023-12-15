@@ -14,7 +14,7 @@ import {
   useGetPostRequestsMutation,
   useGetProductStatsQuery,
   useGetRequestStatsQuery,
-  useGetSystemAlertQuery
+  useGetSystemAlertQuery,
 } from "@app/api";
 import {
   ProductTypes,
@@ -195,17 +195,23 @@ export default function IndexComponent() {
     data: prodStatData,
     refetch: prodStatRefetch,
     isFetching: prodStatLoading,
-  } = useGetProductStatsQuery({ ...query, filter_by: selected?.value }, {
-    skip: category !== StatusCategoryType.AllProducts,
-  });
+  } = useGetProductStatsQuery(
+    { ...query, filter_by: selected?.value },
+    {
+      skip: category !== StatusCategoryType.AllProducts,
+    }
+  );
 
   const {
     data: requestStatData,
     refetch: requestRefetch,
     isFetching: requestStatLoading,
-  } = useGetRequestStatsQuery({ ...query, filter_by: selected?.value }, {
-    skip: category !== StatusCategoryType.Requests,
-  });
+  } = useGetRequestStatsQuery(
+    { ...query, filter_by: selected?.value },
+    {
+      skip: category !== StatusCategoryType.Requests,
+    }
+  );
 
   React.useEffect(() => {
     setQuery({
@@ -216,7 +222,7 @@ export default function IndexComponent() {
       getProducts({ ...query, page: 1, filter_by: selected?.value });
       // prodStatRefetch({ ...query, page: 1, filter_by: selected?.value });
     } else {
-      getRequests({ ...query, page: 1 , filter_by: selected?.value});
+      getRequests({ ...query, page: 1, filter_by: selected?.value });
       // requestRefetch({ ...query, page: 1, filter_by: selected?.value });
     }
   }, [
@@ -281,17 +287,14 @@ export default function IndexComponent() {
     query.page,
   ]);
 
-  const {
-    data: systemAlertData,
-   isSuccess: systemAlertDataSuccess
-  } = useGetSystemAlertQuery()
+  const { data: systemAlertData, isSuccess: systemAlertDataSuccess } =
+    useGetSystemAlertQuery();
 
   useEffect(() => {
-    if(systemAlertDataSuccess){
-      notify(systemAlertData)
+    if (systemAlertDataSuccess) {
+      notify(systemAlertData);
     }
-
-  }, [systemAlertDataSuccess])
+  }, [systemAlertDataSuccess]);
 
   useEffect(() => {
     if (preview === "search_product") {
