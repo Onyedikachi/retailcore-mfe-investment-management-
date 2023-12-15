@@ -24,4 +24,6 @@ describe("IndexComponent", () => {
         expect(screen.getByText("New Term Deposit Product")).toBeInTheDocument();
         expect(screen.getAllByTestId("form-step").length).toBeGreaterThan(1);
     })
+
+    it("")
 })
