@@ -72,8 +72,9 @@ export default function LiquiditySetup({
           text: chargeValue.charge_type,
           sub: chargeValue.charge_amount,
           value: {
-            charge_type: chargeValue.charge_type,
-            charge_amount: chargeValue.charge_amount,
+            id: chargeValue.charge_id,
+            name: chargeValue.charge_type,
+            amount: chargeValue.charge_amount,
           },
         }))
       )
@@ -81,20 +82,30 @@ export default function LiquiditySetup({
 
     setChargeOptions(options);
   }, [chargesData]);
+  useEffect(() => {
+    console.log(
+      "🚀 ~ file: liquidity-setup.tsx:86 ~ useEffect ~  formData.part_SpecificCharges:",
+      formData.part_SpecificCharges
+    );
+  }, [formData]);
 
   function handleSelected({ inputName, selectedOptions }) {
+    
+    // console.log("🚀 ~ file: liquidity-setup.tsx:93 ~ handleSelected ~ selectedOptions:", selectedOptions)
     if (inputName === "part_SpecificCharges") {
       setPartOptionCharges(selectedOptions);
-      // setValue("part_SpecificCharges", selectedOptions);
+      setValue("part_SpecificCharges", selectedOptions);
     }
 
     if (inputName === "early_SpecificCharges") {
       setEarlyOptionCharges(selectedOptions);
-      // setValue("early_SpecificCharges", selectedOptions);
+      setValue("early_SpecificCharges", selectedOptions);
     }
   }
 
   function onProceed(d: any) {
+    
+    console.log("🚀 ~ file: liquidity-setup.tsx:108 ~ onProceed ~ partOptionCharges:", partOptionCharges)
     setFormData({
       ...d,
       early_SpecificCharges: earlyOptionCharges,
@@ -568,6 +579,7 @@ export default function LiquiditySetup({
                           allLabel="All"
                           clearErrors={clearErrors}
                           trigger={trigger}
+                          handleSelected={handleSelected}
                         />
                       </div>
                       {watchEarlyLiquidationPenalty === 4 && (
@@ -577,7 +589,7 @@ export default function LiquiditySetup({
                               key={i}
                               className="rounded-full px-[13px] py-[4px] text-xs bg-[#E0E0E0] flex gap-x-6 items-center text-[#16252A]"
                             >
-                              {i}{" "}
+                              {i?.name}{" "}
                               <span
                                 onClick={() => {
                                   setEarlyOptionCharges(
