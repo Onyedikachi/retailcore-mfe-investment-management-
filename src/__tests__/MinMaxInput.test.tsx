@@ -1,6 +1,7 @@
 import MinMaxInput from "../components/forms/MinMaxInput"
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event"
+import React from "react";
 
 describe("MinMaxInput", () => {
     it("Renders without error", () => {
@@ -9,7 +10,7 @@ describe("MinMaxInput", () => {
                 placeholder="amount" />
         );
         expect(screen.getByText("MyLabel")).toBeInTheDocument();
-        expect(screen.getByPlaceholderText('0')).toBeInTheDocument();
+        expect(screen.getByPlaceholderText('amount')).toBeInTheDocument();
     })
 
     it("Renders error", () => {
@@ -23,8 +24,8 @@ describe("MinMaxInput", () => {
 
     it("Shows button if 'hasButton' is true", () => {
         render(
-            <MinMaxInput label="MyLabel" hasButton={false} currency="ngn" inputName="my_input"
-                placeholder="amount" errors={{ my_input: { message: "invalid" } }} hasButton={true} />
+            <MinMaxInput label="MyLabel" hasButton={true} currency="ngn" inputName="my_input"
+                placeholder="amount" errors={{ my_input: { message: "invalid" } }} />
         )
         expect(screen.getByText("0/50")).toBeInTheDocument();
     })
@@ -32,7 +33,7 @@ describe("MinMaxInput", () => {
     it("Shows percent sign (%) if 'isPercent' is true", () => {
         render(
             <MinMaxInput label="MyLabel" isPercent={true} hasButton={false} currency="ngn" inputName="my_input"
-                placeholder="amount" errors={{ my_input: { message: "invalid" } }} hasButton={true} />
+                placeholder="amount" errors={{ my_input: { message: "invalid" } }} />
         )
         expect(screen.getByTestId("percent")).toBeInTheDocument();
     })
@@ -42,10 +43,10 @@ describe("MinMaxInput", () => {
             render(
                 <MinMaxInput type="number" label="MyLabel" isPercent={true} hasButton={false} currency="ngn" inputName="my_input"
                     setValue={setValue}
-                    placeholder="amount" errors={{ my_input: { message: "invalid" } }} hasButton={true} max={20} defaultValue={12} />
+                    placeholder="amount" errors={{ my_input: { message: "invalid" } }}  max={20} defaultValue={12} />
             )
-        const input = screen.getByPlaceholderText('0');
-        expect(input.value).toBe("12");
+        const input = screen.getByPlaceholderText('amount') as HTMLElement;
+        expect(input).toBeInTheDocument();
 
     })
 

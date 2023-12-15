@@ -4,8 +4,8 @@ import { server } from "./__mocks__/api/apiServer";
 import { linkApi, investmentApi, authApi } from "@app/api";
 import { store } from "@app/config/store";
 // setupTests.js
-import { configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { configure } from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
 
 configure({ adapter: new Adapter() });
 
@@ -24,7 +24,6 @@ afterEach(() => {
   mockstore.dispatch(linkApi.util.resetApiState());
   mockstore.dispatch(investmentApi.util.resetApiState());
   mockstore.dispatch(authApi.util.resetApiState());
-
 });
 
 // Clean up after the tests are finished.
