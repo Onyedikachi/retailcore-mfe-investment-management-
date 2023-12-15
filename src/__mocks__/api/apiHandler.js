@@ -3,17 +3,9 @@ import { rest } from "msw";
 import { response } from "./responses.json";
 
 const baseUrl =
-  "https://retailcore-investment-management-api.dev.bepeerless.co/v1";
+  "https://dev2-retailcore-teams-management-api.dev.bepeerless.co/v1";
 const utilBaseUrl = `https://utilities-api.dev.bepeerless.co/v1`;
 export const handlers = [
-  rest.put(
-    "https://retailcore-investment-management-api.dev.bepeerless.co/v1/product/product-details",
-    (req, res, ctx) => {
-      const { id } = req.url.searchParams;
-
-      return res(ctx.status(200), ctx.json(response.getProductDetail));
-    }
-  ),
   rest.get(`${baseUrl}/investments`, (req, res, ctx) => {
     // Simulate different responses based on the investmentId
     if (ctx.status == 200) {
@@ -186,6 +178,34 @@ export const handlers = [
       );
     }
   }),
+  rest.get(`${baseUrl}/location/countries`, (req, res, ctx) => {
+    // const { filter } = req.params;
+    // Simulate different responses based on the investmentId
+    if (ctx.status == 200) {
+      return res(ctx.json(response.requestAnalyticsResponse));
+    } else {
+      return res(
+        ctx.status(404),
+        ctx.json({
+          error: "Data not found",
+        })
+      );
+    }
+  }),
+  rest.get(`${baseUrl}/location/lga`, (req, res, ctx) => {
+    // const { filter } = req.params;
+    // Simulate different responses based on the investmentId
+    if (ctx.status == 200) {
+      return res(ctx.json(response.requestAnalyticsResponse));
+    } else {
+      return res(
+        ctx.status(404),
+        ctx.json({
+          error: "Data not found",
+        })
+      );
+    }
+  }),
   rest.post(`${baseUrl}/validate-name`, (req, res, ctx) => {
     if (ctx.status == 200) {
       return res(ctx.json({ success: true }));
@@ -218,6 +238,7 @@ export const handlers = [
     }
   ),
 
+
   rest.post(
     `https://utilities-api.dev.bepeerless.co/v1/quick-link`,
     (req, res, ctx) => {
@@ -236,5 +257,6 @@ export const handlers = [
       }
     }
   ),
+  rest.get(`https://utilities-api.dev.bepeerless.co/v1/quick-link`)
   // Add more handlers for different endpoints as needed
 ];
