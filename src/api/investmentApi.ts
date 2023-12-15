@@ -47,7 +47,15 @@ export const investmentApi: any = createApi({
         };
       },
     }),
-
+    getSystemAlert: builder.query<any, any>({
+      query: () => {
+        return {
+          url: `${urls.SYSTEM_ALERT}`,
+          method: "get",
+        };
+      },
+    }),
+   
     getPostProducts: builder.mutation<
       IGetProducts,
       {
@@ -307,4 +315,5 @@ export const {
   useGetRequestDetailQuery,
   useApproveProductMutation,
   useRejectProductMutation,
+  useGetSystemAlertQuery
 } = investmentApi;
