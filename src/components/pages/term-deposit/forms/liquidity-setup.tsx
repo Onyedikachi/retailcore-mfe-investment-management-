@@ -104,6 +104,8 @@ export default function LiquiditySetup({
   }
 
   function onProceed(d: any) {
+    
+    console.log("🚀 ~ file: liquidity-setup.tsx:108 ~ onProceed ~ partOptionCharges:", partOptionCharges)
     setFormData({
       ...d,
       early_SpecificCharges: earlyOptionCharges,
