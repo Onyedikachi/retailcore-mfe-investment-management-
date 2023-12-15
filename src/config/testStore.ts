@@ -4,9 +4,9 @@ import { linkApi, investmentApi, authApi } from "@app/api";
 export const setupStore = (preloadedState) => {
   return configureStore({
     reducer: {
-      // [linkApi?.reducerPath]: linkApi?.reducer,
+      [linkApi?.reducerPath]: linkApi?.reducer,
       [investmentApi?.reducerPath]: investmentApi?.reducer,
-      // [authApi?.reducerPath]: authApi?.reducer,
+      [authApi?.reducerPath]: authApi?.reducer,
     },
     preloadedState,
     middleware: (getDefaultMiddleware) =>

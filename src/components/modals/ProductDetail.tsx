@@ -366,8 +366,7 @@ export default function ProductDetail({
                                   {
                                     productData?.data?.liquidation
                                       ?.part_NoticePeriod
-                                  }
-{" "}
+                                  }{" "}
                                   {
                                     Interval[
                                       productData?.data?.liquidation
@@ -379,39 +378,41 @@ export default function ProductDetail({
                               </span>
                             )}
                             {
-                              <p className="font-normal">
-                                <span className="font-bold">Penalty:</span>{" "}
-                                <span>
-                                  {liquidities[
-                                    productData?.data?.liquidation
-                                      ?.part_LiquidationPenalty
-                                  ] == "none" &&
-                                    liquidities[
+                              <div className="font-normal">
+                                <div className="flex gap-x-1">
+                                  <span className="font-bold">Penalty:</span>{" "}
+                                  <span>
+                                    {liquidities[
                                       productData?.data?.liquidation
                                         ?.part_LiquidationPenalty
-                                    ]}
-                                </span>
-                                <span>
-                                  {liquidities[
-                                    productData?.data?.liquidation
-                                      ?.part_LiquidationPenalty
-                                  ] == "ForfietAll" &&
-                                    "Forfeit all accrued interest"}
-                                </span>
-                                <span>
-                                  {liquidities[
-                                    productData?.data?.liquidation
-                                      ?.part_LiquidationPenalty
-                                  ] == "ForfietPortion" &&
-                                    `Forfeit a portion of accrued interest - ${productData?.data?.liquidation?.part_LiquidationPenaltyPercentage}%`}
-                                </span>
-                                <span>
-                                  {liquidities[
-                                    productData?.data?.liquidation
-                                      ?.part_LiquidationPenalty
-                                  ] == "RecalculateInterest" &&
-                                    `Recalculate accrued interest of ${productData?.data?.liquidation?.part_LiquidationPenaltyPercentage}%`}
-                                </span>
+                                    ] == "none" &&
+                                      liquidities[
+                                        productData?.data?.liquidation
+                                          ?.part_LiquidationPenalty
+                                      ]}
+                                  </span>
+                                  <span>
+                                    {liquidities[
+                                      productData?.data?.liquidation
+                                        ?.part_LiquidationPenalty
+                                    ] == "ForfietAll" &&
+                                      "Forfeit all accrued interest"}
+                                  </span>
+                                  <span>
+                                    {liquidities[
+                                      productData?.data?.liquidation
+                                        ?.part_LiquidationPenalty
+                                    ] == "ForfietPortion" &&
+                                      `Forfeit a portion of accrued interest - ${productData?.data?.liquidation?.part_LiquidationPenaltyPercentage}%`}
+                                  </span>
+                                  <span>
+                                    {liquidities[
+                                      productData?.data?.liquidation
+                                        ?.part_LiquidationPenalty
+                                    ] == "RecalculateInterest" &&
+                                      `Recalculate accrued interest of ${productData?.data?.liquidation?.part_LiquidationPenaltyPercentage}%`}
+                                  </span>
+                                </div>
                                 <span>
                                   {liquidities[
                                     productData?.data?.liquidation
@@ -437,7 +438,7 @@ export default function ProductDetail({
                                     </span>
                                   )}
                                 </span>
-                              </p>
+                              </div>
                             }
                             Maximum of{" "}
                             {
@@ -482,39 +483,41 @@ export default function ProductDetail({
                               </span>
                             )}
                             {
-                              <p className="font-normal">
-                                <span className="font-bold">Penalty:</span>{" "}
-                                <span>
-                                  {liquidities[
-                                    productData?.data?.liquidation
-                                      ?.early_LiquidationPenalty
-                                  ] == "none" &&
-                                    liquidities[
+                              <div className="font-normal">
+                                <div className="flex gap-x-1">
+                                  <span className="font-bold">Penalty:</span>{" "}
+                                  <span>
+                                    {liquidities[
                                       productData?.data?.liquidation
                                         ?.early_LiquidationPenalty
-                                    ]}
-                                </span>
-                                <span>
-                                  {liquidities[
-                                    productData?.data?.liquidation
-                                      ?.early_LiquidationPenalty
-                                  ] == "ForfietAll" &&
-                                    "Forfeit all accrued interest"}
-                                </span>
-                                <span>
-                                  {liquidities[
-                                    productData?.data?.liquidation
-                                      ?.early_LiquidationPenalty
-                                  ] == "ForfietPortion" &&
-                                    `Forfeit a portion of accrued interest - ${productData?.data?.liquidation?.early_LiquidationPenaltyPercentage}%`}
-                                </span>
-                                <span>
-                                  {liquidities[
-                                    productData?.data?.liquidation
-                                      ?.early_LiquidationPenalty
-                                  ] == "RecalculateInterest" &&
-                                    `Recalculate accrued interest of ${productData?.data?.liquidation?.early_LiquidationPenaltyPercentage}%`}
-                                </span>
+                                    ] == "none" &&
+                                      liquidities[
+                                        productData?.data?.liquidation
+                                          ?.early_LiquidationPenalty
+                                      ]}
+                                  </span>
+                                  <span>
+                                    {liquidities[
+                                      productData?.data?.liquidation
+                                        ?.early_LiquidationPenalty
+                                    ] == "ForfietAll" &&
+                                      "Forfeit all accrued interest"}
+                                  </span>
+                                  <span>
+                                    {liquidities[
+                                      productData?.data?.liquidation
+                                        ?.early_LiquidationPenalty
+                                    ] == "ForfietPortion" &&
+                                      `Forfeit a portion of accrued interest - ${productData?.data?.liquidation?.early_LiquidationPenaltyPercentage}%`}
+                                  </span>
+                                  <span>
+                                    {liquidities[
+                                      productData?.data?.liquidation
+                                        ?.early_LiquidationPenalty
+                                    ] == "RecalculateInterest" &&
+                                      `Recalculate accrued interest of ${productData?.data?.liquidation?.early_LiquidationPenaltyPercentage}%`}
+                                  </span>
+                                </div>
                                 <span>
                                   {liquidities[
                                     productData?.data?.liquidation
@@ -540,7 +543,7 @@ export default function ProductDetail({
                                     </span>
                                   )}
                                 </span>
-                              </p>
+                              </div>
                             }
                           </span>
                         ) : (

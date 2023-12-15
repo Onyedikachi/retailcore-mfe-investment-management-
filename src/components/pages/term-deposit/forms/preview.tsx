@@ -32,7 +32,7 @@ export function Container({ children }) {
   );
 }
 export default function Preview({ formData, previousData = null }: any) {
-  console.log("🚀 ~ file: preview.tsx:36 ~ Preview ~ previousData:", previousData);
+
   const { role } = useContext(AppContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
