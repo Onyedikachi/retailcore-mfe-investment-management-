@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { IoArrowUndo } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { FaBan, FaEdit, FaPlayCircle, FaTimes } from "react-icons/fa";
@@ -40,6 +40,10 @@ export default function ProductDetail({
 
   const [open, setOpen] = useState(false);
   const { permissions } = useContext(AppContext);
+
+  useEffect(() => {
+    console.log(isLoading)
+  }, [isLoading])
 
   React.useEffect(() => {
 

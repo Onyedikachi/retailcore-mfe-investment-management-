@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react"
+import { act, render, screen } from "@testing-library/react"
 import {renderWithProviders} from "../../__mocks__/api/Wrapper"
 import ProductDetail from "../../components/modals/ProductDetail"
 
@@ -109,8 +109,18 @@ const details = {
   }
 
 describe("ProductDetail", () => {
+  global.fetch = jest.fn(() => {
+    console.log("heyyyyyyyyy");
+    return Promise.resolve({
+      json: () => Promise.resolve({ data: { CAD: 1.42 } }),
+    })
+  }
+);
     it("Renders without crashing", () => {
-        const val = renderWithProviders(<ProductDetail handleClick={jest.fn()} setIsOpen={jest.fn()} isOpen={true} detail={details}/>);
-        // screen.debug()
+      const val = renderWithProviders(<ProductDetail handleClick={jest.fn()} setIsOpen={jest.fn()} isOpen={true} detail={details}/>)
+        act(() => {
+        })
+        expect(val).toMatchSnapshot();
+        screen.debug()
     })
 })
