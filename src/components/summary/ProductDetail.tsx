@@ -102,7 +102,7 @@ export default function ProductDetail({ detail, previousData }: any) {
     )})`
   );
 
-  const dummyCharge = [
+  const chargeArray = [
     {
       id: "79e00876-2244-4e21-9bbf-ccbd5cf62233",
       name: "Fixed Charge",
@@ -500,7 +500,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                                 {" "}
                                 Take a charge{" "}
                                 <span className="flex flex-wrap">
-                                  {dummyCharge.map((charge) => (
+                                  {chargeArray.map((charge) => (
                                     <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
                                       {" "}
                                       {charge?.name} {charge?.amount}
@@ -582,7 +582,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                                 {" "}
                                 Take a charge{" "}
                                 <span className="flex flex-wrap">
-                                  {dummyCharge.map((charge) => (
+                                  {chargeArray.map((charge) => (
                                     <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
                                       {" "}
                                       {charge?.name} {charge?.amount}
