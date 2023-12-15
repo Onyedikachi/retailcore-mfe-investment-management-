@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ProductDetail should render product details correctly 1`] = `
+exports[`DebitCreditable should render product details correctly 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
@@ -583,6 +583,7 @@ Object {
                       >
                         <td
                           class="text-sm font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative text-left"
+                          data-testid="table-data"
                         >
                           <span>
                             <span
@@ -620,6 +621,7 @@ Object {
                       >
                         <td
                           class="text-sm font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative text-left"
+                          data-testid="table-data"
                         >
                           <span>
                             <span
@@ -657,6 +659,7 @@ Object {
                       >
                         <td
                           class="text-sm font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative text-left"
+                          data-testid="table-data"
                         >
                           <span>
                             <span
@@ -1300,6 +1303,7 @@ Object {
                     >
                       <td
                         class="text-sm font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative text-left"
+                        data-testid="table-data"
                       >
                         <span>
                           <span
@@ -1337,6 +1341,7 @@ Object {
                     >
                       <td
                         class="text-sm font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative text-left"
+                        data-testid="table-data"
                       >
                         <span>
                           <span
@@ -1374,6 +1379,7 @@ Object {
                     >
                       <td
                         class="text-sm font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative text-left"
+                        data-testid="table-data"
                       >
                         <span>
                           <span
