@@ -7,7 +7,7 @@ import { liquidationTypes } from "@app/constants";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
-export default function fToggleInputChildren({
+export default function ToggleInputChildren({
   children,
   label,
   setValue,
