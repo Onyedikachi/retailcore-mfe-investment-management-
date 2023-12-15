@@ -7,10 +7,10 @@ const baseUrl =
 const utilBaseUrl = `https://utilities-api.dev.bepeerless.co/v1`;
 export const handlers = [
   rest.put(
-    "https://retailcore-investment-management-api.dev.bepeerless.co/v1/product/product-details?id=0e061078-ccb7-431d-b696-e76db9909fff",
+    "https://retailcore-investment-management-api.dev.bepeerless.co/v1/product/product-details",
     (req, res, ctx) => {
-      // Access query parameters using req.url.searchParams
-      // Mock the response for the getPostProducts endpoint
+      const { id } = req.url.searchParams;
+
       return res(ctx.status(200), ctx.json(response.getProductDetail));
     }
   ),

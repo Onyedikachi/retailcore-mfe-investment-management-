@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import IndexComponent, { handleToggle, handleChange, handleRefresh, handleSearch } from "../pages/investment/IndexComponent"
 import { renderWithProviders } from "../utils/test-util";
 import { StatusCategoryType } from "../constants/enums";
+import React from "react";
 
 jest.mock("react-router-dom", () => ({
     BrowserRouter: ({ children }) => <div>{children}</div>,
@@ -27,8 +28,9 @@ describe("IndexComponent", () => {
     })
 
     it('should display the TopBar component', () => {
-        const { getByTestId } = renderWithProviders(<IndexComponent />)
-        expect(getByTestId("top-bar-component")).toBeInTheDocument();
+        const { getAllByTestId } = renderWithProviders(<IndexComponent />)
+        const data = getAllByTestId("top-bar")
+        expect(data[0]).toBeInTheDocument();
     });
 })
 

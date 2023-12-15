@@ -3,6 +3,7 @@ import ProductInformation from "../components/pages/term-deposit/forms/customer-
 import {renderWithProviders} from "../__mocks__/api/Wrapper"
 import { act } from "react-dom/test-utils";
 import CustomerEligibilityCriteria from "../components/pages/term-deposit/forms/customer-eligibilty-criteria";
+import React from "react";
 
 const fData = {
     customerCategory: "",
@@ -22,7 +23,7 @@ jest.mock("react-router-dom", () => ({
 
 describe("ProductInformation", () => {
     it ("Renders without error", () => {
-        const form = renderWithProviders(<CustomerEligibilityCriteria proceed={jest.fn()} formData={fData} setDisabled={jest.fn()}/>)
+        const form = renderWithProviders(<CustomerEligibilityCriteria proceed={jest.fn()} formData={fData} setDisabled={jest.fn()} setFormData={jest.fn()} initiateDraft={null}/>)
         expect(form).toMatchSnapshot()
     })
 })

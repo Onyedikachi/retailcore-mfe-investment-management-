@@ -79,27 +79,7 @@ export function DebitCreditTable({ dataTab }) {
 export default function ProductDetail({ detail, previousData }: any) {
   console.log(
     "🚀 ~ file: ProductDetail.tsx:81 ~ ProductDetail ~  detail?.liquidation?.part_SpecificCharges:",
-    detail?.liquidation?.part_SpecificCharges
-  );
-  const [isNewDescription, setDescription] = useState(false);
-  // const [productInfo, setProductInfo] = useState({
-  //   productName: "",
-  //   slogan: "",
-  //   description: "",
-  //   startDate: "",
-  //   endDate: "",
-  //   currency: "NGN",
-  //   customerCategory: 0,
-  // });
-  // useEffect(() => {
-
-  //   setProductInfo(formData?.productInfo);
-  // }, [formData]);
-
-  console.log(
-    `🚀 ~ file: ProductDetail.tsx:86 ~ ProductDetail ~ detail:, (${JSON.stringify(
-      detail
-    )})`
+    detail
   );
 
   const chargeArray = [
@@ -456,7 +436,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                         <span>Require notice of</span>{" "}
                         <span className="font-bold">
                           {detail?.liquidation?.part_NoticePeriod}
-
+                          {" "}
                           {Interval[detail?.liquidation?.part_NoticePeriodUnit]}
                         </span>{" "}
                         <span>before liquidation</span>
@@ -490,7 +470,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                           ] == "RecalculateInterest" &&
                             `Recalculate accrued interest of ${detail?.liquidation?.part_LiquidationPenaltyPercentage}%`}
                         </span>
-                        <span className="">
+                        <span className="flex flex-wrap gap-x-1 my-1">
                           {liquidities[
                             detail?.liquidation?.part_LiquidationPenalty
                           ] == "TakeCharge" && (
@@ -500,7 +480,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                                 {" "}
                                 Take a charge{" "}
                                 <span className="flex flex-wrap">
-                                  {chargeArray.map((charge) => (
+                                  {detail?.liquidation?.part_SpecificCharges.map((charge) => (
                                     <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
                                       {" "}
                                       {charge?.name} {charge?.amount}
@@ -534,7 +514,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                         <span>Require notice of</span>{" "}
                         <span className="font-bold">
                           {detail?.liquidation?.early_NoticePeriod}
-
+                          {" "}
                           {
                             Interval[
                               detail?.liquidation?.early_NoticePeriodUnit
@@ -572,7 +552,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                           ] == "RecalculateInterest" &&
                             `Recalculate accrued interest of ${detail?.liquidation?.early_LiquidationPenaltyPercentage}%`}
                         </span>
-                        <span>
+                        <span className="flex flex-wrap gap-x-1 my-1">
                           {liquidities[
                             detail?.liquidation?.early_LiquidationPenalty
                           ] == "TakeCharge" && (
@@ -582,7 +562,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                                 {" "}
                                 Take a charge{" "}
                                 <span className="flex flex-wrap">
-                                  {chargeArray.map((charge) => (
+                                  {detail?.liquidation?.part_SpecificCharges.map((charge) => (
                                     <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
                                       {" "}
                                       {charge?.name} {charge?.amount}

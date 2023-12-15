@@ -152,7 +152,7 @@ export default function TopBar() {
   return (
     <div className="bg-white px-8   w-full border-b border-[#E5E9EB]">
       <div
-        data-testid="top-bar-component"
+        data-testid="top-bar"
         className="py-[52px] w-full min-h-[198px] flex gap-x-9 items-center"
       >
         <h1 className="text-[#636363] text-[38px] font-bold">

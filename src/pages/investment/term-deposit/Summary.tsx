@@ -19,7 +19,7 @@ import {
 import { rangeLabels, summaryLinks } from "@app/constants";
 export function Container({ children }) {
   return (
-    <div className="rounded-[10px] border border-[#EEE] px-12 py-10">
+    <div data-testid="container" className="rounded-[10px] border border-[#EEE] px-12 py-10">
       {children}
     </div>
   );
@@ -27,7 +27,6 @@ export function Container({ children }) {
 export default function Summary() {
   const [searchParams] = useSearchParams();
   const { tab, type, id, process } = useParams();
-  console.log("🚀 ~ file: Summary.tsx:30 ~ Summary ~ process:", process);
   const category = searchParams.get("category");
 
   const [state, setState] = useState();

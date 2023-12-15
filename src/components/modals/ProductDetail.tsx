@@ -367,7 +367,7 @@ export default function ProductDetail({
                                     productData?.data?.liquidation
                                       ?.part_NoticePeriod
                                   }
-
+{" "}
                                   {
                                     Interval[
                                       productData?.data?.liquidation
@@ -422,8 +422,11 @@ export default function ProductDetail({
                                       <span>
                                         {" "}
                                         Take a charge{" "}
-                                        <span className="flex flex-wrap">
-                                          {chargeArray.map((charge) => (
+                                        <span className="flex flex-wrap my-1">
+                                          {liquidities[
+                                            productData?.data?.liquidation
+                                              ?.part_SpecificCharges
+                                          ].map((charge) => (
                                             <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
                                               {" "}
                                               {charge?.name} {charge?.amount}
@@ -467,8 +470,7 @@ export default function ProductDetail({
                                   {
                                     productData?.data?.liquidation
                                       ?.early_NoticePeriod
-                                  }
-
+                                  }{" "}
                                   {
                                     Interval[
                                       productData?.data?.liquidation
@@ -523,8 +525,11 @@ export default function ProductDetail({
                                       <span>
                                         {" "}
                                         Take a charge{" "}
-                                        <span className="flex flex-wrap">
-                                          {chargeArray.map((charge) => (
+                                        <span className="flex flex-wrap my-1">
+                                          {liquidities[
+                                            productData?.data?.liquidation
+                                              ?.early_SpecificCharges
+                                          ].map((charge) => (
                                             <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
                                               {" "}
                                               {charge?.name} {charge?.amount}
