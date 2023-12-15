@@ -279,7 +279,7 @@ describe("TopBar", () => {
       </InvestmentContext.Provider>
     );
     // assertion
-    expect(screen.getByTestId("top-bar")).toBeInTheDocument();
+    expect(screen.getByTestId("top-bar-component")).toBeInTheDocument();
   });
 
   // Displays the Product Factory title
