@@ -29,7 +29,6 @@ export default function ProductDetail({
   handleClick,
   detail,
 }: Props) {
-
   const {
     data: productData,
     isLoading,
@@ -41,9 +40,14 @@ export default function ProductDetail({
   const [open, setOpen] = useState(false);
   const { permissions } = useContext(AppContext);
 
-  React.useEffect(() => {
-
-  }, [isSuccess]);
+  React.useEffect(() => {}, [isSuccess]);
+  const chargeArray = [
+    {
+      id: "79e00876-2244-4e21-9bbf-ccbd5cf62233",
+      name: "Fixed Charge",
+      amount: "100",
+    },
+  ];
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
       <div
@@ -179,7 +183,9 @@ export default function ProductDetail({
                           <button
                             type="button"
                             data-testid="activate-btn"
-                            onClick={() => handleClick("activate", productData?.data)}
+                            onClick={() =>
+                              handleClick("activate", productData?.data)
+                            }
                             className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
                           >
                             <FaPlayCircle className="text-[#2FB755]" /> Activate
@@ -187,7 +193,9 @@ export default function ProductDetail({
                         ) : (
                           <button
                             data-testid="deactivate-btn"
-                            onClick={() => handleClick("deactivate", productData?.data)}
+                            onClick={() =>
+                              handleClick("deactivate", productData?.data)
+                            }
                             className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
                           >
                             <FaBan className="text-sterling-red-800" />{" "}
@@ -201,7 +209,9 @@ export default function ProductDetail({
                   <Link
                     to={`/product-factory/investment/${encodeURIComponent(
                       "term deposit"
-                    )}/process-summary/preview/${productData?.data.id}?category=product`}
+                    )}/process-summary/preview/${
+                      productData?.data.id
+                    }?category=product`}
                   >
                     <button
                       className={`group flex items-center whitespace-nowrap py-[1px] text-base text-[#636363] gap-x-3 underline outline-none`}
@@ -406,7 +416,23 @@ export default function ProductDetail({
                                   {liquidities[
                                     productData?.data?.liquidation
                                       ?.part_LiquidationPenalty
-                                  ] == "TakeCharge" && "Take a charge"}
+                                  ] == "TakeCharge" && (
+                                    <span>
+                                      {" "}
+                                      <span>
+                                        {" "}
+                                        Take a charge{" "}
+                                        <span className="flex flex-wrap">
+                                          {chargeArray.map((charge) => (
+                                            <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
+                                              {" "}
+                                              {charge?.name} {charge?.amount}
+                                            </span>
+                                          ))}
+                                        </span>
+                                      </span>
+                                    </span>
+                                  )}
                                 </span>
                               </p>
                             }
@@ -430,14 +456,18 @@ export default function ProductDetail({
                         Early Liquidation
                       </span>
                       <div className="w-full text-base font-normal text-[#636363]">
-                        {productData?.data?.liquidation?.early_AllowEarlyLiquidation ? (
+                        {productData?.data?.liquidation
+                          ?.early_AllowEarlyLiquidation ? (
                           <span className="font-normal block">
                             {productData?.data?.liquidation
                               ?.early_RequireNoticeBeforeLiquidation && (
                               <span>
                                 <span>Require notice of</span>{" "}
                                 <span className="font-bold">
-                                  {productData?.data?.liquidation?.early_NoticePeriod}
+                                  {
+                                    productData?.data?.liquidation
+                                      ?.early_NoticePeriod
+                                  }
 
                                   {
                                     Interval[
@@ -487,7 +517,23 @@ export default function ProductDetail({
                                   {liquidities[
                                     productData?.data?.liquidation
                                       ?.early_LiquidationPenalty
-                                  ] == "TakeCharge" && "Take a charge"}
+                                  ] == "TakeCharge" && (
+                                    <span>
+                                      {" "}
+                                      <span>
+                                        {" "}
+                                        Take a charge{" "}
+                                        <span className="flex flex-wrap">
+                                          {chargeArray.map((charge) => (
+                                            <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
+                                              {" "}
+                                              {charge?.name} {charge?.amount}
+                                            </span>
+                                          ))}
+                                        </span>
+                                      </span>
+                                    </span>
+                                  )}
                                 </span>
                               </p>
                             }
@@ -516,7 +562,10 @@ export default function ProductDetail({
           </div>
         )}
         {isLoading && (
-          <div className="h-[500px] flex items-center justify-center" data-testid="loading-spinner">
+          <div
+            className="h-[500px] flex items-center justify-center"
+            data-testid="loading-spinner"
+          >
             <div className="spinner-border h-11 w-11 border-t border-danger-500 rounded-full animate-spin"></div>
           </div>
         )}
