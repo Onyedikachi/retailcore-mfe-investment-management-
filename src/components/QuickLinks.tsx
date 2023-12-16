@@ -7,7 +7,7 @@ import {
   useAddLinkMutation,
 } from "@app/api";
 
-const defaultLink = {
+export const defaultLink = {
   isDefault: true,
   count: 1,
   name: "Product management",
@@ -22,9 +22,7 @@ export const handleLinks = (quickLinks, isLinksQuerySuccessful, baseUrl, setLink
     //get
     if (quickLinks && quickLinks.data && quickLinks.data.length > 0) {
       setLinks([defaultLink, ...quickLinks.data]);
-      
     }
-    console.log("effect")
     //check if quickLinks has link of this page
     const hasPageLink =
       quickLinks && quickLinks.data
@@ -32,8 +30,8 @@ export const handleLinks = (quickLinks, isLinksQuerySuccessful, baseUrl, setLink
             (link) => link.link === `${baseUrl}/product-factory/investment`
           )
         : false;
-   
-
+      
+    console.log(hasPageLink, "hasPageLink")
     //add
 
     if (
@@ -78,49 +76,6 @@ export default function QuickLinks() {
   
   React.useEffect(() => {
     handleLinks(quickLinks, isLinksQuerySuccessful, baseUrl, setLinks, addLink, updateLink, defaultLink);
-    // if (isLinksQuerySuccessful) {
-    //   const moduleName = "Product Factory";
-    //   const moduleLink = `product-factory/investment`;
-    //   //get
-    //   if (quickLinks && quickLinks.data && quickLinks.data.length > 0) {
-    //     setLinks([defaultLink, ...quickLinks.data]);
-        
-    //   }
-    //   console.log("effect")
-    //   //check if quickLinks has link of this page
-    //   const hasPageLink =
-    //     quickLinks && quickLinks.data
-    //       ? quickLinks?.data.some(
-    //           (link) => link.link === `${baseUrl}/product-factory/investment`
-    //         )
-    //       : false;
-     
-
-    //   //add
-
-    //   if (
-    //     (quickLinks && !quickLinks.data) ||
-    //     quickLinks?.data?.length === 0 ||
-    //     !hasPageLink
-    //   ) {
-    //     addLink([
-    //       {
-    //         link: `product-factory/investment`,
-    //         name: "Product Factory",
-    //         category: "ProductFactory",
-
-    //         isDefault: true,
-    //       },
-    //     ]);
-    //   }
-    //   //update
-    //   if (hasPageLink) {
-    //     updateLink({
-    //       moduleName,
-    //       moduleLink,
-    //     });
-    //   }
-    // }
   }, [quickLinks]);
   return (
     <div data-testid='quick-links' className="border border-[#E5E9EB] rounded-lg bg-white px-[13px] py-8 w-[300px]">

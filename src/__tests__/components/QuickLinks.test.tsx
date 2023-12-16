@@ -1,6 +1,6 @@
 import React from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import QuickLinks from "../../components/QuickLinks";
+import QuickLinks, { defaultLink, handleLinks } from "../../components/QuickLinks";
 import { InvestmentContext } from "../../../src/utils/context";
 import { ProviderValue } from "../../__mocks__/fileMocks";
 import { MemoryRouter } from "react-router-dom";
@@ -134,3 +134,71 @@ describe("QuickLinks component", () => {
     ).not.toBeInTheDocument();
   });
 });
+
+
+describe("HandleLinks", () => {
+  const mockLinks = {
+    "status": "success",
+    "message": "Quick links fetched successfully",
+    "data": [
+      {
+        "quickLinkId": "913169c5-3108-4ce6-856e-50bde8ce0587",
+        "link": "https://seabaas.dev.bepeerless.co/product-factory/investment",
+        "name": "ProductFactory",
+        "category": "ProductFactory",
+        "count": 26,
+        "isDefault": true,
+        "createdAt": "2023-12-08T07:58:37.781Z",
+        "updatedAt": "2023-12-08T13:43:53.519Z"
+      },
+      {
+        "quickLinkId": "7d2b69cc-302a-4eb1-ae0b-b3312b91a14e",
+        "link": "https://seabaas.dev.bepeerless.co/payment-management/dashboard/transfers",
+        "name": "Payments Module",
+        "category": "ProductFactory",
+        "count": 1,
+        "isDefault": true,
+        "createdAt": "2023-08-16T15:56:43.256Z",
+        "updatedAt": "2023-08-16T15:56:43.256Z"
+      },
+      {
+        "quickLinkId": "779bd103-c42c-4312-ba11-0418bf28e668",
+        "link": "https://seabaas.dev.bepeerless.co/product/inventory",
+        "name": "Product Inventory",
+        "category": "ProductFactory",
+        "count": 1,
+        "isDefault": true,
+        "createdAt": "2023-08-16T15:56:43.577Z",
+        "updatedAt": "2023-08-16T15:56:43.577Z"
+      },
+      {
+        "quickLinkId": "7e4cefe6-ba21-466f-a8b2-62ec32ca5774",
+        "link": "https://seabaas.dev.bepeerless.co/configuration/global-product-organisation",
+        "name": "Global Product Organisation",
+        "category": "ProductFactory",
+        "count": 1,
+        "isDefault": true,
+        "createdAt": "2023-08-16T15:56:43.873Z",
+        "updatedAt": "2023-08-16T15:56:43.873Z"
+      }
+    ]
+  }
+  const setLinks = jest.fn()
+  const addLink = jest.fn()
+  const updateLink = jest.fn()
+  it("Sets links if links are available", () => {
+    handleLinks(mockLinks, true, "https://seabaas.dev.bepeerless.co", setLinks, jest.fn(), jest.fn(), defaultLink);
+    // @ts-ignore
+    expect(setLinks).toBeCalledWith([defaultLink, ...mockLinks.data])
+  })
+  
+  it("Return default link if links are not available", () => {
+    handleLinks({}, true, "https://seabaas.dev.bepeerless.co", setLinks, addLink, jest.fn(), defaultLink);
+    expect(addLink).toBeCalledWith([{"category": "ProductFactory", "isDefault": true, "link": "product-factory/investment", "name": "Product Factory"}]);
+  })
+  it("Updates Links", () => {
+    handleLinks(mockLinks, true, "https://seabaas.dev.bepeerless.co", setLinks, addLink, updateLink, defaultLink);
+    // @ts-ignore
+    expect(updateLink).toBeCalledWith({"moduleLink": "product-factory/investment", "moduleName": "Product Factory"})
+  })
+})
