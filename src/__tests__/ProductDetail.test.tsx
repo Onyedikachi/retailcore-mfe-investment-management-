@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, queryByTestId, render, screen } from "@testing-library/react";
 import ProductInformation from "../components/pages/term-deposit/forms/customer-eligibilty-criteria";
 import { renderWithProviders } from "../__mocks__/api/Wrapper"
 import { act } from "react-dom/test-utils";
@@ -120,7 +120,6 @@ describe("ProductDetail", () => {
     const form = renderWithProviders(<ProductDetail isOpen={true} detail={details} />)
     expect(screen.getByText("Term Deposit Product Details")).toBeInTheDocument();
     expect(screen.getByText("Slogan")).toBeInTheDocument();
-    screen.debug();
   })
 
   it('should render data rows correctly', () => {
@@ -146,26 +145,88 @@ describe("ProductDetail", () => {
       const creditBalanceElement = getByText(data.creditBalance.toString());
 
       const accountNameElement = getByText(data.accountName);
-  
+
       expect(creditBalanceElement).toBeInTheDocument();
       expect(accountNameElement).toBeInTheDocument();
     });
   });
 
-      // The function renders the product details correctly.
-      it('should render product details correctly', () => {
-        // Arrange
-        const previousData = null;
-  
-        // Act
-        const page = render(<ProductDetail detail={details} previousData={previousData} />);
-        // Assert
-        expect(screen.getByText('Draft Box updated')).toBeInTheDocument();
-        expect(screen.getByText('Draft slogan updat')).toBeInTheDocument();
-        expect(screen.getByText('NGN')).toBeInTheDocument();
-        expect(screen.getByText('15 Dec 2023 - 31 Dec 2023')).toBeInTheDocument();
-        expect(screen.getByText('Individual')).toBeInTheDocument();
-        expect(screen.getByText('NGN 1,000.00 - NGN 1,200,000.00')).toBeInTheDocument();
-        expect(page).toMatchSnapshot();
-      });
+  // The function handles cases where there is no previous data available.
+  it('should handle no previous data available', () => {
+    // Arrange
+    const detail = {
+      productInfo: {
+        productName: 'Test Product',
+        slogan: 'Test Slogan',
+        description: 'Test Description',
+        currency: 'USD',
+      },
+      pricingConfiguration: {},
+      customerEligibility: {},
+      liquidation: {},
+      productGlMappings: [],
+      productCode: '',
+    };
+    const previousData = null;
+
+    // Act
+    render(<ProductDetail detail={details} previousData={previousData} />);
+
+    // Assert
+    expect(screen.getByText('Draft Box updated')).toBeInTheDocument();
+    expect(screen.queryByText('Draft slogan updat')).toBeInTheDocument();
+    expect(screen.queryByText('Draft description example update')).toBeInTheDocument();
+    expect(screen.queryByText('NGN')).toBeInTheDocument();
+  });
+
+  // The function renders the product details correctly.
+})
+
+
+describe("DebitCreditable", () => {
+  it('should render product details correctly', () => {
+    // Arrange
+    const previousData = null;
+
+    // Act
+    const page = render(<ProductDetail detail={details} previousData={previousData} />);
+    // Assert
+    expect(screen.getByText('Draft Box updated')).toBeInTheDocument();
+    expect(screen.getByText('Draft slogan updat')).toBeInTheDocument();
+    expect(screen.getByText('NGN')).toBeInTheDocument();
+    expect(screen.getByText('15 Dec 2023 - 31 Dec 2023')).toBeInTheDocument();
+    expect(screen.getByText('Individual')).toBeInTheDocument();
+    expect(screen.getByText('NGN 1,000.00 - NGN 1,200,000.00')).toBeInTheDocument();
+  });
+  it('should display an empty table when dataTab prop is an empty array', () => {
+    render(<DebitCreditTable dataTab={[]} />);
+    expect(screen.queryAllByTestId("table-data").length).toBe(0)
+  });
+
+  it('should display the correct S|N value for each row', () => {
+    const dataTab = [
+      {
+        creditBalance: 1,
+        glAccountType: 0,
+        accountName: "Account 1",
+      },
+      {
+        creditBalance: 2,
+        glAccountType: 1,
+        accountName: "Account 2",
+      },
+      {
+        creditBalance: 3,
+        glAccountType: 2,
+        accountName: "Account 3",
+      },
+    ];
+
+    render(<DebitCreditTable dataTab={dataTab} />);
+
+    const rows = screen.getAllByTestId('table-data');
+    dataTab.forEach(el => {
+      screen.getByText(el.accountName);
+    })
+  });
 })

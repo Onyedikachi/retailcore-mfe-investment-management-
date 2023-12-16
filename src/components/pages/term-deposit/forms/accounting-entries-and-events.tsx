@@ -19,6 +19,46 @@ export function InputDivs({ children, label }) {
   );
 }
 
+const GlMappingOptions = [
+  {
+    id: 0,
+    text: "Term Deposit Liability account",
+    key: "TermDepositLiabilityAccount",
+  },
+  {
+    id: 1,
+    text: "Interest accural account",
+    key: "InterestAccrualAccount",
+  },
+  {
+    id: 2,
+    text: "Interest expense account",
+    key: "InterestExpenseAccount",
+  },
+];
+
+export const handleGlMappingSchema = (key, submenu, setValue, mapOptions, setMapOptions) => {
+  const data = {
+    accountName: submenu.name,
+    accountId: submenu?.id,
+    glAccountType: GlMappingOptions.find((i) => i.key === key)?.id,
+  };
+
+  setValue(key, submenu?.name);
+
+  if (!mapOptions.some((i) => i.glAccountType === data.glAccountType)) {
+    setMapOptions([...mapOptions, data]);
+  } else {
+    setMapOptions((prevMapOptions) =>
+      prevMapOptions.map((i) =>
+        i.glAccountType === data.glAccountType
+          ? { ...i, accountName: submenu.name, accountId: data.accountId }
+          : i
+      )
+    );
+  }
+}
+
 export default function AccountingEntriesAndEvents({
   proceed,
   formData,
@@ -51,49 +91,9 @@ export default function AccountingEntriesAndEvents({
     // values,
   });
 
-  const GlMappingOptions = [
-    {
-      id: 0,
-      text: "Term Deposit Liability account",
-      key: "TermDepositLiabilityAccount",
-    },
-    {
-      id: 1,
-      text: "Interest accural account",
-      key: "InterestAccrualAccount",
-    },
-    {
-      id: 2,
-      text: "Interest expense account",
-      key: "InterestExpenseAccount",
-    },
-  ];
-
   // glMappingSchema
   const handleClick = (key, submenu) => {
-    console.log(
-      "🚀 ~ file: accounting-entries-and-events.tsx:76 ~ handleClick ~ subname:",
-      submenu
-    );
-    const data = {
-      accountName: submenu.name,
-      accountId: submenu?.id,
-      glAccountType: GlMappingOptions.find((i) => i.key === key)?.id,
-    };
-
-    setValue(key, submenu?.name);
-
-    if (!mapOptions.some((i) => i.glAccountType === data.glAccountType)) {
-      setMapOptions([...mapOptions, data]);
-    } else {
-      setMapOptions((prevMapOptions) =>
-        prevMapOptions.map((i) =>
-          i.glAccountType === data.glAccountType
-            ? { ...i, accountName: submenu.name, accountId: data.accountId }
-            : i
-        )
-      );
-    }
+    handleGlMappingSchema(key, submenu, setValue, mapOptions, setMapOptions)
   };
 
   const values = getValues();

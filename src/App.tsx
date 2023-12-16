@@ -2,11 +2,15 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import routes from "./routes";
 import Layout from "./layouts/Layout";
 import InvestmentManagement from "./pages/investment/IndexComponent";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import PreLoader from "./components/PreLoader";
 import AppWrapper from "./components/AppWrapper";
 
 function App() {
+
+  useEffect(() => {
+    console.log(process.env.NODE_ENV)
+  })
   return (
     <AppWrapper>
       <BrowserRouter>
