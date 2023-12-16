@@ -1,5 +1,5 @@
 import {render, screen, waitFor} from "@testing-library/react";
-import Preview from "../../../../../components/pages/term-deposit/forms/preview"
+import Preview, { handleErrorMessage, handleSuccessMessage } from "../../../../../components/pages/term-deposit/forms/preview"
 import { renderWithProviders } from "../../../../../__mocks__/api/Wrapper";
 jest.mock("react-router-dom", () => ({
   BrowserRouter: ({ children }) => <div>{children}</div>,
@@ -96,4 +96,46 @@ describe("Preview", () => {
           screen.debug();
         })
     })
+})
+
+describe("handleSuccess", () => {
+  const setSuccessText = jest.fn();
+  const setIsSuccessOpen = jest.fn();
+
+  it("Sets success message if isSuccess and role === superadmin", () => {
+    handleSuccessMessage(true, setSuccessText, setIsSuccessOpen, "superadmin");
+    expect(setSuccessText).toBeCalledWith("Product created successfully")
+    expect(setIsSuccessOpen).toBeCalledWith(true)
+  })
+  it("Sets success message if isSuccess is false and role === superadmin", () => {
+    handleSuccessMessage(false, setSuccessText, setIsSuccessOpen, "superadmin");
+    expect(setSuccessText).toBeCalledWith("Product modified successfully")
+    expect(setIsSuccessOpen).toBeCalledWith(true)
+  })
+  it("Sets success message if role !== superadmin", () => {
+    handleSuccessMessage(true, setSuccessText, setIsSuccessOpen, "admin");
+    expect(setSuccessText).toBeCalledWith("Product creation request submitted for approval")
+    expect(setIsSuccessOpen).toBeCalledWith(true)
+  })
+})
+
+describe("handleErrorMessage", () => {
+  const setFailedText = jest.fn();
+  const setFailedSubtext = jest.fn();
+  const setFailed = jest.fn();
+
+  it ("Sets error message if isError === true", () => {
+    handleErrorMessage({message : {message : "Error message"}}, {}, {}, true, setFailedText, setFailedSubtext, setFailed)
+    expect(setFailedText).toBeCalledWith("Product creation request failed")
+    expect(setFailedSubtext).toBeCalledWith("Error message")
+    expect(setFailed).toBeCalledWith(true)
+  })
+
+  it ("Sets error message if isError === false", () => {
+    handleErrorMessage({message : {message : "Error message"}}, {}, {}, false, setFailedText, setFailedSubtext, setFailed)
+    expect(setFailedText).toBeCalledWith("Product modification request failed")
+    expect(setFailedSubtext).toBeCalledWith("Error message")
+    expect(setFailed).toBeCalledWith(true)
+  })
+
 })
