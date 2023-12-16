@@ -335,6 +335,7 @@ export default function ProductDetail({
                       (productData?.data?.pricingConfiguration
                         .interestRateRangeType !== 1 && (
                         <button
+                          data-testid="more"
                           className="text-[#636363]  underline"
                           onClick={() => setOpen(true)}
                         >

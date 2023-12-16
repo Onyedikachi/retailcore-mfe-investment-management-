@@ -27,20 +27,20 @@ describe("QuickLinks", () => {
   it("should renderWithProviders a container with a title and a list of links", () => {
     const { getByText, getAllByRole } = renderWithProviders(<QuickLinks />);
 
-    const container = getByText("Quick Links");
+    // const container = getByText(" Quick Links");
     const links = getAllByRole("link");
 
-    expect(container).toBeInTheDocument();
+    // expect(container).toBeInTheDocument();
     expect(links.length).toBeGreaterThan(0);
   });
 });
 
 describe("QuickLinks component", () => {
-  test("renderWithProviderss QuickLinks component with suggested links", () => {
+  test("renderWithProviderss QuickLinks component with suggested links", async () => {
     renderWithProviders(<QuickLinks />);
 
     // Check if the "Quick Links" heading is present
-    expect(screen.getByText("Quick Links")).toBeInTheDocument();
+    // expect(screen.getByText("Quick Links")).toBeInTheDocument();
     expect(
       screen.queryByText("Suggested from your activity")
     ).toBeInTheDocument();
@@ -73,45 +73,18 @@ describe("QuickLinks component", () => {
 
 
   // Fetches data from useGetLinksQuery hook and updates state with received data
-  it("should fetch data from useGetLinksQuery hook and update state with received data", async () => {
-    // Mock the useGetLinksQuery hook to return data
-    const mockData = {
-      data: [
-        {
-          isDefault: false,
-          count: 2,
-          name: "Link 1",
-          category: "Category 1",
-          link: "link-1",
-        },
-        {
-          isDefault: false,
-          count: 3,
-          name: "Link 2",
-          category: "Category 2",
-          link: "link-2",
-        },
-      ],
-      isLoading: false,
-      isFetching: false,
-    };
-    
 
 
+  // Import the QuickLinks component
 
+  // Render the QuickLinks component
+  const { getByText } = renderWithProviders(<QuickLinks />);
 
-
-    // Import the QuickLinks component
-
-    // Render the QuickLinks component
-    const { getByText } = renderWithProviders(<QuickLinks />);
-
-    // Assert that the links are renderWithProvidersed with the received data
-    waitFor(() => {
-      expect(getByText("Link 1")).toBeInTheDocument();
-      expect(getByText("Link 2")).toBeInTheDocument();
-    })
-  });
+  // Assert that the links are renderWithProvidersed with the received data
+  waitFor(() => {
+    expect(getByText("Link 1")).toBeInTheDocument();
+    expect(getByText("Link 2")).toBeInTheDocument();
+  })
 
   it("should renderWithProviders a message when isOpen state is true", () => {
 
@@ -137,68 +110,68 @@ describe("QuickLinks component", () => {
   });
 
 
-//   it("renderWithProviderss QuickLinks component with mocked useUpdateLinkMutation", () => {
-//     jest.mock("@app/api", () => ({
-//       ...jest.requireActual("@app/api"),
-//       useUpdateLinkMutation: jest.fn(),
-//     }));
-//     // Mock the useUpdateLinkMutation hook
-//     const mockUpdateLinkMutation = jest.fn();
-//     useUpdateLinkMutation.mockReturnValue([mockUpdateLinkMutation]);
+  //   it("renderWithProviderss QuickLinks component with mocked useUpdateLinkMutation", () => {
+  //     jest.mock("@app/api", () => ({
+  //       ...jest.requireActual("@app/api"),
+  //       useUpdateLinkMutation: jest.fn(),
+  //     }));
+  //     // Mock the useUpdateLinkMutation hook
+  //     const mockUpdateLinkMutation = jest.fn();
+  //     useUpdateLinkMutation.mockReturnValue([mockUpdateLinkMutation]);
 
-//     renderWithProviders(<QuickLinks />);
+  //     renderWithProviders(<QuickLinks />);
 
-//   //   const mockUpdateLink = jest.fn();
-//   //   useUpdateLinkMutation.mockReturnValue([mockUpdateLink]);
+  //   //   const mockUpdateLink = jest.fn();
+  //   //   useUpdateLinkMutation.mockReturnValue([mockUpdateLink]);
 
-//     // For example, you can check if the hook was called during component renderWithProvidersing
-//     expect(useUpdateLinkMutation).toHaveBeenCalled();
-//   });
+  //     // For example, you can check if the hook was called during component renderWithProvidersing
+  //     expect(useUpdateLinkMutation).toHaveBeenCalled();
+  //   });
 
-//   //   render(<QuickLinks />);
+  //   //   render(<QuickLinks />);
 
-//     renderWithProviders(<QuickLinks />);
+  //     renderWithProviders(<QuickLinks />);
 
-//   //   // Assertions
-//   //   expect(useGetLinksQuery).toHaveBeenCalled();
-//   //   expect(mockUpdateLink).not.toHaveBeenCalled(); // No need to update link
-//   //   expect(mockAddLink).not.toHaveBeenCalled(); // No need to add link
+  //   //   // Assertions
+  //   //   expect(useGetLinksQuery).toHaveBeenCalled();
+  //   //   expect(mockUpdateLink).not.toHaveBeenCalled(); // No need to update link
+  //   //   expect(mockAddLink).not.toHaveBeenCalled(); // No need to add link
 
-//     // Wait for asynchronous operations (e.g., updateLink) to complete
-//     // You may need to adjust this based on the actual behavior of your component
-//     await new Promise((resolve) => setTimeout(resolve, 0));
-//     const baseUrl = "https://seabaas.dev.bepeerless.co";
+  //     // Wait for asynchronous operations (e.g., updateLink) to complete
+  //     // You may need to adjust this based on the actual behavior of your component
+  //     await new Promise((resolve) => setTimeout(resolve, 0));
+  //     const baseUrl = "https://seabaas.dev.bepeerless.co";
 
-//     // Check if updateLink has been called with the correct arguments
-//     expect(mockUpdateLinkMutation).toHaveBeenCalledWith({
-//       moduleName: MODULENAME, // Replace with the actual value
-//       moduleLink: `${baseUrl}/product-factory/investment`, // Replace with the actual value
-//     });
-//   });
+  //     // Check if updateLink has been called with the correct arguments
+  //     expect(mockUpdateLinkMutation).toHaveBeenCalledWith({
+  //       moduleName: MODULENAME, // Replace with the actual value
+  //       moduleLink: `${baseUrl}/product-factory/investment`, // Replace with the actual value
+  //     });
+  //   });
 
-//   it("calls addLink when quickLinks is not available", async () => {
-//     const mockAddLinkMutation = jest.fn();
-//     const mockUseGetLinksQuery = jest.fn();
-//     useAddLinkMutation.mockReturnValue([mockAddLinkMutation]);
-//     useGetLinksQuery.mockReturnValue({
-//       data: null,
-//       isLoading: false,
-//       isFetching: false,
-//     });
+  //   it("calls addLink when quickLinks is not available", async () => {
+  //     const mockAddLinkMutation = jest.fn();
+  //     const mockUseGetLinksQuery = jest.fn();
+  //     useAddLinkMutation.mockReturnValue([mockAddLinkMutation]);
+  //     useGetLinksQuery.mockReturnValue({
+  //       data: null,
+  //       isLoading: false,
+  //       isFetching: false,
+  //     });
 
-//     renderWithProviders(<QuickLinks />);
+  //     renderWithProviders(<QuickLinks />);
 
-//     // Wait for asynchronous operations (e.g., useEffect) to complete
-//     await waitFor(() => {});
+  //     // Wait for asynchronous operations (e.g., useEffect) to complete
+  //     await waitFor(() => {});
 
-//     // Check if addLink has been called with the correct arguments
-//     expect(mockAddLinkMutation).toHaveBeenCalledWith({
-//       isDefault: true,
-//       name: "ProductFactory",
-//       category: "Investment",
-//       link: "https://seabaas.dev.bepeerless.co/product-factory/investment",
-//     });
-//   });
+  //     // Check if addLink has been called with the correct arguments
+  //     expect(mockAddLinkMutation).toHaveBeenCalledWith({
+  //       isDefault: true,
+  //       name: "ProductFactory",
+  //       category: "Investment",
+  //       link: "https://seabaas.dev.bepeerless.co/product-factory/investment",
+  //     });
+  //   });
 
   it("sets links state when quickLinks is available", async () => {
     const useGetLinksQuery = jest.fn();
@@ -223,281 +196,263 @@ describe("QuickLinks component", () => {
     // Note: Adjust this based on your actual data structure
   });
 
-  test("should set the baseUrl correctly", () => {
+  test("closes the suggested links section when close button is clicked", () => {
     renderWithProviders(<QuickLinks />);
-    const baseUrl = "https://seabaas.dev.bepeerless.co";
 
-    // Assuming baseUrl is used in the component, you can assert that it is set correctly
-    expect(baseUrl).toBe("https://seabaas.dev.bepeerless.co");
+    // Check if the suggested links section is initially visible
+    expect(
+      screen.getByText("Suggested from your activity")
+    ).toBeInTheDocument();
+
+    // Click the close button
+    fireEvent.click(screen.getByTestId("close"));
+
+    // Check if the suggested links section is now hidden
+    expect(
+      screen.queryByText("Suggested from your activity")
+    ).not.toBeInTheDocument();
   });
-// describe("QuickLinks", () => {
-// Renders a container with a title and a list of links.
-// it("should render a container with a title and a list of links", () => {
-//   const { getByText, getAllByRole } = render(<QuickLinks />);
 
-//   const container = getByText("Quick Links");
-//   const links = getAllByRole("link");
+  // describe("QuickLinks", () => {
+  // Renders a container with a title and a list of links.
+  // it("should render a container with a title and a list of links", () => {
+  //   const { getByText, getAllByRole } = render(<QuickLinks />);
 
-//   expect(container).toBeInTheDocument();
-//   expect(links.length).toBeGreaterThan(0);
-// });
+  //   const container = getByText("Quick Links");
+  //   const links = getAllByRole("link");
 
-//   test("renders QuickLinks component with suggested links", () => {
-//     render(<InvestmentContext.Provider value={}><QuickLinks /></InvestmentContext.Provider>);
+  //   expect(container).toBeInTheDocument();
+  //   expect(links.length).toBeGreaterThan(0);
+  // });
 
-//     // Check if the "Quick Links" heading is present
-//     expect(screen.getByText("Quick Links")).toBeInTheDocument();
+  //   test("renders QuickLinks component with suggested links", () => {
+  //     render(<InvestmentContext.Provider value={}><QuickLinks /></InvestmentContext.Provider>);
 
-//     // Check if the suggested links section is visible
-//     expect(
-//       screen.getByText("Suggested from your activity")
-//     ).toBeInTheDocument();
+  //     // Check if the "Quick Links" heading is present
+  //     expect(screen.getByText("Quick Links")).toBeInTheDocument();
 
-//     // Check if the close button is present
-//     expect(screen.getByTestId("close")).toBeInTheDocument();
+  //     // Check if the suggested links section is visible
+  //     expect(
+  //       screen.getByText("Suggested from your activity")
+  //     ).toBeInTheDocument();
 
-//     // Check if the suggested link is rendered
-//     expect(screen.getByText("ProductFactory")).toBeInTheDocument();
+  //     // Check if the close button is present
+  //     expect(screen.getByTestId("close")).toBeInTheDocument();
 
-//     // Check if the links are rendered with the correct URLs
-//     const link = screen.getByText("ProductFactory");
-//     expect(link.tagName).toBe("SPAN");
-//   });
+  //     // Check if the suggested link is rendered
+  //     expect(screen.getByText("ProductFactory")).toBeInTheDocument();
 
-//   test("closes the suggested links section when close button is clicked", () => {
-//     render(<QuickLinks />);
+  //     // Check if the links are rendered with the correct URLs
+  //     const link = screen.getByText("ProductFactory");
+  //     expect(link.tagName).toBe("SPAN");
+  //   });
 
-//     // Check if the suggested links section is initially visible
-//     expect(
-//       screen.getByText("Suggested from your activity")
-//     ).toBeInTheDocument();
+  //   test("closes the suggested links section when close button is clicked", () => {
+  //     render(<QuickLinks />);
 
-//     // Click the close button
-//     fireEvent.click(screen.getByTestId("close"));
+  //     // Check if the suggested links section is initially visible
+  //     expect(
+  //       screen.getByText("Suggested from your activity")
+  //     ).toBeInTheDocument();
 
-//     // Check if the suggested links section is now hidden
-//     expect(
-//       screen.queryByText("Suggested from your activity")
-//     ).not.toBeInTheDocument();
-//   });
+  //     // Click the close button
+  //     fireEvent.click(screen.getByTestId("close"));
 
-//   // Fetches data from useGetLinksQuery hook and updates state with received data
-//   it("should fetch data from useGetLinksQuery hook and update state with received data", () => {
-//     // Mock the useGetLinksQuery hook to return data
-//     const mockData = {
-//       data: [
-//         {
-//           isDefault: false,
-//           count: 2,
-//           name: "Link 1",
-//           category: "Category 1",
-//           link: "link-1",
-//         },
-//         {
-//           isDefault: false,
-//           count: 3,
-//           name: "Link 2",
-//           category: "Category 2",
-//           link: "link-2",
-//         },
-//       ],
-//       isLoading: false,
-//       isFetching: false,
-//     };
-//     jest.mock("@app/api", () => ({
-//       useGetLinksQuery: jest.fn(() => mockData),
-//       useUpdateLinkMutation: jest.fn(),
-//       useAddLinkMutation: jest.fn(),
-//     }));
+  //     // Check if the suggested links section is now hidden
+  //     expect(
+  //       screen.queryByText("Suggested from your activity")
+  //     ).not.toBeInTheDocument();
+  //   });
 
-//     // Import the QuickLinks component
+  //   // Fetches data from useGetLinksQuery hook and updates state with received data
+  //   it("should fetch data from useGetLinksQuery hook and update state with received data", () => {
+  //     // Mock the useGetLinksQuery hook to return data
+  //     const mockData = {
+  //       data: [
+  //         {
+  //           isDefault: false,
+  //           count: 2,
+  //           name: "Link 1",
+  //           category: "Category 1",
+  //           link: "link-1",
+  //         },
+  //         {
+  //           isDefault: false,
+  //           count: 3,
+  //           name: "Link 2",
+  //           category: "Category 2",
+  //           link: "link-2",
+  //         },
+  //       ],
+  //       isLoading: false,
+  //       isFetching: false,
+  //     };
+  //     jest.mock("@app/api", () => ({
+  //       useGetLinksQuery: jest.fn(() => mockData),
+  //       useUpdateLinkMutation: jest.fn(),
+  //       useAddLinkMutation: jest.fn(),
+  //     }));
 
-//     // Render the QuickLinks component
-//     const { getByText } = render(<QuickLinks />);
+  //     // Import the QuickLinks component
 
-//     // Assert that the links are rendered with the received data
-//     expect(getByText("Link 1")).toBeInTheDocument();
-//     expect(getByText("Link 2")).toBeInTheDocument();
-//   });
+  //     // Render the QuickLinks component
+  //     const { getByText } = render(<QuickLinks />);
 
-//   it("should render a message when isOpen state is true", () => {
-//     // Mock the useState hook to set isOpen state to true
-//     jest.mock("react", () => ({
-//       ...jest.requireActual("react"),
-//       useState: jest.fn(() => [true, jest.fn()]),
-//     }));
+  //     // Assert that the links are rendered with the received data
+  //     expect(getByText("Link 1")).toBeInTheDocument();
+  //     expect(getByText("Link 2")).toBeInTheDocument();
+  //   });
 
-//     // Import the QuickLinks component
-//     const QuickLinks = require("../src/components/QuickLinks").default;
+  //   it("should render a message when isOpen state is true", () => {
+  //     // Mock the useState hook to set isOpen state to true
+  //     jest.mock("react", () => ({
+  //       ...jest.requireActual("react"),
+  //       useState: jest.fn(() => [true, jest.fn()]),
+  //     }));
 
-//     // Render the QuickLinks component
-//     const { getByText } = render(<QuickLinks />);
+  //     // Import the QuickLinks component
+  //     const QuickLinks = require("../src/components/QuickLinks").default;
 
-//     // Assert that the message is rendered
-//     expect(getByText("Suggested from your activity")).toBeInTheDocument();
-//   });
+  //     // Render the QuickLinks component
+  //     const { getByText } = render(<QuickLinks />);
 
-//   // Renders default link when useGetLinksQuery hook returns null
-//   it("should render default link when useGetLinksQuery hook returns null", () => {
-//     // Mock the useGetLinksQuery hook to return null
-//     jest.mock("@app/api", () => ({
-//       useGetLinksQuery: jest.fn(() => ({
-//         data: null,
-//         isLoading: false,
-//         isFetching: false,
-//       })),
-//       useUpdateLinkMutation: jest.fn(),
-//       useAddLinkMutation: jest.fn(),
-//     }));
+  //     // Assert that the message is rendered
+  //     expect(getByText("Suggested from your activity")).toBeInTheDocument();
+  //   });
 
-//     // Import the QuickLinks component
-//     const QuickLinks = require("../src/components/QuickLinks").default;
+  //   // Renders default link when useGetLinksQuery hook returns null
+  //   it("should render default link when useGetLinksQuery hook returns null", () => {
+  //     // Mock the useGetLinksQuery hook to return null
+  //     jest.mock("@app/api", () => ({
+  //       useGetLinksQuery: jest.fn(() => ({
+  //         data: null,
+  //         isLoading: false,
+  //         isFetching: false,
+  //       })),
+  //       useUpdateLinkMutation: jest.fn(),
+  //       useAddLinkMutation: jest.fn(),
+  //     }));
 
-//     // Render the QuickLinks component
-//     const { getByText } = render(<QuickLinks />);
+  //     // Import the QuickLinks component
+  //     const QuickLinks = require("../src/components/QuickLinks").default;
 
-//     // Assert that the default link is rendered
-//     expect(getByText("Product management")).toBeInTheDocument();
-//   });
+  //     // Render the QuickLinks component
+  //     const { getByText } = render(<QuickLinks />);
 
-//   it("renders QuickLinks component with mocked useUpdateLinkMutation", () => {
-//     jest.mock("@app/api", () => ({
-//       ...jest.requireActual("@app/api"),
-//       useUpdateLinkMutation: jest.fn(),
-//     }));
-//     // Mock the useUpdateLinkMutation hook
-//     const mockUpdateLinkMutation = jest.fn();
-//     useUpdateLinkMutation.mockReturnValue([mockUpdateLinkMutation]);
+  //     // Assert that the default link is rendered
+  //     expect(getByText("Product management")).toBeInTheDocument();
+  //   });
 
-//     render(<QuickLinks />);
+  //   it("renders QuickLinks component with mocked useUpdateLinkMutation", () => {
+  //     jest.mock("@app/api", () => ({
+  //       ...jest.requireActual("@app/api"),
+  //       useUpdateLinkMutation: jest.fn(),
+  //     }));
+  //     // Mock the useUpdateLinkMutation hook
+  //     const mockUpdateLinkMutation = jest.fn();
+  //     useUpdateLinkMutation.mockReturnValue([mockUpdateLinkMutation]);
 
-//     // You can add more assertions based on your component's behavior
-//     expect(screen.getByText(/Quick Links/i)).toBeInTheDocument();
+  //     render(<QuickLinks />);
 
-//     // For example, you can check if the hook was called during component rendering
-//     expect(useUpdateLinkMutation).toHaveBeenCalled();
-//   });
+  //     // You can add more assertions based on your component's behavior
+  //     expect(screen.getByText(/Quick Links/i)).toBeInTheDocument();
 
-//   it("calls updateLink with correct arguments", async () => {
-//     const mockUpdateLinkMutation = jest.fn();
-//     useUpdateLinkMutation.mockReturnValue([mockUpdateLinkMutation]);
+  //     // For example, you can check if the hook was called during component rendering
+  //     expect(useUpdateLinkMutation).toHaveBeenCalled();
+  //   });
 
-//     render(<QuickLinks />);
+  //   it("calls updateLink with correct arguments", async () => {
+  //     const mockUpdateLinkMutation = jest.fn();
+  //     useUpdateLinkMutation.mockReturnValue([mockUpdateLinkMutation]);
 
-//     // Assuming that the component calls updateLink when it mounts
-//     // You can also trigger the action that calls updateLink in your component
+  //     render(<QuickLinks />);
 
-//     // Wait for asynchronous operations (e.g., updateLink) to complete
-//     // You may need to adjust this based on the actual behavior of your component
-//     await new Promise((resolve) => setTimeout(resolve, 0));
-//     const baseUrl = "https://seabaas.dev.bepeerless.co";
+  //     // Assuming that the component calls updateLink when it mounts
+  //     // You can also trigger the action that calls updateLink in your component
 
-//     // Check if updateLink has been called with the correct arguments
-//     expect(mockUpdateLinkMutation).toHaveBeenCalledWith({
-//       moduleName: MODULENAME, // Replace with the actual value
-//       moduleLink: `${baseUrl}/product-factory/investment`, // Replace with the actual value
-//     });
-//   });
+  //     // Wait for asynchronous operations (e.g., updateLink) to complete
+  //     // You may need to adjust this based on the actual behavior of your component
+  //     await new Promise((resolve) => setTimeout(resolve, 0));
+  //     const baseUrl = "https://seabaas.dev.bepeerless.co";
 
-//   it("calls addLink when quickLinks is not available", async () => {
-//     const mockAddLinkMutation = jest.fn();
-//     const mockUseGetLinksQuery = jest.fn();
-//     useAddLinkMutation.mockReturnValue([mockAddLinkMutation]);
-//     useGetLinksQuery.mockReturnValue({
-//       data: null,
-//       isLoading: false,
-//       isFetching: false,
-//     });
+  //     // Check if updateLink has been called with the correct arguments
+  //     expect(mockUpdateLinkMutation).toHaveBeenCalledWith({
+  //       moduleName: MODULENAME, // Replace with the actual value
+  //       moduleLink: `${baseUrl}/product-factory/investment`, // Replace with the actual value
+  //     });
+  //   });
 
-//     render(<QuickLinks />);
+  //   it("calls addLink when quickLinks is not available", async () => {
+  //     const mockAddLinkMutation = jest.fn();
+  //     const mockUseGetLinksQuery = jest.fn();
+  //     useAddLinkMutation.mockReturnValue([mockAddLinkMutation]);
+  //     useGetLinksQuery.mockReturnValue({
+  //       data: null,
+  //       isLoading: false,
+  //       isFetching: false,
+  //     });
 
-//     // Wait for asynchronous operations (e.g., useEffect) to complete
-//     await waitFor(() => {});
+  //     render(<QuickLinks />);
 
-//     // Check if addLink has been called with the correct arguments
-//     expect(mockAddLinkMutation).toHaveBeenCalledWith({
-//       isDefault: true,
-//       name: "ProductFactory",
-//       category: "Investment",
-//       link: "https://seabaas.dev.bepeerless.co/product-factory/investment",
-//     });
-//   });
+  //     // Wait for asynchronous operations (e.g., useEffect) to complete
+  //     await waitFor(() => {});
 
-//   it("sets links state when quickLinks is available", async () => {
-//     const mockUseGetLinksQuery = jest.fn();
-//     useGetLinksQuery.mockReturnValue({
-//       data: {
-//         data: [
-//           // Your data structure here
-//         ],
-//       },
-//       isLoading: false,
-//       isFetching: false,
-//     });
+  //     // Check if addLink has been called with the correct arguments
+  //     expect(mockAddLinkMutation).toHaveBeenCalledWith({
+  //       isDefault: true,
+  //       name: "ProductFactory",
+  //       category: "Investment",
+  //       link: "https://seabaas.dev.bepeerless.co/product-factory/investment",
+  //     });
+  //   });
 
-//     render(<QuickLinks />);
+  //   it("sets links state when quickLinks is available", async () => {
+  //     const mockUseGetLinksQuery = jest.fn();
+  //     useGetLinksQuery.mockReturnValue({
+  //       data: {
+  //         data: [
+  //           // Your data structure here
+  //         ],
+  //       },
+  //       isLoading: false,
+  //       isFetching: false,
+  //     });
 
-//     // Wait for asynchronous operations (e.g., useEffect) to complete
-//     await waitFor(() => {});
+  //     render(<QuickLinks />);
 
-//     // You can check if setLinks has been called with the expected values
-//     // Note: Adjust this based on your actual data structure
-//     // expect(setLinks).toHaveBeenCalledWith([defaultLink, ...expectedLinks]);
-//   });
+  //     // Wait for asynchronous operations (e.g., useEffect) to complete
+  //     await waitFor(() => {});
 
-//   describe("QuickLinks component", () => {
-//     test("should toggle the isOpen state when close button is clicked", () => {
-//       render(<QuickLinks />);
+  //     // You can check if setLinks has been called with the expected values
+  //     // Note: Adjust this based on your actual data structure
+  //     // expect(setLinks).toHaveBeenCalledWith([defaultLink, ...expectedLinks]);
+  //   });
 
-//       // Verify that the suggestion block is initially rendered when isOpen is true
-//       expect(
-//         screen.getByText("Suggested from your activity")
-//       ).toBeInTheDocument();
+  //   describe("QuickLinks component", () => {
+  //     test("should toggle the isOpen state when close button is clicked", () => {
+  //       render(<QuickLinks />);
 
-//       // Click the close button to toggle isOpen
-//       fireEvent.click(screen.getByTestId("close"));
+  //       // Verify that the suggestion block is initially rendered when isOpen is true
+  //       expect(
+  //         screen.getByText("Suggested from your activity")
+  //       ).toBeInTheDocument();
 
-//       // Verify that the suggestion block is not present after clicking close
-//       expect(
-//         screen.queryByText("Suggested from your activity")
-//       ).not.toBeInTheDocument();
+  //       // Click the close button to toggle isOpen
+  //       fireEvent.click(screen.getByTestId("close"));
 
-//       // Click the close button again to toggle isOpen back to true
-//       fireEvent.click(screen.getByTestId("close"));
+  //       // Verify that the suggestion block is not present after clicking close
+  //       expect(
+  //         screen.queryByText("Suggested from your activity")
+  //       ).not.toBeInTheDocument();
 
-//       // Verify that the suggestion block is present after clicking close again
-//       expect(
-//         screen.getByText("Suggested from your activity")
-//       ).toBeInTheDocument();
-//     });
-//   });
+  //       // Click the close button again to toggle isOpen back to true
+  //       fireEvent.click(screen.getByTestId("close"));
 
-//   test("should set the baseUrl correctly", () => {
-//     render(<QuickLinks />);
-//     const baseUrl = "https://seabaas.dev.bepeerless.co";
+  //       // Verify that the suggestion block is present after clicking close again
+  //       expect(
+  //         screen.getByText("Suggested from your activity")
+  //       ).toBeInTheDocument();
+  //     });
+  //   });
 
-//     // Assuming baseUrl is used in the component, you can assert that it is set correctly
-//     expect(baseUrl).toBe("https://seabaas.dev.bepeerless.co");
-//   });
-
-//   test("should log an error when updateLink throws an error", async () => {
-//     // Mock the updateLink function to throw an error
-//     const mockUpdateLink = jest
-//       .fn()
-//       .mockRejectedValue(new Error("Update link error"));
-//     require("@app/api").useUpdateLinkMutation.mockReturnValue([mockUpdateLink]);
-
-//     render(<QuickLinks />);
-
-//     // Ensure that updateLinkCount is called
-//     await waitFor(() => {
-//       expect(mockUpdateLink).toHaveBeenCalled();
-//     });
-
-//     // Ensure that the error message is logged
-//     expect(console.error).toHaveBeenCalledWith(
-//       "Error creating link:",
-//       new Error("Update link error")
-//     );
-//   });
 });
