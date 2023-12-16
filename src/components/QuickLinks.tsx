@@ -27,12 +27,6 @@ export default function QuickLinks() {
 
   const [addLink] = useAddLinkMutation();
   const baseUrl = "https://seabaas.dev.bepeerless.co";
-  // React.useEffect(() => {
-
-  //   return () => {
-  //     // Additional cleanup actions can be performed here
-  //   };
-  // }, []);
 
   useEffect(() => {
     console.log(isLoading, quickLinks)
