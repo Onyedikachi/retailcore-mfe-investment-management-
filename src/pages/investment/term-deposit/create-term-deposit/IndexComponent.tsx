@@ -237,8 +237,9 @@ export default function CreateTermDeposit() {
     step < termDepositFormSteps.length
       ? handleNext(step, setStep, termDepositFormSteps)
       : navigate(
-          `/product-factory/investment/term-deposit/${process}?id=${id}&stage=summary`
-        );
+        `/product-factory/investment/term-deposit/${process}?${id ? `id=${id}&` : ''}stage=summary`
+      );
+      
   }
 
   const handleDraft = () => {

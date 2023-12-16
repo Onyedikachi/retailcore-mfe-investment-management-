@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -182,6 +182,7 @@ export default function TableComponent<TableProps>({
   } = useContext(InvestmentContext);
   const [action, setAction] = useState("");
   const navigate = useNavigate();
+  const previousData = useRef({});
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [isDeactivationOpen, setIsDeactivationOpen] = useState(false);
@@ -195,11 +196,25 @@ export default function TableComponent<TableProps>({
   const notify = (toastMessage) => toast.error(toastMessage);
   // function getdata(item, key) {}
   const handleAction = (action, items) => {
-    console.log("🚀 ~ file: index.tsx:171 ~ handleAction ~ action:", action);
     setAction(action);
     setDetail(items);
     dropDownClick(action, items);
     setSubText("");
+    previousData.current = {
+      ...previousData.current,
+      productName: items?.productName,
+      prodType: items?.productType,
+      state: items?.state,
+      description: items?.description,
+      slogan: items?.slogan,
+      currency: items?.currency,
+      requestStatus: null,
+      requestType: null,
+      request: "",
+      initiatorId: "",
+      approved_By_Id: "",
+      date: new Date(),
+    };
 
     if (action.toLowerCase() === Actions.DEACTIVATE) {
       setConfirmText(Prompts.PRODUCT_DEACTIVATE);
@@ -298,7 +313,10 @@ export default function TableComponent<TableProps>({
       setIsDeactivationOpen(true);
     }
     if (action.toLowerCase() === Actions.ACTIVATE) {
-      activateProduct({ id: detail?.id });
+      activateProduct({
+        id: detail?.id,
+        recentlyUpdatedMeta: JSON.stringify(previousData),
+      });
     }
     if (action.toLowerCase() === Actions.MODIFY) {
       if (!permissions?.includes("CREATE_INVESTMENT_PRODUCT")) {
@@ -512,9 +530,9 @@ export default function TableComponent<TableProps>({
                                 </div>
                               }
                             >
-                             <div className="h-[10px] w-[10px] flex items-center justify-center cursor-pointer">
-                             <span className="absolute h-[6px] w-[6px] -right-[6px] top-[1px] rounded-full bg-[#CF2A2A]"></span>
-                             </div>
+                              <div className="h-[10px] w-[10px] flex items-center justify-center cursor-pointer">
+                                <span className="absolute h-[6px] w-[6px] -right-[6px] top-[1px] rounded-full bg-[#CF2A2A]"></span>
+                              </div>
                             </Tooltip>
                           )}{" "}
                         </div>

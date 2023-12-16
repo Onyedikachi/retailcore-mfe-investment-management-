@@ -8,7 +8,10 @@ import { useForm } from "react-hook-form";
 export function InputDivs({ children, label }) {
   return (
     <div className="flex gap-[10px] items-center">
-      <span data-testid="input-div" className="min-w-[250px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium">
+      <span
+        data-testid="input-div"
+        className="min-w-[250px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium"
+      >
         {label} <RedDot />
       </span>
       <div>{children}</div>
@@ -25,6 +28,7 @@ export default function AccountingEntriesAndEvents({
 }) {
   const [mapOptions, setMapOptions] = useState([]);
   const [clearFields, setClearField] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -64,15 +68,20 @@ export default function AccountingEntriesAndEvents({
       key: "InterestExpenseAccount",
     },
   ];
+
   // glMappingSchema
-  const handleClick = (key, menu, name, subname) => {
+  const handleClick = (key, submenu) => {
+    console.log(
+      "🚀 ~ file: accounting-entries-and-events.tsx:76 ~ handleClick ~ subname:",
+      submenu
+    );
     const data = {
-      accountName: subname,
-      accountId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      accountName: submenu.name,
+      accountId: submenu?.id,
       glAccountType: GlMappingOptions.find((i) => i.key === key)?.id,
     };
 
-    setValue(key, subname);
+    setValue(key, submenu?.name);
 
     if (!mapOptions.some((i) => i.glAccountType === data.glAccountType)) {
       setMapOptions([...mapOptions, data]);
@@ -80,7 +89,7 @@ export default function AccountingEntriesAndEvents({
       setMapOptions((prevMapOptions) =>
         prevMapOptions.map((i) =>
           i.glAccountType === data.glAccountType
-            ? { ...i, accountName: subname, accountId: data.accountId }
+            ? { ...i, accountName: submenu.name, accountId: data.accountId }
             : i
         )
       );
@@ -103,10 +112,6 @@ export default function AccountingEntriesAndEvents({
     }
   }, [values, mapOptions]);
 
-  // useEffect(() => {
-  //   trigger();
-  // }, []);
-
   const handleClear = () => {
     setClearField(!clearFields);
     setMapOptions([]);
@@ -127,7 +132,11 @@ export default function AccountingEntriesAndEvents({
     }
   }, [setValue, formData]);
   return (
-    <form id="entriesandevents" data-testid="entriesandevents" onSubmit={handleSubmit(onProceed)}>
+    <form
+      id="entriesandevents"
+      data-testid="entriesandevents"
+      onSubmit={handleSubmit(onProceed)}
+    >
       <div>
         <div
           style={{
