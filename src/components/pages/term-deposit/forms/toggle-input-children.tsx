@@ -17,13 +17,6 @@ export default function ToggleInputChildren({
   register
 }) {
   const [isOpen, setIsOpen] = useState(false);
-
-  React.useEffect(() => {
-    console.log("default value ==" + defaultValue)
-    if (defaultValue !== null) {
-      setIsOpen(defaultValue);
-    }
-  }, [defaultValue]);
   return (
     <div
       style={{

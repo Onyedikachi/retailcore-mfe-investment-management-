@@ -218,29 +218,8 @@ export const handlers = [
       );
     }
   }),
-
-  rest.get(
-    `https://utilities-api.dev.bepeerless.co/v1/quick-link/all`,
-    (req, res, ctx) => {
-      // const { filter } = req.params;
-      // Simulate different responses based on the investmentId
-      if (ctx.status == 200) {
-        return res(ctx.json(response.requestAnalyticsResponse));
-      } else {
-        return res(
-          ctx.status(500),
-          ctx.json({
-            status: "error",
-            error: "Something went wrong",
-          })
-        );
-      }
-    }
-  ),
-
-
   rest.post(
-    `https://utilities-api.dev.bepeerless.co/v1/quick-link`,
+    `https://utilities-api.dev.bepeerless.co/v1/quick-link/all/ProductFactory`,
     (req, res, ctx) => {
       // const { filter } = req.params;
       // Simulate different responses based on the investmentId
@@ -257,10 +236,11 @@ export const handlers = [
       }
     }
     ),
-    rest.get(`https://utilities-api.dev.bepeerless.co/v1/product/product-details/id=0192e82c-3784-4dee-a113-6d113d33eb01`,
+    rest.get(`https://retailcore-investment-management-api.dev.bepeerless.co/v1/product/product-details`,
     (req, res, ctx) => {
-      if (req!=null) {
-        return res(ctx.json({data: "heyy"}));
+
+      if (req.id !== null ) {
+        return res(ctx.json(response.getProductDetailResponseOne));
       } else {
         return res(
           ctx.status(500),

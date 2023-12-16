@@ -27,6 +27,74 @@ export function Container({ children }) {
     </div>
   );
 }
+
+export const handleSuccessMessage = (isSuccess, setSuccessText, setIsSuccessOpen, role) => {
+  setSuccessText(
+    role === "superadmin"
+      ? isSuccess
+        ? Messages.PRODUCT_CREATE_SUCCESS
+        : Messages.PRODUCT_MODIFY_SUCCESS
+      : Messages.ADMIN_PRODUCT_CREATE_SUCCESS
+  );
+  setIsSuccessOpen(true);
+}
+
+export const handleErrorMessage = (error, modifyError, modifyRequestError, isError, setFailedText, setFailedSubtext, setFailed) => {
+  setFailedText(
+    isError
+      ? Messages.ADMIN_PRODUCT_CREATE_FAILED
+      : Messages.ADMIN_PRODUCT_MODIFY_FAILED
+  );
+  setFailedSubtext(
+    error?.message?.message ||
+    modifyError?.message?.message ||
+    modifyRequestError?.message?.message ||
+    error?.message?.Message ||
+    modifyError?.message?.Message ||
+    modifyRequestError?.message?.Message
+  );
+  setFailed(true);
+}
+
+export const cancelProcess = (process, setConfirmText, setIsConfirmOpen) => {
+  if (process === "create") {
+    setConfirmText(Prompts.CANCEL_CREATION);
+  }
+  if (process === "modify" || process === "withdraw_modify") {
+    setConfirmText(Prompts.CANCEL_MODIFICATION);
+  }
+  if (process === "verdict" || process === "continue") {
+    setConfirmText(Prompts.CANCEL_PROCESS);
+  }
+  setIsConfirmOpen(true);
+  return;
+}
+
+export const submitForm = (formData, modifyProduct, modifyRequest, createProduct, process, id, previousData) => {
+  if (process === "modify") {
+    modifyProduct({
+      ...formData,
+      isDraft: false,
+      id,
+      recentlyUpdatedMeta: JSON.stringify(previousData),
+    });
+  }
+  if (process === "withdraw_modify") {
+    modifyRequest({
+      ...formData,
+      isDraft: false,
+      id,
+      recentlyUpdatedMeta: JSON.stringify(previousData),
+    });
+  }
+
+  if (process === "create" || process === "continue" || process === "clone") {
+    createProduct({ ...formData, isDraft: false });
+  }
+
+  // navigate(paths.INVESTMENT_DASHBOARD);
+}
+
 export default function Preview({ formData, previousData = null }: any) {
   const { role } = useContext(AppContext);
   const navigate = useNavigate();
@@ -44,6 +112,7 @@ export default function Preview({ formData, previousData = null }: any) {
   const [failedText, setFailedText] = useState("");
 
   const [state, setState] = useState();
+
 
   const { data: activityData, isLoading: activityIsLoading } =
     useGetProductActivityLogQuery(
@@ -64,7 +133,6 @@ export default function Preview({ formData, previousData = null }: any) {
       error: modifyError,
     },
   ] = useModifyProductMutation();
-
   const [
     modifyRequest,
     {
@@ -75,73 +143,20 @@ export default function Preview({ formData, previousData = null }: any) {
     },
   ] = useModifyRequestMutation();
 
+
   const handleModify = () => {
     navigate(-1);
   };
-  const handleCancel = () => {
-    if (process === "create") {
-      setConfirmText(Prompts.CANCEL_CREATION);
-    }
-    if (process === "modify" || process === "withdraw_modify") {
-      setConfirmText(Prompts.CANCEL_MODIFICATION);
-    }
-    if (process === "verdict" || process === "continue") {
-      setConfirmText(Prompts.CANCEL_PROCESS);
-    }
-    setIsConfirmOpen(true);
-    return;
-  };
-  const handleSubmit = () => {
-    if (process === "modify") {
-      modifyProduct({
-        ...formData,
-        isDraft: false,
-        id,
-        recentlyUpdatedMeta: JSON.stringify(previousData),
-      });
-    }
-    if (process === "withdraw_modify") {
-      modifyRequest({
-        ...formData,
-        isDraft: false,
-        id,
-        recentlyUpdatedMeta: JSON.stringify(previousData),
-      });
-    }
+  const handleCancel = () => cancelProcess(process, setConfirmText, setIsConfirmOpen);
 
-    if (process === "create" || process === "continue" || process === "clone") {
-      createProduct({ ...formData, isDraft: false });
-    }
-
-    // navigate(paths.INVESTMENT_DASHBOARD);
-  };
+  const handleSubmit = () => submitForm(formData, modifyProduct, modifyRequest, createProduct, process, id, previousData);
   useEffect(() => {
     if (isSuccess || modifySuccess || modifyRequestSuccess) {
-      setSuccessText(
-        role === "superadmin"
-          ? isSuccess
-            ? Messages.PRODUCT_CREATE_SUCCESS
-            : Messages.PRODUCT_MODIFY_SUCCESS
-          : Messages.ADMIN_PRODUCT_CREATE_SUCCESS
-      );
-      setIsSuccessOpen(true);
+      handleSuccessMessage(isSuccess, setSuccessText, setIsSuccessOpen, role)
     }
 
     if (isError || modifyIsError || modifyRequestIsError) {
-      setFailedText(
-        isError
-          ? Messages.ADMIN_PRODUCT_CREATE_FAILED
-          : Messages.ADMIN_PRODUCT_MODIFY_FAILED
-      );
-      setFailedSubtext(
-        error?.message?.message ||
-          modifyError?.message?.message ||
-          modifyRequestError?.message?.message ||
-          error?.message?.Message ||
-          modifyError?.message?.Message ||
-          modifyRequestError?.message?.Message
-      );
-      setFailed(true);
+      handleErrorMessage(error, modifyError, modifyRequestError, isError, setFailedText, setFailedSubtext, setFailed)
     }
   }, [
     isSuccess,

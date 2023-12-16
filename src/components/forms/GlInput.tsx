@@ -34,6 +34,10 @@ export default function EntriesAndEventsSearchResults({
     isFetching,
   } = useGetLedgersQuery({ gl_class: classId }, { skip: !classId });
 
+  useEffect(() => {
+    console.log(toggleMenu);
+  }, [toggleMenu])
+
   const GlMappingOptions = [
     {
       id: 0,
@@ -88,6 +92,7 @@ export default function EntriesAndEventsSearchResults({
       <div className="w-full" data-testid="gli">
         <div className="relative bg-[#fff] w-full">
           <div
+            data-testid="open-button"
             className="flex items-center  border-b border-[#8F8F8F]"
             onClick={() => setOpen(!isOpen)}
           >
@@ -104,7 +109,7 @@ export default function EntriesAndEventsSearchResults({
           </div>
           {isOpen && (
             <div className="flex flex-col shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]  p-4 rounded-b-lg top-[35px] bg-white z-[400] absolute w-full min-w-[360px]">
-              <div className="flex justify-between mb-3">
+              <div data-testid="glclasses" className="flex justify-between mb-3">
                 {glClass.map((item) => (
                   <div
                     key={item.id}
