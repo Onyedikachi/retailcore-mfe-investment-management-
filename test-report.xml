@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/QuickLinks.test.tsx">
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/modals/ProductDetail.test.tsx">
+    <testCase name="ProductDetail Should show product data when available" duration="357"/>
+    <testCase name="ProductDetail Show spinner when loading" duration="92"/>
+    <testCase name="ProductDetail Shows nothng when setOpen is false" duration="29"/>
   </file>
 </testExecutions>
