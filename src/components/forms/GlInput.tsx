@@ -34,6 +34,10 @@ export default function EntriesAndEventsSearchResults({
     isFetching,
   } = useGetLedgersQuery({ gl_class: classId }, { skip: !classId });
 
+  useEffect(() => {
+    console.log(toggleMenu);
+  }, [toggleMenu])
+
   const GlMappingOptions = [
     {
       id: 0,
