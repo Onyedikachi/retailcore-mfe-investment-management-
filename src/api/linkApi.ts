@@ -25,6 +25,8 @@ export const linkApi = createApi({
   endpoints: (builder) => ({
     getLinks: builder.query<any, any>({
       query: () => {
+        console.log(MODULENAME);
+        
         return {
           url: `/quick-link/all/${MODULENAME}`,
           method: "get",
