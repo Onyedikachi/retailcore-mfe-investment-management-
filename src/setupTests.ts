@@ -12,7 +12,7 @@ configure({ adapter: new Adapter() });
 const mockstore = store();
 
 // Establish API mocking before all tests.
-beforeAll(() => {
+beforeEach(() => {
   server.listen();
 });
 
@@ -27,4 +27,4 @@ afterEach(() => {
 });
 
 // Clean up after the tests are finished.
-afterAll(() => server.close());
+afterEach(() => server.close());

@@ -5,7 +5,8 @@ import { REHYDRATE } from "redux-persist";
 import {MODULENAME} from '@app/constants'
 export const linkApi = createApi({
   reducerPath: "linkApi",
-  baseQuery: fetchBaseQuery({
+  baseQuery: process.env.NODE_ENV === "test" &&
+  fetchBaseQuery({
     baseUrl: `https://utilities-api.dev.bepeerless.co/v1`,
     prepareHeaders: (headers) => {
       const token = getToken();

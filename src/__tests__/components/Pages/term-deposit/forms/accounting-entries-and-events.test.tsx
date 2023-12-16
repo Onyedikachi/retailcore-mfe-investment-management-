@@ -1,7 +1,6 @@
 import React from 'react'
 import { fireEvent, render, screen, waitFor, act } from "@testing-library/react";
 import AccountingEntriesAndEvents, { InputDivs } from '../../../../../components/pages/term-deposit/forms/accounting-entries-and-events'
-import { act } from 'react-dom/test-utils';
 import { renderWithProviders } from '../../../../../utils/test-util';
 
 describe('AccountingEntriesAndEvents', () => {

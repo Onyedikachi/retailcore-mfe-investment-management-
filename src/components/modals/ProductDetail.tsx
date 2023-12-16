@@ -42,8 +42,8 @@ export default function ProductDetail({
   const { permissions } = useContext(AppContext);
 
   useEffect(() => {
-    console.log(isLoading)
-  }, [isLoading])
+    console.log(productData, isLoading, "Yo")
+  }, [productData])
 
   React.useEffect(() => {
 
@@ -202,8 +202,8 @@ export default function ProductDetail({
                     )}
                   </div>
 
-                  <Link
-                    to={`/product-factory/investment/${encodeURIComponent(
+                  <a
+                    href={`/product-factory/investment/${encodeURIComponent(
                       "term deposit"
                     )}/process-summary/preview/${productData?.data.id}?category=product`}
                   >
@@ -212,7 +212,7 @@ export default function ProductDetail({
                     >
                       View Activity Log
                     </button>
-                  </Link>
+                  </a>
                 </div>
               </div>
               <div className="border border-[#E5E9EB] rounded-lg py-[25px] px-[30px] h-[593px]">
