@@ -7,15 +7,63 @@ import {
   useAddLinkMutation,
 } from "@app/api";
 
+const defaultLink = {
+  isDefault: true,
+  count: 1,
+  name: "Product management",
+  category: "ProductManagement",
+  link: "product-management",
+};
+
+export const handleLinks = (quickLinks, isLinksQuerySuccessful, baseUrl, setLinks, addLink, updateLink, defaultLink) => {
+  if (isLinksQuerySuccessful) {
+    const moduleName = "Product Factory";
+    const moduleLink = `product-factory/investment`;
+    //get
+    if (quickLinks && quickLinks.data && quickLinks.data.length > 0) {
+      setLinks([defaultLink, ...quickLinks.data]);
+      
+    }
+    console.log("effect")
+    //check if quickLinks has link of this page
+    const hasPageLink =
+      quickLinks && quickLinks.data
+        ? quickLinks?.data.some(
+            (link) => link.link === `${baseUrl}/product-factory/investment`
+          )
+        : false;
+   
+
+    //add
+
+    if (
+      (quickLinks && !quickLinks.data) ||
+      quickLinks?.data?.length === 0 ||
+      !hasPageLink
+    ) {
+      addLink([
+        {
+          link: `product-factory/investment`,
+          name: "Product Factory",
+          category: "ProductFactory",
+
+          isDefault: true,
+        },
+      ]);
+    }
+    //update
+    if (hasPageLink) {
+      updateLink({
+        moduleName,
+        moduleLink,
+      });
+    }
+  }
+}
+
+
 export default function QuickLinks() {
-    const [isOpen, setIsOpen] = useState(true);
-  const defaultLink = {
-    isDefault: true,
-    count: 1,
-    name: "Product management",
-    category: "ProductManagement",
-    link: "product-management",
-  };
+  const [isOpen, setIsOpen] = useState(true);
   const [links, setLinks] = useState([defaultLink]);
   const {
     data: quickLinks,
@@ -29,49 +77,50 @@ export default function QuickLinks() {
   const baseUrl = "https://seabaas.dev.bepeerless.co";
   
   React.useEffect(() => {
-    if (isLinksQuerySuccessful) {
-      const moduleName = "Product Factory";
-      const moduleLink = `product-factory/investment`;
-      //get
-      if (quickLinks && quickLinks.data && quickLinks.data.length > 0) {
-        setLinks([defaultLink, ...quickLinks.data]);
+    handleLinks(quickLinks, isLinksQuerySuccessful, baseUrl, setLinks, addLink, updateLink, defaultLink);
+    // if (isLinksQuerySuccessful) {
+    //   const moduleName = "Product Factory";
+    //   const moduleLink = `product-factory/investment`;
+    //   //get
+    //   if (quickLinks && quickLinks.data && quickLinks.data.length > 0) {
+    //     setLinks([defaultLink, ...quickLinks.data]);
         
-      }
-      console.log("effect")
-      //check if quickLinks has link of this page
-      const hasPageLink =
-        quickLinks && quickLinks.data
-          ? quickLinks?.data.some(
-              (link) => link.link === `${baseUrl}/product-factory/investment`
-            )
-          : false;
+    //   }
+    //   console.log("effect")
+    //   //check if quickLinks has link of this page
+    //   const hasPageLink =
+    //     quickLinks && quickLinks.data
+    //       ? quickLinks?.data.some(
+    //           (link) => link.link === `${baseUrl}/product-factory/investment`
+    //         )
+    //       : false;
      
 
-      //add
+    //   //add
 
-      if (
-        (quickLinks && !quickLinks.data) ||
-        quickLinks?.data?.length === 0 ||
-        !hasPageLink
-      ) {
-        addLink([
-          {
-            link: `product-factory/investment`,
-            name: "Product Factory",
-            category: "ProductFactory",
+    //   if (
+    //     (quickLinks && !quickLinks.data) ||
+    //     quickLinks?.data?.length === 0 ||
+    //     !hasPageLink
+    //   ) {
+    //     addLink([
+    //       {
+    //         link: `product-factory/investment`,
+    //         name: "Product Factory",
+    //         category: "ProductFactory",
 
-            isDefault: true,
-          },
-        ]);
-      }
-      //update
-      if (hasPageLink) {
-        updateLink({
-          moduleName,
-          moduleLink,
-        });
-      }
-    }
+    //         isDefault: true,
+    //       },
+    //     ]);
+    //   }
+    //   //update
+    //   if (hasPageLink) {
+    //     updateLink({
+    //       moduleName,
+    //       moduleLink,
+    //     });
+    //   }
+    // }
   }, [quickLinks]);
   return (
     <div data-testid='quick-links' className="border border-[#E5E9EB] rounded-lg bg-white px-[13px] py-8 w-[300px]">
