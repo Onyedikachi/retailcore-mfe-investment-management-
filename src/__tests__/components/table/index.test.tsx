@@ -22,9 +22,9 @@ import { store } from "../../../__mocks__/api/store-mock";
 import * as hooks from '../../../api';
 import { handleChange } from "../../../components/forms/ComboSelect";
 class ResizeObserver {
-  observe() {}
-  unobserve() {}
-  disconnect() {}
+  observe() { }
+  unobserve() { }
+  disconnect() { }
 }
 
 const navigate = jest.fn();
@@ -149,13 +149,13 @@ describe("TableComponent", () => {
           tableRows={tableRows}
           page={1}
           total={3}
-          fetchMoreData={() => {}}
+          fetchMoreData={() => { }}
           hasMore={true}
-          getOptionData={() => {}}
+          getOptionData={() => { }}
           isLoading={false}
           dropDownOptions={[]}
-          dropDownClick={() => {}}
-          onChangeDate={() => {}}
+          dropDownClick={() => { }}
+          onChangeDate={() => { }}
         />
       </Provider>
     );
@@ -173,7 +173,7 @@ describe("TableComponent", () => {
   it("should display a loading indicator when data is being fetched", () => {
     // Arrange
     const headers = [{ label: "Name", key: "name" }];
-    
+
     const tableRows = [];
 
     render(
@@ -183,13 +183,13 @@ describe("TableComponent", () => {
           tableRows={tableRows}
           page={1}
           total={0}
-          fetchMoreData={() => {}}
+          fetchMoreData={() => { }}
           hasMore={true}
-          getOptionData={() => {}}
+          getOptionData={() => { }}
           isLoading={true}
           dropDownOptions={[]}
-          dropDownClick={() => {}}
-          onChangeDate={() => {}}
+          dropDownClick={() => { }}
+          onChangeDate={() => { }}
         />
       </Provider>
     );
@@ -409,27 +409,27 @@ describe("ActionsCellContent", () => {
 });
 
 describe("handleUpdated", () => {
-  const options = [
-    {
-      id: 1,
-      name: "active",
-      value: 2,
-    },
-    {
-      id: 2,
-      name: "inactive",
-      value: 1,
-    },
-  ];
-  it("return without errors", () => {
-    expect(() => {handleUpdated(null, null, null)}).not.toThrowError();
+  const d = { "productName": "Draft Box updated", "prodType": 0, "state": 2, "description": "Draft description example update", "slogan": "Draft slogan updat", "currency": "NGN", "requestStatus": null, "requestType": null, "request": "", "initiatorId": "", "approved_By_Id": "", "date": "2023-12-15T13:22:31.426Z" }
+  it("should return time of update if value was updated", () => {
+    expect(handleUpdated("productName", "Draft Bx updated", JSON.stringify(d)))
+      .toBe(`Updated on ${moment(new Date).format("DD MMM YYYY, hh:mm A")}`)
+  })
+  it("should not return time of update if value was not updated", () => {
+    expect(handleUpdated("productName", "Draft Box updated", JSON.stringify(d)))
+      .toBeNull();
+  })
+  it("should handle change of state value", () => {
+    expect(handleUpdated("state", 3, JSON.stringify(d)))
+      .toBe(`Updated on ${moment(new Date).format("DD MMM YYYY, hh:mm A")}`)
   })
 
-  it("should return null when provided with invalid values", () => {
-    expect(handleUpdated("mykey", null, options)).toBeUndefined();
+  it("should handle non change of state value", () => {
+    expect(handleUpdated("state", 2, JSON.stringify(d)))
+      .toBeNull();
   })
 
-  it("Should return undefined when there's no key", () => {
-    expect(handleUpdated(null, "state", options)).toBeUndefined();
+  it("Should return nothing when value is null", () => {
+    expect(handleUpdated(null, "Draft Box updated", JSON.stringify(d)))
+      .toBeUndefined();
   })
 })

@@ -52,18 +52,24 @@ interface TableProps {
 }
 export function handleUpdated(key, value, options) {
   if (!options || !value) return;
-
+  
   const parseOptions = JSON.parse(options);
+    console.log(`
+    key : ${key};
+    value: ${value};
+    options: ${options};
+    `)
   if (!parseOptions[key]) return;
-
   if (key === "state") {
     const newState = ActiveFilterOptions.find(
       (n) => parseOptions[key] === n.value
     )?.name;
 
+    
     if (newState === value) return null;
   }
-
+  
+  console.log(`newState = ${value}`)
   return value !== parseOptions[key]
     ? `Updated on ${moment(parseOptions[key]?.date).format(
         "DD MMM YYYY, hh:mm A"
