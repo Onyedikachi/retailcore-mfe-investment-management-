@@ -313,10 +313,6 @@ export default function TableComponent<TableProps>({
       setIsDeactivationOpen(true);
     }
     if (action.toLowerCase() === Actions.ACTIVATE) {
-      console.log(
-        "🚀 ~ file: index.tsx:319 ~ handleConfirm ~ previousData:",
-        previousData
-      );
       activateProduct({
         id: detail?.id,
         recentlyUpdatedMeta: JSON.stringify(previousData),
