@@ -42,6 +42,7 @@ describe("ProductInformation", () => {
     expect(getByTestId('product-name')).toBeInTheDocument();
     expect(getByTestId('investment-slogan')).toBeInTheDocument();
     expect(getByTestId('product-description')).toBeInTheDocument();
+    
   });
 
 
@@ -101,11 +102,25 @@ describe("ProductInformation", () => {
 
     const { getByTestId, getByText } = renderWithProviders(<ProductInformation activeId={{ current: "3456" }} proceed={jest.fn()} formData={fData} setDisabled={jest.fn()} setFormData={jest.fn()} initiateDraft={undefined} />)
     const productNameInput = getByTestId('product-name');
-
+    
     // Action
     act(() => {
       fireEvent.change(productNameInput, { target: { value: 'This is a very long product name that exceeds the character limit.... I believe It does, It should by now' } });
     })
     expect(getByTestId('product-name-char-count')).toHaveTextContent('50/50');
   });
+  
+  it("Should show error when invalid name is typed", async () => {
+    const { getByTestId, getByText, findByText } = renderWithProviders(<ProductInformation activeId={{ current: "3456" }} proceed={jest.fn()} formData={fData} setDisabled={jest.fn()} setFormData={jest.fn()} initiateDraft={undefined} />)
+    const productName = getByTestId("product-name")
+    await user.type(productName, "ju&");
+    getByText("Product name is required")
+  })
+  
+  it("Should show error when description is too short", async() => {
+    const { getByTestId, getByText, findByText } = renderWithProviders(<ProductInformation activeId={{ current: "3456" }} proceed={jest.fn()} formData={fData} setDisabled={jest.fn()} setFormData={jest.fn()} initiateDraft={undefined} />)
+    const productDescriptionInput = getByTestId("product-description");
+    await user.type(productDescriptionInput, "ju");
+    expect(getByText("Minimum of 4 chars")).toBeInTheDocument();
+  })
 })
