@@ -166,9 +166,6 @@ export const investmentApi: any = createApi({
     getProductDetail: builder.query<any, any>({
       query: (data) => {
         if (!data.id) return;
-        console.log(`${urls.PRODUCT_DETAILS}?${new URLSearchParams(
-          cleanObject(data)
-        )}`)
         return {
           url: `${urls.PRODUCT_DETAILS}?${new URLSearchParams(
             cleanObject(data)

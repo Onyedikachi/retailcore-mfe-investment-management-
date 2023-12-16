@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
   <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/product-information.test.tsx">
-    <testCase name="ProductInformation should render the form without errors" duration="334"/>
-    <testCase name="ProductInformation Changes values" duration="323"/>
-    <testCase name="ProductInformation values should not exceed limit when user tries to type beyond limit" duration="5011">
+    <testCase name="ProductInformation should render the form without errors" duration="291"/>
+    <testCase name="ProductInformation Changes values" duration="313"/>
+    <testCase name="ProductInformation values should not exceed limit when user tries to type beyond limit" duration="5094">
       <failure message="Error: thrown: &quot;Exceeded timeout of 5000 ms for a test."><![CDATA[Error: thrown: "Exceeded timeout of 5000 ms for a test.
 Use jest.setTimeout(newTimeout) to increase the timeout value, if this is a long-running test."
     at /Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/product-information.test.tsx:62:3
@@ -19,10 +19,10 @@ Use jest.setTimeout(newTimeout) to increase the timeout value, if this is a long
     at runTest (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-runner/build/runTest.js:475:34)
     at Object.worker (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-runner/build/testWorker.js:133:12)]]></failure>
     </testCase>
-    <testCase name="ProductInformation should update character count for product name in real-time" duration="83"/>
-    <testCase name="ProductInformation should display negative character count message for product name with more than 50 characters" duration="52"/>
-    <testCase name="ProductInformation Should show error when invalid name is typed" duration="139"/>
-    <testCase name="ProductInformation Should show error when description is too short" duration="139">
+    <testCase name="ProductInformation should update character count for product name in real-time" duration="112"/>
+    <testCase name="ProductInformation should display negative character count message for product name with more than 50 characters" duration="35"/>
+    <testCase name="ProductInformation Should show error when invalid name is typed" duration="81"/>
+    <testCase name="ProductInformation Should show error when description is too short" duration="91">
       <failure message="TestingLibraryElementError: Unable to find an element with the text: Minimum of 4 chars. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible."><![CDATA[TestingLibraryElementError: Unable to find an element with the text: Minimum of 4 chars. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
 
 Ignored nodes: comments, script, style

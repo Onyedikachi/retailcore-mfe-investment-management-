@@ -218,29 +218,8 @@ export const handlers = [
       );
     }
   }),
-
-  rest.get(
-    `https://utilities-api.dev.bepeerless.co/v1/quick-link/all`,
-    (req, res, ctx) => {
-      // const { filter } = req.params;
-      // Simulate different responses based on the investmentId
-      if (ctx.status == 200) {
-        return res(ctx.json(response.requestAnalyticsResponse));
-      } else {
-        return res(
-          ctx.status(500),
-          ctx.json({
-            status: "error",
-            error: "Something went wrong",
-          })
-        );
-      }
-    }
-  ),
-
-
   rest.post(
-    `https://utilities-api.dev.bepeerless.co/v1/quick-link`,
+    `https://utilities-api.dev.bepeerless.co/v1/quick-link/all/ProductFactory`,
     (req, res, ctx) => {
       // const { filter } = req.params;
       // Simulate different responses based on the investmentId
