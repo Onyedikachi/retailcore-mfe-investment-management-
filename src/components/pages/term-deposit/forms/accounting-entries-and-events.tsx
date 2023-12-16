@@ -71,10 +71,6 @@ export default function AccountingEntriesAndEvents({
 
   // glMappingSchema
   const handleClick = (key, submenu) => {
-    console.log(
-      "🚀 ~ file: accounting-entries-and-events.tsx:76 ~ handleClick ~ subname:",
-      submenu
-    );
     const data = {
       accountName: submenu.name,
       accountId: submenu?.id,

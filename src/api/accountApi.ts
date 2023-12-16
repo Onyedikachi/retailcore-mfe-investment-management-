@@ -35,7 +35,6 @@ export const accountApi: any = createApi({
     }),
     getLedgers: builder.query<any, any>({
       query: (data) => {
-        console.log("🚀 ~ file: accountApi.ts:35 ~ data:", data)
         return {
           url: `accounting/gl/leaf-ledgers/?${new URLSearchParams(
             cleanObject(data)

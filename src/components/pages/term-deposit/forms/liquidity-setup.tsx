@@ -83,16 +83,9 @@ export default function LiquiditySetup({
     setChargeOptions(options);
   }, [chargesData]);
   useEffect(() => {
-    console.log(
-      "🚀 ~ file: liquidity-setup.tsx:86 ~ useEffect ~  formData.part_SpecificCharges:",
-      formData.part_SpecificCharges
-    );
   }, [formData]);
 
   function handleSelected({ inputName, selectedOptions }) {
-    console.log("🚀 ~ file: liquidity-setup.tsx:93 ~ handleSelected ~ inputName:", inputName)
-    
-    console.log("🚀 ~ file: liquidity-setup.tsx:93 ~ handleSelected ~ selectedOptions:", selectedOptions)
     if (inputName === "part_SpecificCharges") {
       setPartOptionCharges(selectedOptions);
       setValue("part_SpecificCharges", selectedOptions);
@@ -105,14 +98,11 @@ export default function LiquiditySetup({
   }
 
   function onProceed(d: any) {
-    
-    console.log("🚀 ~ file: liquidity-setup.tsx:108 ~ onProceed ~ partOptionCharges:", partOptionCharges)
     setFormData({
       ...d,
       early_SpecificCharges: earlyOptionCharges,
       part_SpecificCharges: partOptionCharges,
     });
-      console.log("🚀 ~ file: liquidity-setup.tsx:115 ~ onProceed ~ partOptionCharges:", partOptionCharges)
     proceed();
   }
   const values = getValues();

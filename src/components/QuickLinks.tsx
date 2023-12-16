@@ -23,16 +23,13 @@ export const handleLinks = (quickLinks, isLinksQuerySuccessful, baseUrl, setLink
     if (quickLinks && quickLinks.data && quickLinks.data.length > 0) {
       setLinks([defaultLink, ...quickLinks.data]);
     }
-    //check if quickLinks has link of this page
+    
     const hasPageLink =
       quickLinks && quickLinks.data
         ? quickLinks?.data.some(
             (link) => link.link === `${baseUrl}/product-factory/investment`
           )
         : false;
-      
-    console.log(hasPageLink, "hasPageLink")
-    //add
 
     if (
       (quickLinks && !quickLinks.data) ||
