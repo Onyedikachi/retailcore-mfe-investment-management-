@@ -12,6 +12,7 @@ import TableComponent, {
   TextCellContent,
   UpdatedOnCellContent,
   handleProductsDropdown,
+  handleUpdated,
 } from "../../../components/table";
 import { FaBars } from "react-icons/fa";
 import { shallow } from "enzyme";
@@ -19,6 +20,7 @@ import { handleColorState, handleUserView } from "../../../utils";
 import { Provider } from "react-redux";
 import { store } from "../../../__mocks__/api/store-mock";
 import * as hooks from '../../../api';
+import { handleChange } from "../../../components/forms/ComboSelect";
 class ResizeObserver {
   observe() {}
   unobserve() {}
@@ -405,3 +407,29 @@ describe("ActionsCellContent", () => {
     expect(screen.queryByText("Option 2")).not.toBeInTheDocument();
   });
 });
+
+describe("handleUpdated", () => {
+  const options = [
+    {
+      id: 1,
+      name: "active",
+      value: 2,
+    },
+    {
+      id: 2,
+      name: "inactive",
+      value: 1,
+    },
+  ];
+  it("return without errors", () => {
+    expect(() => {handleUpdated(null, null, null)}).not.toThrowError();
+  })
+
+  it("should return null when provided with invalid values", () => {
+    expect(handleUpdated("mykey", null, options)).toBeUndefined();
+  })
+
+  it("Should return undefined when there's no key", () => {
+    expect(handleUpdated(null, "state", options)).toBeUndefined();
+  })
+})
