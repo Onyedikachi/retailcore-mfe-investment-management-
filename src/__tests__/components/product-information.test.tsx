@@ -121,6 +121,6 @@ describe("ProductInformation", () => {
     const { getByTestId, getByText, findByText } = renderWithProviders(<ProductInformation activeId={{ current: "3456" }} proceed={jest.fn()} formData={fData} setDisabled={jest.fn()} setFormData={jest.fn()} initiateDraft={undefined} />)
     const productDescriptionInput = getByTestId("product-description");
     await user.type(productDescriptionInput, "ju");
-    expect(getByText("Minimum of 4 chars")).toBeInTheDocument();
+    expect(await findByText("Minimum of 4 chars")).toBeInTheDocument();
   })
 })
