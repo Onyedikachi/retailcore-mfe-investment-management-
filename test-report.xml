@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/modals/ProductDetail.test.tsx">
-    <testCase name="ProductDetail Should show product data when available" duration="357"/>
-    <testCase name="ProductDetail Show spinner when loading" duration="92"/>
-    <testCase name="ProductDetail Shows nothng when setOpen is false" duration="29"/>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/SearchInput.test.tsx">
+    <testCase name="handleInputChange should call setInputValue with the event target value" duration="12"/>
+    <testCase name="SearchInput should render search input field with default props" duration="41"/>
+    <testCase name="SearchInput applies custom CSS classes" duration="8"/>
+    <testCase name="SearchInput should update input field when user inputs a search term" duration="12"/>
+    <testCase name="SearchInput should update input field when user inputs a search term and isTruncated is true" duration="9"/>
+    <testCase name="closeBox should set search results to an empty array" duration="2"/>
+    <testCase name="closeBox should set show box state to false" duration="2"/>
+    <testCase name="closeBox should handle setSearchResults parameter not being a function" duration="26"/>
+    <testCase name="closeBox should handle setShowBox parameter not being a function" duration="3"/>
+    <testCase name="closeBox should handle multiple calls in a row" duration="2"/>
+    <testCase name="SearchValues should call handleClick when search item is clicked" duration="11"/>
+    <testCase name="SearchItem should render a div element with an empty className" duration="8"/>
+    <testCase name="SearchItem should render a span element with the specified className when type is &quot;general&quot;" duration="5"/>
+    <testCase name="SearchItem should render a div element when item.products.length &gt; 0" duration="11"/>
+    <testCase name="SearchItem should render a div element when item is undefined" duration="10"/>
   </file>
 </testExecutions>

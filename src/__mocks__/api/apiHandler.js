@@ -220,7 +220,7 @@ export const handlers = [
   }),
 
   rest.get(
-    `https://utilities-api.dev.bepeerless.co/v1/quick-link/all/ProductFactory`,
+    `https://utilities-api.dev.bepeerless.co/v1/quick-link/all`,
     (req, res, ctx) => {
       // const { filter } = req.params;
       // Simulate different responses based on the investmentId
