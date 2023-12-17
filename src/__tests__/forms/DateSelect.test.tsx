@@ -18,7 +18,6 @@ describe("DateSelect", () => {
 
     fireEvent.click(screen.getByText("Set Date"));
     let days = screen.queryAllByRole("option");
-    console.log(days.length);
   });
 });
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { RiErrorWarningFill } from "react-icons/ri";
 import { FaTimes } from "react-icons/fa";
 import ModalLayout from "./Layout";
