@@ -159,13 +159,13 @@ export const investmentApi: any = createApi({
         return {
           url: `${urls.PRODUCT_DETAILS}?${new URLSearchParams(
             cleanObject(data)
-          )}`,
-          method: "get",
-        };
-      },
-    }),
-    getRequestDetail: builder.query<any, any>({
-      query: (data) => {
+            )}`,
+            method: "get",
+          };
+        },
+      }),
+      getRequestDetail: builder.query<any, any>({
+        query: (data) => {
         if (!data.id) return;
         return {
           url: `${urls.REQUESTS}/${data.id}`,

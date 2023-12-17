@@ -62,7 +62,6 @@ Object {
                 aria-checked="false"
                 class="bg-transparent border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
                 data-headlessui-state=""
-                data-testid="part_AllowPartLiquidation"
                 id="headlessui-switch-1"
                 role="switch"
                 tabindex="0"
@@ -129,11 +128,10 @@ Object {
                   </div>
                 </div>
               </span>
-              
               <button
-                aria-checked=""
+                aria-checked="false"
                 class="bg-transparent border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
-                data-testid="early_AllowEarlyLiquidation"
+                data-headlessui-state=""
                 id="headlessui-switch-2"
                 role="switch"
                 tabindex="0"
@@ -152,7 +150,6 @@ Object {
                 />
               </button>
             </div>
-            
           </div>
         </div>
       </form>
@@ -216,7 +213,6 @@ Object {
               aria-checked="false"
               class="bg-transparent border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
               data-headlessui-state=""
-              data-testid="part_AllowPartLiquidation"
               id="headlessui-switch-1"
               role="switch"
               tabindex="0"
@@ -283,11 +279,10 @@ Object {
                 </div>
               </div>
             </span>
-            
             <button
-              aria-checked=""
+              aria-checked="false"
               class="bg-transparent border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
-              data-testid="early_AllowEarlyLiquidation"
+              data-headlessui-state=""
               id="headlessui-switch-2"
               role="switch"
               tabindex="0"
@@ -306,7 +301,6 @@ Object {
               />
             </button>
           </div>
-          
         </div>
       </div>
     </form>
