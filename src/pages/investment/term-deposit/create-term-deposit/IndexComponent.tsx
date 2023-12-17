@@ -172,6 +172,7 @@ export default function CreateTermDeposit() {
   const [searchParams] = useSearchParams();
   const stage = searchParams.get("stage");
   const id = searchParams.get("id");
+  const refresh = searchParams.get("refresh");
   const activeId = useRef(null);
   const previousData = useRef({});
   const [step, setStep] = useState(1);
@@ -468,6 +469,11 @@ export default function CreateTermDeposit() {
 
     return links;
   }
+  useEffect(() => {
+    if (refresh) {
+      // navigate(0);
+    }
+  }, [refresh]);
 
   return (
     <div>

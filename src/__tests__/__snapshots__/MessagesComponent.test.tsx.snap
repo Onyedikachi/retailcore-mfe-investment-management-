@@ -329,6 +329,7 @@ Object {
                       <svg
                         aria-hidden="true"
                         class="text-[80px] text-[#2FB755]"
+                        data-testid="check-circle-icon"
                         fill="currentColor"
                         height="1em"
                         stroke="currentColor"
@@ -505,6 +506,7 @@ Object {
                       <svg
                         aria-hidden="true"
                         class="text-[80px] text-[#2FB755]"
+                        data-testid="check-circle-icon"
                         fill="currentColor"
                         height="1em"
                         stroke="currentColor"
