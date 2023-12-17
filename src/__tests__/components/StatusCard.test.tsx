@@ -42,13 +42,11 @@ describe("sortOptions", () => {
 
     it("Sorts and returns expected options in 'all products' category", () => {
         const result = sortOptions("all products", true);
-        console.log(result)
         expect(result).toStrictEqual(expectedProductsResult);
     })
 
     it("Sorts and returns expected options in 'requests' category", () => {
         const result = sortOptions("requests", true);
-        console.log(result)
         expect(result).toStrictEqual(expectedRequestsResult);
     })
 })

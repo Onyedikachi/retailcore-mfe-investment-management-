@@ -3,6 +3,8 @@ import ProductInformation from "../../components/pages/term-deposit/forms/produc
 import { renderWithProviders } from "../../__mocks__/api/Wrapper"
 import { act } from "react-dom/test-utils";
 import React from "react";
+import userEvent from '@testing-library/user-event'
+
 
 const fData = {
   productName: "",
@@ -19,6 +21,9 @@ jest.mock("react-router-dom", () => ({
   useSearchParams: jest.fn(),
   useParams: jest.fn(),
 }));
+
+
+const user = userEvent.setup()
 
 describe("ProductInformation", () => {
   beforeEach(() => {
@@ -37,38 +42,65 @@ describe("ProductInformation", () => {
     expect(getByTestId('product-name')).toBeInTheDocument();
     expect(getByTestId('investment-slogan')).toBeInTheDocument();
     expect(getByTestId('product-description')).toBeInTheDocument();
+    
   });
 
 
   it("Changes values", () => {
     renderWithProviders(<ProductInformation activeId={{ current: "3456" }} proceed={jest.fn()} formData={fData} setDisabled={jest.fn()} setFormData={undefined} initiateDraft={undefined} />)
-    const input = screen.getByTestId("product-name")
+    const inputs = screen.getAllByRole("textbox")
+    const values = ["TestProd", "TestProdslogan", "this is testprod", "15/12/2023", "25/12/2023"];
     act(() => {
-      fireEvent.change(input, { target: { value: 'new name' } });
+      inputs.forEach((input, index) => {
+        fireEvent.change(input, { target: { value: values[index] } });
+      })
     })
-        // @ts-ignore 
-    expect(input.value).toBe("new name");
+    // @ts-ignore 
+    expect(inputs.map(i => i.value)).toStrictEqual(values);
   })
   
+  it("values should not exceed limit when user tries to type beyond limit", async () => {
+    renderWithProviders(<ProductInformation activeId={{ current: "3456" }} proceed={jest.fn()} formData={fData} setDisabled={jest.fn()} setFormData={undefined} initiateDraft={undefined} />)
+    const value = "tHIS IS A FREE LOANtHIS IS A FREE LOANtHIS IS A FREE LOANtHIS IS A FREE LOANtHIS IS A FREE LOANtHIStHIS IS A FREE LOANtHIS IS A FREE LOANtHIS IS A FREE LOANtHIS IS A FREE LOANtHIS IS A FREE LOANtHIS IS A FREE LOANtHIS IS A FREE LOANtHIS IS A FREE LOANtHIS IS A FREE LOANtHIS IS A FREE LOANtHIS IS A FREE LOANIS A FREE LOANtHIS IS A FREE LOANtHIS IS A FREE LOAN";
+
+    const productName = screen.getByTestId("product-name");
+    const productSlogan = screen.getByTestId("investment-slogan");
+    const productDescription = screen.getByTestId("product-description")
+
+    await user.type(productName, value);
+    await user.type(productSlogan, value);
+    await user.type(productDescription, value);
+    
+    //@ts-ignore
+    expect(productName.value.length).toEqual(productName.maxLength);
+    //@ts-ignore
+    expect(productSlogan.value.length).toEqual(productSlogan.maxLength);
+    //@ts-ignore
+    expect(productDescription.value.length).toEqual(productDescription.maxLength);
+    
+  })
+
   it('should update character count for product name in real-time', () => {
     // Test setup
-    const {getByTestId} = renderWithProviders(<ProductInformation activeId={{ current: "3456" }} proceed={jest.fn()} formData={fData} setDisabled={jest.fn()} setFormData={undefined} initiateDraft={undefined} />)
+    const { getByTestId } = renderWithProviders(<ProductInformation activeId={{ current: "3456" }} proceed={jest.fn()} formData={fData} setDisabled={jest.fn()} setFormData={undefined} initiateDraft={undefined} />)
     const productNameInput = getByTestId('product-name');
-    
+
     // Action
     fireEvent.change(productNameInput, { target: { value: 'Test Product' } });
-    screen.debug();
     // Assertion
     // @ts-ignore 
     expect(productNameInput.value).toBe('Test Product');
     screen.debug();
     expect(getByTestId('product-name-char-count')).toHaveTextContent('50/50');
   });
-  
+
+
+
+
   it('should display negative character count message for product name with more than 50 characters', () => {
     // Test setup
-    
-    const {getByTestId, getByText} = renderWithProviders(<ProductInformation activeId={{ current: "3456" }} proceed={jest.fn()} formData={fData} setDisabled={jest.fn()} setFormData={jest.fn()} initiateDraft={undefined} />)
+
+    const { getByTestId, getByText } = renderWithProviders(<ProductInformation activeId={{ current: "3456" }} proceed={jest.fn()} formData={fData} setDisabled={jest.fn()} setFormData={jest.fn()} initiateDraft={undefined} />)
     const productNameInput = getByTestId('product-name');
     
     // Action
@@ -77,4 +109,18 @@ describe("ProductInformation", () => {
     })
     expect(getByTestId('product-name-char-count')).toHaveTextContent('50/50');
   });
+  
+  it("Should show error when invalid name is typed", async () => {
+    const { getByTestId, getByText, findByText } = renderWithProviders(<ProductInformation activeId={{ current: "3456" }} proceed={jest.fn()} formData={fData} setDisabled={jest.fn()} setFormData={jest.fn()} initiateDraft={undefined} />)
+    const productName = getByTestId("product-name")
+    await user.type(productName, "ju&");
+    getByText("Product name is required")
+  })
+  
+  it("Should show error when description is too short", async() => {
+    const { getByTestId, getByText, findByText } = renderWithProviders(<ProductInformation activeId={{ current: "3456" }} proceed={jest.fn()} formData={fData} setDisabled={jest.fn()} setFormData={jest.fn()} initiateDraft={undefined} />)
+    const productDescriptionInput = getByTestId("product-description");
+    await user.type(productDescriptionInput, "ju");
+    expect(getByText("Minimum of 4 chars")).toBeInTheDocument();
+  })
 })

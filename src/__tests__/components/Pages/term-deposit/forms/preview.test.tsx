@@ -1,14 +1,16 @@
-import {render, screen} from "@testing-library/react";
+import {render, screen, waitFor} from "@testing-library/react";
 import Preview from "../../../../../components/pages/term-deposit/forms/preview"
 import { renderWithProviders } from "../../../../../__mocks__/api/Wrapper";
-
 jest.mock("react-router-dom", () => ({
-    BrowserRouter: ({ children }) => <div>{children}</div>,
-    Link: ({ to, children }) => <a href={to}>{children}</a>,
-    useNavigate: jest.fn(),
-    useSearchParams: jest.fn(),
-    useParams: jest.fn(),
+  BrowserRouter: ({ children }) => <div>{children}</div>,
+  Link: ({ to, children }) => <a href={to}>{children}</a>,
+  useNavigate: jest.fn(),
+  useSearchParams: jest.fn(),
+  useParams: jest.fn(),
 }));
+jest
+  .spyOn(require("react-router-dom"), "useNavigate")
+  .mockReturnValue(jest.fn());
 
 const fData = {
     productInfo: {
@@ -85,10 +87,13 @@ describe("Preview", () => {
             .mockReturnValue([new URLSearchParams({ sub_type: "", filter: "", id: "5678" })]);
 
         jest.spyOn(require("react-router-dom"), "useParams")
-            .mockReturnValue({ process: "continue" })
+            .mockReturnValue({ process: "create" })
     });
-    it("Renders without crashing", () => {
+    it("Renders without crashing", async () => {
         renderWithProviders(<Preview formData={fData} />)
-        expect(screen.getByTestId("preview")).toBeInTheDocument();
+        await waitFor(() => {
+          expect(screen.getByTestId("preview")).toBeInTheDocument();
+          screen.debug();
+        })
     })
 })

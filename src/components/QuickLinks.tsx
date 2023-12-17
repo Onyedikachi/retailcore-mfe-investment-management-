@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
 import {
@@ -8,7 +8,7 @@ import {
 } from "@app/api";
 
 export default function QuickLinks() {
-  const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(true);
   const defaultLink = {
     isDefault: true,
     count: 1,
@@ -27,13 +27,7 @@ export default function QuickLinks() {
 
   const [addLink] = useAddLinkMutation();
   const baseUrl = "https://seabaas.dev.bepeerless.co";
-  // React.useEffect(() => {
-
-  //   return () => {
-  //     // Additional cleanup actions can be performed here
-  //   };
-  // }, []);
-
+  
   React.useEffect(() => {
     if (isLinksQuerySuccessful) {
       const moduleName = "Product Factory";
@@ -43,6 +37,7 @@ export default function QuickLinks() {
         setLinks([defaultLink, ...quickLinks.data]);
         
       }
+      console.log("effect")
       //check if quickLinks has link of this page
       const hasPageLink =
         quickLinks && quickLinks.data

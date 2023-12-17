@@ -53,7 +53,7 @@ export function DebitCreditTable({ dataTab }) {
             key={i?.accountId}
             className="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"
           >
-            <td className="text-sm font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative text-left">
+            <td data-testid="table-data" className="text-sm font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative text-left">
               <span>
                 <span className="text-[#aaa] capitalize">{index + 1}</span>
               </span>

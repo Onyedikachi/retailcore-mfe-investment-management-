@@ -45,35 +45,36 @@ export default function Preview({ formData, previousData = null }: any) {
 
   const [state, setState] = useState();
 
+  
   const { data: activityData, isLoading: activityIsLoading } =
-    useGetProductActivityLogQuery(
-      { productid: id },
-      { ski: process === "create" }
+  useGetProductActivityLogQuery(
+    { productid: id },
+    { ski: process === "create" }
     );
-
-  const [
-    createProduct,
-    { isLoading: createProductLoading, isSuccess, isError, reset, error },
-  ] = useCreateProductMutation();
-  const [
-    modifyProduct,
-    {
-      isLoading: modifyLoading,
-      isSuccess: modifySuccess,
-      isError: modifyIsError,
-      error: modifyError,
-    },
-  ] = useModifyProductMutation();
-
-  const [
-    modifyRequest,
-    {
-      isLoading: modifyRequestLoading,
-      isSuccess: modifyRequestSuccess,
-      isError: modifyRequestIsError,
-      error: modifyRequestError,
-    },
-  ] = useModifyRequestMutation();
+    
+    const [
+      createProduct,
+      { isLoading: createProductLoading, isSuccess, isError, reset, error },
+    ] = useCreateProductMutation();
+    const [
+      modifyProduct,
+      {
+        isLoading: modifyLoading,
+        isSuccess: modifySuccess,
+        isError: modifyIsError,
+        error: modifyError,
+      },
+    ] = useModifyProductMutation();
+    const [
+      modifyRequest,
+      {
+        isLoading: modifyRequestLoading,
+        isSuccess: modifyRequestSuccess,
+        isError: modifyRequestIsError,
+        error: modifyRequestError,
+      },
+    ] = useModifyRequestMutation();
+    
 
   const handleModify = () => {
     navigate(-1);

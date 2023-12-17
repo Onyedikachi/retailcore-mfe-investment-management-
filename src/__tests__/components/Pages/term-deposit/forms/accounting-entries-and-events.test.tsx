@@ -1,11 +1,10 @@
 import React from 'react'
-import { fireEvent, render, screen, } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, act } from "@testing-library/react";
 import AccountingEntriesAndEvents, { InputDivs } from '../../../../../components/pages/term-deposit/forms/accounting-entries-and-events'
-import { act } from 'react-dom/test-utils';
 import { renderWithProviders } from '../../../../../utils/test-util';
 
 describe('AccountingEntriesAndEvents', () => {
-    const formD =  {
+    const formD = {
         productName: "",
         slogan: "",
         description: "",
@@ -13,13 +12,24 @@ describe('AccountingEntriesAndEvents', () => {
         endDate: null,
         currency: "NGN",
         customerCategory: null,
-      }
+    }
     it("Renders without error", () => {
-        act(() => {
-            renderWithProviders
+        renderWithProviders
             (<AccountingEntriesAndEvents proceed={jest.fn} formData={formD} setFormData={jest.fn()} setDisabled={jest.fn()} initiateDraft={undefined} />)
+        expect(screen.getByText("Product to GL Mapping")).toBeInTheDocument();
+        expect(screen.getByText("Term Deposit Liability account")).toBeInTheDocument();
+        expect(screen.getByText("Interest accural account")).toBeInTheDocument();
+
+        expect(screen.getAllByTestId("gli-input").length).toBeGreaterThan(0);
+    })
+    
+    it ("Should change gli inputs value", () => {
+        renderWithProviders
+        (<AccountingEntriesAndEvents proceed={jest.fn} formData={formD} setFormData={jest.fn()} setDisabled={jest.fn()} initiateDraft={undefined} />)
+        const inputs = screen.getAllByTestId("gli-input");
+        inputs.forEach((input) => {
+            fireEvent.change(input, { target: { value: 'Test value' } });
+            expect(input.value).toBe("Test value");
         })
-        expect(screen.getByTestId("entriesandevents")).toBeInTheDocument();
-        expect(screen.getAllByTestId("input-div").length).toBe(3);
     })
 });
