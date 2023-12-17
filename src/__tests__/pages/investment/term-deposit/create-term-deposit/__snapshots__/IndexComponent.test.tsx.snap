@@ -1,0 +1,2747 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FormComponeent Should render if step === 3 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <form
+        id="pricingconfig"
+      >
+        <div
+          class="flex flex-col gap-10"
+        >
+          <div
+            class="flex flex-col gap-[10px] "
+          >
+            <div
+              class="flex  gap-2 min-w-[300px]"
+            >
+               
+              <label
+                class=" flex text-base font-medium text-[#636363]"
+              >
+                Applicable Tenor
+                <span
+                  class="flex"
+                >
+                   
+                  <div>
+                    <svg
+                      data-testid="red-dot"
+                      fill="none"
+                      height="5"
+                      viewBox="0 0 5 5"
+                      width="5"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        cx="2.5"
+                        cy="2.5"
+                        fill="#CF2A2A"
+                        r="2.5"
+                      />
+                    </svg>
+                  </div>
+                </span>
+              </label>
+              <div
+                class="flex items-end cursor-pointer"
+              >
+                <div
+                  aria-describedby="tippy-tooltip-31"
+                  class="bg-white max-w-[320px]"
+                  data-tooltipped=""
+                  style="display: inline;"
+                >
+                  <div
+                    class="w-[18px] h-[18px] text-[#636363]"
+                  >
+                    <svg
+                      fill="currentColor"
+                      height="1em"
+                      stroke="currentColor"
+                      stroke-width="0"
+                      version="1.1"
+                      viewBox="0 0 16 16"
+                      width="1em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                      />
+                      <path
+                        d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                      />
+                      <path
+                        d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-6 py-5 flex flex-col gap-5 "
+            >
+              <div
+                class="flex items-center gap-[25px] mt-[14px]"
+              >
+                <div
+                  class="flex gap-[25px]"
+                >
+                  <div
+                    class="w-[200px]"
+                  >
+                    <div>
+                      <div
+                        class="undefined flex items-center gap-4"
+                      >
+                        <div>
+                          Min
+                        </div>
+                        <div
+                          class="w-full flex flex-col gap-2"
+                        >
+                          <div
+                            class="relative flex items-center max-w-[642px]"
+                          >
+                            <input
+                              class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                              data-testid="min-max-input"
+                              placeholder="0"
+                              type="number"
+                              value="0"
+                            />
+                            <div
+                              class="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="w-[200px]"
+                  >
+                    <div
+                      class=" min-w-full"
+                      role="combobox"
+                    >
+                      <div
+                        class="flex  gap-2 min-w-[300px]"
+                      >
+                         
+                        <label
+                          class="flex  text-base font-semibold text-[#636363]"
+                        />
+                      </div>
+                      <input
+                        hidden=""
+                        name="applicableTenorMinUnit[id]"
+                        readonly=""
+                        style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px; display: none;"
+                        type="hidden"
+                        value="1"
+                      />
+                      <input
+                        hidden=""
+                        name="applicableTenorMinUnit[text]"
+                        readonly=""
+                        style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px; display: none;"
+                        type="hidden"
+                        value="Day(s)"
+                      />
+                      <input
+                        hidden=""
+                        name="applicableTenorMinUnit[value]"
+                        readonly=""
+                        style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px; display: none;"
+                        type="hidden"
+                        value="1"
+                      />
+                      <input
+                        hidden=""
+                        name="applicableTenorMinUnit[subvalue]"
+                        readonly=""
+                        style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px; display: none;"
+                        type="hidden"
+                        value="day"
+                      />
+                      <div
+                        class="relative mt-1"
+                        data-headlessui-state=""
+                      >
+                        <button
+                          aria-expanded="false"
+                          aria-haspopup="listbox"
+                          class="relative w-full cursor-pointer  bg-white py-1  pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm border-[#8F8F8F]"
+                          data-headlessui-state=""
+                          id="headlessui-listbox-button-10"
+                          type="button"
+                        >
+                          <span
+                            class="block truncate"
+                          >
+                            Day(s)
+                          </span>
+                          <span
+                            class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-xs"
+                          >
+                            <svg
+                              fill="none"
+                              height="10"
+                              viewBox="0 0 15 10"
+                              width="15"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M15 0H0L7.14286 9.47368L15 0Z"
+                                fill="#636363"
+                              />
+                            </svg>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                 
+                -
+                <div
+                  class="flex gap-[25px]"
+                >
+                  <div
+                    class="w-[180px]"
+                  >
+                    <div>
+                      <div
+                        class="undefined flex items-center gap-4"
+                      >
+                        <div>
+                          Max
+                        </div>
+                        <div
+                          class="w-full flex flex-col gap-2"
+                        >
+                          <div
+                            class="relative flex items-center max-w-[642px]"
+                          >
+                            <input
+                              class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                              data-testid="min-max-input"
+                              placeholder="0"
+                              type="number"
+                              value="1000"
+                            />
+                            <div
+                              class="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="w-[180px]"
+                  >
+                    <div
+                      class=" min-w-full"
+                      role="combobox"
+                    >
+                      <div
+                        class="flex  gap-2 min-w-[300px]"
+                      >
+                         
+                        <label
+                          class="flex  text-base font-semibold text-[#636363]"
+                        />
+                      </div>
+                      <input
+                        hidden=""
+                        name="applicableTenorMaxUnit[id]"
+                        readonly=""
+                        style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px; display: none;"
+                        type="hidden"
+                        value="1"
+                      />
+                      <input
+                        hidden=""
+                        name="applicableTenorMaxUnit[text]"
+                        readonly=""
+                        style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px; display: none;"
+                        type="hidden"
+                        value="Day(s)"
+                      />
+                      <input
+                        hidden=""
+                        name="applicableTenorMaxUnit[value]"
+                        readonly=""
+                        style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px; display: none;"
+                        type="hidden"
+                        value="1"
+                      />
+                      <input
+                        hidden=""
+                        name="applicableTenorMaxUnit[subvalue]"
+                        readonly=""
+                        style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px; display: none;"
+                        type="hidden"
+                        value="day"
+                      />
+                      <div
+                        class="relative mt-1"
+                        data-headlessui-state=""
+                      >
+                        <button
+                          aria-expanded="false"
+                          aria-haspopup="listbox"
+                          class="relative w-full cursor-pointer  bg-white py-1  pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm border-[#8F8F8F]"
+                          data-headlessui-state=""
+                          id="headlessui-listbox-button-11"
+                          type="button"
+                        >
+                          <span
+                            class="block truncate"
+                          >
+                            Day(s)
+                          </span>
+                          <span
+                            class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-xs"
+                          >
+                            <svg
+                              fill="none"
+                              height="10"
+                              viewBox="0 0 15 10"
+                              width="15"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M15 0H0L7.14286 9.47368L15 0Z"
+                                fill="#636363"
+                              />
+                            </svg>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                 
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex flex-col gap-[10px] "
+          >
+            <div
+              class="flex  gap-2 min-w-[300px]"
+            >
+               
+              <label
+                class=" flex text-base font-medium text-[#636363]"
+              >
+                Applicable Principal
+                <span
+                  class="flex"
+                >
+                   
+                  <div>
+                    <svg
+                      data-testid="red-dot"
+                      fill="none"
+                      height="5"
+                      viewBox="0 0 5 5"
+                      width="5"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        cx="2.5"
+                        cy="2.5"
+                        fill="#CF2A2A"
+                        r="2.5"
+                      />
+                    </svg>
+                  </div>
+                </span>
+              </label>
+              <div
+                class="flex items-end cursor-pointer"
+              >
+                <div
+                  aria-describedby="tippy-tooltip-32"
+                  class="bg-white max-w-[320px]"
+                  data-tooltipped=""
+                  style="display: inline;"
+                >
+                  <div
+                    class="w-[18px] h-[18px] text-[#636363]"
+                  >
+                    <svg
+                      fill="currentColor"
+                      height="1em"
+                      stroke="currentColor"
+                      stroke-width="0"
+                      version="1.1"
+                      viewBox="0 0 16 16"
+                      width="1em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                      />
+                      <path
+                        d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                      />
+                      <path
+                        d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-6 py-5 flex flex-col gap-5 "
+            >
+              <div
+                class="flex items-center gap-[25px] mt-[14px]"
+              >
+                <div
+                  class="flex gap-[25px]"
+                >
+                  <div>
+                    <div
+                      class="w-[300px] flex items-center gap-4"
+                    >
+                      <div>
+                        Min
+                      </div>
+                      <div
+                        class="text-[#636363]"
+                      >
+                        NGN
+                      </div>
+                      <div
+                        class="w-full flex flex-col gap-2"
+                      >
+                        <div
+                          class="relative flex items-center max-w-[642px]"
+                        >
+                          <input
+                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                            id="applicablePrincipalMin"
+                            inputmode="decimal"
+                            name="applicablePrincipalMin"
+                            placeholder="0"
+                            type="text"
+                            value="0"
+                          />
+                          <div
+                            class="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                 
+                -
+                <div
+                  class="flex gap-[25px]"
+                >
+                  <div>
+                    <div
+                      class="w-[300px] flex items-center gap-4"
+                    >
+                      <div>
+                        Max
+                      </div>
+                      <div
+                        class="text-[#636363]"
+                      >
+                        NGN
+                      </div>
+                      <div
+                        class="w-full flex flex-col gap-2"
+                      >
+                        <div
+                          class="relative flex items-center max-w-[642px]"
+                        >
+                          <input
+                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                            id="applicablePrincipalMax"
+                            inputmode="decimal"
+                            name="applicablePrincipalMax"
+                            placeholder="0"
+                            type="text"
+                            value="20,000,000"
+                          />
+                          <div
+                            class="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                 
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex flex-col gap-[10px] "
+          >
+            <div
+              class="flex  gap-2 min-w-[300px]"
+            >
+               
+              <label
+                class=" flex text-base font-medium text-[#636363]"
+              >
+                Applicable Interest Rate Range (Per Annum)
+                <span
+                  class="flex"
+                >
+                   
+                  <div>
+                    <svg
+                      data-testid="red-dot"
+                      fill="none"
+                      height="5"
+                      viewBox="0 0 5 5"
+                      width="5"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        cx="2.5"
+                        cy="2.5"
+                        fill="#CF2A2A"
+                        r="2.5"
+                      />
+                    </svg>
+                  </div>
+                </span>
+              </label>
+              <div
+                class="flex items-end cursor-pointer"
+              >
+                <div
+                  aria-describedby="tippy-tooltip-33"
+                  class="bg-white max-w-[320px]"
+                  data-tooltipped=""
+                  style="display: inline;"
+                >
+                  <div
+                    class="w-[18px] h-[18px] text-[#636363]"
+                  >
+                    <svg
+                      fill="currentColor"
+                      height="1em"
+                      stroke="currentColor"
+                      stroke-width="0"
+                      version="1.1"
+                      viewBox="0 0 16 16"
+                      width="1em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                      />
+                      <path
+                        d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                      />
+                      <path
+                        d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-6 py-5 flex flex-col gap-5 "
+            >
+              <div
+                class="flex gap-[51px] mb-[10px]"
+              >
+                <div
+                  class="flex items-center"
+                >
+                  <input
+                    class="h-4 w-4 border-gray-300 accent-sterling-red-800"
+                    id="Vary by principal"
+                    name="interestRateRangeType"
+                    type="radio"
+                    value="0"
+                  />
+                  <label
+                    class="ml-3 block text-base font-medium leading-6 text-[#636363]"
+                    for="Vary by principal"
+                  >
+                    Vary by principal
+                  </label>
+                </div>
+                <div
+                  class="flex items-center"
+                >
+                  <input
+                    class="h-4 w-4 border-gray-300 accent-sterling-red-800"
+                    id="Vary by tenor"
+                    name="interestRateRangeType"
+                    type="radio"
+                    value="1"
+                  />
+                  <label
+                    class="ml-3 block text-base font-medium leading-6 text-[#636363]"
+                    for="Vary by tenor"
+                  >
+                    Vary by tenor
+                  </label>
+                </div>
+                <div
+                  class="flex items-center"
+                >
+                  <input
+                    checked=""
+                    class="h-4 w-4 border-gray-300 accent-sterling-red-800"
+                    id="Do not vary by principal or tenor"
+                    name="interestRateRangeType"
+                    type="radio"
+                    value="2"
+                  />
+                  <label
+                    class="ml-3 block text-base font-medium leading-6 text-[#636363]"
+                    for="Do not vary by principal or tenor"
+                  >
+                    Do not vary by principal or tenor
+                  </label>
+                </div>
+              </div>
+              <div
+                class="flex items-center gap-[25px] "
+              >
+                <div
+                  class="flex gap-[25px]"
+                >
+                  <div>
+                    <div
+                      class="w-[200px] flex items-center gap-4"
+                    >
+                      <div>
+                        Min
+                      </div>
+                      <div
+                        class="w-full flex flex-col gap-2"
+                      >
+                        <div
+                          class="relative flex items-center max-w-[642px]"
+                        >
+                          <input
+                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                            id="interestRateMin"
+                            inputmode="decimal"
+                            name="interestRateMin"
+                            placeholder="0"
+                            type="text"
+                            value="0"
+                          />
+                          <span
+                            class="absolute right-1"
+                            data-testid="percent"
+                          >
+                            %
+                          </span>
+                          <div
+                            class="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                 
+                -
+                <div
+                  class="flex gap-[25px]"
+                >
+                  <div>
+                    <div
+                      class="w-[200px] flex items-center gap-4"
+                    >
+                      <div>
+                        Max
+                      </div>
+                      <div
+                        class="w-full flex flex-col gap-2"
+                      >
+                        <div
+                          class="relative flex items-center max-w-[642px]"
+                        >
+                          <input
+                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                            id="interestRateMax"
+                            inputmode="decimal"
+                            name="interestRateMax"
+                            placeholder="0"
+                            type="text"
+                            value="20"
+                          />
+                          <span
+                            class="absolute right-1"
+                            data-testid="percent"
+                          >
+                            %
+                          </span>
+                          <div
+                            class="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                 
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex flex-col gap-[25px] "
+          >
+            <span
+              class="capitalize min-w-[300px] flex items-center gap-[5px] text-[##636363] text-base font-medium"
+            >
+              Interest Computation Days in Year Method
+              <div
+                class="flex items-end cursor-pointer"
+              >
+                <div
+                  aria-describedby="tippy-tooltip-34"
+                  class="bg-white max-w-[320px]"
+                  data-tooltipped=""
+                  style="display: inline;"
+                >
+                  <div
+                    class="w-[18px] h-[18px] text-[#636363]"
+                  >
+                    <svg
+                      fill="currentColor"
+                      height="1em"
+                      stroke="currentColor"
+                      stroke-width="0"
+                      version="1.1"
+                      viewBox="0 0 16 16"
+                      width="1em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                      />
+                      <path
+                        d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                      />
+                      <path
+                        d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div
+                aria-describedby="tippy-tooltip-35"
+                class="bg-white max-w-[320px]"
+                data-tooltipped=""
+                style="display: inline;"
+              >
+                <div
+                  class="w-[18px] h-[18px] text-[#636363]"
+                >
+                  <svg
+                    fill="currentColor"
+                    height="1em"
+                    stroke="currentColor"
+                    stroke-width="0"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                    />
+                    <path
+                      d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                    />
+                    <path
+                      d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </span>
+            <div
+              class="w-[300px]"
+            >
+              <div
+                class=" min-w-full"
+                role="combobox"
+              >
+                <div
+                  class="flex  gap-2 min-w-[300px]"
+                >
+                   
+                  <label
+                    class="flex  text-base font-semibold text-[#636363]"
+                  />
+                </div>
+                <div
+                  class="relative mt-1"
+                >
+                  <button
+                    aria-expanded="false"
+                    aria-haspopup="listbox"
+                    class="relative w-full cursor-pointer  bg-white py-1  pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm border-[#8F8F8F]"
+                    data-headlessui-state="disabled"
+                    disabled=""
+                    id="headlessui-listbox-button-12"
+                    type="button"
+                  >
+                    <span
+                      class="block truncate"
+                    >
+                      Actual/365
+                    </span>
+                    <span
+                      class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-xs"
+                    >
+                      <svg
+                        fill="none"
+                        height="10"
+                        viewBox="0 0 15 10"
+                        width="15"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M15 0H0L7.14286 9.47368L15 0Z"
+                          fill="#636363"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </body>,
+  "container": <div>
+    <form
+      id="pricingconfig"
+    >
+      <div
+        class="flex flex-col gap-10"
+      >
+        <div
+          class="flex flex-col gap-[10px] "
+        >
+          <div
+            class="flex  gap-2 min-w-[300px]"
+          >
+             
+            <label
+              class=" flex text-base font-medium text-[#636363]"
+            >
+              Applicable Tenor
+              <span
+                class="flex"
+              >
+                 
+                <div>
+                  <svg
+                    data-testid="red-dot"
+                    fill="none"
+                    height="5"
+                    viewBox="0 0 5 5"
+                    width="5"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="2.5"
+                      cy="2.5"
+                      fill="#CF2A2A"
+                      r="2.5"
+                    />
+                  </svg>
+                </div>
+              </span>
+            </label>
+            <div
+              class="flex items-end cursor-pointer"
+            >
+              <div
+                aria-describedby="tippy-tooltip-31"
+                class="bg-white max-w-[320px]"
+                data-tooltipped=""
+                style="display: inline;"
+              >
+                <div
+                  class="w-[18px] h-[18px] text-[#636363]"
+                >
+                  <svg
+                    fill="currentColor"
+                    height="1em"
+                    stroke="currentColor"
+                    stroke-width="0"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                    />
+                    <path
+                      d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                    />
+                    <path
+                      d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-6 py-5 flex flex-col gap-5 "
+          >
+            <div
+              class="flex items-center gap-[25px] mt-[14px]"
+            >
+              <div
+                class="flex gap-[25px]"
+              >
+                <div
+                  class="w-[200px]"
+                >
+                  <div>
+                    <div
+                      class="undefined flex items-center gap-4"
+                    >
+                      <div>
+                        Min
+                      </div>
+                      <div
+                        class="w-full flex flex-col gap-2"
+                      >
+                        <div
+                          class="relative flex items-center max-w-[642px]"
+                        >
+                          <input
+                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                            data-testid="min-max-input"
+                            placeholder="0"
+                            type="number"
+                            value="0"
+                          />
+                          <div
+                            class="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="w-[200px]"
+                >
+                  <div
+                    class=" min-w-full"
+                    role="combobox"
+                  >
+                    <div
+                      class="flex  gap-2 min-w-[300px]"
+                    >
+                       
+                      <label
+                        class="flex  text-base font-semibold text-[#636363]"
+                      />
+                    </div>
+                    <input
+                      hidden=""
+                      name="applicableTenorMinUnit[id]"
+                      readonly=""
+                      style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px; display: none;"
+                      type="hidden"
+                      value="1"
+                    />
+                    <input
+                      hidden=""
+                      name="applicableTenorMinUnit[text]"
+                      readonly=""
+                      style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px; display: none;"
+                      type="hidden"
+                      value="Day(s)"
+                    />
+                    <input
+                      hidden=""
+                      name="applicableTenorMinUnit[value]"
+                      readonly=""
+                      style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px; display: none;"
+                      type="hidden"
+                      value="1"
+                    />
+                    <input
+                      hidden=""
+                      name="applicableTenorMinUnit[subvalue]"
+                      readonly=""
+                      style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px; display: none;"
+                      type="hidden"
+                      value="day"
+                    />
+                    <div
+                      class="relative mt-1"
+                      data-headlessui-state=""
+                    >
+                      <button
+                        aria-expanded="false"
+                        aria-haspopup="listbox"
+                        class="relative w-full cursor-pointer  bg-white py-1  pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm border-[#8F8F8F]"
+                        data-headlessui-state=""
+                        id="headlessui-listbox-button-10"
+                        type="button"
+                      >
+                        <span
+                          class="block truncate"
+                        >
+                          Day(s)
+                        </span>
+                        <span
+                          class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-xs"
+                        >
+                          <svg
+                            fill="none"
+                            height="10"
+                            viewBox="0 0 15 10"
+                            width="15"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M15 0H0L7.14286 9.47368L15 0Z"
+                              fill="#636363"
+                            />
+                          </svg>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+               
+              -
+              <div
+                class="flex gap-[25px]"
+              >
+                <div
+                  class="w-[180px]"
+                >
+                  <div>
+                    <div
+                      class="undefined flex items-center gap-4"
+                    >
+                      <div>
+                        Max
+                      </div>
+                      <div
+                        class="w-full flex flex-col gap-2"
+                      >
+                        <div
+                          class="relative flex items-center max-w-[642px]"
+                        >
+                          <input
+                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                            data-testid="min-max-input"
+                            placeholder="0"
+                            type="number"
+                            value="1000"
+                          />
+                          <div
+                            class="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="w-[180px]"
+                >
+                  <div
+                    class=" min-w-full"
+                    role="combobox"
+                  >
+                    <div
+                      class="flex  gap-2 min-w-[300px]"
+                    >
+                       
+                      <label
+                        class="flex  text-base font-semibold text-[#636363]"
+                      />
+                    </div>
+                    <input
+                      hidden=""
+                      name="applicableTenorMaxUnit[id]"
+                      readonly=""
+                      style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px; display: none;"
+                      type="hidden"
+                      value="1"
+                    />
+                    <input
+                      hidden=""
+                      name="applicableTenorMaxUnit[text]"
+                      readonly=""
+                      style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px; display: none;"
+                      type="hidden"
+                      value="Day(s)"
+                    />
+                    <input
+                      hidden=""
+                      name="applicableTenorMaxUnit[value]"
+                      readonly=""
+                      style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px; display: none;"
+                      type="hidden"
+                      value="1"
+                    />
+                    <input
+                      hidden=""
+                      name="applicableTenorMaxUnit[subvalue]"
+                      readonly=""
+                      style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px; display: none;"
+                      type="hidden"
+                      value="day"
+                    />
+                    <div
+                      class="relative mt-1"
+                      data-headlessui-state=""
+                    >
+                      <button
+                        aria-expanded="false"
+                        aria-haspopup="listbox"
+                        class="relative w-full cursor-pointer  bg-white py-1  pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm border-[#8F8F8F]"
+                        data-headlessui-state=""
+                        id="headlessui-listbox-button-11"
+                        type="button"
+                      >
+                        <span
+                          class="block truncate"
+                        >
+                          Day(s)
+                        </span>
+                        <span
+                          class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-xs"
+                        >
+                          <svg
+                            fill="none"
+                            height="10"
+                            viewBox="0 0 15 10"
+                            width="15"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M15 0H0L7.14286 9.47368L15 0Z"
+                              fill="#636363"
+                            />
+                          </svg>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+               
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex flex-col gap-[10px] "
+        >
+          <div
+            class="flex  gap-2 min-w-[300px]"
+          >
+             
+            <label
+              class=" flex text-base font-medium text-[#636363]"
+            >
+              Applicable Principal
+              <span
+                class="flex"
+              >
+                 
+                <div>
+                  <svg
+                    data-testid="red-dot"
+                    fill="none"
+                    height="5"
+                    viewBox="0 0 5 5"
+                    width="5"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="2.5"
+                      cy="2.5"
+                      fill="#CF2A2A"
+                      r="2.5"
+                    />
+                  </svg>
+                </div>
+              </span>
+            </label>
+            <div
+              class="flex items-end cursor-pointer"
+            >
+              <div
+                aria-describedby="tippy-tooltip-32"
+                class="bg-white max-w-[320px]"
+                data-tooltipped=""
+                style="display: inline;"
+              >
+                <div
+                  class="w-[18px] h-[18px] text-[#636363]"
+                >
+                  <svg
+                    fill="currentColor"
+                    height="1em"
+                    stroke="currentColor"
+                    stroke-width="0"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                    />
+                    <path
+                      d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                    />
+                    <path
+                      d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-6 py-5 flex flex-col gap-5 "
+          >
+            <div
+              class="flex items-center gap-[25px] mt-[14px]"
+            >
+              <div
+                class="flex gap-[25px]"
+              >
+                <div>
+                  <div
+                    class="w-[300px] flex items-center gap-4"
+                  >
+                    <div>
+                      Min
+                    </div>
+                    <div
+                      class="text-[#636363]"
+                    >
+                      NGN
+                    </div>
+                    <div
+                      class="w-full flex flex-col gap-2"
+                    >
+                      <div
+                        class="relative flex items-center max-w-[642px]"
+                      >
+                        <input
+                          class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                          id="applicablePrincipalMin"
+                          inputmode="decimal"
+                          name="applicablePrincipalMin"
+                          placeholder="0"
+                          type="text"
+                          value="0"
+                        />
+                        <div
+                          class="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+               
+              -
+              <div
+                class="flex gap-[25px]"
+              >
+                <div>
+                  <div
+                    class="w-[300px] flex items-center gap-4"
+                  >
+                    <div>
+                      Max
+                    </div>
+                    <div
+                      class="text-[#636363]"
+                    >
+                      NGN
+                    </div>
+                    <div
+                      class="w-full flex flex-col gap-2"
+                    >
+                      <div
+                        class="relative flex items-center max-w-[642px]"
+                      >
+                        <input
+                          class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                          id="applicablePrincipalMax"
+                          inputmode="decimal"
+                          name="applicablePrincipalMax"
+                          placeholder="0"
+                          type="text"
+                          value="20,000,000"
+                        />
+                        <div
+                          class="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+               
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex flex-col gap-[10px] "
+        >
+          <div
+            class="flex  gap-2 min-w-[300px]"
+          >
+             
+            <label
+              class=" flex text-base font-medium text-[#636363]"
+            >
+              Applicable Interest Rate Range (Per Annum)
+              <span
+                class="flex"
+              >
+                 
+                <div>
+                  <svg
+                    data-testid="red-dot"
+                    fill="none"
+                    height="5"
+                    viewBox="0 0 5 5"
+                    width="5"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="2.5"
+                      cy="2.5"
+                      fill="#CF2A2A"
+                      r="2.5"
+                    />
+                  </svg>
+                </div>
+              </span>
+            </label>
+            <div
+              class="flex items-end cursor-pointer"
+            >
+              <div
+                aria-describedby="tippy-tooltip-33"
+                class="bg-white max-w-[320px]"
+                data-tooltipped=""
+                style="display: inline;"
+              >
+                <div
+                  class="w-[18px] h-[18px] text-[#636363]"
+                >
+                  <svg
+                    fill="currentColor"
+                    height="1em"
+                    stroke="currentColor"
+                    stroke-width="0"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                    />
+                    <path
+                      d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                    />
+                    <path
+                      d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-6 py-5 flex flex-col gap-5 "
+          >
+            <div
+              class="flex gap-[51px] mb-[10px]"
+            >
+              <div
+                class="flex items-center"
+              >
+                <input
+                  class="h-4 w-4 border-gray-300 accent-sterling-red-800"
+                  id="Vary by principal"
+                  name="interestRateRangeType"
+                  type="radio"
+                  value="0"
+                />
+                <label
+                  class="ml-3 block text-base font-medium leading-6 text-[#636363]"
+                  for="Vary by principal"
+                >
+                  Vary by principal
+                </label>
+              </div>
+              <div
+                class="flex items-center"
+              >
+                <input
+                  class="h-4 w-4 border-gray-300 accent-sterling-red-800"
+                  id="Vary by tenor"
+                  name="interestRateRangeType"
+                  type="radio"
+                  value="1"
+                />
+                <label
+                  class="ml-3 block text-base font-medium leading-6 text-[#636363]"
+                  for="Vary by tenor"
+                >
+                  Vary by tenor
+                </label>
+              </div>
+              <div
+                class="flex items-center"
+              >
+                <input
+                  checked=""
+                  class="h-4 w-4 border-gray-300 accent-sterling-red-800"
+                  id="Do not vary by principal or tenor"
+                  name="interestRateRangeType"
+                  type="radio"
+                  value="2"
+                />
+                <label
+                  class="ml-3 block text-base font-medium leading-6 text-[#636363]"
+                  for="Do not vary by principal or tenor"
+                >
+                  Do not vary by principal or tenor
+                </label>
+              </div>
+            </div>
+            <div
+              class="flex items-center gap-[25px] "
+            >
+              <div
+                class="flex gap-[25px]"
+              >
+                <div>
+                  <div
+                    class="w-[200px] flex items-center gap-4"
+                  >
+                    <div>
+                      Min
+                    </div>
+                    <div
+                      class="w-full flex flex-col gap-2"
+                    >
+                      <div
+                        class="relative flex items-center max-w-[642px]"
+                      >
+                        <input
+                          class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                          id="interestRateMin"
+                          inputmode="decimal"
+                          name="interestRateMin"
+                          placeholder="0"
+                          type="text"
+                          value="0"
+                        />
+                        <span
+                          class="absolute right-1"
+                          data-testid="percent"
+                        >
+                          %
+                        </span>
+                        <div
+                          class="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+               
+              -
+              <div
+                class="flex gap-[25px]"
+              >
+                <div>
+                  <div
+                    class="w-[200px] flex items-center gap-4"
+                  >
+                    <div>
+                      Max
+                    </div>
+                    <div
+                      class="w-full flex flex-col gap-2"
+                    >
+                      <div
+                        class="relative flex items-center max-w-[642px]"
+                      >
+                        <input
+                          class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                          id="interestRateMax"
+                          inputmode="decimal"
+                          name="interestRateMax"
+                          placeholder="0"
+                          type="text"
+                          value="20"
+                        />
+                        <span
+                          class="absolute right-1"
+                          data-testid="percent"
+                        >
+                          %
+                        </span>
+                        <div
+                          class="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+               
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex flex-col gap-[25px] "
+        >
+          <span
+            class="capitalize min-w-[300px] flex items-center gap-[5px] text-[##636363] text-base font-medium"
+          >
+            Interest Computation Days in Year Method
+            <div
+              class="flex items-end cursor-pointer"
+            >
+              <div
+                aria-describedby="tippy-tooltip-34"
+                class="bg-white max-w-[320px]"
+                data-tooltipped=""
+                style="display: inline;"
+              >
+                <div
+                  class="w-[18px] h-[18px] text-[#636363]"
+                >
+                  <svg
+                    fill="currentColor"
+                    height="1em"
+                    stroke="currentColor"
+                    stroke-width="0"
+                    version="1.1"
+                    viewBox="0 0 16 16"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                    />
+                    <path
+                      d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                    />
+                    <path
+                      d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div
+              aria-describedby="tippy-tooltip-35"
+              class="bg-white max-w-[320px]"
+              data-tooltipped=""
+              style="display: inline;"
+            >
+              <div
+                class="w-[18px] h-[18px] text-[#636363]"
+              >
+                <svg
+                  fill="currentColor"
+                  height="1em"
+                  stroke="currentColor"
+                  stroke-width="0"
+                  version="1.1"
+                  viewBox="0 0 16 16"
+                  width="1em"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                  />
+                  <path
+                    d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                  />
+                  <path
+                    d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                  />
+                </svg>
+              </div>
+            </div>
+          </span>
+          <div
+            class="w-[300px]"
+          >
+            <div
+              class=" min-w-full"
+              role="combobox"
+            >
+              <div
+                class="flex  gap-2 min-w-[300px]"
+              >
+                 
+                <label
+                  class="flex  text-base font-semibold text-[#636363]"
+                />
+              </div>
+              <div
+                class="relative mt-1"
+              >
+                <button
+                  aria-expanded="false"
+                  aria-haspopup="listbox"
+                  class="relative w-full cursor-pointer  bg-white py-1  pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm border-[#8F8F8F]"
+                  data-headlessui-state="disabled"
+                  disabled=""
+                  id="headlessui-listbox-button-12"
+                  type="button"
+                >
+                  <span
+                    class="block truncate"
+                  >
+                    Actual/365
+                  </span>
+                  <span
+                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-xs"
+                  >
+                    <svg
+                      fill="none"
+                      height="10"
+                      viewBox="0 0 15 10"
+                      width="15"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M15 0H0L7.14286 9.47368L15 0Z"
+                        fill="#636363"
+                      />
+                    </svg>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "store": Object {
+    "@@observable": [Function],
+    "dispatch": [Function],
+    "getState": [Function],
+    "replaceReducer": [Function],
+    "subscribe": [Function],
+  },
+  "unmount": [Function],
+}
+`;
+
+exports[`FormComponeent Should render if step === 4 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <form
+        id="liquiditysetup"
+      >
+        <div
+          class="flex flex-col gap-14"
+        >
+          <div
+            class="rounded-[5px] px-10 flex flex-col gap-[40px] py-5"
+            style="box-shadow: 0px 0px 1px 0px rgba(26, 32, 36, 0.32), 0px 1px 2px 0px rgba(91, 104, 113, 0.32);"
+          >
+            <div
+              class="flex items-center gap-[10px]"
+            >
+              <span
+                class="capitalize min-w-[300px] flex items-center gap-[5px] text-[##636363] text-base font-medium"
+              >
+                Allow Part Liquidation
+                <div
+                  class="flex items-end cursor-pointer"
+                >
+                  <div
+                    aria-describedby="tippy-tooltip-36"
+                    class="bg-white max-w-[320px]"
+                    data-tooltipped=""
+                    style="display: inline;"
+                  >
+                    <div
+                      class="w-[18px] h-[18px] text-[#636363]"
+                    >
+                      <svg
+                        fill="currentColor"
+                        height="1em"
+                        stroke="currentColor"
+                        stroke-width="0"
+                        version="1.1"
+                        viewBox="0 0 16 16"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                        />
+                        <path
+                          d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                        />
+                        <path
+                          d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </span>
+              <button
+                aria-checked="false"
+                class="bg-transparent border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
+                data-headlessui-state=""
+                id="headlessui-switch-13"
+                role="switch"
+                tabindex="0"
+                type="button"
+                value="true"
+              >
+                <span
+                  class="sr-only"
+                >
+                  Use setting
+                </span>
+                <span
+                  aria-hidden="true"
+                  class="translate-x-0  bg-white  pointer-events-none inline-block h-[14px] w-[14px] transform rounded-full border border-[#CF2A2A] shadow ring-0 transition duration-200 ease-in-out"
+                  data-testid="switch"
+                />
+              </button>
+            </div>
+          </div>
+          <div
+            class="rounded-[5px] px-10 flex flex-col gap-[40px] py-5"
+            style="box-shadow: 0px 0px 1px 0px rgba(26, 32, 36, 0.32), 0px 1px 2px 0px rgba(91, 104, 113, 0.32);"
+          >
+            <div
+              class="flex items-center gap-[10px]"
+            >
+              <span
+                class="capitalize min-w-[300px] flex items-center gap-[5px] text-[##636363] text-base font-medium"
+              >
+                Allow Early Liquidation
+                <div
+                  class="flex items-end cursor-pointer"
+                >
+                  <div
+                    aria-describedby="tippy-tooltip-37"
+                    class="bg-white max-w-[320px]"
+                    data-tooltipped=""
+                    style="display: inline;"
+                  >
+                    <div
+                      class="w-[18px] h-[18px] text-[#636363]"
+                    >
+                      <svg
+                        fill="currentColor"
+                        height="1em"
+                        stroke="currentColor"
+                        stroke-width="0"
+                        version="1.1"
+                        viewBox="0 0 16 16"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                        />
+                        <path
+                          d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                        />
+                        <path
+                          d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </span>
+              <button
+                aria-checked="false"
+                class="bg-transparent border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
+                data-headlessui-state=""
+                id="headlessui-switch-14"
+                role="switch"
+                tabindex="0"
+                type="button"
+                value="false"
+              >
+                <span
+                  class="sr-only"
+                >
+                  Use setting
+                </span>
+                <span
+                  aria-hidden="true"
+                  class="translate-x-0  bg-white  pointer-events-none inline-block h-[14px] w-[14px] transform rounded-full border border-[#CF2A2A] shadow ring-0 transition duration-200 ease-in-out"
+                  data-testid="switch"
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </body>,
+  "container": <div>
+    <form
+      id="liquiditysetup"
+    >
+      <div
+        class="flex flex-col gap-14"
+      >
+        <div
+          class="rounded-[5px] px-10 flex flex-col gap-[40px] py-5"
+          style="box-shadow: 0px 0px 1px 0px rgba(26, 32, 36, 0.32), 0px 1px 2px 0px rgba(91, 104, 113, 0.32);"
+        >
+          <div
+            class="flex items-center gap-[10px]"
+          >
+            <span
+              class="capitalize min-w-[300px] flex items-center gap-[5px] text-[##636363] text-base font-medium"
+            >
+              Allow Part Liquidation
+              <div
+                class="flex items-end cursor-pointer"
+              >
+                <div
+                  aria-describedby="tippy-tooltip-36"
+                  class="bg-white max-w-[320px]"
+                  data-tooltipped=""
+                  style="display: inline;"
+                >
+                  <div
+                    class="w-[18px] h-[18px] text-[#636363]"
+                  >
+                    <svg
+                      fill="currentColor"
+                      height="1em"
+                      stroke="currentColor"
+                      stroke-width="0"
+                      version="1.1"
+                      viewBox="0 0 16 16"
+                      width="1em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                      />
+                      <path
+                        d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                      />
+                      <path
+                        d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </span>
+            <button
+              aria-checked="false"
+              class="bg-transparent border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
+              data-headlessui-state=""
+              id="headlessui-switch-13"
+              role="switch"
+              tabindex="0"
+              type="button"
+              value="true"
+            >
+              <span
+                class="sr-only"
+              >
+                Use setting
+              </span>
+              <span
+                aria-hidden="true"
+                class="translate-x-0  bg-white  pointer-events-none inline-block h-[14px] w-[14px] transform rounded-full border border-[#CF2A2A] shadow ring-0 transition duration-200 ease-in-out"
+                data-testid="switch"
+              />
+            </button>
+          </div>
+        </div>
+        <div
+          class="rounded-[5px] px-10 flex flex-col gap-[40px] py-5"
+          style="box-shadow: 0px 0px 1px 0px rgba(26, 32, 36, 0.32), 0px 1px 2px 0px rgba(91, 104, 113, 0.32);"
+        >
+          <div
+            class="flex items-center gap-[10px]"
+          >
+            <span
+              class="capitalize min-w-[300px] flex items-center gap-[5px] text-[##636363] text-base font-medium"
+            >
+              Allow Early Liquidation
+              <div
+                class="flex items-end cursor-pointer"
+              >
+                <div
+                  aria-describedby="tippy-tooltip-37"
+                  class="bg-white max-w-[320px]"
+                  data-tooltipped=""
+                  style="display: inline;"
+                >
+                  <div
+                    class="w-[18px] h-[18px] text-[#636363]"
+                  >
+                    <svg
+                      fill="currentColor"
+                      height="1em"
+                      stroke="currentColor"
+                      stroke-width="0"
+                      version="1.1"
+                      viewBox="0 0 16 16"
+                      width="1em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M7 4.75c0-0.412 0.338-0.75 0.75-0.75h0.5c0.412 0 0.75 0.338 0.75 0.75v0.5c0 0.412-0.338 0.75-0.75 0.75h-0.5c-0.412 0-0.75-0.338-0.75-0.75v-0.5z"
+                      />
+                      <path
+                        d="M10 12h-4v-1h1v-3h-1v-1h3v4h1z"
+                      />
+                      <path
+                        d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </span>
+            <button
+              aria-checked="false"
+              class="bg-transparent border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
+              data-headlessui-state=""
+              id="headlessui-switch-14"
+              role="switch"
+              tabindex="0"
+              type="button"
+              value="false"
+            >
+              <span
+                class="sr-only"
+              >
+                Use setting
+              </span>
+              <span
+                aria-hidden="true"
+                class="translate-x-0  bg-white  pointer-events-none inline-block h-[14px] w-[14px] transform rounded-full border border-[#CF2A2A] shadow ring-0 transition duration-200 ease-in-out"
+                data-testid="switch"
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "store": Object {
+    "@@observable": [Function],
+    "dispatch": [Function],
+    "getState": [Function],
+    "replaceReducer": [Function],
+    "subscribe": [Function],
+  },
+  "unmount": [Function],
+}
+`;
+
+exports[`FormComponeent Should render if step === 5 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <form
+        data-testid="entriesandevents"
+        id="entriesandevents"
+      >
+        <div>
+          <div
+            class="bg-[#fff] border border-[#E6E9ED] rounded-[6px]"
+            style="box-shadow: 0px 0px 1px 0px rgba(26, 32, 36, 0.32), 0px 1px 2px 0px rgba(91, 104, 113, 0.32);"
+          >
+            <div
+              class="border-b border-[#E6E9ED] flex justify-between items-center px-6 py-[14px]"
+            >
+              <span
+                class="text-[18px] flex  gap-[1px] text-[#636363] font-semibold"
+              >
+                Product to GL Mapping 
+                <div>
+                  <svg
+                    data-testid="red-dot"
+                    fill="none"
+                    height="5"
+                    viewBox="0 0 5 5"
+                    width="5"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="2.5"
+                      cy="2.5"
+                      fill="#CF2A2A"
+                      r="2.5"
+                    />
+                  </svg>
+                </div>
+              </span>
+              <span
+                class="font-normal text-sm text-danger-500 italic underline"
+              >
+                Clear all entries
+              </span>
+            </div>
+            <div
+              class="flex flex-col gap-4 px-[30px] py-5"
+            >
+              <div
+                class="flex flex-col items-start gap-y-5"
+              >
+                <div
+                  class="flex gap-[10px] items-center"
+                >
+                  <span
+                    class="min-w-[250px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium"
+                    data-testid="input-div"
+                  >
+                    Term Deposit Liability account
+                     
+                    <div>
+                      <svg
+                        data-testid="red-dot"
+                        fill="none"
+                        height="5"
+                        viewBox="0 0 5 5"
+                        width="5"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle
+                          cx="2.5"
+                          cy="2.5"
+                          fill="#CF2A2A"
+                          r="2.5"
+                        />
+                      </svg>
+                    </div>
+                  </span>
+                  <div>
+                    <div>
+                      <div
+                        class="w-[360px] relative"
+                      >
+                        <div
+                          class=" "
+                        >
+                          <div>
+                            <div
+                              class="w-full"
+                              data-testid="gli"
+                            >
+                              <div
+                                class="relative bg-[#fff] w-full"
+                              >
+                                <div
+                                  class="flex items-center  border-b border-[#8F8F8F]"
+                                  data-testid="open-button"
+                                >
+                                  <span
+                                    class="w-8 h-8 flex items-center justify-center"
+                                  >
+                                    <svg
+                                      class="text-[#48535B] text-lg"
+                                      fill="currentColor"
+                                      height="1em"
+                                      stroke="currentColor"
+                                      stroke-width="0"
+                                      viewBox="0 0 512 512"
+                                      width="1em"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+                                      />
+                                    </svg>
+                                  </span>
+                                   
+                                  <input
+                                    class="w-full  ring-0 outline-none bg-transparent"
+                                    data-testid="gli-input"
+                                    value=""
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="flex gap-[10px] items-center"
+                >
+                  <span
+                    class="min-w-[250px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium"
+                    data-testid="input-div"
+                  >
+                    Interest accural account
+                     
+                    <div>
+                      <svg
+                        data-testid="red-dot"
+                        fill="none"
+                        height="5"
+                        viewBox="0 0 5 5"
+                        width="5"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle
+                          cx="2.5"
+                          cy="2.5"
+                          fill="#CF2A2A"
+                          r="2.5"
+                        />
+                      </svg>
+                    </div>
+                  </span>
+                  <div>
+                    <div>
+                      <div
+                        class="w-[360px] relative"
+                      >
+                        <div
+                          class=" "
+                        >
+                          <div>
+                            <div
+                              class="w-full"
+                              data-testid="gli"
+                            >
+                              <div
+                                class="relative bg-[#fff] w-full"
+                              >
+                                <div
+                                  class="flex items-center  border-b border-[#8F8F8F]"
+                                  data-testid="open-button"
+                                >
+                                  <span
+                                    class="w-8 h-8 flex items-center justify-center"
+                                  >
+                                    <svg
+                                      class="text-[#48535B] text-lg"
+                                      fill="currentColor"
+                                      height="1em"
+                                      stroke="currentColor"
+                                      stroke-width="0"
+                                      viewBox="0 0 512 512"
+                                      width="1em"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+                                      />
+                                    </svg>
+                                  </span>
+                                   
+                                  <input
+                                    class="w-full  ring-0 outline-none bg-transparent"
+                                    data-testid="gli-input"
+                                    value=""
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="flex gap-[10px] items-center"
+                >
+                  <span
+                    class="min-w-[250px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium"
+                    data-testid="input-div"
+                  >
+                    Interest expense account
+                     
+                    <div>
+                      <svg
+                        data-testid="red-dot"
+                        fill="none"
+                        height="5"
+                        viewBox="0 0 5 5"
+                        width="5"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle
+                          cx="2.5"
+                          cy="2.5"
+                          fill="#CF2A2A"
+                          r="2.5"
+                        />
+                      </svg>
+                    </div>
+                  </span>
+                  <div>
+                    <div>
+                      <div
+                        class="w-[360px] relative"
+                      >
+                        <div
+                          class=" "
+                        >
+                          <div>
+                            <div
+                              class="w-full"
+                              data-testid="gli"
+                            >
+                              <div
+                                class="relative bg-[#fff] w-full"
+                              >
+                                <div
+                                  class="flex items-center  border-b border-[#8F8F8F]"
+                                  data-testid="open-button"
+                                >
+                                  <span
+                                    class="w-8 h-8 flex items-center justify-center"
+                                  >
+                                    <svg
+                                      class="text-[#48535B] text-lg"
+                                      fill="currentColor"
+                                      height="1em"
+                                      stroke="currentColor"
+                                      stroke-width="0"
+                                      viewBox="0 0 512 512"
+                                      width="1em"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+                                      />
+                                    </svg>
+                                  </span>
+                                   
+                                  <input
+                                    class="w-full  ring-0 outline-none bg-transparent"
+                                    data-testid="gli-input"
+                                    value=""
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </body>,
+  "container": <div>
+    <form
+      data-testid="entriesandevents"
+      id="entriesandevents"
+    >
+      <div>
+        <div
+          class="bg-[#fff] border border-[#E6E9ED] rounded-[6px]"
+          style="box-shadow: 0px 0px 1px 0px rgba(26, 32, 36, 0.32), 0px 1px 2px 0px rgba(91, 104, 113, 0.32);"
+        >
+          <div
+            class="border-b border-[#E6E9ED] flex justify-between items-center px-6 py-[14px]"
+          >
+            <span
+              class="text-[18px] flex  gap-[1px] text-[#636363] font-semibold"
+            >
+              Product to GL Mapping 
+              <div>
+                <svg
+                  data-testid="red-dot"
+                  fill="none"
+                  height="5"
+                  viewBox="0 0 5 5"
+                  width="5"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle
+                    cx="2.5"
+                    cy="2.5"
+                    fill="#CF2A2A"
+                    r="2.5"
+                  />
+                </svg>
+              </div>
+            </span>
+            <span
+              class="font-normal text-sm text-danger-500 italic underline"
+            >
+              Clear all entries
+            </span>
+          </div>
+          <div
+            class="flex flex-col gap-4 px-[30px] py-5"
+          >
+            <div
+              class="flex flex-col items-start gap-y-5"
+            >
+              <div
+                class="flex gap-[10px] items-center"
+              >
+                <span
+                  class="min-w-[250px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium"
+                  data-testid="input-div"
+                >
+                  Term Deposit Liability account
+                   
+                  <div>
+                    <svg
+                      data-testid="red-dot"
+                      fill="none"
+                      height="5"
+                      viewBox="0 0 5 5"
+                      width="5"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        cx="2.5"
+                        cy="2.5"
+                        fill="#CF2A2A"
+                        r="2.5"
+                      />
+                    </svg>
+                  </div>
+                </span>
+                <div>
+                  <div>
+                    <div
+                      class="w-[360px] relative"
+                    >
+                      <div
+                        class=" "
+                      >
+                        <div>
+                          <div
+                            class="w-full"
+                            data-testid="gli"
+                          >
+                            <div
+                              class="relative bg-[#fff] w-full"
+                            >
+                              <div
+                                class="flex items-center  border-b border-[#8F8F8F]"
+                                data-testid="open-button"
+                              >
+                                <span
+                                  class="w-8 h-8 flex items-center justify-center"
+                                >
+                                  <svg
+                                    class="text-[#48535B] text-lg"
+                                    fill="currentColor"
+                                    height="1em"
+                                    stroke="currentColor"
+                                    stroke-width="0"
+                                    viewBox="0 0 512 512"
+                                    width="1em"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+                                    />
+                                  </svg>
+                                </span>
+                                 
+                                <input
+                                  class="w-full  ring-0 outline-none bg-transparent"
+                                  data-testid="gli-input"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="flex gap-[10px] items-center"
+              >
+                <span
+                  class="min-w-[250px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium"
+                  data-testid="input-div"
+                >
+                  Interest accural account
+                   
+                  <div>
+                    <svg
+                      data-testid="red-dot"
+                      fill="none"
+                      height="5"
+                      viewBox="0 0 5 5"
+                      width="5"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        cx="2.5"
+                        cy="2.5"
+                        fill="#CF2A2A"
+                        r="2.5"
+                      />
+                    </svg>
+                  </div>
+                </span>
+                <div>
+                  <div>
+                    <div
+                      class="w-[360px] relative"
+                    >
+                      <div
+                        class=" "
+                      >
+                        <div>
+                          <div
+                            class="w-full"
+                            data-testid="gli"
+                          >
+                            <div
+                              class="relative bg-[#fff] w-full"
+                            >
+                              <div
+                                class="flex items-center  border-b border-[#8F8F8F]"
+                                data-testid="open-button"
+                              >
+                                <span
+                                  class="w-8 h-8 flex items-center justify-center"
+                                >
+                                  <svg
+                                    class="text-[#48535B] text-lg"
+                                    fill="currentColor"
+                                    height="1em"
+                                    stroke="currentColor"
+                                    stroke-width="0"
+                                    viewBox="0 0 512 512"
+                                    width="1em"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+                                    />
+                                  </svg>
+                                </span>
+                                 
+                                <input
+                                  class="w-full  ring-0 outline-none bg-transparent"
+                                  data-testid="gli-input"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="flex gap-[10px] items-center"
+              >
+                <span
+                  class="min-w-[250px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium"
+                  data-testid="input-div"
+                >
+                  Interest expense account
+                   
+                  <div>
+                    <svg
+                      data-testid="red-dot"
+                      fill="none"
+                      height="5"
+                      viewBox="0 0 5 5"
+                      width="5"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        cx="2.5"
+                        cy="2.5"
+                        fill="#CF2A2A"
+                        r="2.5"
+                      />
+                    </svg>
+                  </div>
+                </span>
+                <div>
+                  <div>
+                    <div
+                      class="w-[360px] relative"
+                    >
+                      <div
+                        class=" "
+                      >
+                        <div>
+                          <div
+                            class="w-full"
+                            data-testid="gli"
+                          >
+                            <div
+                              class="relative bg-[#fff] w-full"
+                            >
+                              <div
+                                class="flex items-center  border-b border-[#8F8F8F]"
+                                data-testid="open-button"
+                              >
+                                <span
+                                  class="w-8 h-8 flex items-center justify-center"
+                                >
+                                  <svg
+                                    class="text-[#48535B] text-lg"
+                                    fill="currentColor"
+                                    height="1em"
+                                    stroke="currentColor"
+                                    stroke-width="0"
+                                    viewBox="0 0 512 512"
+                                    width="1em"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+                                    />
+                                  </svg>
+                                </span>
+                                 
+                                <input
+                                  class="w-full  ring-0 outline-none bg-transparent"
+                                  data-testid="gli-input"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "store": Object {
+    "@@observable": [Function],
+    "dispatch": [Function],
+    "getState": [Function],
+    "replaceReducer": [Function],
+    "subscribe": [Function],
+  },
+  "unmount": [Function],
+}
+`;

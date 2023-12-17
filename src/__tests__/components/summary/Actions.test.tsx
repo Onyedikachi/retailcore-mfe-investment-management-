@@ -284,7 +284,6 @@ describe("Actions", () => {
         </AppContext.Provider>
       </InvestmentContext.Provider>
     );
-    screen.debug()
     // Click the Approve button
     const approveButton = screen.getByTestId("cancel");
     userEvent.click(approveButton);

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import ProductInformation from "../../components/pages/term-deposit/forms/product-information";
 import { renderWithProviders } from "../../__mocks__/api/Wrapper"
 import { act } from "react-dom/test-utils";
@@ -67,16 +67,17 @@ describe("ProductInformation", () => {
     const productSlogan = screen.getByTestId("investment-slogan");
     const productDescription = screen.getByTestId("product-description")
 
-    await user.type(productName, value);
-    await user.type(productSlogan, value);
-    await user.type(productDescription, value);
-    
-    //@ts-ignore
-    expect(productName.value.length).toEqual(productName.maxLength);
-    //@ts-ignore
-    expect(productSlogan.value.length).toEqual(productSlogan.maxLength);
-    //@ts-ignore
-    expect(productDescription.value.length).toEqual(productDescription.maxLength);
+    waitFor(() => {
+      user.type(productName, value);
+      user.type(productSlogan, value);
+      user.type(productDescription, value);
+
+      expect(productName.value.length).toEqual(productName.maxLength);
+      //@ts-ignore
+      expect(productSlogan.value.length).toEqual(productSlogan.maxLength);
+      //@ts-ignore
+      expect(productDescription.value.length).toEqual(productDescription.maxLength);
+    })
     
   })
 
@@ -90,7 +91,6 @@ describe("ProductInformation", () => {
     // Assertion
     // @ts-ignore 
     expect(productNameInput.value).toBe('Test Product');
-    screen.debug();
     expect(getByTestId('product-name-char-count')).toHaveTextContent('50/50');
   });
 
@@ -113,14 +113,18 @@ describe("ProductInformation", () => {
   it("Should show error when invalid name is typed", async () => {
     const { getByTestId, getByText, findByText } = renderWithProviders(<ProductInformation activeId={{ current: "3456" }} proceed={jest.fn()} formData={fData} setDisabled={jest.fn()} setFormData={jest.fn()} initiateDraft={undefined} />)
     const productName = getByTestId("product-name")
-    await user.type(productName, "ju&");
-    getByText("Product name is required")
+    waitFor(() => {
+      user.type(productName, "ju&");
+      getByText("Product name is required")
+    })
   })
   
   it("Should show error when description is too short", async() => {
     const { getByTestId, getByText, findByText } = renderWithProviders(<ProductInformation activeId={{ current: "3456" }} proceed={jest.fn()} formData={fData} setDisabled={jest.fn()} setFormData={jest.fn()} initiateDraft={undefined} />)
     const productDescriptionInput = getByTestId("product-description");
-    await user.type(productDescriptionInput, "ju");
-    expect(await findByText("Minimum of 4 chars")).toBeInTheDocument();
+    waitFor(() => {
+      user.type(productDescriptionInput, "ju");
+      expect(getByText("Minimum of 4 chars")).toBeInTheDocument();
+    })
   })
 })

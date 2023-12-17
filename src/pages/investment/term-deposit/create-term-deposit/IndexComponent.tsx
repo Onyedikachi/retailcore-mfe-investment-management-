@@ -33,7 +33,6 @@ import { convertKeysToLowerCase } from "@app/utils/convertKeysToLowerCase";
 
 export function FormComponent(props) {
   const { step, productData, activeId, handleNav, setProductData, setDisabled, initiateDraft } = props;
-  useEffect(() => console.log("rendering...", step), [step])
   return (
     <Fragment>
       {

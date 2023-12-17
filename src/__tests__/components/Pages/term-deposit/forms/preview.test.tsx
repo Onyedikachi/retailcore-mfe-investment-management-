@@ -93,7 +93,6 @@ describe("Preview", () => {
     renderWithProviders(<Preview formData={fData} />)
     await waitFor(() => {
       expect(screen.getByTestId("preview")).toBeInTheDocument();
-      screen.debug();
     })
   })
 })

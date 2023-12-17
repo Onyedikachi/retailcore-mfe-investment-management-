@@ -10,6 +10,7 @@ import { RedDot } from "@app/components/forms";
 import { useDeactivateProductMutation } from "@app/api";
 import { Messages } from "@app/constants/enums";
 import { AppContext } from "@app/utils";
+import MessagesComponent from "../table/MessagesComponent";
 
 interface ApprovedProps {
   isOpen: boolean;
@@ -139,14 +140,17 @@ export default function RequestDeactivation({
             Submit
           </Button>
         </div>
-        {isSuccessOpen && (
+        {/*@ts-ignore*/}
+        <MessagesComponent isSuccessOpen={isSuccessOpen} isSuccess={isSuccess} 
+          setIsSuccessOpen={setIsSuccessOpen} isFailed={isFailed} failedText={failedText} canRetry={true} failedSubText={failedSubText} setFailed={setFailed}/>
+        {/* {isSuccessOpen && (
           <Success
             text={successText}
             isOpen={isSuccess}
             setIsOpen={setIsSuccessOpen}
           />
-        )}
-        {isFailed && (
+        )} */}
+        {/* {isFailed && (
           <Failed
             text={failedText}
             subtext={failedSubText}
@@ -154,7 +158,7 @@ export default function RequestDeactivation({
             isOpen={isFailed}
             setIsOpen={setFailed}
           />
-        )}
+        )} */}
         <Loader isOpen={isLoading} text="Submitting" />
       </div>
     </ModalLayout>

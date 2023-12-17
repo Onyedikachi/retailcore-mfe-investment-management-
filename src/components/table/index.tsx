@@ -32,6 +32,7 @@ import {
 } from "@app/api";
 import Button from "../Button";
 import { ActiveFilterOptions } from "@app/constants";
+import MessagesComponent from "./MessagesComponent";
 
 interface TableProps {
   headers: any[];
@@ -560,60 +561,13 @@ export default function TableComponent<TableProps>({
         </div>
         {isLoading && <BottomBarLoader />}
       </InfiniteScroll>{" "}
-      {isConfirmOpen && (
-        <Confirm
-          text={confirmText}
-          subtext={subText}
-          isOpen={isConfirmOpen}
-          setIsOpen={setIsConfirmOpen}
-          onConfirm={() => {
-            setIsConfirmOpen(false);
-            handleConfirm();
-          }}
-          onCancel={() => {
-            setIsConfirmOpen(false);
-          }}
-        />
-      )}
-      {isSuccessOpen && (
-        <Success
-          text={successText}
-          isOpen={isSuccessOpen}
-          setIsOpen={setIsSuccessOpen}
-        />
-      )}
-      {isFailed && (
-        <Failed
-          text={failedText}
-          subtext={failedSubText}
-          isOpen={isFailed}
-          setIsOpen={setFailed}
-        />
-      )}
-      {isDeactivationOpen && (
-        <RequestDeactivation
-          isOpen={isDeactivationOpen}
-          setIsOpen={setIsDeactivationOpen}
-          onConfirm={() => {}}
-          detail={detail}
-          // setReason={() => {}}
-        />
-      )}
-      {isDetailOpen && (
-        <ProductDetail
-          isOpen={isDetailOpen}
-          setIsOpen={setDetailOpen}
-          handleClick={handleAction}
-          detail={detail}
-          // setReason={() => {}}
-        />
-      )}
-      {(deleteLoading || activateIsLoading) && (
-        <Loader
-          isOpen={deleteLoading || activateIsLoading}
-          text={"Submitting"}
-        />
-      )}
+      {/* @ts-ignore */}
+      <MessagesComponent isConfirmOpen={isConfirmOpen} isSuccessOpen={isSuccessOpen} setIsConfirmOpen={setIsConfirmOpen} isFailed={isFailed} 
+        isDeactivationOpen={isDeactivationOpen} isDetailOpen={isDetailOpen} deleteLoading={deleteLoading} 
+        activateIsLoading={activateIsLoading} confirmText={confirmText} detail={detail} subText={subText} 
+        successText={successText} failedText={failedText} failedSubText={failedSubText}
+        handleConfirm={handleConfirm} setIsSuccessOpen={setIsSuccessOpen} setFailed={setFailed} setIsDeactivationOpen={setIsDeactivationOpen}
+        setDetailOpen={setDetailOpen} handleAction={handleAction}/>
     </div>
   );
 }
