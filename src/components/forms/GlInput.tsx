@@ -36,7 +36,7 @@ export default function EntriesAndEventsSearchResults({
 
   useEffect(() => {
     console.log(toggleMenu);
-  }, [toggleMenu])
+  }, [toggleMenu]);
 
   const GlMappingOptions = [
     {
@@ -199,6 +199,15 @@ export default function EntriesAndEventsSearchResults({
                       )}
                     </div>
                   ))}
+
+                  {ledgerIsLoading && (
+                    <div
+                      data-testid="bottom-bar-loader"
+                      className="w-full bg-white p-2 flex justify-center items-center"
+                    >
+                      <div className="spinner-border h-6 w-6 border-t border-danger-500 rounded-full animate-spin"></div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

@@ -34,6 +34,39 @@ export function InputDivs({
     </div>
   );
 }
+
+export function handleSelected(
+  inputName,
+  selectedOptions,
+  setPartOptionCharges,
+  setEarlyOptionCharges,
+  setValue
+) {
+  if (inputName === "part_SpecificCharges") {
+    setPartOptionCharges(selectedOptions);
+    setValue("part_SpecificCharges", selectedOptions);
+  }
+
+  if (inputName === "early_SpecificCharges") {
+    setEarlyOptionCharges(selectedOptions);
+    setValue("early_SpecificCharges", selectedOptions);
+  }
+}
+export function onProceed(
+  formData,
+  setFormData,
+  earlyOptionCharges,
+  partOptionCharges,
+  proceed
+) {
+  setFormData({
+    ...formData,
+    early_SpecificCharges: earlyOptionCharges,
+    part_SpecificCharges: partOptionCharges,
+  });
+  proceed();
+}
+
 export default function LiquiditySetup({
   proceed,
   formData,
@@ -82,29 +115,8 @@ export default function LiquiditySetup({
 
     setChargeOptions(options);
   }, [chargesData]);
-  useEffect(() => {
-  }, [formData]);
+  useEffect(() => {}, [formData]);
 
-  function handleSelected({ inputName, selectedOptions }) {
-    if (inputName === "part_SpecificCharges") {
-      setPartOptionCharges(selectedOptions);
-      setValue("part_SpecificCharges", selectedOptions);
-    }
-
-    if (inputName === "early_SpecificCharges") {
-      setEarlyOptionCharges(selectedOptions);
-      setValue("early_SpecificCharges", selectedOptions);
-    }
-  }
-
-  function onProceed(d: any) {
-    setFormData({
-      ...d,
-      early_SpecificCharges: earlyOptionCharges,
-      part_SpecificCharges: partOptionCharges,
-    });
-    proceed();
-  }
   const values = getValues();
 
   useEffect(() => {
@@ -155,7 +167,18 @@ export default function LiquiditySetup({
     }
   }, [initiateDraft]);
   return (
-    <form id="liquiditysetup" onSubmit={handleSubmit(onProceed)}>
+    <form
+      id="liquiditysetup"
+      onSubmit={handleSubmit((formData) =>
+        onProceed(
+          formData,
+          setFormData,
+          earlyOptionCharges,
+          partOptionCharges,
+          proceed
+        )
+      )}
+    >
       <div className="flex flex-col gap-14">
         {liquidationTypes.map((type) => (
           <ToggleInputChildren
@@ -335,7 +358,15 @@ export default function LiquiditySetup({
                             allLabel="All"
                             clearErrors={clearErrors}
                             trigger={trigger}
-                            handleSelected={handleSelected}
+                            handleSelected={({ inputName, selectedOptions }) =>
+                              handleSelected(
+                                inputName,
+                                selectedOptions,
+                                setPartOptionCharges,
+                                setEarlyOptionCharges,
+                                setValue
+                              )
+                            }
                           />
                         </div>
                         {watchPartLiquidationPenalty === 4 && (
@@ -571,7 +602,15 @@ export default function LiquiditySetup({
                           allLabel="All"
                           clearErrors={clearErrors}
                           trigger={trigger}
-                          handleSelected={handleSelected}
+                          handleSelected={({ inputName, selectedOptions }) =>
+                            handleSelected(
+                              inputName,
+                              selectedOptions,
+                              setPartOptionCharges,
+                              setEarlyOptionCharges,
+                              setValue
+                            )
+                          }
                         />
                       </div>
                       {watchEarlyLiquidationPenalty === 4 && (

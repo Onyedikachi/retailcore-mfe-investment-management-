@@ -1,5 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { linkApi, investmentApi, authApi, accountApi } from "@app/api";
+import {
+  linkApi,
+  investmentApi,
+  authApi,
+  accountApi,
+} from "@app/__mocks__/api";
 
 export const setupStore = (preloadedState) => {
   return configureStore({

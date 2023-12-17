@@ -110,7 +110,9 @@ export default function CustomerEligibilityCriteria({
 
       if (
         formData?.requireDocument &&
-        (process === "continue" || process === "modify" || process === "withdraw_modify")
+        (process === "continue" ||
+          process === "modify" ||
+          process === "withdraw_modify")
       ) {
         setSelectedRequirements(formData?.requireDocument);
 

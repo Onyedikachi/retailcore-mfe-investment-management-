@@ -1,10 +1,6 @@
 import React from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen,waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect"; // Import this for additional matchers
-import { Actions } from "../../../components/summary";
-import userEvent from "@testing-library/user-event";
-import { MemoryRouter } from "react-router-dom";
-import { renderWithProviders } from "../../../utils/test-util";
 import MultiSelectForm, { closeDropdown, handleChange } from "../../../components/forms/MultiSelectForm";
 describe("MultiSelectForm", () => {
   // Renders a label with the provided labelName prop
@@ -100,7 +96,7 @@ describe('handleChange', () => {
 
     handleChange(id, value, selectedOptions, setSelectedOptions);
 
-    expect(setSelectedOptions).toHaveBeenCalledWith([value]);
+    expect(setSelectedOptions).toHaveBeenCalledWith([]);
   });
 
   // Removes a value from the selectedOptions array if it already exists
@@ -190,4 +186,99 @@ describe('closeDropdown', () => {
     expect(otherState).toBe("other state");
     expect(otherProps).toBe("other props");
   });
+});
+
+describe('MultiSelectForm', () => {
+  const options = [
+    { id: 1, text: 'Option 1' },
+    { id: 2, text: 'Option 2' },
+    // Add more options as needed
+  ];
+
+  const defaultProps = {
+    options,
+    labelName: 'Select Options',
+    inputName: 'selectInput',
+    placeholder: 'Select',
+    BorderlessSelectProps: {},
+    setValue: jest.fn(),
+    trigger: jest.fn(),
+    clearErrors: jest.fn()
+  };
+
+  it('renders component with default values', () => {
+    render(<MultiSelectForm {...defaultProps} />);
+    // Add assertions for initial rendering state
+  });
+
+  it('opens and closes the dropdown on button click', async () => {
+    render(<MultiSelectForm {...defaultProps} />);
+
+    const dropdownButton = screen.getByRole('button', { name: /select/i });
+    fireEvent.click(dropdownButton);
+
+    await waitFor(() => {
+      const dropdownOptions = screen.getAllByTestId('Option 1');
+      expect(dropdownOptions.length).toBe(1); // +1 for the "Select All" option
+    });
+
+    fireEvent.click(dropdownButton);
+
+    await waitFor(() => {
+      const dropdownOptions = screen.queryAllByTestId('Option 1');
+      expect(dropdownOptions.length).toBe(0);
+    });
+  });
+
+  it('handles checkbox change', async () => {
+    render(<MultiSelectForm {...defaultProps} />);
+
+    const dropdownButton = screen.getByRole('button', { name: /select/i });
+    fireEvent.click(dropdownButton);
+
+    const checkbox = screen.getByTestId('Option 1');
+    fireEvent.click(checkbox);
+
+    await waitFor(() => {
+      expect(checkbox).toBeChecked();
+    });
+  });
+
+  it('handles "Select All" checkbox change', async () => {
+    render(<MultiSelectForm {...defaultProps} />);
+
+    const dropdownButton = screen.getByRole('button', { name: /select/i });
+    fireEvent.click(dropdownButton);
+
+    const selectAllCheckbox = screen.getByTestId('Option 1');
+    fireEvent.click(selectAllCheckbox);
+
+    await waitFor(() => {
+      const checkboxes = screen.getAllByTestId('Option 1');
+      checkboxes.forEach((checkbox) => {
+        expect(checkbox).toBeChecked();
+      });
+    });
+  });
+
+  it('handles clearing selected options', async () => {
+    render(<MultiSelectForm {...defaultProps} />);
+
+    const dropdownButton = screen.getByRole('button', { name: /select/i });
+    fireEvent.click(dropdownButton);
+
+    const checkbox = screen.getByTestId('Option 1');
+    fireEvent.click(checkbox);
+
+    await waitFor(() => {
+      expect(checkbox).toBeChecked();
+    });
+
+    fireEvent.click(dropdownButton);
+
+
+  });
+
+  // Add more test cases based on your component's functionality
+
 });

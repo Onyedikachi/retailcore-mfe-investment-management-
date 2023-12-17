@@ -5,7 +5,12 @@ import { glMappingSchema } from "@app/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 
-export const handleClear = (setClearField, clearFields, setMapOptions, reset) => {
+export const handleClear = (
+  setClearField,
+  clearFields,
+  setMapOptions,
+  reset
+) => {
   setClearField(!clearFields);
   setMapOptions([]);
   reset();
@@ -119,6 +124,9 @@ export default function AccountingEntriesAndEvents({
       setDisabled(false);
     }
   }, [values, mapOptions]);
+  useEffect(() => {
+    setDisabled(true);
+  }, []);
 
   useEffect(() => {
     if (formData?.productGlMappings?.length) {
@@ -137,7 +145,7 @@ export default function AccountingEntriesAndEvents({
     <form
       id="entriesandevents"
       data-testid="entriesandevents"
-      onSubmit={() => onProceed(proceed)}
+      onSubmit={handleSubmit(() => onProceed(proceed))}
     >
       <div>
         <div
@@ -201,4 +209,3 @@ export default function AccountingEntriesAndEvents({
     </form>
   );
 }
-
