@@ -40,6 +40,8 @@ describe("IndexComponent", () => {
         expect(getByTestId('product-name')).toBeInTheDocument();
         expect(getByTestId('investment-slogan')).toBeInTheDocument();
         expect(getByTestId('product-description')).toBeInTheDocument();
+        expect(getByText("Next")).toBeInTheDocument();
+
         screen.debug();
     })
 
@@ -86,4 +88,27 @@ describe("IndexComponent", () => {
         expect(getByTestId("confirm-modal")).toBeInTheDocument();
     })
 
+    it("Shows disabled button when form is not valid", async () => {
+        const { getByText, getAllByTestId, getByTestId } = renderWithProviders(<IndexComponent />)
+        const next = getByText("Next");
+        expect(next).toBeInTheDocument();
+        expect(next).toHaveAttribute("disabled")
+    })
+
+    it("Should not have disabled button when fom is valid", () => {
+        const { getByText, getAllByTestId, getByTestId, getAllByRole } = renderWithProviders(<IndexComponent />)
+        const inputs = getAllByRole("textbox")
+        const values = ["TestProd", "TestProdslogan", "this is testprod", "15/12/2023", "25/12/2024"];
+        act(() => {
+            inputs.forEach((input, index) => {
+                fireEvent.change(input, { target: { value: values[index] } });
+            })
+        })
+        // @ts-ignore 
+        expect(inputs.map(i => i.value)).toStrictEqual(values);
+        const next = getByText("Next");
+        expect(next).toBeInTheDocument();
+        expect(next).toHaveAttribute("disabled")
+        screen.debug();
+    })
 })
