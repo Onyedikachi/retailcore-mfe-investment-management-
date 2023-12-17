@@ -74,7 +74,7 @@ export default function CreateButton({ children }) {
           >
             {" "}
           </div>
-          <span onClick={() => setIsOpen(true)}>{children}</span>
+          <span data-testid="btn-create" onClick={() => setIsOpen(true)}>{children}</span>
 
           {/* First level  */}
           {isOpen && (
@@ -84,7 +84,7 @@ export default function CreateButton({ children }) {
                   <li className="group"  key={item.key}>
                     <button
                       disabled={!permissions.includes(item?.permission)}
-                     
+                       data-testid="btn-1"
                       onClick={() =>
                         item.isUrl
                           ? goToUrl(item.url, navigate)
@@ -106,7 +106,7 @@ export default function CreateButton({ children }) {
                               {item?.links.map((item2: CreateProp) => (
                                 <li className="group"  key={item2.key}>
                                   <button
-                                   
+                                    data-testid="btn-2"
                                     onClick={() =>
                                       item2.isUrl
                                         ? goToUrl(item2.url, navigate)
@@ -171,7 +171,7 @@ export default function CreateButton({ children }) {
                                                                   item4.key
                                                                 }>
                                                                   <button
-                                                                   
+                                                                    data-testid="btn-3"
                                                                     onClick={() =>
                                                                       item4.isUrl
                                                                         ? goToUrl(

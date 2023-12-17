@@ -207,7 +207,16 @@ describe("CreateButton", () => {
   // Renders the component without crashing
   it("should render the component without crashing", () => {
     render(<CreateButton children={<button>Create new product</button>} />);
-    expect(screen.getByText("Create new product")).toBeInTheDocument();
+    const btnText = screen.getByText("Create new product");
+    expect(btnText).toBeInTheDocument();
+    btnText.click();
+    const investBtn = screen.getByText("Investment");
+   
+    expect(investBtn).toBeInTheDocument();
+    const btn1 = screen.getAllByTestId("btn-1");
+    btn1[3].click();
+   
+
   });
 
   // Clicking on the button opens the dropdown menu

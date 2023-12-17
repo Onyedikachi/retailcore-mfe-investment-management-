@@ -1,7 +1,10 @@
 
-import { getByText, screen } from "@testing-library/dom";
+import { getByText, screen, fireEvent } from "@testing-library/dom";
 import { renderWithProviders } from "../../../../../__mocks__/api/Wrapper";
 import IndexComponent from "../../../../../pages/investment/term-deposit/create-term-deposit/IndexComponent"
+import { act } from "@testing-library/react";
+import userEvent from '@testing-library/user-event'
+import React from "react";
 
 jest.mock("react-router-dom", () => ({
     BrowserRouter: ({ children }) => <div>{children}</div>,
@@ -10,7 +13,17 @@ jest.mock("react-router-dom", () => ({
     useSearchParams: jest.fn(),
     useParams: jest.fn(),
 }));
+
+const user = userEvent.setup()
+
+class ResizeObserver {
+    observe() { }
+    unobserve() { }
+    disconnect() { }
+}
+
 describe("IndexComponent", () => {
+    window.ResizeObserver = ResizeObserver;
     beforeEach(() => {
         jest
             .spyOn(require("react-router-dom"), "useSearchParams")
@@ -20,8 +33,23 @@ describe("IndexComponent", () => {
             .mockReturnValue({ process: "continue" })
     });
     it("renders", () => {
-        renderWithProviders(<IndexComponent/>)
-        expect(screen.getByText("New Term Deposit Product")).toBeInTheDocument();
-        expect(screen.getAllByTestId("form-step").length).toBeGreaterThan(1);
+        const { getByText, getAllByTestId, getByTestId } = renderWithProviders(<IndexComponent />)
+        expect(getByText("New Term Deposit Product")).toBeInTheDocument();
+        expect(getAllByTestId("form-step").length).toBeGreaterThan(1);
+        expect(getByText("Product Name")).toBeInTheDocument();
+        expect(getByTestId('investment-slogan')).toBeInTheDocument();
+        expect(getByTestId('product-description')).toBeInTheDocument();
+        screen.debug();
     })
+
+
+
+    it("Show modal when clicking save to Draft", async () => {
+        const { getByText, getAllByTestId, getByTestId } = renderWithProviders(<IndexComponent />)
+        const saveButton = getByText("Save As Draft");
+        expect(saveButton).toBeInTheDocument();
+        await user.click(saveButton);
+        expect(getByTestId("confirm-modal")).toBeInTheDocument();
+    })
+
 })

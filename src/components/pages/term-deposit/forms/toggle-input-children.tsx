@@ -14,12 +14,12 @@ export default function ToggleInputChildren({
   trigger,
   inputName,
   defaultValue,
-  register
+  register,
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
   React.useEffect(() => {
-    console.log("default value ==" + defaultValue)
+    console.log("default value ==" + defaultValue);
     if (defaultValue !== null) {
       setIsOpen(defaultValue);
     }
@@ -43,8 +43,9 @@ export default function ToggleInputChildren({
           )}
         </span>
         <Switch
-        {...register(inputName)}
+          {...register(inputName)}
           checked={isOpen}
+          data-testid={inputName}
           onChange={(value) => {
             setIsOpen(value);
             setValue(inputName, value);
@@ -53,14 +54,16 @@ export default function ToggleInputChildren({
           className={classNames(
             isOpen ? "bg-[#CF2A2A]" : "bg-transparent",
             "border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
-            )}
-            >
+          )}
+        >
           <span className="sr-only">Use setting</span>
           <span
-          data-testid="switch"
+            data-testid="switch"
             aria-hidden="true"
             className={classNames(
-              isOpen ? "translate-x-[14px] bg-white" : "translate-x-0  bg-white ",
+              isOpen
+                ? "translate-x-[14px] bg-white"
+                : "translate-x-0  bg-white ",
               "pointer-events-none inline-block h-[14px] w-[14px] transform rounded-full border border-[#CF2A2A] shadow ring-0 transition duration-200 ease-in-out"
             )}
           />

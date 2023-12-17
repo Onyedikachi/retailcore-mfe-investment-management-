@@ -104,17 +104,15 @@ export default function CustomerEligibilityCriteria({
 
   useEffect(() => {
     if (formData) {
-      console.log(
-        "🚀 ~ file: customer-eligibilty-criteria.tsx:106 ~ useEffect ~ formData:",
-        formData.requireDocument
-      );
       Object.entries(formData).forEach(([name, value]) =>
         setValue(name, value)
       );
 
       if (
         formData?.requireDocument &&
-        (process === "continue" || process === "modify" || process === "withdraw_modify")
+        (process === "continue" ||
+          process === "modify" ||
+          process === "withdraw_modify")
       ) {
         setSelectedRequirements(formData?.requireDocument);
 

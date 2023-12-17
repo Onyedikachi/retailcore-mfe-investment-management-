@@ -5,6 +5,17 @@ import { glMappingSchema } from "@app/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 
+export const handleClear = (
+  setClearField,
+  clearFields,
+  setMapOptions,
+  reset
+) => {
+  setClearField(!clearFields);
+  setMapOptions([]);
+  reset();
+  setClearField(!clearFields);
+};
 export function InputDivs({ children, label }) {
   return (
     <div className="flex gap-[10px] items-center">
@@ -19,6 +30,39 @@ export function InputDivs({ children, label }) {
   );
 }
 
+export const handleClick = (
+  key,
+  submenu,
+  setValue,
+  mapOptions,
+  setMapOptions,
+  GlMappingOptions
+) => {
+  const data = {
+    accountName: submenu.name,
+    accountId: submenu?.id,
+    glAccountType: GlMappingOptions.find((i) => i.key === key)?.id,
+  };
+
+  setValue(key, submenu?.name);
+
+  if (!mapOptions.some((i) => i.glAccountType === data.glAccountType)) {
+    setMapOptions([...mapOptions, data]);
+  } else {
+    setMapOptions((prevMapOptions) =>
+      prevMapOptions.map((i) =>
+        i.glAccountType === data.glAccountType
+          ? { ...i, accountName: submenu.name, accountId: data.accountId }
+          : i
+      )
+    );
+  }
+};
+
+export function onProceed(proceed) {
+  // setFormData({ data: d, mapOptions });
+  proceed();
+}
 export default function AccountingEntriesAndEvents({
   proceed,
   formData,
@@ -69,39 +113,8 @@ export default function AccountingEntriesAndEvents({
     },
   ];
 
-  // glMappingSchema
-  const handleClick = (key, submenu) => {
-    console.log(
-      "🚀 ~ file: accounting-entries-and-events.tsx:76 ~ handleClick ~ subname:",
-      submenu
-    );
-    const data = {
-      accountName: submenu.name,
-      accountId: submenu?.id,
-      glAccountType: GlMappingOptions.find((i) => i.key === key)?.id,
-    };
-
-    setValue(key, submenu?.name);
-
-    if (!mapOptions.some((i) => i.glAccountType === data.glAccountType)) {
-      setMapOptions([...mapOptions, data]);
-    } else {
-      setMapOptions((prevMapOptions) =>
-        prevMapOptions.map((i) =>
-          i.glAccountType === data.glAccountType
-            ? { ...i, accountName: submenu.name, accountId: data.accountId }
-            : i
-        )
-      );
-    }
-  };
-
   const values = getValues();
 
-  function onProceed(d: any) {
-    // setFormData({ data: d, mapOptions });
-    proceed();
-  }
   useEffect(() => {
     setFormData({ data: formData, mapOptions });
   }, [mapOptions, initiateDraft]);
@@ -111,13 +124,10 @@ export default function AccountingEntriesAndEvents({
       setDisabled(false);
     }
   }, [values, mapOptions]);
+  useEffect(() => {
+    setDisabled(true);
+  }, []);
 
-  const handleClear = () => {
-    setClearField(!clearFields);
-    setMapOptions([]);
-    reset();
-    setClearField(!clearFields);
-  };
   useEffect(() => {
     if (formData?.productGlMappings?.length) {
       setMapOptions(formData?.productGlMappings);
@@ -135,7 +145,7 @@ export default function AccountingEntriesAndEvents({
     <form
       id="entriesandevents"
       data-testid="entriesandevents"
-      onSubmit={handleSubmit(onProceed)}
+      onSubmit={handleSubmit(() => onProceed(proceed))}
     >
       <div>
         <div
@@ -151,7 +161,9 @@ export default function AccountingEntriesAndEvents({
             </span>
             <span
               className="font-normal text-sm text-danger-500 italic underline"
-              onClick={handleClear}
+              onClick={() =>
+                handleClear(setClearField, clearFields, setMapOptions, reset)
+              }
             >
               Clear all entries
             </span>
@@ -165,7 +177,16 @@ export default function AccountingEntriesAndEvents({
                     <div className="w-[360px] relative">
                       <div className=" ">
                         <GlInput
-                          handleClick={handleClick}
+                          handleClick={(key, submenu) =>
+                            handleClick(
+                              key,
+                              submenu,
+                              setValue,
+                              mapOptions,
+                              setMapOptions,
+                              GlMappingOptions
+                            )
+                          }
                           inputName={type.key}
                           defaultValue={
                             mapOptions.find((i) => i?.glAccountType === type.id)
