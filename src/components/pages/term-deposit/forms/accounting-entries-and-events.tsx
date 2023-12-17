@@ -5,6 +5,12 @@ import { glMappingSchema } from "@app/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 
+export const handleClear = (setClearField, clearFields, setMapOptions, reset) => {
+  setClearField(!clearFields);
+  setMapOptions([]);
+  reset();
+  setClearField(!clearFields);
+};
 export function InputDivs({ children, label }) {
   return (
     <div className="flex gap-[10px] items-center">
@@ -19,25 +25,14 @@ export function InputDivs({ children, label }) {
   );
 }
 
-const GlMappingOptions = [
-  {
-    id: 0,
-    text: "Term Deposit Liability account",
-    key: "TermDepositLiabilityAccount",
-  },
-  {
-    id: 1,
-    text: "Interest accural account",
-    key: "InterestAccrualAccount",
-  },
-  {
-    id: 2,
-    text: "Interest expense account",
-    key: "InterestExpenseAccount",
-  },
-];
-
-export const handleGlMappingSchema = (key, submenu, setValue, mapOptions, setMapOptions) => {
+export const handleClick = (
+  key,
+  submenu,
+  setValue,
+  mapOptions,
+  setMapOptions,
+  GlMappingOptions
+) => {
   const data = {
     accountName: submenu.name,
     accountId: submenu?.id,
@@ -57,8 +52,12 @@ export const handleGlMappingSchema = (key, submenu, setValue, mapOptions, setMap
       )
     );
   }
-}
+};
 
+export function onProceed(proceed) {
+  // setFormData({ data: d, mapOptions });
+  proceed();
+}
 export default function AccountingEntriesAndEvents({
   proceed,
   formData,
@@ -91,17 +90,26 @@ export default function AccountingEntriesAndEvents({
     // values,
   });
 
-  // glMappingSchema
-  const handleClick = (key, submenu) => {
-    handleGlMappingSchema(key, submenu, setValue, mapOptions, setMapOptions)
-  };
+  const GlMappingOptions = [
+    {
+      id: 0,
+      text: "Term Deposit Liability account",
+      key: "TermDepositLiabilityAccount",
+    },
+    {
+      id: 1,
+      text: "Interest accural account",
+      key: "InterestAccrualAccount",
+    },
+    {
+      id: 2,
+      text: "Interest expense account",
+      key: "InterestExpenseAccount",
+    },
+  ];
 
   const values = getValues();
 
-  function onProceed(d: any) {
-    // setFormData({ data: d, mapOptions });
-    proceed();
-  }
   useEffect(() => {
     setFormData({ data: formData, mapOptions });
   }, [mapOptions, initiateDraft]);
@@ -112,12 +120,6 @@ export default function AccountingEntriesAndEvents({
     }
   }, [values, mapOptions]);
 
-  const handleClear = () => {
-    setClearField(!clearFields);
-    setMapOptions([]);
-    reset();
-    setClearField(!clearFields);
-  };
   useEffect(() => {
     if (formData?.productGlMappings?.length) {
       setMapOptions(formData?.productGlMappings);
@@ -135,7 +137,7 @@ export default function AccountingEntriesAndEvents({
     <form
       id="entriesandevents"
       data-testid="entriesandevents"
-      onSubmit={handleSubmit(onProceed)}
+      onSubmit={() => onProceed(proceed)}
     >
       <div>
         <div
@@ -151,7 +153,9 @@ export default function AccountingEntriesAndEvents({
             </span>
             <span
               className="font-normal text-sm text-danger-500 italic underline"
-              onClick={handleClear}
+              onClick={() =>
+                handleClear(setClearField, clearFields, setMapOptions, reset)
+              }
             >
               Clear all entries
             </span>
@@ -165,7 +169,16 @@ export default function AccountingEntriesAndEvents({
                     <div className="w-[360px] relative">
                       <div className=" ">
                         <GlInput
-                          handleClick={handleClick}
+                          handleClick={(key, submenu) =>
+                            handleClick(
+                              key,
+                              submenu,
+                              setValue,
+                              mapOptions,
+                              setMapOptions,
+                              GlMappingOptions
+                            )
+                          }
                           inputName={type.key}
                           defaultValue={
                             mapOptions.find((i) => i?.glAccountType === type.id)
@@ -188,3 +201,4 @@ export default function AccountingEntriesAndEvents({
     </form>
   );
 }
+

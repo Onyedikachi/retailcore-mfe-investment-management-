@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import CascadingDropdown from "../../../components/ui/CasadingDropdown";
 import { BrowserRouter } from "react-router-dom";
-
+import '@testing-library/jest-dom';
 
 describe("CascadingDropdown", () => {
   // Renders a dropdown button with a label and a list of items
@@ -117,4 +117,25 @@ describe("CascadingDropdown", () => {
     expect(screen.getByText(label)).toBeInTheDocument();
     expect(screen.queryByRole("menuitem")).not.toBeInTheDocument();
   });
+});
+
+
+describe('CascadingDropdown', () => {
+  const sampleItems = [
+    { label: 'Item 1', link: '/item1', hasDivider: false, subMenu: [] },
+    { label: 'Item 2', link: '/item2', hasDivider: false, subMenu: [] },
+    { label: 'Item 3', link: '/item3', hasDivider: true, subMenu: [] },
+  ];
+
+  it('renders label and items correctly', () => {
+    render(<CascadingDropdown label="Test Dropdown" items={sampleItems} />);
+
+    // Check if the label is rendered
+    expect(screen.getByText('Test Dropdown')).toBeInTheDocument();
+
+   
+  });
+
+
+  // Add more test cases as needed
 });

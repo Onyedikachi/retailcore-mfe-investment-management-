@@ -7,7 +7,7 @@ import {
   useAddLinkMutation,
 } from "@app/api";
 
-export const defaultLink = {
+const defaultLink = {
   isDefault: true,
   count: 1,
   name: "Product management",
@@ -15,15 +15,26 @@ export const defaultLink = {
   link: "product-management",
 };
 
-export const handleLinks = (quickLinks, isLinksQuerySuccessful, baseUrl, setLinks, addLink, updateLink, defaultLink) => {
+export function handleLinksUpdate(
+  isLinksQuerySuccessful,
+  quickLinks,
+  setLinks,
+  addLink,
+  updateLink,
+  baseUrl
+) {
   if (isLinksQuerySuccessful) {
     const moduleName = "Product Factory";
-    const moduleLink = `product-factory/investment`;
-    //get
+    const moduleLink = "product-factory/investment";
+
+    // Get
     if (quickLinks && quickLinks.data && quickLinks.data.length > 0) {
       setLinks([defaultLink, ...quickLinks.data]);
     }
-    
+
+    console.log("effect");
+
+    // Check if quickLinks has a link to this page
     const hasPageLink =
       quickLinks && quickLinks.data
         ? quickLinks?.data.some(
@@ -31,6 +42,7 @@ export const handleLinks = (quickLinks, isLinksQuerySuccessful, baseUrl, setLink
           )
         : false;
 
+    // Add
     if (
       (quickLinks && !quickLinks.data) ||
       quickLinks?.data?.length === 0 ||
@@ -41,12 +53,12 @@ export const handleLinks = (quickLinks, isLinksQuerySuccessful, baseUrl, setLink
           link: `product-factory/investment`,
           name: "Product Factory",
           category: "ProductFactory",
-
           isDefault: true,
         },
       ]);
     }
-    //update
+
+    // Update
     if (hasPageLink) {
       updateLink({
         moduleName,
@@ -56,9 +68,11 @@ export const handleLinks = (quickLinks, isLinksQuerySuccessful, baseUrl, setLink
   }
 }
 
+// Usage example:
 
 export default function QuickLinks() {
   const [isOpen, setIsOpen] = useState(true);
+
   const [links, setLinks] = useState([defaultLink]);
   const {
     data: quickLinks,
@@ -66,16 +80,27 @@ export default function QuickLinks() {
     isFetching,
     isSuccess: isLinksQuerySuccessful,
   } = useGetLinksQuery();
+  
   const [updateLink] = useUpdateLinkMutation();
 
   const [addLink] = useAddLinkMutation();
   const baseUrl = "https://seabaas.dev.bepeerless.co";
-  
+
   React.useEffect(() => {
-    handleLinks(quickLinks, isLinksQuerySuccessful, baseUrl, setLinks, addLink, updateLink, defaultLink);
+    handleLinksUpdate(
+      isLinksQuerySuccessful,
+      quickLinks,
+      setLinks,
+      addLink,
+      updateLink,
+      baseUrl
+    );
   }, [quickLinks]);
   return (
-    <div data-testid='quick-links' className="border border-[#E5E9EB] rounded-lg bg-white px-[13px] py-8 w-[300px]">
+    <div
+      data-testid="quick-links"
+      className="border border-[#E5E9EB] rounded-lg bg-white px-[13px] py-8 w-[300px]"
+    >
       <h1 className="uppercase text-xl mb-5 font-medium">Quick Links</h1>
       <hr className="border-[#ddd] mb-[15px]" />
       {isOpen && (

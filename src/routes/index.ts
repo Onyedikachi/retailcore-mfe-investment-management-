@@ -10,13 +10,6 @@ export const routes = [
   },
 
   {
-    path: paths.INVESTMENT_TEST,
-    name: "Investment Test",
-    exact: true,
-    component: lazy(() => import("../pages/investment/TestComponents")),
-  },
-
-  {
     path: paths.CREATE_PRODUCT,
     name: "Create Term Deposit",
     exact: true,
