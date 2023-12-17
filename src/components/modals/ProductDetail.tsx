@@ -41,10 +41,6 @@ export default function ProductDetail({
   const [open, setOpen] = useState(false);
   const { permissions } = useContext(AppContext);
 
-  useEffect(() => {
-    console.log(productData, isLoading, "Yo")
-  }, [productData])
-
   React.useEffect(() => {
 
   }, [isSuccess]);

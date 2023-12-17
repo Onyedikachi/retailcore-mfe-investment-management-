@@ -56,7 +56,6 @@ export default function MultiSelectForm({
   // Change selected when changing status category
   useEffect(() => {
     setSelectedOptions(defaultValue);
-    console.log("🚀 ~ file: MultiSelectForm.tsx:59 ~ useEffect ~ defaultValue:", defaultValue)
   }, [defaultValue]);
   return (
     <div className="relative z-40 w-full">

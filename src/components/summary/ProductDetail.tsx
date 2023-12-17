@@ -77,11 +77,6 @@ export function DebitCreditTable({ dataTab }) {
   );
 }
 export default function ProductDetail({ detail, previousData }: any) {
-  console.log(
-    "🚀 ~ file: ProductDetail.tsx:81 ~ ProductDetail ~  detail?.liquidation?.part_SpecificCharges:",
-    detail
-  );
-
   const chargeArray = [
     {
       id: "79e00876-2244-4e21-9bbf-ccbd5cf62233",
