@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, Fragment } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 
@@ -10,7 +10,7 @@ import {
   useGetProductDetailQuery,
   useModifyProductMutation,
   useModifyRequestMutation,
-  
+
 } from "@app/api";
 import {
   Breadcrumbs,
@@ -30,6 +30,94 @@ import Preview from "@app/components/pages/term-deposit/forms/preview";
 import { Messages } from "@app/constants/enums";
 import { convertKeysToLowerCase } from "@app/utils/convertKeysToLowerCase";
 
+
+export function FormComponent(props) {
+  const { step, productData, activeId, handleNav, setProductData, setDisabled, initiateDraft } = props;
+  useEffect(() => console.log("rendering...", step), [step])
+  return (
+    <Fragment>
+      {
+        step === 1 &&
+        <ProductInformation
+          proceed={handleNav}
+          formData={productData.productInfo}
+          setFormData={(productInfo) =>
+            setProductData({ ...productData, productInfo: productInfo })
+          }
+          setDisabled={setDisabled}
+          initiateDraft={initiateDraft}
+          activeId={activeId}
+        />
+      }
+      {
+        step === 2 &&
+        <CustomerEligibilityCriteria
+          proceed={handleNav}
+          formData={productData.customerEligibility}
+          setFormData={(customerEligibility) =>
+            setProductData({
+              ...productData,
+              productInfo: {
+                ...productData.productInfo,
+              },
+              customerEligibility: customerEligibility,
+            })
+          }
+          setDisabled={setDisabled}
+          initiateDraft={initiateDraft}
+        />
+      }
+      {
+        step === 3 &&
+        <PricingConfig
+          formData={productData.pricingConfiguration}
+          setFormData={(pricingConfiguration) =>
+            setProductData({
+              ...productData,
+              pricingConfiguration: pricingConfiguration,
+            })
+          }
+          productData={productData}
+          proceed={handleNav}
+          setDisabled={setDisabled}
+          initiateDraft={initiateDraft}
+        />
+      }
+      {
+        step === 4 &&
+        <LiquiditySetup
+          proceed={handleNav}
+          formData={productData.liquidation}
+          setFormData={(liquidation) =>
+            setProductData({
+              ...productData,
+              liquidation: liquidation,
+            })
+          }
+          setDisabled={setDisabled}
+          initiateDraft={initiateDraft}
+        />
+      }
+      {
+        step === 5 &&
+        <AccountingEntriesAndEvents
+          proceed={handleNav}
+          formData={productData}
+          setFormData={({ data, mapOptions }) =>
+            setProductData({
+              ...productData,
+              ...data,
+              productGlMappings: mapOptions,
+            })
+          }
+          setDisabled={setDisabled}
+          initiateDraft={initiateDraft}
+        />
+      }
+    </Fragment>
+  )
+}
+
 export function handleNext(step, setStep, termDepositFormSteps) {
   step < termDepositFormSteps.length && setStep(step + 1);
 }
@@ -40,39 +128,39 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
 
 export const handleDetailsSuccess = (activeId, productDetails, previousData, process, setProductData) => {
   activeId.current = productDetails?.data?.id;
-      if (process === "modify") {
-        previousData.current = {
-          ...previousData.current,
-          productName: productDetails?.data?.productInfo.productName,
-          prodType: productDetails?.data?.productType,
-          state: productDetails?.data?.state,
-          description: productDetails?.data?.productInfo.description,
-          slogan: productDetails?.data?.productInfo.slogan,
-          currency: productDetails?.data?.productInfo.currency,
-          requestStatus: null,
-          requestType: null,
-          request: "",
-          initiatorId: "",
-          approved_By_Id: "",
-          date: new Date(),
-        };
-      }
+  if (process === "modify") {
+    previousData.current = {
+      ...previousData.current,
+      productName: productDetails?.data?.productInfo.productName,
+      prodType: productDetails?.data?.productType,
+      state: productDetails?.data?.state,
+      description: productDetails?.data?.productInfo.description,
+      slogan: productDetails?.data?.productInfo.slogan,
+      currency: productDetails?.data?.productInfo.currency,
+      requestStatus: null,
+      requestType: null,
+      request: "",
+      initiatorId: "",
+      approved_By_Id: "",
+      date: new Date(),
+    };
+  }
 
-      setProductData({
-        productInfo: productDetails?.data?.productInfo,
-        customerEligibility: productDetails?.data?.customerEligibility,
-        pricingConfiguration: productDetails?.data?.pricingConfiguration,
-        liquidation: productDetails?.data?.liquidation,
-        productGlMappings: productDetails?.data?.productGlMappings,
-        interestComputationMethod:
-          productDetails?.data?.interestComputationMethod,
-        TermDepositLiabilityAccount:
-          productDetails?.data?.TermDepositLiabilityAccount,
-        InterestAccrualAccount: productDetails?.data?.InterestAccrualAccount,
-        InterestExpenseAccount: productDetails?.data?.InterestExpenseAccount,
-        isDraft: productDetails?.data?.isDraft,
-        productType: productDetails?.data?.productType,
-      });
+  setProductData({
+    productInfo: productDetails?.data?.productInfo,
+    customerEligibility: productDetails?.data?.customerEligibility,
+    pricingConfiguration: productDetails?.data?.pricingConfiguration,
+    liquidation: productDetails?.data?.liquidation,
+    productGlMappings: productDetails?.data?.productGlMappings,
+    interestComputationMethod:
+      productDetails?.data?.interestComputationMethod,
+    TermDepositLiabilityAccount:
+      productDetails?.data?.TermDepositLiabilityAccount,
+    InterestAccrualAccount: productDetails?.data?.InterestAccrualAccount,
+    InterestExpenseAccount: productDetails?.data?.InterestExpenseAccount,
+    isDraft: productDetails?.data?.isDraft,
+    productType: productDetails?.data?.productType,
+  });
 }
 
 export default function CreateTermDeposit() {
@@ -244,7 +332,7 @@ export default function CreateTermDeposit() {
       : navigate(
         `/product-factory/investment/term-deposit/${process}?${id ? `id=${id}&` : ''}stage=summary`
       );
-      
+
   }
 
   const handleDraft = () => {
@@ -273,107 +361,23 @@ export default function CreateTermDeposit() {
 
   switch (step) {
     case 1:
-      component = (
-        <ProductInformation
-          proceed={handleNav}
-          formData={productData.productInfo}
-          setFormData={(productInfo) =>
-            setProductData({ ...productData, productInfo: productInfo })
-          }
-          setDisabled={setDisabled}
-          initiateDraft={initiateDraft}
-          activeId={activeId}
-        />
-      );
       formRef = "productform";
       break;
     case 2:
-      component = (
-        <CustomerEligibilityCriteria
-          proceed={handleNav}
-          formData={productData.customerEligibility}
-          setFormData={(customerEligibility) =>
-            setProductData({
-              ...productData,
-              productInfo: {
-                ...productData.productInfo,
-              },
-              customerEligibility: customerEligibility,
-            })
-          }
-          setDisabled={setDisabled}
-          initiateDraft={initiateDraft}
-        />
-      );
       formRef = "customereligibilitycriteria";
       break;
     case 3:
-      component = (
-        <PricingConfig
-          formData={productData.pricingConfiguration}
-          setFormData={(pricingConfiguration) =>
-            setProductData({
-              ...productData,
-              pricingConfiguration: pricingConfiguration,
-            })
-          }
-          productData={productData}
-          proceed={handleNav}
-          setDisabled={setDisabled}
-          initiateDraft={initiateDraft}
-        />
-      );
       formRef = "pricingconfig";
       break;
     case 4:
-      component = (
-        <LiquiditySetup
-          proceed={handleNav}
-          formData={productData.liquidation}
-          setFormData={(liquidation) =>
-            setProductData({
-              ...productData,
-              liquidation: liquidation,
-            })
-          }
-          setDisabled={setDisabled}
-          initiateDraft={initiateDraft}
-        />
-      );
       formRef = "liquiditysetup";
       break;
     case 5:
-      component = (
-        <AccountingEntriesAndEvents
-          proceed={handleNav}
-          formData={productData}
-          setFormData={({ data, mapOptions }) =>
-            setProductData({
-              ...productData,
-              ...data,
-              productGlMappings: mapOptions,
-            })
-          }
-          setDisabled={setDisabled}
-          initiateDraft={initiateDraft}
-        />
-      );
       formRef = "entriesandevents";
       break;
 
     default:
-      component = (
-        <ProductInformation
-          proceed={handleNav}
-          formData={productData.productInfo}
-          setFormData={(productInfo) =>
-            setProductData({ ...productData, productInfo: productInfo })
-          }
-          setDisabled={setDisabled}
-          initiateDraft
-          activeId={activeId}
-        />
-      );
+      formRef = "productform"
   }
 
   useEffect(() => {
@@ -416,8 +420,8 @@ export default function CreateTermDeposit() {
       setFailedText(Messages.PRODUCT_DRAFT_FAILED);
       setFailedSubtext(
         error?.message?.message ||
-          modifyError?.message?.message ||
-          modifyRequestError?.message?.message
+        modifyError?.message?.message ||
+        modifyRequestError?.message?.message
       );
       setFailed(true);
     }
@@ -455,12 +459,6 @@ export default function CreateTermDeposit() {
 
     return links;
   }
-  useEffect(() => {
-    console.log(
-      "🚀 ~ file: IndexComponent.tsx:379 ~ CreateTermDeposit ~ previousData.current:",
-      previousData.current
-    );
-  }, [previousData.current]);
 
   return (
     <div>
@@ -482,7 +480,11 @@ export default function CreateTermDeposit() {
                 />
               </div>
               <div className=" bg-[#ffffff] border border-[#EEEEEE] rounded-[10px] px-[87px] pt-[100px] pb-[43px] ">
-                {component}
+                {/* {component} */}
+                <FormComponent step={step} productData={productData}
+                  activeId={activeId} handleNav={handleNav}
+                  setProductData={setProductData} setDisabled={setDisabled}
+                  initiateDraft={initiateDraft} />
 
                 <div className="h-px w-full bg-[#CCCCCC] mb-12 mt-16"></div>
 

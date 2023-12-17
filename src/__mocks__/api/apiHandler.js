@@ -253,8 +253,6 @@ export const handlers = [
     }),
     rest.get(`https://retailcore-investment-management-api.dev.bepeerless.co/v1/ProductRequest/4567234567890-`,
     (req, res, ctx) => {
-      console.log("from-msw")
-      consoele.log("from msw")
       if (req.id !== null ) {
         return res(ctx.json(response.getProductDetailResponseOne));
       } else {
