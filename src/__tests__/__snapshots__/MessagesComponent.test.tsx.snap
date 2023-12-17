@@ -185,6 +185,7 @@ Object {
                       <button
                         class="btn rounded-lg text-base font-medium py-[5px] bg-sterling-red-800 border border-[#D8DAE5] disabled:opacity-60 disabled:bg-[#808080] text-white px-10"
                         data-testid="submit-btn"
+                        disabled=""
                         type="button"
                       >
                         Submit
