@@ -70,6 +70,7 @@ export default function RequestDeactivation({
 
   useEffect(() => {
     if (isSuccess) {
+   
       setSuccessText(
         role === "superadmin"
           ? Messages.PRODUCT_DEACTIVATE_SUCCESS
@@ -134,6 +135,7 @@ export default function RequestDeactivation({
           <Button
             onClick={() => handleDeactivate()}
             type="button"
+            disabled={!reason}
             data-testid="submit-btn"
             className="rounded-lg text-base font-medium py-[5px] bg-sterling-red-800 border border-[#D8DAE5] disabled:opacity-60 disabled:bg-[#808080] text-white px-10"
           >
@@ -141,8 +143,18 @@ export default function RequestDeactivation({
           </Button>
         </div>
         {/*@ts-ignore*/}
-        <MessagesComponent isSuccessOpen={isSuccessOpen} isSuccess={isSuccess} 
-          setIsSuccessOpen={setIsSuccessOpen} isFailed={isFailed} failedText={failedText} canRetry={true} failedSubText={failedSubText} setFailed={setFailed}/>
+        <MessagesComponent
+          isSuccessOpen={isSuccessOpen}
+          isSuccess={isSuccess}
+          setIsSuccessOpen={setIsSuccessOpen}
+          successText={successText}
+          isFailed={isFailed}
+          failedText={failedText}
+          canRetry={true}
+          failedSubText={failedSubText}
+          setFailed={setFailed}
+          
+        />
         {/* {isSuccessOpen && (
           <Success
             text={successText}

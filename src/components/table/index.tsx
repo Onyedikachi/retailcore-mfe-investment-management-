@@ -54,17 +54,20 @@ interface TableProps {
   noData?: string;
 }
 export function handleUpdated(key, value, options) {
+ 
   if (!options || !value) return;
-  
+
   const parseOptions = JSON.parse(options);
   if (!parseOptions[key]) return;
+ 
   if (key === "state") {
+    console.log("🚀 ~ file: index.tsx:57 ~ handleUpdated ~ value:", value)
+    console.log("🚀 ~ file: index.tsx:74 ~ handleUpdated ~ parseOptions[key]:", parseOptions[key])
     const newState = ActiveFilterOptions.find(
       (n) => parseOptions[key] === n.value
     )?.name;
 
-    
-    if (newState === value) return null;
+    if (parseOptions[key] === value) return null;
   }
   return value !== parseOptions[key]
     ? `Updated on ${moment(parseOptions[key]?.date).format(
@@ -72,6 +75,7 @@ export function handleUpdated(key, value, options) {
       )}`
     : null;
 }
+
 // Extract Dropdown component for reusability
 export const DropdownButton = ({ options, handleClick }: any) => {
   return (
@@ -80,8 +84,6 @@ export const DropdownButton = ({ options, handleClick }: any) => {
     </DropDown>
   );
 };
-
-
 
 export const handleProductsDropdown = (
   status: string,
@@ -201,7 +203,21 @@ export default function TableComponent<TableProps>({
   // function getdata(item, key) {}
   // @ts-ignore
   const handleAction = (action, items) => {
-    actionHandler({action, items, category, setAction, setDetail, setSubText, dropDownClick, previousData, setConfirmText, setIsConfirmOpen, setDetailOpen, navigate, selected })
+    actionHandler({
+      action,
+      items,
+      category,
+      setAction,
+      setDetail,
+      setSubText,
+      dropDownClick,
+      previousData,
+      setConfirmText,
+      setIsConfirmOpen,
+      setDetailOpen,
+      navigate,
+      selected,
+    });
   };
 
   const [
@@ -218,7 +234,19 @@ export default function TableComponent<TableProps>({
     },
   ] = useActivateProductMutation();
 
-  const handleConfirm = () => confirmationHandler({action, detail, permissions, selected, previousData, deleteRequest, setIsDeactivationOpen, activateProduct, notify, navigate })
+  const handleConfirm = () =>
+    confirmationHandler({
+      action,
+      detail,
+      permissions,
+      selected,
+      previousData,
+      deleteRequest,
+      setIsDeactivationOpen,
+      activateProduct,
+      notify,
+      navigate,
+    });
 
   useEffect(() => {
     if (isSuccess) {
@@ -443,12 +471,28 @@ export default function TableComponent<TableProps>({
         {isLoading && <BottomBarLoader />}
       </InfiniteScroll>{" "}
       {/* @ts-ignore */}
-      <MessagesComponent isConfirmOpen={isConfirmOpen} isSuccessOpen={isSuccessOpen} setIsConfirmOpen={setIsConfirmOpen} isFailed={isFailed} 
-        isDeactivationOpen={isDeactivationOpen} isDetailOpen={isDetailOpen} deleteLoading={deleteLoading} 
-        activateIsLoading={activateIsLoading} confirmText={confirmText} detail={detail} subText={subText} 
-        successText={successText} failedText={failedText} failedSubText={failedSubText}
-        handleConfirm={handleConfirm} setIsSuccessOpen={setIsSuccessOpen} setFailed={setFailed} setIsDeactivationOpen={setIsDeactivationOpen}
-        setDetailOpen={setDetailOpen} handleAction={handleAction}/>
+      <MessagesComponent
+        isConfirmOpen={isConfirmOpen}
+        isSuccessOpen={isSuccessOpen}
+        setIsConfirmOpen={setIsConfirmOpen}
+        isFailed={isFailed}
+        isDeactivationOpen={isDeactivationOpen}
+        isDetailOpen={isDetailOpen}
+        deleteLoading={deleteLoading}
+        activateIsLoading={activateIsLoading}
+        confirmText={confirmText}
+        detail={detail}
+        subText={subText}
+        successText={successText}
+        failedText={failedText}
+        failedSubText={failedSubText}
+        handleConfirm={handleConfirm}
+        setIsSuccessOpen={setIsSuccessOpen}
+        setFailed={setFailed}
+        setIsDeactivationOpen={setIsDeactivationOpen}
+        setDetailOpen={setDetailOpen}
+        handleAction={handleAction}
+      />
     </div>
   );
 }
