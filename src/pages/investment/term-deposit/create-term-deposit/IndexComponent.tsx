@@ -38,6 +38,43 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
   step > termDepositFormSteps[0].index && setStep(step - 1);
 }
 
+export const handleDetailsSuccess = (activeId, productDetails, previousData, process, setProductData) => {
+  activeId.current = productDetails?.data?.id;
+      if (process === "modify") {
+        previousData.current = {
+          ...previousData.current,
+          productName: productDetails?.data?.productInfo.productName,
+          prodType: productDetails?.data?.productType,
+          state: productDetails?.data?.state,
+          description: productDetails?.data?.productInfo.description,
+          slogan: productDetails?.data?.productInfo.slogan,
+          currency: productDetails?.data?.productInfo.currency,
+          requestStatus: null,
+          requestType: null,
+          request: "",
+          initiatorId: "",
+          approved_By_Id: "",
+          date: new Date(),
+        };
+      }
+
+      setProductData({
+        productInfo: productDetails?.data?.productInfo,
+        customerEligibility: productDetails?.data?.customerEligibility,
+        pricingConfiguration: productDetails?.data?.pricingConfiguration,
+        liquidation: productDetails?.data?.liquidation,
+        productGlMappings: productDetails?.data?.productGlMappings,
+        interestComputationMethod:
+          productDetails?.data?.interestComputationMethod,
+        TermDepositLiabilityAccount:
+          productDetails?.data?.TermDepositLiabilityAccount,
+        InterestAccrualAccount: productDetails?.data?.InterestAccrualAccount,
+        InterestExpenseAccount: productDetails?.data?.InterestExpenseAccount,
+        isDraft: productDetails?.data?.isDraft,
+        productType: productDetails?.data?.productType,
+      });
+}
+
 export default function CreateTermDeposit() {
   const { process } = useParams();
   const [searchParams] = useSearchParams();
@@ -197,39 +234,7 @@ export default function CreateTermDeposit() {
 
   useEffect(() => {
     if (productDetailsIsSuccess) {
-      activeId.current = productDetails?.data?.id;
-      if (process === "modify") {
-        previousData.current = {
-          ...previousData.current,
-          productName: productDetails?.data?.productInfo.productName,
-          prodType: productDetails?.data?.productType,
-          state: productDetails?.data?.state,
-          description: productDetails?.data?.productInfo.description,
-          slogan: productDetails?.data?.productInfo.slogan,
-          currency: productDetails?.data?.productInfo.currency,
-          requestStatus: null,
-          requestType: null,
-          request: "",
-          initiatorId: "",
-          approved_By_Id: "",
-          date: new Date(),
-        };
-      }
-      setProductData({
-        productInfo: productDetails?.data?.productInfo,
-        customerEligibility: productDetails?.data?.customerEligibility,
-        pricingConfiguration: productDetails?.data?.pricingConfiguration,
-        liquidation: productDetails?.data?.liquidation,
-        productGlMappings: productDetails?.data?.productGlMappings,
-        interestComputationMethod:
-          productDetails?.data?.interestComputationMethod,
-        TermDepositLiabilityAccount:
-          productDetails?.data?.TermDepositLiabilityAccount,
-        InterestAccrualAccount: productDetails?.data?.InterestAccrualAccount,
-        InterestExpenseAccount: productDetails?.data?.InterestExpenseAccount,
-        isDraft: productDetails?.data?.isDraft,
-        productType: productDetails?.data?.productType,
-      });
+      handleDetailsSuccess(activeId, productDetails, previousData, process, setProductData)
     }
   }, [productDetails]);
 
