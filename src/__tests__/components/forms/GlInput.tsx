@@ -93,6 +93,7 @@ describe("EntriesAndEventsSearchResults", () => {
     fireEvent.change(searchInput, { target: { value: "query" } });
 
     // Assert
+    // @ts-ignore 
     expect(searchInput.value).toBe("query");
   });
 
