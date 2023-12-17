@@ -9,7 +9,7 @@ import { cleanObject } from "@app/utils/cleanObject";
 // baseQuery: axiosBaseQuery({ serviceKey: "investment" }),
 export const investmentApi: any = createApi({
   reducerPath: "investmentApi",
-  baseQuery: process.env.NODE_ENV ? 
+  baseQuery: process.env.NODE_ENV === "test" ? 
   fetchBaseQuery({
     baseUrl: "https://retailcore-investment-management-api.dev.bepeerless.co/v1/",
     prepareHeaders: (headers) => {
@@ -169,13 +169,13 @@ export const investmentApi: any = createApi({
         return {
           url: `${urls.PRODUCT_DETAILS}?${new URLSearchParams(
             cleanObject(data)
-          )}`,
-          method: "get",
-        };
-      },
-    }),
-    getRequestDetail: builder.query<any, any>({
-      query: (data) => {
+            )}`,
+            method: "get",
+          };
+        },
+      }),
+      getRequestDetail: builder.query<any, any>({
+        query: (data) => {
         if (!data.id) return;
         return {
           url: `${urls.REQUESTS}/${data.id}`,

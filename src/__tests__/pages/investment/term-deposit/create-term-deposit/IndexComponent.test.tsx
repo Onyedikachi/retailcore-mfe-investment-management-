@@ -31,7 +31,7 @@ describe("IndexComponent", () => {
         jest.spyOn(require("react-router-dom"), "useParams")
             .mockReturnValue({ process: "continue" })
     });
-    it("renders", () => {
+    it("renders", async () => {
         const { getByText, getAllByTestId, getByTestId } = renderWithProviders(<IndexComponent />)
         expect(getByText("New Term Deposit Product")).toBeInTheDocument();
         expect(getAllByTestId("form-step").length).toBeGreaterThan(1);

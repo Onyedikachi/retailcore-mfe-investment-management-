@@ -238,7 +238,23 @@ export const handlers = [
     ),
     rest.get(`https://retailcore-investment-management-api.dev.bepeerless.co/v1/product/product-details`,
     (req, res, ctx) => {
-
+      consoele.log("from msw")
+      if (req.id !== null ) {
+        return res(ctx.json(response.getProductDetailResponseOne));
+      } else {
+        return res(
+          ctx.status(500),
+          ctx.json({
+            status: "error",
+            error: "Something went wrong",
+          })
+        );
+      }
+    }),
+    rest.get(`https://retailcore-investment-management-api.dev.bepeerless.co/v1/ProductRequest/4567234567890-`,
+    (req, res, ctx) => {
+      console.log("from-msw")
+      consoele.log("from msw")
       if (req.id !== null ) {
         return res(ctx.json(response.getProductDetailResponseOne));
       } else {
