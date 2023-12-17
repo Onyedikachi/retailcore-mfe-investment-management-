@@ -9,10 +9,13 @@ export function closeDropdown(setIsOpen) {
 }
 
 export function handleChange(id, value, selectedOptions, setSelectedOptions) {
-  if (!selectedOptions?.some((i) => i === value)) {
+  if (
+    selectedOptions?.length > 0 &&
+    !selectedOptions?.some((i) => i === value)
+  ) {
     setSelectedOptions([...selectedOptions, value]);
   } else {
-    const arrOptions = selectedOptions.filter((i) => i !== value);
+    const arrOptions = selectedOptions?.filter((i) => i !== value);
     setSelectedOptions(arrOptions);
   }
 }
