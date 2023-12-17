@@ -35,6 +35,9 @@ describe("ToggleInputChildren", () => {
     // Assert
     expect(screen.getByText(label)).toBeInTheDocument();
     expect(screen.getByRole("switch")).toBeInTheDocument();
+    const switcher = screen.getByTestId(inputName)
+    switcher.click()
+    expect(setValue).toHaveBeenCalled()
   });
 
   // Toggles the switch component on click

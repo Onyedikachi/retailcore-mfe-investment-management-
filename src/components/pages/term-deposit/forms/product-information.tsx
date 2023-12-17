@@ -20,12 +20,7 @@ import { useValidateNameMutation } from "@app/api";
 import moment from "moment";
 // Import debounce function if not already available
 
-// Mock debounce to execute the debounced function immediately
-jest.mock("lodash", () => ({
-  debounce: (fn) => {
-    return fn;
-  },
-}));
+
 const defaultLength = 50;
 const defaultSloganLength = 160;
 
@@ -113,7 +108,14 @@ export function handleSlogan(
   clearErrors("slogan");
   setIsSloganOkay(watchSlogan && watchSlogan.length > 0);
 }
-
+export const onProceed = (d, setFormData, proceed) => {
+  setFormData({
+    ...d,
+    startDate: d.startDate && moment(d.startDate).format("yyyy-MM-DD"),
+    endDate: d.endDate && moment(d.endDate).format("yyyy-MM-DD"),
+  });
+  proceed();
+};
 //ProductInformation
 export default function ProductInformation({
   formData,
@@ -176,14 +178,14 @@ export default function ProductInformation({
     );
   }, [nameIsSuccess, nameIsError]);
 
-  function onProceed(d: any) {
-    setFormData({
-      ...d,
-      startDate: d.startDate && moment(d.startDate).format("yyyy-MM-DD"),
-      endDate: d.endDate && moment(d.endDate).format("yyyy-MM-DD"),
-    });
-    proceed();
-  }
+  // function onProceed(d: any) {
+  //   setFormData({
+  //     ...d,
+  //     startDate: d.startDate && moment(d.startDate).format("yyyy-MM-DD"),
+  //     endDate: d.endDate && moment(d.endDate).format("yyyy-MM-DD"),
+  //   });
+  //   proceed();
+  // }
   useEffect(() => {
     if (initiateDraft) {
       setFormData({
@@ -258,7 +260,7 @@ export default function ProductInformation({
     <form
       id="productform"
       data-testid="submit-button"
-      onSubmit={handleSubmit(onProceed)}
+      onSubmit={handleSubmit((d)=> onProceed(d, setFormData, proceed))}
     >
       <div className="">
         <div className="mb-6 flex flex-col gap-[1px]">

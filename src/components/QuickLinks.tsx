@@ -80,6 +80,7 @@ export default function QuickLinks() {
     isFetching,
     isSuccess: isLinksQuerySuccessful,
   } = useGetLinksQuery();
+  
   const [updateLink] = useUpdateLinkMutation();
 
   const [addLink] = useAddLinkMutation();
