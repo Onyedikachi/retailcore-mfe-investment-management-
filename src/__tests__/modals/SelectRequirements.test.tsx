@@ -192,8 +192,10 @@ describe("SelectRequirements", () => {
         onConfirm={jest.fn()}
       />
     );
-
+const btn =screen.queryByTestId("cancel-btn")
     // Assert
-    expect(screen.queryByTestId("cancel-btn")).toBeInTheDocument();
+    expect(btn).toBeInTheDocument();
+    btn?.click()
+    expect(setIsOpen).toHaveBeenCalled()
   });
 });

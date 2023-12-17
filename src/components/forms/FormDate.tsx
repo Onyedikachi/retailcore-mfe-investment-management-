@@ -15,6 +15,7 @@ interface FormDateProps {
   clearErrors?: (name?: string | string[]) => void;
   trigger: any
   placeholder?: string;
+  id?: string
 }
 
 const FormDate: React.FC<FormDateProps> = ({
@@ -28,7 +29,8 @@ const FormDate: React.FC<FormDateProps> = ({
   maxDate,
   clearErrors,
   trigger,
-  placeholder ="yyyy/mm/dd"
+  placeholder ="yyyy/mm/dd",
+  id
 }: FormDateProps) => {
   const [date, setDate] = useState<Date | null>(
     defaultValue ? new Date(defaultValue) : null
@@ -67,6 +69,7 @@ const FormDate: React.FC<FormDateProps> = ({
     <div>
       <div className="relative flex items-center date-picker">
         <DatePicker
+        id={id}
           showIcon
           dateFormat="dd/MM/yyyy"
           data-testid="date-picker"

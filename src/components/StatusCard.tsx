@@ -48,8 +48,8 @@ export const StatusButton = ({
 }: any) => {
   return (
     <button
-      data-testid={item.type}
-      onClick={() => setActiveType(item.type)}
+      data-testid={item?.type}
+      onClick={() => setActiveType(item?.type)}
       className={`border min-w-[60px] rounded-lg py-1 px-[15px] flex flex-col cursor-pointer relative ${
         isActive
           ? "bg-[#EFEFEF] border-[#D0D5DD]"
@@ -60,9 +60,9 @@ export const StatusButton = ({
         className={`text-sm capitalize ${
           isActive ? "font-semibold" : "font-normal"
         }`}
-        style={{ color: item.color }}
+        style={{ color: item?.color }}
       >
-        {item.type}
+        {item?.type}
       </span>
       <span className="text-2xl xl:text-4xl text-[#252C32] font-semibold">
         {!isLoading && count(item, analyticsData)}
@@ -100,7 +100,7 @@ export const count = (item, analyticsData) => {
 };
 
 export const handleClick = (setCategory, item, setSelected, category) => {
-  setCategory(item.type);
+  setCategory(item?.type);
   setSelected(
     category === StatusCategoryType?.AllProducts
       ? ProductOptions[0]

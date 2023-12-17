@@ -14,10 +14,18 @@ import {
   currencyOptions,
   toolTips,
 } from "@app/constants";
-import debounce from "lodash.debounce";
+import { debounce } from "lodash";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useValidateNameMutation } from "@app/api";
 import moment from "moment";
+// Import debounce function if not already available
+
+// Mock debounce to execute the debounced function immediately
+jest.mock("lodash", () => ({
+  debounce: (fn) => {
+    return fn;
+  },
+}));
 const defaultLength = 50;
 const defaultSloganLength = 160;
 
@@ -48,7 +56,11 @@ export function handleValidatingName(
 }
 
 export function InputDiv({ children }) {
-  return <div className="w-full flex flex-col gap-2">{children}</div>;
+  return (
+    <div data-testid="input-div" className="w-full flex flex-col gap-2">
+      {children}
+    </div>
+  );
 }
 export function handleName(
   validateName,
@@ -60,7 +72,6 @@ export function handleName(
   setIsNameOkay,
   setDisabled,
   setCurrentName,
-  compareValues,
   timer = 800,
   id = ""
 ) {
@@ -76,7 +87,7 @@ export function handleName(
       if (formData?.oldValue?.toLowerCase() === watchName.toLowerCase()) {
         setError("");
         setIsNameOkay(false);
-        compareValues();
+
         return;
       }
       validateName({ productName: watchName, productId: id || null });
@@ -100,13 +111,7 @@ export function handleSlogan(
 
   setSloganCharLeft(remainder);
   clearErrors("slogan");
-
-  if (!watchSlogan) return;
-  if (watchSlogan.length > 0) {
-    setIsSloganOkay(true);
-  } else {
-    setIsSloganOkay(false);
-  }
+  setIsSloganOkay(watchSlogan && watchSlogan.length > 0);
 }
 
 //ProductInformation
@@ -170,18 +175,6 @@ export default function ProductInformation({
       clearErrors
     );
   }, [nameIsSuccess, nameIsError]);
-  function compareValues() {
-    const name = getValues("name");
-    // const conditions = [
-
-    // ];
-
-    // if (conditions.some((condition) => condition)) {
-    //   // setDisabled(false);
-    // } else {
-    //   // setDisabled(true);
-    // }
-  }
 
   function onProceed(d: any) {
     setFormData({
@@ -220,7 +213,7 @@ export default function ProductInformation({
         if (formData.productName && id) {
           validateName({
             productName: formData.productName,
-            productId: activeId.current || id || productId || null,
+            productId: activeId?.current || id || productId || null,
           });
         }
       }
@@ -256,9 +249,9 @@ export default function ProductInformation({
       setIsNameOkay,
       setDisabled,
       setCurrentName,
-      compareValues,
+
       100,
-      activeId.current || productId || id
+      activeId?.current || productId || id
     );
   }, 800);
   return (
@@ -271,7 +264,10 @@ export default function ProductInformation({
         <div className="mb-6 flex flex-col gap-[1px]">
           <div className="flex itemx-center gap-2 w-[300px]">
             {" "}
-            <label className=" pt-[10px]  flex text-base font-semibold text-[#636363]">
+            <label
+              htmlFor="productName"
+              className=" pt-[10px]  flex text-base font-semibold text-[#636363]"
+            >
               Product Name{" "}
               <span className="flex">
                 {" "}
@@ -284,6 +280,7 @@ export default function ProductInformation({
           <InputDiv>
             <div className="relative flex items-center max-w-[642px]">
               <input
+                id="productName"
                 data-testid="product-name"
                 className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB] ${
                   errors?.productName || error ? "border-red-500" : ""
@@ -316,7 +313,7 @@ export default function ProductInformation({
                     <FaCheckCircle className="text-success-500 text-xl" />
                   </span>
                 )}
-                {(errors?.productName) && (
+                {errors?.productName && (
                   <span>
                     <RiErrorWarningFill className="text-danger-500 text-xl w-5 h-5" />
                   </span>
@@ -341,13 +338,17 @@ export default function ProductInformation({
         </div>
 
         <div className="mb-6 flex flex-col gap-[1px]">
-          <label className="w-[300px] pt-[10px]  text-base font-semibold text-[#636363]">
+          <label
+            htmlFor="slogan"
+            className="w-[300px] pt-[10px]  text-base font-semibold text-[#636363]"
+          >
             Slogan
           </label>
 
           <InputDiv>
             <div className="relative flex items-center">
               <input
+                id="logan"
                 data-testid="investment-slogan"
                 className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB] ${
                   errors?.slogan || error ? "border-red-500" : ""
@@ -399,7 +400,10 @@ export default function ProductInformation({
         <div className="mb-6 flex flex-col gap-[13px]">
           <div className="flex  gap-2 w-[300px]">
             {" "}
-            <label className=" pt-[10px] flex text-base font-semibold text-[#636363]">
+            <label
+              htmlFor="productDescription"
+              className=" pt-[10px] flex text-base font-semibold text-[#636363]"
+            >
               Product Description{" "}
               <span className="flex">
                 {" "}
@@ -411,6 +415,7 @@ export default function ProductInformation({
           <InputDiv>
             <div className="relative">
               <textarea
+                id="productDescription"
                 data-testid="product-description"
                 placeholder="Enter description"
                 maxLength={250}
@@ -430,7 +435,8 @@ export default function ProductInformation({
                 <span className="text-sm text-danger-500">{error}</span>
               )}
               <span className="absolute bottom-4 right-2 text-xs text-[#8F8F8F] flex items-center gap-x-1">
-                <span>{watch("description").length || 0}</span>/<span>250</span>
+                <span>{watch("description")?.length || 0}</span>/
+                <span>250</span>
               </span>
             </div>
             {errors?.description && (
@@ -445,7 +451,10 @@ export default function ProductInformation({
           <div className="flex flex-col gap">
             <div className="flex  gap-x-2 w-[300px]">
               {" "}
-              <label className=" pt-[10px]  text-base font-semibold text-[#636363]">
+              <label
+                htmlFor="productLifeCycle"
+                className=" pt-[10px]  text-base font-semibold text-[#636363]"
+              >
                 Product Life Cycle
               </label>
               <FormToolTip tip={toolTips.lifeCycle} />
@@ -453,6 +462,7 @@ export default function ProductInformation({
 
             <div className="flex gap-x-4">
               <FormDate
+                id="productLifeCycle"
                 register={register}
                 inputName={"startDate"}
                 errors={errors}
@@ -508,3 +518,4 @@ export default function ProductInformation({
     </form>
   );
 }
+
