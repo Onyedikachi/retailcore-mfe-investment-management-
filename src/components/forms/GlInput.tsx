@@ -34,10 +34,6 @@ export default function EntriesAndEventsSearchResults({
     isFetching,
   } = useGetLedgersQuery({ gl_class: classId }, { skip: !classId });
 
-  useEffect(() => {
-    console.log(toggleMenu);
-  }, [toggleMenu]);
-
   const GlMappingOptions = [
     {
       id: 0,
@@ -109,10 +105,7 @@ export default function EntriesAndEventsSearchResults({
           </div>
           {isOpen && (
             <div className="flex flex-col shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]  p-4 rounded-b-lg top-[35px] bg-white z-[400] absolute w-full min-w-[360px]">
-              <div
-                data-testid="glclasses"
-                className="flex justify-between mb-3"
-              >
+              <div data-testid="glclasses" className="flex justify-between mb-3">
                 {glClass.map((item) => (
                   <div
                     key={item.id}
@@ -199,15 +192,6 @@ export default function EntriesAndEventsSearchResults({
                       )}
                     </div>
                   ))}
-
-                  {ledgerIsLoading && (
-                    <div
-                      data-testid="bottom-bar-loader"
-                      className="w-full bg-white p-2 flex justify-center items-center"
-                    >
-                      <div className="spinner-border h-6 w-6 border-t border-danger-500 rounded-full animate-spin"></div>
-                    </div>
-                  )}
                 </div>
               )}
             </div>

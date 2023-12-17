@@ -3,7 +3,6 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { REHYDRATE } from "redux-persist";
 import { IGetProducts, ICreateProduct } from "./types/investmentApi.types";
 
-
 import urls from "../helpers/url_helpers";
 import { cleanObject } from "@app/utils/cleanObject";
 // baseQuery: axiosBaseQuery({ serviceKey: "investment" }),
@@ -54,7 +53,7 @@ export const investmentApi: any = createApi({
         };
       },
     }),
-   
+
     getPostProducts: builder.mutation<
       IGetProducts,
       {
@@ -246,6 +245,7 @@ export const investmentApi: any = createApi({
         return {
           url: `${urls.PRODUCT}/reactivate/${data.id}`,
           method: "put",
+          body: data,
         };
       },
     }),
@@ -313,5 +313,5 @@ export const {
   useGetRequestDetailQuery,
   useApproveProductMutation,
   useRejectProductMutation,
-  useGetSystemAlertQuery
+  useGetSystemAlertQuery,
 } = investmentApi;

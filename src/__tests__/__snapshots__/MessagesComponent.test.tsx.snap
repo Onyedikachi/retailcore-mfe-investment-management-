@@ -1,0 +1,630 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MessagesComponent Renders Deactivation modals 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div
+      aria-hidden="true"
+    >
+      <div
+        style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px; display: none;"
+      />
+    </div>
+    <div
+      id="headlessui-portal-root"
+    >
+      <div
+        data-headlessui-portal=""
+      >
+        <button
+          aria-hidden="true"
+          data-headlessui-focus-guard="true"
+          style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;"
+          type="button"
+        />
+        <div>
+          <div
+            aria-modal="true"
+            class="relative z-[9999]"
+            data-headlessui-state="open"
+            data-testid="dialog"
+            id="headlessui-dialog-8"
+            role="dialog"
+          >
+            <div
+              class="fixed inset-0 bg-black bg-opacity-25 ease-out duration-300 opacity-0"
+            />
+            <div
+              class="fixed inset-0 overflow-y-auto"
+              data-testid="Layout"
+            >
+              <div
+                class="flex min-h-full items-center justify-center p-4 text-center"
+              >
+                <div
+                  class="relative transform overflow-hidden rounded-lg text-left align-middle transition-all ease-out duration-300 opacity-0 scale-95"
+                >
+                  <div
+                    class="bg-white rounded-[11px] w-[704px] pb-10 px-10 py-7"
+                  >
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="flex justify-between"
+                      >
+                        <h1
+                          class="text-2xl text-[#747373] font-bold mb-5 uppercase"
+                        >
+                          DEACTIVATION Request
+                        </h1>
+                        <span
+                          class="cursor-pointer"
+                        >
+                          <svg
+                            fill="currentColor"
+                            height="1em"
+                            stroke="currentColor"
+                            stroke-width="0"
+                            viewBox="0 0 352 512"
+                            width="1em"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"
+                            />
+                          </svg>
+                        </span>
+                      </div>
+                      <hr
+                        class="my-4 mb-16 border-[#CCCCCC]"
+                      />
+                      <div
+                        class="mb-14"
+                      >
+                        <label
+                          class="flex gap-x-1 text-[#333333] mb-2"
+                          for="reason"
+                        >
+                          Provide justification for deactivation
+                          <div>
+                            <svg
+                              data-testid="red-dot"
+                              fill="none"
+                              height="5"
+                              viewBox="0 0 5 5"
+                              width="5"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <circle
+                                cx="2.5"
+                                cy="2.5"
+                                fill="#CF2A2A"
+                                r="2.5"
+                              />
+                            </svg>
+                          </div>
+                        </label>
+                        <textarea
+                          class="outline-none border border-[#AAAAAA] rounded-lg px-3 py-[11px] w-full resize-none"
+                          data-testid="reason-input"
+                          id="reason"
+                          name="reason"
+                          placeholder="Reason"
+                          required=""
+                          rows="4"
+                        />
+                      </div>
+                      <div
+                        class="mb-[90px]"
+                      >
+                        <label
+                          class="block text-[#333333] mb-2"
+                          for="upload"
+                        >
+                          Upload Supporting Documents
+                        </label>
+                        <div>
+                          <div
+                            class="border-[0.5px] bg-white border-[#C4C4C4] rounded-lg max-w-[392px] px-4 py-[11px] relative   border-[#C4C4C4]"
+                          >
+                            <label
+                              class="flex gap-x-12 items-center text-[#636363] text-sm cursor-pointer font-normal capitalize"
+                              data-testid="upload-btn"
+                            >
+                              <input
+                                accept=""
+                                class="accent-sterling-red-800 hidden"
+                                data-testid="input"
+                                type="file"
+                              />
+                              <svg
+                                fill="none"
+                                height="44"
+                                viewBox="0 0 44 44"
+                                width="44"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M44 22C44 34.1503 34.1503 44 22 44C9.84974 44 0 34.1503 0 22C0 9.84974 9.84974 0 22 0C34.1503 0 44 9.84974 44 22Z"
+                                  fill="#F9FAFB"
+                                />
+                                <path
+                                  d="M39.8749 22.105C39.8749 32.1042 31.7694 40.21 21.7708 40.21C11.7721 40.21 3.6666 32.1042 3.6666 22.105C3.6666 12.1059 11.7721 4.00004 21.7708 4.00004C31.7694 4.00004 39.8749 12.1059 39.8749 22.105Z"
+                                  fill="#F2F4F7"
+                                />
+                                <path
+                                  d="M21.9475 20.9754C21.9272 20.9469 21.9012 20.9239 21.8716 20.9081C21.842 20.8923 21.8095 20.884 21.7766 20.884C21.7436 20.884 21.7111 20.8923 21.6815 20.9081C21.6519 20.9239 21.626 20.9469 21.6057 20.9754L18.5677 25.1931C18.5427 25.2282 18.5271 25.2704 18.5229 25.3147C18.5186 25.359 18.5258 25.4038 18.5437 25.4438C18.5615 25.4839 18.5892 25.5176 18.6237 25.5412C18.6582 25.5648 18.698 25.5772 18.7386 25.5771C19.8457 25.5771 20.7431 26.4746 20.7431 27.5816V32.7922C20.7431 32.9232 20.8408 33.0303 20.9601 33.0303H22.5876C22.707 33.0303 22.8046 32.9232 22.8046 32.7922V27.59C22.8046 26.48 23.7045 25.5801 24.8145 25.5801C24.9963 25.5801 25.0966 25.3509 24.9854 25.1961L21.9475 20.9754Z"
+                                  fill="#5C6879"
+                                />
+                                <path
+                                  d="M33.9282 24.9061C33.9282 20.1851 29.3415 15.6018 25.0255 13.6887C24.0233 13.2445 22.9285 13 21.7818 13C20.6394 13 19.5484 13.2424 18.5493 13.6831C14.2247 15.5905 9.62451 20.1795 9.62451 24.9061C9.62451 28.1952 12.0522 30.8592 15.0467 30.8592H16.1344C16.2538 30.8592 16.3514 30.752 16.3514 30.6211V28.8351C16.3514 28.7042 16.2538 28.597 16.1344 28.597H15.0467C14.1326 28.597 13.2728 28.1982 12.6326 27.4749C11.9952 26.7546 11.6562 25.7842 11.686 24.7781C11.7104 23.9923 11.9545 23.2542 12.3967 22.6321C12.8496 21.9981 13.4844 21.5367 14.1896 21.3313C14.834 21.1466 15.3481 20.6595 15.5674 20.026L15.5947 19.9472C15.8279 19.2686 16.1534 18.6346 16.563 18.0601C16.9674 17.4907 17.4463 16.9902 17.9843 16.5748C19.0992 15.7146 20.412 15.2592 21.7818 15.2592C23.1516 15.2592 24.4644 15.7146 25.5793 16.5748C26.119 16.9915 26.5964 17.4916 27.0006 18.0601C27.4102 18.6346 27.7357 19.2716 27.9689 19.9472L27.9955 20.0242C28.2135 20.6572 28.7256 21.1447 29.3686 21.3313C30.8387 21.7659 31.8668 23.2333 31.8668 24.9061C31.8668 25.8914 31.5168 26.82 30.8821 27.5165C30.5709 27.8601 30.2006 28.1325 29.7927 28.318C29.3848 28.5035 28.9475 28.5983 28.506 28.597H27.4183C27.299 28.597 27.2013 28.7042 27.2013 28.8351V30.6211C27.2013 30.752 27.299 30.8592 27.4183 30.8592H28.506C31.5006 30.8592 33.9282 28.1952 33.9282 24.9061Z"
+                                  fill="#5C6879"
+                                />
+                              </svg>
+                              <span
+                                class="text-sm text-center"
+                              >
+                                <span
+                                  class="text-sterling-red-800 font-semibold"
+                                >
+                                  Click to upload
+                                </span>
+                                 
+                                or drag and drop .extension
+                              </span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="flex justify-center items-center"
+                    >
+                      <button
+                        class="btn rounded-lg text-base font-medium py-[5px] bg-sterling-red-800 border border-[#D8DAE5] disabled:opacity-60 disabled:bg-[#808080] text-white px-10"
+                        data-testid="submit-btn"
+                        disabled=""
+                        type="button"
+                      >
+                        Submit
+                      </button>
+                    </div>
+                    <div />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button
+          aria-hidden="true"
+          data-headlessui-focus-guard="true"
+          style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;"
+          type="button"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div
+    aria-hidden="true"
+  >
+    <div
+      style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px; display: none;"
+    />
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "store": Object {
+    "@@observable": [Function],
+    "dispatch": [Function],
+    "getState": [Function],
+    "replaceReducer": [Function],
+    "subscribe": [Function],
+  },
+  "unmount": [Function],
+}
+`;
+
+exports[`MessagesComponent Renders success message 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div
+      aria-hidden="true"
+    >
+      <div
+        style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px; display: none;"
+      />
+    </div>
+    <div
+      id="headlessui-portal-root"
+    >
+      <div
+        data-headlessui-portal=""
+      >
+        <button
+          aria-hidden="true"
+          data-headlessui-focus-guard="true"
+          style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;"
+          type="button"
+        />
+        <div>
+          <div
+            aria-modal="true"
+            class="relative z-[9999]"
+            data-headlessui-state="open"
+            data-testid="dialog"
+            id="headlessui-dialog-4"
+            role="dialog"
+          >
+            <div
+              class="fixed inset-0 bg-black bg-opacity-25 ease-out duration-300 opacity-0"
+            />
+            <div
+              class="fixed inset-0 overflow-y-auto"
+              data-testid="Layout"
+            >
+              <div
+                class="flex min-h-full items-center justify-center p-4 text-center"
+              >
+                <div
+                  class="relative transform overflow-hidden rounded-lg text-left align-middle transition-all ease-out duration-300 opacity-0 scale-95"
+                >
+                  <div
+                    class="relative h-[400px] w-[606px] flex flex-col justify-between px-10 py-8 rounded-lg bg-white text-center items-center"
+                  >
+                    <div
+                      class="flex justify-center items-center"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="text-[80px] text-[#2FB755]"
+                        data-testid="check-circle-icon"
+                        fill="currentColor"
+                        height="1em"
+                        stroke="currentColor"
+                        stroke-width="0"
+                        viewBox="0 0 20 20"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          clip-rule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                          fill-rule="evenodd"
+                        />
+                      </svg>
+                       
+                    </div>
+                    <p
+                      class="font-normal text-2xl"
+                    >
+                      Operation successful
+                    </p>
+                    <div
+                      class="flex justify-between items-center gap-x-[6px] w-full"
+                    >
+                      <button
+                        class="btn text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full text-[#667085] outline-none"
+                        data-testid="dashboard-link"
+                        type="button"
+                      >
+                        <svg
+                          class="text-sterling-red-800 text-4xl"
+                          fill="currentColor"
+                          height="1em"
+                          stroke="currentColor"
+                          stroke-width="0"
+                          viewBox="0 0 512 512"
+                          width="1em"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M479.9 394.9c0-19.6 4.2-97.1-56.8-158.7-40.4-40.7-91.9-61.7-163.4-65.5-2.1-.1-3.8-1.9-3.8-4V84c0-3.2-3.5-5.1-6.2-3.4L33.8 222.8c-2.4 1.6-2.4 5.1 0 6.7l215.9 142.2c2.7 1.8 6.2-.1 6.2-3.4v-81.6c0-2.3 1.9-4.1 4.2-4 44.1 1.7 69.5 10.9 97.1 23.2 36.1 16.2 72.9 50.9 94.5 83.5 13.1 19.9 19.2 33.9 21.4 39.7.7 1.7 2.3 2.8 4.1 2.8h2.9c-.1-11.7-.2-26.7-.2-37z"
+                          />
+                        </svg>
+                         Return to dashboard
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button
+          aria-hidden="true"
+          data-headlessui-focus-guard="true"
+          style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;"
+          type="button"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div
+    aria-hidden="true"
+  >
+    <div
+      style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px; display: none;"
+    />
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`MessagesComponent returns user to dashboard when user clicks on the dashboard link 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div
+      aria-hidden="true"
+    >
+      <div
+        style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px; display: none;"
+      />
+    </div>
+    <div
+      id="headlessui-portal-root"
+    >
+      <div
+        data-headlessui-portal=""
+      >
+        <button
+          aria-hidden="true"
+          data-headlessui-focus-guard="true"
+          style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;"
+          type="button"
+        />
+        <div>
+          <div
+            aria-modal="true"
+            class="relative z-[9999]"
+            data-headlessui-state="open"
+            data-testid="dialog"
+            id="headlessui-dialog-5"
+            role="dialog"
+          >
+            <div
+              class="fixed inset-0 bg-black bg-opacity-25 ease-out duration-300 opacity-0"
+            />
+            <div
+              class="fixed inset-0 overflow-y-auto"
+              data-testid="Layout"
+            >
+              <div
+                class="flex min-h-full items-center justify-center p-4 text-center"
+              >
+                <div
+                  class="relative transform overflow-hidden rounded-lg text-left align-middle transition-all ease-out duration-300 opacity-0 scale-95"
+                >
+                  <div
+                    class="relative h-[400px] w-[606px] flex flex-col justify-between px-10 py-8 rounded-lg bg-white text-center items-center"
+                  >
+                    <div
+                      class="flex justify-center items-center"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="text-[80px] text-[#2FB755]"
+                        data-testid="check-circle-icon"
+                        fill="currentColor"
+                        height="1em"
+                        stroke="currentColor"
+                        stroke-width="0"
+                        viewBox="0 0 20 20"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          clip-rule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                          fill-rule="evenodd"
+                        />
+                      </svg>
+                       
+                    </div>
+                    <p
+                      class="font-normal text-2xl"
+                    >
+                      Operation successful
+                    </p>
+                    <div
+                      class="flex justify-between items-center gap-x-[6px] w-full"
+                    >
+                      <button
+                        class="btn text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full text-[#667085] outline-none"
+                        data-testid="dashboard-link"
+                        type="button"
+                      >
+                        <svg
+                          class="text-sterling-red-800 text-4xl"
+                          fill="currentColor"
+                          height="1em"
+                          stroke="currentColor"
+                          stroke-width="0"
+                          viewBox="0 0 512 512"
+                          width="1em"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M479.9 394.9c0-19.6 4.2-97.1-56.8-158.7-40.4-40.7-91.9-61.7-163.4-65.5-2.1-.1-3.8-1.9-3.8-4V84c0-3.2-3.5-5.1-6.2-3.4L33.8 222.8c-2.4 1.6-2.4 5.1 0 6.7l215.9 142.2c2.7 1.8 6.2-.1 6.2-3.4v-81.6c0-2.3 1.9-4.1 4.2-4 44.1 1.7 69.5 10.9 97.1 23.2 36.1 16.2 72.9 50.9 94.5 83.5 13.1 19.9 19.2 33.9 21.4 39.7.7 1.7 2.3 2.8 4.1 2.8h2.9c-.1-11.7-.2-26.7-.2-37z"
+                          />
+                        </svg>
+                         Return to dashboard
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button
+          aria-hidden="true"
+          data-headlessui-focus-guard="true"
+          style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;"
+          type="button"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div
+    aria-hidden="true"
+  >
+    <div
+      style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px; display: none;"
+    />
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
