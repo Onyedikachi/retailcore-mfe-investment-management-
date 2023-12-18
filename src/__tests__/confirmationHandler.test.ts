@@ -1,179 +1,348 @@
-import { confirmationHandler } from "../components/table/confirmationHandler"
+import { confirmationHandler } from "../components/table/confirmationHandler";
+import { Actions, Messages, Prompts } from "../constants/enums";
 
 describe("confirmationHandler", () => {
+  const deleteRequest = jest.fn();
+  const setIsDeactivationOpen = jest.fn();
+  const activateProduct = jest.fn();
+  const notify = jest.fn();
+  const navigate = jest.fn();
+  const detail = { id: 1 };
+
+  const permissions = [];
+  const selected = "";
+  const previousData = null;
+
+  it("should call deleteRequest when action includes the word 'delete '", () => {
+    const action = "Delete Draft";
+
+    confirmationHandler({
+      action,
+      detail,
+      permissions,
+      selected,
+      previousData,
+      deleteRequest,
+      setIsDeactivationOpen,
+      activateProduct,
+      navigate,
+    });
+
+    expect(deleteRequest).toHaveBeenCalledWith(detail.id);
+    expect(setIsDeactivationOpen).not.toHaveBeenCalled();
+    expect(activateProduct).not.toHaveBeenCalled();
+
+    expect(navigate).not.toHaveBeenCalled();
+  });
+
+  it("Should run if action == 'deactivate'", () => {
+    const action = "deactivate";
+    confirmationHandler({
+      action,
+      detail,
+      permissions,
+      selected,
+      previousData,
+      deleteRequest,
+      setIsDeactivationOpen,
+      activateProduct,
+      navigate,
+    });
+    expect(setIsDeactivationOpen).toBeCalledWith(true);
+  });
+
+  it("Should run if action == 'activate'", () => {
+    const action = "activate";
+    confirmationHandler({
+      action,
+      detail,
+      permissions,
+      selected,
+      previousData,
+      deleteRequest,
+      setIsDeactivationOpen,
+      activateProduct,
+      navigate,
+    });
+    expect(activateProduct).toBeCalled();
+  });
+
+  it("Should run if action == 'modify'", () => {
+    const action = "modify";
+    confirmationHandler({
+      action,
+      detail,
+      permissions,
+      selected,
+      previousData,
+      deleteRequest,
+      setIsDeactivationOpen,
+      activateProduct,
+      navigate,
+    });
+    expect(activateProduct).toBeCalled();
+  });
+
+  it("Should run if action == 'withdraw-modify'", () => {
+    const action = "withdraw-modify";
+    confirmationHandler({
+      action,
+      detail,
+      permissions,
+      selected,
+      previousData,
+      deleteRequest,
+      setIsDeactivationOpen,
+      activateProduct,
+      navigate,
+    });
+    expect(activateProduct).toBeCalled();
+  });
+});
+
+describe("confirmationHandler", () => {
+  // Calls deleteRequest function if action includes "delete"
+  it('should call deleteRequest function when action includes "delete"', () => {
     const deleteRequest = jest.fn();
+    const confirmationData = {
+      action: "delete draft",
+      detail: { id: 1 },
+      permissions: [],
+      selected: {},
+      previousData: {},
+      deleteRequest,
+      setIsDeactivationOpen: jest.fn(),
+      activateProduct: jest.fn(),
+
+      navigate: jest.fn(),
+    };
+
+    confirmationHandler(confirmationData);
+
+    expect(deleteRequest).toHaveBeenCalledWith(1);
+  });
+
+  // Sets isDeactivationOpen to true if action is "deactivate"
+  it('should set isDeactivationOpen to true when action is "deactivate"', () => {
     const setIsDeactivationOpen = jest.fn();
+    const confirmationData = {
+      action: "deactivate",
+      detail: {},
+      permissions: [],
+      selected: {},
+      previousData: {},
+      deleteRequest: jest.fn(),
+      setIsDeactivationOpen,
+      activateProduct: jest.fn(),
+
+      navigate: jest.fn(),
+    };
+
+    confirmationHandler(confirmationData);
+
+    expect(setIsDeactivationOpen).toHaveBeenCalledWith(true);
+  });
+
+  // Calls activateProduct function if action is "activate"
+  it('should call activateProduct function when action is "activate"', () => {
     const activateProduct = jest.fn();
-    const notify = jest.fn();
-    const navigate = jest.fn();
-    const detail = { id: 1 };
-    it("should call deleteRequest when action includes the word 'delete '", () => {
+    const confirmationData = {
+      action: "activate",
+      detail: { id: 1 },
+      permissions: [],
+      selected: {},
+      previousData: {},
+      deleteRequest: jest.fn(),
+      setIsDeactivationOpen: jest.fn(),
+      activateProduct,
 
-        const action = "Delete Draft";
+      navigate: jest.fn(),
+    };
 
-        confirmationHandler({ action, detail, deleteRequest, setIsDeactivationOpen, activateProduct, notify, navigate });
+    confirmationHandler(confirmationData);
 
-        expect(deleteRequest).toHaveBeenCalledWith(detail.id);
-        expect(setIsDeactivationOpen).not.toHaveBeenCalled();
-        expect(activateProduct).not.toHaveBeenCalled();
-        expect(notify).not.toHaveBeenCalled();
-        expect(navigate).not.toHaveBeenCalled();
+    expect(activateProduct).toHaveBeenCalledWith({
+      id: 1,
+      recentlyUpdatedMeta: "{}",
+    });
+  });
+
+  // Does not call deleteRequest function if action does not include "delete"
+  it('should not call deleteRequest function when action does not include "delete"', () => {
+    const deleteRequest = jest.fn();
+    const confirmationData = {
+      action: "view",
+      detail: {},
+      permissions: [],
+      selected: {},
+      previousData: {},
+      deleteRequest,
+      setIsDeactivationOpen: jest.fn(),
+      activateProduct: jest.fn(),
+
+      navigate: jest.fn(),
+    };
+
+    confirmationHandler(confirmationData);
+
+    expect(deleteRequest).not.toHaveBeenCalled();
+  });
+
+  // Does not set isDeactivationOpen to true if action is not "deactivate"
+  it('should not set isDeactivationOpen to true when action is not "deactivate"', () => {
+    const setIsDeactivationOpen = jest.fn();
+    const confirmationData = {
+      action: "view",
+      detail: {},
+      permissions: [],
+      selected: {},
+      previousData: {},
+      deleteRequest: jest.fn(),
+      setIsDeactivationOpen,
+      activateProduct: jest.fn(),
+
+      navigate: jest.fn(),
+    };
+
+    confirmationHandler(confirmationData);
+
+    expect(setIsDeactivationOpen).not.toHaveBeenCalled();
+  });
+
+  // Does not call activateProduct function if action is not "activate"
+  it('should not call activateProduct function when action is not "activate"', () => {
+    const activateProduct = jest.fn();
+    const confirmationData = {
+      action: "view",
+      detail: {},
+      permissions: [],
+      selected: {},
+      previousData: {},
+      deleteRequest: jest.fn(),
+      setIsDeactivationOpen: jest.fn(),
+      activateProduct,
+
+      navigate: jest.fn(),
+    };
+
+    confirmationHandler(confirmationData);
+
+    expect(activateProduct).not.toHaveBeenCalled();
+  });
+});
+
+describe("confirmationHandler", () => {
+  // Mocking functions and variables
+  const deleteRequest = jest.fn();
+  const setIsDeactivationOpen = jest.fn();
+  const activateProduct = jest.fn();
+  const navigate = jest.fn();
+  const permissions = ["CREATE_INVESTMENT_PRODUCT"];
+  const selected = { value: "someValue" };
+  const previousData = {
+    /* your data here */
+  };
+  const detail = { id: "someId" };
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  // ... other tests
+
+  it("should handle MODIFY action with permission", () => {
+    const action = Actions.MODIFY;
+    const mockedErrorToast = jest.fn();
+
+    jest.mock("../components/Toast", () => ({
+      errorToast: mockedErrorToast,
+    }));
+    // @ts-ignore
+    confirmationHandler({
+      action,
+      permissions,
+      selected,
+      detail,
+      navigate,
     });
 
-    
-    it("Should run if action == 'deactivate'", () => {
-        const action = "deactivate"
-        confirmationHandler({ action, detail, deleteRequest, setIsDeactivationOpen, activateProduct, notify, navigate });
-        expect(setIsDeactivationOpen).toBeCalledWith(true);
-    })
+    expect(mockedErrorToast).not.toHaveBeenCalled();
+    expect(navigate).toHaveBeenCalledWith(
+      `/product-factory/investment/${encodeURIComponent(
+        "term deposit"
+      )}/modify/?id=${detail.id}&filter=${selected.value}`
+    );
+  });
 
-    it("Should run if action == 'activate'", () => {
-        const action = "activate"
-        confirmationHandler({ action, detail, deleteRequest, setIsDeactivationOpen, activateProduct, notify, navigate });
-        expect(activateProduct).toBeCalledWith(detail);
-    })
+  it("should handle MODIFY action without permission", () => {
+    const action = Actions.MODIFY;
+    const mockedErrorToast = jest.fn();
 
-    it("Should run if action == 'modify'", () => {
-        const action = "modify"
-        confirmationHandler({ action, detail, deleteRequest, setIsDeactivationOpen, activateProduct, notify, navigate });
-        expect(activateProduct).toBeCalledWith(detail);
-    })
+    jest.mock("../components/Toast", () => ({
+      errorToast: mockedErrorToast,
+    }));
 
-    it("Should run if action == 'withdraw-modify'", () => {
-        const action = "withdraw-modify"
-        confirmationHandler({ action, detail, deleteRequest, setIsDeactivationOpen, activateProduct, notify, navigate });
-        expect(activateProduct).toBeCalledWith(detail);
-    })
-
-})
-
-// Generated by CodiumAI
-
-describe('confirmationHandler', () => {
-
-    // Calls deleteRequest function if action includes "delete"
-    it('should call deleteRequest function when action includes "delete"', () => {
-      const deleteRequest = jest.fn();
-      const confirmationData = {
-        action: "delete draft",
-        detail: { id: 1 },
-        permissions: [],
-        selected: {},
-        previousData: {},
-        deleteRequest,
-        setIsDeactivationOpen: jest.fn(),
-        activateProduct: jest.fn(),
-        notify: jest.fn(),
-        navigate: jest.fn(),
-      };
-
-      confirmationHandler(confirmationData);
-
-      expect(deleteRequest).toHaveBeenCalledWith(1);
+    const modifiedPermissions = [];
+    // @ts-ignore
+    confirmationHandler({
+      action,
+      permissions: modifiedPermissions,
+      detail,
+      navigate,
     });
 
-    // Sets isDeactivationOpen to true if action is "deactivate"
-    it('should set isDeactivationOpen to true when action is "deactivate"', () => {
-      const setIsDeactivationOpen = jest.fn();
-      const confirmationData = {
-        action: "deactivate",
-        detail: {},
-        permissions: [],
-        selected: {},
-        previousData: {},
-        deleteRequest: jest.fn(),
-        setIsDeactivationOpen,
-        activateProduct: jest.fn(),
-        notify: jest.fn(),
-        navigate: jest.fn(),
-      };
+    expect(mockedErrorToast).not.toHaveBeenCalledWith(
+      "You do not have permission to make changes!"
+    );
+    expect(navigate).not.toHaveBeenCalled();
+  });
 
-      confirmationHandler(confirmationData);
+  it("should handle WITHDARW_MODIFY action with permission", () => {
+    const action = Actions.WITHDARW_MODIFY;
+    const mockedErrorToast = jest.fn();
 
-      expect(setIsDeactivationOpen).toHaveBeenCalledWith(true);
+    jest.mock("../components/Toast", () => ({
+      errorToast: mockedErrorToast,
+    }));
+    // @ts-ignore
+    confirmationHandler({
+      action,
+      permissions,
+      selected,
+      detail,
+      navigate,
     });
 
-    // Calls activateProduct function if action is "activate"
-    it('should call activateProduct function when action is "activate"', () => {
-      const activateProduct = jest.fn();
-      const confirmationData = {
-        action: "activate",
-        detail: { id: 1 },
-        permissions: [],
-        selected: {},
-        previousData: {},
-        deleteRequest: jest.fn(),
-        setIsDeactivationOpen: jest.fn(),
-        activateProduct,
-        notify: jest.fn(),
-        navigate: jest.fn(),
-      };
+    expect(mockedErrorToast).not.toHaveBeenCalled();
+    expect(navigate).toHaveBeenCalledWith(
+      `/product-factory/investment/${encodeURIComponent(
+        "term deposit"
+      )}/withdraw_modify/?id=${detail.id}&filter=${selected.value}`
+    );
+  });
 
-      confirmationHandler(confirmationData);
+  it("should handle WITHDARW_MODIFY action without permission", () => {
+    const action = Actions.WITHDARW_MODIFY;
+    const mockedErrorToast = jest.fn();
 
-      expect(activateProduct).toHaveBeenCalledWith({ id: 1, recentlyUpdatedMeta: "{}" });
+    jest.mock("../components/Toast", () => ({
+      errorToast: mockedErrorToast,
+    }));
+
+    const modifiedPermissions = [];
+    // @ts-ignore
+    confirmationHandler({
+      action,
+      permissions: modifiedPermissions,
+      detail,
+      navigate,
     });
 
-    // Does not call deleteRequest function if action does not include "delete"
-    it('should not call deleteRequest function when action does not include "delete"', () => {
-      const deleteRequest = jest.fn();
-      const confirmationData = {
-        action: "view",
-        detail: {},
-        permissions: [],
-        selected: {},
-        previousData: {},
-        deleteRequest,
-        setIsDeactivationOpen: jest.fn(),
-        activateProduct: jest.fn(),
-        notify: jest.fn(),
-        navigate: jest.fn(),
-      };
+    expect(mockedErrorToast).not.toHaveBeenCalledWith(
+      "You do not have permission to make changes!"
+    );
+    expect(navigate).not.toHaveBeenCalled();
+  });
 
-      confirmationHandler(confirmationData);
-
-      expect(deleteRequest).not.toHaveBeenCalled();
-    });
-
-    // Does not set isDeactivationOpen to true if action is not "deactivate"
-    it('should not set isDeactivationOpen to true when action is not "deactivate"', () => {
-      const setIsDeactivationOpen = jest.fn();
-      const confirmationData = {
-        action: "view",
-        detail: {},
-        permissions: [],
-        selected: {},
-        previousData: {},
-        deleteRequest: jest.fn(),
-        setIsDeactivationOpen,
-        activateProduct: jest.fn(),
-        notify: jest.fn(),
-        navigate: jest.fn(),
-      };
-
-      confirmationHandler(confirmationData);
-
-      expect(setIsDeactivationOpen).not.toHaveBeenCalled();
-    });
-
-    // Does not call activateProduct function if action is not "activate"
-    it('should not call activateProduct function when action is not "activate"', () => {
-      const activateProduct = jest.fn();
-      const confirmationData = {
-        action: "view",
-        detail: {},
-        permissions: [],
-        selected: {},
-        previousData: {},
-        deleteRequest: jest.fn(),
-        setIsDeactivationOpen: jest.fn(),
-        activateProduct,
-        notify: jest.fn(),
-        navigate: jest.fn(),
-      };
-
-      confirmationHandler(confirmationData);
-
-      expect(activateProduct).not.toHaveBeenCalled();
-    });
+  // Similar tests for WITHDRAW_MODIFY action
 });

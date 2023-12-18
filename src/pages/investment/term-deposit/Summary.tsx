@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { paths } from "@app/routes/paths";
 import {
   ProcessingStatusSlider,
@@ -19,7 +19,10 @@ import {
 import { rangeLabels, summaryLinks } from "@app/constants";
 export function Container({ children }) {
   return (
-    <div data-testid="container" className="rounded-[10px] border border-[#EEE] px-12 py-10">
+    <div
+      data-testid="container"
+      className="rounded-[10px] border border-[#EEE] px-12 py-10"
+    >
       {children}
     </div>
   );
@@ -27,11 +30,18 @@ export function Container({ children }) {
 export default function Summary() {
   const [searchParams] = useSearchParams();
   const { tab, type, id, process } = useParams();
+  const [productId, setProductId] = useState(id);
   const category = searchParams.get("category");
 
   const [state, setState] = useState();
   // Fetch product data
-  const { data: productData, isLoading } = useGetProductDetailQuery({ id });
+  const {
+    data: productData,
+    isLoading,
+    isError,
+  } = useGetProductDetailQuery({
+    id: productId,
+  });
 
   // Fetch activity data based on the category
   const { data: activityData, isLoading: activityIsLoading } =
@@ -56,6 +66,10 @@ export default function Summary() {
     },
     { skip: category === "product" }
   );
+  useEffect(() => {
+    if (isError && requestDetailIsSuccess)
+      setProductId(requestDetail?.data?.investementProductId);
+  }, [requestDetailIsSuccess, isError]);
 
   return (
     <div className="flex flex-col min-h-[100vh] ">
