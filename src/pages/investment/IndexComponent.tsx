@@ -54,6 +54,42 @@ export const handleChange = (
       activeType === "all" ? null : [sortTabStatus(activeType, category)],
   });
 };
+
+export const handleStatus = ({query, setProductData, setRequestData, isSuccess, data, setHasMore, isRequestSuccess, request}) => {
+  if (query.page === 1) {
+    setProductData([]);
+    setRequestData([]);
+  }
+  if (isSuccess) {
+    setProductData((prevData) => [
+      ...prevData.concat(
+        data.results.map((i) => ({
+          ...i,
+          state: StatusTypes.find((n) => n.id === i.state)?.type,
+          productType: ProductTypes.find((n) => n.id === i.productType)?.name,
+        }))
+      ),
+    ]);
+    !data?.next ? setHasMore(false) : setHasMore(true);
+  }
+  if (isRequestSuccess) {
+    setRequestData((prevData) => [
+      ...prevData.concat(
+        ...request.results.map((i) => ({
+          ...i,
+          requestStatus: StatusFilterOptions.find(
+            (n) => n.value === i.requestStatus
+          )?.name,
+          requestType: TypeFilterOptions.find(
+            (n) => n.value === i.requestType
+          )?.name,
+        }))
+      ),
+    ]);
+    !request?.next ? setHasMore(false) : setHasMore(true);
+  }
+}
+
 export const handleRefresh = (
   category,
   query,
@@ -245,48 +281,8 @@ export default function IndexComponent() {
     );
   }, [queryCategory]);
 
-  useEffect(() => {
-    if (query.page === 1) {
-      setProductData([]);
-      setRequestData([]);
-    }
-    if (isSuccess) {
-      setProductData((prevData) => [
-        ...prevData.concat(
-          data.results.map((i) => ({
-            ...i,
-            state: StatusTypes.find((n) => n.id === i.state)?.type,
-            productType: ProductTypes.find((n) => n.id === i.productType)?.name,
-          }))
-        ),
-      ]);
-      !data?.next ? setHasMore(false) : setHasMore(true);
-    }
-    if (isRequestSuccess) {
-      setRequestData((prevData) => [
-        ...prevData.concat(
-          ...request.results.map((i) => ({
-            ...i,
-            requestStatus: StatusFilterOptions.find(
-              (n) => n.value === i.requestStatus
-            )?.name,
-            requestType: TypeFilterOptions.find(
-              (n) => n.value === i.requestType
-            )?.name,
-          }))
-        ),
-      ]);
-      !request?.next ? setHasMore(false) : setHasMore(true);
-    }
-  }, [
-    data,
-    request,
-    isSuccess,
-    isRequestSuccess,
-    isError,
-    isRequestError,
-    query.page,
-  ]);
+  useEffect(() => handleStatus({query, setProductData, setRequestData, isSuccess, data, setHasMore, isRequestSuccess, request}),
+  [data, request, isSuccess, isRequestSuccess, isError, isRequestError, query.page]);
 
   const { data: systemAlertData, isSuccess: systemAlertDataSuccess } =
     useGetSystemAlertQuery();
