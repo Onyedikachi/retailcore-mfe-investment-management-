@@ -55,6 +55,7 @@ describe('errorToast', () => {
       errorToast(text);
 
       expect(toastErrorSpy).toHaveBeenCalledWith(expect.any(Function), errorToastProps);
+      // @ts-ignore 
       expect(toastErrorSpy.mock.calls[0][0]({ closeToast })).toEqual(Msg({ closeToast }, text));
     });
 
@@ -76,7 +77,7 @@ describe('errorToast', () => {
       const text = 'Sample error message';
 
       errorToast(text);
-
+// @ts-ignore 
       expect(toastErrorSpy.mock.calls[0][0]({ closeToast })).toEqual(Msg({ closeToast }, text));
     });
 
