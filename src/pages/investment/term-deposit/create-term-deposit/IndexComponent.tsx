@@ -26,95 +26,11 @@ import {
 import { ProductState, termDepositFormSteps } from "@app/constants";
 import Preview from "@app/components/pages/term-deposit/forms/preview";
 import { Messages } from "@app/constants/enums";
+import { handleDraft } from "./handleDraft";
+import handleFormRef from "./handleFormRef";
+import FormComponent from "../FormComponent";
 
-export function FormComponent(props) {
-  const {
-    step,
-    productData,
-    activeId,
-    handleNav,
-    setProductData,
-    setDisabled,
-    initiateDraft,
-  } = props;
-  return (
-    <Fragment>
-      {step === 1 && (
-        <ProductInformation
-          proceed={handleNav}
-          formData={productData.productInfo}
-          setFormData={(productInfo) =>
-            setProductData({ ...productData, productInfo: productInfo })
-          }
-          setDisabled={setDisabled}
-          initiateDraft={initiateDraft}
-          activeId={activeId}
-        />
-      )}
-      {step === 2 && (
-        <CustomerEligibilityCriteria
-          proceed={handleNav}
-          formData={productData.customerEligibility}
-          setFormData={(customerEligibility) =>
-            setProductData({
-              ...productData,
-              productInfo: {
-                ...productData.productInfo,
-              },
-              customerEligibility: customerEligibility,
-            })
-          }
-          setDisabled={setDisabled}
-          initiateDraft={initiateDraft}
-        />
-      )}
-      {step === 3 && (
-        <PricingConfig
-          formData={productData.pricingConfiguration}
-          setFormData={(pricingConfiguration) =>
-            setProductData({
-              ...productData,
-              pricingConfiguration: pricingConfiguration,
-            })
-          }
-          productData={productData}
-          proceed={handleNav}
-          setDisabled={setDisabled}
-          initiateDraft={initiateDraft}
-        />
-      )}
-      {step === 4 && (
-        <LiquiditySetup
-          proceed={handleNav}
-          formData={productData.liquidation}
-          setFormData={(liquidation) =>
-            setProductData({
-              ...productData,
-              liquidation: liquidation,
-            })
-          }
-          setDisabled={setDisabled}
-          initiateDraft={initiateDraft}
-        />
-      )}
-      {step === 5 && (
-        <AccountingEntriesAndEvents
-          proceed={handleNav}
-          formData={productData}
-          setFormData={({ data, mapOptions }) =>
-            setProductData({
-              ...productData,
-              ...data,
-              productGlMappings: mapOptions,
-            })
-          }
-          setDisabled={setDisabled}
-          initiateDraft={initiateDraft}
-        />
-      )}
-    </Fragment>
-  );
-}
+
 
 export function handleNext(step, setStep, termDepositFormSteps) {
   step < termDepositFormSteps.length && setStep(step + 1);
@@ -339,26 +255,14 @@ export default function CreateTermDeposit() {
     step < termDepositFormSteps.length
       ? handleNext(step, setStep, termDepositFormSteps)
       : navigate(
-          `/product-factory/investment/term-deposit/${process}?${
-            id ? `id=${id}&` : ""
-          }stage=summary`
-        );
+        `/product-factory/investment/term-deposit/${process}?${id ? `id=${id}&` : ""
+        }stage=summary`
+      );
   }
 
-  const handleDraft = () => {
-    setIsConfirmOpen(false);
-    if (process === "modify") {
-      modifyProduct({ ...productData, isDraft: true, id });
-    }
-    if (process === "create" || process === "clone") {
-      createProduct({ ...productData, isDraft: true });
-    }
-    if (process === "continue" || process === "withdraw_modify") {
-      modifyRequest({ ...productData, isDraft: true, id });
-    }
-  };
+
   const [formRef, setFormRef] = useState(null);
-  
+
 
   useEffect(() => {
     if (initiateDraft) {
@@ -369,26 +273,7 @@ export default function CreateTermDeposit() {
   }, [initiateDraft]);
 
   useEffect(() => {
-    switch (step) {
-      case 1:
-        setFormRef("productform");
-        break;
-      case 2:
-        setFormRef("customereligibilitycriteria");
-        break;
-      case 3:
-        setFormRef("pricingconfig");
-        break;
-      case 4:
-        setFormRef("liquiditysetup");
-        break;
-      case 5:
-        setFormRef("entriesandevents");
-        break;
-  
-      default:
-        setFormRef("productform");
-    }
+    handleFormRef({step, setFormRef});
   }, [step])
 
 
@@ -434,8 +319,8 @@ export default function CreateTermDeposit() {
       setFailedText(Messages.PRODUCT_DRAFT_FAILED);
       setFailedSubtext(
         error?.message?.message ||
-          modifyError?.message?.message ||
-          modifyRequestError?.message?.message
+        modifyError?.message?.message ||
+        modifyRequestError?.message?.message
       );
       setFailed(true);
     }
@@ -449,7 +334,7 @@ export default function CreateTermDeposit() {
     modifyRequestSuccess,
     modifyRequestIsError,
   ]);
-  
+
   function handleLinks(links, process) {
     const extraLinks = [
       {
@@ -566,7 +451,7 @@ export default function CreateTermDeposit() {
               isOpen={isConfirmOpen}
               setIsOpen={setIsConfirmOpen}
               onCancel={() => setIsConfirmOpen(false)}
-              onConfirm={() => handleDraft()}
+              onConfirm={() => handleDraft({ productData, process, id, modifyRequest, setIsConfirmOpen, modifyProduct, createProduct })}
             />
           )}
           {isFailed && (

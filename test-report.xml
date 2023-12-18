@@ -1,20 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/handleDraft.test.ts">
+    <testCase name="handleDraft should set setIsConfirmOpen to false when called" duration="23"/>
+    <testCase name="handleDraft should call modifyProduct with isDraft set to true when process is &quot;modify&quot;" duration="4"/>
+    <testCase name="handleDraft should call createProduct with isDraft set to true when process is &quot;create&quot; or &quot;clone&quot;" duration="3"/>
+    <testCase name="handleDraft should not call any functions when process is undefined" duration="5"/>
+    <testCase name="handleDraft should not call any functions when productData is undefined" duration="5"/>
+    <testCase name="handleDraft should not call any functions when id is undefined" duration="3"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/Sterling-investment.tsx">
+    <testCase name="microfrontend bootstraps the app" duration="12"/>
+    <testCase name="microfrontend mounts and unmounts" duration="79"/>
+  </file>
   <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/pages/investment/term-deposit/create-term-deposit/IndexComponent.test.tsx">
-    <testCase name="IndexComponent renders" duration="392"/>
-    <testCase name="IndexComponent Changes values" duration="370"/>
-    <testCase name="IndexComponent Show modal when clicking save to Draft" duration="284"/>
-    <testCase name="IndexComponent Shows disabled button when form is not valid" duration="132"/>
-    <testCase name="IndexComponent Should not have disabled button when fom is valid" duration="276"/>
-    <testCase name="handleDetailsSuccess Works" duration="4"/>
-    <testCase name="FormComponeent Should render if step === 1" duration="145"/>
-    <testCase name="FormComponeent Should render if step === 2" duration="260"/>
-    <testCase name="FormComponeent Should render if step === 3" duration="343"/>
-    <testCase name="FormComponeent Should render if step === 4" duration="340"/>
-    <testCase name="FormComponeent Should render if step === 5" duration="180"/>
+    <testCase name="IndexComponent renders" duration="426"/>
+    <testCase name="IndexComponent Changes values" duration="422"/>
+    <testCase name="IndexComponent Show modal when clicking save to Draft" duration="432"/>
+    <testCase name="IndexComponent Shows disabled button when form is not valid" duration="119"/>
+    <testCase name="IndexComponent Should not have disabled button when fom is valid" duration="348"/>
+    <testCase name="handleDetailsSuccess Works" duration="6"/>
+    <testCase name="FormComponeent Should render if step === 1" duration="178"/>
+    <testCase name="FormComponeent Should render if step === 2" duration="127"/>
+    <testCase name="FormComponeent Should render if step === 3" duration="318"/>
+    <testCase name="FormComponeent Should render if step === 4" duration="250"/>
+    <testCase name="FormComponeent Should render if step === 5" duration="54"/>
     <testCase name="handleNext should call setStep when theres more steps ahead" duration="2"/>
-    <testCase name="handleNext should not setStep when there are no steps ahead" duration="5"/>
-    <testCase name="handlePrev should call setStep when there are steps behind" duration="3"/>
-    <testCase name="handlePrev should not call setStep when user is at the first step" duration="8"/>
+    <testCase name="handleNext should not setStep when there are no steps ahead" duration="2"/>
+    <testCase name="handlePrev should call setStep when there are steps behind" duration="2"/>
+    <testCase name="handlePrev should not call setStep when user is at the first step" duration="5"/>
+    <testCase name="handleDraft should set setIsConfirmOpen to false when called" duration="11"/>
+    <testCase name="handleDraft should call modifyProduct with isDraft set to true when process is &quot;modify&quot;" duration="5"/>
+    <testCase name="handleDraft should call createProduct with isDraft set to true when process is &quot;create&quot; or &quot;clone&quot;" duration="3"/>
+    <testCase name="handleDraft should not call any functions when process is undefined" duration="2"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/App.test.tsx">
+    <testCase name="Test App Component If App is rendered wihout issues" duration="42"/>
   </file>
 </testExecutions>
