@@ -81,6 +81,13 @@ describe('currencyFormatter', () => {
     expect(result.toString()).not.toEqual(expected.toString());
   });
 
+  it('should format a value with more than two decimal places', () => {
+    const value = 1234.5678;
+    const expected = "1234.57";
+    const result = currencyFormatter(value,"NGN", false);
+    expect(result.toString()).toEqual(expected.toString());
+  });
+
   // Should format a value with less than two decimal places
   it('should format a value with less than two decimal places', () => {
     const value = 1234.5;
