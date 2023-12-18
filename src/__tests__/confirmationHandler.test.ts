@@ -1,4 +1,5 @@
 import { confirmationHandler } from "../components/table/confirmationHandler";
+import { Actions, Messages, Prompts } from "../constants/enums";
 
 describe("confirmationHandler", () => {
   const deleteRequest = jest.fn();
@@ -228,4 +229,120 @@ describe("confirmationHandler", () => {
 
     expect(activateProduct).not.toHaveBeenCalled();
   });
+});
+
+describe("confirmationHandler", () => {
+  // Mocking functions and variables
+  const deleteRequest = jest.fn();
+  const setIsDeactivationOpen = jest.fn();
+  const activateProduct = jest.fn();
+  const navigate = jest.fn();
+  const permissions = ["CREATE_INVESTMENT_PRODUCT"];
+  const selected = { value: "someValue" };
+  const previousData = {
+    /* your data here */
+  };
+  const detail = { id: "someId" };
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  // ... other tests
+
+  it("should handle MODIFY action with permission", () => {
+    const action = Actions.MODIFY;
+    const mockedErrorToast = jest.fn();
+
+    jest.mock("../components/Toast", () => ({
+      errorToast: mockedErrorToast,
+    }));
+    // @ts-ignore
+    confirmationHandler({
+      action,
+      permissions,
+      selected,
+      detail,
+      navigate,
+    });
+
+    expect(mockedErrorToast).not.toHaveBeenCalled();
+    expect(navigate).toHaveBeenCalledWith(
+      `/product-factory/investment/${encodeURIComponent(
+        "term deposit"
+      )}/modify/?id=${detail.id}&filter=${selected.value}`
+    );
+  });
+
+  it("should handle MODIFY action without permission", () => {
+    const action = Actions.MODIFY;
+    const mockedErrorToast = jest.fn();
+
+    jest.mock("../components/Toast", () => ({
+      errorToast: mockedErrorToast,
+    }));
+
+    const modifiedPermissions = [];
+    // @ts-ignore
+    confirmationHandler({
+      action,
+      permissions: modifiedPermissions,
+      detail,
+      navigate,
+    });
+
+    expect(mockedErrorToast).not.toHaveBeenCalledWith(
+      "You do not have permission to make changes!"
+    );
+    expect(navigate).not.toHaveBeenCalled();
+  });
+
+  it("should handle WITHDARW_MODIFY action with permission", () => {
+    const action = Actions.WITHDARW_MODIFY;
+    const mockedErrorToast = jest.fn();
+
+    jest.mock("../components/Toast", () => ({
+      errorToast: mockedErrorToast,
+    }));
+    // @ts-ignore
+    confirmationHandler({
+      action,
+      permissions,
+      selected,
+      detail,
+      navigate,
+    });
+
+    expect(mockedErrorToast).not.toHaveBeenCalled();
+    expect(navigate).toHaveBeenCalledWith(
+      `/product-factory/investment/${encodeURIComponent(
+        "term deposit"
+      )}/withdraw_modify/?id=${detail.id}&filter=${selected.value}`
+    );
+  });
+
+  it("should handle WITHDARW_MODIFY action without permission", () => {
+    const action = Actions.WITHDARW_MODIFY;
+    const mockedErrorToast = jest.fn();
+
+    jest.mock("../components/Toast", () => ({
+      errorToast: mockedErrorToast,
+    }));
+
+    const modifiedPermissions = [];
+    // @ts-ignore
+    confirmationHandler({
+      action,
+      permissions: modifiedPermissions,
+      detail,
+      navigate,
+    });
+
+    expect(mockedErrorToast).not.toHaveBeenCalledWith(
+      "You do not have permission to make changes!"
+    );
+    expect(navigate).not.toHaveBeenCalled();
+  });
+
+  // Similar tests for WITHDRAW_MODIFY action
 });
