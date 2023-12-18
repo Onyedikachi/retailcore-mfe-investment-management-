@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { InvestmentContext } from "../../utils/context";
 import { StatusCategoryType } from "../../constants/enums";
@@ -24,6 +24,7 @@ import {
 } from "@app/constants";
 import { sortTabStatus } from "@app/utils/sortTabStatus";
 import { useSearchParams } from "react-router-dom";
+import { errorToast } from "@app/components/Toast";
 
 export function handleToggle(selected, setIsChecker, setHideCreate) {
   if (
@@ -78,7 +79,7 @@ export const handleSearch = (value, query, setQuery) => {
   });
 };
 export default function IndexComponent() {
-  const notify = (toastMessage) => toast.error(toastMessage);
+
   const [category, setCategory] = useState<string>(
     StatusCategoryType?.AllProducts
   );
@@ -292,7 +293,7 @@ export default function IndexComponent() {
 
   useEffect(() => {
     if (systemAlertDataSuccess) {
-      notify(systemAlertData);
+      errorToast(systemAlertData);
     }
   }, [systemAlertDataSuccess]);
 
