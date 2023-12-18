@@ -53,6 +53,34 @@ interface TableProps {
   type?: string;
   noData?: string;
 }
+
+export const statusHandler = ({isSuccess, setSuccessText, setIsSuccessOpen, activateSuccess, isError,
+  setFailedText, setFailed, activateIsError, activateError, setFailedSubtext, error,  role}) => {
+  if (isSuccess) {
+    setSuccessText(Messages.PRODUCT_DELETE_SUCCESS);
+    setIsSuccessOpen(true);
+  }
+  if (activateSuccess) {
+    setSuccessText(
+      role === "superadmin"
+        ? Messages.PRODUCT_ACTIVATE_SUCCESS
+        : Messages.ADMIN_PRODUCT_ACTIVATE_SUCCESS
+    );
+    setIsSuccessOpen(true);
+  }
+  if (isError) {
+    setFailedText(Messages.PRODUCT_DELETE_FAILED);
+    setFailedSubtext(error?.message?.message);
+    setFailed(true);
+  }
+
+  if (activateIsError) {
+    setFailedText(Messages.PRODUCT_ACTIVATE_FAILED);
+    setFailedSubtext(activateError?.message?.message);
+    setFailed(true);
+  }
+}
+
 export function handleUpdated(key, value, options) {
  
   if (!options || !value) return;
@@ -249,29 +277,8 @@ export default function TableComponent<TableProps>({
     });
 
   useEffect(() => {
-    if (isSuccess) {
-      setSuccessText(Messages.PRODUCT_DELETE_SUCCESS);
-      setIsSuccessOpen(true);
-    }
-    if (activateSuccess) {
-      setSuccessText(
-        role === "superadmin"
-          ? Messages.PRODUCT_ACTIVATE_SUCCESS
-          : Messages.ADMIN_PRODUCT_ACTIVATE_SUCCESS
-      );
-      setIsSuccessOpen(true);
-    }
-    if (isError) {
-      setFailedText(Messages.PRODUCT_DELETE_FAILED);
-      setFailedSubtext(error?.message?.message);
-      setFailed(true);
-    }
-
-    if (activateIsError) {
-      setFailedText(Messages.PRODUCT_ACTIVATE_FAILED);
-      setFailedSubtext(activateError?.message?.message);
-      setFailed(true);
-    }
+    statusHandler({isSuccess, setSuccessText, setIsSuccessOpen, activateSuccess, isError,
+      setFailedText, setFailed, activateIsError, activateError, setFailedSubtext, error,  role})
   }, [isSuccess, isError, error, activateSuccess, activateIsError]);
 
   return (
