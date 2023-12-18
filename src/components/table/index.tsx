@@ -60,14 +60,9 @@ export function handleUpdated(key, value, options) {
   if (!parseOptions[key]) return;
 
   if (key === "state") {
-    console.log("🚀 ~ file: index.tsx:57 ~ handleUpdated ~ value:", value);
-    console.log(
-      "🚀 ~ file: index.tsx:74 ~ handleUpdated ~ parseOptions[key]:",
-      parseOptions[key]
-    );
-    const newState = ActiveFilterOptions.find(
-      (n) => parseOptions[key] === n.value
-    )?.name;
+    // const newState = ActiveFilterOptions.find(
+    //   (n) => parseOptions[key] === n.value
+    // )?.name;
 
     if (parseOptions[key] === value) return null;
   }
