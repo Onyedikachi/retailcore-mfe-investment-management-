@@ -393,7 +393,9 @@ export default function CreateTermDeposit() {
   useEffect(() => {
     if (requestIsSuccess) {
       const data = JSON.parse(requestData?.data?.metaInfo);
-
+      if (process === "continue" && data?.id) {
+        activeId.current = data?.id
+      }
       if (process === "withdraw_modify") {
         previousData.current = {
           ...previousData.current,
