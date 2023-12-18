@@ -21,7 +21,7 @@ export const confirmationHandler = ({
   if (action.toLowerCase() === Actions.ACTIVATE) {
     activateProduct({
       id: detail?.id,
-      recentlyUpdatedMeta: JSON.stringify(previousData),
+      recentlyUpdatedMeta: JSON.stringify(previousData.current),
     });
   }
   if (action.toLowerCase() === Actions.MODIFY) {
