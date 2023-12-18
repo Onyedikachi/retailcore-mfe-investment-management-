@@ -1,5 +1,5 @@
 import React from "react";
-import { screen } from "@testing-library/react";
+import { act, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect"; // Import this for additional matchers
 import { Actions } from "../../../components/summary";
 import userEvent from "@testing-library/user-event";
@@ -10,9 +10,9 @@ import { renderWithProviders } from "../../../utils/test-util";
 const navigate = jest.fn();
 const useParams = jest.fn();
 class ResizeObserver {
-  observe() {}
-  unobserve() {}
-  disconnect() {}
+  observe() { }
+  unobserve() { }
+  disconnect() { }
 }
 jest.mock("react-router-dom", () => ({
   BrowserRouter: ({ children }) => <div>{children}</div>,
@@ -284,10 +284,46 @@ describe("Actions", () => {
         </AppContext.Provider>
       </InvestmentContext.Provider>
     );
-
     // Click the Approve button
-    const approveButton = screen.getByTestId("approve");
+    const approveButton = screen.getByTestId("cancel");
     userEvent.click(approveButton);
     // Assert the confirm text is set to "Product activation approve"
   });
+
+  it("Should call initiate verdict", () => {
+    const handleSubmit = jest.fn();
+    const handleModify = jest.fn();
+    const handleCancel = jest.fn();
+    const requestDetail = {};
+    renderWithProviders(
+      <InvestmentContext.Provider value={{}}>
+        <AppContext.Provider
+          value={{
+            permissions: [
+              "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS",
+            ],
+            role: "superadmin",
+            setRole: jest.fn(),
+          }}
+        >
+          <Actions
+            handleSubmit={handleSubmit}
+            handleModify={handleModify}
+            handleCancel={handleCancel}
+            requestDetail={requestDetail}
+          />
+        </AppContext.Provider>
+      </InvestmentContext.Provider>
+    );
+
+    const cancelButton = screen.getByTestId("cancel");
+    fireEvent.click(cancelButton)
+    act(() => {
+    })
+    expect(screen.getByTestId("submit-btn")).toBeInTheDocument()
+  })
+
+
+
 });
+

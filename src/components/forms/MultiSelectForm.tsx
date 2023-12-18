@@ -9,10 +9,13 @@ export function closeDropdown(setIsOpen) {
 }
 
 export function handleChange(id, value, selectedOptions, setSelectedOptions) {
-  if (!selectedOptions?.some((i) => i === value)) {
+  if (
+    selectedOptions?.length > 0 &&
+    !selectedOptions?.some((i) => i === value)
+  ) {
     setSelectedOptions([...selectedOptions, value]);
   } else {
-    const arrOptions = selectedOptions.filter((i) => i !== value);
+    const arrOptions = selectedOptions?.filter((i) => i !== value);
     setSelectedOptions(arrOptions);
   }
 }
@@ -56,7 +59,6 @@ export default function MultiSelectForm({
   // Change selected when changing status category
   useEffect(() => {
     setSelectedOptions(defaultValue);
-    console.log("🚀 ~ file: MultiSelectForm.tsx:59 ~ useEffect ~ defaultValue:", defaultValue)
   }, [defaultValue]);
   return (
     <div className="relative z-40 w-full">

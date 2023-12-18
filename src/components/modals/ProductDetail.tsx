@@ -41,10 +41,6 @@ export default function ProductDetail({
   const [open, setOpen] = useState(false);
   const { permissions } = useContext(AppContext);
 
-  useEffect(() => {
-    console.log(isLoading)
-  }, [isLoading])
-
   React.useEffect(() => {
 
   }, [isSuccess]);
@@ -202,8 +198,8 @@ export default function ProductDetail({
                     )}
                   </div>
 
-                  <Link
-                    to={`/product-factory/investment/${encodeURIComponent(
+                  <a
+                    href={`/product-factory/investment/${encodeURIComponent(
                       "term deposit"
                     )}/process-summary/preview/${productData?.data.id}?category=product`}
                   >
@@ -212,7 +208,7 @@ export default function ProductDetail({
                     >
                       View Activity Log
                     </button>
-                  </Link>
+                  </a>
                 </div>
               </div>
               <div className="border border-[#E5E9EB] rounded-lg py-[25px] px-[30px] h-[593px]">
@@ -335,6 +331,7 @@ export default function ProductDetail({
                       (productData?.data?.pricingConfiguration
                         .interestRateRangeType !== 1 && (
                         <button
+                          data-testid="more"
                           className="text-[#636363]  underline"
                           onClick={() => setOpen(true)}
                         >

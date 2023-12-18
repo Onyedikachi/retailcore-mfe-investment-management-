@@ -9,12 +9,12 @@ export const routes = [
     component: lazy(() => import("../pages/investment/IndexComponent")),
   },
 
-  {
-    path: paths.INVESTMENT_TEST,
-    name: "Investment Test",
-    exact: true,
-    component: lazy(() => import("../pages/investment/TestComponents")),
-  },
+  // {
+    // path: paths.INVESTMENT_TEST,
+  //   name: "Investment Test",
+  //   exact: true,
+  //   component: lazy(() => import("../pages/investment/TestComponents")),
+  // },
 
   {
     path: paths.CREATE_PRODUCT,

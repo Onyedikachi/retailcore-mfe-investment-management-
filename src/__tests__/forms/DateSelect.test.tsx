@@ -18,7 +18,6 @@ describe("DateSelect", () => {
 
     fireEvent.click(screen.getByText("Set Date"));
     let days = screen.queryAllByRole("option");
-    console.log(days.length);
   });
 });
 
@@ -165,5 +164,26 @@ describe("onChange", () => {
       startDate: "2022-01-01",
       endDate: "2022-01-31",
     });
+  });
+});
+
+
+describe('closeDropdown', () => {
+
+  // should set isOpen state to false when called with setIsOpen function
+  it('should set isOpen state to false when called with setIsOpen function', () => {
+    const setIsOpen = jest.fn();
+    closeDropdown(setIsOpen);
+    expect(setIsOpen).toHaveBeenCalledWith(false);
+  });
+
+
+
+  // should not have any side effects other than setting isOpen state to false
+  it('should not have any side effects other than setting isOpen state to false', () => {
+    const setIsOpen = jest.fn();
+    closeDropdown(setIsOpen);
+    expect(setIsOpen).toHaveBeenCalledTimes(1);
+  
   });
 });

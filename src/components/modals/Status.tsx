@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { IoIosUndo, IoIosRefresh } from "react-icons/io";
 import { HiCheckCircle } from "react-icons/hi";
 import { RiErrorWarningFill } from "react-icons/ri";
@@ -14,7 +14,7 @@ interface SuccessProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   canClose?: boolean;
-  canCreate?: boolean
+  canCreate?: boolean;
 }
 
 export function Success({
@@ -22,7 +22,7 @@ export function Success({
   isOpen,
   setIsOpen,
   canClose = false,
-  canCreate = false
+  canCreate = false,
 }: SuccessProps): React.JSX.Element {
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,7 +32,7 @@ export function Success({
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="relative h-[400px] w-[606px] flex flex-col justify-between px-10 py-8 rounded-lg bg-white text-center items-center">
         <div className="flex justify-center items-center">
-          <HiCheckCircle className="text-[80px] text-[#2FB755]" />{" "}
+          <HiCheckCircle data-testid="check-circle-icon" className="text-[80px] text-[#2FB755]" />{" "}
         </div>
         <p className="font-normal text-2xl">{text}</p>
         <div className="flex justify-between items-center gap-x-[6px] w-full">
@@ -70,13 +70,15 @@ export function Success({
           {canCreate && (
             <Button
               onClick={() =>
-                navigate("/product-factory/investment/term deposit/create")
+                (window.location.href =
+                  "/product-factory/investment/term deposit/create")
               }
               type="button"
               data-testid="dashboard-link"
               className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full text-[#667085] outline-none"
             >
-              Create another product  <FaAngleRight className="text-sterling-red-800 text-2xl" />
+              Create another product{" "}
+              <FaAngleRight className="text-sterling-red-800 text-2xl" />
             </Button>
           )}
         </div>

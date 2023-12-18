@@ -5,7 +5,16 @@ import { cleanObject } from "@app/utils/cleanObject";
 
 export const accountApi: any = createApi({
   reducerPath: "accountApi",
-  baseQuery: axiosBaseQuery({ serviceKey: "accounting" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "https://retailcore-accounting-api.dev.bepeerless.co/v1/",
+    prepareHeaders: (headers) => {
+      const token = getToken();
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
   keepUnusedDataFor: 0,
   extractRehydrationInfo(action, { reducerPath }) {
     if (action.type === REHYDRATE && action.payload) {

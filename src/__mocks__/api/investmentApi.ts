@@ -1,14 +1,23 @@
 import { axiosBaseQuery, getToken } from "@Sterling/shared";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { REHYDRATE } from "redux-persist";
-import { IGetProducts, ICreateProduct } from "./types/investmentApi.types";
+import urls from "../../helpers/url_helpers";
 
-import urls from "../helpers/url_helpers";
 import { cleanObject } from "@app/utils/cleanObject";
 // baseQuery: axiosBaseQuery({ serviceKey: "investment" }),
 export const investmentApi: any = createApi({
   reducerPath: "investmentApi",
-  baseQuery: axiosBaseQuery({ serviceKey: "investment" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl:
+      "https://retailcore-investment-management-api.dev.bepeerless.co/v1/",
+    prepareHeaders: (headers) => {
+      const token = getToken();
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
   keepUnusedDataFor: 0,
   extractRehydrationInfo(action, { reducerPath }) {
     if (action.type === REHYDRATE && action.payload) {
@@ -55,7 +64,7 @@ export const investmentApi: any = createApi({
     }),
 
     getPostProducts: builder.mutation<
-      IGetProducts,
+      any,
       {
         filter_by: string;
         status_In: number[];
@@ -76,7 +85,7 @@ export const investmentApi: any = createApi({
       },
     }),
     getPostRequests: builder.mutation<
-      IGetProducts,
+      any,
       {
         filter_by: string;
         status_In: number[];
@@ -97,9 +106,9 @@ export const investmentApi: any = createApi({
       },
     }),
     createProduct: builder.mutation<
-      ICreateProduct,
+      any,
       {
-        data: ICreateProduct;
+        data: any;
       }
     >({
       query: (data) => {
@@ -245,7 +254,6 @@ export const investmentApi: any = createApi({
         return {
           url: `${urls.PRODUCT}/reactivate/${data.id}`,
           method: "put",
-          body: data,
         };
       },
     }),

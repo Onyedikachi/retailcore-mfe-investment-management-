@@ -35,7 +35,6 @@ describe("ShareButton", () => {
 
     // Mock the console.log method
     const originalConsoleLog = console.log;
-    console.log = jest.fn();
 
     // Click the Share button
     userEvent.click(shareButton);
