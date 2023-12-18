@@ -47,7 +47,7 @@ export default function RequestDeactivation({
       investmentProductId: detail.id,
       reason,
       url,
-      recentlyUpdatedMeta: JSON.stringify(previousData),
+      recentlyUpdatedMeta: JSON.stringify(previousData.current),
     });
   }
   useEffect(() => {

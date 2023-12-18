@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 import { Tooltip } from "react-tippy";
 import "react-tippy/dist/tippy.css";
@@ -82,18 +82,15 @@ export const statusHandler = ({isSuccess, setSuccessText, setIsSuccessOpen, acti
 }
 
 export function handleUpdated(key, value, options) {
- 
   if (!options || !value) return;
 
   const parseOptions = JSON.parse(options);
   if (!parseOptions[key]) return;
- 
+
   if (key === "state") {
-    console.log("🚀 ~ file: index.tsx:57 ~ handleUpdated ~ value:", value)
-    console.log("🚀 ~ file: index.tsx:74 ~ handleUpdated ~ parseOptions[key]:", parseOptions[key])
-    const newState = ActiveFilterOptions.find(
-      (n) => parseOptions[key] === n.value
-    )?.name;
+    // const newState = ActiveFilterOptions.find(
+    //   (n) => parseOptions[key] === n.value
+    // )?.name;
 
     if (parseOptions[key] === value) return null;
   }
@@ -227,7 +224,6 @@ export default function TableComponent<TableProps>({
   const [failedSubText, setFailedSubtext] = useState("");
   const [failedText, setFailedText] = useState("");
 
-  const notify = (toastMessage) => toast.error(toastMessage);
   // function getdata(item, key) {}
   // @ts-ignore
   const handleAction = (action, items) => {
@@ -272,7 +268,6 @@ export default function TableComponent<TableProps>({
       deleteRequest,
       setIsDeactivationOpen,
       activateProduct,
-      notify,
       navigate,
     });
 
@@ -284,7 +279,6 @@ export default function TableComponent<TableProps>({
   return (
     <div>
       {" "}
-      <ToastContainer />{" "}
       <InfiniteScroll
         dataLength={tableRows?.length}
         next={fetchMoreData}
@@ -363,10 +357,14 @@ export default function TableComponent<TableProps>({
                                 <StateCellContent value={item[header.key]} />
                               )}
                               {header.key === "requestStatus" && (
-                                <StatusCellContent
-                                  value={item[header.key]}
-                                  isChecker={isChecker}
-                                />
+                                <span
+                                  onClick={() => handleAction("view", item)}
+                                >
+                                  <StatusCellContent
+                                    value={item[header.key]}
+                                    isChecker={isChecker}
+                                  />
+                                </span>
                               )}
                               {header.key === "updated_At" && (
                                 <UpdatedOnCellContent

@@ -3,8 +3,7 @@ import { Listbox, Transition } from "@headlessui/react";
 import { FaChevronDown } from "react-icons/fa";
 import { BorderlessSelectProps } from "@app/types";
 import { FormToolTip } from "@app/components";
-import {RedDot} from '@app/components/forms'
-
+import { RedDot } from "@app/components/forms";
 
 export default function Select({
   options,
@@ -22,7 +21,7 @@ export default function Select({
   requiredField = false,
   trigger,
   error,
-  disabled= false
+  disabled = false,
 }: BorderlessSelectProps): React.JSX.Element {
   const [selected, setSelected] = useState<any>(null);
 
@@ -39,10 +38,8 @@ export default function Select({
   };
   // Change selected when changing status category
   useEffect(() => {
-    if (defaultValue) {
-      setSelected(options?.find((i) => i.value === defaultValue));
-     
-    }
+  
+    setSelected(options?.find((i) => i.value === defaultValue));
   }, [defaultValue]);
 
   return (
@@ -122,7 +119,8 @@ export default function Select({
                   >
                     {({ selected }) => (
                       <>
-                        <span data-testid="select-option"
+                        <span
+                          data-testid="select-option"
                           className={`block whitespace-nowrap  ${
                             selected ? "font-medium" : "font-normal"
                           }`}

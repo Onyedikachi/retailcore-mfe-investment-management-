@@ -47,13 +47,20 @@ export const CustomerEligibilityCriteriaSchema = yup
           .min(0, "Min of 0")
           .test("min-less-than-max", "Must be less than Max", function (value) {
             const ageGroupMax = this.parent.ageGroupMax;
-            return (
-              value === null ||
-              value === undefined ||
-              value === 0 ||
-              ageGroupMax === undefined ||
-              value < ageGroupMax
-            );
+
+            // Only run the validation if ageGroupMax is greater than 0
+            if (ageGroupMax > 0) {
+              return (
+                value === null ||
+                value === undefined ||
+                value === 0 ||
+                ageGroupMax === undefined ||
+                value < ageGroupMax
+              );
+            }
+        
+            // Return true if ageGroupMax is not greater than 0
+            return true;
           }),
         otherwise: yup.number().typeError("Invalid value").nullable(),
       }),
