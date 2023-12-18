@@ -357,9 +357,8 @@ export default function CreateTermDeposit() {
       modifyRequest({ ...productData, isDraft: true, id });
     }
   };
-
-  let component;
-  let formRef;
+  const [formRef, setFormRef] = useState(null);
+  
 
   useEffect(() => {
     if (initiateDraft) {
@@ -369,26 +368,29 @@ export default function CreateTermDeposit() {
     }
   }, [initiateDraft]);
 
-  switch (step) {
-    case 1:
-      formRef = "productform";
-      break;
-    case 2:
-      formRef = "customereligibilitycriteria";
-      break;
-    case 3:
-      formRef = "pricingconfig";
-      break;
-    case 4:
-      formRef = "liquiditysetup";
-      break;
-    case 5:
-      formRef = "entriesandevents";
-      break;
+  useEffect(() => {
+    switch (step) {
+      case 1:
+        setFormRef("productform");
+        break;
+      case 2:
+        setFormRef("customereligibilitycriteria");
+        break;
+      case 3:
+        setFormRef("pricingconfig");
+        break;
+      case 4:
+        setFormRef("liquiditysetup");
+        break;
+      case 5:
+        setFormRef("entriesandevents");
+        break;
+  
+      default:
+        setFormRef("productform");
+    }
+  }, [step])
 
-    default:
-      formRef = "productform";
-  }
 
   useEffect(() => {
     if (requestIsSuccess) {
@@ -445,6 +447,7 @@ export default function CreateTermDeposit() {
     modifyRequestSuccess,
     modifyRequestIsError,
   ]);
+  
   function handleLinks(links, process) {
     const extraLinks = [
       {
