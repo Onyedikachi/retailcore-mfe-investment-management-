@@ -1,7 +1,7 @@
 
 import { getByText, screen, fireEvent } from "@testing-library/dom";
 import { renderWithProviders } from "../../../../../__mocks__/api/Wrapper";
-import IndexComponent, { FormComponent, handleDetailsSuccess } from "../../../../../pages/investment/term-deposit/create-term-deposit/IndexComponent"
+import IndexComponent, { FormComponent, handleDetailsSuccess, handleNext, handlePrev } from "../../../../../pages/investment/term-deposit/create-term-deposit/IndexComponent"
 import { act, render } from "@testing-library/react";
 import userEvent from '@testing-library/user-event'
 import React from "react";
@@ -337,5 +337,31 @@ describe("FormComponeent", () => {
     productData={formData} handleNav={handleNav} setDisabled={setDisabled} initiateDraft={false} />)
 
     expect(form).toMatchSnapshot();
+  })
+})
+
+describe("handleNext", () => {
+  const setStep = jest.fn();
+  it("should call setStep when theres more steps ahead", () => {
+    handleNext(1, setStep, [1,1,1,1,1]);
+    expect(setStep).toBeCalledWith(2);
+  })
+  it("should not setStep when there are no steps ahead", () => {
+    const setStep = jest.fn();
+    handleNext(5, setStep, [1,1,1,1,1]);
+    expect(setStep).not.toBeCalled();
+  })
+  
+})
+
+describe("handlePrev", () => {
+  const setStep = jest.fn();
+  it("should call setStep when there are steps behind", () => {
+    handlePrev(4, setStep, [{index : 1}]);
+    expect(setStep).toBeCalledWith(3);
+  })
+  it("should not call setStep when user is at the first step", () => {
+    handlePrev(1, setStep, [{index : 1}]);
+    expect(setStep).not.toBeCalledWith(0);
   })
 })
