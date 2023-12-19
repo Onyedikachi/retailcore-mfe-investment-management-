@@ -55,7 +55,6 @@ export default function CustomerEligibilityCriteria({
   const [isAdd, setIsAdd] = useState(false);
   const [newDocument, setNewDocument] = useState("");
   const values = getValues();
-  console.log("🚀 ~ file: customer-eligibilty-criteria.tsx:58 ~ values:", values)
 
   const handleCheckedRequirement = (document) => {
     const isDocumentToggled = toggledRequirements.some(
@@ -96,7 +95,6 @@ export default function CustomerEligibilityCriteria({
   };
 
   function onProceed(d: any) {
-    console.log("🚀 ~ file: customer-eligibilty-criteria.tsx:98 ~ onProceed ~ d:", d)
     setFormData({
       ...d,
       customerCategory: d.customerCategory,
@@ -110,7 +108,6 @@ export default function CustomerEligibilityCriteria({
 
   useEffect(() => {
     if (formData) {
-      console.log("🚀 ~ file: customer-eligibilty-criteria.tsx:111 ~ useEffect ~ formData:", formData)
       Object.entries(formData).forEach(([name, value]) =>
         setValue(name, value)
       );

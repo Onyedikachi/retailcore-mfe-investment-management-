@@ -18,6 +18,7 @@ import {
   productHeader,
   requestHeader,
 } from "@app/constants";
+import optionsDataHandler from "./optionsDataHandler";
 
 interface RequestDataProps {
   request: string;
@@ -274,37 +275,7 @@ export default function TableComponent({
   }, [category]);
 
   const getOptionData = (value: any, label: string) => {
-    if (label === "product type") {
-      setQuery({
-        ...query,
-        productType_In: value.length ? value.map((i) => i.value) : null,
-      });
-    }
-    if (label === "type") {
-      setQuery({
-        ...query,
-        requestType_In: value.length ? value.map((i) => i.value) : null,
-      });
-    }
-
-    if (label === "initiator") {
-      setQuery({
-        ...query,
-        initiator_In: value.length ? value.map((i) => i.value) : null,
-      });
-    }
-    if (label === "reviewer") {
-      setQuery({
-        ...query,
-        initiator_In: value.length ? value.map((i) => i.value) : null,
-      });
-    }
-    if (label === "state" || label === "status") {
-      setQuery({
-        ...query,
-        status_In: value.length ? value.map((i) => i.value) : null,
-      });
-    }
+    optionsDataHandler({ query, value, label, setQuery });
   };
   const onChangeDate = (value: any) => {
     setQuery({
@@ -319,10 +290,6 @@ export default function TableComponent({
   };
 
   const handleDropClick = (value: any) => {
-    console.log(
-      "🚀 ~ file: TableComponent.tsx:197 ~ handleDropClick ~ value:",
-      value
-    );
   };
 
   return (
@@ -340,9 +307,8 @@ export default function TableComponent({
               selected
             )
           }
-          placeholder={`Search by product name${
-            category !== StatusCategoryType.Requests ? "/code" : ""
-          }`}
+          placeholder={`Search by product name${category !== StatusCategoryType.Requests ? "/code" : ""
+            }`}
           searchResults={searchResults}
           setSearchResults={setSearchResults}
           searchLoading={searchLoading}
@@ -386,14 +352,14 @@ export default function TableComponent({
           category === StatusCategoryType?.AllProducts
             ? productHeader
             : handleHeaders(
-                requestHeader.map((i) => {
-                  if (i.key === "created_By" || i.key === "approved_By") {
-                    i.options = users;
-                  }
-                  return i;
-                }),
-                isChecker
-              )
+              requestHeader.map((i) => {
+                if (i.key === "created_By" || i.key === "approved_By") {
+                  i.options = users;
+                }
+                return i;
+              }),
+              isChecker
+            )
         }
         tableRows={
           category === StatusCategoryType?.AllProducts

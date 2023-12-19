@@ -32,8 +32,6 @@ export function handleLinksUpdate(
       setLinks([defaultLink, ...quickLinks.data]);
     }
 
-    console.log("effect");
-
     // Check if quickLinks has a link to this page
     const hasPageLink =
       quickLinks && quickLinks.data
