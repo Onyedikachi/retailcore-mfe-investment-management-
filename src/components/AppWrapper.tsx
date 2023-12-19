@@ -1,7 +1,7 @@
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
-import { ToastContainer, Zoom } from "react-toastify";
+import { ToastContainer, Slide } from "react-toastify";
 import { store } from "../config/store";
 
 function AppWrapper({ children }) {
@@ -12,11 +12,11 @@ function AppWrapper({ children }) {
       <Provider data-testid="store" store={store()}>
         <PersistGate loading={<div>loading...</div>} persistor={persistor}>
           <ToastContainer
-            position="top-right"
+            position="bottom-left"
             autoClose={4000}
             draggable={false}
-            // icon={false}
-            transition={Zoom}
+            icon={false}
+            transition={Slide}
           />
           {children}
         </PersistGate>

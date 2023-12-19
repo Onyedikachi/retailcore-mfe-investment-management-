@@ -1,4 +1,5 @@
 import { Actions, Messages, Prompts } from "@app/constants/enums";
+import { errorToast } from "../Toast";
 
 export const confirmationHandler = ({
   action,
@@ -9,7 +10,6 @@ export const confirmationHandler = ({
   deleteRequest,
   setIsDeactivationOpen,
   activateProduct,
-  notify,
   navigate,
 }) => {
   if (action.toLowerCase().includes("delete")) {
@@ -21,12 +21,12 @@ export const confirmationHandler = ({
   if (action.toLowerCase() === Actions.ACTIVATE) {
     activateProduct({
       id: detail?.id,
-      recentlyUpdatedMeta: JSON.stringify(previousData),
+      recentlyUpdatedMeta: JSON.stringify(previousData.current),
     });
   }
   if (action.toLowerCase() === Actions.MODIFY) {
     if (!permissions?.includes("CREATE_INVESTMENT_PRODUCT")) {
-      notify("You do not have permission to make changes!");
+      errorToast("You do not have permission to make changes!");
     } else {
       navigate(
         `/product-factory/investment/${encodeURIComponent(
@@ -38,7 +38,7 @@ export const confirmationHandler = ({
 
   if (action.toLowerCase() === Actions.WITHDARW_MODIFY) {
     if (!permissions?.includes("CREATE_INVESTMENT_PRODUCT")) {
-      notify("You do not have permission to make changes!");
+      errorToast("You do not have permission to make changes!");
     } else {
       navigate(
         `/product-factory/investment/${encodeURIComponent(

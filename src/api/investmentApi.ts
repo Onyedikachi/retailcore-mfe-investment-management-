@@ -1,11 +1,10 @@
-import { axiosBaseQuery, getToken } from "@Sterling/shared";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { axiosBaseQuery } from "@Sterling/shared";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import { REHYDRATE } from "redux-persist";
 import { IGetProducts, ICreateProduct } from "./types/investmentApi.types";
-
 import urls from "../helpers/url_helpers";
 import { cleanObject } from "@app/utils/cleanObject";
-// baseQuery: axiosBaseQuery({ serviceKey: "investment" }),
+
 export const investmentApi: any = createApi({
   reducerPath: "investmentApi",
   baseQuery: axiosBaseQuery({ serviceKey: "investment" }),
@@ -40,7 +39,7 @@ export const investmentApi: any = createApi({
     getCharges: builder.query<any, any>({
       query: () => {
         return {
-          url: `https://product-mgt-api.dev.bepeerless.co/v1/charges/state?state=active`,
+          url: `https://product-mgt-api.qa.bepeerless.co/v1/charges/state?state=active`,
           method: "get",
         };
       },
