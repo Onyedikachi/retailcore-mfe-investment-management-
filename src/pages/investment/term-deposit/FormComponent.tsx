@@ -2,6 +2,7 @@ import { AccountingEntriesAndEvents, CustomerEligibilityCriteria, LiquiditySetup
 import { Fragment } from "react";
 
 export default ({step, productData, activeId, handleNav, setProductData, setDisabled, initiateDraft}) => {
+    console.log("🚀 ~ file: FormComponent.tsx:5 ~ productData:", productData)
     return (
       <Fragment>
         {step === 1 && (

@@ -21,7 +21,7 @@ export default ({query, value, label, setQuery}) => {
     if (label === "reviewer") {
       setQuery({
         ...query,
-        initiator_In: value.length ? value.map((i) => i.value) : null,
+        approvers_In: value.length ? value.map((i) => i.value) : null,
       });
     }
     if (label === "state" || label === "status") {

@@ -216,7 +216,7 @@ export default function TableComponent({
   useEffect(() => {
     if (initSuccess || reviewSuccess) {
       setUsers(
-        (isChecker ? initData : reviewData)?.data?.map((i) => {
+        (!isChecker ? initData : reviewData)?.data?.map((i) => {
           return {
             name: i.fullname,
             value: i.id,
@@ -225,7 +225,7 @@ export default function TableComponent({
         })
       );
     }
-  }, [reviewSuccess, initSuccess]);
+  }, [reviewSuccess, initSuccess, isChecker]);
 
   useEffect(() => {
     isSuccess &&
@@ -289,8 +289,7 @@ export default function TableComponent({
     });
   };
 
-  const handleDropClick = (value: any) => {
-  };
+  const handleDropClick = (value: any) => {};
 
   return (
     <section className="w-full h-full">
@@ -307,8 +306,9 @@ export default function TableComponent({
               selected
             )
           }
-          placeholder={`Search by product name${category !== StatusCategoryType.Requests ? "/code" : ""
-            }`}
+          placeholder={`Search by product name${
+            category !== StatusCategoryType.Requests ? "/code" : ""
+          }`}
           searchResults={searchResults}
           setSearchResults={setSearchResults}
           searchLoading={searchLoading}
@@ -352,14 +352,14 @@ export default function TableComponent({
           category === StatusCategoryType?.AllProducts
             ? productHeader
             : handleHeaders(
-              requestHeader.map((i) => {
-                if (i.key === "created_By" || i.key === "approved_By") {
-                  i.options = users;
-                }
-                return i;
-              }),
-              isChecker
-            )
+                requestHeader.map((i) => {
+                  if (i.key === "created_By" || i.key === "approved_By") {
+                    i.options = users;
+                  }
+                  return i;
+                }),
+                isChecker
+              )
         }
         tableRows={
           category === StatusCategoryType?.AllProducts

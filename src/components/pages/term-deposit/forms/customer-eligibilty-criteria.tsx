@@ -26,6 +26,7 @@ export default function CustomerEligibilityCriteria({
   proceed,
   initiateDraft,
 }) {
+  console.log("🚀 ~ file: customer-eligibilty-criteria.tsx:29 ~ formData:", formData)
   const { process } = useParams();
   const [documents, setDocuments] = useState([...documentOptions]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -108,6 +109,7 @@ export default function CustomerEligibilityCriteria({
 
   useEffect(() => {
     if (formData) {
+      console.log("🚀 ~ file: customer-eligibilty-criteria.tsx:111 ~ useEffect ~ formData:", formData)
       Object.entries(formData).forEach(([name, value]) =>
         setValue(name, value)
       );

@@ -30,8 +30,6 @@ import { handleDraft } from "./handleDraft";
 import handleFormRef from "./handleFormRef";
 import FormComponent from "../FormComponent";
 
-
-
 export function handleNext(step, setStep, termDepositFormSteps) {
   step < termDepositFormSteps.length && setStep(step + 1);
 }
@@ -67,20 +65,34 @@ export const handleDetailsSuccess = (
     };
   }
 
-  setProductData({
-    productInfo: productDetails?.data?.productInfo,
-    customerEligibility: productDetails?.data?.customerEligibility,
-    pricingConfiguration: productDetails?.data?.pricingConfiguration,
-    liquidation: productDetails?.data?.liquidation,
-    productGlMappings: productDetails?.data?.productGlMappings,
-    interestComputationMethod: productDetails?.data?.interestComputationMethod,
-    TermDepositLiabilityAccount:
-      productDetails?.data?.TermDepositLiabilityAccount,
-    InterestAccrualAccount: productDetails?.data?.InterestAccrualAccount,
-    InterestExpenseAccount: productDetails?.data?.InterestExpenseAccount,
-    isDraft: productDetails?.data?.isDraft,
-    productType: productDetails?.data?.productType,
+  setProductData((prevProductData) => {
+    const pricingConfigurationCopy = JSON.parse(
+      JSON.stringify(productDetails?.data?.pricingConfiguration)
+    );
+  
+    if (pricingConfigurationCopy) {
+      pricingConfigurationCopy.interestRateConfigModels = pricingConfigurationCopy.interestRateConfigModels?.sort(
+        (a, b) => a.min - b.min
+      );
+    }
+  
+    return {
+      ...prevProductData,
+      productInfo: productDetails?.data?.productInfo,
+      customerEligibility: productDetails?.data?.customerEligibility,
+      pricingConfiguration: pricingConfigurationCopy,
+      liquidation: productDetails?.data?.liquidation,
+      productGlMappings: productDetails?.data?.productGlMappings,
+      interestComputationMethod: productDetails?.data?.interestComputationMethod,
+      TermDepositLiabilityAccount:
+        productDetails?.data?.TermDepositLiabilityAccount,
+      InterestAccrualAccount: productDetails?.data?.InterestAccrualAccount,
+      InterestExpenseAccount: productDetails?.data?.InterestExpenseAccount,
+      isDraft: productDetails?.data?.isDraft,
+      productType: productDetails?.data?.productType,
+    };
   });
+  
 };
 
 export default function CreateTermDeposit() {
@@ -126,6 +138,7 @@ export default function CreateTermDeposit() {
       interestComputationMethod: 2,
       interestRateConfigModels: [
         {
+          index: 0,
           min: 0,
           max: 0,
           principalMin: 0,
@@ -255,14 +268,13 @@ export default function CreateTermDeposit() {
     step < termDepositFormSteps.length
       ? handleNext(step, setStep, termDepositFormSteps)
       : navigate(
-        `/product-factory/investment/term-deposit/${process}?${id ? `id=${id}&` : ""
-        }stage=summary`
-      );
+          `/product-factory/investment/term-deposit/${process}?${
+            id ? `id=${id}&` : ""
+          }stage=summary`
+        );
   }
 
-
   const [formRef, setFormRef] = useState(null);
-
 
   useEffect(() => {
     if (initiateDraft) {
@@ -273,15 +285,14 @@ export default function CreateTermDeposit() {
   }, [initiateDraft]);
 
   useEffect(() => {
-    handleFormRef({step, setFormRef});
-  }, [step])
-
+    handleFormRef({ step, setFormRef });
+  }, [step]);
 
   useEffect(() => {
-    if (requestIsSuccess) {
+    if (requestIsSuccess && requestData?.data?.metaInfo) {
       const data = JSON.parse(requestData?.data?.metaInfo);
       if (process === "continue" && data?.id) {
-        activeId.current = data?.id
+        activeId.current = data?.id;
       }
       if (process === "withdraw_modify") {
         previousData.current = {
@@ -319,8 +330,11 @@ export default function CreateTermDeposit() {
       setFailedText(Messages.PRODUCT_DRAFT_FAILED);
       setFailedSubtext(
         error?.message?.message ||
-        modifyError?.message?.message ||
-        modifyRequestError?.message?.message
+          modifyError?.message?.message ||
+          modifyRequestError?.message?.message ||
+          error?.message?.Message ||
+          modifyError?.message?.Message ||
+          modifyRequestError?.message?.Message
       );
       setFailed(true);
     }
@@ -451,7 +465,17 @@ export default function CreateTermDeposit() {
               isOpen={isConfirmOpen}
               setIsOpen={setIsConfirmOpen}
               onCancel={() => setIsConfirmOpen(false)}
-              onConfirm={() => handleDraft({ productData, process, id, modifyRequest, setIsConfirmOpen, modifyProduct, createProduct })}
+              onConfirm={() =>
+                handleDraft({
+                  productData,
+                  process,
+                  id,
+                  modifyRequest,
+                  setIsConfirmOpen,
+                  modifyProduct,
+                  createProduct,
+                })
+              }
             />
           )}
           {isFailed && (

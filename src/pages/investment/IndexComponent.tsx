@@ -154,6 +154,7 @@ export default function IndexComponent() {
     productType_In: null,
     requestType_In: null,
     initiator_In: null,
+    approvers_In: null
   });
   const value = useMemo(
     () => ({
@@ -272,6 +273,7 @@ export default function IndexComponent() {
     query.end_Date,
     query.requestType_In,
     query.initiator_In,
+    query.approvers_In
   ]);
   useEffect(() => {
     setCategory(
