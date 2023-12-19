@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { FaChevronDown } from "react-icons/fa";
 import { SelectProps } from "@app/types";
+import OptionsList from "./OptionsList";
 
 export default function Select({
   options,
@@ -42,44 +43,7 @@ export default function Select({
             leaveTo="opacity-0"
           >
             <Listbox.Options className="absolute mt-1 max-h-60 w-[200px] overflow-auto bg-white py-1  focus:outline-none text-sm shadow-[0px_0px_4px_0px_#00000040] right-0 rounded-b-lg z-40">
-              {options?.map(
-                (
-                  option: {
-                    id: number;
-                    text: string;
-                    value?: string;
-                    disabled?: boolean;
-                  },
-                  optionIdx: number
-                ) => (
-                  <Listbox.Option
-                    key={`${optionIdx.toString()}-index`}
-                    disabled={option?.disabled}
-                    className={({ active }) =>
-                      `relative  select-none py-2 px-6  text-[#636363] hover:bg-gray-50  ${
-                        active ? "bg-red-50" : ""
-                      } ${
-                        option?.disabled
-                          ? "opacity-50 cursor-not-allowed"
-                          : "cursor-pointer"
-                      }`
-                    }
-                    value={option}
-                  >
-                    {({ selected }) => (
-                      <>
-                        <span
-                          className={`block whitespace-nowrap  ${
-                            selected ? "font-medium" : "font-normal"
-                          }`}
-                        >
-                          {option?.text}
-                        </span>
-                      </>
-                    )}
-                  </Listbox.Option>
-                )
-              )}
+              <OptionsList options={options}/>
             </Listbox.Options>
           </Transition>
         </div>

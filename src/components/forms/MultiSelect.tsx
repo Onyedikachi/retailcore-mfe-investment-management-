@@ -52,7 +52,7 @@ export default function MultiSelect({
           {children}
         </button>
         {isOpen && (
-          <div className="z-40 transition-all duration-300 top-12 absolute -right-2 shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] bg-white p-4 w-[175px] rounded-b-lg">
+          <div className="z-40 transition-all duration-300 top-12 absolute -right-2 shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] bg-white p-4 min-w-[175px] rounded-b-lg">
             <div>
               <ul className="grid gap-y-3">
                 <li className="cursor-pointer">

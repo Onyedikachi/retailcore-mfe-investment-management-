@@ -14,8 +14,9 @@ import {
 import { Confirm, Failed, Prompt, Success } from "../modals";
 import { AppContext } from "@app/utils";
 import { useApproveProductMutation, useRejectProductMutation } from "@app/api";
-import { Messages, Prompts } from "@app/constants/enums";
+import { Messages} from "@app/constants/enums";
 import Rejection from "../modals/Rejection";
+import handleVerdict from "./handleVerdict";
 
 export const handlePrint = () => {
   window.print();
@@ -66,46 +67,8 @@ export default function Actions({
     },
   ] = useRejectProductMutation();
 
-  const initiateVeridict = (value) => {
-    setAction(value);
-    if (value === "approve" && !sub_type) {
-      setConfirmText(Prompts.PRODUCT_CREATION_APPROVE);
-    }
-    if (value === "reject" && !sub_type) {
-      setConfirmText(Prompts.PRODUCT_CREATION_REJECT);
-    }
-
-    if (value === "approve" && sub_type === "activation") {
-      setConfirmText(Prompts.PRODUCT_ACTIVATION_APPROVE);
-    }
-    if (value === "reject" && sub_type === "activation") {
-      setConfirmText(Prompts.PRODUCT_ACTIVATION_REJECT);
-    }
-    if (value === "approve" && sub_type === "deactivation") {
-      setConfirmText(Prompts.PRODUCT_DEACTIVATION_APPROVE);
-    }
-    if (value === "reject" && sub_type === "deactivation") {
-      setConfirmText(Prompts.PRODUCT_DEACTIVATION_REJECT);
-    }
-    if (value === "approve" && sub_type === "modification") {
-      setConfirmText(Prompts.PRODUCT_MODIFY_APPROVE);
-    }
-    if (value === "reject" && sub_type === "modification") {
-      setConfirmText(Prompts.PRODUCT_MODIFY_REJECT);
-    }
-
-    if (value === "cancel" && (process === "create" ||  process === "clone" ||  process === "continue") ) {
-    
-      setConfirmText(Prompts.CANCEL_CREATION);
-    }
-    if (value === "cancel" && (process === "modify" || process === "withdraw_modify")) {
-      setConfirmText(Prompts.CANCEL_MODIFICATION);
-    }
-    if (value === "cancel" && process === "verdict") {
-      setConfirmText(Prompts.CANCEL_PROCESS);
-    }
-
-    setIsConfirmOpen(true);
+  const initiateVerdict = (value) => {
+    handleVerdict({value, sub_type, process, setConfirmText, setAction, setIsConfirmOpen})
   };
   const handleConfirm = () => {
     if (action === "approve") {
@@ -272,7 +235,7 @@ export default function Actions({
         ) && (
           <div className="flex  gap-6">
             <Button
-              onClick={() => initiateVeridict("cancel")}
+              onClick={() => initiateVerdict("cancel")}
               data-testid="cancel"
               className="cursor-pointer max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"
             >
@@ -295,7 +258,7 @@ export default function Actions({
             </Button>
 
             <Button
-              onClick={() => initiateVeridict("reject")}
+              onClick={() => initiateVerdict("reject")}
               data-testid="reject"
               className="cursor-pointer ml-auto max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"
             >
@@ -318,7 +281,7 @@ export default function Actions({
             </Button>
 
             <Button
-              onClick={() => initiateVeridict("approve")}
+              onClick={() => initiateVerdict("approve")}
               data-testid="approve"
               type="submit"
               className="px-10 py-[5px] flex items-center gap-2 justify-center text-[#ffffff] bg-sterling-red-800 rounded-lg"

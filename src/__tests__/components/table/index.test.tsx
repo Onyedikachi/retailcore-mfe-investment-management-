@@ -1,3 +1,4 @@
+import { Messages } from "../../../constants/enums"
 import React from "react";
 import { render, fireEvent, waitFor, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
@@ -13,6 +14,7 @@ import TableComponent, {
   UpdatedOnCellContent,
   handleProductsDropdown,
   handleUpdated,
+  statusHandler,
 } from "../../../components/table";
 import { FaBars } from "react-icons/fa";
 import { shallow } from "enzyme";
@@ -754,4 +756,93 @@ describe("handleUpdated", () => {
     expect(handleUpdated(null, "Draft Box updated", JSON.stringify(d)))
       .toBeUndefined();
   })
+})
+
+describe("statusHandler", () => {
+  // Sets success text and opens success modal if isSuccess is true
+  it('should set success text and open success modal when isSuccess is true', () => {
+    const setSuccessText = jest.fn();
+    const setIsSuccessOpen = jest.fn();
+    const isSuccess = true;
+
+    statusHandler({ isSuccess, setSuccessText, setIsSuccessOpen });
+
+    expect(setSuccessText).toHaveBeenCalledWith(Messages.PRODUCT_DELETE_SUCCESS);
+    expect(setIsSuccessOpen).toHaveBeenCalledWith(true);
+  });
+
+  // Sets success text and opens success modal if activateSuccess is true and role is superadmin or admin
+  it('should set success text and open success modal when activateSuccess is true and role is superadmin or admin', () => {
+    const setSuccessText = jest.fn();
+    const setIsSuccessOpen = jest.fn();
+    const activateSuccess = true;
+    const role = "superadmin";
+
+    statusHandler({ activateSuccess, setSuccessText, setIsSuccessOpen, role });
+
+    expect(setSuccessText).toHaveBeenCalledWith(Messages.PRODUCT_ACTIVATE_SUCCESS);
+    expect(setIsSuccessOpen).toHaveBeenCalledWith(true);
+  });
+
+  // Sets failed text, subtext and opens failed modal if isError is true
+  it('should set failed text, subtext and open failed modal when isError is true', () => {
+    const setFailedText = jest.fn();
+    const setFailedSubtext = jest.fn();
+    const setFailed = jest.fn();
+    const isError = true;
+    const error = { message: { message: "Error message" } };
+
+    statusHandler({ isError, setFailedText, setFailedSubtext, setFailed, error });
+
+    expect(setFailedText).toHaveBeenCalledWith(Messages.PRODUCT_DELETE_FAILED);
+    expect(setFailedSubtext).toHaveBeenCalledWith("Error message");
+    expect(setFailed).toHaveBeenCalledWith(true);
+  });
+
+  // None of the boolean flags are true
+  it('should not set any text or open any modal when none of the boolean flags are true', () => {
+    const setSuccessText = jest.fn();
+    const setIsSuccessOpen = jest.fn();
+    const setFailedText = jest.fn();
+    const setFailedSubtext = jest.fn();
+    const setFailed = jest.fn();
+
+    statusHandler({ setSuccessText, setIsSuccessOpen, setFailedText, setFailedSubtext, setFailed });
+
+    expect(setSuccessText).not.toHaveBeenCalled();
+    expect(setIsSuccessOpen).not.toHaveBeenCalled();
+    expect(setFailedText).not.toHaveBeenCalled();
+    expect(setFailedSubtext).not.toHaveBeenCalled();
+    expect(setFailed).not.toHaveBeenCalled();
+  });
+
+  // isError is true but error object is null
+  it('should set failed text and open failed modal when isError is true and error object is null', () => {
+    const setFailedText = jest.fn();
+    const setFailedSubtext = jest.fn();
+    const setFailed = jest.fn();
+    const isError = true;
+    const error = null;
+
+    statusHandler({ isError, setFailedText, setFailedSubtext, setFailed, error });
+
+    expect(setFailedText).toHaveBeenCalledWith(Messages.PRODUCT_DELETE_FAILED);
+    expect(setFailedSubtext).toHaveBeenCalledWith(undefined);
+    expect(setFailed).toHaveBeenCalledWith(true);
+  });
+
+  // activateIsError is true but activateError object is null
+  it('should set failed text and open failed modal when activateIsError is true and activateError object is null', () => {
+    const setFailedText = jest.fn();
+    const setFailedSubtext = jest.fn();
+    const setFailed = jest.fn();
+    const activateIsError = true;
+    const activateError = null;
+
+    statusHandler({ activateIsError, setFailedText, setFailedSubtext, setFailed, activateError });
+
+    expect(setFailedText).toHaveBeenCalledWith(Messages.PRODUCT_ACTIVATE_FAILED);
+    expect(setFailedSubtext).toHaveBeenCalledWith(undefined);
+    expect(setFailed).toHaveBeenCalledWith(true);
+  });
 })
