@@ -84,6 +84,7 @@ export default function PricingConfig({
 
   const addField = () => {
     append({
+      index: interestRateConfigModels.length,
       min: 0,
       max: null,
       principalMin: 0,
@@ -620,9 +621,9 @@ export default function PricingConfig({
                     calendar, but using a fixed 360-day year length.
                   </p>
                   <p>
-                    <span className="font-semibold"> Actual/365:</span> Calculates
-                    the interest daily by counting the number of days in the
-                    calendar and using a fixed 365-day year length
+                    <span className="font-semibold"> Actual/365:</span>{" "}
+                    Calculates the interest daily by counting the number of days
+                    in the calendar and using a fixed 365-day year length
                   </p>
                 </div>
               }

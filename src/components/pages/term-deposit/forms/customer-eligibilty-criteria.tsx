@@ -26,6 +26,7 @@ export default function CustomerEligibilityCriteria({
   proceed,
   initiateDraft,
 }) {
+  console.log("🚀 ~ file: customer-eligibilty-criteria.tsx:29 ~ formData:", formData)
   const { process } = useParams();
   const [documents, setDocuments] = useState([...documentOptions]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -96,7 +97,6 @@ export default function CustomerEligibilityCriteria({
   };
 
   function onProceed(d: any) {
-    console.log("🚀 ~ file: customer-eligibilty-criteria.tsx:98 ~ onProceed ~ d:", d)
     setFormData({
       ...d,
       customerCategory: d.customerCategory,

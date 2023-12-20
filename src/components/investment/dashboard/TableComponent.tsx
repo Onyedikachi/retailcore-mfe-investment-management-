@@ -18,6 +18,7 @@ import {
   productHeader,
   requestHeader,
 } from "@app/constants";
+import optionsDataHandler from "./optionsDataHandler";
 
 interface RequestDataProps {
   request: string;
@@ -215,7 +216,7 @@ export default function TableComponent({
   useEffect(() => {
     if (initSuccess || reviewSuccess) {
       setUsers(
-        (isChecker ? initData : reviewData)?.data?.map((i) => {
+        (!isChecker ? initData : reviewData)?.data?.map((i) => {
           return {
             name: i.fullname,
             value: i.id,
@@ -224,7 +225,7 @@ export default function TableComponent({
         })
       );
     }
-  }, [reviewSuccess, initSuccess]);
+  }, [reviewSuccess, initSuccess, isChecker]);
 
   useEffect(() => {
     isSuccess &&
@@ -274,37 +275,7 @@ export default function TableComponent({
   }, [category]);
 
   const getOptionData = (value: any, label: string) => {
-    if (label === "product type") {
-      setQuery({
-        ...query,
-        productType_In: value.length ? value.map((i) => i.value) : null,
-      });
-    }
-    if (label === "type") {
-      setQuery({
-        ...query,
-        requestType_In: value.length ? value.map((i) => i.value) : null,
-      });
-    }
-
-    if (label === "initiator") {
-      setQuery({
-        ...query,
-        initiator_In: value.length ? value.map((i) => i.value) : null,
-      });
-    }
-    if (label === "reviewer") {
-      setQuery({
-        ...query,
-        initiator_In: value.length ? value.map((i) => i.value) : null,
-      });
-    }
-    if (label === "state" || label === "status") {
-      setQuery({
-        ...query,
-        status_In: value.length ? value.map((i) => i.value) : null,
-      });
-    }
+    optionsDataHandler({ query, value, label, setQuery });
   };
   const onChangeDate = (value: any) => {
     setQuery({
@@ -318,12 +289,7 @@ export default function TableComponent({
     });
   };
 
-  const handleDropClick = (value: any) => {
-    console.log(
-      "🚀 ~ file: TableComponent.tsx:197 ~ handleDropClick ~ value:",
-      value
-    );
-  };
+  const handleDropClick = (value: any) => {};
 
   return (
     <section className="w-full h-full">

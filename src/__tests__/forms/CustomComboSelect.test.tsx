@@ -109,22 +109,6 @@ describe("CustomComboSelect", () => {
         />);
         expect(screen.getByPlaceholderText("Select")).toBeInTheDocument();
     })
-    
-    // it("Shows options on click", () => {
-    //     render(
-    //         <CustomComboSelect placeholder ="Select" options = {itemOptions} register = {jest.fn()} 
-    //         name="my_input" setValue={jest.fn()} clearErrors={jest.fn()}
-    //         defaultValue=""
-    //         disabled={false}
-    //     />);
-    //     const selectElement = screen.getByRole("combobox");
-    //     act(() => {
-    //         fireEvent.change(selectElement, "Op");
-    //     })
-    //     console.log(selectElement.value)
-
-    // })
-    
 })
 
 describe('handleDefault', () => {

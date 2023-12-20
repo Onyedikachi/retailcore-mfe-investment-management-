@@ -4,6 +4,7 @@ import { FaChevronDown } from "react-icons/fa";
 import { BorderlessSelectProps } from "@app/types";
 import { FormToolTip } from "@app/components";
 import { RedDot } from "@app/components/forms";
+import OptionsList from "./OptionsList";
 
 export default function Select({
   options,
@@ -41,7 +42,6 @@ export default function Select({
   
     setSelected(options?.find((i) => i.value === defaultValue));
   }, [defaultValue]);
-
   return (
     <div role="combobox" className={` min-w-full`}>
       <div className="flex  gap-2 min-w-[300px]">
@@ -93,45 +93,7 @@ export default function Select({
             leaveTo="opacity-0"
           >
             <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto z-[400] bg-white  focus:outline-none text-sm shadow-[0px_0px_4px_0px_#00000040] right-0 rounded-b-lg">
-              {options?.map(
-                (
-                  option: {
-                    id: number;
-                    text: string;
-                    value?: string;
-                    disabled?: boolean;
-                  },
-                  optionIdx: number
-                ) => (
-                  <Listbox.Option
-                    key={`${optionIdx.toString()}-index`}
-                    disabled={option?.disabled}
-                    className={({ active }) =>
-                      `relative  select-none py-2 px-6  text-[#636363] hover:bg-[#F9E5E5]  ${
-                        active ? "bg-red-50" : ""
-                      } ${
-                        option?.disabled
-                          ? "opacity-50 cursor-not-allowed"
-                          : "cursor-pointer"
-                      }`
-                    }
-                    value={option}
-                  >
-                    {({ selected }) => (
-                      <>
-                        <span
-                          data-testid="select-option"
-                          className={`block whitespace-nowrap  ${
-                            selected ? "font-medium" : "font-normal"
-                          }`}
-                        >
-                          {option?.text}
-                        </span>
-                      </>
-                    )}
-                  </Listbox.Option>
-                )
-              )}
+              <OptionsList options={options}/>
             </Listbox.Options>
           </Transition>
         </div>
