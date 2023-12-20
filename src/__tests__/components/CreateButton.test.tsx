@@ -1,10 +1,12 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import OutsideClickHandler from "react-outside-click-handler";
 import CreateButton, {
   closeButton,
   goToUrl,
 } from "../../components/CreateButton";
 import React from "react";
+import userEvent from "@testing-library/user-event"
+import { toBeInTheDocument } from "@testing-library/jest-dom/matchers";
 
 jest.mock("react-router-dom", () => ({
   BrowserRouter: ({ children }) => <div>{children}</div>,
@@ -211,11 +213,11 @@ describe("CreateButton", () => {
     expect(btnText).toBeInTheDocument();
     btnText.click();
     const investBtn = screen.getByText("Investment");
-   
+
     expect(investBtn).toBeInTheDocument();
     const btn1 = screen.getAllByTestId("btn-1");
     btn1[3].click();
-   
+
 
   });
 
@@ -235,29 +237,99 @@ describe("CreateButton", () => {
     expect(screen.getByText("Deposit")).toBeInTheDocument();
     expect(screen.getByText("Investment")).toBeInTheDocument();
     expect(screen.getByText("Over the counter payment")).toBeInTheDocument();
-
-    // fireEvent.click(screen.getByText("Credit"));
-    // expect(screen.getByText("Loans")).toBeInTheDocument();
-
-    // fireEvent.click(screen.getByText("Loans"));
-    // expect(screen.getByText("Individual Loans")).toBeInTheDocument();
-
-    // fireEvent.click(screen.getByText("Commercial loans"));
-    // expect(screen.getByText("Corporate loans")).toBeInTheDocument();
-
-    // fireEvent.click(screen.getByText("Corporate loans"));
-    // expect(goToUrl).toHaveBeenCalledWith('#', expect.any(Function));
   });
 
   // Clicking outside the dropdown menu closes it
-  it("should close the dropdown menu when clicked outside", () => {
-    render(<CreateButton children={<button>Button</button>} />);
-    fireEvent.click(screen.getByText("Button"));
-    fireEvent.click(document);
+  it("should close the dropdown menu when clicked outside", async () => {
 
-    // expect(screen.getByText("Credit")).not.toBeInTheDocument();
-    // expect(screen.getByText("Deposit")).not.toBeInTheDocument();
-    // expect(screen.getByText("Investment")).not.toBeInTheDocument();
-    // expect(screen.getByText("Over the counter payment")).not.toBeInTheDocument();
+    render(
+      <div>
+        <button data-testid="tst">tst</button>
+        <CreateButton children={<button>Button</button>} />
+      </div>
+    );
+    await userEvent.click(screen.getByText("Button"));
+    await fireEvent.click(screen.getByTestId("tst"));
+
+    waitFor(() => {
+      expect(screen.getByText("Credit")).not.toBeInTheDocument();
+      expect(screen.getByText("Deposit")).not.toBeInTheDocument();
+      expect(screen.getByText("Investment")).not.toBeInTheDocument();
+      expect(screen.getByText("Over the counter payment")).not.toBeInTheDocument();
+    })
+
   });
+
+  it("should show Deposit options", async () => {
+
+    render(
+      <div>
+        <CreateButton children={<button>Button</button>} />
+      </div>
+    );
+    await userEvent.click(screen.getByText("Button"));
+    
+    const depositButton = await screen.findByText("Deposit");
+    
+    await fireEvent.click(depositButton);
+
+    waitFor(() => {
+      expect(screen.getByText("Savings")).toBeInTheDocument();
+      expect(screen.getByText("Current")).toBeInTheDocument();
+    })
+  });
+
+
+  it("should show Investment options", async () => {
+
+    render(
+      <div>
+        <CreateButton children={<button>Button</button>} />
+      </div>
+    );
+    await userEvent.click(screen.getByText("Button"));
+    
+    const investmentButton = await screen.findByText("Investment");
+    
+    await fireEvent.click(investmentButton);
+
+    waitFor(() => {
+      expect(screen.getByText("Term Deposit")).toBeInTheDocument();
+      expect(screen.getByText("Treasury Bills")).toBeInTheDocument();
+      expect(screen.getByText("Commercial Paper")).toBeInTheDocument();
+    })
+  });
+
+  it("should show Credit options", async () => {
+
+    render(
+      <div>
+        <CreateButton children={<button>Button</button>} />
+      </div>
+    );
+    await userEvent.click(screen.getByText("Button"));
+    
+    const button = await screen.findByText("Credit");
+    
+    await fireEvent.click(button);
+
+    waitFor(() => {
+      expect(screen.getByText("Personal Loans")).toBeInTheDocument();
+      expect(screen.getByText("SME Loans")).toBeInTheDocument();
+      expect(screen.getByText("Corporate Loans")).toBeInTheDocument();
+    })
+  });
+
+  // it("should show Payment options", async () => {
+
+  //   render(
+  //     <div>
+  //       <CreateButton children={<button>Button</button>} />
+  //     </div>
+  //   );
+  //   await userEvent.click(screen.getByText("Button"));
+    
+  //   const button = await screen.findByText("Payment");
+  // });
+
 });

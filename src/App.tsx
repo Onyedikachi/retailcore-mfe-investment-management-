@@ -7,10 +7,6 @@ import PreLoader from "./components/PreLoader";
 import AppWrapper from "./components/AppWrapper";
 
 function App() {
-
-  useEffect(() => {
-    console.log(process.env.NODE_ENV)
-  })
   return (
     <AppWrapper>
       <BrowserRouter>

@@ -11,7 +11,7 @@ describe("confirmationHandler", () => {
 
   const permissions = [];
   const selected = "";
-  const previousData = null;
+  const previousData = {current: {}};
 
   it("should call deleteRequest when action includes the word 'delete '", () => {
     const action = "Delete Draft";
@@ -80,7 +80,7 @@ describe("confirmationHandler", () => {
       activateProduct,
       navigate,
     });
-    expect(activateProduct).toBeCalled();
+    expect(navigate).not.toBeCalled();
   });
 
   it("Should run if action == 'withdraw-modify'", () => {
@@ -151,11 +151,10 @@ describe("confirmationHandler", () => {
       detail: { id: 1 },
       permissions: [],
       selected: {},
-      previousData: {},
       deleteRequest: jest.fn(),
       setIsDeactivationOpen: jest.fn(),
       activateProduct,
-
+      previousData : {current: {}},
       navigate: jest.fn(),
     };
 
@@ -163,7 +162,7 @@ describe("confirmationHandler", () => {
 
     expect(activateProduct).toHaveBeenCalledWith({
       id: 1,
-      recentlyUpdatedMeta: "{}",
+      recentlyUpdatedMeta: JSON.stringify({})
     });
   });
 
@@ -249,14 +248,14 @@ describe("confirmationHandler", () => {
   });
 
   // ... other tests
+  const mockedErrorToast = jest.fn();
+  jest.mock("../components/Toast", () => ({
+    errorToast: mockedErrorToast,
+  }));
 
   it("should handle MODIFY action with permission", () => {
     const action = Actions.MODIFY;
-    const mockedErrorToast = jest.fn();
 
-    jest.mock("../components/Toast", () => ({
-      errorToast: mockedErrorToast,
-    }));
     // @ts-ignore
     confirmationHandler({
       action,

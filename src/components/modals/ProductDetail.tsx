@@ -14,6 +14,7 @@ import {
 import { currencyFormatter } from "@app/utils/formatCurrency";
 import { useGetProductDetailQuery } from "@app/api";
 import { AppContext } from "@app/utils";
+import PricingConfigurationComponent from "./PricingConfigurationComponent";
 
 interface Props {
   isOpen: boolean;
@@ -524,56 +525,7 @@ export default function ProductDetail({
         <ModalLayout isOpen={open} setIsOpen={setOpen}>
           <div className="px-[30px] pt-[64px] pb-[20px] bg-white w-[400px] rounded-lg relative">
             <ul className="max-h-[345px] overflow-y-auto flex flex-col gap-y-5">
-              {productData?.data?.pricingConfiguration.interestRateRangeType ==
-                0 && (
-                <div className="flex flex-col">
-                  {productData?.data?.pricingConfiguration.interestRateConfigModels?.map(
-                    (configModel, index) => (
-                      <span key={index} className="block  mb-2 text-[#636363]">
-                        {" "}
-                        {`${configModel.min} - ${configModel.max}%`} for
-                        principal between{" "}
-                        {`${currencyFormatter(
-                          configModel.principalMin,
-                          productData?.data?.productInfo?.currency
-                        )} - ${currencyFormatter(
-                          configModel.principalMax,
-                          productData?.data?.productInfo?.currency
-                        )}`}{" "}
-                      </span>
-                    )
-                  )}
-                </div>
-              )}
-
-              {productData?.data?.pricingConfiguration.interestRateRangeType ==
-                1 && (
-                <div className="flex flex-col">
-                  {productData?.data?.pricingConfiguration.interestRateConfigModels?.map(
-                    (configModel, index) => (
-                      <span key={index} className="block  mb-2 text-[#636363]">
-                        {" "}
-                        {`${configModel.min} - ${configModel.max}%`} for tenor
-                        between{" "}
-                        {`${configModel.tenorMin} ${
-                          Interval[configModel.tenorMinUnit]
-                        } - ${configModel.tenorMax} ${
-                          Interval[configModel.tenorMaxUnit]
-                        }`}{" "}
-                      </span>
-                    )
-                  )}
-                </div>
-              )}
-              {productData?.data?.pricingConfiguration.interestRateRangeType ==
-                2 && (
-                <div className="flex flex-col">
-                  <span className="block  mb-2 text-[#636363]">
-                    {" "}
-                    {`${productData?.data?.pricingConfiguration.interestRateMin} - ${productData?.data?.pricingConfiguration.interestRateMax}%`}
-                  </span>
-                </div>
-              )}
+              <PricingConfigurationComponent {...productData}/>
             </ul>
             <button
               onClick={() => setOpen(false)}

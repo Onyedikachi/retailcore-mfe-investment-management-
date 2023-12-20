@@ -1,10 +1,12 @@
 
 import { getByText, screen, fireEvent } from "@testing-library/dom";
 import { renderWithProviders } from "../../../../../__mocks__/api/Wrapper";
-import IndexComponent, { FormComponent, handleDetailsSuccess } from "../../../../../pages/investment/term-deposit/create-term-deposit/IndexComponent"
+import IndexComponent, { handleDetailsSuccess, handleNext, handlePrev } from "../../../../../pages/investment/term-deposit/create-term-deposit/IndexComponent"
 import { act, render } from "@testing-library/react";
 import userEvent from '@testing-library/user-event'
 import React from "react";
+import { handleDraft } from "../../../../../pages/investment/term-deposit/create-term-deposit/handleDraft";
+import FormComponent from "../../../../../pages/investment/term-deposit/FormComponent";
 
 jest.mock("react-router-dom", () => ({
   BrowserRouter: ({ children }) => <div>{children}</div>,
@@ -288,13 +290,13 @@ const formData = {
 }
 
 describe("FormComponeent", () => {
-  const handleNav= jest.fn();
-  const setProductData= jest.fn();
-  const setDisabled= jest.fn();
+  const handleNav = jest.fn();
+  const setProductData = jest.fn();
+  const setDisabled = jest.fn();
   const initiateDraft = false;
   it("Should render if step === 1", () => {
     const form = renderWithProviders(<FormComponent step={1} activeId={"23456789"} setProductData={setProductData}
-    productData={formData} handleNav={handleNav} setDisabled={setDisabled} initiateDraft={false} />)
+      productData={formData} handleNav={handleNav} setDisabled={setDisabled} initiateDraft={false} />)
     expect(screen.getByText("Product Name")).toBeInTheDocument();
     expect(screen.getByText("Slogan")).toBeInTheDocument();
     expect(screen.getByText("Product Description")).toBeInTheDocument();
@@ -303,7 +305,7 @@ describe("FormComponeent", () => {
   })
   it("Should render if step === 2", () => {
     const form = renderWithProviders(<FormComponent step={2} activeId={"23456789"} setProductData={setProductData}
-    productData={formData} handleNav={handleNav} setDisabled={setDisabled} initiateDraft={false} />)
+      productData={formData} handleNav={handleNav} setDisabled={setDisabled} initiateDraft={false} />)
 
     expect(screen.getByText("DOCUMENTATION REQUIRED")).toBeInTheDocument();
     // expect(screen.getByText("Signature")).toBeInTheDocument();
@@ -317,7 +319,7 @@ describe("FormComponeent", () => {
   })
   it("Should render if step === 3", () => {
     const form = renderWithProviders(<FormComponent step={3} activeId={"23456789"} setProductData={setProductData}
-    productData={formData} handleNav={handleNav} setDisabled={setDisabled} initiateDraft={false} />)
+      productData={formData} handleNav={handleNav} setDisabled={setDisabled} initiateDraft={false} />)
 
     expect(screen.getAllByTestId('min-max-input').length).toBe(2);
 
@@ -328,14 +330,105 @@ describe("FormComponeent", () => {
   })
   it("Should render if step === 4", () => {
     const form = renderWithProviders(<FormComponent step={4} activeId={"23456789"} setProductData={setProductData}
-    productData={formData} handleNav={handleNav} setDisabled={setDisabled} initiateDraft={false} />)
+      productData={formData} handleNav={handleNav} setDisabled={setDisabled} initiateDraft={false} />)
 
     expect(form).toMatchSnapshot();
   })
   it("Should render if step === 5", () => {
     const form = renderWithProviders(<FormComponent step={5} activeId={"23456789"} setProductData={setProductData}
-    productData={formData} handleNav={handleNav} setDisabled={setDisabled} initiateDraft={false} />)
+      productData={formData} handleNav={handleNav} setDisabled={setDisabled} initiateDraft={false} />)
 
     expect(form).toMatchSnapshot();
   })
+})
+
+describe("handleNext", () => {
+  const setStep = jest.fn();
+  it("should call setStep when theres more steps ahead", () => {
+    handleNext(1, setStep, [1, 1, 1, 1, 1]);
+    expect(setStep).toBeCalledWith(2);
+  })
+  it("should not setStep when there are no steps ahead", () => {
+    const setStep = jest.fn();
+    handleNext(5, setStep, [1, 1, 1, 1, 1]);
+    expect(setStep).not.toBeCalled();
+  })
+
+})
+
+describe("handlePrev", () => {
+  const setStep = jest.fn();
+  it("should call setStep when there are steps behind", () => {
+    handlePrev(4, setStep, [{ index: 1 }]);
+    expect(setStep).toBeCalledWith(3);
+  })
+  it("should not call setStep when user is at the first step", () => {
+    handlePrev(1, setStep, [{ index: 1 }]);
+    expect(setStep).not.toBeCalledWith(0);
+  })
+})
+
+describe("handleDraft", () => {
+  // Sets setIsConfirmOpen to false
+  it('should set setIsConfirmOpen to false when called', () => {
+    const setIsConfirmOpen = jest.fn();
+    const productData = {};
+    const process = "modify";
+    const id = "123";
+    const modifyRequest = jest.fn();
+    const modifyProduct = jest.fn();
+    const createProduct = jest.fn();
+
+    handleDraft({ productData, process, id, modifyRequest, setIsConfirmOpen, modifyProduct, createProduct });
+
+    expect(setIsConfirmOpen).toHaveBeenCalledWith(false);
+  });
+
+  // Calls modifyProduct with isDraft set to true if process is "modify"
+  it('should call modifyProduct with isDraft set to true when process is "modify"', () => {
+    const setIsConfirmOpen = jest.fn();
+    const productData = {};
+    const process = "modify";
+    const id = "123";
+    const modifyRequest = jest.fn();
+    const modifyProduct = jest.fn();
+    const createProduct = jest.fn();
+
+    handleDraft({ productData, process, id, modifyRequest, setIsConfirmOpen, modifyProduct, createProduct });
+
+    expect(modifyProduct).toHaveBeenCalledWith({ ...productData, isDraft: true, id });
+  });
+
+  // Calls createProduct with isDraft set to true if process is "create" or "clone"
+  it('should call createProduct with isDraft set to true when process is "create" or "clone"', () => {
+    const setIsConfirmOpen = jest.fn();
+    const productData = {};
+    const process = "create";
+    const id = "123";
+    const modifyRequest = jest.fn();
+    const modifyProduct = jest.fn();
+    const createProduct = jest.fn();
+
+    handleDraft({ productData, process, id, modifyRequest, setIsConfirmOpen, modifyProduct, createProduct });
+
+    expect(createProduct).toHaveBeenCalledWith({ ...productData, isDraft: true });
+  });
+
+  // process is undefined
+  it('should not call any functions when process is undefined', () => {
+    const setIsConfirmOpen = jest.fn();
+    const productData = {};
+    const process = null;
+    const id = "123";
+    const modifyRequest = jest.fn();
+    const modifyProduct = jest.fn();
+    const createProduct = jest.fn();
+
+    handleDraft({ productData, process, id, modifyRequest, setIsConfirmOpen, modifyProduct, createProduct });
+
+    expect(setIsConfirmOpen).toHaveBeenCalled();
+    expect(modifyProduct).not.toHaveBeenCalled();
+    expect(createProduct).not.toHaveBeenCalled();
+    expect(modifyRequest).not.toHaveBeenCalled();
+  });
 })

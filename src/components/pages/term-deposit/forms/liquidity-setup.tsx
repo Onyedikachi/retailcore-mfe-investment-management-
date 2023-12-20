@@ -325,13 +325,13 @@ export default function LiquiditySetup({
                         <div className="w-[300px]">
                           <MinMaxInput
                             register={register}
-                            inputName={"early_LiquidationPenaltyPercentage"}
+                            inputName={"part_LiquidationPenaltyPercentage"}
                             errors={errors}
                             setValue={setValue}
                             trigger={trigger}
                             clearErrors={clearErrors}
                             defaultValue={
-                              formData?.early_LiquidationPenaltyPercentage
+                              formData?.part_LiquidationPenaltyPercentage
                             }
                             isCurrency
                             disablegroupseparators

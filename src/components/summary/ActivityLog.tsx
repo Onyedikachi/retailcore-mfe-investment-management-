@@ -81,7 +81,7 @@ export default function ActivityLog({
                               r="8.34375"
                               fill="white"
                               stroke="#AAAAAA"
-                              stroke-width="0.5"
+                              strokeWidth="0.5"
                             />
                             <rect
                               x="0.5"
@@ -166,7 +166,7 @@ export default function ActivityLog({
                   r="8.34375"
                   fill="white"
                   stroke="#AAAAAA"
-                  stroke-width="0.5"
+                  strokeWidth="0.5"
                 />
                 <rect x="0.5" y="1" width="24" height="24" stroke="black" />
               </g>
