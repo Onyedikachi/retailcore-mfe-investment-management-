@@ -42,7 +42,6 @@ export default function Select({
   
     setSelected(options?.find((i) => i.value === defaultValue));
   }, [defaultValue]);
-
   return (
     <div role="combobox" className={` min-w-full`}>
       <div className="flex  gap-2 min-w-[300px]">
