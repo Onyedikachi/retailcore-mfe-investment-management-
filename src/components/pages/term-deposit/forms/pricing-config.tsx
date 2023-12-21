@@ -17,7 +17,7 @@ import { FormToolTip } from "@app/components";
 import { toolTips } from "@app/constants";
 import { RedDot } from "@app/components/forms";
 import { useParams } from "react-router-dom";
-import { getCurrencyName } from "@app/utils/getCurrencyName";
+import { useGetCurrencyName } from "@app/utils/useGetCurrencyName";
 
 const labels = [
   "Applicable Tenor",
@@ -123,9 +123,6 @@ export default function PricingConfig({
   const watchApplicableTenorMaxUnit = watch("applicableTenorMaxUnit");
 
   function onProceed(d: any) {
-    if (watchinterestRateRangeType === 0) {
-      return;
-    }
     setFormData({ ...d });
     proceed();
   }
@@ -282,7 +279,9 @@ export default function PricingConfig({
               <MinMaxInput
                 className="w-[300px]"
                 label={"Min"}
-                currency={getCurrencyName(productData?.productInfo?.currency)}
+                currency={useGetCurrencyName(
+                  productData?.productInfo?.currency
+                )}
                 register={register}
                 inputName={"applicablePrincipalMin"}
                 defaultValue={formData?.applicablePrincipalMin}
@@ -298,7 +297,9 @@ export default function PricingConfig({
               <MinMaxInput
                 className="w-[300px]"
                 label={"Max"}
-                currency={getCurrencyName(productData?.productInfo?.currency)}
+                currency={useGetCurrencyName(
+                  productData?.productInfo?.currency
+                )}
                 register={register}
                 inputName={"applicablePrincipalMax"}
                 defaultValue={formData?.applicablePrincipalMax}
@@ -404,7 +405,9 @@ export default function PricingConfig({
                         <span>for principal between:</span>
                         <div className="flex gap-[25px] ">
                           <MinMaxInput
-                            label={getCurrencyName(productData?.productInfo?.currency)}
+                            label={useGetCurrencyName(
+                              productData?.productInfo?.currency
+                            )}
                             className="w-[180px]"
                             register={register}
                             inputName={`interestRateConfigModels.${index}.principalMin`}
@@ -426,7 +429,9 @@ export default function PricingConfig({
                         -
                         <div className="flex gap-[25px] ">
                           <MinMaxInput
-                            label={getCurrencyName(productData?.productInfo?.currency)}
+                            label={useGetCurrencyName(
+                              productData?.productInfo?.currency
+                            )}
                             className="w-[180px]"
                             register={register}
                             inputName={`interestRateConfigModels.${index}.principalMax`}

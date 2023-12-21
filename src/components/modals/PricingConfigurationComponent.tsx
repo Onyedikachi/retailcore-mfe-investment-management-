@@ -1,6 +1,6 @@
 import { Interval } from "@app/constants"
 import { currencyFormatter } from "@app/utils/formatCurrency"
-import { getCurrencyName } from "@app/utils/getCurrencyName"
+import { useGetCurrencyName } from "@app/utils/useGetCurrencyName"
 import { Fragment } from "react"
 
 export default ({productData}) => {
@@ -17,10 +17,10 @@ export default ({productData}) => {
                                     principal between{" "}
                                     {`${currencyFormatter(
                                         configModel.principalMin,
-                                        getCurrencyName(productData?.data?.productInfo?.currency)
+                                        useGetCurrencyName(productData?.data?.productInfo?.currency)
                                     )} - ${currencyFormatter(
                                         configModel.principalMax,
-                                        getCurrencyName(productData?.data?.productInfo?.currency)
+                                        useGetCurrencyName(productData?.data?.productInfo?.currency)
                                     )}`}{" "}
                                 </span>
                             )

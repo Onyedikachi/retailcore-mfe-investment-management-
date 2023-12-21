@@ -15,7 +15,7 @@ import { currencyFormatter } from "@app/utils/formatCurrency";
 import { useGetProductDetailQuery } from "@app/api";
 import { AppContext } from "@app/utils";
 import PricingConfigurationComponent from "./PricingConfigurationComponent";
-import { getCurrencyName } from "@app/utils/getCurrencyName";
+import { useGetCurrencyName } from "@app/utils/useGetCurrencyName";
 
 interface Props {
   isOpen: boolean;
@@ -145,7 +145,7 @@ export default function ProductDetail({
                   <div>
                     <span className="font-bold block mb-[15px]">Currency</span>
                     <span className="font-normal block">
-                      {getCurrencyName(productData?.data?.productInfo?.currency)}{" "}
+                      {useGetCurrencyName(productData?.data?.productInfo?.currency)}{" "}
                     </span>
                   </div>
                   <div>
@@ -249,14 +249,14 @@ export default function ProductDetail({
                       {currencyFormatter(
                         productData?.data?.pricingConfiguration
                           ?.applicablePrincipalMin,
-                          getCurrencyName(productData?.data?.productInfo.currency)
+                          useGetCurrencyName(productData?.data?.productInfo.currency)
                       )}{" "}
                       {productData?.data?.pricingConfiguration
                         ?.applicablePrincipalMax
                         ? `- ${currencyFormatter(
                             productData?.data?.pricingConfiguration
                               ?.applicablePrincipalMax,
-                              getCurrencyName(productData?.data?.productInfo?.currency)
+                              useGetCurrencyName(productData?.data?.productInfo?.currency)
                           )}`
                         : "and above"}
                     </span>
@@ -283,10 +283,10 @@ export default function ProductDetail({
                                 principal between{" "}
                                 {`${currencyFormatter(
                                   configModel.principalMin,
-                                  getCurrencyName(productData?.data?.productInfo?.currency)
+                                  useGetCurrencyName(productData?.data?.productInfo?.currency)
                                 )} - ${currencyFormatter(
                                   configModel.principalMax,
-                                  getCurrencyName(productData?.data?.productInfo?.currency)
+                                  useGetCurrencyName(productData?.data?.productInfo?.currency)
                                 )}`}{" "}
                               </span>
                             )
