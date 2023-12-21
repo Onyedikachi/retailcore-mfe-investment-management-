@@ -5,5 +5,5 @@ export function getCurrencyName(id: string) {
   const { currencies } = useContext(AppContext);
   if (!id) return null;
 
-  return currencies.find((i) => i.id === id)?.text;
+  return currencies.find((i) => i.id === id)?.text || null;
 }

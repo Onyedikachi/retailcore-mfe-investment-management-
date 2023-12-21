@@ -1,34 +1,43 @@
 import { getCurrencyName } from "../../utils/getCurrencyName";
-import React from 'react';
-import { render } from '@testing-library/react';
+import React from "react";
+import { render } from "@testing-library/react";
+import { renderHook } from "@testing-library/react-hooks";
+import { AppContext } from "../../utils/context";
 
-// Mock the AppContext
-jest.mock('../../utils/context', () => ({
-  AppContext: {
-    currencies: [
-      { id: 'USD', text: 'United States Dollar', value: "USD" },
-      { id: 'NGN', text: 'NGN', value: "NGNN" },
-      // Add more currency data as needed
-    ],
-  },
-}));
+describe("getCurrencyName", () => {
+  it("returns the currency name for a valid id", () => {
+    const currencies = [
+      { id: "NGN", text: "NGN" },
+      { id: "EUR", text: "Euro" },
+    ];
 
-describe('getCurrencyName', () => {
-  it('returns the currency name for a valid id', () => {
-    const currencyId = 'USD';
-    const currencyName = getCurrencyName(currencyId);
-    expect(currencyName).toBe('United States Dollar');
+    const wrapper = ({ children }) => (
+      <AppContext.Provider
+        value={{ currencies, role: "", setRole: jest.fn(), permissions: [] }}
+      >
+        {children}
+      </AppContext.Provider>
+    );
+
+    const { result } = renderHook(() => getCurrencyName("NGN"), { wrapper });
+
+    expect(result.current).toBe("NGN");
   });
 
-  it('returns null for an empty id', () => {
-    const currencyId = '';
-    const currencyName = getCurrencyName(currencyId);
-    expect(currencyName).toBeNull();
-  });
+  it("returns null for an invalid id", () => {
+    const currencies = [
+      { id: "USD", text: "US Dollar" },
+      { id: "EUR", text: "Euro" },
+    ];
 
- 
+    const wrapper = ({ children }) => (
+      <AppContext.Provider  value={{ currencies, role: "", setRole: jest.fn(), permissions: [] }}>
+        {children}
+      </AppContext.Provider>
+    );
+
+    const { result } = renderHook(() => getCurrencyName("XXX"), { wrapper });
+
+    expect(result.current).toBeNull();
+  });
 });
-
-// You may need to configure Jest to handle TypeScript files if you are using TypeScript.
-// For example, you can use ts-jest.
-
