@@ -352,7 +352,7 @@ export const pricingConfigSchema = yup.object({
             ) {
               errors.push(
                 new ValidationError(
-                  `Max principal is ${currencyFormatter(appPrinMax)}`,
+                  `Min principal must be less than ${currencyFormatter(appPrinMax)}`,
                   last,
                   `interestRateConfigModels[${value.length - 1}].principalMin`
                 )
@@ -450,7 +450,7 @@ export const pricingConfigSchema = yup.object({
             ) {
               errors.push(
                 new ValidationError(
-                  `Max tenor  is ${appTenorMax} ${
+                  `Min tenor must be less than ${appTenorMax} ${
                     IntervalOptions[appTenorMaxUnit - 1].text
                   }`,
                   last,
