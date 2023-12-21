@@ -555,8 +555,9 @@ Object {
                 <div
                   class="flex justify-end mt-1"
                 >
-                  <div
-                    class="flex items-center gap-4 cursor-pointer text-[##636363] ml-auto"
+                  <button
+                    class="flex items-center gap-4 cursor-pointer text-[##636363] ml-auto disabled:opacity-50 disabled:cursor-not-allowed"
+                    type="button"
                   >
                     <span
                       class="text-[20px]"
@@ -580,7 +581,7 @@ Object {
                     <span>
                       Add slab
                     </span>
-                  </div>
+                  </button>
                 </div>
               </div>
             </div>
@@ -1271,8 +1272,9 @@ Object {
               <div
                 class="flex justify-end mt-1"
               >
-                <div
-                  class="flex items-center gap-4 cursor-pointer text-[##636363] ml-auto"
+                <button
+                  class="flex items-center gap-4 cursor-pointer text-[##636363] ml-auto disabled:opacity-50 disabled:cursor-not-allowed"
+                  type="button"
                 >
                   <span
                     class="text-[20px]"
@@ -1296,7 +1298,7 @@ Object {
                   <span>
                     Add slab
                   </span>
-                </div>
+                </button>
               </div>
             </div>
           </div>

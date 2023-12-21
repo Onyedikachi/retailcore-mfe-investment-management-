@@ -23,6 +23,19 @@ const labels = [
   "Applicable Principal",
   "Applicable Interest Rate Range (Per Annum)",
 ];
+
+export function validateSlab(values, type, principalMax, tenorMax) {
+  const lastSlab =
+    values.interestRateConfigModels[values.interestRateConfigModels.length - 1];
+
+  if (parseInt(type, 10) === 0) {
+    return lastSlab?.principalMax === principalMax;
+  }
+  if (parseInt(type, 10) === 1) {
+    return lastSlab?.tenorMax === tenorMax;
+  }
+  return false;
+}
 export function InputDivs({ children, label, requiredField = true }) {
   return (
     <div className="flex flex-col gap-[10px] ">
@@ -100,11 +113,6 @@ export default function PricingConfig({
     remove(index);
   };
 
-  function onProceed(d: any) {
-    setFormData({ ...d });
-    proceed();
-  }
-
   // Watch tenor
   const watchinterestRateRangeType = watch("interestRateRangeType");
 
@@ -112,6 +120,14 @@ export default function PricingConfig({
   const watchApplicableTenorMinUnit = watch("applicableTenorMinUnit");
   const watchApplicableTenorMax = watch("applicableTenorMax");
   const watchApplicableTenorMaxUnit = watch("applicableTenorMaxUnit");
+
+  function onProceed(d: any) {
+    if (watchinterestRateRangeType === 0) {
+      return;
+    }
+    setFormData({ ...d });
+    proceed();
+  }
 
   useEffect(() => {
     if (watchApplicableTenorMax > 0) {
@@ -159,7 +175,18 @@ export default function PricingConfig({
   const values = getValues();
 
   useEffect(() => {
-    setDisabled(!isValid);
+    if (
+      validateSlab(
+        values,
+        watchinterestRateRangeType,
+        watchApplicablePrincipalMax,
+        watchApplicableTenorMax
+      )
+    ) {
+      setDisabled(!isValid);
+    } else {
+      setDisabled(true);
+    }
   }, [values]);
   useEffect(() => {
     if (formData) {
@@ -376,7 +403,13 @@ export default function PricingConfig({
                         <span>for principal between:</span>
                         <div className="flex gap-[25px] ">
                           <MinMaxInput
+<<<<<<< Updated upstream
                             label={productData?.productInfo?.currency}
+=======
+                            label={getCurrencyName(
+                              productData?.productInfo?.currency
+                            )}
+>>>>>>> Stashed changes
                             className="w-[180px]"
                             register={register}
                             inputName={`interestRateConfigModels.${index}.principalMin`}
@@ -398,7 +431,13 @@ export default function PricingConfig({
                         -
                         <div className="flex gap-[25px] ">
                           <MinMaxInput
+<<<<<<< Updated upstream
                             label={productData?.productInfo?.currency}
+=======
+                            label={getCurrencyName(
+                              productData?.productInfo?.currency
+                            )}
+>>>>>>> Stashed changes
                             className="w-[180px]"
                             register={register}
                             inputName={`interestRateConfigModels.${index}.principalMax`}
@@ -543,8 +582,15 @@ export default function PricingConfig({
               ))}
 
               <div className="flex justify-end mt-1">
-                <div
-                  className="flex items-center gap-4 cursor-pointer text-[##636363] ml-auto"
+                <button
+                  disabled={validateSlab(
+                    values,
+                    watchinterestRateRangeType,
+                    watchApplicablePrincipalMax,
+                    watchApplicableTenorMax
+                  )}
+                  type="button"
+                  className="flex items-center gap-4 cursor-pointer text-[##636363] ml-auto disabled:opacity-50 disabled:cursor-not-allowed"
                   onClick={addField}
                 >
                   <span className="text-[20px]">
@@ -552,7 +598,7 @@ export default function PricingConfig({
                     <IoMdAddCircle />
                   </span>{" "}
                   <span>Add slab</span>
-                </div>
+                </button>
               </div>
             </div>
           )}

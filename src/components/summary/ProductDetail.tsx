@@ -370,7 +370,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                           principal between{" "}
                           {`${currencyFormatter(
                             configModel?.principalMin,
-                            detail?.productInfo?.currency
+                            getCurrencyName(detail?.productInfo?.currency)
                           )} - ${currencyFormatter(
                             configModel?.principalMax,
                             detail?.productInfo?.currency
