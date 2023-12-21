@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { RiErrorWarningFill } from "react-icons/ri";
 import { FaCheckCircle } from "react-icons/fa";
 import { AiOutlineLoading } from "react-icons/ai";
@@ -18,8 +18,8 @@ import { debounce } from "lodash";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useValidateNameMutation } from "@app/api";
 import moment from "moment";
+import { AppContext } from "@app/utils";
 // Import debounce function if not already available
-
 
 const defaultLength = 50;
 const defaultSloganLength = 160;
@@ -143,7 +143,10 @@ export default function ProductInformation({
   });
 
   //useState
+  const {currencies} = useContext(AppContext)
   const values = getValues();
+  
+  console.log("🚀 ~ file: product-information.tsx:148 ~ values:", values)
   const productFormRef = useRef();
   const { process } = useParams();
   const [error, setError] = useState<string>("");
@@ -165,6 +168,7 @@ export default function ProductInformation({
     },
   ] = useValidateNameMutation();
 
+  
   useEffect(() => {
     handleValidatingName(
       nameIsSuccess,
@@ -260,7 +264,7 @@ export default function ProductInformation({
     <form
       id="productform"
       data-testid="submit-button"
-      onSubmit={handleSubmit((d)=> onProceed(d, setFormData, proceed))}
+      onSubmit={handleSubmit((d) => onProceed(d, setFormData, proceed))}
     >
       <div className="">
         <div className="mb-6 flex flex-col gap-[1px]">
@@ -508,7 +512,7 @@ export default function ProductInformation({
                 clearErrors={clearErrors}
                 requiredField={true}
                 tip={toolTips.currency}
-                options={currencyOptions}
+                options={currencies}
                 trigger={trigger}
               />
             </div>
@@ -520,4 +524,3 @@ export default function ProductInformation({
     </form>
   );
 }
-

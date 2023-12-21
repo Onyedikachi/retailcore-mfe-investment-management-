@@ -8,6 +8,7 @@ import {
   ProductTypes,
 } from "@app/constants";
 import { currencyFormatter } from "@app/utils/formatCurrency";
+import { getCurrencyName } from "@app/utils/getCurrencyName";
 
 export function DebitCreditTable({ dataTab }) {
   const headers = [
@@ -53,7 +54,10 @@ export function DebitCreditTable({ dataTab }) {
             key={i?.accountId}
             className="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"
           >
-            <td data-testid="table-data" className="text-sm font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative text-left">
+            <td
+              data-testid="table-data"
+              className="text-sm font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative text-left"
+            >
               <span>
                 <span className="text-[#aaa] capitalize">{index + 1}</span>
               </span>
@@ -191,7 +195,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                   previousData?.currency !== detail?.productInfo?.currency && (
                     <span className="block  line-through mb-2 text-[#aaa]">
                       {" "}
-                      {previousData?.currency}
+                      {getCurrencyName(previousData?.currency)}
                     </span>
                   )}
                 <span className="flex itmes-center">
@@ -341,12 +345,12 @@ export default function ProductDetail({ detail, previousData }: any) {
                 <span className="block  mb-2 text-[#636363]">
                   {currencyFormatter(
                     detail?.pricingConfiguration?.applicablePrincipalMin,
-                    detail?.productInfo?.currency
+                    getCurrencyName(detail?.productInfo?.currency)
                   )}{" "}
                   {detail?.pricingConfiguration?.applicablePrincipalMax
                     ? `- ${currencyFormatter(
                         detail?.pricingConfiguration?.applicablePrincipalMax,
-                        detail?.productInfo?.currency
+                        getCurrencyName(detail?.productInfo?.currency)
                       )}`
                     : "and above"}
                 </span>
@@ -370,10 +374,10 @@ export default function ProductDetail({ detail, previousData }: any) {
                           principal between{" "}
                           {`${currencyFormatter(
                             configModel?.principalMin,
-                            detail?.productInfo?.currency
+                            getCurrencyName(detail?.productInfo?.currency)
                           )} - ${currencyFormatter(
                             configModel?.principalMax,
-                            detail?.productInfo?.currency
+                            getCurrencyName(detail?.productInfo?.currency)
                           )}`}{" "}
                           {/* {detail?.productInfo?.currency} */}
                         </span>

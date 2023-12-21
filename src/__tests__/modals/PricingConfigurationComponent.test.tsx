@@ -28,14 +28,14 @@ describe('PricingConfigurationComponent', () => {
                     ],
                 },
                 productInfo: {
-                    currency: "USD",
+                    currency: "NGN",
                 },
             },
         };
 
         render(<PricingConfigurationComponent productData={productData} />);
-        expect(screen.getByText("0 - 1% for principal between $100.00 - $200.00")).toBeInTheDocument();
-        expect(screen.getByText("2 - 3% for principal between $300.00 - $400.00")).toBeInTheDocument();
+        expect(screen.getByText("0 - 1% for principal between NGN 100.00 - NGN 200.00")).toBeInTheDocument();
+        expect(screen.getByText("2 - 3% for principal between NGN 300.00 - NGN 400.00")).toBeInTheDocument();
     });
 
     // Renders the component with interest rate range type 1

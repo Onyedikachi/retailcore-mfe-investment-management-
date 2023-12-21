@@ -19,7 +19,7 @@ module.exports = (webpackConfigEnv, argv) => {
     devServer: {
       port: 8089,
       headers: {
-        "Access-Control-Allow-Origin": "https://seabaas.dev.bepeerless.co",
+        "Access-Control-Allow-Origin": "https://seabaas.qa.bepeerless.co",
       },
       client: {
         webSocketURL: {

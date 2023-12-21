@@ -3,6 +3,7 @@ import { render } from "@testing-library/react";
 import { MemoryRouter, Outlet } from "react-router-dom";
 import AuthGaurd from "../../layouts/AuthGuard";
 import Layout, { handleRole } from "../../layouts/Layout";
+import { renderWithProviders } from "../../__mocks__/api/Wrapper";
 
 jest.mock("react-router-dom", () => ({
   BrowserRouter: ({ children }) => <div>{children}</div>,
@@ -21,7 +22,7 @@ jest.mock("react-router-dom", () => ({
 
 describe("Layout", () => {
   it("renders AuthGuard and Outlet components", () => {
-    const { getByTestId } = render(<Layout />);
+    const { getByTestId } = renderWithProviders(<Layout />);
 
     const outletElement = getByTestId("outlet");
     expect(outletElement).toBeInTheDocument();

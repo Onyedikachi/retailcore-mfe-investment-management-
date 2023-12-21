@@ -1,7 +1,7 @@
 export default function formatCurrency(price, fraction = 0, currency = "NGN") {
   let value = Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: currency,
+    currency: currency ||  "NGN",
     // currencyDisplay: "narrowSymbol",
     maximumFractionDigits: fraction,
   });
@@ -11,7 +11,7 @@ export default function formatCurrency(price, fraction = 0, currency = "NGN") {
 export function currencyFormatter(value, currency = "NGN", showSymbol = true) {
   const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
-    currency,
+    currency: currency ||  "NGN",
     // currencyDisplay: "narrowSymbol",
     minimumFractionDigits: 2,
   });
