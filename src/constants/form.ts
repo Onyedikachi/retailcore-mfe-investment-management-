@@ -348,7 +348,7 @@ export const pricingConfigSchema = yup.object({
             if (
               appPrinMax !== undefined &&
               last?.principalMin !== undefined &&
-              last.principalMin > appPrinMax
+              last.principalMin >= appPrinMax
             ) {
               errors.push(
                 new ValidationError(
@@ -445,7 +445,7 @@ export const pricingConfigSchema = yup.object({
             if (
               appTenorMax !== undefined &&
               last?.tenorMin !== undefined &&
-              convertToDays(last.tenorMin, last.tenorMinUnit) >
+              convertToDays(last.tenorMin, last.tenorMinUnit) >=
                 convertToDays(appTenorMax, appTenorMaxUnit)
             ) {
               errors.push(
