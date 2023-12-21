@@ -403,13 +403,9 @@ export default function PricingConfig({
                         <span>for principal between:</span>
                         <div className="flex gap-[25px] ">
                           <MinMaxInput
-<<<<<<< Updated upstream
-                            label={productData?.productInfo?.currency}
-=======
                             label={getCurrencyName(
                               productData?.productInfo?.currency
                             )}
->>>>>>> Stashed changes
                             className="w-[180px]"
                             register={register}
                             inputName={`interestRateConfigModels.${index}.principalMin`}
@@ -431,13 +427,9 @@ export default function PricingConfig({
                         -
                         <div className="flex gap-[25px] ">
                           <MinMaxInput
-<<<<<<< Updated upstream
-                            label={productData?.productInfo?.currency}
-=======
                             label={getCurrencyName(
                               productData?.productInfo?.currency
                             )}
->>>>>>> Stashed changes
                             className="w-[180px]"
                             register={register}
                             inputName={`interestRateConfigModels.${index}.principalMax`}
