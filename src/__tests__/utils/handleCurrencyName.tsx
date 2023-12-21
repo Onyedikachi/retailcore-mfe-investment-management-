@@ -1,10 +1,10 @@
-import { useGetCurrencyName } from "../../utils/useGetCurrencyName";
+import { handleCurrencyName } from "../../utils/handleCurrencyName";
 import React from "react";
 import { render } from "@testing-library/react";
 import { renderHook } from "@testing-library/react-hooks";
 import { AppContext } from "../../utils/context";
 
-describe("useGetCurrencyName", () => {
+describe("handleCurrencyName", () => {
   it("returns the currency name for a valid id", () => {
     const currencies = [
       { id: "NGN", text: "NGN" },
@@ -19,7 +19,7 @@ describe("useGetCurrencyName", () => {
       </AppContext.Provider>
     );
 
-    const { result } = renderHook(() => useGetCurrencyName("NGN"), { wrapper });
+    const { result } = renderHook(() => handleCurrencyName("NGN"), { wrapper });
 
     expect(result.current).toBe("NGN");
   });
@@ -36,7 +36,7 @@ describe("useGetCurrencyName", () => {
       </AppContext.Provider>
     );
 
-    const { result } = renderHook(() => useGetCurrencyName("XXX"), { wrapper });
+    const { result } = renderHook(() => handleCurrencyName("XXX"), { wrapper });
 
     expect(result.current).toBeNull();
   });

@@ -1,4 +1,4 @@
-import { useGetCurrencyName } from "@app/utils/useGetCurrencyName";
+import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 import { useState, useEffect } from "react";
 
 export default function MiniTermDepositDetail({ detail, oldData }: any) {
@@ -83,12 +83,12 @@ export default function MiniTermDepositDetail({ detail, oldData }: any) {
             {oldData && oldData?.currency !== detail.currency && (
               <span className="block  line-through mb-2 text-[#aaa]">
                 {" "}
-                {useGetCurrencyName(oldData?.currency)}
+                {handleCurrencyName(oldData?.currency)}
               </span>
             )}
             <span className="flex itmes-center">
               {" "}
-              {useGetCurrencyName(detail?.currency)}{" "}
+              {handleCurrencyName(detail?.currency)}{" "}
               {oldData && oldData?.currency !== detail?.currency && (
                 <span className="block text-success-500 pl-[2px]"> New</span>
               )}
