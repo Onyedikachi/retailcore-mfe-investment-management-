@@ -32,7 +32,18 @@ export const accountApi: any = createApi({
         };
       },
     }),
+    getCurrencies: builder.query<any, any>({
+      query: (data) => {
+        return {
+          url: `currency?${new URLSearchParams(
+            cleanObject(data)
+          )}`,
+          method: "get",
+        };
+      },
+    }),
   }),
+
 });
 
-export const { useGetLedgersQuery, useGetGlClassQuery } = accountApi;
+export const { useGetLedgersQuery, useGetGlClassQuery, useGetCurrenciesQuery } = accountApi;

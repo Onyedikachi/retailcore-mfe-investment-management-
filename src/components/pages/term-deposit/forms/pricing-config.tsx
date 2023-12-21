@@ -17,6 +17,7 @@ import { FormToolTip } from "@app/components";
 import { toolTips } from "@app/constants";
 import { RedDot } from "@app/components/forms";
 import { useParams } from "react-router-dom";
+import { getCurrencyName } from "@app/utils/getCurrencyName";
 
 const labels = [
   "Applicable Tenor",
@@ -254,7 +255,7 @@ export default function PricingConfig({
               <MinMaxInput
                 className="w-[300px]"
                 label={"Min"}
-                currency={productData?.productInfo?.currency}
+                currency={getCurrencyName(productData?.productInfo?.currency)}
                 register={register}
                 inputName={"applicablePrincipalMin"}
                 defaultValue={formData?.applicablePrincipalMin}
@@ -270,7 +271,7 @@ export default function PricingConfig({
               <MinMaxInput
                 className="w-[300px]"
                 label={"Max"}
-                currency={productData?.productInfo?.currency}
+                currency={getCurrencyName(productData?.productInfo?.currency)}
                 register={register}
                 inputName={"applicablePrincipalMax"}
                 defaultValue={formData?.applicablePrincipalMax}
@@ -376,7 +377,7 @@ export default function PricingConfig({
                         <span>for principal between:</span>
                         <div className="flex gap-[25px] ">
                           <MinMaxInput
-                            label={productData?.productInfo?.currency}
+                            label={getCurrencyName(productData?.productInfo?.currency)}
                             className="w-[180px]"
                             register={register}
                             inputName={`interestRateConfigModels.${index}.principalMin`}
@@ -398,7 +399,7 @@ export default function PricingConfig({
                         -
                         <div className="flex gap-[25px] ">
                           <MinMaxInput
-                            label={productData?.productInfo?.currency}
+                            label={getCurrencyName(productData?.productInfo?.currency)}
                             className="w-[180px]"
                             register={register}
                             inputName={`interestRateConfigModels.${index}.principalMax`}

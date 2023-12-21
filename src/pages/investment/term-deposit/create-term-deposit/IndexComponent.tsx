@@ -103,7 +103,7 @@ export default function CreateTermDeposit() {
   const refresh = searchParams.get("refresh");
   const activeId = useRef(null);
   const previousData = useRef({});
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(4);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [subText, setSubText] = useState("");
   const [successText, setSuccessText] = useState("");
@@ -118,7 +118,7 @@ export default function CreateTermDeposit() {
       description: "",
       startDate: new Date(),
       endDate: null,
-      currency: "NGN",
+      currency: "09c29985-5985-42f7-a771-a00323c57109",
     },
     customerEligibility: {
       ageGroupMin: 0,
