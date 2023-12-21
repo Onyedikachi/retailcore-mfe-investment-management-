@@ -1026,8 +1026,8 @@
     <testCase name="Root component should be in the document" duration="54"/>
   </file>
   <file path="/Users/user/Documents/GitHub/retailcore-mfe-investment-management/src/__tests__/utils/getCurrencyName.tsx">
-    <testCase name="useGetCurrencyName returns the currency name for a valid id" duration="19"/>
-    <testCase name="useGetCurrencyName returns null for an invalid id" duration="4"/>
+    <testCase name="handleCurrencyName returns the currency name for a valid id" duration="19"/>
+    <testCase name="handleCurrencyName returns null for an invalid id" duration="4"/>
   </file>
   <file path="/Users/user/Documents/GitHub/retailcore-mfe-investment-management/src/__tests__/utils/cleanObject.test.tsx">
     <testCase name="cleanObject should return an empty object when passed an empty object" duration="28"/>

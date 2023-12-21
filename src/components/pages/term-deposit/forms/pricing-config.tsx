@@ -17,7 +17,7 @@ import { FormToolTip } from "@app/components";
 import { toolTips } from "@app/constants";
 import { RedDot } from "@app/components/forms";
 import { useParams } from "react-router-dom";
-import { useGetCurrencyName } from "@app/utils/useGetCurrencyName";
+import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 
 const labels = [
   "Applicable Tenor",
@@ -279,7 +279,7 @@ export default function PricingConfig({
               <MinMaxInput
                 className="w-[300px]"
                 label={"Min"}
-                currency={useGetCurrencyName(
+                currency={handleCurrencyName(
                   productData?.productInfo?.currency
                 )}
                 register={register}
@@ -297,7 +297,7 @@ export default function PricingConfig({
               <MinMaxInput
                 className="w-[300px]"
                 label={"Max"}
-                currency={useGetCurrencyName(
+                currency={handleCurrencyName(
                   productData?.productInfo?.currency
                 )}
                 register={register}
@@ -405,7 +405,7 @@ export default function PricingConfig({
                         <span>for principal between:</span>
                         <div className="flex gap-[25px] ">
                           <MinMaxInput
-                            label={useGetCurrencyName(
+                            label={handleCurrencyName(
                               productData?.productInfo?.currency
                             )}
                             className="w-[180px]"
@@ -429,7 +429,7 @@ export default function PricingConfig({
                         -
                         <div className="flex gap-[25px] ">
                           <MinMaxInput
-                            label={useGetCurrencyName(
+                            label={handleCurrencyName(
                               productData?.productInfo?.currency
                             )}
                             className="w-[180px]"

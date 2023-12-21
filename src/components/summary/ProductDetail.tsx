@@ -8,7 +8,7 @@ import {
   ProductTypes,
 } from "@app/constants";
 import { currencyFormatter } from "@app/utils/formatCurrency";
-import { useGetCurrencyName } from "@app/utils/useGetCurrencyName";
+import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 
 export function DebitCreditTable({ dataTab }) {
   const headers = [
@@ -195,7 +195,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                   previousData?.currency !== detail?.productInfo?.currency && (
                     <span className="block  line-through mb-2 text-[#aaa]">
                       {" "}
-                      {useGetCurrencyName(previousData?.currency)}
+                      {handleCurrencyName(previousData?.currency)}
                     </span>
                   )}
                 <span className="flex itmes-center">
@@ -345,12 +345,12 @@ export default function ProductDetail({ detail, previousData }: any) {
                 <span className="block  mb-2 text-[#636363]">
                   {currencyFormatter(
                     detail?.pricingConfiguration?.applicablePrincipalMin,
-                    useGetCurrencyName(detail?.productInfo?.currency)
+                    handleCurrencyName(detail?.productInfo?.currency)
                   )}{" "}
                   {detail?.pricingConfiguration?.applicablePrincipalMax
                     ? `- ${currencyFormatter(
                         detail?.pricingConfiguration?.applicablePrincipalMax,
-                        useGetCurrencyName(detail?.productInfo?.currency)
+                        handleCurrencyName(detail?.productInfo?.currency)
                       )}`
                     : "and above"}
                 </span>
@@ -374,10 +374,10 @@ export default function ProductDetail({ detail, previousData }: any) {
                           principal between{" "}
                           {`${currencyFormatter(
                             configModel?.principalMin,
-                            useGetCurrencyName(detail?.productInfo?.currency)
+                            handleCurrencyName(detail?.productInfo?.currency)
                           )} - ${currencyFormatter(
                             configModel?.principalMax,
-                            useGetCurrencyName(detail?.productInfo?.currency)
+                            handleCurrencyName(detail?.productInfo?.currency)
                           )}`}{" "}
                           {/* {detail?.productInfo?.currency} */}
                         </span>
