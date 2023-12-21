@@ -3,6 +3,7 @@ import { useState, useMemo, useEffect } from "react";
 import AuthGuard from "./AuthGuard";
 import { AppContext } from "@app/utils/context";
 import { auth$ } from "@Sterling/shared";
+import { useGetCurrenciesQuery } from "@app/api";
 
 export function handleRole(setRole, value) {
   if (value?.user?.is_superuser) {
@@ -14,14 +15,17 @@ export function handleRole(setRole, value) {
 const Layout = () => {
   const [permissions, setPermissions] = useState([]);
   const [role, setRole] = useState("default");
+  const [currencies, setCurrencies] = useState<any[]>([]);
   const value = useMemo(
     () => ({
       role,
       setRole,
       permissions,
+      currencies,
+      setCurrencies,
     }),
 
-    [role, setRole, permissions]
+    [role, setRole, permissions, currencies, setCurrencies]
   );
   useEffect(() => {
     auth$?.subscribe((value) => {
@@ -30,6 +34,25 @@ const Layout = () => {
       handleRole(setRole, value);
     });
   }, []);
+  const {
+    data: currencyData,
+    isLoading: currencyLoading,
+    isSuccess: currencyIsSuccess,
+  } = useGetCurrenciesQuery({ page_size: 1000 });
+
+  useEffect(() => {
+    if (currencyIsSuccess) {
+      setCurrencies(
+        currencyData.results.map((i) => {
+          return {
+            id: i.id,
+            text: i.abbreviation,
+            value: i.id,
+          };
+        })
+      );
+    }
+  }, [currencyIsSuccess]);
 
   return (
     <div data-testid="outlet">
