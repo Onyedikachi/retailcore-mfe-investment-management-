@@ -35,6 +35,9 @@ export function validateSlab(values, type, principalMax, tenorMax) {
   if (parseInt(type, 10) === 1) {
     return lastSlab?.tenorMax === tenorMax;
   }
+  if (parseInt(type, 10) === 2) {
+    return true;
+  }
   return false;
 }
 export function InputDivs({ children, label, requiredField = true }) {
