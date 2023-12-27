@@ -63,7 +63,7 @@ export default function Rejection({
     data: branchMembersData,
     isSuccess: userIsSuccess,
     isLoading: userLoading,
-  } = useGetUsersPermissionsQuery({ permissions: ["APPROVE_BRANCH_REQUESTS"] });
+  } = useGetUsersPermissionsQuery({ permissions: ["CREATE_INVESTMENT_PRODUCT"] });
 
   React.useEffect(() => {
     if (isSuccess) {

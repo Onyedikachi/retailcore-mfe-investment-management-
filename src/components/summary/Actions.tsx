@@ -101,13 +101,13 @@ export default function Actions({
     }
     if (rejectIsError) {
       setFailedText(Messages.PRODUCT_REJECT_FAILED);
-      setFailedSubtext(rejectError?.message?.message);
+      setFailedSubtext(rejectError?.message?.message || rejectError?.message?.Message);
       setFailed(true);
     }
 
     if (approveIsError) {
       setFailedText(Messages.PRODUCT_APPROVE_FAILED);
-      setFailedSubtext(approveError?.message?.message);
+      setFailedSubtext(approveError?.message?.message || approveError?.message?.Message);
       setFailed(true);
     }
   }, [

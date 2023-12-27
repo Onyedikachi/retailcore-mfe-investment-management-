@@ -418,11 +418,6 @@ Object {
                         Min
                       </div>
                       <div
-                        class="text-[#636363]"
-                      >
-                        NGN
-                      </div>
-                      <div
                         class="w-full flex flex-col gap-2"
                       >
                         <div
@@ -456,11 +451,6 @@ Object {
                     >
                       <div>
                         Max
-                      </div>
-                      <div
-                        class="text-[#636363]"
-                      >
-                        NGN
                       </div>
                       <div
                         class="w-full flex flex-col gap-2"
@@ -1250,11 +1240,6 @@ Object {
                       Min
                     </div>
                     <div
-                      class="text-[#636363]"
-                    >
-                      NGN
-                    </div>
-                    <div
                       class="w-full flex flex-col gap-2"
                     >
                       <div
@@ -1288,11 +1273,6 @@ Object {
                   >
                     <div>
                       Max
-                    </div>
-                    <div
-                      class="text-[#636363]"
-                    >
-                      NGN
                     </div>
                     <div
                       class="w-full flex flex-col gap-2"

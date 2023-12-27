@@ -10,6 +10,10 @@ import {
   StatusCategories,
   ProductOptions,
   RequestOptions,
+  ApproveProductOptions,
+  CreateProductOptions,
+  CreateRequestOptions,
+  ApproveRequestOptions,
 } from "@app/constants";
 
 export function filterAllProductsOptions(): any[] {
@@ -67,7 +71,10 @@ export const StatusButton = ({
       <span className="text-2xl xl:text-4xl text-[#252C32] font-semibold">
         {!isLoading && count(item, analyticsData)}
         {isLoading && (
-          <div data-testid="loading" className="mt-3 spinner-border h-6 w-6 border-t border-danger-500 rounded-full animate-spin"></div>
+          <div
+            data-testid="loading"
+            className="mt-3 spinner-border h-6 w-6 border-t border-danger-500 rounded-full animate-spin"
+          ></div>
         )}
       </span>
     </button>
@@ -99,12 +106,19 @@ export const count = (item, analyticsData) => {
   }
 };
 
-export const handleClick = (setCategory, item, setSelected, category) => {
+export const handleClick = (
+  setCategory,
+  item,
+  setSelected,
+  category,
+  filteredProductOptions,
+  filteredRequestOptions
+) => {
   setCategory(item?.type);
   setSelected(
     category === StatusCategoryType?.AllProducts
-      ? ProductOptions[0]
-      : RequestOptions[0]
+      ? filteredProductOptions[0]
+      : filteredRequestOptions[0]
   );
 };
 
@@ -113,13 +127,24 @@ export const StatusCategoryButton = ({
   category,
   setCategory,
   setSelected,
+  filteredProductOptions,
+  filteredRequestOptions,
 }: any) => {
   return (
     <button
       type="button"
       name={item.type}
       data-testid={`${item.type}-btn`}
-      onClick={() => handleClick(setCategory, item, setSelected, category)}
+      onClick={() =>
+        handleClick(
+          setCategory,
+          item,
+          setSelected,
+          category,
+          filteredProductOptions,
+          filteredRequestOptions
+        )
+      }
       className={`${
         category?.toLowerCase() === item?.type?.toLowerCase()
           ? "!bg-white font-semibold text-[20px]"
@@ -178,40 +203,106 @@ export function handlePermission(
 ) {
   if (!permissions?.length) return;
   if (
-    permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS") ||
+    permissions?.includes(
+      "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
+    ) &&
     permissions?.includes("CREATE_INVESTMENT_PRODUCT")
   ) {
-    setFilteredProductOptions(ProductOptions);
-  } else {
-    setFilteredProductOptions(
-      ProductOptions.map((i: any) => {
-        if (i.value === "created_by_anyone") {
-          i.disabled = true;
-        }
-        if (i.value === "approved_system_wide") {
-          i.disabled = true;
-        }
-        return i;
-      })
-    );
-  }
-  if (
-    permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS") ||
-    permissions?.includes("AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS")
+    if (permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS")) {
+      setFilteredProductOptions(ProductOptions);
+    } else {
+      setFilteredProductOptions(
+        ProductOptions.map((i: any) => {
+          if (i.value === "created_by_anyone") {
+            i.disabled = true;
+          }
+          if (i.value === "approved_system_wide") {
+            i.disabled = true;
+          }
+          return i;
+        })
+      );
+    }
+    if (permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS")) {
+      setFilteredRequestOptions(RequestOptions);
+    } else {
+      setFilteredRequestOptions(
+        RequestOptions.map((i: any) => {
+          if (i.value === "created_by_anyone") {
+            i.disabled = true;
+          }
+          if (i.value === "sent_to_anyone") {
+            i.disabled = true;
+          }
+          return i;
+        })
+      );
+    }
+  } else if (
+    permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&
+    !permissions?.includes(
+      "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
+    )
   ) {
-    setFilteredRequestOptions(RequestOptions);
+    if (permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS")) {
+      setFilteredProductOptions(CreateProductOptions);
+    } else {
+      setFilteredProductOptions(
+        CreateProductOptions.map((i: any) => {
+          if (i.value === "created_by_anyone") {
+            i.disabled = true;
+          }
+
+          return i;
+        })
+      );
+    }
+    if (permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS")) {
+      setFilteredRequestOptions(CreateRequestOptions);
+    } else {
+      setFilteredRequestOptions(
+        CreateRequestOptions.map((i: any) => {
+          if (i.value === "created_by_anyone") {
+            i.disabled = true;
+          }
+
+          return i;
+        })
+      );
+    }
+  } else if (
+    !permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&
+    permissions?.includes(
+      "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
+    )
+  ) {
+    if (permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS")) {
+      setFilteredProductOptions(ApproveProductOptions);
+    } else {
+      setFilteredProductOptions(
+        ApproveProductOptions.map((i: any) => {
+          if (i.value === "approved_system_wide") {
+            i.disabled = true;
+          }
+          return i;
+        })
+      );
+    }
+    if (permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS")) {
+      setFilteredRequestOptions(ApproveRequestOptions);
+    } else {
+      setFilteredRequestOptions(
+        ApproveRequestOptions.map((i: any) => {
+          if (i.value === "sent_to_anyone") {
+            i.disabled = true;
+          }
+          return i;
+        })
+      );
+    }
   } else {
-    setFilteredRequestOptions(
-      RequestOptions.map((i: any) => {
-        if (i.value === "created_by_anyone") {
-          i.disabled = true;
-        }
-        if (i.value === "sent_to_anyone") {
-          i.disabled = true;
-        }
-        return i;
-      })
-    );
+    setFilteredProductOptions([]);
+    setFilteredRequestOptions([]);
   }
 }
 export default function StatusCard({
@@ -223,12 +314,6 @@ export default function StatusCard({
   // const { permissions } = useContext(AppContext);
 
   const [activeType, setActiveType] = useState<string | undefined>("all");
-  const [productFilter, setProductFilter] = useState<string | undefined>(
-    "created_by_me"
-  );
-  const [requestFilter, setRequestFilter] = useState<string | undefined>(
-    "created_by_me"
-  );
   const [filteredProductOptions, setFilteredProductOptions] =
     useState(ProductOptions);
   const [filteredRequestOptions, setFilteredRequestOptions] =
@@ -280,6 +365,8 @@ export default function StatusCard({
             category={category}
             setCategory={setCategory}
             setSelected={setSelected}
+            filteredRequestOptions={filteredRequestOptions}
+            filteredProductOptions={filteredProductOptions}
           />
         ))}
       </div>
@@ -298,7 +385,7 @@ export default function StatusCard({
             />
           ))}
         </div>
-      
+
         <div>
           <Select
             options={
@@ -306,7 +393,6 @@ export default function StatusCard({
                 ? filteredProductOptions
                 : filteredRequestOptions
             }
-         
             handleSelected={(value: any) => handleSelected(value)}
             value={selected}
           />
