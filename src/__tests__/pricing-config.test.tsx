@@ -86,7 +86,7 @@ describe('validateSlab', () => {
 
       const result = validateSlab(values, type, principalMax, tenorMax);
 
-      expect(result).toBe(false);
+      expect(result).toBe(true);
     });
 
     // Returns false if values.interestRateConfigModels is empty

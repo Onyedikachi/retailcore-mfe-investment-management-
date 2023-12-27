@@ -133,6 +133,46 @@ export const ProductOptions = [
     disabled: false,
   },
 ];
+export const CreateProductOptions = [
+  {
+    id: 1,
+    text: "Created by me",
+    value: "created_by_me",
+    disabled: false,
+  },
+  {
+    id: 2,
+    text: "Created by my branch",
+    value: "created_by_my_branch",
+    disabled: false,
+  },
+  {
+    id: 3,
+    text: "Created system-wide",
+    value: "created_by_anyone",
+    disabled: false,
+  },
+];
+export const ApproveProductOptions = [
+  {
+    id: 4,
+    text: "Approved by me",
+    value: "approved_by_me",
+    disabled: false,
+  },
+  {
+    id: 5,
+    text: "Approved by my branch",
+    value: "approved_by_my_branch",
+    disabled: false,
+  },
+  {
+    id: 6,
+    text: "Approved system-wide",
+    value: "approved_system_wide",
+    disabled: false,
+  },
+];
 
 export const RequestOptions = [
   {
@@ -154,6 +194,46 @@ export const RequestOptions = [
     disabled: false,
   },
 
+  {
+    id: 4,
+    text: "Sent to me",
+    value: "sent_to_me",
+    disabled: false,
+  },
+  {
+    id: 5,
+    text: "Sent to my branch",
+    value: "sent_to_my_branch",
+    disabled: false,
+  },
+  {
+    id: 6,
+    text: "Sent system-wide",
+    value: "sent_to_anyone",
+    disabled: false,
+  },
+];
+export const CreateRequestOptions = [
+  {
+    id: 1,
+    text: "Initiated by me",
+    value: "created_by_me",
+    disabled: false,
+  },
+  {
+    id: 2,
+    text: "Initiated by my branch",
+    value: "created_by_my_branch",
+    disabled: false,
+  },
+  {
+    id: 3,
+    text: "Initiated system-wide",
+    value: "created_by_anyone",
+    disabled: false,
+  },
+];
+export const ApproveRequestOptions = [
   {
     id: 4,
     text: "Sent to me",
@@ -484,7 +564,7 @@ export const rangeLabels = {
   },
 };
 
-export  const tabLinks = [
+export const tabLinks = [
   {
     name: "Assets",
     menu: [

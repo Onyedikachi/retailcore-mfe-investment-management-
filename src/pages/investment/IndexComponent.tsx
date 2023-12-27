@@ -123,12 +123,7 @@ export default function IndexComponent() {
   const queryCategory = searchParams.get("category");
   const productId = searchParams.get("productId");
   const preview = searchParams.get("preview");
-  const [selected, setSelected] = useState<any>({
-    id: 1,
-    text: "Created by me",
-    value: "created_by_me",
-    disabled: false,
-  });
+  const [selected, setSelected] = useState<any>(null);
   const [isChecker, setIsChecker] = useState(false);
   const [, setHideCreate] = useState(false);
   const [status, setStatus] = useState("");
