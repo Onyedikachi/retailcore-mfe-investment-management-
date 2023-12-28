@@ -54,8 +54,20 @@ interface TableProps {
   noData?: string;
 }
 
-export const statusHandler = ({isSuccess, setSuccessText, setIsSuccessOpen, activateSuccess, isError,
-  setFailedText, setFailed, activateIsError, activateError, setFailedSubtext, error,  role}) => {
+export const statusHandler = ({
+  isSuccess,
+  setSuccessText,
+  setIsSuccessOpen,
+  activateSuccess,
+  isError,
+  setFailedText,
+  setFailed,
+  activateIsError,
+  activateError,
+  setFailedSubtext,
+  error,
+  role,
+}) => {
   if (isSuccess) {
     setSuccessText(Messages.PRODUCT_DELETE_SUCCESS);
     setIsSuccessOpen(true);
@@ -79,7 +91,7 @@ export const statusHandler = ({isSuccess, setSuccessText, setIsSuccessOpen, acti
     setFailedSubtext(activateError?.message?.message);
     setFailed(true);
   }
-}
+};
 
 export function handleUpdated(key, value, options) {
   if (!options || !value) return;
@@ -272,20 +284,46 @@ export default function TableComponent<TableProps>({
     });
 
   useEffect(() => {
-    statusHandler({isSuccess, setSuccessText, setIsSuccessOpen, activateSuccess, isError,
-      setFailedText, setFailed, activateIsError, activateError, setFailedSubtext, error,  role})
+    statusHandler({
+      isSuccess,
+      setSuccessText,
+      setIsSuccessOpen,
+      activateSuccess,
+      isError,
+      setFailedText,
+      setFailed,
+      activateIsError,
+      activateError,
+      setFailedSubtext,
+      error,
+      role,
+    });
   }, [isSuccess, isError, error, activateSuccess, activateIsError]);
 
   return (
     <div>
       {" "}
-      <InfiniteScroll
-        dataLength={tableRows?.length}
-        next={fetchMoreData}
-        hasMore={hasMore}
-        loader={""}
-      >
-        <div className="relative min-h-[400px] max-h-[70vh] overflow-y-auto">
+      <div id="tableContainer" className="relative min-h-[400px]">
+        <InfiniteScroll
+          dataLength={tableRows?.length}
+          next={fetchMoreData}
+          hasMore={hasMore}
+          loader={
+            <div className="text-xs text-center py-6 text-gray-500 relative flex itemx-center justify-center gap-x-1">
+              Loading data...
+              <span className="spinner-border h-4 w-4 border-t border-gray-500 rounded-full animate-spin"></span>
+            </div>
+          }
+          endMessage={
+            !isLoading && (
+              <div className="text-xs text-center py-6 text-gray-500">
+                No more data
+              </div>
+            )
+          }
+          scrollableTarget="tableContainer"
+          height="70vh"
+        >
           <table className="w-full relative">
             <thead
               className={`${
@@ -332,7 +370,7 @@ export default function TableComponent<TableProps>({
                 )}
               </tr>
             </thead>
-            {tableRows?.length > 0 && !isLoading && (
+            {tableRows?.length > 0 && (
               <tbody>
                 {tableRows.map((item: any, index) => (
                   <tr
@@ -472,9 +510,8 @@ export default function TableComponent<TableProps>({
               </tbody>
             )}
           </table>
-        </div>
-        {isLoading && <BottomBarLoader />}
-      </InfiniteScroll>{" "}
+        </InfiniteScroll>{" "}
+      </div>
       {/* @ts-ignore */}
       <MessagesComponent
         isConfirmOpen={isConfirmOpen}
