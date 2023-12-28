@@ -3,7 +3,9 @@ import { DropDownOptions, creationMap } from "@app/constants";
 export function handleDropdown(
   status: string,
   type: string,
-  permissions?: any
+  permissions?: any,
+  created_By_Id?: string,
+  userId?: string
 ) {
   if (!status || !type) return [];
 
@@ -19,7 +21,12 @@ export function handleDropdown(
 
   if (!selectedType) return [];
 
-  if (!permissions?.includes("CREATE_PRODUCT")) {
+  if (
+    (permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&
+      created_By_Id === userId) ||
+    (permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&
+      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS"))
+  ) {
     return selectedType[status];
   } else {
     return selectedType[status].filter((i) => i.text.toLowerCase() === "view");

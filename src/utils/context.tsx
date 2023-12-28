@@ -51,12 +51,14 @@ export const AppContext = createContext<{
   permissions: string[];
   currencies?: any;
   setCurrencies?: (e: any) => void;
+  userId?: string
 }>({
   role: "",
   setRole: () => {},
   permissions: [],
   currencies: [],
   setCurrencies: () => {},
+  userId: ""
 });
 
 export const InvestmentContext = createContext<ContextProps>({

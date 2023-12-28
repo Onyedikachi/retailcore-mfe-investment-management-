@@ -127,7 +127,9 @@ export const handleProductsDropdown = (
   isChecker,
   DropDownOptions,
   locked = false,
-  permissions: string[] = []
+  permissions: string[] = [],
+  created_By_Id,
+  userId
 ): any => {
   if (!status) return [];
   if (isChecker) {
@@ -143,7 +145,12 @@ export const handleProductsDropdown = (
           i.text.toLowerCase() !== "activate"
       );
     }
-    if (!permissions?.includes("CREATE_INVESTMENT_PRODUCT")) {
+    if (
+      !permissions?.includes("CREATE_INVESTMENT_PRODUCT") ||
+      (permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&
+        !permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS") &&
+        created_By_Id !== userId)
+    ) {
       options = options?.filter(
         (i: any) =>
           i.text.toLowerCase() !== "modify" && i.text.toLowerCase() !== "clone"
@@ -213,7 +220,7 @@ export default function TableComponent<TableProps>({
   type = "",
   noData = "No data available",
 }) {
-  const { role, permissions } = useContext(AppContext);
+  const { role, permissions, userId } = useContext(AppContext);
   const {
     isChecker,
     category,
@@ -389,7 +396,9 @@ export default function TableComponent<TableProps>({
                                 header.key !== "state" &&
                                 header.key !== "updated_At" &&
                                 header.key !== "requestStatus" && (
-                                  <TextCellContent value={item[header.key]} />
+                                  <TextCellContent
+                                    value={item[header.key] || "-"}
+                                  />
                                 )}
                               {header.key === "state" && (
                                 <StateCellContent value={item[header.key]} />
@@ -418,18 +427,22 @@ export default function TableComponent<TableProps>({
                               {!isChecker ? (
                                 <ActionsCellContent
                                   dropDownOptions={
-                                    type === "all products"
+                                    type === StatusCategoryType.AllProducts
                                       ? handleProductsDropdown(
                                           item.state,
                                           isChecker,
                                           dropDownOptions,
                                           item.islocked,
-                                          permissions
+                                          permissions,
+                                          item.created_By_Id,
+                                          userId
                                         )
                                       : handleDropdown(
                                           item.requestStatus,
                                           item.requestType,
-                                          permissions
+                                          permissions,
+                                          item.created_By_Id,
+                                          userId
                                         )
                                   }
                                   onClick={(e: any) => handleAction(e, item)}

@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import AuthGuard from "./AuthGuard";
 import { AppContext } from "@app/utils/context";
 import { auth$ } from "@Sterling/shared";
@@ -16,6 +16,7 @@ const Layout = () => {
   const [permissions, setPermissions] = useState([]);
   const [role, setRole] = useState("default");
   const [currencies, setCurrencies] = useState<any[]>([]);
+  const userId = useRef(null);
   const value = useMemo(
     () => ({
       role,
@@ -23,14 +24,15 @@ const Layout = () => {
       permissions,
       currencies,
       setCurrencies,
+      userId: userId.current,
     }),
 
-    [role, setRole, permissions, currencies, setCurrencies]
+    [role, setRole, permissions, currencies, setCurrencies, userId.current]
   );
   useEffect(() => {
     auth$?.subscribe((value) => {
       setPermissions(value?.user?.user_permissions || []);
-
+      userId.current = value?.user?.id;
       handleRole(setRole, value);
     });
   }, []);
