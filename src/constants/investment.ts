@@ -1,3 +1,13 @@
+export const RequiredInvestmentPermissions = [
+  "CREATE_INVESTMENT_PRODUCT",
+  "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS",
+  "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS",
+  "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS",
+  "RE_OR_DEACTIVATE_INVESTMENT_PRODUCT",
+];
+export const RequiredCreditPermissions = ["CREATE_CREDIT_PRODUCT"];
+export const RequiredDepositPermissions = ["CREATE_DEPOSIT_PRODUCT"];
+export const RequiredPaymentPermissions = ["CREATE_PAYMENT_PRODUCT"];
 export const MODULENAME = "ProductFactory";
 
 export const StatusCategories = [

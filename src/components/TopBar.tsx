@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { HiPlus } from "react-icons/hi";
 import { Link, useLocation } from "react-router-dom";
 import Button from "./Button";
@@ -8,6 +8,11 @@ import CreateButton from "./CreateButton";
 import SearchInput from "./SearchInput";
 import { useGetPostProductsMutation } from "@app/api";
 import { useNavigate } from "react-router-dom";
+import {
+  RequiredCreditPermissions,
+  RequiredDepositPermissions,
+  RequiredPaymentPermissions,
+} from "@app/constants/investment";
 
 export const getSearchResult = (
   value,
@@ -30,30 +35,56 @@ export const getSearchResult = (
 
 export function Tabs() {
   const location = useLocation();
+  const { permissions } = useContext(AppContext);
   const { selected, setDetailOpen, setDetail } = useContext(InvestmentContext);
   const [active, setActtive] = useState("investment");
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const navigate = useNavigate();
+  const filteredTabs = useRef([]);
 
   const tabOptions = [
     {
       title: "deposit",
       url: "/product/factory/dashboard/Deposit",
+      disabled: false,
     },
     {
       title: "credit",
       url: "#",
+      disabled: false,
     },
     {
       title: "Over the counter Payments",
       url: "/product/factory/dashboard/Payment",
+      disabled: false,
     },
     {
       title: "investment",
       url: "/product-factory/investment",
+      disabled: false,
     },
   ];
+  useEffect(() => {
+    filteredTabs.current = tabOptions.map((i) => {
+      if (i.title === "credit") {
+        i.disabled = !RequiredCreditPermissions.some((item) =>
+          permissions.includes(item)
+        );
+      }
+      if (i.title === "deposit") {
+        i.disabled = !RequiredDepositPermissions.some((item) =>
+          permissions.includes(item)
+        );
+      }
+      if (i.title === "Over the counter Payments") {
+        i.disabled = !RequiredPaymentPermissions.some((item) =>
+          permissions.includes(item)
+        );
+      }
+      return i;
+    });
+  }, [permissions]);
 
   function handleTabClick(tab) {
     setActtive(tab.title);
@@ -98,28 +129,31 @@ export function Tabs() {
   }
   return (
     <div className="flex justify-between">
-      <ul className="flex gap-x-8">
-        {tabOptions.map((tab) => (
-          <li
-            key={tab.title}
-            onClick={() => {
-              handleTabClick(tab);
-            }}
-            data-testid={tab.title}
-            className={`${
-              active == tab.title
-                ? "text-[#252C32] text-lg font-semibold "
-                : "text-[#636363] text-base "
-            }   capitalize flex flex-col justify-end cursor-pointer`}
-          >
-            <span className="block mb-[7px]">{tab.title}</span>
-            <span
+      <ul className="flex gap-x-8 items-end">
+        {filteredTabs.current.map((tab) => (
+          <li>
+            <button
+              key={tab.title}
+              onClick={() => {
+                handleTabClick(tab);
+              }}
+              data-testid={tab.title}
+              disabled={tab.disabled}
               className={`${
                 active == tab.title
-                  ? " border-[#CF2A2A] shadow-[0px_0px_4px_1px_rgba(0,0,0,0.25)] border-[1.5px]"
-                  : "border-[#DDE2E4] border-[0.75px] shadow-[0px_0px_2px_0px_rgba(228,139,139,0.48)]"
-              }   rounded-lg w-full block`}
-            />
+                  ? "text-[#252C32] text-lg font-semibold "
+                  : "text-[#636363] text-base "
+              }   capitalize flex flex-col justify-end cursor-pointer disabled:cursor-not-allowed disabled:opacity-40`}
+            >
+              <span className="block mb-[7px]">{tab.title}</span>
+              <span
+                className={`${
+                  active == tab.title
+                    ? " border-[#CF2A2A] shadow-[0px_0px_4px_1px_rgba(0,0,0,0.25)] border-[1.5px]"
+                    : "border-[#DDE2E4] border-[0.75px] shadow-[0px_0px_2px_0px_rgba(228,139,139,0.48)]"
+                }   rounded-lg w-full block`}
+              />
+            </button>
           </li>
         ))}
       </ul>

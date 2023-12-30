@@ -49,13 +49,22 @@ export const handleChange = (
   setQuery({
     ...query,
     page: 1,
-    filter_by: selected,
+
     status_In:
       activeType === "all" ? null : [sortTabStatus(activeType, category)],
   });
 };
 
-export const handleStatus = ({query, setProductData, setRequestData, isSuccess, data, setHasMore, isRequestSuccess, request}) => {
+export const handleStatus = ({
+  query,
+  setProductData,
+  setRequestData,
+  isSuccess,
+  data,
+  setHasMore,
+  isRequestSuccess,
+  request,
+}) => {
   if (query.page === 1) {
     setProductData([]);
     setRequestData([]);
@@ -80,15 +89,14 @@ export const handleStatus = ({query, setProductData, setRequestData, isSuccess, 
           requestStatus: StatusFilterOptions.find(
             (n) => n.value === i.requestStatus
           )?.name,
-          requestType: TypeFilterOptions.find(
-            (n) => n.value === i.requestType
-          )?.name,
+          requestType: TypeFilterOptions.find((n) => n.value === i.requestType)
+            ?.name,
         }))
       ),
     ]);
     !request?.next ? setHasMore(false) : setHasMore(true);
   }
-}
+};
 
 export const handleRefresh = (
   category,
@@ -115,7 +123,6 @@ export const handleSearch = (value, query, setQuery) => {
   });
 };
 export default function IndexComponent() {
-
   const [category, setCategory] = useState<string>(
     StatusCategoryType?.AllProducts
   );
@@ -149,7 +156,7 @@ export default function IndexComponent() {
     productType_In: null,
     requestType_In: null,
     initiator_In: null,
-    approvers_In: null
+    approvers_In: null,
   });
   const value = useMemo(
     () => ({
@@ -251,6 +258,7 @@ export default function IndexComponent() {
       ...query,
       page: 1,
     });
+
     if (category === StatusCategoryType.AllProducts) {
       getProducts({ ...query, page: 1, filter_by: selected?.value });
       // prodStatRefetch({ ...query, page: 1, filter_by: selected?.value });
@@ -259,8 +267,9 @@ export default function IndexComponent() {
       // requestRefetch({ ...query, page: 1, filter_by: selected?.value });
     }
   }, [
-    category,
-    query.filter_by,
+    selected,
+    // category,
+    // query.filter_by,
     query.search,
     query.status_In,
     query.productType_In,
@@ -268,7 +277,7 @@ export default function IndexComponent() {
     query.end_Date,
     query.requestType_In,
     query.initiator_In,
-    query.approvers_In
+    query.approvers_In,
   ]);
   useEffect(() => {
     setCategory(
@@ -278,8 +287,28 @@ export default function IndexComponent() {
     );
   }, [queryCategory]);
 
-  useEffect(() => handleStatus({query, setProductData, setRequestData, isSuccess, data, setHasMore, isRequestSuccess, request}),
-  [data, request, isSuccess, isRequestSuccess, isError, isRequestError, query.page]);
+  useEffect(
+    () =>
+      handleStatus({
+        query,
+        setProductData,
+        setRequestData,
+        isSuccess,
+        data,
+        setHasMore,
+        isRequestSuccess,
+        request,
+      }),
+    [
+      data,
+      request,
+      isSuccess,
+      isRequestSuccess,
+      isError,
+      isRequestError,
+      query.page,
+    ]
+  );
 
   const { data: systemAlertData, isSuccess: systemAlertDataSuccess } =
     useGetSystemAlertQuery();

@@ -323,8 +323,8 @@ export function handlePermission(
       );
     }
   } else {
-    setFilteredProductOptions([]);
-    setFilteredRequestOptions([]);
+    setFilteredProductOptions(CreateProductOptions);
+    setFilteredRequestOptions(CreateRequestOptions);
   }
 }
 export default function StatusCard({
@@ -407,7 +407,7 @@ export default function StatusCard({
             />
           ))}
         </div>
-
+    
         <div>
           <Select
             options={
