@@ -82,13 +82,15 @@ export const statusHandler = ({
   }
   if (isError) {
     setFailedText(Messages.PRODUCT_DELETE_FAILED);
-    setFailedSubtext(error?.message?.message);
+    setFailedSubtext(error?.message?.message || error?.message?.Message);
     setFailed(true);
   }
 
   if (activateIsError) {
     setFailedText(Messages.PRODUCT_ACTIVATE_FAILED);
-    setFailedSubtext(activateError?.message?.message);
+    setFailedSubtext(
+      activateError?.message?.message || activateError?.message?.Message
+    );
     setFailed(true);
   }
 };

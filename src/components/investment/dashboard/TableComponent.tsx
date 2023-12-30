@@ -14,7 +14,9 @@ import Table from "@app/components/table";
 import {
   DropDownOptions,
   ProductTypes,
+  StatusFilterOptions,
   StatusTypes,
+  TypeFilterOptions,
   productHeader,
   requestHeader,
 } from "@app/constants";
@@ -75,6 +77,19 @@ export const handleHeaders = (headers: any, isChecker) => {
     ? headers.filter((i) => i.label !== "initiator")
     : headers.filter((i) => i.label !== "reviewer");
 };
+
+export function initiateDownload(
+  query,
+  category,
+  downloadProducts,
+  downloadRequests
+) {
+  if (category === StatusCategoryType.AllProducts) {
+    downloadProducts({ ...query, page_Size: 10000000 });
+  } else {
+    downloadRequests({ ...query, page_Size: 1000000 });
+  }
+}
 export function handleDownload(downloadData, isChecker, csvExporter, category) {
   try {
     if (!downloadData?.length) return;
@@ -192,6 +207,10 @@ export default function TableComponent({
     getProducts,
     { data, isSuccess, isError, error, isLoading: searchLoading },
   ] = useGetPostProductsMutation();
+  const [
+    downloadProducts,
+    { data: productDownloadData, isSuccess: productDownloadIsSuccess },
+  ] = useGetPostProductsMutation();
 
   const [
     getRequests,
@@ -202,6 +221,10 @@ export default function TableComponent({
       error: requestError,
       isLoading: isRequestLoading,
     },
+  ] = useGetPostRequestsMutation();
+  const [
+    downloadRequests,
+    { data: requestsDownloadData, isSuccess: requestsDownloadIsSuccess },
   ] = useGetPostRequestsMutation();
 
   const { data: initData, isSuccess: initSuccess } =
@@ -254,6 +277,39 @@ export default function TableComponent({
       setSearchResults([]);
     };
   }, [data, request, isSuccess, isRequestSuccess]);
+
+  useEffect(() => {
+    if (
+      productDownloadIsSuccess &&
+      category === StatusCategoryType.AllProducts
+    ) {
+      handleDownload(
+        productDownloadData?.results.map((i) => ({
+          ...i,
+          state: StatusTypes.find((n) => n.id === i.state)?.type,
+          productType: ProductTypes.find((n) => n.id === i.productType)?.name,
+        })),
+        isChecker,
+        csvExporter,
+        category
+      );
+    }
+    if (requestsDownloadIsSuccess && category === StatusCategoryType.Requests) {
+      handleDownload(
+        requestsDownloadData?.results.map((i) => ({
+          ...i,
+          requestStatus: StatusFilterOptions.find(
+            (n) => n.value === i.requestStatus
+          )?.name,
+          requestType: TypeFilterOptions.find((n) => n.value === i.requestType)
+            ?.name,
+        })),
+        isChecker,
+        csvExporter,
+        category
+      );
+    }
+  }, [productDownloadIsSuccess, requestsDownloadIsSuccess]);
 
   React.useEffect(() => {
     setOptions({
@@ -329,13 +385,11 @@ export default function TableComponent({
           {/* download button  */}{" "}
           <button
             onClick={() =>
-              handleDownload(
-                category === StatusCategoryType?.AllProducts
-                  ? productData
-                  : requestData,
-                isChecker,
-                csvExporter,
-                category
+              initiateDownload(
+                query,
+                category,
+                downloadProducts,
+                downloadRequests
               )
             }
             data-testid="download-btn"
