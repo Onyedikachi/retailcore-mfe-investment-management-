@@ -323,8 +323,8 @@ export function handlePermission(
       );
     }
   } else {
-    setFilteredProductOptions([]);
-    setFilteredRequestOptions([]);
+    setFilteredProductOptions(CreateProductOptions);
+    setFilteredRequestOptions(CreateRequestOptions);
   }
 }
 export default function StatusCard({
