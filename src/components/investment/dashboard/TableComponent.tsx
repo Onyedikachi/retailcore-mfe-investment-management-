@@ -82,12 +82,15 @@ export function initiateDownload(
   query,
   category,
   downloadProducts,
-  downloadRequests
+  downloadRequests,
+  selected
 ) {
+ 
   if (category === StatusCategoryType.AllProducts) {
-    downloadProducts({ ...query, page_Size: 10000000 });
+    console.log("🚀 ~ file: TableComponent.tsx:87 ~ downloadProducts:", downloadProducts)
+    downloadProducts({ ...query, page_Size: 1000000 , filter_by: selected?.value,});
   } else {
-    downloadRequests({ ...query, page_Size: 1000000 });
+    downloadRequests({ ...query, page_Size: 1000000, filter_by: selected?.value, });
   }
 }
 export function handleDownload(downloadData, isChecker, csvExporter, category) {
@@ -389,7 +392,8 @@ export default function TableComponent({
                 query,
                 category,
                 downloadProducts,
-                downloadRequests
+                downloadRequests,
+                selected
               )
             }
             data-testid="download-btn"
