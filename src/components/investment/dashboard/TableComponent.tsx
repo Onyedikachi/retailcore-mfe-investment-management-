@@ -87,7 +87,7 @@ export function initiateDownload(
 ) {
  
   if (category === StatusCategoryType.AllProducts) {
-    console.log("🚀 ~ file: TableComponent.tsx:87 ~ downloadProducts:", downloadProducts)
+    
     downloadProducts({ ...query, page_Size: 1000000 , filter_by: selected?.value,});
   } else {
     downloadRequests({ ...query, page_Size: 1000000, filter_by: selected?.value, });
