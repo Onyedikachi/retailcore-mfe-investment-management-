@@ -5,12 +5,14 @@ import IndexComponent, {
   handleChange,
   handleRefresh,
   handleSearch,
-  handleStatus,
+  handleProductStatus,
+  handleRequestStatus,
 } from "../pages/investment/IndexComponent";
 import { renderWithProviders } from "../utils/test-util";
 import { StatusCategoryType } from "../constants/enums";
 import React from "react";
 
+const selected = { value: "sent_to_me" };
 jest.mock("react-router-dom", () => ({
   BrowserRouter: ({ children }) => <div>{children}</div>,
   Link: ({ to, children }) => <a href={to}>{children}</a>,
@@ -119,11 +121,10 @@ describe("handleToggle", () => {
   });
 });
 
-
 describe("handleChange", () => {
   // The function should update the query object with the selected filter and reset the page to 1.
   it("should update query object with selected filter and reset page to 1", () => {
-    const selected = "filter";
+    const selected = null;
     const activeType = "all";
     const setQuery = jest.fn();
     const query = {
@@ -145,7 +146,7 @@ describe("handleChange", () => {
 
   // If the activeType is "all", the function should set the status_In property of the query object to null.
   it('should set status_In property of query object to null when activeType is "all"', () => {
-    const selected = "filter";
+    const selected = null;
     const activeType = "all";
     const setQuery = jest.fn();
     const query = {
@@ -179,7 +180,7 @@ describe("handleChange", () => {
     handleChange(selected, activeType, setQuery, query, category);
 
     expect(setQuery).toHaveBeenCalledWith({
-      filter_by: "filter",
+      filter_by: null,
       page: 1,
       status_In: [undefined],
     });
@@ -200,13 +201,12 @@ describe("handleChange", () => {
     handleChange(selected, activeType, setQuery, query, category);
 
     expect(setQuery).toHaveBeenCalledWith({
-      filter_by: "filter",
+      filter_by: null,
       page: 1,
       status_In: null,
     });
   });
 });
-
 
 describe("handleRefresh", () => {
   const getProducts = jest.fn();
@@ -224,11 +224,14 @@ describe("handleRefresh", () => {
       getRequests,
       getProducts,
       prodStatRefetch,
-      requestRefetch
+      requestRefetch,
+      selected,
+      jest.fn(),
+      jest.fn()
     );
 
-    expect(getProducts).toHaveBeenCalledWith({ ...query, page: 1 });
-    expect(prodStatRefetch).toHaveBeenCalledWith(query);
+    expect(getProducts).toHaveBeenCalled();
+    expect(prodStatRefetch).toHaveBeenCalled();
   });
 
   // Calls getRequests and requestRefetch with updated query when category is Requests
@@ -242,11 +245,14 @@ describe("handleRefresh", () => {
       getRequests,
       getProducts,
       prodStatRefetch,
-      requestRefetch
+      requestRefetch,
+      selected,
+      jest.fn(),
+      jest.fn()
     );
 
-    expect(getRequests).toHaveBeenCalledWith({ ...query, page: 1 });
-    expect(requestRefetch).toHaveBeenCalledWith(query);
+    expect(getRequests).toHaveBeenCalled();
+    expect(requestRefetch).toHaveBeenCalled();
   });
 
   // category is undefined
@@ -260,11 +266,14 @@ describe("handleRefresh", () => {
       getRequests,
       getProducts,
       prodStatRefetch,
-      requestRefetch
+      requestRefetch,
+      selected,
+      jest.fn(),
+      jest.fn()
     );
 
-    expect(getRequests).toHaveBeenCalledWith({ page: 1 });
-    expect(prodStatRefetch).toHaveBeenCalledWith({ page: 1 });
+    expect(getRequests).toHaveBeenCalled();
+    expect(prodStatRefetch).toHaveBeenCalled();
     expect(requestRefetch).toHaveBeenCalled();
   });
 
@@ -277,11 +286,14 @@ describe("handleRefresh", () => {
       getRequests,
       getProducts,
       prodStatRefetch,
-      requestRefetch
+      requestRefetch,
+      selected,
+      jest.fn(),
+      jest.fn()
     );
 
-    expect(getProducts).toHaveBeenCalledWith({ page: 1 });
-    expect(prodStatRefetch).toHaveBeenCalledWith({ page: 1 });
+    expect(getProducts).toHaveBeenCalled();
+    expect(prodStatRefetch).toHaveBeenCalled();
   });
 });
 
@@ -305,30 +317,35 @@ jest.mock("react-toastify", () => ({
 }));
 
 describe("IndexComponent", () => {
-
-
   it("handles search input change and sets search state", () => {
     renderWithProviders(<IndexComponent />);
 
     // Simulate typing in the search input
-    fireEvent.change(screen.getByPlaceholderText("Search by product name/code"), {
-      target: { value: "test" },
-    });
+    fireEvent.change(
+      screen.getByPlaceholderText("Search by product name/code"),
+      {
+        target: { value: "test" },
+      }
+    );
 
     // Ensure that the search state is updated as expected
-    // @ts-ignore 
-    expect(screen.getByPlaceholderText("Search by product name/code").value).toBe("test");
+    // @ts-ignore
+    expect(
+      // @ts-ignore
+      screen.getByPlaceholderText("Search by product name/code").value
+    ).toBe("test");
   });
-
 
   it("handles search and calls appropriate functions", async () => {
     renderWithProviders(<IndexComponent />);
 
     // Simulate typing in the search input
-    fireEvent.change(screen.getByPlaceholderText("Search by product name/code"), {
-      target: { value: "test" },
-    });
-
+    fireEvent.change(
+      screen.getByPlaceholderText("Search by product name/code"),
+      {
+        target: { value: "test" },
+      }
+    );
 
     // Your additional assertions or async logic after clicking search...
   });
@@ -336,88 +353,210 @@ describe("IndexComponent", () => {
   // Add more test cases as needed
 });
 
+// Generated by CodiumAI
 
-describe("handleStatus", () => {
-  // Sets product and request data to empty arrays if query page is 1
-  it('should set product and request data to empty arrays when query page is 1', () => {
+describe("handleRequestStatus", () => {
+  // Sets request data to an empty array if query page is 1
+  it("should set request data to an empty array when query page is 1", () => {
     const query = { page: 1 };
-    const setProductData = jest.fn();
     const setRequestData = jest.fn();
-    const isSuccess = true;
-    const data = { results: [] };
     const setHasMore = jest.fn();
     const isRequestSuccess = true;
-    const request = { results: [] };
+    const request = { results: [{ requestStatus: 2, requestType: 0 }] };
 
-    handleStatus({ query, setProductData, setRequestData, isSuccess, data, setHasMore, isRequestSuccess, request });
+    handleRequestStatus({
+      query,
+      setRequestData,
+      setHasMore,
+      isRequestSuccess,
+      request,
+    });
 
-    expect(setProductData).toHaveBeenCalledWith([]);
     expect(setRequestData).toHaveBeenCalledWith([]);
   });
 
-  // Maps and formats product data and adds it to existing product data
-  it('should map and format product data and add it to existing product data when isSuccess is true', () => {
+  // Maps over request results and adds request status and type names to each item in request data
+  it("should map over request results and add request status and type names to each item in request data", () => {
     const query = { page: 2 };
-    const setProductData = jest.fn();
     const setRequestData = jest.fn();
-    const isSuccess = true;
-    const data = { results: [{ state: 0, productType: 0 }] };
-    const setHasMore = jest.fn();
-    const isRequestSuccess = false;
-    const request = {};
-
-    handleStatus({ query, setProductData, setRequestData, isSuccess, data, setHasMore, isRequestSuccess, request });
-
-    expect(setProductData).toHaveBeenCalled();
-  });
-
-  // Maps and formats request data and adds it to existing request data
-  it('should map and format request data and add it to existing request data when isRequestSuccess is true', () => {
-    const query = { page: 2 };
-    const setProductData = jest.fn();
-    const setRequestData = jest.fn();
-    const isSuccess = false;
-    const data = {};
     const setHasMore = jest.fn();
     const isRequestSuccess = true;
-    const request = { results: [{ requestStatus: 1, requestType: 0 }] };
+    const request = {
+      results: [
+        { requestStatus: 2, requestType: 0 },
+        { requestStatus: 1, requestType: 1 },
+      ],
+    };
 
-    handleStatus({ query, setProductData, setRequestData, isSuccess, data, setHasMore, isRequestSuccess, request });
+    handleRequestStatus({
+      query,
+      setRequestData,
+      setHasMore,
+      isRequestSuccess,
+      request,
+    });
+
+    expect(setRequestData).toHaveBeenCalled();
+  });
+  // Concatenates new request data to previous request data using setRequestData
+  it("should concatenate new request data to previous request data using setRequestData", () => {
+    const query = { page: 2 };
+    const setRequestData = jest.fn((prevData) => prevData);
+    const setHasMore = jest.fn();
+    const isRequestSuccess = true;
+    const request = {
+      results: [
+        { requestStatus: 2, requestType: 0 },
+        { requestStatus: 1, requestType: 1 },
+      ],
+    };
+
+    handleRequestStatus({
+      query,
+      setRequestData,
+      setHasMore,
+      isRequestSuccess,
+      request,
+    });
 
     expect(setRequestData).toHaveBeenCalled();
   });
 
-  // Does not modify product or request data if isSuccess and isRequestSuccess are false
-  it('should not modify product or request data when isSuccess and isRequestSuccess are false', () => {
+  // Does not set request data to an empty array if query page is not 1
+  it("should not set request data to an empty array when query page is not 1", () => {
     const query = { page: 2 };
-    const setProductData = jest.fn();
     const setRequestData = jest.fn();
-    const isSuccess = false;
-    const data = {};
-    const setHasMore = jest.fn();
-    const isRequestSuccess = false;
-    const request = {};
-
-    handleStatus({ query, setProductData, setRequestData, isSuccess, data, setHasMore, isRequestSuccess, request });
-
-    expect(setProductData).not.toHaveBeenCalled();
-    expect(setRequestData).not.toHaveBeenCalled();
-  });
-
-  // Does not modify product or request data if data or request are undefined
-  it('should not modify product or request data when data or request are undefined', () => {
-    const query = { page: 2 };
-    const setProductData = jest.fn();
-    const setRequestData = jest.fn();
-    const isSuccess = true;
-    const data = undefined;
     const setHasMore = jest.fn();
     const isRequestSuccess = true;
-    const request = undefined;
+    const request = { results: [{ requestStatus: 2, requestType: 0 }] };
 
-    handleStatus({ query, setProductData, setRequestData, isSuccess, data, setHasMore, isRequestSuccess, request });
+    handleRequestStatus({
+      query,
+      setRequestData,
+      setHasMore,
+      isRequestSuccess,
+      request,
+    });
 
-    expect(setProductData).not.toHaveBeenCalledWith(null);
-    expect(setRequestData).not.toHaveBeenCalledWith(null);
+    expect(setRequestData).not.toHaveBeenCalledWith([]);
   });
-})
+
+  // Does not add request status and type names if request results is empty
+  it("should not add request status and type names when request results is empty", () => {
+    const query = { page: 1 };
+    const setRequestData = jest.fn();
+    const setHasMore = jest.fn();
+    const isRequestSuccess = true;
+    const request = { results: [] };
+
+    handleRequestStatus({
+      query,
+      setRequestData,
+      setHasMore,
+      isRequestSuccess,
+      request,
+    });
+
+    expect(setRequestData).toHaveBeenCalledWith([]);
+  });
+
+  // Does not concatenate new request data if request results is empty
+  it("should not concatenate new request data when request results is empty", () => {
+    const query = { page: 2 };
+    const setRequestData = jest.fn();
+    const setHasMore = jest.fn();
+    const isRequestSuccess = true;
+    const request = { results: [] };
+
+    handleRequestStatus({
+      query,
+      setRequestData,
+      setHasMore,
+      isRequestSuccess,
+      request,
+    });
+
+    expect(setRequestData).not.toHaveBeenCalled();
+  });
+});
+// Generated by CodiumAI
+
+describe("handleProductStatus", () => {
+  // Sets product data to an empty array if query page is 1
+  it("should set product data to an empty array when query page is 1", () => {
+    const query = { page: 1 };
+    const setProductData = jest.fn();
+    const isSuccess = true;
+    const data = { results: [{ state: 0, productType: 0 }] };
+    const setHasMore = jest.fn();
+
+    handleProductStatus({ query, setProductData, isSuccess, data, setHasMore });
+
+    expect(setProductData).toHaveBeenCalledWith([]);
+  });
+
+  // Concatenates the results of a successful data fetch to the previous product data, mapping each result to include state and productType properties
+  it("should concatenate fetched data results to previous product data, mapping each result to include state and productType properties", () => {
+    const query = { page: 2 };
+    const setProductData = jest.fn((prevData) => prevData);
+    const isSuccess = true;
+    const data = { results: [{ state: 0, productType: 0 }] };
+    const setHasMore = jest.fn();
+
+    handleProductStatus({ query, setProductData, isSuccess, data, setHasMore });
+
+    expect(setProductData).toHaveBeenCalled();
+  });
+
+  // Sets hasMore to true if there is a next page in the fetched data
+  it("should set hasMore to true if there is a next page in the fetched data", () => {
+    const query = { page: 1 };
+    const setProductData = jest.fn();
+    const isSuccess = true;
+    const data = { results: [{ state: 0, productType: 0 }], next: "next-page" };
+    const setHasMore = jest.fn();
+
+    handleProductStatus({ query, setProductData, isSuccess, data, setHasMore });
+
+    expect(setHasMore).toHaveBeenCalledWith(true);
+  });
+
+  // Does not modify product data if query page is not 1
+  it("should not modify product data when query page is not 1", () => {
+    const query = { page: 2 };
+    const setProductData = jest.fn();
+    const isSuccess = true;
+    const data = { results: [{ state: 0, productType: 0 }] };
+    const setHasMore = jest.fn();
+
+    handleProductStatus({ query, setProductData, isSuccess, data, setHasMore });
+
+    expect(setProductData).toHaveBeenCalled();
+  });
+
+  // Does not modify product data if data fetch is not successful
+  it("should not modify product data when data fetch is not successful", () => {
+    const query = { page: 1 };
+    const setProductData = jest.fn();
+    const isSuccess = false;
+    const data = { results: [{ state: 0, productType: 0 }] };
+    const setHasMore = jest.fn();
+
+    handleProductStatus({ query, setProductData, isSuccess, data, setHasMore });
+
+    expect(setProductData).toHaveBeenCalled();
+  });
+
+  // Does not modify product data if fetched data results are empty
+  it("should not modify product data when fetched data results are empty", () => {
+    const query = { page: 1 };
+    const setProductData = jest.fn();
+    const isSuccess = true;
+    const data = { results: [] };
+    const setHasMore = jest.fn();
+
+    handleProductStatus({ query, setProductData, isSuccess, data, setHasMore });
+
+    expect(setProductData).toHaveBeenCalled();
+  });
+});

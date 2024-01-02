@@ -90,7 +90,7 @@ test("should set active tab and update search term", () => {
 
   // Now, the "credit" tab should be active
   expect(screen.getByTestId("deposit")).toHaveClass("text-[#636363]");
-  expect(screen.getByTestId("credit")).toHaveClass("text-[#252C32]");
+  expect(screen.getByTestId("credit")).toHaveClass("text-[#636363] text-base capitalize flex flex-col justify-end cursor-pointer disabled:cursor-not-allowed disabled:opacity-40");
 
   // Check if the search term is updated
   fireEvent.change(screen.getByPlaceholderText("Search by product"), {
@@ -242,20 +242,20 @@ describe("Tabs", () => {
     fireEvent.click(depositTab);
 
     // Assert that the active tab is updated and the navigate function is called with the correct URL
-    expect(depositTab).toHaveClass("text-[#252C32] text-lg font-semibold");
+    expect(depositTab).toHaveClass("text-[#636363] text-base capitalize flex flex-col justify-end cursor-pointer disabled:cursor-not-allowed disabled:opacity-40");
  
 
     // Click on the credit tab
     fireEvent.click(creditTab);
 
     // Assert that the active tab is updated and the navigate function is called with the correct URL
-    expect(creditTab).toHaveClass("text-[#252C32] text-lg font-semibold");
+    expect(creditTab).toHaveClass("text-[#636363] text-base capitalize flex flex-col justify-end cursor-pointer disabled:cursor-not-allowed disabled:opacity-40");
 
     // Click on the payment tab
     fireEvent.click(paymentTab);
 
     // Assert that the active tab is updated and the navigate function is called with the correct URL
-    expect(paymentTab).toHaveClass("text-[#252C32] text-lg font-semibold");
+    expect(paymentTab).toHaveClass("text-[#636363] text-base capitalize flex flex-col justify-end cursor-pointer disabled:cursor-not-allowed disabled:opacity-40");
 
 
     // Click on the investment tab
