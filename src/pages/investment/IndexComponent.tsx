@@ -55,21 +55,18 @@ export const handleChange = (
   });
 };
 
-export const handleStatus = ({
+export const handleProductStatus = ({
   query,
   setProductData,
-  setRequestData,
   isSuccess,
   data,
   setHasMore,
-  isRequestSuccess,
-  request,
 }) => {
   if (query.page === 1) {
     setProductData([]);
-    setRequestData([]);
   }
-  if (isSuccess) {
+
+  if (isSuccess && data.results.length) {
     setProductData((prevData) => [
       ...prevData.concat(
         data.results.map((i) => ({
@@ -79,9 +76,22 @@ export const handleStatus = ({
         }))
       ),
     ]);
-    !data?.next ? setHasMore(false) : setHasMore(true);
+
+    setHasMore(!!data?.next);
   }
-  if (isRequestSuccess) {
+};
+export const handleRequestStatus = ({
+  query,
+  setRequestData,
+  setHasMore,
+  isRequestSuccess,
+  request,
+}) => {
+  if (query.page === 1) {
+    setRequestData([]);
+  }
+
+  if (isRequestSuccess && request.results.length) {
     setRequestData((prevData) => [
       ...prevData.concat(
         ...request.results.map((i) => ({
@@ -94,7 +104,8 @@ export const handleStatus = ({
         }))
       ),
     ]);
-    !request?.next ? setHasMore(false) : setHasMore(true);
+
+    setHasMore(!!request?.next);
   }
 };
 
@@ -104,13 +115,18 @@ export const handleRefresh = (
   getRequests,
   getProducts,
   prodStatRefetch,
-  requestRefetch
+  requestRefetch,
+  selected,
+  setProductData,
+  setRequestData
 ) => {
   if (category === StatusCategoryType.AllProducts) {
-    getProducts({ ...query, page: 1 });
+    setProductData([]);
+    getProducts({ ...query, page: 1, filter_by: selected?.value });
     prodStatRefetch(query);
   } else {
-    getRequests({ ...query, page: 1 });
+    setRequestData([]);
+    getRequests({ ...query, page: 1, filter_by: selected?.value });
     requestRefetch(query);
   }
 };
@@ -146,7 +162,7 @@ export default function IndexComponent() {
   const [productData, setProductData] = useState<any[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [query, setQuery] = useState({
-    filter_by: selected?.value,
+    // filter_by: selected?.value,
     status_In: null,
     search: "",
     start_Date: null,
@@ -157,6 +173,7 @@ export default function IndexComponent() {
     requestType_In: null,
     initiator_In: null,
     approvers_In: null,
+    total: 0,
   });
   const value = useMemo(
     () => ({
@@ -236,7 +253,7 @@ export default function IndexComponent() {
     refetch: prodStatRefetch,
     isFetching: prodStatLoading,
   } = useGetProductStatsQuery(
-    { ...query, filter_by: selected?.value },
+    { filter_by: selected?.value },
     {
       skip: category !== StatusCategoryType.AllProducts,
     }
@@ -247,7 +264,7 @@ export default function IndexComponent() {
     refetch: requestRefetch,
     isFetching: requestStatLoading,
   } = useGetRequestStatsQuery(
-    { ...query, filter_by: selected?.value },
+    { filter_by: selected?.value },
     {
       skip: category !== StatusCategoryType.Requests,
     }
@@ -261,15 +278,11 @@ export default function IndexComponent() {
 
     if (category === StatusCategoryType.AllProducts) {
       getProducts({ ...query, page: 1, filter_by: selected?.value });
-      // prodStatRefetch({ ...query, page: 1, filter_by: selected?.value });
     } else {
       getRequests({ ...query, page: 1, filter_by: selected?.value });
-      // requestRefetch({ ...query, page: 1, filter_by: selected?.value });
     }
   }, [
     selected,
-    // category,
-    // query.filter_by,
     query.search,
     query.status_In,
     query.productType_In,
@@ -289,25 +302,25 @@ export default function IndexComponent() {
 
   useEffect(
     () =>
-      handleStatus({
+      handleProductStatus({
         query,
         setProductData,
-        setRequestData,
         isSuccess,
         data,
+        setHasMore,
+      }),
+    [data, isSuccess, isError, query]
+  );
+  useEffect(
+    () =>
+      handleRequestStatus({
+        query,
+        setRequestData,
         setHasMore,
         isRequestSuccess,
         request,
       }),
-    [
-      data,
-      request,
-      isSuccess,
-      isRequestSuccess,
-      isError,
-      isRequestError,
-      query.page,
-    ]
+    [request, isRequestSuccess, isRequestError, query]
   );
 
   const { data: systemAlertData, isSuccess: systemAlertDataSuccess } =
@@ -327,22 +340,26 @@ export default function IndexComponent() {
   }, [preview, productId]);
 
   const fetchMoreData = () => {
-    setTimeout(() => {
-      setQuery((prevQuery) => {
-        const updatedPage = prevQuery.page + 1;
-        if (category === StatusCategoryType.AllProducts) {
-          getProducts({ ...prevQuery, page: updatedPage });
-          prodStatRefetch({ ...prevQuery, page: updatedPage });
-        } else {
-          getRequests({ ...prevQuery, page: updatedPage });
-          requestRefetch({ ...prevQuery, page: updatedPage });
-        }
-        return {
+    setQuery((prevQuery) => {
+      const updatedPage = prevQuery.page + 1;
+      if (category === StatusCategoryType.AllProducts) {
+        getProducts({
           ...prevQuery,
           page: updatedPage,
-        };
-      });
-    }, 1000);
+          filter_by: selected?.value,
+        });
+      } else {
+        getRequests({
+          ...prevQuery,
+          page: updatedPage,
+          filter_by: selected?.value,
+        });
+      }
+      return {
+        ...prevQuery,
+        page: updatedPage,
+      };
+    });
   };
 
   return (
@@ -363,16 +380,20 @@ export default function IndexComponent() {
             <div className="bg-white px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16">
               {" "}
               <TableComponent
-                handleRefresh={() =>
+                handleRefresh={() => {
                   handleRefresh(
                     category,
                     query,
                     getRequests,
                     getProducts,
                     prodStatRefetch,
-                    requestRefetch
-                  )
-                }
+                    requestRefetch,
+                    selected,
+                    setProductData,
+                    setRequestData
+                  );
+                  setQuery({ ...query, page: 1 });
+                }}
                 handleSearch={(value) => handleSearch(value, query, setQuery)}
                 productData={useMemo(() => productData, [productData])}
                 requestData={useMemo(() => requestData, [requestData])}

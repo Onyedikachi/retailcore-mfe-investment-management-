@@ -425,7 +425,7 @@ export default function TableComponent({
             : requestData
         }
         page={1}
-        total={20}
+        total={query.total}
         fetchMoreData={fetchMoreData}
         hasMore={hasMore}
         getOptionData={getOptionData}

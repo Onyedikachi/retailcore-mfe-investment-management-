@@ -336,10 +336,8 @@ export default function StatusCard({
   // const { permissions } = useContext(AppContext);
 
   const [activeType, setActiveType] = useState<string | undefined>("all");
-  const [filteredProductOptions, setFilteredProductOptions] =
-    useState(ProductOptions);
-  const [filteredRequestOptions, setFilteredRequestOptions] =
-    useState(RequestOptions);
+  const [filteredProductOptions, setFilteredProductOptions] = useState([]);
+  const [filteredRequestOptions, setFilteredRequestOptions] = useState([]);
   const { isChecker, selected, setSelected, category, setCategory, status } =
     useContext(InvestmentContext);
   const { permissions } = useContext(AppContext);
@@ -377,6 +375,15 @@ export default function StatusCard({
       setFilteredProductOptions
     );
   }, [permissions, category]);
+
+  useEffect(() => {
+    setSelected(
+      category === StatusCategoryType.Requests
+        ? filteredRequestOptions[0]
+        : filteredProductOptions[0]
+    );
+  }, [category, filteredProductOptions, filteredRequestOptions]);
+
   return (
     <div className="flex border border-[#E5E9EB] rounded-lg">
       <div className=" w-[208px] rounded-l-lg border-r border-[#D0D5DD] overflow-hidden">
@@ -407,7 +414,7 @@ export default function StatusCard({
             />
           ))}
         </div>
-    
+
         <div>
           <Select
             options={

@@ -317,12 +317,13 @@ export default function TableComponent<TableProps>({
           dataLength={tableRows?.length}
           next={fetchMoreData}
           hasMore={hasMore}
-          loader={
-            <div className="text-xs text-center py-6 text-gray-500 relative flex itemx-center justify-center gap-x-1">
-              Loading data...
-              <span className="spinner-border h-4 w-4 border-t border-gray-500 rounded-full animate-spin"></span>
-            </div>
-          }
+          loader={""}
+          // loader={
+          //   <div className="text-xs text-center py-6 text-gray-500 relative flex itemx-center justify-center gap-x-1">
+          //     Loading data...
+          //     <span className="spinner-border h-4 w-4 border-t border-gray-500 rounded-full animate-spin"></span>
+          //   </div>
+          // }
           endMessage={
             !isLoading && (
               <div className="text-xs text-center py-6 text-gray-500">
@@ -525,7 +526,14 @@ export default function TableComponent<TableProps>({
               </tbody>
             )}
           </table>
-        </InfiniteScroll>{" "}
+
+          {isLoading && (
+            <div className="text-xs text-center py-6 text-gray-500 relative flex itemx-center justify-center gap-x-1">
+              Loading data...
+              <span className="spinner-border h-4 w-4 border-t border-gray-500 rounded-full animate-spin"></span>
+            </div>
+          )}
+        </InfiniteScroll>
       </div>
       {/* @ts-ignore */}
       <MessagesComponent
