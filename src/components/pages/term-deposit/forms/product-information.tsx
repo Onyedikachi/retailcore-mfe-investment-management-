@@ -143,10 +143,9 @@ export default function ProductInformation({
   });
 
   //useState
-  const {currencies} = useContext(AppContext)
+  const { currencies } = useContext(AppContext);
   const values = getValues();
-  
-  console.log("🚀 ~ file: product-information.tsx:148 ~ values:", values)
+
   const productFormRef = useRef();
   const { process } = useParams();
   const [error, setError] = useState<string>("");
@@ -168,7 +167,6 @@ export default function ProductInformation({
     },
   ] = useValidateNameMutation();
 
-  
   useEffect(() => {
     handleValidatingName(
       nameIsSuccess,
@@ -182,14 +180,14 @@ export default function ProductInformation({
     );
   }, [nameIsSuccess, nameIsError]);
 
-  // function onProceed(d: any) {
-  //   setFormData({
-  //     ...d,
-  //     startDate: d.startDate && moment(d.startDate).format("yyyy-MM-DD"),
-  //     endDate: d.endDate && moment(d.endDate).format("yyyy-MM-DD"),
-  //   });
-  //   proceed();
-  // }
+  useEffect(() => {
+    const currency = currencies.find(
+      (i) => i.text.toLowerCase() === "ngn"
+    )?.value;
+    formData.currency = currency;
+    setValue("productName", currency);
+  }, [currencies]);
+
   useEffect(() => {
     if (initiateDraft) {
       setFormData({
