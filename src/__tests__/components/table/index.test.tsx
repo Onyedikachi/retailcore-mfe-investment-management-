@@ -197,7 +197,7 @@ describe("TableComponent", () => {
     );
 
     // Assert
-    expect(screen.getByTestId("bottom-bar-loader")).toBeInTheDocument();
+    expect(screen.getByText("Loading data...")).toBeInTheDocument();
   });
 });
 describe("TextCellContent", () => {

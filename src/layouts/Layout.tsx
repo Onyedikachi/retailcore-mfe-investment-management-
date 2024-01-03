@@ -1,9 +1,10 @@
 import { Outlet } from "react-router-dom";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import AuthGuard from "./AuthGuard";
 import { AppContext } from "@app/utils/context";
 import { auth$ } from "@Sterling/shared";
 import { useGetCurrenciesQuery } from "@app/api";
+import { RequiredInvestmentPermissions } from "@app/constants";
 
 export function handleRole(setRole, value) {
   if (value?.user?.is_superuser) {
@@ -16,6 +17,7 @@ const Layout = () => {
   const [permissions, setPermissions] = useState([]);
   const [role, setRole] = useState("default");
   const [currencies, setCurrencies] = useState<any[]>([]);
+  const userId = useRef(null);
   const value = useMemo(
     () => ({
       role,
@@ -23,14 +25,27 @@ const Layout = () => {
       permissions,
       currencies,
       setCurrencies,
+      userId: userId.current,
     }),
 
-    [role, setRole, permissions, currencies, setCurrencies]
+    [role, setRole, permissions, currencies, setCurrencies, userId.current]
   );
   useEffect(() => {
     auth$?.subscribe((value) => {
-      setPermissions(value?.user?.user_permissions || []);
+      const userPermissions = value?.user?.user_permissions;
+      const canProceed =
+        userPermissions &&
+        userPermissions.length &&
+        RequiredInvestmentPermissions.some((item) =>
+          userPermissions.includes(item)
+        );
 
+      if (userPermissions && userPermissions.length && !canProceed) {
+        window.location.href = "https://seabaas.dev.bepeerless.co";
+      }
+      setPermissions(userPermissions || []);
+
+      userId.current = value?.user?.id;
       handleRole(setRole, value);
     });
   }, []);

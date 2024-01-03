@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useRef, Fragment } from "react";
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  Fragment,
+  useContext,
+} from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 import { paths } from "@app/routes/paths";
@@ -29,6 +35,7 @@ import { Messages } from "@app/constants/enums";
 import { handleDraft } from "./handleDraft";
 import handleFormRef from "./handleFormRef";
 import FormComponent from "../FormComponent";
+import { AppContext } from "@app/utils";
 
 export function handleNext(step, setStep, termDepositFormSteps) {
   step < termDepositFormSteps.length && setStep(step + 1);
@@ -69,13 +76,14 @@ export const handleDetailsSuccess = (
     const pricingConfigurationCopy = JSON.parse(
       JSON.stringify(productDetails?.data?.pricingConfiguration)
     );
-  
+
     if (pricingConfigurationCopy) {
-      pricingConfigurationCopy.interestRateConfigModels = pricingConfigurationCopy.interestRateConfigModels?.sort(
-        (a, b) => a.min - b.min
-      );
+      pricingConfigurationCopy.interestRateConfigModels =
+        pricingConfigurationCopy.interestRateConfigModels?.sort(
+          (a, b) => a.min - b.min
+        );
     }
-  
+
     return {
       ...prevProductData,
       productInfo: productDetails?.data?.productInfo,
@@ -83,7 +91,8 @@ export const handleDetailsSuccess = (
       pricingConfiguration: pricingConfigurationCopy,
       liquidation: productDetails?.data?.liquidation,
       productGlMappings: productDetails?.data?.productGlMappings,
-      interestComputationMethod: productDetails?.data?.interestComputationMethod,
+      interestComputationMethod:
+        productDetails?.data?.interestComputationMethod,
       TermDepositLiabilityAccount:
         productDetails?.data?.TermDepositLiabilityAccount,
       InterestAccrualAccount: productDetails?.data?.InterestAccrualAccount,
@@ -92,7 +101,6 @@ export const handleDetailsSuccess = (
       productType: productDetails?.data?.productType,
     };
   });
-  
 };
 
 export default function CreateTermDeposit() {
@@ -111,6 +119,7 @@ export default function CreateTermDeposit() {
   const [failedSubText, setFailedSubtext] = useState("");
   const [failedText, setFailedText] = useState("");
   const [initiateDraft, setInitiateDraft] = useState(false);
+  const { currencies } = useContext(AppContext);
   const [productData, setProductData] = useState({
     productInfo: {
       productName: "",
@@ -118,7 +127,7 @@ export default function CreateTermDeposit() {
       description: "",
       startDate: new Date(),
       endDate: null,
-      currency: "09c29985-5985-42f7-a771-a00323c57109",
+      currency: currencies.find((i) => i.text.toLowerCase() === "ngn")?.value,
     },
     customerEligibility: {
       ageGroupMin: 0,

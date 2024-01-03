@@ -200,7 +200,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                   )}
                 <span className="flex itmes-center">
                   {" "}
-                  {detail?.productInfo?.currency}{" "}
+                  {handleCurrencyName(detail?.productInfo?.currency)}{" "}
                   {previousData &&
                     previousData?.currency &&
                     previousData?.currency !==
