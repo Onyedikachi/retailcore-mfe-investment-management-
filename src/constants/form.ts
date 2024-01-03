@@ -58,7 +58,7 @@ export const CustomerEligibilityCriteriaSchema = yup
                 value < ageGroupMax
               );
             }
-        
+
             // Return true if ageGroupMax is not greater than 0
             return true;
           }),
@@ -154,23 +154,8 @@ export const pricingConfigSchema = yup.object({
   applicableTenorMin: yup
     .number()
     .typeError("Invalid value")
-    .required("Min is required")
-    .test("min-less-than-max", "Must be greater than Min", function (value) {
-      const applicableTenorMax = this.resolve(yup.ref("applicableTenorMax"));
-      const applicableTenorMinUnit = this.resolve(
-        yup.ref("applicableTenorMinUnit")
-      );
-      const applicableTenorMaxUnit = this.resolve(
-        yup.ref("applicableTenorMaxUnit")
-      );
+    .required("Min is required"),
 
-      return (
-        value === undefined ||
-        applicableTenorMax === undefined ||
-        convertToDays(value, applicableTenorMinUnit) <
-          convertToDays(applicableTenorMax, applicableTenorMaxUnit)
-      );
-    }),
   applicablePrincipalMin: yup
     .number()
     .typeError("Invalid value")
@@ -278,7 +263,7 @@ export const pricingConfigSchema = yup.object({
           ) {
             errors.push(
               new ValidationError(
-                "Minimum value must be greater than the previous slab's maximum value.",
+                "Min value must be greater than the previous slab's max value.",
                 current,
                 `interestRateConfigModels[${i}].min`
               )
@@ -292,13 +277,13 @@ export const pricingConfigSchema = yup.object({
           ) {
             errors.push(
               new ValidationError(
-                "Maximum value must be greater than the minimum value.",
+                "Max value must be greater than the min value.",
                 current,
                 `interestRateConfigModels[${i}].max`
               )
             );
           }
-
+          // Vary by principal starts here
           if (rateType === 0) {
             if (
               [current?.principalMax, current?.principalMin].some(
@@ -326,7 +311,7 @@ export const pricingConfigSchema = yup.object({
             ) {
               errors.push(
                 new ValidationError(
-                  "Principal minimum value must be greater than the previous slab's maximum principal value.",
+                  "Principal min value must be greater than the previous slab's max principal value.",
                   current,
                   `interestRateConfigModels[${i}].principalMin`
                 )
@@ -340,7 +325,7 @@ export const pricingConfigSchema = yup.object({
             ) {
               errors.push(
                 new ValidationError(
-                  "Principal maximum value must be greater than the minimum principal value.",
+                  "Principal max value must be greater than the min principal value.",
                   current,
                   `interestRateConfigModels[${i}].principalMax`
                 )
@@ -354,9 +339,22 @@ export const pricingConfigSchema = yup.object({
             ) {
               errors.push(
                 new ValidationError(
-                  `Maximum principal is ${currencyFormatter(appPrinMax)}`,
+                  `Max principal is ${currencyFormatter(appPrinMax)}`,
                   last,
                   `interestRateConfigModels[${value.length - 1}].principalMax`
+                )
+              );
+            }
+            if (
+              appPrinMax !== undefined &&
+              last?.principalMin !== undefined &&
+              last.principalMin >= appPrinMax
+            ) {
+              errors.push(
+                new ValidationError(
+                  `Min principal must be less than ${currencyFormatter(appPrinMax)}`,
+                  last,
+                  `interestRateConfigModels[${value.length - 1}].principalMin`
                 )
               );
             }
@@ -368,14 +366,14 @@ export const pricingConfigSchema = yup.object({
             ) {
               errors.push(
                 new ValidationError(
-                  `Minimum principal is ${currencyFormatter(appPrinMin)}`,
+                  `Min principal is ${currencyFormatter(appPrinMin)}`,
                   first,
                   `interestRateConfigModels[${0}].principalMin`
                 )
               );
             }
           }
-
+          // Vary by tenor starts here
           if (rateType === 1) {
             if (
               [current?.tenorMax, current?.tenorMin].some(
@@ -405,7 +403,7 @@ export const pricingConfigSchema = yup.object({
             ) {
               errors.push(
                 new ValidationError(
-                  "Tenor minimum value must be greater than the previous slab's maximum tenor value.",
+                  "Tenor min value must be greater than the previous slab's max tenor value.",
                   current,
                   `interestRateConfigModels[${i}].tenorMin`
                 )
@@ -420,7 +418,7 @@ export const pricingConfigSchema = yup.object({
             ) {
               errors.push(
                 new ValidationError(
-                  "Tenor maximum value must be greater than the minimum tenor value.",
+                  "Tenor max value must be greater than the min tenor value.",
                   current,
                   `interestRateConfigModels[${i}].tenorMax`
                 )
@@ -435,7 +433,7 @@ export const pricingConfigSchema = yup.object({
             ) {
               errors.push(
                 new ValidationError(
-                  `Maximum tenor  is ${appTenorMax} ${
+                  `Max tenor  is ${appTenorMax} ${
                     IntervalOptions[appTenorMaxUnit - 1].text
                   }`,
                   last,
@@ -443,6 +441,24 @@ export const pricingConfigSchema = yup.object({
                 )
               );
             }
+
+            if (
+              appTenorMax !== undefined &&
+              last?.tenorMin !== undefined &&
+              convertToDays(last.tenorMin, last.tenorMinUnit) >=
+                convertToDays(appTenorMax, appTenorMaxUnit)
+            ) {
+              errors.push(
+                new ValidationError(
+                  `Min tenor must be less than ${appTenorMax} ${
+                    IntervalOptions[appTenorMaxUnit - 1].text
+                  }`,
+                  last,
+                  `interestRateConfigModels[${value.length - 1}].tenorMin`
+                )
+              );
+            }
+
             if (
               appTenorMin !== undefined &&
               first?.tenorMin !== undefined &&
@@ -451,7 +467,7 @@ export const pricingConfigSchema = yup.object({
             ) {
               errors.push(
                 new ValidationError(
-                  `Minimum tenor is ${appTenorMin} ${
+                  `Min tenor is ${appTenorMin} ${
                     IntervalOptions[appTenorMinUnit - 1].text
                   }`,
                   first,
@@ -698,10 +714,14 @@ export const toolTips = {
     "The allowed investment maturity duration at the point of booking the product for a customer",
   applicablePrincipal:
     "The allowed investment amount at the point of booking the product for the customer",
-  applicableInterestRange: "Specify the percentage a which interest will be charged on the loan amount",
-  interestComputation: "<div><p>30E/360: Counts the days from the calendar, but also introduces some changes on the months with 31 and 28 days.</p><p>Actual/360: Computes the interest daily by counting the number of days in the calendar, but using a fixed 360-day year length.</p><p>Actual/365: Calculates the interest daily by counting the number of days in the calendar and using a fixed 365-day year length</p></div>",
+  applicableInterestRange:
+    "Specify the percentage a which interest will be charged on the loan amount",
+  interestComputation:
+    "<div><p>30E/360: Counts the days from the calendar, but also introduces some changes on the months with 31 and 28 days.</p><p>Actual/360: Computes the interest daily by counting the number of days in the calendar, but using a fixed 360-day year length.</p><p>Actual/365: Calculates the interest daily by counting the number of days in the calendar and using a fixed 365-day year length</p></div>",
 
-  allowPartLiquidation: "Allows customers to access their investment funds without fully cashing out their investment.",
-  allowEarlyLiquidation: "Allows for withdrawing or closing the investment before its predetermined maturity date",
-  description: "Enter a description for this loan product"
+  allowPartLiquidation:
+    "Allows customers to access their investment funds without fully cashing out their investment.",
+  allowEarlyLiquidation:
+    "Allows for withdrawing or closing the investment before its predetermined maturity date",
+  description: "Enter a description for this loan product",
 };

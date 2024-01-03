@@ -54,8 +54,20 @@ interface TableProps {
   noData?: string;
 }
 
-export const statusHandler = ({isSuccess, setSuccessText, setIsSuccessOpen, activateSuccess, isError,
-  setFailedText, setFailed, activateIsError, activateError, setFailedSubtext, error,  role}) => {
+export const statusHandler = ({
+  isSuccess,
+  setSuccessText,
+  setIsSuccessOpen,
+  activateSuccess,
+  isError,
+  setFailedText,
+  setFailed,
+  activateIsError,
+  activateError,
+  setFailedSubtext,
+  error,
+  role,
+}) => {
   if (isSuccess) {
     setSuccessText(Messages.PRODUCT_DELETE_SUCCESS);
     setIsSuccessOpen(true);
@@ -70,16 +82,18 @@ export const statusHandler = ({isSuccess, setSuccessText, setIsSuccessOpen, acti
   }
   if (isError) {
     setFailedText(Messages.PRODUCT_DELETE_FAILED);
-    setFailedSubtext(error?.message?.message);
+    setFailedSubtext(error?.message?.message || error?.message?.Message);
     setFailed(true);
   }
 
   if (activateIsError) {
     setFailedText(Messages.PRODUCT_ACTIVATE_FAILED);
-    setFailedSubtext(activateError?.message?.message);
+    setFailedSubtext(
+      activateError?.message?.message || activateError?.message?.Message
+    );
     setFailed(true);
   }
-}
+};
 
 export function handleUpdated(key, value, options) {
   if (!options || !value) return;
@@ -115,7 +129,9 @@ export const handleProductsDropdown = (
   isChecker,
   DropDownOptions,
   locked = false,
-  permissions: string[] = []
+  permissions: string[] = [],
+  created_By_Id,
+  userId
 ): any => {
   if (!status) return [];
   if (isChecker) {
@@ -131,7 +147,12 @@ export const handleProductsDropdown = (
           i.text.toLowerCase() !== "activate"
       );
     }
-    if (!permissions?.includes("CREATE_INVESTMENT_PRODUCT")) {
+    if (
+      !permissions?.includes("CREATE_INVESTMENT_PRODUCT") ||
+      (permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&
+        !permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS") &&
+        created_By_Id !== userId)
+    ) {
       options = options?.filter(
         (i: any) =>
           i.text.toLowerCase() !== "modify" && i.text.toLowerCase() !== "clone"
@@ -201,7 +222,7 @@ export default function TableComponent<TableProps>({
   type = "",
   noData = "No data available",
 }) {
-  const { role, permissions } = useContext(AppContext);
+  const { role, permissions, userId } = useContext(AppContext);
   const {
     isChecker,
     category,
@@ -272,20 +293,47 @@ export default function TableComponent<TableProps>({
     });
 
   useEffect(() => {
-    statusHandler({isSuccess, setSuccessText, setIsSuccessOpen, activateSuccess, isError,
-      setFailedText, setFailed, activateIsError, activateError, setFailedSubtext, error,  role})
+    statusHandler({
+      isSuccess,
+      setSuccessText,
+      setIsSuccessOpen,
+      activateSuccess,
+      isError,
+      setFailedText,
+      setFailed,
+      activateIsError,
+      activateError,
+      setFailedSubtext,
+      error,
+      role,
+    });
   }, [isSuccess, isError, error, activateSuccess, activateIsError]);
 
   return (
     <div>
       {" "}
-      <InfiniteScroll
-        dataLength={tableRows?.length}
-        next={fetchMoreData}
-        hasMore={hasMore}
-        loader={""}
-      >
-        <div className="relative min-h-[400px] max-h-[70vh] overflow-y-auto">
+      <div id="tableContainer" className="relative min-h-[400px]">
+        <InfiniteScroll
+          dataLength={tableRows?.length}
+          next={fetchMoreData}
+          hasMore={hasMore}
+          loader={""}
+          // loader={
+          //   <div className="text-xs text-center py-6 text-gray-500 relative flex itemx-center justify-center gap-x-1">
+          //     Loading data...
+          //     <span className="spinner-border h-4 w-4 border-t border-gray-500 rounded-full animate-spin"></span>
+          //   </div>
+          // }
+          endMessage={
+            !isLoading && (
+              <div className="text-xs text-center py-6 text-gray-500">
+                No more data
+              </div>
+            )
+          }
+          scrollableTarget="tableContainer"
+          height="70vh"
+        >
           <table className="w-full relative">
             <thead
               className={`${
@@ -332,7 +380,7 @@ export default function TableComponent<TableProps>({
                 )}
               </tr>
             </thead>
-            {tableRows?.length > 0 && !isLoading && (
+            {tableRows?.length > 0 && (
               <tbody>
                 {tableRows.map((item: any, index) => (
                   <tr
@@ -351,7 +399,9 @@ export default function TableComponent<TableProps>({
                                 header.key !== "state" &&
                                 header.key !== "updated_At" &&
                                 header.key !== "requestStatus" && (
-                                  <TextCellContent value={item[header.key]} />
+                                  <TextCellContent
+                                    value={item[header.key] || "-"}
+                                  />
                                 )}
                               {header.key === "state" && (
                                 <StateCellContent value={item[header.key]} />
@@ -380,18 +430,22 @@ export default function TableComponent<TableProps>({
                               {!isChecker ? (
                                 <ActionsCellContent
                                   dropDownOptions={
-                                    type === "all products"
+                                    type === StatusCategoryType.AllProducts
                                       ? handleProductsDropdown(
                                           item.state,
                                           isChecker,
                                           dropDownOptions,
                                           item.islocked,
-                                          permissions
+                                          permissions,
+                                          item.created_By_Id,
+                                          userId
                                         )
                                       : handleDropdown(
                                           item.requestStatus,
                                           item.requestType,
-                                          permissions
+                                          permissions,
+                                          item.created_By_Id,
+                                          userId
                                         )
                                   }
                                   onClick={(e: any) => handleAction(e, item)}
@@ -472,9 +526,15 @@ export default function TableComponent<TableProps>({
               </tbody>
             )}
           </table>
-        </div>
-        {isLoading && <BottomBarLoader />}
-      </InfiniteScroll>{" "}
+
+          {isLoading && (
+            <div className="text-xs text-center py-6 text-gray-500 relative flex itemx-center justify-center gap-x-1">
+              Loading data...
+              <span className="spinner-border h-4 w-4 border-t border-gray-500 rounded-full animate-spin"></span>
+            </div>
+          )}
+        </InfiniteScroll>
+      </div>
       {/* @ts-ignore */}
       <MessagesComponent
         isConfirmOpen={isConfirmOpen}

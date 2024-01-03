@@ -49,18 +49,24 @@ export const handleChange = (
   setQuery({
     ...query,
     page: 1,
-    filter_by: selected,
+
     status_In:
       activeType === "all" ? null : [sortTabStatus(activeType, category)],
   });
 };
 
-export const handleStatus = ({query, setProductData, setRequestData, isSuccess, data, setHasMore, isRequestSuccess, request}) => {
+export const handleProductStatus = ({
+  query,
+  setProductData,
+  isSuccess,
+  data,
+  setHasMore,
+}) => {
   if (query.page === 1) {
     setProductData([]);
-    setRequestData([]);
   }
-  if (isSuccess) {
+
+  if (isSuccess && data.results.length) {
     setProductData((prevData) => [
       ...prevData.concat(
         data.results.map((i) => ({
@@ -70,9 +76,22 @@ export const handleStatus = ({query, setProductData, setRequestData, isSuccess, 
         }))
       ),
     ]);
-    !data?.next ? setHasMore(false) : setHasMore(true);
+
+    setHasMore(!!data?.next);
   }
-  if (isRequestSuccess) {
+};
+export const handleRequestStatus = ({
+  query,
+  setRequestData,
+  setHasMore,
+  isRequestSuccess,
+  request,
+}) => {
+  if (query.page === 1) {
+    setRequestData([]);
+  }
+
+  if (isRequestSuccess && request.results.length) {
     setRequestData((prevData) => [
       ...prevData.concat(
         ...request.results.map((i) => ({
@@ -80,15 +99,15 @@ export const handleStatus = ({query, setProductData, setRequestData, isSuccess, 
           requestStatus: StatusFilterOptions.find(
             (n) => n.value === i.requestStatus
           )?.name,
-          requestType: TypeFilterOptions.find(
-            (n) => n.value === i.requestType
-          )?.name,
+          requestType: TypeFilterOptions.find((n) => n.value === i.requestType)
+            ?.name,
         }))
       ),
     ]);
-    !request?.next ? setHasMore(false) : setHasMore(true);
+
+    setHasMore(!!request?.next);
   }
-}
+};
 
 export const handleRefresh = (
   category,
@@ -96,13 +115,18 @@ export const handleRefresh = (
   getRequests,
   getProducts,
   prodStatRefetch,
-  requestRefetch
+  requestRefetch,
+  selected,
+  setProductData,
+  setRequestData
 ) => {
   if (category === StatusCategoryType.AllProducts) {
-    getProducts({ ...query, page: 1 });
+    setProductData([]);
+    getProducts({ ...query, page: 1, filter_by: selected?.value });
     prodStatRefetch(query);
   } else {
-    getRequests({ ...query, page: 1 });
+    setRequestData([]);
+    getRequests({ ...query, page: 1, filter_by: selected?.value });
     requestRefetch(query);
   }
 };
@@ -115,7 +139,6 @@ export const handleSearch = (value, query, setQuery) => {
   });
 };
 export default function IndexComponent() {
-
   const [category, setCategory] = useState<string>(
     StatusCategoryType?.AllProducts
   );
@@ -123,12 +146,7 @@ export default function IndexComponent() {
   const queryCategory = searchParams.get("category");
   const productId = searchParams.get("productId");
   const preview = searchParams.get("preview");
-  const [selected, setSelected] = useState<any>({
-    id: 1,
-    text: "Created by me",
-    value: "created_by_me",
-    disabled: false,
-  });
+  const [selected, setSelected] = useState<any>(null);
   const [isChecker, setIsChecker] = useState(false);
   const [, setHideCreate] = useState(false);
   const [status, setStatus] = useState("");
@@ -144,7 +162,7 @@ export default function IndexComponent() {
   const [productData, setProductData] = useState<any[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [query, setQuery] = useState({
-    filter_by: selected?.value,
+    // filter_by: selected?.value,
     status_In: null,
     search: "",
     start_Date: null,
@@ -154,7 +172,8 @@ export default function IndexComponent() {
     productType_In: null,
     requestType_In: null,
     initiator_In: null,
-    approvers_In: null
+    approvers_In: null,
+    total: 0,
   });
   const value = useMemo(
     () => ({
@@ -234,7 +253,7 @@ export default function IndexComponent() {
     refetch: prodStatRefetch,
     isFetching: prodStatLoading,
   } = useGetProductStatsQuery(
-    { ...query, filter_by: selected?.value },
+    { filter_by: selected?.value },
     {
       skip: category !== StatusCategoryType.AllProducts,
     }
@@ -245,7 +264,7 @@ export default function IndexComponent() {
     refetch: requestRefetch,
     isFetching: requestStatLoading,
   } = useGetRequestStatsQuery(
-    { ...query, filter_by: selected?.value },
+    { filter_by: selected?.value },
     {
       skip: category !== StatusCategoryType.Requests,
     }
@@ -256,16 +275,14 @@ export default function IndexComponent() {
       ...query,
       page: 1,
     });
+
     if (category === StatusCategoryType.AllProducts) {
       getProducts({ ...query, page: 1, filter_by: selected?.value });
-      // prodStatRefetch({ ...query, page: 1, filter_by: selected?.value });
     } else {
       getRequests({ ...query, page: 1, filter_by: selected?.value });
-      // requestRefetch({ ...query, page: 1, filter_by: selected?.value });
     }
   }, [
-    category,
-    query.filter_by,
+    selected,
     query.search,
     query.status_In,
     query.productType_In,
@@ -273,7 +290,7 @@ export default function IndexComponent() {
     query.end_Date,
     query.requestType_In,
     query.initiator_In,
-    query.approvers_In
+    query.approvers_In,
   ]);
   useEffect(() => {
     setCategory(
@@ -283,8 +300,28 @@ export default function IndexComponent() {
     );
   }, [queryCategory]);
 
-  useEffect(() => handleStatus({query, setProductData, setRequestData, isSuccess, data, setHasMore, isRequestSuccess, request}),
-  [data, request, isSuccess, isRequestSuccess, isError, isRequestError, query.page]);
+  useEffect(
+    () =>
+      handleProductStatus({
+        query,
+        setProductData,
+        isSuccess,
+        data,
+        setHasMore,
+      }),
+    [data, isSuccess, isError, query]
+  );
+  useEffect(
+    () =>
+      handleRequestStatus({
+        query,
+        setRequestData,
+        setHasMore,
+        isRequestSuccess,
+        request,
+      }),
+    [request, isRequestSuccess, isRequestError, query]
+  );
 
   const { data: systemAlertData, isSuccess: systemAlertDataSuccess } =
     useGetSystemAlertQuery();
@@ -303,22 +340,26 @@ export default function IndexComponent() {
   }, [preview, productId]);
 
   const fetchMoreData = () => {
-    setTimeout(() => {
-      setQuery((prevQuery) => {
-        const updatedPage = prevQuery.page + 1;
-        if (category === StatusCategoryType.AllProducts) {
-          getProducts({ ...prevQuery, page: updatedPage });
-          prodStatRefetch({ ...prevQuery, page: updatedPage });
-        } else {
-          getRequests({ ...prevQuery, page: updatedPage });
-          requestRefetch({ ...prevQuery, page: updatedPage });
-        }
-        return {
+    setQuery((prevQuery) => {
+      const updatedPage = prevQuery.page + 1;
+      if (category === StatusCategoryType.AllProducts) {
+        getProducts({
           ...prevQuery,
           page: updatedPage,
-        };
-      });
-    }, 1000);
+          filter_by: selected?.value,
+        });
+      } else {
+        getRequests({
+          ...prevQuery,
+          page: updatedPage,
+          filter_by: selected?.value,
+        });
+      }
+      return {
+        ...prevQuery,
+        page: updatedPage,
+      };
+    });
   };
 
   return (
@@ -339,16 +380,20 @@ export default function IndexComponent() {
             <div className="bg-white px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16">
               {" "}
               <TableComponent
-                handleRefresh={() =>
+                handleRefresh={() => {
                   handleRefresh(
                     category,
                     query,
                     getRequests,
                     getProducts,
                     prodStatRefetch,
-                    requestRefetch
-                  )
-                }
+                    requestRefetch,
+                    selected,
+                    setProductData,
+                    setRequestData
+                  );
+                  setQuery({ ...query, page: 1 });
+                }}
                 handleSearch={(value) => handleSearch(value, query, setQuery)}
                 productData={useMemo(() => productData, [productData])}
                 requestData={useMemo(() => requestData, [requestData])}

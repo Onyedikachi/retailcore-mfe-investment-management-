@@ -79,7 +79,7 @@ export const submitForm = (formData, modifyProduct, modifyRequest, createProduct
       recentlyUpdatedMeta: JSON.stringify(previousData),
     });
   }
-  if (process === "withdraw_modify") {
+  if (process === "withdraw_modify" || process === "continue") {
     modifyRequest({
       ...formData,
       isDraft: false,
@@ -88,7 +88,7 @@ export const submitForm = (formData, modifyProduct, modifyRequest, createProduct
     });
   }
 
-  if (process === "create" || process === "continue" || process === "clone") {
+  if (process === "create"  || process === "clone") {
     createProduct({ ...formData, isDraft: false });
   }
 

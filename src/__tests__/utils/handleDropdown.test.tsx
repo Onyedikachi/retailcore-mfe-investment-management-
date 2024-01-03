@@ -25,12 +25,9 @@ describe("handleDropdown", () => {
   });
 });
 
-
-
-describe('handleDropdown', () => {
-
+describe("handleDropdown", () => {
   // Returns an empty array if either status or type is falsy
-  it('should return an empty array when either status or type is falsy', () => {
+  it("should return an empty array when either status or type is falsy", () => {
     const result = handleDropdown("", "create");
     expect(result).toEqual([]);
 
@@ -42,7 +39,7 @@ describe('handleDropdown', () => {
   });
 
   // Returns an array of options based on status and type
-  it('should return an array of options based on status and type', () => {
+  it("should return an array of options based on status and type", () => {
     const result = handleDropdown("A", "create");
     expect(result).not.toEqual([
       {
@@ -73,7 +70,7 @@ describe('handleDropdown', () => {
   });
 
   // Filters options based on permissions if CREATE_PRODUCT is not included
-  it('should filter options based on permissions if CREATE_PRODUCT is not included', () => {
+  it("should filter options based on permissions if CREATE_PRODUCT is not included", () => {
     const result = handleDropdown("P", "activation", []);
     expect(result).not.toEqual([
       {
@@ -87,25 +84,16 @@ describe('handleDropdown', () => {
         icon: "FaTrash",
       },
     ]);
-
-  
   });
 
- 
-
   // Returns an empty array if status is not found in firstLevel
-  it('should return an empty array if status is not found in firstLevel', () => {
+  it("should return an empty array if status is not found in firstLevel", () => {
     const result = handleDropdown("X", "activation");
     expect(result).toEqual([]);
   });
-
-
 });
 
-
-
-describe('handleDropdown', () => {
-
+describe("handleDropdown", () => {
   // Returns an empty array if either 'status' or 'type' is falsy.
   it('should return an empty array when either "status" or "type" is falsy', () => {
     const status = "";
@@ -156,11 +144,9 @@ describe('handleDropdown', () => {
   });
 });
 
-
-describe('handleDropdown', () => {
-
+describe("handleDropdown", () => {
   // Returns an empty array if either status or type is falsy
-  it('should return an empty array when status is falsy', () => {
+  it("should return an empty array when status is falsy", () => {
     const status = "";
     const type = "create";
     const permissions = ["CREATE_PRODUCT"];
@@ -171,7 +157,7 @@ describe('handleDropdown', () => {
   });
 
   // Returns an empty array if either status or type is falsy
-  it('should return an empty array when type is falsy', () => {
+  it("should return an empty array when type is falsy", () => {
     const status = "approved";
     const type = "";
     const permissions = ["CREATE_PRODUCT"];
@@ -182,7 +168,7 @@ describe('handleDropdown', () => {
   });
 
   // Returns an array of options based on whether type is in creationMap or not
-  it('should return an array of options when type is in creationMap', () => {
+  it("should return an array of options when type is in creationMap", () => {
     const status = "approved";
     const type = "create";
     const permissions = ["CREATE_PRODUCT"];
@@ -199,7 +185,7 @@ describe('handleDropdown', () => {
   });
 
   // Returns an array of options based on whether type is in creationMap or not
-  it('should return an array of options when type is not in creationMap', () => {
+  it("should return an array of options when type is not in creationMap", () => {
     const status = "approved";
     const type = "activate";
     const permissions = ["CREATE_PRODUCT"];
@@ -221,6 +207,50 @@ describe('handleDropdown', () => {
         id: "",
         text: "Delete Request",
         icon: "FaTrash",
+      },
+    ]);
+  });
+});
+describe("handleDropdown", () => {
+  it("returns an empty array if status or type is missing", () => {
+    expect(handleDropdown("", "type")).toEqual([]);
+    expect(handleDropdown("status", "")).toEqual([]);
+    expect(handleDropdown("", "")).toEqual([]);
+  });
+
+  it("returns an empty array if selectedType is missing", () => {
+    expect(handleDropdown("null", "type")).toEqual([]);
+  });
+
+  it("returns selectedType[status] if conditions are met", () => {
+    const permissions = [
+      "CREATE_INVESTMENT_PRODUCT",
+      "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS",
+    ];
+    const created_By_Id = "someId";
+    const userId = "someId";
+    expect(
+      handleDropdown("approved", "creation", permissions, created_By_Id, userId)
+    ).toEqual([
+      {
+        id: "",
+        text: "View",
+        icon: "FaEye",
+      },
+    ]);
+  });
+
+  it("returns filtered array if conditions are not met", () => {
+    const permissions = ["VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS"];
+    const created_By_Id = "someId";
+    const userId = "someId";
+    expect(
+      handleDropdown("approved", "creation", permissions, created_By_Id, userId)
+    ).toEqual([
+      {
+        id: "",
+        text: "View",
+        icon: "FaEye",
       },
     ]);
   });
