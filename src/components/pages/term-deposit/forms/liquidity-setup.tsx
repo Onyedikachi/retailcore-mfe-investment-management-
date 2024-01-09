@@ -112,8 +112,23 @@ export default function LiquiditySetup({
         }))
       )
       .flat();
+    const options1 = chargesData?.data?.records
+      ?.map((item) => {
+        return {
+          id: item.charge_id,
+          text: item.name,
+          sub: item.code,
+          value: {
+            id: item.charge_id,
+            name: item.name,
+            code: item.code,
+            value: item.charge_id,
+          },
+        };
+      })
+      .flat();
 
-    setChargeOptions(options);
+    setChargeOptions(options1);
   }, [chargesData]);
   useEffect(() => {}, [formData]);
 
@@ -374,7 +389,7 @@ export default function LiquiditySetup({
                             {partOptionCharges.map((i) => (
                               <span
                                 key={i}
-                                className="rounded-full px-[13px] py-[4px] text-xs bg-[#E0E0E0] flex gap-x-6 items-center text-[#16252A]"
+                                className="rounded-full px-[13px] py-[4px] text-xs bg-[#E0E0E0] flex gap-x-6 items-center text-[#16252A] capitalize"
                               >
                                 {i?.name}{" "}
                                 <span
@@ -618,7 +633,7 @@ export default function LiquiditySetup({
                           {earlyOptionCharges.map((i) => (
                             <span
                               key={i}
-                              className="rounded-full px-[13px] py-[4px] text-xs bg-[#E0E0E0] flex gap-x-6 items-center text-[#16252A]"
+                              className="rounded-full px-[13px] py-[4px] text-xs bg-[#E0E0E0] flex gap-x-6 items-center text-[#16252A] capitalize"
                             >
                               {i?.name}{" "}
                               <span

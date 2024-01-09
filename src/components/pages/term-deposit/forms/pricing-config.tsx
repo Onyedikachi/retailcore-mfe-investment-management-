@@ -644,7 +644,7 @@ export default function PricingConfig({
         <div className="flex flex-col gap-[25px] ">
           <span className="capitalize min-w-[300px] flex items-center gap-[5px] text-[##636363] text-base font-medium">
             Interest Computation Days in Year Method
-            <FormToolTip tip={toolTips.interestComputation} />
+            {/* <FormToolTip tip={toolTips.interestComputation} /> */}
             <Tooltip
               theme="light"
               distance={20}
