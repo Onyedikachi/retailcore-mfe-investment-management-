@@ -1,9 +1,9 @@
 import React from "react";
-import Icon from "../../ui/Icon";
+import Icon from "@app/components/ui/Icon";
 import { DateSelect } from "@app/components/forms";
 
 import { useOverviewContext } from "@app/utils";
-import { OverviewChart } from "@app/components/Charts";
+import { DonutChart } from "@app/components/Charts";
 export default function ChartInfo() {
   const overviewState = useOverviewContext();
   const amountValues = [
@@ -22,7 +22,7 @@ export default function ChartInfo() {
   ];
 
   return (
-    <div className="rounded-[5px] bg-white px-5 py-6 shadow-custom">
+    <div className="rounded-[5px] bg-white px-5 py-6 shadow-custom h-full">
       <div className="flex items-center justify-between border-b border-[#636363] pb-2">
         <span className="text-base font-semibold text-[#636363]">
           {overviewState.name} Portfolio
@@ -56,7 +56,7 @@ export default function ChartInfo() {
         </div>
       </div>
       <div className="mb-[18px] mt-[25px] flex items-center justify-center">
-        <OverviewChart />
+        <DonutChart />
       </div>
       <div className="flex items-center justify-between ">
         {amountValues?.map((investment) => (

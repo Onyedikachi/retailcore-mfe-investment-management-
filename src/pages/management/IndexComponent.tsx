@@ -18,7 +18,7 @@ export default function Dashboard() {
   }
   return (
     <div className="h-full w-full">
-      <div className="bg-white px-4 sm:px-6 lg:px-8">
+      <div className="bg-white px-4 sm:px-6 lg:px-8 border-[#E5E9EB] border-b">
         <div className="pb-[57px] flex items-center gap-9 pt-[52px]">
           <span className="text-[38px] font-bold text-[#636363]">
             Investment Management
@@ -55,7 +55,7 @@ export default function Dashboard() {
           ))}
         </div>
       </div>
-      <div className="bg-[#F7F7F7] px-4 sm:px-6 lg:px-8 py-[30px]">
+      <div className="bg-[#F7F7F7] px-4 sm:px-6 lg:px-8 py-[30px] max-h-[100vh] overflow-y-auto">
         {selectedTab.toLowerCase() == 'overview' && <Overview />}
         {selectedTab.toLowerCase() == 'corporate' && <Corporate />}
         {selectedTab.toLowerCase() == 'individual' && <Individual />}
