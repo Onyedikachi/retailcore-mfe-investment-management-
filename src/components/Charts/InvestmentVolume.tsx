@@ -6,23 +6,25 @@ import { useOverviewContext } from "@app/utils";
 import Chart from "react-apexcharts";
 export default function ChartInfo() {
   const overviewState = useOverviewContext();
-  const state = {
-    options: {
-      chart: {
-        id: "basic-bar",
-      },
-      xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
-      },
+  const series = [
+    {
+      name: "Term Deposit",
+      data: [19, 22, 20, 26],
     },
-    // series: [
-    //   {
-    //     name: 'series-1',
-    //     data: [30]
-    //   }
-    // ]
-    series: [90, 30, 50],
-    labels: ["Term Deposit", "Treasury Bill", "Commercial Paper"],
+    //additional data in this array..
+    {
+      name: "Treasury Bill",
+      data: [103, 105, 98, 83],
+    },
+    {
+      name: "Commercial Paper",
+      data: [12, 145, 44, 83],
+    },
+  ];
+  const options = {
+    xaxis: {
+      categories: ["2019-05-01", "2019-05-02", "2019-05-03", "2019-05-04"]
+    }
   };
   const amountValues = [
     {
@@ -63,22 +65,16 @@ export default function ChartInfo() {
       </div>
 
       <div className="mt-[15px] flex items-center justify-end">
-      
         <div className="text-xs font-normal text-[#8F8F8F]">
           Sept, 2022 till date
         </div>
       </div>
-      <div className="mb-[18px] mt-[25px] flex items-center justify-center">
-        <div>
-          <Chart
-            options={state.options}
-            series={state.series}
-            type="line"
-            
-          />
+      <div className="mb-[18px] mt-[25px] flex items-center justify-center w-full ">
+        <div className=" w-full h-[300px]">
+          <Chart options={options} series={series} type="line" width="100%" height='100%' toolbar={{  toolbar: {
+        show: false,}}}/>
         </div>
       </div>
-     
     </div>
   );
 }
