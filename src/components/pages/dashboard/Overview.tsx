@@ -31,7 +31,7 @@ export default function Overview() {
   return (
     <OverviewContext.Provider value={overviewState}>
       <div className="flex min-h-[75vh] gap-[25px]">
-        <div className="flex w-full max-w-[350px] flex-col gap-5">
+        <div className="grid w-full max-w-[350px]  gap-5">
           {tabs.map((tab) => (
             <div
               onClick={() => {

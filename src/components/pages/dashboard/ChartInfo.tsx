@@ -32,8 +32,8 @@ export default function ChartInfo() {
           <span className="text-sm  text-[#8F8F8F]">Filter by Date</span>
 
           <DateSelect
-            onChangeDate={() => {
-              console.log('chaNGED');
+            onChangeDate={(value) => {
+              console.log(value);
             }}
           >
             <span className="text-[#636363]">
