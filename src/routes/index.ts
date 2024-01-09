@@ -33,6 +33,12 @@ export const routes = [
     exact: true,
     component: lazy(() => import("../pages/investment/term-deposit/Summary")),
   },
+  {
+    path: paths.INVESTMENT_MANAGEMENT,
+    name: "Investment Management",
+    exact: true,
+    component: lazy(() => import("../pages/management/IndexComponent")),
+  },
 ];
 
 export default routes;
