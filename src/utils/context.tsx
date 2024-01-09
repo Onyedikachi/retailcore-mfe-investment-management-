@@ -110,7 +110,7 @@ interface IOverviewContext {
   name: string
 }
 export const defaultOverviewContext = {
-  name: ''
+  name: 'All Investments'
 }
 
 export const OverviewContext = createContext<undefined | IOverviewContext>(

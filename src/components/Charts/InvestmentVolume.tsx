@@ -6,25 +6,79 @@ import { useOverviewContext } from "@app/utils";
 import Chart from "react-apexcharts";
 export default function ChartInfo() {
   const overviewState = useOverviewContext();
-  const series = [
-    {
-      name: "Term Deposit",
-      data: [19, 22, 20, 26],
-    },
-    //additional data in this array..
-    {
-      name: "Treasury Bill",
-      data: [103, 105, 98, 83],
-    },
-    {
-      name: "Commercial Paper",
-      data: [12, 145, 44, 83],
-    },
-  ];
-  const options = {
-    xaxis: {
-      categories: ["2019-05-01", "2019-05-02", "2019-05-03", "2019-05-04"]
+  function formatYAxis(value) {
+    if (value === 0) {
+      return '0';
     }
+  
+    const suffixes = ['', 'k', 'm', 'b'];
+  
+    const suffixIndex = Math.floor(Math.log10(Math.abs(value)) / 3);
+    const scaledValue = value / Math.pow(10, suffixIndex * 3);
+  
+    const formattedValue =
+      suffixIndex < suffixes.length
+        ? scaledValue.toFixed(2).replace(/\.?0*$/, '') + suffixes[suffixIndex]
+        : value;
+  
+    return formattedValue;
+  }
+  
+  const labels = [
+    { text: "Term Deposit", color: "#F8961E", amount: "20,000.00" },
+    { text: "Treasury Bill", color: "#F94144", amount: "20,000.00" },
+    { text: "Commercial Paper", color: "#837777", amount: "20,000.00" },
+  ];
+  const state = {
+    options: {
+      chart: {
+        id: "basic-bar",
+        height: 350,
+        toolbar: {
+          show: false,
+        },
+
+        stroke: {
+          width: 3,
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      markers: {
+        size: 5,
+      },
+      colors: labels?.map((i) => i.color),
+      xaxis: {
+        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+      },
+      yaxis: {
+        labels: {
+          formatter: function (value) {
+            return formatYAxis(value);
+          },
+        },
+      },
+      legend: {
+        show: false,
+      },
+    },
+
+    series: [
+      {
+        name: "Term Deposit",
+        data: [100, 41000, 350000, 510000, 490000, 620000, 6900, 910000, 1480000],
+      },
+      {
+        name: "Treasury Bill",
+        data: [1500, 390000, 450000, 210000, 5900, 63000, 190000, 91000, 180000],
+      },
+      {
+        name: "Commercial Paper",
+        data: [100000, 4100, 350000, 210000, 490000, 620000, 790000, 910000, 1680000],
+      },
+    ],
+    labels: ["Term Deposit", "Treasury Bill", "Commercial Paper"],
   };
   const amountValues = [
     {
@@ -69,10 +123,15 @@ export default function ChartInfo() {
           Sept, 2022 till date
         </div>
       </div>
-      <div className="mb-[18px] mt-[25px] flex items-center justify-center w-full ">
-        <div className=" w-full h-[300px]">
-          <Chart options={options} series={series} type="line" width="100%" height='100%' toolbar={{  toolbar: {
-        show: false,}}}/>
+      <div className="mb-[18px] mt-[25px] flex items-center justify-center">
+        <div className="w-full">
+          <Chart
+            options={state.options}
+            series={state.series}
+            type="line"
+            width="100%"
+            height={320}
+          />
         </div>
       </div>
     </div>
