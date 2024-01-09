@@ -107,14 +107,13 @@ export default function MultiSelectForm2({
         {isOpen && (
           <div className="z-40 transition-all duration-300 top-[60px] absolute left-0 shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]  bg-white min-w-[175px] w-full rounded-b-[6px]">
             <div>
-              <ul className="grid overflow-y-auto max-h-300px">
-                {options
-                  .filter((i) =>
+              <ul className="grid overflow-y-auto max-h-[300px]">
+                {options?.filter((i) =>
                     i.text?.toLowerCase().includes(search?.toLowerCase())
                   )
-                  .map((item) => (
+                  .map((item, idx) => (
                     <li
-                      key={item.value}
+                      key={`${idx.toString()}-key`}
                       className="cursor-pointer hover:bg-[#F9E5E5] py-[8px] px-6"
                     >
                       <Checkbox
@@ -148,7 +147,7 @@ export default function MultiSelectForm2({
                     setSearch
                   )
                 }
-                className="text-sm text-danger-500 block mt-2 py-[10px] px-6"
+                className="text-sm text-danger-500 block mt-2 py-[10px] px-6 cursor-pointer"
               >
                 Add selected charge
               </span>
