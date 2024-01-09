@@ -1,6 +1,6 @@
 import React from 'react'
 import Chart from 'react-apexcharts'
-export default function OverviewChart() {
+export default function RadialChart() {
   const state = {
     options: {
       chart: {
@@ -24,7 +24,7 @@ export default function OverviewChart() {
       <Chart
         options={state.options}
         series={state.series}
-        type="radialBar"
+        type="donut"
         width="372"
       />
     </div>
