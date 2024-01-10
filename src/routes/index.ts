@@ -10,7 +10,7 @@ export const routes = [
   },
 
   // {
-    // path: paths.INVESTMENT_TEST,
+  // path: paths.INVESTMENT_TEST,
   //   name: "Investment Test",
   //   exact: true,
   //   component: lazy(() => import("../pages/investment/TestComponents")),
@@ -27,6 +27,15 @@ export const routes = [
         )
     ),
   },
+  {
+    path: paths.BOOK_INVESTMENT,
+    name: "Investment Booking",
+    exact: true,
+    component: lazy(
+      () => import("../pages/management/book-investment/IndexComponent")
+    ),
+  },
+
   {
     path: paths.TERM_DEPOSIT_SUMMARY,
     name: "Term Deposit Summary",
