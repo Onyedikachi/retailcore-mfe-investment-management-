@@ -1,5 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { InputDivs } from "@app/components/pages/term-deposit/forms/accounting-entries-and-events";
+import { BorderlessSelect, MinMaxInput } from "@app/components/forms";
+import { Switch } from "@headlessui/react";
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
 
 export const onProceed = (proceed) => {
   proceed();
@@ -15,6 +21,8 @@ export default function TransactionSettings({
   setFormData,
   proceed,
 }: TransactionSettingsProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <form
       id="transactionSettings"
@@ -26,7 +34,12 @@ export default function TransactionSettings({
         <div className="flex flex-col items-start gap-y-5">
           <InputDivs label={"Account for liquidation"}>
             <div className="flex gap-[15px]">
-              <div className="ml-[51px] w-[360px]">stuff</div>
+              <div className="ml-[51px] w-[360px]">
+                <BorderlessSelect
+                  inputName={"part_LiquidationPenalty"}
+                  options={[]}
+                />
+              </div>
             </div>
           </InputDivs>
           <InputDivs
@@ -34,7 +47,32 @@ export default function TransactionSettings({
             isCompulsory={false}
           >
             <div className="flex gap-[15px]">
-              <div className="ml-[51px] w-[360px]">stuff</div>
+              <div className="ml-[51px] w-[360px]">
+                <div>
+                  <Switch
+                    checked={isOpen}
+                    onChange={(value) => {
+                      setIsOpen(value);
+                    }}
+                    className={classNames(
+                      isOpen ? "bg-[#CF2A2A]" : "bg-transparent",
+                      "border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
+                    )}
+                  >
+                    <span className="sr-only">Use setting</span>
+                    <span
+                      data-testid="switch"
+                      aria-hidden="true"
+                      className={classNames(
+                        isOpen
+                          ? "translate-x-[14px] bg-white"
+                          : "translate-x-0  bg-white ",
+                        "pointer-events-none inline-block h-[14px] w-[14px] transform rounded-full border border-[#CF2A2A] shadow ring-0 transition duration-200 ease-in-out"
+                      )}
+                    />
+                  </Switch>
+                </div>
+              </div>
             </div>
           </InputDivs>
           <InputDivs
@@ -45,7 +83,16 @@ export default function TransactionSettings({
             }
           >
             <div className="flex gap-[15px]">
-              <div className="ml-[51px] w-[360px]">stuff</div>
+              <div className="ml-[51px] w-[360px] flex gap-2">
+                <div>
+                  <input
+                    type="checkbox"
+                    name="Notify customer"
+                    className="accent-sterling-red-800"
+                  />
+                </div>
+                <BorderlessSelect inputName={"rolloverMaturity"} options={[]} />
+              </div>
             </div>
           </InputDivs>
           <div className="mt-10 flex flex-col w-full gap-6 py-6 px-5 rounded-lg border border-[#EBEBEB] bg-[#AAAAAA12]">
