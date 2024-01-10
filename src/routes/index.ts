@@ -27,14 +27,6 @@ export const routes = [
         )
     ),
   },
-  {
-    path: paths.BOOK_INVESTMENT,
-    name: "Investment Booking",
-    exact: true,
-    component: lazy(
-      () => import("../pages/management/book-investment/IndexComponent")
-    ),
-  },
 
   {
     path: paths.TERM_DEPOSIT_SUMMARY,
@@ -42,12 +34,7 @@ export const routes = [
     exact: true,
     component: lazy(() => import("../pages/investment/term-deposit/Summary")),
   },
-  {
-    path: paths.INVESTMENT_MANAGEMENT,
-    name: "Investment Management",
-    exact: true,
-    component: lazy(() => import("../pages/management/IndexComponent")),
-  },
+ 
 ];
 
 export default routes;
