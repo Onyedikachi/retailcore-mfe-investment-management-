@@ -16,14 +16,26 @@ export const handleClear = (
   reset();
   setClearField(!clearFields);
 };
-export function InputDivs({ children, label }) {
+export function InputDivs({
+  children,
+  label,
+  isCompulsory = true,
+  divClass = '',
+  subLabel = ''
+}: {
+  children: any;
+  label: string;
+  isCompulsory?: boolean;
+  divClass?: string
+  subLabel?: string
+}) {
   return (
-    <div className="flex gap-[10px] items-center">
+    <div className={`flex gap-[10px] items-center ${divClass ? divClass :''}`}>
       <span
         data-testid="input-div"
         className="min-w-[250px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium"
       >
-        {label} <RedDot />
+        {label} {isCompulsory && <RedDot />}
       </span>
       <div>{children}</div>
     </div>
