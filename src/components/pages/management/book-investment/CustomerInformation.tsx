@@ -2,7 +2,7 @@ import React from "react";
 import AccountSearch from "@app/components/AccountSearch";
 import { InputDivs } from "@app/components/pages/term-deposit/forms/accounting-entries-and-events";
 import { FormUpload } from "@app/components/forms";
-
+import CustomerInfoCard from "./CustomerInfoCard";
 export const onProceed = (proceed) => {
   proceed();
 };
@@ -31,15 +31,19 @@ export default function CustomerInformation({
               <AccountSearch placeholder={"Search by account number"} />
             </div>
           </InputDivs>
+          <div className="w-full">
+            <CustomerInfoCard />
+          </div>
           <InputDivs label={"Customer’s investment request form"}>
             <div className="ml-[51px] w-[360px]">
-            <FormUpload
-              data-testid="input"
-              accept={[]}
-              onUploadComplete={(value) => {
-                console.log(value)
-              }}
-            />            </div>
+              <FormUpload
+                data-testid="input"
+                accept={[]}
+                onUploadComplete={(value) => {
+                  console.log(value);
+                }}
+              />{" "}
+            </div>
           </InputDivs>
         </div>
       </div>
