@@ -18,7 +18,7 @@ export default function ChartInfo() {
   
     const formattedValue =
       suffixIndex < suffixes.length
-        ? scaledValue.toFixed(2) + suffixes[suffixIndex]
+        ? scaledValue.toFixed(2).replace(/((\.\d*?[1-9])0*|(\.0*))$/, '$2') + suffixes[suffixIndex]
         : value;
   
     return formattedValue;

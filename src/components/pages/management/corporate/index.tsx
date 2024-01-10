@@ -1,14 +1,10 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { InvestmentContext } from "../../utils/context";
-import { StatusCategoryType } from "../../constants/enums";
-import {
-  TopBar,
-  StatusCard,
-  TableComponent,
-  QuickLinks,
-} from "@app/components";
+import { InvestmentContext } from "@app/utils/context";
+import { StatusCategoryType } from "@app/constants/enums";
+import { StatusCard, QuickLinks } from "@app/components";
+import TableComponent from "@app/components/pages/management/corporate/TableComponent";
 import {
   useGetPostProductsMutation,
   useGetPostRequestsMutation,
@@ -138,7 +134,7 @@ export const handleSearch = (value, query, setQuery) => {
     search: value,
   });
 };
-export default function IndexComponent() {
+export default function Corporate() {
   const [category, setCategory] = useState<string>(
     StatusCategoryType?.AllProducts
   );
@@ -364,50 +360,47 @@ export default function IndexComponent() {
 
   return (
     <InvestmentContext.Provider value={value}>
-      <section className=" w-full bg-[#F7F7F7] h-full min-h-[100vh] flex flex-col">
-        <TopBar />
-        <div className="px-8 flex gap-x-5 w-full flex-1 py-7">
-          <div className="flex flex-col gap-y-7 w-calc overflow-auto">
-            <StatusCard
-              data={prodStatData}
-              requests={requestStatData}
-              handleChange={({ selected, activeType }) =>
-                handleChange(selected, activeType, setQuery, query, category)
-              }
-              isLoading={requestStatLoading || prodStatLoading}
-            />
+      <div className="flex gap-x-5 w-full flex-1">
+        <div className="flex flex-col gap-y-7 w-calc overflow-auto">
+          <StatusCard
+            data={prodStatData}
+            requests={requestStatData}
+            handleChange={({ selected, activeType }) =>
+              handleChange(selected, activeType, setQuery, query, category)
+            }
+            isLoading={requestStatLoading || prodStatLoading}
+          />
 
-            <div className="bg-white px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16">
-              {" "}
-              <TableComponent
-                handleRefresh={() => {
-                  handleRefresh(
-                    category,
-                    query,
-                    getRequests,
-                    getProducts,
-                    prodStatRefetch,
-                    requestRefetch,
-                    selected,
-                    setProductData,
-                    setRequestData
-                  );
-                  setQuery({ ...query, page: 1 });
-                }}
-                handleSearch={(value) => handleSearch(value, query, setQuery)}
-                productData={useMemo(() => productData, [productData])}
-                requestData={useMemo(() => requestData, [requestData])}
-                isLoading={isLoading || isRequestLoading}
-                query={query}
-                setQuery={setQuery}
-                hasMore={hasMore}
-                fetchMoreData={fetchMoreData}
-              />
-            </div>
+          <div className="bg-white px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16">
+            {" "}
+            <TableComponent
+              handleRefresh={() => {
+                handleRefresh(
+                  category,
+                  query,
+                  getRequests,
+                  getProducts,
+                  prodStatRefetch,
+                  requestRefetch,
+                  selected,
+                  setProductData,
+                  setRequestData
+                );
+                setQuery({ ...query, page: 1 });
+              }}
+              handleSearch={(value) => handleSearch(value, query, setQuery)}
+              productData={useMemo(() => productData, [productData])}
+              requestData={useMemo(() => requestData, [requestData])}
+              isLoading={isLoading || isRequestLoading}
+              query={query}
+              setQuery={setQuery}
+              hasMore={hasMore}
+              fetchMoreData={fetchMoreData}
+            />
           </div>
-          <QuickLinks />
         </div>
-      </section>
+        <QuickLinks />
+      </div>
     </InvestmentContext.Provider>
   );
 }

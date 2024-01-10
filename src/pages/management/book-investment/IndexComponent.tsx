@@ -41,7 +41,7 @@ export default function IndexComponent() {
     // const extraLinks = [
     //   {
     //     id: 3,
-    //     title: "Term Deposit",
+    //     title: "Te\rm Deposit",
     //     url: "/product-factory/investment",
     //   },
     //   {
