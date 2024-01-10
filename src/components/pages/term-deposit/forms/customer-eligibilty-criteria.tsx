@@ -56,6 +56,7 @@ export default function CustomerEligibilityCriteria({
   const [isAdd, setIsAdd] = useState(false);
   const [newDocument, setNewDocument] = useState("");
   const values = getValues();
+  console.log("🚀 ~ file: customer-eligibilty-criteria.tsx:58 ~ values:", values)
 
   const handleCheckedRequirement = (document) => {
     const isDocumentToggled = toggledRequirements.some(
