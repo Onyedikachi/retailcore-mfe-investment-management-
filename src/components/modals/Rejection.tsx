@@ -2,10 +2,7 @@ import React from "react";
 import { RiErrorWarningFill } from "react-icons/ri";
 import { FaTimes } from "react-icons/fa";
 import ModalLayout from "./Layout";
-import {
-  useGetUserQuery,
-  useGetUsersPermissionsQuery,
-} from "../../api";
+import { useGetUserQuery, useGetUsersPermissionsQuery } from "../../api";
 import { removeNullEmptyKeys } from "@app/utils";
 import { ProductSearch, Button } from "@app/components";
 interface Rejection {
@@ -63,7 +60,9 @@ export default function Rejection({
     data: branchMembersData,
     isSuccess: userIsSuccess,
     isLoading: userLoading,
-  } = useGetUsersPermissionsQuery({ permissions: ["CREATE_INVESTMENT_PRODUCT"] });
+  } = useGetUsersPermissionsQuery({
+    permissions: ["CREATE_INVESTMENT_PRODUCT"],
+  });
 
   React.useEffect(() => {
     if (isSuccess) {
@@ -104,7 +103,11 @@ export default function Rejection({
         </div>
 
         <div className="grid grid-cols-2 gap-4 mb-12">
-          <div className="flex flex-col">
+          <div
+            className={`flex flex-col ${
+              (isLoading || !user || !user?.is_active) && "opacity-50"
+            }`}
+          >
             <span className="mb-2 text-[#636363] font-medium text-base">
               Route Request to
             </span>
@@ -116,6 +119,7 @@ export default function Rejection({
                 placeholder="Type, search and select"
                 options={users}
                 ledger={[]}
+                disabled={isLoading || !user || !user?.is_active}
                 handleOptions={(e) => setSelected(e)}
                 data-testis="search"
               />

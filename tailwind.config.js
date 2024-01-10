@@ -20,6 +20,9 @@ module.exports = {
       width: {
         calc: "calc(100% - 294px)",
       },
+      boxShadow: {
+        custom: "0px 0px 4px 0px rgba(0, 0, 0, 0.25)",
+      },
     },
   },
   plugins: [],

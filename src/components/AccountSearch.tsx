@@ -1,3 +1,5 @@
+
+
 import React, { useState, useEffect, useMemo } from "react";
 import { Combobox } from "@headlessui/react";
 import { FaSearch } from "react-icons/fa";
@@ -6,20 +8,18 @@ export function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function ProductSearch({
+export default function AccountSearch({
   placeholder,
   options,
   handleOptions,
   ledger,
   value,
-  disabled
 }: {
   placeholder: string;
-  options: Array<any>;
+  options?: Array<any>;
   handleOptions?: any;
   ledger?: any;
   value?: any;
-  disabled?: boolean
 }) {
   const [query, setQuery] = useState("");
   const [selectedItem, setSelectedItem] = useState(null);
@@ -53,7 +53,6 @@ export default function ProductSearch({
       as="div"
       value={selectedItem ? selectedItem?.name : ""}
       onChange={setSelectedItem}
-      disabled={disabled}
     >
       <div className="flex items-center  border-b border-[#8F8F8F]">
         <span className="w-8 h-8 flex items-center justify-center">
@@ -100,3 +99,4 @@ export default function ProductSearch({
     </Combobox>
   );
 }
+

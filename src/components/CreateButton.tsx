@@ -74,17 +74,19 @@ export default function CreateButton({ children }) {
           >
             {" "}
           </div>
-          <span data-testid="btn-create" onClick={() => setIsOpen(true)}>{children}</span>
+          <span data-testid="btn-create" onClick={() => setIsOpen(true)}>
+            {children}
+          </span>
 
           {/* First level  */}
           {isOpen && (
             <div className="top-0 absolute w-[286px] z-10 bg-white rounded-b-lg shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] pt-[1px]">
               <ul>
                 {ButtonOptions.map((item: CreateProp) => (
-                  <li className="group"  key={item.key}>
+                  <li className="group" key={item.key}>
                     <button
                       disabled={!permissions.includes(item?.permission)}
-                       data-testid="btn-1"
+                      data-testid="btn-1"
                       onClick={() =>
                         item.isUrl
                           ? goToUrl(item.url, navigate)
@@ -104,7 +106,7 @@ export default function CreateButton({ children }) {
                           <div className="z-10 absolute top-0 -right-[212px] w-[209px] bg-white rounded-b-lg shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] pt-[1px]">
                             <ul>
                               {item?.links.map((item2: CreateProp) => (
-                                <li className="group"  key={item2.key}>
+                                <li className="group" key={item2.key}>
                                   <button
                                     data-testid="btn-2"
                                     onClick={() =>
@@ -134,9 +136,11 @@ export default function CreateButton({ children }) {
                                           <ul>
                                             {item2?.links.map(
                                               (item3: CreateProp) => (
-                                                <li className="group"   key={item3.key}>
+                                                <li
+                                                  className="group"
+                                                  key={item3.key}
+                                                >
                                                   <button
-                                                  
                                                     onClick={() =>
                                                       item3.isUrl
                                                         ? goToUrl(
@@ -167,9 +171,12 @@ export default function CreateButton({ children }) {
                                                               (
                                                                 item4: CreateProp
                                                               ) => (
-                                                                <li className="group"  key={
-                                                                  item4.key
-                                                                }>
+                                                                <li
+                                                                  className="group"
+                                                                  key={
+                                                                    item4.key
+                                                                  }
+                                                                >
                                                                   <button
                                                                     data-testid="btn-3"
                                                                     onClick={() =>
