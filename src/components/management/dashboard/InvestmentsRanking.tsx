@@ -1,10 +1,7 @@
 import Icon from "@app/components/ui/Icon";
 import { useState } from "react";
-import {
-  Corporate,
-  Overview,
-  Individual,
-} from "@app/components/pages/dashboard";
+import { Corporate, Overview, Individual } from "@app/components/pages";
+
 export default function Dashboard() {
   //   useEffect(() => {
   //     loadSimulator()
@@ -17,16 +14,14 @@ export default function Dashboard() {
     setSelectedTab(tab);
   };
 
-  const headers = ['Investment Ranking', 'Number of Customers', 'Value (NGN)']
+  const headers = ["Investment Ranking", "Number of Customers", "Value (NGN)"];
 
   const people = [
     {
       product: "Sterling Premium Term IV",
       numberOfCustomers: 24,
       amount: "N10,000,000",
-     
     },
-    
   ];
 
   return (
@@ -64,16 +59,14 @@ export default function Dashboard() {
                 <table className="min-w-full divide-y divide-gray-300">
                   <thead>
                     <tr>
-                    {
-                      headers.map((header) => (
+                      {headers.map((header) => (
                         <th
-                        scope="col"
-                        className="py-3.5 pl-0 pr-3 text-left text-sm font-medium text-[#636363] sm:pl-0"
-                      >
-                        {header}
-                      </th>
-                      ))
-                    }
+                          scope="col"
+                          className="py-3.5 pl-0 pr-3 text-left text-sm font-medium text-[#636363] sm:pl-0"
+                        >
+                          {header}
+                        </th>
+                      ))}
                       {/* <th
                         scope="col"
                         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
@@ -86,12 +79,14 @@ export default function Dashboard() {
                       >
                         Email
                       </th> */}
-                    
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
                     {people.map((ranking, index) => (
-                      <tr className="text-xs font-medium text-[#636363]" key={index}>
+                      <tr
+                        className="text-xs font-medium text-[#636363]"
+                        key={index}
+                      >
                         <td className="whitespace-nowrap py-4 pl-0 pr-3  sm:pl-0">
                           {ranking.product}
                         </td>
@@ -101,7 +96,6 @@ export default function Dashboard() {
                         <td className="whitespace-nowrap pr-3 py-4 ">
                           {ranking.amount}
                         </td>
-                     
                       </tr>
                     ))}
                   </tbody>
