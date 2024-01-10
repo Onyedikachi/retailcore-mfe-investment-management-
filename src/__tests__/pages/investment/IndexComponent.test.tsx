@@ -7,9 +7,9 @@ import IndexComponent, {
   handleSearch,
   handleProductStatus,
   handleRequestStatus,
-} from "../pages/investment/IndexComponent";
-import { renderWithProviders } from "../utils/test-util";
-import { StatusCategoryType } from "../constants/enums";
+} from "../../../pages/investment/IndexComponent";
+import { renderWithProviders } from "../../../utils/test-util";
+import { StatusCategoryType } from "../../../constants/enums";
 import React from "react";
 
 const selected = { value: "sent_to_me" };
