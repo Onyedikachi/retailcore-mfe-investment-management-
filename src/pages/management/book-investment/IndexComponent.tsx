@@ -1,13 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BookInvestmentFormSteps } from "@app/constants";
 
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import handleFormRef from "./HandleFormRef";
 
 import { Breadcrumbs, Button, FormStepComponent } from "@app/components";
+import BookInvestmentFormComponent from "./FormComponent";
 
+export function handleNext(step, setStep, BookInvestmentFormSteps) {
+  step < BookInvestmentFormSteps.length && setStep(step + 1);
+}
+
+export function handlePrev(step, setStep, BookInvestmentFormSteps) {
+  step > BookInvestmentFormSteps[0].index && setStep(step - 1);
+}
 export default function IndexComponent() {
   const { process, investmentType } = useParams();
   const [step, setStep] = useState(1);
+  const [formRef, setFormRef] = useState(null);
+  const navigate = useNavigate();
 
   const links = [
     {
@@ -50,6 +61,16 @@ export default function IndexComponent() {
 
     return links;
   }
+
+  function handleNav() {
+    step < BookInvestmentFormSteps.length
+      ? handleNext(step, setStep, BookInvestmentFormSteps)
+      : navigate("#");
+  }
+
+  useEffect(() => {
+    handleFormRef({ step, setFormRef });
+  }, [step]);
   return (
     <div className="flex flex-col min-h-[100vh] ">
       <div className="px-[37px] py-[11px] bg-white">
@@ -69,6 +90,7 @@ export default function IndexComponent() {
           </div>
           <div className=" bg-[#ffffff] border border-[#EEEEEE] rounded-[10px] px-[87px] pt-[100px] pb-[43px] ">
             {/* {form component} */}
+            <BookInvestmentFormComponent step={step} handleNav={handleNav} />
 
             <div className="h-px w-full bg-[#CCCCCC] mb-12 mt-16"></div>
 
@@ -95,11 +117,12 @@ export default function IndexComponent() {
 
                 <Button
                   type="submit"
+                  form={formRef}
                   className={
                     "bg-sterling-red-800 rounded-lg px-10 py-1 font-medium text-base"
                   }
                 >
-                  {step < 5 ? "Next" : "Proceed"}
+                  {step < 3 ? "Next" : "Proceed"}
                 </Button>
               </div>
             </div>
