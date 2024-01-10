@@ -573,8 +573,8 @@ export const requestHeader = [
 ];
 
 export const BookInvestmentOptions = [
-  { title: "Individual", url: "#" },
-  { title: "corporate", url: "#" },
+  { title: "Individual", url: "/product-factory/investment/management/individual" },
+  { title: "corporate", url: "/product-factory/investment/management/corporate" },
 ];
 export interface IBookInvestmentOptions {
   title: string;

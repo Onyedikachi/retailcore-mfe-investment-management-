@@ -283,6 +283,24 @@ export const colorState = {
   draft: "bg-[#E5E5EA] text-[#1E0A3C]",
 };
 export const productNameRegex = /^[A-Za-z0-9\s]+$/;
+export const BookInvestmentFormSteps = [
+  {
+    id: 1,
+    label: "Customer Information",
+    index: 1,
+  },
+  {
+    id: 2,
+    label: "Facility Details",
+    index: 2,
+  },
+  {
+    id: 3,
+    label: "Transaction Settings",
+    index: 3,
+  },
+
+];
 export const termDepositFormSteps = [
   {
     id: 1,
