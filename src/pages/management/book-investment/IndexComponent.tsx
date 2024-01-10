@@ -16,7 +16,7 @@ export function handlePrev(step, setStep, BookInvestmentFormSteps) {
 }
 export default function IndexComponent() {
   const { process, investmentType } = useParams();
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(3);
   const [formRef, setFormRef] = useState(null);
   const navigate = useNavigate();
 
