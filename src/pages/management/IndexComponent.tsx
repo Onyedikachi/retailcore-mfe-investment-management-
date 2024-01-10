@@ -1,4 +1,6 @@
 import Icon from "@app/components/ui/Icon";
+
+import { BookInvestmentButton } from "@app/components";
 import { useState } from "react";
 import SearchInput from "@app/components/SearchInput";
 import {
@@ -57,12 +59,16 @@ export default function Dashboard() {
             Investment Management
           </span>
 
-          <button className="flex h-[32px] items-center gap-[8px] rounded-[6px] bg-sterling-red-800 px-3 py-[4px] text-white ">
-            <Icon icon="eva:plus-fill" />
-            <span className="text-sm font-semibold text-[#F6F8F9]">
-              Book Investment
-            </span>
-          </button>
+          <BookInvestmentButton>
+            <button className="flex h-[32px] items-center gap-[8px] rounded-[6px] bg-sterling-red-800 px-3 py-[4px] text-white ">
+              <span className="p-[5px]">
+                <Icon icon="eva:plus-fill" />
+              </span>
+              <span className="text-sm font-semibold text-[#F6F8F9]">
+                Book Investment
+              </span>
+            </button>
+          </BookInvestmentButton>
         </div>
         <div className="flex justify-between items-end">
           <div className="flex gap-[32px] ">

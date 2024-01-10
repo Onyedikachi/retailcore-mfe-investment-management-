@@ -571,19 +571,29 @@ export const requestHeader = [
     key: "actions",
   },
 ];
-export const ButtonOptions  = [
+
+export const BookInvestmentOptions = [
+  { title: "Individual", url: "#" },
+  { title: "corporate", url: "#" },
+];
+export interface IBookInvestmentOptions {
+  title: string;
+  url: string;
+}
+;
+export const ButtonOptions = [
   {
     title: "Deposit",
     key: "deposit",
     isUrl: false,
-    permission:"CREATE_DEPOSIT_PRODUCT",
+    permission: "CREATE_DEPOSIT_PRODUCT",
     links: [
       {
         title: "Current",
         key: "current",
         isUrl: true,
         url: "/product/factory/current/create-new-product/1",
-        permission:"CREATE_DEPOSIT_PRODUCT"
+        permission: "CREATE_DEPOSIT_PRODUCT",
       },
 
       {
@@ -591,7 +601,7 @@ export const ButtonOptions  = [
         key: "savings",
         isUrl: true,
         url: "/product/factory/savings/create-new-product/1",
-        permission:"CREATE_DEPOSIT_PRODUCT"
+        permission: "CREATE_DEPOSIT_PRODUCT",
       },
     ],
   },
@@ -599,42 +609,42 @@ export const ButtonOptions  = [
     title: "Credit",
     key: "credit",
     isUrl: false,
-    permission:"CREATE_CREDIT_PRODUCT",
+    permission: "CREATE_CREDIT_PRODUCT",
     links: [
       {
         title: "Loans",
         key: "loans",
         isUrl: false,
         url: "#",
-        permission:"CREATE_CREDIT_PRODUCT",
+        permission: "CREATE_CREDIT_PRODUCT",
         links: [
           {
             title: "Individual Loans",
             key: "individual-loans",
             isUrl: true,
             url: "#",
-            permission:"CREATE_CREDIT_PRODUCT"
+            permission: "CREATE_CREDIT_PRODUCT",
           },
           {
             title: "Commercial loans",
             key: "commercial-loans",
             isUrl: false,
             url: "#",
-            permission:"CREATE_CREDIT_PRODUCT",
+            permission: "CREATE_CREDIT_PRODUCT",
             links: [
               {
                 title: "SME Loans",
                 key: "sme-loans",
                 isUrl: true,
                 url: "#",
-                permission:"CREATE_CREDIT_PRODUCT"
+                permission: "CREATE_CREDIT_PRODUCT",
               },
               {
                 title: "Corporate loans",
                 key: "corporate-loans",
                 isUrl: true,
                 url: "#",
-                permission:"CREATE_CREDIT_PRODUCT"
+                permission: "CREATE_CREDIT_PRODUCT",
               },
             ],
           },
@@ -645,7 +655,7 @@ export const ButtonOptions  = [
         key: "overdraft",
         isUrl: true,
         url: "#",
-        permission:"CREATE_INVESTMENT_PRODUCT"
+        permission: "CREATE_INVESTMENT_PRODUCT",
       },
     ],
   },
@@ -653,28 +663,28 @@ export const ButtonOptions  = [
     title: "Over the counter payment",
     key: "counter-payment",
     isUrl: false,
-    permission:"CREATE_PAYMENT_PRODUCT",
+    permission: "CREATE_PAYMENT_PRODUCT",
     links: [
       {
         title: "Cash withdrawal",
         key: "cash-withdrawal",
         isUrl: true,
         url: "/product/factory/payment/over-the-counter/cash-withdrawal/1",
-        permission:"CREATE_PAYMENT_PRODUCT"
+        permission: "CREATE_PAYMENT_PRODUCT",
       },
       {
         title: "Within bank transfer",
         key: "within-bank-transfer",
         isUrl: true,
         url: "/product/factory/payment/over-the-counter/within-bank-transfer/1",
-        permission:"CREATE_PAYMENT_PRODUCT"
+        permission: "CREATE_PAYMENT_PRODUCT",
       },
       {
         title: "Other bank transfer",
         key: "other-bank-transfer",
         isUrl: true,
         url: "/product/factory/payment/over-the-counter/other-bank-transfer/1",
-        permission:"CREATE_PAYMENT_PRODUCT"
+        permission: "CREATE_PAYMENT_PRODUCT",
       },
     ],
   },
@@ -682,28 +692,28 @@ export const ButtonOptions  = [
     title: "Investment",
     key: "investment",
     isUrl: false,
-    permission:"CREATE_INVESTMENT_PRODUCT",
+    permission: "CREATE_INVESTMENT_PRODUCT",
     links: [
       {
         title: "Term deposits",
         key: "term-deposits",
         isUrl: true,
         url: "term-deposit/create",
-        permission:"CREATE_INVESTMENT_PRODUCT"
+        permission: "CREATE_INVESTMENT_PRODUCT",
       },
       {
         title: "Treasury Bill",
         key: "treasury-bill",
         isUrl: true,
         url: "#",
-        permission:"CREATE_INVESTMENT_PRODUCT"
+        permission: "CREATE_INVESTMENT_PRODUCT",
       },
       {
         title: "Commercial paper",
         key: "commercial-paper",
         isUrl: true,
         url: "#",
-        permission:"CREATE_INVESTMENT_PRODUCT"
+        permission: "CREATE_INVESTMENT_PRODUCT",
       },
     ],
   },
