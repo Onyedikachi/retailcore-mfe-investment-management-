@@ -20,7 +20,7 @@ import {
   individualHeader,
   IndividualRequestHeader,
 } from "@app/constants";
-import optionsDataHandler from "./optionsDataHandler";
+import optionsDataHandler from "@app/utils/optionsDataHandler";
 
 interface RequestDataProps {
   request: string;

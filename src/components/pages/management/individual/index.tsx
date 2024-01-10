@@ -13,6 +13,7 @@ import {
   useGetSystemAlertQuery,
 } from "@app/api";
 import {
+  IndividualStatusTypes,
   ManagementCategories,
   ProductTypes,
   StatusFilterOptions,
@@ -68,7 +69,7 @@ export const handleProductStatus = ({
       ...prevData.concat(
         data.results.map((i) => ({
           ...i,
-          state: StatusTypes.find((n) => n.id === i.state)?.type,
+          state: IndividualStatusTypes.find((n) => n.id === i.state)?.type,
           productType: ProductTypes.find((n) => n.id === i.productType)?.name,
         }))
       ),
