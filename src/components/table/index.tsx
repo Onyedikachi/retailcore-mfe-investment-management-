@@ -155,7 +155,7 @@ export const handleProductsDropdown = (
     ) {
       options = options?.filter(
         (i: any) =>
-          i.text.toLowerCase() !== "modify" && i.text.toLowerCase() !== "clone"
+          i.text.toLowerCase() === "view" 
       );
     }
     return options;
