@@ -12,12 +12,14 @@ export default function ProductSearch({
   handleOptions,
   ledger,
   value,
+  disabled
 }: {
   placeholder: string;
   options: Array<any>;
   handleOptions?: any;
   ledger?: any;
   value?: any;
+  disabled?: boolean
 }) {
   const [query, setQuery] = useState("");
   const [selectedItem, setSelectedItem] = useState(null);
@@ -51,6 +53,7 @@ export default function ProductSearch({
       as="div"
       value={selectedItem ? selectedItem?.name : ""}
       onChange={setSelectedItem}
+      disabled={disabled}
     >
       <div className="flex items-center  border-b border-[#8F8F8F]">
         <span className="w-8 h-8 flex items-center justify-center">
