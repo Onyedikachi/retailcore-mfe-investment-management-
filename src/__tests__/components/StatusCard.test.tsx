@@ -74,7 +74,7 @@ describe("StatusCategoryButton", () => {
         setCategory={setCategory}
         setSelected={setSelected}
         filteredRequestOptions={RequestOptions}
-            filteredProductOptions={ProductOptions}
+        filteredProductOptions={ProductOptions}
       />
     );
 
@@ -687,6 +687,69 @@ describe("handlePermission", () => {
     jest.clearAllMocks();
   });
 
+  // Sets filtered product and request options based on user permissions
+  it('should set filtered product and request options based on user permissions', () => {
+    const setFilteredRequestOptions = jest.fn();
+    const setFilteredProductOptions = jest.fn();
+    const permissions = [
+      "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS",
+      "CREATE_INVESTMENT_PRODUCT",
+      "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS",
+      "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS",
+    ];
+    const ProductOptions = [
+      {
+        id: 1,
+        text: "Created by me",
+        value: "created_by_me",
+        disabled: false,
+      },
+      {
+        id: 2,
+        text: "Created by my branch",
+        value: "created_by_my_branch",
+        disabled: false,
+      },
+      {
+        id: 3,
+        text: "Created system-wide",
+        value: "created_by_anyone",
+        disabled: false,
+      },
+    ];
+    const RequestOptions = [
+      {
+        id: 1,
+        text: "Initiated by me",
+        value: "created_by_me",
+        disabled: false,
+      },
+      {
+        id: 2,
+        text: "Initiated by my branch",
+        value: "created_by_my_branch",
+        disabled: false,
+      },
+      {
+        id: 3,
+        text: "Initiated system-wide",
+        value: "created_by_anyone",
+        disabled: false,
+      },
+    ];
+
+    handlePermission(
+      setFilteredRequestOptions,
+      permissions,
+      ProductOptions,
+      RequestOptions,
+      setFilteredProductOptions
+    );
+
+    expect(setFilteredRequestOptions).toHaveBeenCalledWith(RequestOptions);
+    expect(setFilteredProductOptions).toHaveBeenCalledWith(ProductOptions);
+  });
+
   it("should not modify options if permissions are not provided", () => {
     handlePermission(
       mockSetFilteredRequestOptions,
@@ -806,5 +869,70 @@ describe("handlePermission", () => {
 
     expect(setFilteredProductOptions).toHaveBeenCalledWith(ProductOptions);
     expect(setFilteredRequestOptions).toHaveBeenCalledWith(RequestOptions);
+  });
+  it("should set filtered product and request options based on user permissions", () => {
+    const setFilteredRequestOptions = jest.fn();
+    const setFilteredProductOptions = jest.fn();
+    const permissions = [
+      "CREATE_INVESTMENT_PRODUCT",
+      "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS",
+      "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS",
+    ];
+    const ProductOptions = [
+      {
+        id: 1,
+        text: "Created by me",
+        value: "created_by_me",
+        disabled: false,
+      },
+      {
+        id: 2,
+        text: "Created by my branch",
+        value: "created_by_my_branch",
+        disabled: false,
+      },
+      {
+        id: 3,
+        text: "Created system-wide",
+        value: "created_by_anyone",
+        disabled: false,
+      },
+    ];
+    const RequestOptions = [
+      {
+        id: 1,
+        text: "Initiated by me",
+        value: "created_by_me",
+        disabled: false,
+      },
+      {
+        id: 2,
+        text: "Initiated by my branch",
+        value: "created_by_my_branch",
+        disabled: false,
+      },
+      {
+        id: 3,
+        text: "Initiated system-wide",
+        value: "created_by_anyone",
+        disabled: false,
+      },
+    ];
+
+    handlePermission(
+      setFilteredRequestOptions,
+      permissions,
+      ProductOptions,
+      RequestOptions,
+      setFilteredProductOptions
+    );
+
+    const expectedProductOptions = [...ProductOptions]
+    expectedProductOptions[2].disabled = true
+    const expectedRequestOptions = [...RequestOptions]
+    expectedProductOptions[2].disabled = true
+
+    expect(setFilteredProductOptions).toHaveBeenCalledWith(expectedProductOptions);
+    expect(setFilteredRequestOptions).toHaveBeenCalledWith([{ "disabled": false, "id": 1, "text": "Initiated by me", "value": "created_by_me" }, { "disabled": false, "id": 2, "text": "Initiated by my branch", "value": "created_by_my_branch" }, { "disabled": true, "id": 3, "text": "Initiated system-wide", "value": "created_by_anyone" }]);
   });
 });
