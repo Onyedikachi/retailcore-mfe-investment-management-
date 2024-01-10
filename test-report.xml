@@ -1,41 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/App.test.tsx">
-    <testCase name="Test App Component If App is rendered wihout issues" duration="47"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Pages/management/corporate/index.test.tsx">
-    <testCase name="IndexComponent Renders without error" duration="147">
-      <failure message="TypeError: Cannot read properties of null (reading &apos;toLowerCase&apos;)"><![CDATA[TypeError: Cannot read properties of null (reading 'toLowerCase')
-    at TableComponent (/Users/work/Documents/retailcore-mfe-investment-management/src/components/pages/management/corporate/TableComponent.tsx:441:24)
-    at renderWithHooks (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:14985:18)
-    at mountIndeterminateComponent (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:17811:13)
-    at beginWork (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:19049:16)
-    at HTMLUnknownElement.callCallback (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:3945:14)
-    at HTMLUnknownElement.callTheUserObjectsOperation (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jsdom/lib/jsdom/living/generated/EventListener.js:26:30)
-    at innerInvokeEventListeners (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:338:25)
-    at invokeEventListeners (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:274:3)
-    at HTMLUnknownElementImpl._dispatch (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:221:9)
-    at HTMLUnknownElementImpl.dispatchEvent (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:94:17)
-    at HTMLUnknownElement.dispatchEvent (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jsdom/lib/jsdom/living/generated/EventTarget.js:231:34)
-    at Object.invokeGuardedCallbackDev (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:3994:16)
-    at invokeGuardedCallback (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:4056:31)
-    at beginWork$1 (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:23964:7)
-    at performUnitOfWork (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:22779:12)
-    at workLoopSync (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:22707:5)
-    at renderRootSync (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:22670:7)
-    at performSyncWorkOnRoot (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:22293:18)
-    at scheduleUpdateOnFiber (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:21881:7)
-    at updateContainer (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:25482:3)
-    at /Users/work/Documents/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:26021:7
-    at unbatchedUpdates (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:22431:12)
-    at legacyRenderSubtreeIntoContainer (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:26020:5)
-    at Object.render (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:26103:10)
-    at /Users/work/Documents/retailcore-mfe-investment-management/node_modules/@testing-library/react/dist/pure.js:101:25
-    at batchedUpdates$1 (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:22380:12)
-    at act (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom-test-utils.development.js:1042:14)
-    at render (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/@testing-library/react/dist/pure.js:97:26)
-    at renderWithProviders (/Users/work/Documents/retailcore-mfe-investment-management/src/utils/test-util.tsx:22:28)
-    at Object.<anonymous> (/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Pages/management/corporate/index.test.tsx:32:48)
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Pages/management/corporate/TableComponent.test.tsx">
+    <testCase name="handleDropdown should return an array of options based on the status, isChecker, locked, and permissions parameters" duration="10"/>
+    <testCase name="handleDropdown should filter out &quot;deactivate&quot; and &quot;activate&quot; options if user does not have &quot;CREATE_PRODUCT&quot; permission" duration="3"/>
+    <testCase name="handleDropdown should filter out &quot;modify&quot; option if user does not have &quot;CREATE_PRODUCT&quot; permission and is not a checker" duration="3"/>
+    <testCase name="handleDropdown should return an array with only &quot;view&quot; option if locked parameter is true and &quot;view&quot; option exists" duration="6"/>
+    <testCase name="handleDropdown should return an empty array if locked parameter is true and &quot;view&quot; option does not exist" duration="2"/>
+    <testCase name="handleDropdown should return an array with only &quot;view&quot; option if isChecker parameter is true and &quot;view&quot; option exists" duration="2"/>
+    <testCase name="handleHeaders should filter out &apos;created_by&apos; when isChecker is true" duration="3"/>
+    <testCase name="handleHeaders should filter out &apos;approved_By&apos; when isChecker is false" duration="2"/>
+    <testCase name="handleDownload should generate CSV for requests category" duration="5"/>
+    <testCase name="handleDownload should generate CSV for product category" duration="2"/>
+    <testCase name="handleDownload should not generate CSV if downloadData is empty" duration="2"/>
+    <testCase name="initiateDownload should download all requests when category is &quot;requests&quot;" duration="2"/>
+    <testCase name="initiateDownload should not call download functions when category is not &quot;all products&quot; or &quot;requests&quot;" duration="3"/>
+    <testCase name="initiateDownload should call downloadProducts with the correct parameters when category is Investments" duration="4">
+      <failure message="Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)"><![CDATA[Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+Expected: {"filter_by": "selectedValue", "page_Size": 1000000}
+
+Number of calls: 0
+    at Object.<anonymous> (/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Pages/management/corporate/TableComponent.test.tsx:320:30)
     at Promise.then.completed (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/utils.js:391:28)
     at new Promise (<anonymous>)
     at callAsyncCircusFn (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/utils.js:316:10)
@@ -51,35 +36,11 @@
     at runTest (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-runner/build/runTest.js:475:34)
     at Object.worker (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-runner/build/testWorker.js:133:12)]]></failure>
     </testCase>
-    <testCase name="handleToggle should set isChecker to true and hideCreate to true when selected option includes &quot;approved&quot;" duration="4"/>
-    <testCase name="handleToggle should set isChecker to true and hideCreate to true when selected option includes &quot;sent&quot;" duration="4"/>
-    <testCase name="handleToggle should set isChecker to false and hideCreate to false when selected option does not include &quot;approved&quot; or &quot;sent&quot;" duration="6"/>
-    <testCase name="handleToggle should not throw an error and change values to &apos;false&apos; when selected values when selected value is null" duration="3"/>
-    <testCase name="handleToggle should not throw an error and change values to &apos;false&apos; when selected values does not have a text property" duration="2"/>
-    <testCase name="handleToggle should not throw an error and change values to &apos;false&apos; when selected values when selected value has a null text property" duration="2"/>
-    <testCase name="handleChange should update query object with selected filter and reset page to 1" duration="2"/>
-    <testCase name="handleChange should set status_In property of query object to null when activeType is &quot;all&quot;" duration="22"/>
-    <testCase name="handleChange should update query object when activeType is not a valid string" duration="2"/>
-    <testCase name="handleChange should update query object when category is not a valid string" duration="2"/>
-    <testCase name="handleRefresh should call getProducts and prodStatRefetch with updated query when category is Investments" duration="9"/>
-    <testCase name="handleRefresh should call getRequests and requestRefetch with updated query when category is Requests" duration="2"/>
-    <testCase name="handleRefresh should call getRequests and RequestRefetch when category is undefined" duration="2"/>
-    <testCase name="handleSearch Should call setQuery with the provided values" duration="4"/>
-    <testCase name="handleRequestStatus should set request data to an empty array when query page is 1" duration="2"/>
-    <testCase name="handleRequestStatus should map over request results and add request status and type names to each item in request data" duration="2"/>
-    <testCase name="handleRequestStatus should concatenate new request data to previous request data using setRequestData" duration="2"/>
-    <testCase name="handleRequestStatus should not set request data to an empty array when query page is not 1" duration="2"/>
-    <testCase name="handleRequestStatus should not add request status and type names when request results is empty" duration="13"/>
-    <testCase name="handleRequestStatus should not concatenate new request data when request results is empty" duration="2"/>
-    <testCase name="handleProductStatus should set product data to an empty array when query page is 1" duration="1"/>
-    <testCase name="handleProductStatus should concatenate fetched data results to previous product data, mapping each result to include state and productType properties" duration="2"/>
-    <testCase name="handleProductStatus should set hasMore to true if there is a next page in the fetched data" duration="2"/>
-    <testCase name="handleProductStatus should not modify product data when query page is not 1" duration="2"/>
-    <testCase name="handleProductStatus should not modify product data when data fetch is not successful" duration="4"/>
-    <testCase name="handleProductStatus should not modify product data when fetched data results are empty" duration="9"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/Sterling-investment.tsx">
-    <testCase name="microfrontend bootstraps the app" duration="9"/>
-    <testCase name="microfrontend mounts and unmounts" duration="27"/>
+    <testCase name="initiateDownload should call downloadRequests with the correct parameters when category is not Investments" duration="2"/>
+    <testCase name="initiateDownload should not call downloadProducts or downloadRequests when category is not defined or has an invalid value" duration="2"/>
+    <testCase name="getSearchResult should call setSearchResults with an empty array when value is empty" duration="2"/>
+    <testCase name="getSearchResult should call getRequests with the correct parameters when category is Requests" duration="2"/>
+    <testCase name="getSearchResult should call setSearchResults with an empty array when value is null" duration="3"/>
+    <testCase name="getSearchResult should not call setSearchResults when category is not a valid StatusCategoryType" duration="3"/>
   </file>
 </testExecutions>
