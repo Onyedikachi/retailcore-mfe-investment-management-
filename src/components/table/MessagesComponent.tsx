@@ -2,6 +2,9 @@ import { Fragment } from "react";
 import { Confirm, Failed, Success } from "../modals";
 import RequestDeactivation from "../modals/RequestDeactivation";
 import ProductDetail from "../modals/ProductDetail";
+import BookingDetail from "../modals/BookingDetail";
+import EarlyLiquidation from "../modals/EarlyLiquidation";
+import PartLiquidation from "../modals/PartLiquidation";
 import Loader from "../Loader";
 
 export default function MessagesComponent({
@@ -29,6 +32,14 @@ export default function MessagesComponent({
   setIsDeactivationOpen,
   setDetailOpen,
   handleAction,
+
+  isIndividualDetailOpen,
+  setIndividualDetailOpen,
+
+  isEarlyLiquidation,
+  isPartLiquidation,
+  setPartLiquidationOpen,
+  setEarlyLiquidationOpen
 }) {
   return (
     <Fragment>
@@ -72,10 +83,37 @@ export default function MessagesComponent({
           // setReason={() => {}}
         />
       )}
+       {isEarlyLiquidation && (
+        <EarlyLiquidation
+          isOpen={isEarlyLiquidation}
+          setIsOpen={setEarlyLiquidationOpen}
+          onConfirm={() => {}}
+          detail={detail}
+          // setReason={() => {}}
+        />
+      )}
+       {isPartLiquidation && (
+        <PartLiquidation
+          isOpen={isPartLiquidation}
+          setIsOpen={setPartLiquidationOpen}
+          onConfirm={() => {}}
+          detail={detail}
+          // setReason={() => {}}
+        />
+      )}
       {isDetailOpen && (
         <ProductDetail
           isOpen={isDetailOpen}
           setIsOpen={setDetailOpen}
+          handleClick={handleAction}
+          detail={detail}
+          // setReason={() => {}}
+        />
+      )}
+      {isIndividualDetailOpen && (
+        <BookingDetail
+          isOpen={isIndividualDetailOpen}
+          setIsOpen={setIndividualDetailOpen}
           handleClick={handleAction}
           detail={detail}
           // setReason={() => {}}

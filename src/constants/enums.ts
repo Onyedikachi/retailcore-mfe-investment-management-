@@ -1,7 +1,7 @@
 export enum StatusCategoryType {
   AllProducts = "all products",
   Requests = "requests",
-  Investments = "investments"
+  Investments = "investments",
   // Add other category types here
 }
 
@@ -94,7 +94,10 @@ export enum Actions {
   DELETE_REQUESTS = "delete request",
   WITHDARW_MODIFY = "withdraw & modify",
   MODIFY = "modify",
-  CONTINUE_REQUEST = "continue request"
+  CONTINUE_REQUEST = "continue request",
+  EARLY_LIQUIDATE = "early liquidate",
+  PART_LIQUIDATE = "part liquidate",
+  RESTRUCTURE = "restructure",
 }
 
 export enum CustomerCategoryType {
@@ -111,4 +114,3 @@ export enum LiquidationPenalty {
   TakeCharge = 4,
   ComparePenalties = 5,
 }
-

@@ -24,6 +24,8 @@ interface ContextProps {
   setRole?: (e: string) => void;
   isDetailOpen?: boolean;
   setDetailOpen?: (e: any) => void;
+  isIndividualDetailOpen?: boolean;
+  setIndividualDetailOpen?: (e: any) => void;
   detail?: any;
   setDetail?: (e: any) => void;
 }
@@ -113,8 +115,8 @@ export const IndividualContext = createContext<ContextProps>({
   setRefreshing: () => {},
   role: "",
   setRole: () => {},
-  isDetailOpen: false,
-  setDetailOpen: () => {},
+  isIndividualDetailOpen: false,
+  setIndividualDetailOpen: () => {},
   detail: false,
   setDetail: () => {},
 });

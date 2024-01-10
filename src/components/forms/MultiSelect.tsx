@@ -22,11 +22,13 @@ export default function MultiSelect({
   children,
   getOptions,
   label = "[Select all]",
+  showMe,
 }: {
   options: any;
   children: ReactNode;
   getOptions: any;
   label?: string;
+  showMe?: string;
 }): React.JSX.Element {
   const [isSelectAll] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -63,7 +65,10 @@ export default function MultiSelect({
                   />
                 </li>
                 {options?.map((item) => (
-                  <li key={item.id} className="cursor-pointer">
+                  <li
+                    key={item.id}
+                    className="cursor-pointer flex items-center gap-x-1"
+                  >
                     <Checkbox
                       data-testid="select-item"
                       label={item.name}
@@ -79,6 +84,9 @@ export default function MultiSelect({
                         )
                       }
                     />
+                    {showMe && showMe === item.value && (
+                      <span className="text-[13px] text-[#636363] font-normal">[ME]</span>
+                    )}
                   </li>
                 ))}
               </ul>

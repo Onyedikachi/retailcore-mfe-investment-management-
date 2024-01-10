@@ -80,7 +80,7 @@ export default function ProductDetail({
             <div className="grid grid-cols-2 gap-x-5 text-left px-10 py-11">
               <div className="flex flex-col justify-between gap-y-3">
                 <div className="p-6 flex flex-col gap-y-[35px] max-h-[463px] overflow-y-auto">
-                  {/* {detail?.status === "R" && (
+                  {/* {detail?.reason && (
                     <div>
                       <span className="font-bold block mb-[15px]">
                         Reason for Deactivation

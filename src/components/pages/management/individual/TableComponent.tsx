@@ -12,13 +12,13 @@ import {
 import SearchInput from "@app/components/SearchInput";
 import Table from "@app/components/table";
 import {
-  DropDownOptions,
+  IndividualDropDownOptions,
   ProductTypes,
   StatusFilterOptions,
   StatusTypes,
   TypeFilterOptions,
   individualHeader,
-  requestHeader,
+  IndividualRequestHeader,
 } from "@app/constants";
 import optionsDataHandler from "./optionsDataHandler";
 
@@ -42,22 +42,22 @@ interface ProductDataProps {
 export const handleDropdown = (
   status: string,
   isChecker,
-  DropDownOptions,
+  IndividualDropDownOptions,
   setOptionsByStatus,
   locked = false,
   permissions: string[] = []
 ) => {
   if (locked)
-    return DropDownOptions[setOptionsByStatus(status)].filter(
+    return IndividualDropDownOptions[setOptionsByStatus(status)].filter(
       (i: any) => i.text.toLowerCase() === "view"
     );
   if (!status) return [];
   if (isChecker) {
-    return DropDownOptions[setOptionsByStatus(status)].filter(
+    return IndividualDropDownOptions[setOptionsByStatus(status)].filter(
       (i: any) => i.text.toLowerCase() === "view"
     );
   } else {
-    let options = DropDownOptions[setOptionsByStatus(status)];
+    let options = IndividualDropDownOptions[setOptionsByStatus(status)];
     if (!permissions?.includes("CREATE_PRODUCT")) {
       options = options?.filter(
         (i: any) =>
@@ -415,7 +415,7 @@ export default function TableComponent({
           category === StatusCategoryType?.Investments
             ? individualHeader
             : handleHeaders(
-                requestHeader.map((i) => {
+                IndividualRequestHeader.map((i) => {
                   if (i.key === "created_By" || i.key === "approved_By") {
                     i.options = users;
                   }
@@ -435,7 +435,7 @@ export default function TableComponent({
         hasMore={hasMore}
         getOptionData={getOptionData}
         isLoading={isLoading}
-        dropDownOptions={DropDownOptions}
+        dropDownOptions={IndividualDropDownOptions}
         dropDownClick={handleDropClick}
         onChangeDate={onChangeDate}
         type={category.toLowerCase()}
@@ -444,6 +444,7 @@ export default function TableComponent({
             ? "No request available"
             : "No investment available"
         }
+        Context={IndividualContext}
       />
     </section>
   );
