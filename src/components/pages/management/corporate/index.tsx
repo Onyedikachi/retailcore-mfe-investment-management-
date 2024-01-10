@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useContext } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { InvestmentContext } from "@app/utils/context";
+import { AppContext, IndividualContext } from "@app/utils/context";
 import { StatusCategoryType } from "@app/constants/enums";
 import { StatusCard, QuickLinks } from "@app/components";
-import TableComponent from "@app/components/pages/management/corporate/TableComponent";
+import TableComponent from "@app/components/pages/management/individual/TableComponent";
 import {
   useGetPostProductsMutation,
   useGetPostRequestsMutation,
@@ -13,6 +13,7 @@ import {
   useGetSystemAlertQuery,
 } from "@app/api";
 import {
+  ManagementCategories,
   ProductTypes,
   StatusFilterOptions,
   StatusTypes,
@@ -116,7 +117,7 @@ export const handleRefresh = (
   setProductData,
   setRequestData
 ) => {
-  if (category === StatusCategoryType.AllProducts) {
+  if (category === StatusCategoryType?.Investments) {
     setProductData([]);
     getProducts({ ...query, page: 1, filter_by: selected?.value });
     prodStatRefetch(query);
@@ -135,15 +136,15 @@ export const handleSearch = (value, query, setQuery) => {
   });
 };
 export default function Corporate() {
+  const {isChecker, setIsChecker} = useContext(AppContext)
   const [category, setCategory] = useState<string>(
-    StatusCategoryType?.AllProducts
+    StatusCategoryType?.Investments
   );
   const [searchParams] = useSearchParams();
   const queryCategory = searchParams.get("category");
   const productId = searchParams.get("productId");
   const preview = searchParams.get("preview");
   const [selected, setSelected] = useState<any>(null);
-  const [isChecker, setIsChecker] = useState(false);
   const [, setHideCreate] = useState(false);
   const [status, setStatus] = useState("");
   const [dateData, setDateData] = useState({ to: null, from: null });
@@ -175,8 +176,6 @@ export default function Corporate() {
     () => ({
       selected,
       setSelected,
-      isChecker,
-      setIsChecker,
       category,
       setCategory,
       setStatus,
@@ -201,8 +200,6 @@ export default function Corporate() {
     [
       selected,
       setSelected,
-      isChecker,
-      setIsChecker,
       category,
       setCategory,
       setStatus,
@@ -251,7 +248,7 @@ export default function Corporate() {
   } = useGetProductStatsQuery(
     { filter_by: selected?.value },
     {
-      skip: category !== StatusCategoryType.AllProducts,
+      skip: category !== StatusCategoryType?.Investments,
     }
   );
 
@@ -272,7 +269,7 @@ export default function Corporate() {
       page: 1,
     });
 
-    if (category === StatusCategoryType.AllProducts) {
+    if (category === StatusCategoryType?.Investments) {
       getProducts({ ...query, page: 1, filter_by: selected?.value });
     } else {
       getRequests({ ...query, page: 1, filter_by: selected?.value });
@@ -292,7 +289,7 @@ export default function Corporate() {
     setCategory(
       queryCategory === "requests"
         ? StatusCategoryType.Requests
-        : StatusCategoryType.AllProducts
+        : StatusCategoryType?.Investments
     );
   }, [queryCategory]);
 
@@ -338,7 +335,7 @@ export default function Corporate() {
   const fetchMoreData = () => {
     setQuery((prevQuery) => {
       const updatedPage = prevQuery.page + 1;
-      if (category === StatusCategoryType.AllProducts) {
+      if (category === StatusCategoryType?.Investments) {
         getProducts({
           ...prevQuery,
           page: updatedPage,
@@ -359,16 +356,20 @@ export default function Corporate() {
   };
 
   return (
-    <InvestmentContext.Provider value={value}>
+    <IndividualContext.Provider value={value}>
       <div className="flex gap-x-5 w-full flex-1">
         <div className="flex flex-col gap-y-7 w-calc overflow-auto">
           <StatusCard
+            StatusCategories={ManagementCategories}
+            categoryType1={StatusCategoryType?.Investments}
+            categoryType2={StatusCategoryType.Requests}
             data={prodStatData}
             requests={requestStatData}
             handleChange={({ selected, activeType }) =>
               handleChange(selected, activeType, setQuery, query, category)
             }
             isLoading={requestStatLoading || prodStatLoading}
+            Context={IndividualContext}
           />
 
           <div className="bg-white px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16">
@@ -401,6 +402,6 @@ export default function Corporate() {
         </div>
         <QuickLinks />
       </div>
-    </InvestmentContext.Provider>
+    </IndividualContext.Provider>
   );
 }

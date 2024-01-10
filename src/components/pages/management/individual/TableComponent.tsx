@@ -3,7 +3,7 @@ import { ExportToCsv } from "export-to-csv";
 import { HiRefresh, HiDownload } from "react-icons/hi";
 import { StatusCategoryType } from "@app/constants/enums";
 import moment from "moment";
-import { ucObjectKeys, InvestmentContext, AppContext } from "@app/utils";
+import { ucObjectKeys, IndividualContext, AppContext } from "@app/utils";
 import {
   useGetPostProductsMutation,
   useGetPostRequestsMutation,
@@ -17,7 +17,7 @@ import {
   StatusFilterOptions,
   StatusTypes,
   TypeFilterOptions,
-  productHeader,
+  individualHeader,
   requestHeader,
 } from "@app/constants";
 import optionsDataHandler from "./optionsDataHandler";
@@ -85,12 +85,18 @@ export function initiateDownload(
   downloadRequests,
   selected
 ) {
- 
-  if (category === StatusCategoryType.AllProducts) {
-    
-    downloadProducts({ ...query, page_Size: 1000000 , filter_by: selected?.value,});
+  if (category === StatusCategoryType?.Investments) {
+    downloadProducts({
+      ...query,
+      page_Size: 1000000,
+      filter_by: selected?.value,
+    });
   } else {
-    downloadRequests({ ...query, page_Size: 1000000, filter_by: selected?.value, });
+    downloadRequests({
+      ...query,
+      page_Size: 1000000,
+      filter_by: selected?.value,
+    });
   }
 }
 export function handleDownload(downloadData, isChecker, csvExporter, category) {
@@ -150,7 +156,7 @@ export const getSearchResult = (
     setSearchResults([]);
     return;
   }
-  if (category === StatusCategoryType.AllProducts) {
+  if (category === StatusCategoryType?.Investments) {
     getProducts({
       search: value,
       page: 1,
@@ -183,9 +189,8 @@ export default function TableComponent({
   hasMore,
   fetchMoreData,
 }: any) {
-  const { category, setStatus, isChecker, selected } =
-    useContext(InvestmentContext);
-  const { permissions } = useContext(AppContext);
+  const { category, setStatus, selected } = useContext(IndividualContext);
+  const { isChecker } = useContext(AppContext);
   const [users, setUsers] = useState([]);
   const [searchResults, setSearchResults] = useState<any[]>([]);
 
@@ -197,7 +202,7 @@ export default function TableComponent({
     showTitle: false,
     title: "Product management",
     filename:
-      category === StatusCategoryType?.AllProducts
+      category === StatusCategoryType?.Investments
         ? "dashboard_products_data"
         : "dashboard_requests_data",
     useTextFile: false,
@@ -255,7 +260,7 @@ export default function TableComponent({
 
   useEffect(() => {
     isSuccess &&
-      category === StatusCategoryType?.AllProducts &&
+      category === StatusCategoryType?.Investments &&
       setSearchResults(
         data.results.map((i) => {
           return {
@@ -284,7 +289,7 @@ export default function TableComponent({
   useEffect(() => {
     if (
       productDownloadIsSuccess &&
-      category === StatusCategoryType.AllProducts
+      category === StatusCategoryType?.Investments
     ) {
       handleDownload(
         productDownloadData?.results.map((i) => ({
@@ -323,7 +328,7 @@ export default function TableComponent({
       showTitle: false,
       title: "Product management",
       filename:
-        category === StatusCategoryType?.AllProducts
+        category === StatusCategoryType?.Investments
           ? "dashboard_products_data"
           : "dashboard_requests_data",
       useTextFile: false,
@@ -365,7 +370,7 @@ export default function TableComponent({
               selected
             )
           }
-          placeholder={`Search by product name${
+          placeholder={`Search by customer name${
             category !== StatusCategoryType.Requests ? "/code" : ""
           }`}
           searchResults={searchResults}
@@ -407,8 +412,8 @@ export default function TableComponent({
       {/* main table  */}
       <Table
         headers={
-          category === StatusCategoryType?.AllProducts
-            ? productHeader
+          category === StatusCategoryType?.Investments
+            ? individualHeader
             : handleHeaders(
                 requestHeader.map((i) => {
                   if (i.key === "created_By" || i.key === "approved_By") {
@@ -420,7 +425,7 @@ export default function TableComponent({
               )
         }
         tableRows={
-          category === StatusCategoryType?.AllProducts
+          category === StatusCategoryType?.Investments
             ? productData
             : requestData
         }
@@ -437,7 +442,7 @@ export default function TableComponent({
         noData={
           StatusCategoryType.Requests === category
             ? "No request available"
-            : "No product available"
+            : "No investment available"
         }
       />
     </section>

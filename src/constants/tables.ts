@@ -215,6 +215,18 @@ export const ActiveFilterOptions: any[] = [
     value: 1,
   },
 ];
+export const IndividualFilterOptions: any[] = [
+  {
+    id: 1,
+    name: "active",
+    value: 2,
+  },
+  {
+    id: 2,
+    name: "liquidated",
+    value: 1,
+  },
+];
 export const ProductTypes: any[] = [
   {
     id: 0,
@@ -490,6 +502,56 @@ export const productHeader = [
     label: "state",
     key: "state",
     options: ActiveFilterOptions,
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "updated on",
+    key: "updated_At",
+    options: [],
+    hasSelect: false,
+    hasDateSelect: true,
+  },
+  {
+    label: "",
+    options: [],
+    hasSelect: false,
+    hasDateSelect: false,
+    key: "actions",
+  },
+];
+export const individualHeader = [
+  {
+    label: "customer name/id",
+    key: "customerName",
+    options: [
+      {
+        id: 1,
+        name: "",
+        value: "",
+      },
+    ],
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "principal",
+    key: "prinncipal",
+    options: [],
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "investment product",
+    key: "investmentProduct",
+    options: productFilterOptions,
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "state",
+    key: "state",
+    options: IndividualFilterOptions,
     hasSelect: true,
     hasDateSelect: false,
   },

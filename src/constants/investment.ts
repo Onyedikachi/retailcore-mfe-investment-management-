@@ -20,6 +20,26 @@ export const StatusCategories = [
     type: "requests",
   },
 ];
+export const FactoryCategories = [
+  {
+    id: 1,
+    type: "all products",
+  },
+  {
+    id: 2,
+    type: "requests",
+  },
+];
+export const ManagementCategories = [
+  {
+    id: 1,
+    type: "investments",
+  },
+  {
+    id: 2,
+    type: "requests",
+  },
+];
 
 export const StatusTypes = [
   {
@@ -35,6 +55,23 @@ export const StatusTypes = [
   {
     id: 1,
     type: "inactive",
+    color: "#AAAAAA",
+  },
+];
+export const IndividualStatusTypes = [
+  {
+    id: 0,
+    type: "all",
+    color: "#252C32",
+  },
+  {
+    id: 2,
+    type: "active",
+    color: "#2FB755",
+  },
+  {
+    id: 1,
+    type: "liquidated",
     color: "#AAAAAA",
   },
 ];

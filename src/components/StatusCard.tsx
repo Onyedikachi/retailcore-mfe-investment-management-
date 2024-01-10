@@ -7,17 +7,21 @@ import {
   StatusTypes,
   CheckerStatusRequests,
   StatusRequests,
-  StatusCategories,
   ProductOptions,
   RequestOptions,
   ApproveProductOptions,
   CreateProductOptions,
   CreateRequestOptions,
   ApproveRequestOptions,
+  FactoryCategories,
+  IndividualStatusTypes,
 } from "@app/constants";
 
 export function filterAllProductsOptions(): any[] {
   return StatusTypes;
+}
+export function filterAllInvestmentsOptions(): any[] {
+  return IndividualStatusTypes;
 }
 
 export function filterCheckerOptions(): any[] {
@@ -34,6 +38,9 @@ export function filterDefaultOptions(): any[] {
 export function sortOptions(category: string, isChecker: boolean): any[] {
   if (category === StatusCategoryType.AllProducts) {
     return filterAllProductsOptions();
+  }
+  if (category === StatusCategoryType?.Investments) {
+    return filterAllInvestmentsOptions();
   }
 
   if (isChecker) {
@@ -89,6 +96,8 @@ export const count = (item, analyticsData) => {
       return analyticsData?.data?.A || 0;
     case "inactive":
       return analyticsData?.data?.I || 0;
+    case "liquidated":
+      return analyticsData?.data?.I || 0;
     case "approved":
       return analyticsData?.data?.A || 0;
     case "pending":
@@ -112,11 +121,12 @@ export const handleClick = (
   setSelected,
   category,
   filteredProductOptions,
-  filteredRequestOptions
+  filteredRequestOptions,
+  categoryType1
 ) => {
   setCategory(item?.type);
   setSelected(
-    category === StatusCategoryType?.AllProducts
+    category === categoryType1
       ? filteredProductOptions[0]
       : filteredRequestOptions[0]
   );
@@ -129,6 +139,7 @@ export const StatusCategoryButton = ({
   setSelected,
   filteredProductOptions,
   filteredRequestOptions,
+  categoryType1,
 }: any) => {
   return (
     <button
@@ -142,7 +153,8 @@ export const StatusCategoryButton = ({
           setSelected,
           category,
           filteredProductOptions,
-          filteredRequestOptions
+          filteredRequestOptions,
+          categoryType1
         )
       }
       className={`${
@@ -171,6 +183,9 @@ export function handleActiveType(activeType, setStatus) {
       setStatus("A");
       break;
     case "inactive":
+      setStatus("I");
+      break;
+    case "liquidated":
       setStatus("I");
       break;
     case "approved":
@@ -332,15 +347,19 @@ export default function StatusCard({
   requests,
   isLoading,
   handleChange,
+  StatusCategories = FactoryCategories,
+  categoryType1 = "all products",
+  categoryType2 = "requests",
+  Context,
 }: any): React.JSX.Element {
   // const { permissions } = useContext(AppContext);
 
   const [activeType, setActiveType] = useState<string | undefined>("all");
   const [filteredProductOptions, setFilteredProductOptions] = useState([]);
   const [filteredRequestOptions, setFilteredRequestOptions] = useState([]);
-  const { isChecker, selected, setSelected, category, setCategory, status } =
-    useContext(InvestmentContext);
-  const { permissions } = useContext(AppContext);
+  const { selected, setSelected, category, setCategory, status }: any =
+    useContext(Context);
+  const { permissions, isChecker } = useContext(AppContext);
 
   // Get select value
   function handleSelected(value: any) {
@@ -378,7 +397,7 @@ export default function StatusCard({
 
   useEffect(() => {
     setSelected(
-      category === StatusCategoryType.Requests
+      category === categoryType2
         ? filteredRequestOptions[0]
         : filteredProductOptions[0]
     );
@@ -396,6 +415,7 @@ export default function StatusCard({
             setSelected={setSelected}
             filteredRequestOptions={filteredRequestOptions}
             filteredProductOptions={filteredProductOptions}
+            categoryType1={categoryType1}
           />
         ))}
       </div>
@@ -408,9 +428,7 @@ export default function StatusCard({
               isActive={activeType === item.type}
               setActiveType={setActiveType}
               isLoading={isLoading}
-              analyticsData={
-                category === StatusCategoryType.AllProducts ? data : requests
-              }
+              analyticsData={category === categoryType1 ? data : requests}
             />
           ))}
         </div>
@@ -418,7 +436,7 @@ export default function StatusCard({
         <div>
           <Select
             options={
-              category === StatusCategoryType?.AllProducts
+              category === categoryType1
                 ? filteredProductOptions
                 : filteredRequestOptions
             }

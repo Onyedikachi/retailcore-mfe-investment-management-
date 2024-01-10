@@ -183,9 +183,9 @@ export default function TableComponent({
   hasMore,
   fetchMoreData,
 }: any) {
-  const { category, setStatus, isChecker, selected } =
+  const { category, setStatus, selected } =
     useContext(InvestmentContext);
-  const { permissions } = useContext(AppContext);
+  const { isChecker } = useContext(AppContext);
   const [users, setUsers] = useState([]);
   const [searchResults, setSearchResults] = useState<any[]>([]);
 

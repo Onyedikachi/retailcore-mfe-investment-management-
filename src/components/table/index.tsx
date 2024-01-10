@@ -153,10 +153,7 @@ export const handleProductsDropdown = (
         !permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS") &&
         created_By_Id !== userId)
     ) {
-      options = options?.filter(
-        (i: any) =>
-          i.text.toLowerCase() === "view" 
-      );
+      options = options?.filter((i: any) => i.text.toLowerCase() === "view");
     }
     return options;
   }
@@ -222,16 +219,9 @@ export default function TableComponent<TableProps>({
   type = "",
   noData = "No data available",
 }) {
-  const { role, permissions, userId } = useContext(AppContext);
-  const {
-    isChecker,
-    category,
-    selected,
-    isDetailOpen,
-    setDetailOpen,
-    detail,
-    setDetail,
-  } = useContext(InvestmentContext);
+  const { role, permissions, userId, isChecker } = useContext(AppContext);
+  const { category, selected, isDetailOpen, setDetailOpen, detail, setDetail } =
+    useContext(InvestmentContext);
   const [action, setAction] = useState("");
   const navigate = useNavigate();
   const previousData = useRef({});
@@ -430,7 +420,8 @@ export default function TableComponent<TableProps>({
                               {!isChecker ? (
                                 <ActionsCellContent
                                   dropDownOptions={
-                                    type === StatusCategoryType.AllProducts
+                                    type === StatusCategoryType.AllProducts ||
+                                    type === StatusCategoryType.Investments
                                       ? handleProductsDropdown(
                                           item.state,
                                           isChecker,

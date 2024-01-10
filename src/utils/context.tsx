@@ -5,8 +5,7 @@ interface ContextProps {
   setCategory?: (e: any) => void;
   selected?: { id: number; text: string; value?: string } | null;
   setSelected?: (e: any) => void;
-  isChecker?: boolean;
-  setIsChecker?: (e: any) => void;
+
   setStatus?: (e: any) => void;
   status?: string;
   dateData?: any;
@@ -51,14 +50,18 @@ export const AppContext = createContext<{
   permissions: string[];
   currencies?: any;
   setCurrencies?: (e: any) => void;
-  userId?: string
+  userId?: string;
+  isChecker?: boolean;
+  setIsChecker?: (e: any) => void;
 }>({
   role: "",
   setRole: () => {},
   permissions: [],
   currencies: [],
   setCurrencies: () => {},
-  userId: ""
+  userId: "",
+  isChecker: true,
+  setIsChecker: () => {},
 });
 
 export const InvestmentContext = createContext<ContextProps>({
@@ -66,8 +69,34 @@ export const InvestmentContext = createContext<ContextProps>({
   setCategory: () => {},
   selected: null,
   setSelected: () => {},
-  isChecker: true,
-  setIsChecker: () => {},
+  setStatus: () => {},
+  status: "",
+  dateData: null,
+  setDateData: () => {},
+  search: "",
+  setSearch: () => {},
+  type: "",
+  setType: () => {},
+  initiator: "",
+  setInitiator: () => {},
+  setDuration: () => {},
+  duration: "",
+  isRefreshing: false,
+  setRefreshing: () => {},
+  role: "",
+  setRole: () => {},
+  isDetailOpen: false,
+  setDetailOpen: () => {},
+  detail: false,
+  setDetail: () => {},
+});
+
+export const IndividualContext = createContext<ContextProps>({
+  category: null,
+  setCategory: () => {},
+  selected: null,
+  setSelected: () => {},
+
   setStatus: () => {},
   status: "",
   dateData: null,
@@ -107,21 +136,21 @@ export const SummaryContextProps = createContext<ISummaryContextProps>({
 });
 
 interface IOverviewContext {
-  name: string
+  name: string;
 }
 export const defaultOverviewContext = {
-  name: 'All Investments'
-}
+  name: "All Investments",
+};
 
 export const OverviewContext = createContext<undefined | IOverviewContext>(
   undefined
-)
+);
 
 export function useOverviewContext() {
-  const overviewState = useContext(OverviewContext)
+  const overviewState = useContext(OverviewContext);
   if (overviewState === undefined) {
-    throw new Error('useOverviewContext must be used with a dashbord context')
+    throw new Error("useOverviewContext must be used with a dashbord context");
   }
 
-  return overviewState
+  return overviewState;
 }
