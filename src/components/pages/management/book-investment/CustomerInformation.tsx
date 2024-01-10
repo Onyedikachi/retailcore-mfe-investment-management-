@@ -27,9 +27,14 @@ export default function CustomerInformation({
       <div className="flex flex-col gap-4 px-[30px] py-5">
         <div className="flex flex-col items-start gap-y-5">
           <InputDivs label={"Customer account"}>
-            <div className="ml-[51px] w-[360px]">
+           <div className="flex gap-[15px]">
+           <div className="ml-[51px] w-[360px]">
               <AccountSearch placeholder={"Search by account number"} />
             </div>
+            <div className="p-[10px] max-w-max rounded-lg bg-[#F9F9F9] border border-[#EBEBEB]">
+                <span className='text-base font-medium text-[#636363]' >Available Bal: <span className='text-base font-normal text-[#636363]' >NGN 2,000,000.00</span></span>
+            </div>
+           </div>
           </InputDivs>
           <div className="w-full">
             <CustomerInfoCard />
