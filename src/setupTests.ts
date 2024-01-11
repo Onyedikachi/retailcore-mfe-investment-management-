@@ -13,37 +13,6 @@ class ResizeObserver {
   disconnect() { }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 configure({ adapter: new Adapter() });
 
 const mockstore = store();
