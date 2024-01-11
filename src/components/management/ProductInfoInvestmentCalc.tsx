@@ -15,6 +15,34 @@ const productInfoArray = [
     },
     isOpen: false,
   },
+  {
+    name: "Customer Eligibility Criteria",
+    data: {
+      name: "",
+    },
+    isOpen: false,
+  },
+  {
+    name: "Pricing Configuration",
+    data: {
+      name: "",
+    },
+    isOpen: false,
+  },
+  {
+    name: "Early & Part Liquidation Configuration",
+    data: {
+      name: "",
+    },
+    isOpen: false,
+  },
+  {
+    name: "Charges & Taxes Configuration",
+    data: {
+      name: "",
+    },
+    isOpen: false,
+  },
 ];
 export default function ProductInfoInvestmentCalc({}) {
   //   const { process } = useParams();
@@ -26,7 +54,7 @@ export default function ProductInfoInvestmentCalc({}) {
       >
         <div className="pt-[30px] pb-[19px] border-b border-[#cccccc] px-6 ">
           <span className="text-[#636363] font-medium text-[20px] uppercase">
-            Product Info
+            Product Information
           </span>
         </div>
 
@@ -43,9 +71,27 @@ export default function ProductInfoInvestmentCalc({}) {
           <div className="flex flex-col gap-4">
             {productInfoArray.map((item, index) => (
               <div key={index} className="">
-                <span onClick={() => (item.isOpen = !item.isOpen)} className="">
-                  {item.name}
-                </span>
+                <div className="flex items-center gap-2">
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 15 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M6.39063 2.68924L6.39062 12.3103C6.39062 12.5989 6.69531 12.76 6.90332 12.5813L12.4814 7.77079C12.6411 7.63309 12.6411 7.36795 12.4814 7.22879L6.90332 2.41825C6.69531 2.23954 6.39063 2.40067 6.39063 2.68924Z"
+                      fill="#555555"
+                    />
+                  </svg>
+                  <span
+                    onClick={() => (item.isOpen = !item.isOpen)}
+                    className="text-[#636363] text-base font-medium"
+                  >
+                    {item.name}
+                  </span>
+                </div>
+
                 {/* {item.isOpen && <div>Item Details</div>} */}
               </div>
             ))}
