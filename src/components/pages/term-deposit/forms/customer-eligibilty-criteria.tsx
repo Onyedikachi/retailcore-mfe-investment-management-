@@ -19,6 +19,43 @@ import MultiSelectForm from "@app/components/forms/MultiSelectForm";
 import { useParams } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 
+export const handleCheckedRequirement = ({ document, toggledRequirements, setToggledRequirements }) => {
+  const isDocumentToggled = toggledRequirements.some(
+    (d) => d.id === document.id
+  );
+
+  // If it's checked, add it to the array; if unchecked, remove it
+  if (isDocumentToggled) {
+    setToggledRequirements(
+      toggledRequirements.filter((d) => d.id !== document.id)
+    );
+  } else {
+    setToggledRequirements([...toggledRequirements, document]);
+  }
+};
+
+export const requirementDeleteHandler = ({ itemToDelete, selectedRequirements, setSelectedRequirements }) => {
+  // Filter out the item to delete
+  const updatedRequirement = selectedRequirements.filter(
+    (item) => item !== itemToDelete
+  );
+
+  // Update the state with the new array
+  setSelectedRequirements(updatedRequirement);
+}
+
+export const handleSelectAllChange = ({ setToggledRequirements, documents, selectAll, setSelectAll }) => {
+  // If "Select All" is checked, set all documents to toggledDocuments; if unchecked, clear the array
+  if (selectAll) {
+    setToggledRequirements([]);
+  } else {
+    setToggledRequirements([...documents]);
+  }
+  setSelectAll(!selectAll);
+};
+
+
+
 export default function CustomerEligibilityCriteria({
   formData,
   setFormData,
@@ -27,6 +64,7 @@ export default function CustomerEligibilityCriteria({
   initiateDraft,
 }) {
   console.log("🚀 ~ file: customer-eligibilty-criteria.tsx:29 ~ formData:", formData)
+  console.log("checkin'")
   const { process } = useParams();
   const [documents, setDocuments] = useState([...documentOptions]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -57,43 +95,14 @@ export default function CustomerEligibilityCriteria({
   const [newDocument, setNewDocument] = useState("");
   const values = getValues();
 
-  const handleCheckedRequirement = (document) => {
-    const isDocumentToggled = toggledRequirements.some(
-      (d) => d.id === document.id
-    );
-
-    // If it's checked, add it to the array; if unchecked, remove it
-    if (isDocumentToggled) {
-      setToggledRequirements(
-        toggledRequirements.filter((d) => d.id !== document.id)
-      );
-    } else {
-      setToggledRequirements([...toggledRequirements, document]);
-    }
-  };
-
-  const handleSelectAllChange = () => {
-    // If "Select All" is checked, set all documents to toggledDocuments; if unchecked, clear the array
-    if (selectAll) {
-      setToggledRequirements([]);
-    } else {
-      setToggledRequirements([...documents]);
-    }
-    setSelectAll(!selectAll);
-  };
 
   const deleteRequirementItem = (itemToDelete) => {
-    // Filter out the item to delete
-    const updatedRequirement = selectedRequirements.filter(
-      (item) => item !== itemToDelete
-    );
-
-    // Update the state with the new array
-    setSelectedRequirements(updatedRequirement);
+    requirementDeleteHandler({ itemToDelete, selectedRequirements, setSelectedRequirements })
   };
   const handleOptions = (val: any) => {
     setSearchQuery(val.name);
   };
+
 
   function onProceed(d: any) {
     setFormData({
@@ -354,7 +363,7 @@ export default function CustomerEligibilityCriteria({
                                 type="checkbox"
                                 id="doc-requirement-all"
                                 checked={selectAll}
-                                onChange={handleSelectAllChange}
+                                onChange={() => handleSelectAllChange({ documents, selectAll, setSelectAll, setToggledRequirements })}
                                 className="h-4 w-4 rounded border-gray-300  !accent-sterling-red-800 ring-0"
                               />
                             </div>
@@ -387,7 +396,7 @@ export default function CustomerEligibilityCriteria({
                                       type="checkbox"
                                       value={JSON.stringify(document)}
                                       onChange={() =>
-                                        handleCheckedRequirement(document)
+                                        handleCheckedRequirement({ document, toggledRequirements, setToggledRequirements })
                                       }
                                       checked={toggledRequirements.some(
                                         (d) => d.id === document.id

@@ -1,10 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/pages/management/book-investment/FormComponent.test.tsx">
-    <testCase name="code snippet should render the customer information form when step is 1" duration="87"/>
-    <testCase name="code snippet should render the customer information form when step is 2" duration="37"/>
-    <testCase name="code snippet should pass the &apos;proceed&apos; function to the &apos;CustomerInformation&apos; component" duration="24"/>
-    <testCase name="code snippet should allow the user to input customer information" duration="35"/>
-    <testCase name="code snippet should handle invalid input data correctly" duration="23"/>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/SideLabelSearchSelect.test.tsx">
+    <testCase name="InputDivs should render a div with a label and a child div" duration="104"/>
+    <testCase name="InputDivs should display a RedDot component next to the label" duration="63"/>
+    <testCase name="InputDivs should accept a label prop and render it as text" duration="9"/>
+    <testCase name="InputDivs should render without a label when label prop is not provided" duration="8"/>
+    <testCase name="InputDivs should render without a child div when children prop is not provided" duration="27"/>
+    <testCase name="InputDivs should render an empty label when label prop is an empty string" duration="11"/>
+    <testCase name="SideLabelSearchSelect should render the component with default props and input options" duration="693"/>
+    <testCase name="SideLabelSearchSelect should handle empty input field correctly" duration="103"/>
+    <testCase name="SideLabelSearchSelect should handle long input field values correctly" duration="63"/>
+    <testCase name="SideLabelSearchSelect should handle special characters in input field values correctly" duration="82"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/Sterling-investment.tsx">
+    <testCase name="microfrontend bootstraps the app" duration="10"/>
+    <testCase name="microfrontend mounts and unmounts" duration="28"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/pages/investment/term-deposit/create-term-deposit/IndexComponent.test.tsx">
+    <testCase name="IndexComponent renders" duration="945"/>
+    <testCase name="IndexComponent Changes values" duration="437"/>
+    <testCase name="IndexComponent Show modal when clicking save to Draft" duration="393"/>
+    <testCase name="IndexComponent Shows disabled button when form is not valid" duration="153"/>
+    <testCase name="IndexComponent Should not have disabled button when fom is valid" duration="327"/>
+    <testCase name="FormComponeent Should render if step === 1" duration="296"/>
+    <testCase name="FormComponeent Should render if step === 2" duration="494"/>
+    <testCase name="FormComponeent Should render if step === 3" duration="705"/>
+    <testCase name="FormComponeent Should render if step === 4" duration="846"/>
+    <testCase name="FormComponeent Should render if step === 5" duration="134"/>
+    <testCase name="handleNext should call setStep when theres more steps ahead" duration="3"/>
+    <testCase name="handleNext should not setStep when there are no steps ahead" duration="10"/>
+    <testCase name="handlePrev should call setStep when there are steps behind" duration="2"/>
+    <testCase name="handlePrev should not call setStep when user is at the first step" duration="21"/>
+    <testCase name="handleDraft should set setIsConfirmOpen to false when called" duration="11"/>
+    <testCase name="handleDraft should call modifyProduct with isDraft set to true when process is &quot;modify&quot;" duration="5"/>
+    <testCase name="handleDraft should call createProduct with isDraft set to true when process is &quot;create&quot; or &quot;clone&quot;" duration="5"/>
+    <testCase name="handleDraft should not call any functions when process is undefined" duration="13"/>
+    <testCase name="handleDetailsSuccess should set activeId.current to the id of productDetails when it exists" duration="3"/>
+    <testCase name="handleDetailsSuccess should set activeId.current to the id of productDetails when it exists 2" duration="9"/>
+    <testCase name="handleDetailsSuccess should update previousData.current with relevant fields from productDetails when process is &quot;modify&quot;" duration="3"/>
+    <testCase name="handleDetailsSuccess should update productData with relevant fields from productDetails" duration="2"/>
+    <testCase name="handleDetailsSuccess should set pricingConfigurationCopy to an empty object before sorting when it is null" duration="2"/>
+    <testCase name="handleDetailsSuccess should not sort pricingConfigurationCopy when interestRateConfigModels is null" duration="79"/>
+    <testCase name="handlePreviousData should return an object with all properties from prevProductData and productDetails" duration="3"/>
+    <testCase name="handlePreviousData should sort the interestRateConfigModels array in pricingConfigurationCopy by min value" duration="2"/>
+    <testCase name="handlePreviousData should return an object with all properties from prevProductData and productDetails when pricingConfigurationCopy is null" duration="2"/>
+    <testCase name="handleRequestIsSuccess should update product data when requestIsSuccess is true and metaInfo exists" duration="3"/>
+    <testCase name="handleRequestIsSuccess should update product data when requestIsSuccess is true and metaInfo exists and process == withdraw_modify" duration="3"/>
+    <testCase name="handleMessage should set success text to &quot;Product Setup saved to draft&quot; and open success modal when isSuccess is true" duration="2"/>
+    <testCase name="handleMessage should set success text to &quot;Product Setup saved to draft&quot; and open success modal when modifySuccess is true" duration="48"/>
+    <testCase name="handleMessage should set success text to &quot;Product Setup saved to draft&quot; and open success modal when modifyRequestSuccess is true" duration="5"/>
+    <testCase name="handleMessage should set failed text to &quot;Unable to save as draft&quot; and set failed subtext to error message when isError is true" duration="3"/>
+    <testCase name="handleMessage should set failed text to &quot;Unable to save as draft&quot; and set failed subtext to error message when modifyRequestIsError is true" duration="16"/>
+    <testCase name="handleMessage should set failed subtext to empty string when error message is undefined" duration="40"/>
+    <testCase name="handleNav should call handleNext when step is less than the length of termDepositFormSteps" duration="5"/>
+    <testCase name="handleNav should call navigate with the appropriate URL when step is equal to the length of termDepositFormSteps" duration="2"/>
+    <testCase name="handleNav should handle error when navigate function throws an error" duration="20"/>
+    <testCase name="handleNav should not include id parameter in URL when id is not provided" duration="4"/>
+    <testCase name="handleNav should include id parameter in URL when id is provided" duration="4"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/App.test.tsx">
+    <testCase name="Test App Component If App is rendered wihout issues" duration="90"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/liquidity-setup.test.tsx">
+    <testCase name="LiquiditySetup Renders without error" duration="706"/>
+    <testCase name="handleSelected should set partOptionCharges and earlyOptionCharges when inputName is &quot;part_SpecificCharges&quot; or &quot;early_SpecificCharges&quot; respectively" duration="8"/>
+    <testCase name="handleSelected should set value of &quot;part_SpecificCharges&quot; or &quot;early_SpecificCharges&quot; to selectedOptions when inputName is &quot;part_SpecificCharges&quot; or &quot;early_SpecificCharges&quot; respectively" duration="24"/>
+    <testCase name="handleSelected should not set partOptionCharges, earlyOptionCharges, or value when inputName is not &quot;part_SpecificCharges&quot; or &quot;early_SpecificCharges&quot;" duration="7"/>
+    <testCase name="handleSelected should not set partOptionCharges, earlyOptionCharges, or value when selectedOptions is null or undefined" duration="5"/>
+    <testCase name="onProceed should set early_SpecificCharges and part_SpecificCharges in formData and call proceed function when all parameters are defined" duration="13"/>
+    <testCase name="onProceed should set early_SpecificCharges and part_SpecificCharges in formData as undefined when earlyOptionCharges and partOptionCharges are undefined" duration="3"/>
+    <testCase name="onProceed should set early_SpecificCharges and part_SpecificCharges in formData as null when earlyOptionCharges and partOptionCharges are null" duration="6"/>
+    <testCase name="onProceed should set early_SpecificCharges and part_SpecificCharges in formData as null when formData is null" duration="51"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/customer-eligibility-criteria.test.tsx">
+    <testCase name="ProductInformation Renders without error" duration="570"/>
+    <testCase name="handleCheckedRequirements should add document to toggled requirements when it is not already in the list" duration="4"/>
+    <testCase name="handleCheckedRequirements should remove document from toggled requirements when it is already in the list" duration="5"/>
+    <testCase name="handleSelectAllChange should set toggledRequirements to an empty array and set selectAll to false when selectAll is true" duration="21"/>
+    <testCase name="handleSelectAllChange should set toggledRequirements to all documents and set selectAll to true when selectAll is false" duration="3"/>
+    <testCase name="requirementDeleteHandler should filter out the item to delete from the selected requirements array" duration="4"/>
+    <testCase name="requirementDeleteHandler should update the state with the new array" duration="2"/>
+  </file>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/ProductDetail.test.tsx">
+    <testCase name="ProductDetail Renders without crashing" duration="166"/>
+    <testCase name="ProductDetail Renders without crashing" duration="71"/>
+    <testCase name="ProductDetail should render data rows correctly" duration="12"/>
+    <testCase name="ProductDetail should handle no previous data available" duration="59"/>
+    <testCase name="DebitCreditable should render product details correctly" duration="146"/>
+    <testCase name="DebitCreditable should display an empty table when dataTab prop is an empty array" duration="5"/>
+    <testCase name="DebitCreditable should display the correct S|N value for each row" duration="11"/>
   </file>
 </testExecutions>
