@@ -15,8 +15,8 @@ describe('PartLiquidation', () => {
 
         // Act
         renderWithProviders(<PartLiquidation isOpen={isOpen} setIsOpen={setIsOpen} onConfirm={onConfirm} detail={detail} />);
-
-        // Assert
+        expect(screen).toMatchSnapshot();
+        // Assert   
         // Add assertions here
     });
 
