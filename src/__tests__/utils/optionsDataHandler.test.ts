@@ -1,4 +1,4 @@
-import optionsDataHandler from "../../../../../components/pages/management/individual/optionsDataHandler"
+import optionsDataHandler from "../../utils/optionsDataHandler"
 
 describe('optionsDataHandler', () => {
 

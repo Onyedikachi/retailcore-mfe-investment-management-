@@ -1,22 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/pages/management/book-investment/IndexComponent.test.tsx">
-    <testCase name="IndexComponent should render the component without crashing" duration="316"/>
-    <testCase name="IndexComponent should display the correct title and breadcrumbs based on the investmentType parameter" duration="165"/>
-    <testCase name="IndexComponent should render the correct form step based on the step state" duration="140"/>
-  </file>
   <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/pages/management/book-investment/FormComponent.test.tsx">
-    <testCase name="code snippet should render the customer information form when step is 1" duration="412"/>
-    <testCase name="code snippet should render the customer information form when step is 2" duration="202"/>
-    <testCase name="code snippet should pass the &apos;proceed&apos; function to the &apos;CustomerInformation&apos; component" duration="45"/>
-    <testCase name="code snippet should allow the user to input customer information" duration="78"/>
-    <testCase name="code snippet should handle invalid input data correctly" duration="41"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/App.test.tsx">
-    <testCase name="Test App Component If App is rendered wihout issues" duration="31"/>
-  </file>
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/Sterling-investment.tsx">
-    <testCase name="microfrontend bootstraps the app" duration="8"/>
-    <testCase name="microfrontend mounts and unmounts" duration="24"/>
+    <testCase name="code snippet should render the customer information form when step is 1" duration="87"/>
+    <testCase name="code snippet should render the customer information form when step is 2" duration="37"/>
+    <testCase name="code snippet should pass the &apos;proceed&apos; function to the &apos;CustomerInformation&apos; component" duration="24"/>
+    <testCase name="code snippet should allow the user to input customer information" duration="35"/>
+    <testCase name="code snippet should handle invalid input data correctly" duration="23"/>
   </file>
 </testExecutions>
