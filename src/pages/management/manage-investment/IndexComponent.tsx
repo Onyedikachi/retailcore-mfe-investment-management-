@@ -57,7 +57,7 @@ export default function IndexComponent() {
             <div className="flex-1 border border-[#E5E9EB] rounded-lg py-[13px] px-[31px] flex-col gap-[27px]">
               <div className="flex justify-end items-center">
                 <div className="flex items-center gap-[11px]">
-                  <div className="shadow-custom">
+                  <div className="shadow-custom w-[294px]">
                     {" "}
                     <ProductSearch
                       placeholder="Search by product name/code"
@@ -65,7 +65,7 @@ export default function IndexComponent() {
                     />
                   </div>
                   <span className="text-[#E5E9EB]">|</span>
-                  <div className="flex gap-1">
+                  <div className="flex gap-1 cursor-pointer">
                     <svg
                       width="24"
                       height="24"
