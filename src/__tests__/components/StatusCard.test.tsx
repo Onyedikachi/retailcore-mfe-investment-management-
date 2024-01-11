@@ -11,8 +11,11 @@ import StatusCard, {
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
-import { ApproveProductOptions, ApproveRequestOptions, CreateProductOptions, CreateRequestOptions, ProductOptions, RequestOptions } from "../../constants";
+import { ApproveProductOptions, ApproveRequestOptions, CreateProductOptions, CreateRequestOptions, FactoryCategories, ProductOptions, RequestOptions } from "../../constants";
 import { InvestmentContext, AppContext } from "../../utils/context";
+import { ProviderValue } from "../../__mocks__/fileMocks";
+import { StatusCategoryType } from "../../constants/enums";
+
 const mockInvestmentContext = {
   isChecker: false,
   category: "some-category",
@@ -53,20 +56,22 @@ describe("StatusCard", () => {
     setDetail: () => {},
   });
 
-
   it("Renders without error", () => {
     render(
-      <InvestmentContext.Provider value={{}}>
-        <AppContext.Provider
-          value={{
-            permissions: [
-              "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS", "RE_OR_DEACTIVATE_INVESTMENT_PRODUCT"
-            ],
-            role: "superadmin",
-            setRole: jest.fn(),
-          }}
+      <InvestmentContext.Provider value={ProviderValue}>
+        <AppContext.Provider value={mockAppContext}
         >
-          <StatusCard Context={IndividualContext} handleChange={jest.fn()} />
+          {/* <StatusCard Context={IndividualContext} handleChange={jest.fn()} /> */}
+          <StatusCard
+              StatusCategories={FactoryCategories}
+              categoryType1={StatusCategoryType.AllProducts}
+              categoryType2={StatusCategoryType.Requests}
+              data={null}
+              requests={null}
+              handleChange={jest.fn()}
+              isLoading={true}
+              Context={InvestmentContext}
+            />
         </AppContext.Provider>
       </InvestmentContext.Provider>
     );
