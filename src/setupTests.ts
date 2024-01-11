@@ -7,6 +7,12 @@ import { store } from "@app/config/store";
 import { configure } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
+class ResizeObserver {
+  observe() { }
+  unobserve() { }
+  disconnect() { }
+}
+
 configure({ adapter: new Adapter() });
 
 const mockstore = store();
@@ -24,6 +30,7 @@ afterEach(() => {
   mockstore.dispatch(linkApi.util.resetApiState());
   mockstore.dispatch(investmentApi.util.resetApiState());
   mockstore.dispatch(authApi.util.resetApiState());
+  window.ResizeObserver = ResizeObserver
 });
 
 // Clean up after the tests are finished.
