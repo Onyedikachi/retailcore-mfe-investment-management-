@@ -3,7 +3,7 @@ import { ExportToCsv } from "export-to-csv";
 import { HiRefresh, HiDownload } from "react-icons/hi";
 import { StatusCategoryType } from "@app/constants/enums";
 import moment from "moment";
-import { ucObjectKeys, InvestmentContext, AppContext } from "@app/utils";
+import { ucObjectKeys, InvestmentContext, AppContext, IndividualContext } from "@app/utils";
 import {
   useGetPostProductsMutation,
   useGetPostRequestsMutation,
@@ -20,8 +20,7 @@ import {
   individualHeader,
   requestHeader,
 } from "@app/constants";
-import optionsDataHandler from "./optionsDataHandler";
-
+import optionsDataHandler from "@app/utils/optionsDataHandler";
 interface RequestDataProps {
   request: string;
   type: string;
@@ -444,6 +443,7 @@ export default function TableComponent({
             ? "No request available"
             : "No product available"
         }
+        Context={IndividualContext}
       />
     </section>
   );

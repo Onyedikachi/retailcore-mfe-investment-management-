@@ -105,7 +105,7 @@ export default function Rejection({
         <div className="grid grid-cols-2 gap-4 mb-12">
           <div
             className={`flex flex-col ${
-              (isLoading || !user || !user?.is_active) && "opacity-50"
+              (isLoading || user?.is_active) && "opacity-50"
             }`}
           >
             <span className="mb-2 text-[#636363] font-medium text-base">
@@ -119,7 +119,7 @@ export default function Rejection({
                 placeholder="Type, search and select"
                 options={users}
                 ledger={[]}
-                disabled={isLoading || !user || !user?.is_active}
+                disabled={isLoading || user?.is_active}
                 handleOptions={(e) => setSelected(e)}
                 data-testis="search"
               />

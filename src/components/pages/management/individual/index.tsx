@@ -13,6 +13,7 @@ import {
   useGetSystemAlertQuery,
 } from "@app/api";
 import {
+  IndividualStatusTypes,
   ManagementCategories,
   ProductTypes,
   StatusFilterOptions,
@@ -68,7 +69,7 @@ export const handleProductStatus = ({
       ...prevData.concat(
         data.results.map((i) => ({
           ...i,
-          state: StatusTypes.find((n) => n.id === i.state)?.type,
+          state: IndividualStatusTypes.find((n) => n.id === i.state)?.type,
           productType: ProductTypes.find((n) => n.id === i.productType)?.name,
         }))
       ),
@@ -152,7 +153,7 @@ export default function Individual() {
   const [type, setType] = useState("");
   const [initiator, setInitiator] = useState("");
   const [detail, setDetail] = useState<any>(null);
-  const [isDetailOpen, setDetailOpen] = useState(false);
+  const [isIndividualDetailOpen, setIndividualDetailOpen] = useState(false);
   const [duration, setDuration] = useState("");
   const [isRefreshing, setRefreshing] = useState<boolean>(false);
   const [requestData, setRequestData] = useState<any[]>([]);
@@ -192,8 +193,8 @@ export default function Individual() {
       duration,
       isRefreshing,
       setRefreshing,
-      isDetailOpen,
-      setDetailOpen,
+      isIndividualDetailOpen,
+      setIndividualDetailOpen,
       detail,
       setDetail,
     }),
@@ -217,8 +218,8 @@ export default function Individual() {
       duration,
       isRefreshing,
       setRefreshing,
-      isDetailOpen,
-      setDetailOpen,
+      isIndividualDetailOpen,
+      setIndividualDetailOpen,
       detail,
       setDetail,
     ]
@@ -329,7 +330,7 @@ export default function Individual() {
   useEffect(() => {
     if (preview === "search_product") {
       setDetail({ id: productId });
-      setDetailOpen(true);
+      setIndividualDetailOpen(true);
     }
   }, [preview, productId]);
 

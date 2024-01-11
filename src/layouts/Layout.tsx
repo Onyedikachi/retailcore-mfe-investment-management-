@@ -18,6 +18,7 @@ const Layout = () => {
   const [role, setRole] = useState("default");
   const [isChecker, setIsChecker] = useState(false);
   const [currencies, setCurrencies] = useState<any[]>([]);
+  
   const userId = useRef(null);
   const value = useMemo(
     () => ({

@@ -184,6 +184,28 @@ export const DropDownOptions: any = {
       icon: "FaBan",
     },
   ],
+  individualActive: [
+    {
+      id: "",
+      text: "View",
+      icon: "FaEye",
+    },
+    {
+      id: "",
+      text: "Part Liquidate",
+      icon: "FaBan",
+    },
+    {
+      id: "",
+      text: "Early Liquidate",
+      icon: "FaRegTimesCircle",
+    },
+    {
+      id: "",
+      text: "Restructure",
+      icon: "BiSolidReceipt",
+    },
+  ],
   inactive: [
     {
       id: "",
@@ -200,6 +222,166 @@ export const DropDownOptions: any = {
       text: "Activate",
       icon: "FaPlayCircle",
     },
+  ],
+  individualInactive: [
+    {
+      id: "",
+      text: "View",
+      icon: "FaEye",
+    },
+   
+  ],
+};
+export const IndividualDropDownOptions: any = {
+  creation: [
+    {
+      approved: [
+        {
+          id: "",
+          text: "View",
+          icon: "FaEye",
+        },
+      ],
+    },
+    {
+      "in-issue": [
+        {
+          id: "",
+          text: "View",
+          icon: "FaEye",
+        },
+
+        {
+          id: "",
+          text: "Delete Request",
+          icon: "FaTrash",
+        },
+      ],
+    },
+    {
+      "in-review": [
+        {
+          id: "View",
+          text: "View",
+          icon: "FaEye",
+        },
+        {
+          id: "",
+          text: "Withdraw & Modify",
+          icon: "FaEdit",
+        },
+        {
+          id: "",
+          text: "Withdraw & Delete Request",
+          icon: "FaTrash",
+        },
+      ],
+    },
+    {
+      draft: [
+        {
+          id: "",
+          text: "Continue Request",
+          icon: "FaEdit",
+        },
+        {
+          id: "",
+          text: "Delete Draft",
+          icon: "FaTrash",
+        },
+      ],
+    },
+  ],
+  activation: [
+    {
+      approved: [
+        {
+          id: "",
+          text: "View",
+          icon: "FaEye",
+        },
+      ],
+    },
+    {
+      "in-issue": [
+        {
+          id: "",
+          text: "View",
+          icon: "FaEye",
+        },
+        {
+          id: "",
+          text: "Modify",
+          icon: "FaEdit",
+        },
+        {
+          id: "",
+          text: "Delete Request",
+          icon: "FaTrash",
+        },
+      ],
+    },
+    {
+      "in-review": [
+        {
+          id: "View",
+          text: "View",
+          icon: "FaEye",
+        },
+
+        {
+          id: "",
+          text: "Withdraw & Delete Request",
+          icon: "FaTrash",
+        },
+      ],
+    },
+    {
+      draft: [
+        {
+          id: "",
+          text: "Continue Request",
+          icon: "FaEdit",
+        },
+        {
+          id: "",
+          text: "Delete Request",
+          icon: "FaTrash",
+        },
+      ],
+    },
+  ],
+  active: [
+   
+    {
+      id: "",
+      text: "View",
+      icon: "FaEye",
+    },
+    {
+      id: "",
+      text: "Part Liquidate",
+      icon: "FaBan",
+    },
+    {
+      id: "",
+      text: "Early Liquidate",
+      icon: "FaRegTimesCircle",
+    },
+    {
+      id: "",
+      text: "Restructure",
+      icon: "BiSolidReceipt",
+    },
+  ],
+  liquidated: [
+   
+    {
+      id: "",
+      text: "View",
+      icon: "FaEye",
+    },
+   
   ],
 };
 
@@ -306,6 +488,29 @@ export const TypeFilterOptions: any[] = [
   {
     id: 3,
     name: "reactivation",
+    value: 3,
+  },
+];
+
+export const IndividualTypeFilterOptions: any[] = [
+  {
+    id: 0,
+    name: "booking",
+    value: 0,
+  },
+  {
+    id: 1,
+    name: "early liquidation",
+    value: 1,
+  },
+  {
+    id: 2,
+    name: "part liquidation",
+    value: 2,
+  },
+  {
+    id: 3,
+    name: "restructuring",
     value: 3,
   },
 ];
@@ -588,6 +793,69 @@ export const requestHeader = [
     label: "type",
     key: "requestType",
     options: TypeFilterOptions,
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "initiator",
+    key: "created_By",
+    options: [],
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "reviewer",
+    key: "approved_By",
+    options: [],
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "status",
+    key: "requestStatus",
+    options: StatusFilterOptions,
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "updated on",
+    key: "updated_At",
+    options: [
+      {
+        id: 1,
+        name: "",
+        value: "",
+      },
+    ],
+    hasSelect: false,
+    hasDateSelect: true,
+  },
+  {
+    label: "",
+    options: [],
+    hasSelect: false,
+    hasDateSelect: false,
+    key: "actions",
+  },
+];
+export const IndividualRequestHeader = [
+  {
+    label: "request",
+    key: "request",
+    options: [
+      {
+        id: 1,
+        name: "",
+        value: "",
+      },
+    ],
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "type",
+    key: "requestType",
+    options: IndividualTypeFilterOptions,
     hasSelect: true,
     hasDateSelect: false,
   },

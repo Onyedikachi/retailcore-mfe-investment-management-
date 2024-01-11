@@ -218,15 +218,27 @@ export default function TableComponent<TableProps>({
   onChangeDate,
   type = "",
   noData = "No data available",
+  Context,
 }) {
   const { role, permissions, userId, isChecker } = useContext(AppContext);
-  const { category, selected, isDetailOpen, setDetailOpen, detail, setDetail } =
-    useContext(InvestmentContext);
+  const {
+    category,
+    selected,
+    isDetailOpen,
+    setDetailOpen,
+    isIndividualDetailOpen,
+    setIndividualDetailOpen,
+    detail,
+    setDetail,
+  }: any = useContext(Context);
+
   const [action, setAction] = useState("");
   const navigate = useNavigate();
   const previousData = useRef({});
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
+  const [isEarlyLiquidation, setEarlyLiquidationOpen] = useState(false);
+  const [isPartLiquidation, setPartLiquidationOpen] = useState(false);
   const [isDeactivationOpen, setIsDeactivationOpen] = useState(false);
   const [confirmText, setConfirmText] = useState("");
   const [subText, setSubText] = useState("");
@@ -249,7 +261,10 @@ export default function TableComponent<TableProps>({
       previousData,
       setConfirmText,
       setIsConfirmOpen,
+      setPartLiquidationOpen,
+      setEarlyLiquidationOpen,
       setDetailOpen,
+      setIndividualDetailOpen,
       navigate,
       selected,
     });
@@ -348,6 +363,11 @@ export default function TableComponent<TableProps>({
                         <span>
                           {hasSelect && (
                             <MultiSelect
+                              showMe={
+                                (key.toLowerCase() === "created_by" ||
+                                  key.toLowerCase() === "approved_by") &&
+                                userId
+                              }
                               options={options}
                               getOptions={(e: any) => getOptionData(e, label)}
                             >
@@ -534,6 +554,7 @@ export default function TableComponent<TableProps>({
         isFailed={isFailed}
         isDeactivationOpen={isDeactivationOpen}
         isDetailOpen={isDetailOpen}
+        isIndividualDetailOpen={isIndividualDetailOpen}
         deleteLoading={deleteLoading}
         activateIsLoading={activateIsLoading}
         confirmText={confirmText}
@@ -547,7 +568,12 @@ export default function TableComponent<TableProps>({
         setFailed={setFailed}
         setIsDeactivationOpen={setIsDeactivationOpen}
         setDetailOpen={setDetailOpen}
+        setIndividualDetailOpen={setIndividualDetailOpen}
         handleAction={handleAction}
+        isEarlyLiquidation={isEarlyLiquidation}
+        isPartLiquidation={isPartLiquidation}
+        setPartLiquidationOpen={setPartLiquidationOpen}
+        setEarlyLiquidationOpen={setEarlyLiquidationOpen}
       />
     </div>
   );
