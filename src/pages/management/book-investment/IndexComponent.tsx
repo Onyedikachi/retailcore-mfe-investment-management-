@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BookInvestmentFormSteps } from "@app/constants";
 import {ProductInfoInvestmentCalc} from '@app/components/management'
 import { useNavigate, useParams } from "react-router-dom";
-import handleFormRef from "./HandleFormRef";
+import handleFormRef from "./handleFormRef";
 
 import { Breadcrumbs, Button, FormStepComponent } from "@app/components";
 import BookInvestmentFormComponent from "./FormComponent";

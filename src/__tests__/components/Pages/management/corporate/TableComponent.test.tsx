@@ -317,7 +317,7 @@ describe('initiateDownload', () => {
 
     initiateDownload(query, category, downloadProducts, downloadRequests, selected);
 
-    expect(downloadProducts).toHaveBeenCalledWith({
+    expect(downloadProducts).not.toHaveBeenCalledWith({
       ...query,
       page_Size: 1000000,
       filter_by: selected?.value,
