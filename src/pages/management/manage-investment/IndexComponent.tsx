@@ -4,9 +4,24 @@ import { ProductInfoInvestmentCalc } from "@app/components/management";
 import { useNavigate, useParams } from "react-router-dom";
 import ProductSearch from "@app/components/ProductSearch";
 import { Breadcrumbs, Button } from "@app/components";
-
+import { TableComponent } from "@app/components/pages/management/manage-investment";
 export default function IndexComponent() {
   const { process, investmentType } = useParams();
+  const [hasMore, setHasMore] = useState(true);
+  const [query, setQuery] = useState({
+    // filter_by: selected?.value,
+    status_In: null,
+    search: "",
+    start_Date: null,
+    end_Date: null,
+    page: 1,
+    page_Size: 15,
+    productType_In: null,
+    requestType_In: null,
+    initiator_In: null,
+    approvers_In: null,
+    total: 0,
+  });
   const navigate = useNavigate();
 
   const links = [
@@ -29,6 +44,13 @@ export default function IndexComponent() {
   function handleLinks(links, process) {
     return links;
   }
+  const fetchMoreData = () => {
+    setQuery((prevQuery) => {
+      return {
+        ...prevQuery,
+      };
+    });
+  };
 
   return (
     <div className="flex flex-col min-h-[100vh] ">
@@ -55,7 +77,7 @@ export default function IndexComponent() {
               <div>stuff</div>
             </div>
             <div className="flex-1 border border-[#E5E9EB] rounded-lg py-[13px] px-[31px] flex-col gap-[27px]">
-              <div className="flex justify-end items-center">
+              {/* <div className="flex justify-end items-center">
                 <div className="flex items-center gap-[11px]">
                   <div className="shadow-custom w-[294px]">
                     {" "}
@@ -85,8 +107,20 @@ export default function IndexComponent() {
                     </span>
                   </div>
                 </div>
+              </div> */}
+              <div className="">
+                <TableComponent
+                  handleRefresh={() => {}}
+                  handleSearch={(value) => {}}
+                  productData={[]}
+                  requestData={[]}
+                  isLoading={false}
+                  query={query}
+                  setQuery={setQuery}
+                  hasMore={hasMore}
+                  fetchMoreData={fetchMoreData}
+                />
               </div>
-              <div className="">Table</div>
             </div>
           </div>
         </div>
