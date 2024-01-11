@@ -25,12 +25,12 @@ export default function IndexComponent() {
     {
       id: 1,
       title: "Investment Management",
-      url: "/product-factory/investment/management",
+      url: "/product-factory/investment/management/overview",
     },
     {
       id: 2,
       title: "book new Investment",
-      url: "/product-factory/investment/management",
+      url: "/product-factory/investment/management/overview",
     },
     {
       id: 3,
