@@ -1046,7 +1046,6 @@ describe('handlePermission', () => {
     expect(setFilteredProductOptions).toHaveBeenCalledWith(CreateProductOptions);
     expect(setFilteredRequestOptions).toHaveBeenCalledWith(CreateRequestOptions);
   });
-
   // When not 'CREATE_INVESTMENT_PRODUCT' and permissions include 'AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS', and 'VIEW_ALL_INVESTMENT_PRODUCT_RECORDS' and 'VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS', set filtered product options to ApproveProductOptions and filtered request options to ApproveRequestOptions.
   it('should set filtered product options to ApproveProductOptions and filtered request options to ApproveRequestOptions when not "CREATE_INVESTMENT_PRODUCT" and permissions include "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS", and "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS" and "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS"', () => {
     const setFilteredRequestOptions = jest.fn();
@@ -1055,6 +1054,24 @@ describe('handlePermission', () => {
       "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS",
       "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS",
       "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS",
+    ];
+
+    handlePermission(
+      setFilteredRequestOptions,
+      permissions,
+      ProductOptions,
+      RequestOptions,
+      setFilteredProductOptions
+    );
+
+    expect(setFilteredProductOptions).toHaveBeenCalledWith(ApproveProductOptions);
+    expect(setFilteredRequestOptions).toHaveBeenCalledWith(ApproveRequestOptions);
+  });
+  it('should set filtered product options to ApproveProductOptions and filtered request options to ApproveRequestOptions when not "CREATE_INVESTMENT_PRODUCT" and permissions include "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS", and "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS" and "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS"', () => {
+    const setFilteredRequestOptions = jest.fn();
+    const setFilteredProductOptions = jest.fn();
+    const permissions = [
+      "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS",
     ];
 
     handlePermission(

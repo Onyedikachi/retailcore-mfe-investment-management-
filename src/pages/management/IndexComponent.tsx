@@ -65,7 +65,7 @@ export default function Dashboard() {
         <div className="flex justify-between items-end">
           <div className="flex gap-[32px] ">
             {dashboardTabs.map((item) => (
-              <div
+              <div data-testid={`${item}-tab`}
                 onClick={() =>
                   navigate(`/product-factory/investment/management/${item}`)
                 }
