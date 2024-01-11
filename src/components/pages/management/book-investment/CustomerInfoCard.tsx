@@ -51,7 +51,7 @@ export const Info = ({ title, data, type }: InfoProps) => {
 };
 export default function CustomerInfoCard() {
   return (
-    <div className="py-6 px-10 rounded-lg shadow-custom bg-gray-100 w-full flex flex-col gap-6">
+    <div data-testid="customerInformation" className="py-6 px-10 rounded-lg shadow-custom bg-gray-100 w-full flex flex-col gap-6">
       <h1 className="font-bold text-[20px] text-[#747373]">
         Customer’s Information
       </h1>
