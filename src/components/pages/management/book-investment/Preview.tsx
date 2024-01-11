@@ -218,7 +218,7 @@ export default function Preview({ formData, previousData = null }: any) {
           setIsOpen={setIsConfirmOpen}
           onConfirm={() => {
             setIsConfirmOpen(false);
-            navigate("/product-factory/investment?category=requests");
+            // navigate("/product-factory/investment?category=requests");
           }}
           onCancel={() => {
             setIsConfirmOpen(false);
