@@ -6,12 +6,14 @@ import {
 import { OverviewContext, defaultOverviewContext } from "@app/utils";
 import { OverviewDiv, QuickLinks } from "@app/components";
 import { InvestmentsRanking } from "@app/components/management";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { WithdrawSvg, UserSvg, InvestmentSvg } from "@app/assets/images";
 
 // import { createOverviewState } from '../../../utils'
 export default function Overview() {
   const [overviewState, setOverviewState] = useState(defaultOverviewContext);
+  const navigate = useNavigate();
   const tabs = [
     {
       title: "All Investments",
@@ -48,8 +50,9 @@ export default function Overview() {
   ];
 
   const dataChange = (tab) => {
-    console.log(tab);
-    setOverviewState({ name: tab.title });
+    navigate(`/product-factory/investment/management/products/${tab.title}`)
+    
+    // setOverviewState({ name: tab.title });
     // state?.setData('name', tab.title)
   };
   return (
@@ -64,7 +67,7 @@ export default function Overview() {
                     dataChange(tab);
                   }}
                   key={tab.title}
-                  className="flex gap-3 rounded-[5px] bg-[#FFFFFF] px-6 py-8 shadow-custom"
+                  className="cursor-pointer flex gap-3 rounded-[5px] bg-[#FFFFFF] px-6 py-8 shadow-custom"
                 >
                   <div className="flex items-center">
                     <div className="h-[45px] w-[45px] rounded-full bg-[#D4F7DC] flex items-center justify-center">
