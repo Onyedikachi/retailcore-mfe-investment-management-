@@ -35,6 +35,14 @@ export const routes = [
       () => import("../pages/management/book-investment/IndexComponent")
     ),
   },
+  {
+    path: paths.MANAGE_INVESTMENT,
+    name: "Investment Booking",
+    exact: true,
+    component: lazy(
+      () => import("@app/pages/management/manage-investment/IndexComponent")
+    ),
+  },
 
   {
     path: paths.TERM_DEPOSIT_SUMMARY,
