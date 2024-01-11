@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import PartLiquidation from "../../components/modals/PartLiquidation"
-import { renderWithProviders } from "../../__mocks__/api/Wrapper";
+import PartLiquidation from "../../../components/modals/PartLiquidation"
+import { renderWithProviders } from "../../../__mocks__/api/Wrapper";
 
 
 describe('PartLiquidation', () => {
