@@ -18,7 +18,7 @@ export default function FacilityDetails({
 }: FacilityDetailsProps) {
   return (
     <form
-      id="f acilityDetails"
+      id="facilityDetails"
       data-testid="submit-button"
       onSubmit={(d) => onProceed(proceed)}
     >

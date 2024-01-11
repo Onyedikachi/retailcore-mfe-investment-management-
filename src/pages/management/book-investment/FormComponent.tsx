@@ -10,8 +10,8 @@ export default ({ step, handleNav }) => {
     <Fragment>
       {/* {<span>{step}</span>  } */}
       {step === 1 && <span><CustomerInformation proceed={handleNav} /></span>}
-      {step === 2 && <span><FacilityDetails /></span>}
-      {step === 3 && <span><TransactionSettings /></span>}
+      {step === 2 && <span><FacilityDetails proceed={handleNav}/></span>}
+      {step === 3 && <span><TransactionSettings proceed={handleNav}/></span>}
     </Fragment>
   );
 };
