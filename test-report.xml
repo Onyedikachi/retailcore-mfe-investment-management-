@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
-  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/modals/PartLiquidation.test.tsx">
-    <testCase name="PartLiquidation should render the component with default props" duration="210"/>
-    <testCase name="PartLiquidation should close the modal when the cancel button is clicked" duration="108"/>
-    <testCase name="PartLiquidation should display the entered value in the amount input" duration="101"/>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/modals/EarlyLiquidation.test.tsx">
+    <testCase name="code snippet should render the component with the correct UI elements and styles" duration="223"/>
+    <testCase name="code snippet should allow the user to input a reason for part liquidation" duration="69"/>
+    <testCase name="code snippet should allow the user to upload supporting documents" duration="81"/>
+    <testCase name="code snippet should disable the submit button when the user does not input a reason for part liquidation" duration="84"/>
+    <testCase name="code snippet should not allow the user to upload an unsupported file type" duration="62"/>
   </file>
 </testExecutions>
