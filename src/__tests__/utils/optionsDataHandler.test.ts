@@ -1,4 +1,4 @@
-import optionsDataHandler from "../../../../components/investment/dashboard/optionsDataHandler"
+import optionsDataHandler from "../../utils/optionsDataHandler"
 
 describe('optionsDataHandler', () => {
 

@@ -1,8 +1,9 @@
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
 import { renderWithProviders } from "../../__mocks__/api/Wrapper";
 import ProductDetail from "../../components/modals/ProductDetail";
 import { InvestmentContext, AppContext } from "../../utils/context";
 import React from "react";
+import {userEvent} from "@testing-library/user-event"
 
 const details = {
   id: "4473a62d-5e40-4aa0-8bf4-3c179004c35b",
@@ -101,43 +102,14 @@ const details = {
 };
 
 class ResizeObserver {
-  observe() {}
-  unobserve() {}
-  disconnect() {}
+  observe() { }
+  unobserve() { }
+  disconnect() { }
 }
 
 describe("ProductDetail", () => {
   beforeEach(() => {
     window.ResizeObserver = ResizeObserver;
-  });
-  it("Should show product data when available", async () => {
-    const val = renderWithProviders(
-      <InvestmentContext.Provider value={{}}>
-        <AppContext.Provider
-          value={{
-            permissions: [
-              "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS",
-              "RE_OR_DEACTIVATE_INVESTMENT_PRODUCT",
-            ],
-            role: "superadmin",
-            setRole: jest.fn(),
-          }}
-        > 
-          <ProductDetail
-            handleClick={jest.fn()}
-            setIsOpen={jest.fn()}
-            isOpen={true}
-            detail={details}
-          />
-        </AppContext.Provider>
-      </InvestmentContext.Provider>
-    );
-    // expect(await screen.findByText("Free Loan")).toBeInTheDocument();
-    // expect(await screen.findByText("LOADNF")).toBeInTheDocument();
-    // expect(await screen.findByText("tHIS IS A FREE LOAN")).toBeInTheDocument();
-    // expect(await screen.findByText("NGN")).toBeInTheDocument();
-    // expect(screen.getByTestId("close-btn")).toBeInTheDocument()
-    // screen.getByTestId("close-btn").click()
   });
 
   it("Show spinner when loading", async () => {
@@ -151,6 +123,118 @@ describe("ProductDetail", () => {
     );
     expect(screen.getByTestId("loading-spinner")).toBeInTheDocument();
   });
+  it("Show spinner when loading", async () => {
+    const val = renderWithProviders(
+      <ProductDetail
+        handleClick={jest.fn()}
+        setIsOpen={jest.fn()}
+        isOpen={true}
+        detail={details}
+      />
+    );
+    expect(screen.getByTestId("loading-spinner")).toBeInTheDocument();
+    waitFor(() => screen.debug)
+  });
+  it("Close button calls setIsOpen", async () => {
+    let isOpen = true;
+    const setIsOpen =jest.fn();
+    const val = renderWithProviders(
+      <InvestmentContext.Provider value={{}}>
+        <AppContext.Provider
+          value={{
+            permissions: [
+              "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS",
+            ],
+            role: "superadmin",
+            setRole: jest.fn(),
+          }}
+        >
+          <ProductDetail handleClick={jest.fn()} setIsOpen={setIsOpen} isOpen={true} detail={details} />
+        </AppContext.Provider>
+      </InvestmentContext.Provider>
+    )
+    await waitForElementToBeRemoved(screen.getByTestId("loading-spinner"))
+    const closeBtn = screen.getByTestId("close-btn");
+    expect(setIsOpen).not.toHaveBeenCalled();
+    await userEvent.click(closeBtn);
+    expect(setIsOpen).toHaveBeenCalledWith(false); 
+  })
+  
+  it("Modify button calls handleClick", async () => {
+    let isOpen = true;
+    const setIsOpen =jest.fn();
+    const handleClick = jest.fn();
+    const val = renderWithProviders(
+      <InvestmentContext.Provider value={{}}>
+        <AppContext.Provider
+          value={{
+            permissions: [
+              "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS","CREATE_INVESTMENT_PRODUCT"
+            ],
+            role: "superadmin",
+            setRole: jest.fn(),
+          }}
+        >
+          <ProductDetail handleClick={handleClick} setIsOpen={setIsOpen} isOpen={true} detail={details} />
+        </AppContext.Provider>
+      </InvestmentContext.Provider>
+    )
+    await waitForElementToBeRemoved(screen.getByTestId("loading-spinner"))
+    const modifyBtn = screen.getByTestId("modify");
+    expect(handleClick).not.toHaveBeenCalled();
+    await userEvent.click(modifyBtn);
+    expect(handleClick).toHaveBeenCalledWith("modify", undefined); 
+  })
+  it("deactivate button calls handleClick", async () => {
+    let isOpen = true;
+    const setIsOpen =jest.fn();
+    const handleClick = jest.fn();
+    const val = renderWithProviders(
+      <InvestmentContext.Provider value={{}}>
+        <AppContext.Provider
+          value={{
+            permissions: [
+              "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS", "RE_OR_DEACTIVATE_INVESTMENT_PRODUCT"
+            ],
+            role: "superadmin",
+            setRole: jest.fn(),
+          }}
+        >
+          <ProductDetail handleClick={handleClick} setIsOpen={setIsOpen} isOpen={true} detail={details} />
+        </AppContext.Provider>
+      </InvestmentContext.Provider>
+    )
+    await waitForElementToBeRemoved(screen.getByTestId("loading-spinner"))
+    const deactivateBtn = screen.getByTestId("deactivate-btn");
+    expect(handleClick).not.toHaveBeenCalled();
+    await userEvent.click(deactivateBtn);
+    expect(handleClick).toHaveBeenCalledWith("deactivate", undefined); 
+  })
+  // it("activate button calls handleClick", async () => {
+  //   let isOpen = true;
+  //   const setIsOpen =jest.fn();
+  //   const handleClick = jest.fn();
+  //   const val = renderWithProviders(
+  //     <InvestmentContext.Provider value={{}}>
+  //       <AppContext.Provider
+  //         value={{
+  //           permissions: [
+  //             "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS", "RE_OR_DEACTIVATE_INVESTMENT_PRODUCT"
+  //           ],
+  //           role: "superadmin",
+  //           setRole: jest.fn(),
+  //         }}
+  //       >
+  //         <ProductDetail handleClick={handleClick} setIsOpen={setIsOpen} isOpen={true} detail={details} />
+  //       </AppContext.Provider>
+  //     </InvestmentContext.Provider>
+  //   )
+  //   await waitForElementToBeRemoved(screen.getByTestId("loading-spinner"))
+  //   const activateBtn = screen.getByTestId("activate-btn");
+  //   expect(handleClick).not.toHaveBeenCalled();
+  //   await userEvent.click(activateBtn);
+  //   expect(handleClick).toHaveBeenCalledWith("activate", undefined); 
+  // })
 
   it("Shows nothng when setOpen is false", () => {
     const val = renderWithProviders(

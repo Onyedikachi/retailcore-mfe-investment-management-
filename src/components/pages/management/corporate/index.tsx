@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { AppContext, IndividualContext } from "@app/utils/context";
 import { StatusCategoryType } from "@app/constants/enums";
 import { StatusCard, QuickLinks } from "@app/components";
-import TableComponent from "@app/components/pages/management/individual/TableComponent";
+import TableComponent from "@app/components/pages/management/corporate/TableComponent";
 import {
   useGetPostProductsMutation,
   useGetPostRequestsMutation,

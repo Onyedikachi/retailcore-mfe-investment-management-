@@ -23,7 +23,7 @@ export default function FacilityDetails({
       onSubmit={(d) => onProceed(proceed)}
     >
       {" "}
-      <div className="flex flex-col gap-4 px-[30px] py-5">
+      <div data-testid="facility-details" className="flex flex-col gap-4 px-[30px] py-5">
         <div className="flex flex-col items-start gap-y-5">
           <InputDivs label={"Investment product"}>
             <div className="flex gap-[15px]">
