@@ -79,7 +79,6 @@ export default function CustomerInfoCard() {
           data={"Iyke David"}
           type={"relationshipManager"}
         />
-        <Info title={"Email Address"} data={"samuelyusuf@email.com"} />
       </div>
     </div>
   );
