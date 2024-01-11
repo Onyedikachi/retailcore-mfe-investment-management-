@@ -30,7 +30,7 @@ export default function IndexComponent() {
     {
       id: 2,
       title: "book new Investment",
-      url: "/product-factory/investment/management/overview",
+      url: "/product-factory/investment/management/individual",
     },
     {
       id: 3,
