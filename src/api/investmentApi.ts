@@ -328,6 +328,87 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    getPostInvestment: builder.mutation<
+      any,
+      {
+        filter_by: string;
+        status_In: number[];
+        search: string;
+        start_Date: string;
+        end_Date: string;
+        page: number;
+        page_Size: number;
+      }
+    >({
+      query: (params) => {
+        if (!params?.filter_by) return;
+        return {
+          url: urls.INVESTMENT,
+          method: "post",
+          body: cleanObject(params),
+        };
+      },
+    }),
+    getPostInvestmentRequests: builder.mutation<
+      any,
+      {
+        filter_by: string;
+        status_In: number[];
+        search: string;
+        start_Date: string;
+        end_Date: string;
+        page: number;
+        page_Size: number;
+      }
+    >({
+      query: (params) => {
+        if (!params?.filter_by) return;
+        return {
+          url: urls.INVESTMENT_REQUEST,
+          method: "post",
+          body: cleanObject(params),
+        };
+      },
+    }),
+    getInvestmentActivityLog: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `${urls.INVESTMEENT_ACTIVITY_LOG}?${new URLSearchParams(
+            cleanObject(params)
+          )}`,
+          method: "get",
+          params: cleanObject(params),
+        };
+      },
+    }),
+    getInvestmentStats: builder.query<any, any>({
+      query: (data) => {
+        if (!data.filter_by) return;
+        return {
+          url: `${urls.INVESTMENT_STATS}?${new URLSearchParams(
+            cleanObject({
+              ...data,
+              filterBy: data.filter_by,
+            })
+          )}`,
+          method: "get",
+        };
+      },
+    }),
+    getInvestmentRequestStats: builder.query<any, any>({
+      query: (data) => {
+        if (!data.filter_by) return;
+        return {
+          url: `${urls.INVESTMENT_REQUEST_STATS}?${new URLSearchParams(
+            cleanObject({
+              ...data,
+              filterBy: data.filter_by,
+            })
+          )}`,
+          method: "get",
+        };
+      },
+    }),
   }),
 });
 
@@ -359,5 +440,11 @@ export const {
   useGetCustomerSearchQuery,
   useGetAccountBalanceQuery,
   useGetCustomerProfileQuery,
-  useCreateInvestmentMutation
+  useCreateInvestmentMutation,
+  useGetInvestmentActivityLogQuery,
+  useGetPostInvestmentRequestsMutation,
+  useGetPostInvestmentMutation,
+  useGetInvestmentRequestStatsQuery,
+  useGetInvestmentStatsQuery
+  
 } = investmentApi;

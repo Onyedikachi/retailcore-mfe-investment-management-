@@ -21,7 +21,13 @@ const urls = {
   //  Invesment
   INVESTMENT_CREATE: "/investment/add",
   INVESTMENT_EDIT: "/investment/edit",
-  INVESTMENT: "/investment",
+
+  //investment
+  INVESTMENT: '/Investment',
+  INVESTMENT_REQUEST: '/InvestmentRequest',
+  INVESTMENT_STATS: '/Investment/stats',
+  INVESTMENT_REQUEST_STATS: '/InvestmentRequest/stats',
+  INVESTMEENT_ACTIVITY_LOG: '/InvestmentRequest/activitylog'
 };
 
 export default urls;

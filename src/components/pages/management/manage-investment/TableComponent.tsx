@@ -18,7 +18,7 @@ import {
   StatusTypes,
   TypeFilterOptions,
   individualHeader,
-  IndividualRequestHeader,
+  IndividualProductsHeader,
 } from "@app/constants";
 import optionsDataHandler from "@app/utils/optionsDataHandler";
 
@@ -326,7 +326,7 @@ export default function TableComponent({
       decimalSeparator: ".",
       showLabels: true,
       showTitle: false,
-      title: "Product management",
+      title: "Investment management",
       filename:
         category === StatusCategoryType?.Investments
           ? "dashboard_products_data"
@@ -389,24 +389,7 @@ export default function TableComponent({
             <HiRefresh className="text-lg" /> Refresh table
           </button>
         </div>{" "}
-        <div>
-          {/* download button  */}{" "}
-          <button
-            onClick={() =>
-              initiateDownload(
-                query,
-                category,
-                downloadProducts,
-                downloadRequests,
-                selected
-              )
-            }
-            data-testid="download-btn"
-            className="flex gap-x-2 items-center bg-transparent border-none text-[#636363] text-base"
-          >
-            <HiDownload className="text-lg" /> Download
-          </button>
-        </div>
+     
       </div>
 
       {/* main table  */}
@@ -415,7 +398,7 @@ export default function TableComponent({
           category === StatusCategoryType?.Investments
             ? individualHeader
             : handleHeaders(
-                IndividualRequestHeader.map((i) => {
+                IndividualProductsHeader.map((i) => {
                   if (i.key === "created_By" || i.key === "approved_By") {
                     i.options = users;
                   }
@@ -424,11 +407,7 @@ export default function TableComponent({
                 isChecker
               )
         }
-        tableRows={
-          category === StatusCategoryType?.Investments
-            ? productData
-            : requestData
-        }
+        tableRows={productData}
         page={1}
         total={query.total}
         fetchMoreData={fetchMoreData}
