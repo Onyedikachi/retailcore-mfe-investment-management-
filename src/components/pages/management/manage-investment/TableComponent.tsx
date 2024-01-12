@@ -407,11 +407,7 @@ export default function TableComponent({
                 isChecker
               )
         }
-        tableRows={
-          category === StatusCategoryType?.Investments
-            ? productData
-            : requestData
-        }
+        tableRows={productData}
         page={1}
         total={query.total}
         fetchMoreData={fetchMoreData}

@@ -914,21 +914,21 @@ export const IndividualProductsHeader = [
   },
   {
     label: "Principal Amount",
-    key: "requestType",
+    key: "principalAmount",
     options: IndividualTypeFilterOptions,
     hasSelect: false,
     hasDateSelect: false,
   },
   {
     label: "Tenor",
-    key: "created_By",
+    key: "tenor",
     options: [],
     hasSelect: false,
     hasDateSelect: false,
   },
   {
     label: "Interest Rate",
-    key: "approved_By",
+    key: "interestRate",
     options: [],
     hasSelect: false,
     hasDateSelect: false,
@@ -942,7 +942,7 @@ export const IndividualProductsHeader = [
   },
   {
     label: "status",
-    key: "requestStatus",
+    key: "status",
     options: StatusFilterOptions,
     hasSelect: true,
     hasDateSelect: false,
@@ -960,13 +960,13 @@ export const IndividualProductsHeader = [
     hasSelect: false,
     hasDateSelect: true,
   },
-  {
-    label: "",
-    options: [],
-    hasSelect: false,
-    hasDateSelect: false,
-    key: "actions",
-  },
+  // {
+  //   label: "",
+  //   options: [],
+  //   hasSelect: false,
+  //   hasDateSelect: false,
+  //   key: "actions",
+  // },
 ];
 
 export const BookInvestmentOptions = [
