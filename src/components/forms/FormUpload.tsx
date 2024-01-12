@@ -45,6 +45,7 @@ export const handleDrop = async function (
   setFileInfo(file);
   const type = file?.name?.split(".").pop();
   const fileName = file?.name;
+  console.log("🚀 ~ fileName:", fileName)
   const lastDotIndex = fileName?.lastIndexOf(".");
   const fileType = lastDotIndex !== -1 ? fileName?.slice(lastDotIndex + 1) : "";
 
@@ -55,10 +56,10 @@ export const handleDrop = async function (
     return;
   }
 
-  // if (accept.length > 0 && !accept?.includes(fileType)) {
-  //   setError("File type not supported , please delete and upload another file");
-  //   setHasError(true);
-  // }
+  if (accept.length > 0 && !accept?.includes(fileType)) {
+    setError("File type not supported , please delete and upload another file");
+    setHasError(true);
+  }
 
   const reader = new FileReader();
   reader.onload = () => {
@@ -94,9 +95,11 @@ export const handleFileChange = (
 ) => {
   const file = event?.target?.files?.[0];
   const type = file?.name?.split(".").pop();
+  console.log("🚀 ~ type:", type)
   const fileName = file?.name;
   const lastDotIndex = fileName?.lastIndexOf(".");
   const fileType = lastDotIndex !== -1 ? fileName?.slice(lastDotIndex + 1) : "";
+  console.log("🚀 ~ fileType:", fileType)
 
   setFileType(fileType);
 
@@ -111,10 +114,10 @@ export const handleFileChange = (
     return;
   }
 
-  // if (!accept?.includes(fileType)) {
-  //   setError("File type not supported , please delete and upload another file");
-  //   setHasError(true);
-  // }
+  if (!accept?.includes(fileType)) {
+    setError("File type not supported , please delete and upload another file");
+    setHasError(true);
+  }
 
   const reader = new FileReader();
   reader.onload = () => {
@@ -162,7 +165,7 @@ const FormUpload = ({
 
   React.useEffect(() => {
     if (isSuccess) {
-      onUploadComplete(data.data);
+      onUploadComplete(data.message);
     }
   }, [isSuccess, isError]);
 
@@ -272,15 +275,16 @@ const FormUpload = ({
             <span
               className="absolute bottom-2 right-3 cursor-pointer"
               data-testid="reset"
-              onClick={() =>
+              onClick={() => {
                 handleReset(
                   setSelectedFile,
                   setError,
                   setHasError,
                   reset,
                   setBase64Image
-                )
-              }
+                );
+                onUploadComplete("");
+              }}
             >
               <HiOutlineTrash className="text-lg text-[#96989A]" />
             </span>

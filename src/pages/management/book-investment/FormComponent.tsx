@@ -5,13 +5,50 @@ import {
 } from "@app/components/pages/management/book-investment";
 import { Fragment } from "react";
 
-export default ({ step, handleNav }) => {
+export default ({
+  step,
+  handleNav,
+  formData,
+  setFormData,
+  setDisabled,
+  isSavingDraft,
+}) => {
   return (
     <Fragment>
       {/* {<span>{step}</span>  } */}
-      {step === 1 && <span><CustomerInformation proceed={handleNav} /></span>}
-      {step === 2 && <span><FacilityDetails proceed={handleNav}/></span>}
-      {step === 3 && <span><TransactionSettings proceed={handleNav}/></span>}
+      {step === 1 && (
+        <span>
+          <CustomerInformation
+            proceed={handleNav}
+            formData={formData}
+            setFormData={setFormData}
+            setDisabled={setDisabled}
+            isSavingDraft={isSavingDraft}
+          />
+        </span>
+      )}
+      {step === 2 && (
+        <span>
+          <FacilityDetails
+            proceed={handleNav}
+            formData={formData}
+            setFormData={setFormData}
+            setDisabled={setDisabled}
+            isSavingDraft={isSavingDraft}
+          />
+        </span>
+      )}
+      {step === 3 && (
+        <span>
+          <TransactionSettings
+            proceed={handleNav}
+            formData={formData}
+            setFormData={setFormData}
+            setDisabled={setDisabled}
+            isSavingDraft={isSavingDraft}
+          />
+        </span>
+      )}
     </Fragment>
   );
 };

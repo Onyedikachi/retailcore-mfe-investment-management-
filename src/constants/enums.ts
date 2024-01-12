@@ -55,6 +55,8 @@ export enum Messages {
   PRODUCT_REJECT_FAILED = "Unable to reject product ",
   PRODUCT_DRAFT_SUCCESS = "Product Setup saved to draft",
   PRODUCT_DRAFT_FAILED = "Unable to save as draft",
+  UNABLE_TO_BOOK = "Unable to proceed with booking",
+  UNABLE_TO_BOOK_SUB = "Customer's KYC is not completed"
 }
 
 export enum Prompts {

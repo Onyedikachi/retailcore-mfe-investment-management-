@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { InputDivs } from "@app/components/pages/term-deposit/forms/accounting-entries-and-events";
 import { BorderlessSelect, MinMaxInput } from "@app/components/forms";
 import { Switch } from "@headlessui/react";
+import { TransactionSettingModelSchema } from "@app/constants";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -15,12 +18,31 @@ type TransactionSettingsProps = {
   formData?: any;
   setFormData?: (e) => void;
   proceed?: () => void;
+  setDisabled?: any
+  isSavingDraft?: boolean
 };
 export default function TransactionSettings({
   formData,
   setFormData,
   proceed,
+  setDisabled,
+  isSavingDraft
 }: TransactionSettingsProps) {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    clearErrors,
+    setValue,
+    setError,
+    getValues,
+    trigger,
+    formState: { errors, isValid },
+  } = useForm({
+    resolver: yupResolver(TransactionSettingModelSchema),
+    defaultValues: formData.transactionSettingModel,
+    mode: "all",
+  });
   const [isOpen, setIsOpen] = useState(false);
 
   return (

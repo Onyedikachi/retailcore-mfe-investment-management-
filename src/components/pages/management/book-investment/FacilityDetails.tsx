@@ -1,7 +1,10 @@
 import React from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { InputDivs } from "@app/components/pages/term-deposit/forms/accounting-entries-and-events";
 import AccountSearch from "@app/components/AccountSearch";
 import MinMaxInput from "@app/components/forms/MinMaxInput";
+import { FacilityDetailsModelSchema } from "@app/constants";
 export const onProceed = (proceed) => {
   proceed();
 };
@@ -10,12 +13,31 @@ type FacilityDetailsProps = {
   formData?: any;
   setFormData?: (e) => void;
   proceed?: () => void;
+  setDisabled?: any;
+  isSavingDraft?: boolean
 };
 export default function FacilityDetails({
   formData,
   setFormData,
   proceed,
+  setDisabled,
+  isSavingDraft
 }: FacilityDetailsProps) {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    clearErrors,
+    setValue,
+    setError,
+    getValues,
+    trigger,
+    formState: { errors, isValid },
+  } = useForm({
+    resolver: yupResolver(FacilityDetailsModelSchema),
+    defaultValues: formData.facilityDetailsModel,
+    mode: "all",
+  });
   return (
     <form
       id="facilityDetails"
@@ -23,7 +45,10 @@ export default function FacilityDetails({
       onSubmit={(d) => onProceed(proceed)}
     >
       {" "}
-      <div data-testid="facility-details" className="flex flex-col gap-4 px-[30px] py-5">
+      <div
+        data-testid="facility-details"
+        className="flex flex-col gap-4 px-[30px] py-5"
+      >
         <div className="flex flex-col items-start gap-y-5">
           <InputDivs label={"Investment product"}>
             <div className="flex gap-[15px]">
@@ -58,11 +83,13 @@ export default function FacilityDetails({
           </InputDivs>
           <InputDivs label={"Tenor"}>
             <div className="flex gap-[15px]">
-            <div className="ml-[51px] w-[360px]">
-               <div className="flex items-center w-full gap-[15px] justify-between">
-               <MinMaxInput   />
-               <span className="text-base font-normal text-[#636363]">Months</span>
-               </div>
+              <div className="ml-[51px] w-[360px]">
+                <div className="flex items-center w-full gap-[15px] justify-between">
+                  <MinMaxInput />
+                  <span className="text-base font-normal text-[#636363]">
+                    Months
+                  </span>
+                </div>
                 <div className="text-sm text-[#AAAAAA]">
                   <span>3 - 12 months</span>
                 </div>
@@ -82,7 +109,7 @@ export default function FacilityDetails({
           <InputDivs label={"Interest rate"}>
             <div className="flex gap-[15px]">
               <div className="ml-[51px] w-[360px]">
-                <MinMaxInput  isPercent />
+                <MinMaxInput isPercent />
                 <div className="text-sm text-[#AAAAAA]">
                   <span>3 - 10% per annum</span>
                 </div>

@@ -759,3 +759,312 @@ export const summaryLinks = [
     url: "#",
   },
 ];
+
+export const biodataField = [
+  {
+    label: "Title",
+    key: "title",
+    type: "",
+  },
+  {
+    label: "Surname",
+    key: "surname",
+    type: "",
+  },
+  {
+    label: "First name",
+    key: "firstName",
+    type: "",
+  },
+  {
+    label: "Other names",
+    key: "otherNames",
+    type: "",
+  },
+  {
+    label: "Mother's maiden name",
+    key: "maidenName",
+    type: "",
+  },
+  {
+    label: "Gender",
+    key: "gender",
+    type: "",
+  },
+  {
+    label: "Marital status",
+    key: "maritalStatus",
+    type: "",
+  },
+  {
+    label: "Date of birth",
+    key: "dateOfBirth",
+    type: "date",
+  },
+  {
+    label: "Country",
+    key: "country",
+    type: "",
+  },
+  {
+    label: "State of origin",
+    key: "stateOfOrigin",
+    type: "",
+  },
+  {
+    label: "Lga",
+    key: "lga",
+    type: "",
+  },
+  {
+    label: "Dual citizenship",
+    key: "citizenship",
+    type: "",
+  },
+  {
+    label: "If yes, specify",
+    key: "specify",
+    type: "",
+  },
+];
+
+export const identity = [
+  {
+    label: "BVN",
+    key: "bvn",
+    type: "",
+  },
+  {
+    label: "Choose an Id",
+    key: "choose id",
+    type: "",
+  },
+  {
+    label: "ID Number",
+    key: "idNumber",
+    type: "",
+  },
+  {
+    label: "Issue date",
+    key: "issueDate",
+    type: "date",
+  },
+  {
+    label: "Expiry date",
+    key: "expiryDate",
+    type: "date",
+  },
+];
+
+export const contact = [
+  {
+    label: "Residential address",
+    key: "residentialAddress",
+    type: "",
+  },
+  {
+    label: "Detailed description of address",
+    key: "detailedDescriptionOfAddress",
+    type: "",
+  },
+  {
+    label: "country",
+    key: "country",
+    type: "",
+  },
+  {
+    label: "state",
+    key: "ci_stateOfOrigin",
+    type: "",
+  },
+  {
+    label: "city/town",
+    key: "city",
+    type: "",
+  },
+  {
+    label: "LGA",
+    key: "ci_lga",
+    type: "",
+  },
+  {
+    label: "Mobile number",
+    key: "mobileNumber",
+    type: "",
+  },
+  {
+    label: "Alternate phone number",
+    key: "alternateMobileNumber",
+    type: "",
+  },
+  {
+    label: "Email address",
+    key: "emailAddress",
+    type: "",
+  },
+  {
+    label: "Mailing address is same as residential address",
+    key: "mailingAddressSameAsResidentialAddress",
+    type: "",
+  },
+];
+
+export const kinDetail = [
+  {
+    label: "Title",
+    key: "title",
+    type: "",
+  },
+  {
+    label: "surname",
+    key: "surname",
+    type: "",
+  },
+  {
+    label: "first name",
+    key: "firstName",
+    type: "",
+  },
+  {
+    label: "other name",
+    key: "otherNames",
+    type: "",
+  },
+  {
+    label: "relationship",
+    key: "relationship",
+    type: "",
+  },
+  {
+    label: "gender",
+    key: "gender",
+    type: "",
+  },
+  {
+    label: "date of birth",
+    key: "dateOfBirth",
+    type: "date",
+  },
+  {
+    label: "residential address",
+    key: "residentialAddress",
+    type: "",
+  },
+  {
+    label: "detailed description of address",
+    key: "detailedDescriptionOfResidentialAddress",
+    type: "",
+  },
+  {
+    label: "country",
+    key: "country",
+    type: "",
+  },
+  {
+    label: "state",
+    key: "state",
+    type: "",
+  },
+  {
+    label: "city/town",
+    key: "city",
+    type: "",
+  },
+  {
+    label: "LGA",
+    key: "titlgale",
+    type: "",
+  },
+  {
+    label: "mobile number",
+    key: "mobileNumber",
+    type: "",
+  },
+  {
+    label: "alternate phone number",
+    key: "alternateMobileNumber",
+    type: "",
+  },
+];
+
+export const documentation = [
+  {
+    label: "customer's photo",
+    key: "customerPhoto",
+    type: "array",
+    subkey:"signedUrl"
+  },
+  {
+    label: "customer's signature",
+    key: "customerSignature",
+    type: "array",
+    subkey:""
+  },
+  {
+    label: "proof of identity",
+    key: "validId",
+    type: "array",
+    subkey:"signedUrl"
+  },
+  {
+    label: "proof of address",
+    key: "proofOfResidenceAddress",
+    type: "array",
+    subkey:"signedUrl"
+  },
+  {
+    label: "residential permit",
+    key: "residentialPermit",
+    type: "array",
+    subkey:"signedUrl"
+  },
+  {
+    label: "marriage certificate",
+    key: "marriageCertificate",
+    type: "array",
+    subkey:"signedUrl"
+  },
+
+  {
+    label: "letter from employer/school/NYSC",
+    key: "letterFromEmployerSchoolNusc",
+    type: "array",
+    subkey:"signedUrl"
+  },
+  {
+    label: "independent satisfactory references",
+    key: "independentSatisfactoryRefrence",
+    type: "array",
+    subkey:"signedUrl"
+  },
+  {
+    label: "other documents provided",
+    key: "otherUncategorisedDocuments",
+    type: "array",
+    subkey:"signedUrl"
+  },
+];
+
+export const detailData = [
+  {
+    title: "Biodata",
+    data: biodataField,
+  },
+  {
+    title: "Identity Verification",
+    data: identity,
+  },
+  {
+    title: "Contact Information",
+    data: contact,
+  },
+  {
+    title: "Details of Next of Kin",
+    data: kinDetail,
+  },
+
+  {
+    title: "Documentation",
+    data: documentation,
+  },
+];

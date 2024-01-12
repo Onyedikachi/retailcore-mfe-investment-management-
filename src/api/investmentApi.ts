@@ -44,6 +44,31 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    getCustomerSearch: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `https://customer-management-api.dev.bepeerless.co/v1/customer/search?search=${params}`,
+          method: "get",
+        };
+      },
+    }),
+    getAccountBalance: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `https://customer-management-api.dev.bepeerless.co/v1/accounts/${params}`,
+          method: "get",
+        };
+      },
+    }),
+    getCustomerProfile: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `https://customer-management-api.dev.bepeerless.co/v1/customer/profile/${params}`,
+          method: "get",
+        };
+      },
+    }),
+
     getSystemAlert: builder.query<any, any>({
       query: () => {
         return {
@@ -109,11 +134,29 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    createInvestment: builder.mutation<any,any>({
+      query: (data) => {
+        return {
+          url: urls.INVESTMENT_CREATE,
+          method: "post",
+          body: data,
+        };
+      },
+    }),
 
     modifyProduct: builder.mutation<any, any>({
       query: (data) => {
         return {
           url: `${urls.PRODUCT}/edit`,
+          method: "put",
+          body: data,
+        };
+      },
+    }),
+    modifyInvestment: builder.mutation<any, any>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT}/edit`,
           method: "put",
           body: data,
         };
@@ -313,4 +356,8 @@ export const {
   useApproveProductMutation,
   useRejectProductMutation,
   useGetSystemAlertQuery,
+  useGetCustomerSearchQuery,
+  useGetAccountBalanceQuery,
+  useGetCustomerProfileQuery,
+  useCreateInvestmentMutation
 } = investmentApi;
