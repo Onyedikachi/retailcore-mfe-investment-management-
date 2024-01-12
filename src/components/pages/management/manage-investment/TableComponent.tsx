@@ -18,7 +18,7 @@ import {
   StatusTypes,
   TypeFilterOptions,
   individualHeader,
-  IndividualRequestHeader,
+  IndividualProductsHeader,
 } from "@app/constants";
 import optionsDataHandler from "@app/utils/optionsDataHandler";
 
@@ -326,7 +326,7 @@ export default function TableComponent({
       decimalSeparator: ".",
       showLabels: true,
       showTitle: false,
-      title: "Product management",
+      title: "Investment management",
       filename:
         category === StatusCategoryType?.Investments
           ? "dashboard_products_data"
@@ -398,7 +398,7 @@ export default function TableComponent({
           category === StatusCategoryType?.Investments
             ? individualHeader
             : handleHeaders(
-                IndividualRequestHeader.map((i) => {
+                IndividualProductsHeader.map((i) => {
                   if (i.key === "created_By" || i.key === "approved_By") {
                     i.options = users;
                   }
