@@ -229,7 +229,6 @@ export const DropDownOptions: any = {
       text: "View",
       icon: "FaEye",
     },
-   
   ],
 };
 export const IndividualDropDownOptions: any = {
@@ -352,7 +351,6 @@ export const IndividualDropDownOptions: any = {
     },
   ],
   active: [
-   
     {
       id: "",
       text: "View",
@@ -375,13 +373,11 @@ export const IndividualDropDownOptions: any = {
     },
   ],
   liquidated: [
-   
     {
       id: "",
       text: "View",
       icon: "FaEye",
     },
-   
   ],
 };
 
@@ -902,15 +898,91 @@ export const IndividualRequestHeader = [
   },
 ];
 
+export const IndividualProductsHeader = [
+  {
+    label: "CUSTOMER NAME/Investment ID",
+    key: "customerName",
+    options: [
+      {
+        id: 1,
+        name: "",
+        value: "",
+      },
+    ],
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "Principal Amount",
+    key: "requestType",
+    options: IndividualTypeFilterOptions,
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "Tenor",
+    key: "created_By",
+    options: [],
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "Interest Rate",
+    key: "approved_By",
+    options: [],
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "Value At Maturity",
+    key: "approved_By",
+    options: [],
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "status",
+    key: "requestStatus",
+    options: StatusFilterOptions,
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "updated on",
+    key: "updated_At",
+    options: [
+      {
+        id: 1,
+        name: "",
+        value: "",
+      },
+    ],
+    hasSelect: false,
+    hasDateSelect: true,
+  },
+  {
+    label: "",
+    options: [],
+    hasSelect: false,
+    hasDateSelect: false,
+    key: "actions",
+  },
+];
+
 export const BookInvestmentOptions = [
-  { title: "Individual", url: "/product-factory/investment/management/create/individual" },
-  { title: "corporate", url: "/product-factory/investment/management/create/corporate" },
+  {
+    title: "Individual",
+    url: "/product-factory/investment/management/create/individual",
+  },
+  {
+    title: "corporate",
+    url: "/product-factory/investment/management/create/corporate",
+  },
 ];
 export interface IBookInvestmentOptions {
   title: string;
   url: string;
 }
-;
 export const ButtonOptions = [
   {
     title: "Deposit",

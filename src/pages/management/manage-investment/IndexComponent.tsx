@@ -175,8 +175,8 @@ export default function IndexComponent() {
                 </div>
               </div>
             </div>
-            <div className="flex-1 border border-[#E5E9EB] rounded-lg py-[13px] px-[31px] flex-col gap-[27px]">
-              <div className="">
+            <div className="overflow-x-auto  flex-1 border border-[#E5E9EB] rounded-lg py-[13px] px-[31px] flex-col gap-[27px]">
+              <div className=" max-w-full">
                 <TableComponent
                   handleRefresh={() => {}}
                   handleSearch={(value) => {}}
