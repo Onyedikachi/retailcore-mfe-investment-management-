@@ -21,6 +21,10 @@ const urls = {
 
 
   //investment
+  INVESTMENT: '/Investment',
+  INVESTMENT_REQUEST: '/InvestmentRequest',
+  INVESTMENT_STATS: '/Investment/stats',
+  INVESTMENT_REQUEST_STATS: '/InvestmentRequest/stats',
   INVESTMEENT_ACTIVITY_LOG: '/InvestmentRequest/activitylog'
 };
 

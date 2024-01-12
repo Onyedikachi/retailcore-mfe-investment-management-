@@ -117,7 +117,7 @@ export default function Preview({ formData, previousData = null }: any) {
   const { data: activityData, isLoading: activityIsLoading } =
     useGetInvestmentActivityLogQuery(
       { bookingrequestId: id },
-      { ski: process === "create" }
+      { skip: process === "create" }
     );
 
   const [
