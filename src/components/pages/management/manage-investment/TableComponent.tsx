@@ -389,24 +389,7 @@ export default function TableComponent({
             <HiRefresh className="text-lg" /> Refresh table
           </button>
         </div>{" "}
-        <div>
-          {/* download button  */}{" "}
-          <button
-            onClick={() =>
-              initiateDownload(
-                query,
-                category,
-                downloadProducts,
-                downloadRequests,
-                selected
-              )
-            }
-            data-testid="download-btn"
-            className="flex gap-x-2 items-center bg-transparent border-none text-[#636363] text-base"
-          >
-            <HiDownload className="text-lg" /> Download
-          </button>
-        </div>
+     
       </div>
 
       {/* main table  */}
