@@ -6,10 +6,10 @@ import { StatusCategoryType } from "@app/constants/enums";
 import { StatusCard, QuickLinks } from "@app/components";
 import TableComponent from "@app/components/pages/management/individual/TableComponent";
 import {
-  useGetPostProductsMutation,
-  useGetPostRequestsMutation,
-  useGetProductStatsQuery,
-  useGetRequestStatsQuery,
+  useGetPostInvestmentMutation,
+  useGetPostInvestmentRequestsMutation,
+  useGetInvestmentStatsQuery,
+  useGetInvestmentRequestStatsQuery,
   useGetSystemAlertQuery,
 } from "@app/api";
 import {
@@ -230,7 +230,7 @@ export default function Individual() {
   }, [selected, isChecker]);
 
   const [getProducts, { data, isSuccess, isError, error, isLoading }] =
-    useGetPostProductsMutation();
+    useGetPostInvestmentMutation();
 
   const [
     getRequests,
@@ -241,13 +241,13 @@ export default function Individual() {
       error: requestError,
       isLoading: isRequestLoading,
     },
-  ] = useGetPostRequestsMutation();
+  ] = useGetPostInvestmentRequestsMutation();
 
   const {
     data: prodStatData,
     refetch: prodStatRefetch,
     isFetching: prodStatLoading,
-  } = useGetProductStatsQuery(
+  } = useGetInvestmentStatsQuery(
     { filter_by: selected?.value },
     {
       skip: category !== StatusCategoryType?.Investments,
@@ -258,7 +258,7 @@ export default function Individual() {
     data: requestStatData,
     refetch: requestRefetch,
     isFetching: requestStatLoading,
-  } = useGetRequestStatsQuery(
+  } = useGetInvestmentRequestStatsQuery(
     { filter_by: selected?.value },
     {
       skip: category !== StatusCategoryType.Requests,
@@ -376,6 +376,7 @@ export default function Individual() {
 
           <div className="bg-white px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16">
             {" "}
+            
             <TableComponent
               handleRefresh={() => {
                 handleRefresh(
