@@ -180,7 +180,9 @@ export default function IndexComponent() {
                 <TableComponent
                   handleRefresh={() => {}}
                   handleSearch={(value) => {}}
-                  productData={[]}
+                  productData={[
+                    { id: 1, customerName: "Kaine", principalAmount: "5,000", tenor: '3 months', interestRate: '3%', status: 'Active'},
+                  ]}
                   requestData={[]}
                   isLoading={false}
                   query={query}
