@@ -10,7 +10,7 @@ import {
 import { Breadcrumbs, Loader, Button } from "@app/components";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import {
-  useGetProductActivityLogQuery,
+  useGetInvestmentActivityLogQuery,
   useCreateProductMutation,
   useModifyProductMutation,
   useModifyRequestMutation,
@@ -115,8 +115,8 @@ export default function Preview({ formData, previousData = null }: any) {
 
 
   const { data: activityData, isLoading: activityIsLoading } =
-    useGetProductActivityLogQuery(
-      { productid: id },
+    useGetInvestmentActivityLogQuery(
+      { bookingrequestId: id },
       { ski: process === "create" }
     );
 

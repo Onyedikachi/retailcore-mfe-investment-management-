@@ -285,6 +285,17 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    getInvestmentActivityLog: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `${urls.INVESTMEENT_ACTIVITY_LOG}?${new URLSearchParams(
+            cleanObject(params)
+          )}`,
+          method: "get",
+          params: cleanObject(params),
+        };
+      },
+    }),
   }),
 });
 
@@ -313,4 +324,5 @@ export const {
   useApproveProductMutation,
   useRejectProductMutation,
   useGetSystemAlertQuery,
+  useGetInvestmentActivityLogQuery,
 } = investmentApi;
