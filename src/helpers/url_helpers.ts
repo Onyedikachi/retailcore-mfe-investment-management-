@@ -17,6 +17,11 @@ const urls = {
 
   // Validate
   VALIDATE_NAME: "/product/verify-name",
+
+
+
+  //investment
+  INVESTMEENT_ACTIVITY_LOG: '/InvestmentRequest/activitylog'
 };
 
 export default urls;
