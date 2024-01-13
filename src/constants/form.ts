@@ -28,6 +28,28 @@ export const ProductInformationFormSchema = yup.object({
   currency: yup.string().required("Select a currency"),
 });
 
+export const BookingCustomerInfoSchema = yup.object().shape({
+  customerId: yup.string().uuid().required("Select a customer account"),
+  customerName: yup.string().required("Select a customer account"),
+  customerAccount: yup.string().required("Select a customer account"),
+  investmentformUrl: yup.string().required("Request form is required"),
+});
+export const FacilityDetailsModelSchema = yup.object().shape({
+  investmentProductId: yup.string().uuid().required(),
+  investmentPurpose: yup.string().required(),
+  tenor: yup.number().integer().positive().required(),
+  principal: yup.number().integer().positive().required(),
+  interestRate: yup.number().positive().required(),
+  capitalizationMethod: yup.number().integer().min(0).max(1).required(),
+});
+
+export const TransactionSettingModelSchema = yup.object().shape({
+  accountForLiquidation: yup.string().required(),
+  notifyCustomerOnMaturity: yup.boolean().required(),
+  rollOverAtMaturity: yup.boolean().required(),
+  rollOverOption: yup.number().integer().min(0).max(2).required(),
+});
+
 export const CustomerEligibilityCriteriaSchema = yup
   .object({
     customerCategory: yup
@@ -352,7 +374,9 @@ export const pricingConfigSchema = yup.object({
             ) {
               errors.push(
                 new ValidationError(
-                  `Min principal must be less than ${currencyFormatter(appPrinMax)}`,
+                  `Min principal must be less than ${currencyFormatter(
+                    appPrinMax
+                  )}`,
                   last,
                   `interestRateConfigModels[${value.length - 1}].principalMin`
                 )

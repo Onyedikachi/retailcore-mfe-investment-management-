@@ -4,7 +4,7 @@ const urls = {
 
   // Requests
   REQUESTS: "/ProductRequest",
-  SYSTEM_ALERT: 'ProductRequest/alert',
+  SYSTEM_ALERT: "ProductRequest/alert",
   REQUEST_STATS: "/productrequest/stats",
   REQUEST_ACTIVITY_LOG: "/productrequest/activitylog",
 
@@ -18,7 +18,9 @@ const urls = {
   // Validate
   VALIDATE_NAME: "/product/verify-name",
 
-
+  //  Invesment
+  INVESTMENT_CREATE: "/investment/add",
+  INVESTMENT_EDIT: "/investment/edit",
 
   //investment
   INVESTMENT: '/Investment',

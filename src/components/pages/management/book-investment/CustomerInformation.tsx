@@ -1,9 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { ErrorMessage } from "@hookform/error-message";
 import AccountSearch from "@app/components/AccountSearch";
 import { InputDivs } from "@app/components/pages/term-deposit/forms/accounting-entries-and-events";
 import { FormUpload } from "@app/components/forms";
 import CustomerInfoCard from "./CustomerInfoCard";
-export const onProceed = (proceed) => {
+import { BookingCustomerInfoSchema } from "@app/constants";
+import SearchInput from "@app/components/SearchInput";
+import {
+  useGetCustomerSearchQuery,
+  useGetAccountBalanceQuery,
+  useGetCustomerProfileQuery,
+} from "@app/api";
+import { capitalizeFirstLetter } from "@app/utils";
+import { currencyFormatter } from "@app/utils/formatCurrency";
+import { CustomerDetail } from "@app/components/modals/CustomerDetail";
+import { Failed } from "@app/components/modals";
+import { Messages } from "@app/constants/enums";
+import BottomBarLoader from "@app/components/BottomBarLoader";
+export const onProceed = (data, proceed, formData, setFormData) => {
+  console.log("🚀 ~ onProceed ~ data:", data);
+  setFormData({
+    ...formData,
+    customerBookingInfoModel: data,
+  });
   proceed();
 };
 
@@ -11,47 +32,262 @@ type CustomerInformationProps = {
   formData?: any;
   setFormData?: (e) => void;
   proceed?: () => void;
+  setDisabled?: any;
+  isSavingDraft?: boolean;
+};
+export const handleSearch = (value, setAccountNumber) => {
+  setAccountNumber(value);
 };
 export default function CustomerInformation({
   formData,
   setFormData,
   proceed,
+  setDisabled,
+  isSavingDraft,
 }: CustomerInformationProps) {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    clearErrors,
+    setValue,
+    setError,
+    getValues,
+    trigger,
+    formState: { errors, isValid },
+  } = useForm({
+    resolver: yupResolver(BookingCustomerInfoSchema),
+    defaultValues: formData.customerBookingInfoModel,
+    mode: "all",
+  });
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [query, setQuery] = useState("");
+  const [customerData, setCustomerData] = useState(null);
+  const [accountNumber, setAccountNumber] = useState(null);
+  const [customersData, setCustomersData] = useState([]);
+  const [accountBalance, setAccountBalance] = useState(null);
+  const [validKyc, setValidKyc] = useState(null);
+  const [isKycFailed, setKycFailed] = useState(false);
+  const values = getValues();
+  const {
+    data,
+    isSuccess,
+    isError,
+    error,
+    isLoading: searchLoading,
+  } = useGetCustomerSearchQuery(query, { skip: !query.length });
+
+  const {
+    data: profileData,
+    isSuccess: profileIsSuccess,
+    isError: profileIsError,
+    error: profileError,
+    isLoading: profileLoading,
+  } = useGetCustomerProfileQuery(customerData?.customerId, {
+    skip: !customerData?.customerId,
+  });
+
+  const {
+    data: accountData,
+    isSuccess: accountIsSuccess,
+    isError: accountIsError,
+    error: accountError,
+    isLoading,
+  } = useGetAccountBalanceQuery(query, { skip: !accountNumber });
+
+  useEffect(() => {
+    if (isSuccess) {
+      setCustomersData(
+        data.data.map((i) => {
+          return {
+            id: i.customerId,
+            name: i.customer_products[0]?.accountNumber,
+            code: `${capitalizeFirstLetter(
+              i.customer_profiles[0].firstName
+            )} ${capitalizeFirstLetter(
+              i.customer_profiles[0].otherNames
+            )} ${capitalizeFirstLetter(i.customer_profiles[0].surname)}`,
+            value: i,
+          };
+        })
+      );
+    }
+
+    return () => {
+      setCustomersData([]);
+    };
+  }, [isError, isSuccess, searchLoading, data]);
+
+  useEffect(() => {
+    if (accountIsSuccess) {
+      setAccountBalance(accountData.data);
+    }
+
+    return () => {
+      setAccountBalance(null);
+    };
+  }, [accountIsError, accountIsSuccess, isLoading, accountData]);
+
+  useEffect(() => {
+    if (accountNumber && data) {
+      const foundObject = data?.data?.find((item) => {
+        return (
+          item.customer_products &&
+          item.customer_products.some(
+            (product) => product.accountNumber === accountNumber
+          )
+        );
+      });
+
+      setCustomerData(foundObject);
+      setValue("customerId", foundObject?.customerId);
+      setValue(
+        "customerName",
+        `${capitalizeFirstLetter(
+          foundObject?.customer_profiles[0]?.firstName
+        )} ${capitalizeFirstLetter(
+          foundObject?.customer_profiles[0]?.otherNames
+        )} ${capitalizeFirstLetter(foundObject?.customer_profiles[0]?.surname)}`
+      );
+      setValue("customerAccount", accountNumber);
+      trigger("customerAccount");
+    }
+  }, [accountNumber, data]);
+
+  useEffect(() => {
+    if (searchLoading) {
+      setCustomersData([]);
+      setCustomerData(null);
+      setAccountBalance(null);
+    }
+  }, [searchLoading]);
+
+  useEffect(() => {
+    if (validKyc === false && accountNumber && profileData) {
+      setKycFailed(true);
+    }
+    setDisabled(!isValid || !validKyc);
+  }, [isValid, validKyc]);
+
+  useEffect(() => {
+    if (profileIsSuccess) {
+      const status =
+        profileData?.data?.risk_assessments
+
+          ?.find(
+            (i) =>
+              i.parameter.toLowerCase() ===
+              "status of customer identity verification"
+          )
+          ?.parameterOption?.toLowerCase() === "passed";
+
+      setValidKyc(status);
+    }
+  }, [profileData, profileIsSuccess]);
+
+  useEffect(() => {
+    setFormData({
+      ...formData,
+      customerBookingInfoModel: values,
+    });
+  }, [isSavingDraft]);
+  useEffect(() => {
+    setAccountNumber(formData?.customerBookingInfoModel.customerAccount);
+    setQuery(formData?.customerBookingInfoModel.customerAccount);
+  }, [formData]);
   return (
     <form
       id="customerInformation"
       data-testid="submit-button"
-      onSubmit={(d) => onProceed(proceed)}
+      onSubmit={handleSubmit((d) =>
+        onProceed(d, proceed, formData, setFormData)
+      )}
     >
       {" "}
       <div className="flex flex-col gap-4 px-[30px] py-5">
-        <div className="flex flex-col items-start gap-y-5">
-          <InputDivs label={"Customer account"}>
-           <div className="flex gap-[15px]">
-           <div className="ml-[51px] w-[360px]">
-              <AccountSearch placeholder={"Search by account number"} />
+        <div className="flex flex-col items-start gap-y-8">
+          <InputDivs
+            label={"Customer account"}
+            errors={errors}
+            name="customerAccount"
+          >
+            <div className="flex gap-[15px] items-end">
+              <div className="w-[360px]">
+                <SearchInput
+                  setSearchTerm={(e) => {
+                    setQuery(e);
+                  }}
+                  searchResults={customersData}
+                  setSearchResults={() => {}}
+                  searchLoading={searchLoading}
+                  handleSearch={(value) =>
+                    handleSearch(value, setAccountNumber)
+                  }
+                  placeholder={"Search by account number"}
+                  customClass="shadow-none"
+                  hideBorder
+                  defaultValue={accountNumber}
+                />
+              </div>
+              {accountBalance && (
+                <div className="p-[10px] max-w-max rounded-lg bg-[#F9F9F9] border border-[#EBEBEB]">
+                  <span className="text-base font-medium text-[#636363]">
+                    Available Bal:{" "}
+                    <span className="text-base font-normal text-[#636363]">
+                      {currencyFormatter(
+                        accountBalance.balance,
+                        accountBalance?.currency
+                      )}
+                    </span>
+                  </span>
+                </div>
+              )}
             </div>
-            <div className="p-[10px] max-w-max rounded-lg bg-[#F9F9F9] border border-[#EBEBEB]">
-                <span className='text-base font-medium text-[#636363]' >Available Bal: <span className='text-base font-normal text-[#636363]' >NGN 2,000,000.00</span></span>
-            </div>
-           </div>
           </InputDivs>
-          <div className="w-full">
-            <CustomerInfoCard />
-          </div>
-          <InputDivs label={"Customer’s investment request form"}>
-            <div className="ml-[51px] w-[360px]">
+          {accountNumber && (
+            <div className="w-full">
+              <CustomerInfoCard
+                customerData={profileData?.data}
+                setIsOpen={setIsOpen}
+                isLoading={profileLoading || isLoading }
+              />
+            </div>
+          )}
+
+          <InputDivs
+            label={"Customer’s investment request form"}
+            errors={errors}
+            name="investmentformUrl"
+          >
+            <div className="w-[360px]">
               <FormUpload
                 data-testid="input"
-                accept={[]}
+                accept={["pdf", "jpg", "png", "jpeg"]}
                 onUploadComplete={(value) => {
-                  console.log(value);
+                  setValue("investmentformUrl", value);
+                  trigger("investmentformUrl");
                 }}
               />{" "}
             </div>
           </InputDivs>
         </div>
       </div>
+      {isOpen && customerData && (
+        <CustomerDetail
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          detail={customerData?.customer_profiles[0]}
+        />
+      )}
+      {isKycFailed && !profileLoading && (
+        <Failed
+          text={Messages.UNABLE_TO_BOOK}
+          subtext={Messages.UNABLE_TO_BOOK_SUB}
+          isOpen={isKycFailed}
+          setIsOpen={setKycFailed}
+          canRetry
+        />
+      )}
     </form>
   );
 }

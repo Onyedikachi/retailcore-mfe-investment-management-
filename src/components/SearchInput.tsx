@@ -131,6 +131,8 @@ export default function SearchInput({
   searchLoading,
   handleSearch,
   type,
+  customClass = "",
+  defaultValue
 }: {
   setSearchTerm: (e: string) => void;
   placeholder?: string;
@@ -143,6 +145,8 @@ export default function SearchInput({
   searchLoading?: boolean;
   handleSearch?: (e: string, item?: any) => void;
   type?: string;
+  customClass?: string;
+  defaultValue?: string
 }) {
   const [inputValue, setInputValue] = useState("");
   const [showBox, setShowBox] = useState(false);
@@ -156,6 +160,13 @@ export default function SearchInput({
     }
   }, [inputValue]);
 
+  useEffect(() => {
+    if (defaultValue?.length) {
+     
+      setInputValue(defaultValue);
+    }
+  }, [defaultValue]);
+
   return (
     <OutsideClickHandler
       onOutsideClick={() => closeBox(setSearchResults, setShowBox)}
@@ -167,7 +178,7 @@ export default function SearchInput({
           hideBorder
             ? ""
             : "after:content-[''] after:w-1 after:h-[80%] after:absolute after:border-r after:right-[-15px] after:top-1/2 after:translate-y-[-50%] after:border-[#E5E9EB]"
-        }`}
+        } ${customClass}`}
       >
         <button className="w-8 h-8 p-1 flex items-center justify-center">
           <FaSearch className="text-[#48535B]" />

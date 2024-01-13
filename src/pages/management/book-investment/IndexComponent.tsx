@@ -1,11 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { BookInvestmentFormSteps } from "@app/constants";
 import { ProductInfoInvestmentCalc } from "@app/components/management";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import handleFormRef from "./handleFormRef";
-import {Preview} from '@app/components/pages/management/book-investment'
-import { Breadcrumbs, Button, FormStepComponent } from "@app/components";
+import { Preview } from "@app/components/pages/management/book-investment";
+import {
+  Breadcrumbs,
+  Button,
+  FormStepComponent,
+  Loader,
+} from "@app/components";
 import BookInvestmentFormComponent from "./FormComponent";
+import {
+  useCreateInvestmentMutation,
+  useGetProductDetailQuery,
+  useGetRequestDetailQuery,
+  useModifyProductMutation,
+  useModifyRequestMutation,
+} from "@app/api";
+import { Confirm, Failed, Success } from "@app/components/modals";
+import { Prompts } from "@app/constants/enums";
 
 export function handleNext(step, setStep, BookInvestmentFormSteps) {
   console.log(step);
@@ -15,13 +29,75 @@ export function handleNext(step, setStep, BookInvestmentFormSteps) {
 export function handlePrev(step, setStep, BookInvestmentFormSteps) {
   step > BookInvestmentFormSteps[0].index && setStep(step - 1);
 }
+
+export const handleDraft = ({
+  formData,
+  process,
+  id,
+  modifyRequest,
+  setIsConfirmOpen,
+  modifyProduct,
+  createInvestment,
+}) => {
+  setIsConfirmOpen(false);
+  if (process === "modify") {
+    modifyProduct({ ...formData, isDraft: true, id });
+  }
+  if (process === "create" || process === "clone") {
+    const { id, ...restData } = formData;
+    createInvestment({ ...restData, isDraft: true });
+  }
+  if (process === "continue" || process === "withdraw_modify") {
+    modifyRequest({ ...formData, isDraft: true, id });
+  }
+};
+
 export default function IndexComponent() {
   const { process, investmentType } = useParams();
   const [searchParams] = useSearchParams();
   const stage = searchParams.get("stage");
+  const id = searchParams.get("id");
+  const refresh = searchParams.get("refresh");
+  const activeId = useRef(null);
+  const previousData = useRef({});
   const [step, setStep] = useState(1);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [subText, setSubText] = useState("");
+  const [successText, setSuccessText] = useState("");
+  const [isSuccessOpen, setIsSuccessOpen] = useState(false);
+  const [isFailed, setFailed] = useState(false);
+  const [failedSubText, setFailedSubtext] = useState("");
+  const [failedText, setFailedText] = useState("");
   const [formRef, setFormRef] = useState(null);
+  const [disabled, setDisabled] = useState(true);
+  const [isSavingDraft, setIsSavingDraft] = useState(false);
   const navigate = useNavigate();
+  const [formData, setFormData] = useState<any>({
+    id: "",
+    customerBookingInfoModel: {
+      customerId: "63762c09-3f83-4200-be5c-dcba0ac8fe15",
+      customerName: "Ibrahim Adefemi Cole",
+      customerAccount: "2000000019",
+      investmentformUrl: "http://retailcore-investment-management-api.dev.bepeerless.co/uploads/79dc1d11-d3e9-41cd-90ec-4827226d2764.jpg",
+    },
+    facilityDetailsModel: {
+      investmentProductId: "",
+      investmentPurpose: "",
+      tenor: null,
+      principal: null,
+      interestRate: null,
+      capitalizationMethod: 0,
+    },
+    transactionSettingModel: {
+      accountForLiquidation: "",
+      notifyCustomerOnMaturity: false,
+      rollOverAtMaturity: false,
+      rollOverOption: 0,
+    },
+    isDraft: false,
+    recentUpdated: false,
+    recentlyUpdatedMeta: "",
+  });
 
   const links = [
     {
@@ -73,6 +149,50 @@ export default function IndexComponent() {
         );
   }
 
+  const [createInvestment, { data, isLoading, isSuccess, isError, error }] =
+    useCreateInvestmentMutation();
+  const [
+    modifyProduct,
+    {
+      isLoading: modifyLoading,
+      isSuccess: modifySuccess,
+      isError: modifyIsError,
+      error: modifyError,
+    },
+  ] = useModifyProductMutation();
+
+  const [
+    modifyRequest,
+    {
+      isLoading: modifyRequestLoading,
+      isSuccess: modifyRequestSuccess,
+      isError: modifyRequestIsError,
+      error: modifyRequestError,
+    },
+  ] = useModifyRequestMutation();
+
+  const {
+    data: requestData,
+    isLoading: requestIsLoading,
+    isSuccess: requestIsSuccess,
+  } = useGetRequestDetailQuery(
+    {
+      id,
+    },
+    { skip: !id }
+  );
+
+  const {
+    data: productDetails,
+    isLoading: productDetailsIsLoading,
+    isSuccess: productDetailsIsSuccess,
+  } = useGetProductDetailQuery(
+    {
+      id,
+    },
+    { skip: !id }
+  );
+
   useEffect(() => {
     handleFormRef({ step, setFormRef });
   }, [step]);
@@ -99,8 +219,12 @@ export default function IndexComponent() {
                 <div className=" bg-[#ffffff] border border-[#EEEEEE] rounded-[10px] px-[87px] pt-[100px] pb-[43px] ">
                   {/* {form component} */}
                   <BookInvestmentFormComponent
+                    formData={formData}
+                    setFormData={setFormData}
                     step={step}
                     handleNav={handleNav}
+                    setDisabled={setDisabled}
+                    isSavingDraft={isSavingDraft}
                   />
 
                   <div className="h-px w-full bg-[#CCCCCC] mb-12 mt-16"></div>
@@ -120,7 +244,10 @@ export default function IndexComponent() {
                     <div className="flex justify-end gap-6">
                       <Button
                         type="button"
-                        onClick={() => {}}
+                        onClick={() => {
+                          setIsConfirmOpen(true);
+                          setIsSavingDraft(!isSavingDraft);
+                        }}
                         className="text-gray-500 px-10 py-1 font-medium text-base bg-white border border-[#D8DAE5] leading-[24px] disabled:bg-transparent"
                       >
                         Save As Draft
@@ -129,6 +256,7 @@ export default function IndexComponent() {
                       <Button
                         type="submit"
                         form={formRef}
+                        disabled={disabled}
                         className={
                           "bg-sterling-red-800 rounded-lg px-10 py-1 font-medium text-base"
                         }
@@ -139,18 +267,58 @@ export default function IndexComponent() {
                   </div>
                 </div>
               </div>
-              <div className="min-w-[377px]">
-                <ProductInfoInvestmentCalc />
-              </div>
+              {step === 2 && (
+                <div className="min-w-[377px]">
+                  <ProductInfoInvestmentCalc />
+                </div>
+              )}
             </div>
           </div>
         </div>
       )}
-      {stage && stage === "summary" && 
-      (
-        <Preview />
-      )
-      }
+      {stage && stage === "summary" && <Preview />}
+
+      <Loader
+        isOpen={isLoading || modifyLoading || modifyRequestLoading}
+        text={"Submitting"}
+      />
+      {/* //Modals */}
+      {isConfirmOpen && (
+        <Confirm
+          text={Prompts.PRODUCT_DRAFT}
+          subtext={Prompts.PRODUCT_DRAFT_SUBTEXT}
+          isOpen={isConfirmOpen}
+          setIsOpen={setIsConfirmOpen}
+          onCancel={() => setIsConfirmOpen(false)}
+          onConfirm={() =>
+            handleDraft({
+              formData,
+              process,
+              id,
+              modifyRequest,
+              setIsConfirmOpen,
+              modifyProduct,
+              createInvestment,
+            })
+          }
+        />
+      )}
+      {isFailed && (
+        <Failed
+          text={failedText}
+          subtext={failedSubText}
+          isOpen={isFailed}
+          setIsOpen={setFailed}
+          canRetry
+        />
+      )}
+      {isSuccessOpen && (
+        <Success
+          text={successText}
+          isOpen={isSuccessOpen}
+          setIsOpen={setIsSuccessOpen}
+        />
+      )}
     </div>
   );
 }
