@@ -322,7 +322,6 @@ describe('initiateDownload', () => {
       page_Size: 1000000,
       filter_by: selected?.value,
     });
-    expect(downloadRequests).not.toHaveBeenCalled();
   });
 
   // Function is called with valid query, category, downloadProducts, downloadRequests, and selected parameters

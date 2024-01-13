@@ -204,7 +204,7 @@ export default function CustomerInformation({
       )}
     >
       {" "}
-      <div className="flex flex-col gap-4 px-[30px] py-5">
+      <div data-testid="customerInformation" className="flex flex-col gap-4 px-[30px] py-5">
         <div className="flex flex-col items-start gap-y-8">
           <InputDivs
             label={"Customer account"}
