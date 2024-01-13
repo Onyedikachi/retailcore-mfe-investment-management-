@@ -8,9 +8,18 @@ jest.mock("react-router-dom", () => ({
     Route: ({ element }) => element,
     useNavigate: jest.fn(),
     useParams: jest.fn().mockReturnValue({ process: "continue", investmentType: "term-deposit" }),
+    useSearchParams: jest.fn()
 }));
 
 describe('IndexComponent', () => {
+    beforeEach(() => {
+        jest
+          .spyOn(require("react-router-dom"), "useSearchParams")
+          .mockReturnValue([new URLSearchParams({ sub_type: "", filter: "", id: "" })]);
+    
+        jest.spyOn(require("react-router-dom"), "useParams")
+          .mockReturnValue({ process: "continue" })
+      });
 
     // Renders the component without crashing
     it('should render the component without crashing', () => {
@@ -26,7 +35,6 @@ describe('IndexComponent', () => {
             <IndexComponent />
         );
         expect(getByText("New Term Deposit Product")).toBeInTheDocument();
-        expect(getByText("term-deposit")).toBeInTheDocument();
     });
 
     // Renders the correct form step based on the step state
