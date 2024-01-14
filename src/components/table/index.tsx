@@ -126,6 +126,7 @@ export const DropdownButton = ({ options, handleClick }: any) => {
 };
 
 export const handleProductsDropdown = (
+  statusType = "",
   status: string,
   isChecker,
   DropDownOptions,
@@ -136,11 +137,18 @@ export const handleProductsDropdown = (
 ): any => {
   if (!status) return [];
   if (isChecker) {
-    return DropDownOptions[status]?.filter(
-      (i: any) => i.text.toLowerCase() === "view"
-    );
+    return DropDownOptions[
+      statusType === "investments"
+        ? InvestmentBookingStatus[status].toLowerCase()
+        : status
+    ]?.filter((i: any) => i.text.toLowerCase() === "view");
   } else {
-    let options = DropDownOptions[status];
+    let options =
+      DropDownOptions[
+        statusType === "investments"
+          ? InvestmentBookingStatus[status].toLowerCase()
+          : status
+      ];
     if (!permissions?.includes("RE_OR_DEACTIVATE_INVESTMENT_PRODUCT")) {
       options = options?.filter(
         (i: any) =>
@@ -470,7 +478,12 @@ export default function TableComponent<TableProps>({
                                     type === StatusCategoryType.AllProducts ||
                                     type === StatusCategoryType.Investments
                                       ? handleProductsDropdown(
-                                          item.state,
+                                          type,
+                                          item.state
+                                            ? item.state
+                                            : item.investmentBookingStatus
+                                            ? item.investmentBookingStatus
+                                            : null,
                                           isChecker,
                                           dropDownOptions,
                                           item.islocked,
