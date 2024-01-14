@@ -1,14 +1,16 @@
 import { currencyFormatter } from "@app/utils/formatCurrency"
 import { handleCurrencyName } from "@app/utils/handleCurrencyName"
-import { Fragment } from "react"
+import { Fragment, useContext } from "react"
 import {
     CustomerCategory,
     Interval,
     ProductTypes,
     liquidities,
 } from "@app/constants";
+import { AppContext } from "@app/utils";
 
 export default ({ productData, setOpen }) => {
+    const { currencies } = useContext(AppContext);
     return (
         <div className="border border-[#E5E9EB] rounded-lg py-[25px] px-[30px] h-[593px]">
             <div className="pr-[30px] h-full gap-y-[35px] overflow-y-auto flex flex-col">
@@ -42,14 +44,14 @@ export default ({ productData, setOpen }) => {
                         {currencyFormatter(
                             productData?.data?.pricingConfiguration
                                 ?.applicablePrincipalMin,
-                            handleCurrencyName(productData?.data?.productInfo.currency)
+                            handleCurrencyName(productData?.data?.productInfo.currency,currencies)
                         )}{" "}
                         {productData?.data?.pricingConfiguration
                             ?.applicablePrincipalMax
                             ? `- ${currencyFormatter(
                                 productData?.data?.pricingConfiguration
                                     ?.applicablePrincipalMax,
-                                handleCurrencyName(productData?.data?.productInfo?.currency)
+                                handleCurrencyName(productData?.data?.productInfo?.currency,currencies)
                             )}`
                             : "and above"}
                     </span>
@@ -75,10 +77,10 @@ export default ({ productData, setOpen }) => {
                                                 principal between{" "}
                                                 {`${currencyFormatter(
                                                     configModel.principalMin,
-                                                    handleCurrencyName(productData?.data?.productInfo?.currency)
+                                                    handleCurrencyName(productData?.data?.productInfo?.currency,currencies)
                                                 )} - ${currencyFormatter(
                                                     configModel.principalMax,
-                                                    handleCurrencyName(productData?.data?.productInfo?.currency)
+                                                    handleCurrencyName(productData?.data?.productInfo?.currency,currencies)
                                                 )}`}{" "}
                                             </span>
                                         )

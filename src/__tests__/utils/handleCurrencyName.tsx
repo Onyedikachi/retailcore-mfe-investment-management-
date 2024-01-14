@@ -19,7 +19,9 @@ describe("handleCurrencyName", () => {
       </AppContext.Provider>
     );
 
-    const { result } = renderHook(() => handleCurrencyName("NGN"), { wrapper });
+    const { result } = renderHook(() => handleCurrencyName("NGN", currencies), {
+      wrapper,
+    });
 
     expect(result.current).toBe("NGN");
   });
@@ -31,12 +33,16 @@ describe("handleCurrencyName", () => {
     ];
 
     const wrapper = ({ children }) => (
-      <AppContext.Provider  value={{ currencies, role: "", setRole: jest.fn(), permissions: [] }}>
+      <AppContext.Provider
+        value={{ currencies, role: "", setRole: jest.fn(), permissions: [] }}
+      >
         {children}
       </AppContext.Provider>
     );
 
-    const { result } = renderHook(() => handleCurrencyName("XXX"), { wrapper });
+    const { result } = renderHook(() => handleCurrencyName("XXX", currencies), {
+      wrapper,
+    });
 
     expect(result.current).toBeNull();
   });

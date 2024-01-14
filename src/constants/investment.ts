@@ -336,7 +336,6 @@ export const BookInvestmentFormSteps = [
     label: "Transaction Settings",
     index: 3,
   },
-
 ];
 export const termDepositFormSteps = [
   {
@@ -992,56 +991,56 @@ export const documentation = [
     label: "customer's photo",
     key: "customerPhoto",
     type: "array",
-    subkey:"signedUrl"
+    subkey: "signedUrl",
   },
   {
     label: "customer's signature",
     key: "customerSignature",
     type: "array",
-    subkey:""
+    subkey: "",
   },
   {
     label: "proof of identity",
     key: "validId",
     type: "array",
-    subkey:"signedUrl"
+    subkey: "signedUrl",
   },
   {
     label: "proof of address",
     key: "proofOfResidenceAddress",
     type: "array",
-    subkey:"signedUrl"
+    subkey: "signedUrl",
   },
   {
     label: "residential permit",
     key: "residentialPermit",
     type: "array",
-    subkey:"signedUrl"
+    subkey: "signedUrl",
   },
   {
     label: "marriage certificate",
     key: "marriageCertificate",
     type: "array",
-    subkey:"signedUrl"
+    subkey: "signedUrl",
   },
 
   {
     label: "letter from employer/school/NYSC",
     key: "letterFromEmployerSchoolNusc",
     type: "array",
-    subkey:"signedUrl"
+    subkey: "signedUrl",
   },
   {
     label: "independent satisfactory references",
     key: "independentSatisfactoryRefrence",
     type: "array",
-    subkey:"signedUrl"
+    subkey: "signedUrl",
   },
   {
     label: "other documents provided",
     key: "otherUncategorisedDocuments",
     type: "array",
-    subkey:"signedUrl"
+    subkey: "signedUrl",
   },
 ];
 
@@ -1066,5 +1065,23 @@ export const detailData = [
   {
     title: "Documentation",
     data: documentation,
+  },
+];
+
+export const CapitalizationOptions = [
+  {
+    id: 1,
+    text: "Upon booking",
+    value: 0,
+  },
+  {
+    id: 2,
+    text: "At Interval",
+    value: 1,
+  },
+  {
+    id: 3,
+    text: "At Maturity",
+    value: 2,
   },
 ];

@@ -25,8 +25,17 @@ interface Props {
   detail: any;
 }
 
-
-export const BookingDetailLayout = ({isOpen, setIsOpen, isLoading, productData, permissions, open, setOpen, handleClick }) => {
+export const BookingDetailLayout = ({
+  isOpen,
+  setIsOpen,
+  isLoading,
+  productData,
+  permissions,
+  open,
+  setOpen,
+  handleClick,
+}) => {
+  const { currencies } = useContext(AppContext);
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
       <div
@@ -37,14 +46,18 @@ export const BookingDetailLayout = ({isOpen, setIsOpen, isLoading, productData, 
           <div>
             <div className="flex justify-between items-center pb-6 pt-8 px-16 border-b border-[#CCCCCC] w-full">
               <div className="flex gap-x-5 items-center">
-                <h1 data-testid="product-name" className="text-[#636363] font-bold text-2xl uppercase">
+                <h1
+                  data-testid="product-name"
+                  className="text-[#636363] font-bold text-2xl uppercase"
+                >
                   {productData?.data?.productInfo?.productName || "-"}
                 </h1>
                 <span
-                  className={`${productData?.data?.state === 2
+                  className={`${
+                    productData?.data?.state === 2
                       ? "text-[#15692A] bg-[#D4F7DC]"
                       : "text-[#1E0A3C] bg-[#E5E5EA]"
-                    } px-2 py-[1px] rounded font-medium capitalize`}
+                  } px-2 py-[1px] rounded font-medium capitalize`}
                 >
                   {productData?.data?.state === 2 ? "Active" : "Inactive"}
                 </span>
@@ -122,8 +135,8 @@ export const BookingDetailLayout = ({isOpen, setIsOpen, isLoading, productData, 
                       -{" "}
                       {productData?.data?.productInfo?.endDate
                         ? moment(
-                          productData?.data?.productInfo?.endDate
-                        ).format("DD MMM YYYY")
+                            productData?.data?.productInfo?.endDate
+                          ).format("DD MMM YYYY")
                         : "Unspecified"}
                     </span>
                   </div>
@@ -131,7 +144,8 @@ export const BookingDetailLayout = ({isOpen, setIsOpen, isLoading, productData, 
                     <span className="font-bold block mb-[15px]">Currency</span>
                     <span className="font-normal block">
                       {handleCurrencyName(
-                        productData?.data?.productInfo?.currency
+                        productData?.data?.productInfo?.currency,
+                        currencies
                       )}{" "}
                     </span>
                   </div>
@@ -142,8 +156,8 @@ export const BookingDetailLayout = ({isOpen, setIsOpen, isLoading, productData, 
                     <span className="font-normal block">
                       {
                         CustomerCategory[
-                        productData?.data?.customerEligibility
-                          ?.customerCategory
+                          productData?.data?.customerEligibility
+                            ?.customerCategory
                         ]
                       }{" "}
                     </span>
@@ -153,8 +167,8 @@ export const BookingDetailLayout = ({isOpen, setIsOpen, isLoading, productData, 
                     <span className="font-normal block">
                       {
                         CustomerCategory[
-                        productData?.data?.customerEligibility
-                          ?.customerCategory
+                          productData?.data?.customerEligibility
+                            ?.customerCategory
                         ]
                       }{" "}
                     </span>
@@ -166,8 +180,8 @@ export const BookingDetailLayout = ({isOpen, setIsOpen, isLoading, productData, 
                     <span className="font-normal block">
                       {
                         CustomerCategory[
-                        productData?.data?.customerEligibility
-                          ?.customerCategory
+                          productData?.data?.customerEligibility
+                            ?.customerCategory
                         ]
                       }{" "}
                     </span>
@@ -188,39 +202,40 @@ export const BookingDetailLayout = ({isOpen, setIsOpen, isLoading, productData, 
                     {permissions?.includes(
                       "RE_OR_DEACTIVATE_INVESTMENT_PRODUCT"
                     ) && (
-                        <>
-                          {productData?.data?.state === 1 ? (
-                            <button
-                              type="button"
-                              data-testid="activate-btn"
-                              onClick={() =>
-                                handleClick("activate", productData?.data)
-                              }
-                              className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
-                            >
-                              <FaPlayCircle className="text-[#2FB755]" /> Activate
-                            </button>
-                          ) : (
-                            <button
-                              data-testid="deactivate-btn"
-                              onClick={() =>
-                                handleClick("deactivate", productData?.data)
-                              }
-                              className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
-                            >
-                              <FaBan className="text-sterling-red-800" /> Part
-                              Liquidate
-                            </button>
-                          )}
-                        </>
-                      )}
+                      <>
+                        {productData?.data?.state === 1 ? (
+                          <button
+                            type="button"
+                            data-testid="activate-btn"
+                            onClick={() =>
+                              handleClick("activate", productData?.data)
+                            }
+                            className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
+                          >
+                            <FaPlayCircle className="text-[#2FB755]" /> Activate
+                          </button>
+                        ) : (
+                          <button
+                            data-testid="deactivate-btn"
+                            onClick={() =>
+                              handleClick("deactivate", productData?.data)
+                            }
+                            className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
+                          >
+                            <FaBan className="text-sterling-red-800" /> Part
+                            Liquidate
+                          </button>
+                        )}
+                      </>
+                    )}
                   </div>
 
                   <a
                     href={`/product-factory/investment/${encodeURIComponent(
                       "term deposit"
-                    )}/process-summary/preview/${productData?.data.id
-                      }?category=product`}
+                    )}/process-summary/preview/${
+                      productData?.data.id
+                    }?category=product`}
                   >
                     <button
                       className={`group flex items-center whitespace-nowrap py-[1px] text-base text-[#636363] gap-x-3 underline outline-none`}
@@ -306,8 +321,8 @@ export const BookingDetailLayout = ({isOpen, setIsOpen, isLoading, productData, 
         </ModalLayout>
       </div>
     </ModalLayout>
-  )
-}
+  );
+};
 
 export default function BookingDetail({
   isOpen,
@@ -324,6 +339,17 @@ export default function BookingDetail({
   const [open, setOpen] = useState(false);
 
   return (
-    <BookingDetailLayout {...{isOpen, setIsOpen, isLoading, productData, permissions, open, setOpen, handleClick }}/>
+    <BookingDetailLayout
+      {...{
+        isOpen,
+        setIsOpen,
+        isLoading,
+        productData,
+        permissions,
+        open,
+        setOpen,
+        handleClick,
+      }}
+    />
   );
 }

@@ -151,7 +151,7 @@ export default function SearchInput({
   const [inputValue, setInputValue] = useState("");
   const [showBox, setShowBox] = useState(false);
 
-  const debouncedSetSearchTerm = debounce((value) => setSearchTerm(value), 0);
+  const debouncedSetSearchTerm = debounce((value) => setSearchTerm(value), 500);
 
   useEffect(() => {
     if (!inputValue?.length && handleSearch) {
