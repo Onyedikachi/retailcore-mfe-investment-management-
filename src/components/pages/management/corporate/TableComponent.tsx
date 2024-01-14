@@ -21,6 +21,7 @@ import {
   requestHeader,
 } from "@app/constants";
 import optionsDataHandler from "@app/utils/optionsDataHandler";
+import { handleProductDownloadSuccess } from "@app/utils/handleProductDownloadSuccess";
 interface RequestDataProps {
   request: string;
   type: string;
@@ -286,36 +287,7 @@ export default function TableComponent({
   }, [data, request, isSuccess, isRequestSuccess]);
 
   useEffect(() => {
-    if (
-      productDownloadIsSuccess &&
-      category === StatusCategoryType.AllProducts
-    ) {
-      handleDownload(
-        productDownloadData?.results.map((i) => ({
-          ...i,
-          state: StatusTypes.find((n) => n.id === i.state)?.type,
-          productType: ProductTypes.find((n) => n.id === i.productType)?.name,
-        })),
-        isChecker,
-        csvExporter,
-        category
-      );
-    }
-    if (requestsDownloadIsSuccess && category === StatusCategoryType.Requests) {
-      handleDownload(
-        requestsDownloadData?.results.map((i) => ({
-          ...i,
-          requestStatus: StatusFilterOptions.find(
-            (n) => n.value === i.requestStatus
-          )?.name,
-          requestType: TypeFilterOptions.find((n) => n.value === i.requestType)
-            ?.name,
-        })),
-        isChecker,
-        csvExporter,
-        category
-      );
-    }
+    handleProductDownloadSuccess({ productDownloadIsSuccess, category, productDownloadData, isChecker, csvExporter, requestsDownloadIsSuccess, requestsDownloadData, handleDownload })
   }, [productDownloadIsSuccess, requestsDownloadIsSuccess]);
 
   React.useEffect(() => {
@@ -352,7 +324,7 @@ export default function TableComponent({
     });
   };
 
-  const handleDropClick = (value: any) => {};
+  const handleDropClick = (value: any) => { };
 
   return (
     <section className="w-full h-full">
@@ -369,9 +341,8 @@ export default function TableComponent({
               selected
             )
           }
-          placeholder={`Search by product name${
-            category !== StatusCategoryType.Requests ? "/code" : ""
-          }`}
+          placeholder={`Search by product name${category !== StatusCategoryType.Requests ? "/code" : ""
+            }`}
           searchResults={searchResults}
           setSearchResults={setSearchResults}
           searchLoading={searchLoading}
@@ -414,14 +385,14 @@ export default function TableComponent({
           category === StatusCategoryType?.AllProducts
             ? individualHeader
             : handleHeaders(
-                requestHeader.map((i) => {
-                  if (i.key === "created_By" || i.key === "approved_By") {
-                    i.options = users;
-                  }
-                  return i;
-                }),
-                isChecker
-              )
+              requestHeader.map((i) => {
+                if (i.key === "created_By" || i.key === "approved_By") {
+                  i.options = users;
+                }
+                return i;
+              }),
+              isChecker
+            )
         }
         tableRows={
           category === StatusCategoryType?.AllProducts
