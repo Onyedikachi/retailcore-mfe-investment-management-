@@ -340,6 +340,7 @@ export default function TableComponent<TableProps>({
           height="70vh"
         >
           <table className="w-full relative">
+            
             <thead
               className={`${
                 tableRows?.length > 0 ? "sticky" : "relative"
@@ -437,6 +438,7 @@ export default function TableComponent<TableProps>({
                             </>
                           ) : (
                             <div>
+                              
                               {!isChecker ? (
                                 <ActionsCellContent
                                   dropDownOptions={

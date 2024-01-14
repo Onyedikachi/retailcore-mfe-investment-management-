@@ -358,6 +358,7 @@ export default function TableComponent({
   return (
     <section className="w-full h-full">
       {/* Table Top bar  */}
+      
       <div className="flex justify-end gap-x-[25px] items-center mb-[27px] h-auto">
         <SearchInput
           setSearchTerm={(value) =>
