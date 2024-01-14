@@ -409,6 +409,18 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    getInvestmentDetail: builder.query<any, any>({
+      query: (data) => {
+        if (!data.id) return;
+        return {
+          url: `${urls.PRODUCT_DETAILS}?${new URLSearchParams(
+            cleanObject(data)
+          )}`,
+          method: "get",
+        };
+      },
+    }),
+    
   }),
 });
 
@@ -445,6 +457,6 @@ export const {
   useGetPostInvestmentRequestsMutation,
   useGetPostInvestmentMutation,
   useGetInvestmentRequestStatsQuery,
-  useGetInvestmentStatsQuery
+  useGetInvestmentStatsQuery,
   
 } = investmentApi;
