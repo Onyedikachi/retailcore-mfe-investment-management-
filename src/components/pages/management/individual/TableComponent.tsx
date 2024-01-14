@@ -5,7 +5,7 @@ import { StatusCategoryType } from "@app/constants/enums";
 import moment from "moment";
 import { ucObjectKeys, IndividualContext, AppContext } from "@app/utils";
 import {
-  useGetPostProductsMutation,
+  useGetPostInvestmentMutation,
   useGetPostRequestsMutation,
   useGetUsersPermissionsQuery,
 } from "@app/api";
@@ -216,11 +216,11 @@ export default function TableComponent({
   const [
     getProducts,
     { data, isSuccess, isError, error, isLoading: searchLoading },
-  ] = useGetPostProductsMutation();
+  ] = useGetPostInvestmentMutation();
   const [
     downloadProducts,
     { data: productDownloadData, isSuccess: productDownloadIsSuccess },
-  ] = useGetPostProductsMutation();
+  ] = useGetPostInvestmentMutation();
 
   const [
     getRequests,
