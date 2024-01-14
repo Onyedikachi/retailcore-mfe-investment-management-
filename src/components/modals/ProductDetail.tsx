@@ -32,7 +32,6 @@ export default function ProductDetail({
   handleClick,
   detail,
 }: Props) {
-
   const {
     data: productData,
     isLoading,
@@ -42,11 +41,9 @@ export default function ProductDetail({
   });
 
   const [open, setOpen] = useState(false);
-  const { permissions } = useContext(AppContext);
+  const { permissions, currencies } = useContext(AppContext);
 
-  React.useEffect(() => {
-
-  }, [isSuccess]);
+  React.useEffect(() => {}, [isSuccess]);
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
       <div
@@ -146,7 +143,10 @@ export default function ProductDetail({
                   <div>
                     <span className="font-bold block mb-[15px]">Currency</span>
                     <span className="font-normal block">
-                      {handleCurrencyName(productData?.data?.productInfo?.currency)}{" "}
+                      {handleCurrencyName(
+                        productData?.data?.productInfo?.currency,
+                        currencies
+                      )}{" "}
                     </span>
                   </div>
                   <div>
@@ -182,7 +182,9 @@ export default function ProductDetail({
                           <button
                             type="button"
                             data-testid="activate-btn"
-                            onClick={() => handleClick("activate", productData?.data)}
+                            onClick={() =>
+                              handleClick("activate", productData?.data)
+                            }
                             className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
                           >
                             <FaPlayCircle className="text-[#2FB755]" /> Activate
@@ -190,7 +192,9 @@ export default function ProductDetail({
                         ) : (
                           <button
                             data-testid="deactivate-btn"
-                            onClick={() => handleClick("deactivate", productData?.data)}
+                            onClick={() =>
+                              handleClick("deactivate", productData?.data)
+                            }
                             className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
                           >
                             <FaBan className="text-sterling-red-800" />{" "}
@@ -204,7 +208,9 @@ export default function ProductDetail({
                   <a
                     href={`/product-factory/investment/${encodeURIComponent(
                       "term deposit"
-                    )}/process-summary/preview/${productData?.data.id}?category=product`}
+                    )}/process-summary/preview/${
+                      productData?.data.id
+                    }?category=product`}
                   >
                     <button
                       className={`group flex items-center whitespace-nowrap py-[1px] text-base text-[#636363] gap-x-3 underline outline-none`}
@@ -214,19 +220,25 @@ export default function ProductDetail({
                   </a>
                 </div>
               </div>
-              <ProductPricingAndLiquidity productData={productData} setOpen={setIsOpen}/>
+              <ProductPricingAndLiquidity
+                productData={productData}
+                setOpen={setIsOpen}
+              />
             </div>
           </div>
         )}
         {isLoading && (
-          <div className="h-[500px] flex items-center justify-center" data-testid="loading-spinner">
+          <div
+            className="h-[500px] flex items-center justify-center"
+            data-testid="loading-spinner"
+          >
             <div className="spinner-border h-11 w-11 border-t border-danger-500 rounded-full animate-spin"></div>
           </div>
         )}
         <ModalLayout isOpen={open} setIsOpen={setOpen}>
           <div className="px-[30px] pt-[64px] pb-[20px] bg-white w-[400px] rounded-lg relative">
             <ul className="max-h-[345px] overflow-y-auto flex flex-col gap-y-5">
-              <PricingConfigurationComponent {...productData}/>
+              <PricingConfigurationComponent {...productData} />
             </ul>
             <button
               onClick={() => setOpen(false)}

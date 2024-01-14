@@ -32,15 +32,15 @@ export const BookingCustomerInfoSchema = yup.object().shape({
   customerId: yup.string().uuid().required("Select a customer account"),
   customerName: yup.string().required("Select a customer account"),
   customerAccount: yup.string().required("Select a customer account"),
-  investmentformUrl: yup.string().required("Request form is required"),
+  investmentformUrl: yup.string().required("Request is required"),
 });
 export const FacilityDetailsModelSchema = yup.object().shape({
-  investmentProductId: yup.string().uuid().required(),
+  investmentProductId: yup.string().uuid().required("Select an investment"),
   investmentPurpose: yup.string().required(),
-  tenor: yup.number().integer().positive().required(),
-  principal: yup.number().integer().positive().required(),
-  interestRate: yup.number().positive().required(),
-  capitalizationMethod: yup.number().integer().min(0).max(1).required(),
+  tenor: yup.number().integer().positive().required("Tenor is required"),
+  principal: yup.number().integer().positive().required("Principal is required"),
+  interestRate: yup.number().positive().required("Interest rate is required"),
+  capitalizationMethod: yup.number().integer().min(0).max(4).required(),
 });
 
 export const TransactionSettingModelSchema = yup.object().shape({
