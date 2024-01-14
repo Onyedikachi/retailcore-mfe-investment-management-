@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ImInfo } from "react-icons/im";
 import { Tooltip } from "react-tippy";
 import "react-tippy/dist/tippy.css";
@@ -18,6 +18,7 @@ import { toolTips } from "@app/constants";
 import { RedDot } from "@app/components/forms";
 import { useParams } from "react-router-dom";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
+import { AppContext } from "@app/utils";
 
 const labels = [
   "Applicable Tenor",
@@ -72,6 +73,7 @@ export default function PricingConfig({
   productData,
   initiateDraft,
 }) {
+  const { currencies } = useContext(AppContext);
   const { process } = useParams();
   const {
     register,
@@ -283,7 +285,8 @@ export default function PricingConfig({
                 className="w-[300px]"
                 label={"Min"}
                 currency={handleCurrencyName(
-                  productData?.productInfo?.currency
+                  productData?.productInfo?.currency,
+                  currencies
                 )}
                 register={register}
                 inputName={"applicablePrincipalMin"}
@@ -301,7 +304,8 @@ export default function PricingConfig({
                 className="w-[300px]"
                 label={"Max"}
                 currency={handleCurrencyName(
-                  productData?.productInfo?.currency
+                  productData?.productInfo?.currency,
+                  currencies
                 )}
                 register={register}
                 inputName={"applicablePrincipalMax"}
@@ -409,7 +413,8 @@ export default function PricingConfig({
                         <div className="flex gap-[25px] ">
                           <MinMaxInput
                             label={handleCurrencyName(
-                              productData?.productInfo?.currency
+                              productData?.productInfo?.currency,
+                              currencies
                             )}
                             className="w-[180px]"
                             register={register}
@@ -433,7 +438,8 @@ export default function PricingConfig({
                         <div className="flex gap-[25px] ">
                           <MinMaxInput
                             label={handleCurrencyName(
-                              productData?.productInfo?.currency
+                              productData?.productInfo?.currency,
+                              currencies
                             )}
                             className="w-[180px]"
                             register={register}

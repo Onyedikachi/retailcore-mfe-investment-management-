@@ -60,7 +60,7 @@ export default function IndexComponent() {
   const refresh = searchParams.get("refresh");
   const activeId = useRef(null);
   const previousData = useRef({});
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [subText, setSubText] = useState("");
   const [successText, setSuccessText] = useState("");
@@ -71,6 +71,7 @@ export default function IndexComponent() {
   const [formRef, setFormRef] = useState(null);
   const [disabled, setDisabled] = useState(true);
   const [isSavingDraft, setIsSavingDraft] = useState(false);
+  const [productDetail, setProductDetail] = useState(null);
   const navigate = useNavigate();
   const [formData, setFormData] = useState<any>({
     id: "",
@@ -78,15 +79,19 @@ export default function IndexComponent() {
       customerId: "63762c09-3f83-4200-be5c-dcba0ac8fe15",
       customerName: "Ibrahim Adefemi Cole",
       customerAccount: "2000000019",
-      investmentformUrl: "http://retailcore-investment-management-api.dev.bepeerless.co/uploads/79dc1d11-d3e9-41cd-90ec-4827226d2764.jpg",
+      investmentformUrl:
+        "http://retailcore-investment-management-api.dev.bepeerless.co/uploads/79dc1d11-d3e9-41cd-90ec-4827226d2764.jpg",
     },
     facilityDetailsModel: {
+      investmentProductName: "",
       investmentProductId: "",
       investmentPurpose: "",
       tenor: null,
       principal: null,
       interestRate: null,
       capitalizationMethod: 0,
+      maturityValue:null,
+      discountRate:null,
     },
     transactionSettingModel: {
       accountForLiquidation: "",
@@ -225,6 +230,7 @@ export default function IndexComponent() {
                     handleNav={handleNav}
                     setDisabled={setDisabled}
                     isSavingDraft={isSavingDraft}
+                    setProductDetail={setProductDetail}
                   />
 
                   <div className="h-px w-full bg-[#CCCCCC] mb-12 mt-16"></div>
@@ -234,7 +240,7 @@ export default function IndexComponent() {
                       {step > 1 && (
                         <Button
                           type="button"
-                          onClick={() => {}}
+                          onClick={() => setStep(step - 1)}
                           className="text-gray-500 px-10 py-1 font-medium text-base bg-white border border-[#D8DAE5] leading-[24px] disabled:bg-transparent"
                         >
                           Previous
@@ -267,9 +273,9 @@ export default function IndexComponent() {
                   </div>
                 </div>
               </div>
-              {step === 2 && (
+              {step === 2 && productDetail && (
                 <div className="min-w-[377px]">
-                  <ProductInfoInvestmentCalc />
+                  <ProductInfoInvestmentCalc productDetail={productDetail} />
                 </div>
               )}
             </div>

@@ -20,6 +20,7 @@ interface MinMaxProps {
   isCurrency?: boolean;
   placeholder?: string;
   max?: number;
+  min?: number;
   disablegroupseparators?: boolean;
 }
 export default function MinMaxInput({
@@ -42,6 +43,7 @@ export default function MinMaxInput({
   isCurrency,
   placeholder = "0",
   max,
+  min,
   disablegroupseparators,
 }: MinMaxProps) {
   return (
@@ -70,6 +72,7 @@ export default function MinMaxInput({
                 placeholder={placeholder}
                 // maxLength={defaultLength}
                 max={max}
+                min={min}
                 // {...register(inputName, { required: true })}
                 defaultValue={defaultValue}
               />
@@ -88,6 +91,7 @@ export default function MinMaxInput({
                   setValue(inputName, value);
                   trigger(inputName);
                 }}
+                
                 className={`placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] ${
                   (errors && errors[inputName]) || error
                     ? "border-red-600"
