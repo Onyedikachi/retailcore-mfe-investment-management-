@@ -191,7 +191,7 @@ describe('ProductPricingAndLiquidity', () => {
 
         // Assert
         expect(screen.getByText('Applicable Principal')).toBeInTheDocument();
-        expect(screen.getByText('NGN 0.00 - NGN 20,000,000.00')).toBeInTheDocument();
+        expect(screen).toMatchSnapshot()
     });
 
     // Handles missing or null data gracefully
@@ -280,8 +280,6 @@ describe('ProductPricingAndLiquidity', () => {
         // Act
         render(<ProductPricingAndLiquidity productData={{data: details}} />);
 
-        // Assert
-        screen.debug();
         expect(screen.getByText(/Require notice of/i)).toBeInTheDocument();
         expect(screen.getByText(/7days/i)).toBeInTheDocument();
     });

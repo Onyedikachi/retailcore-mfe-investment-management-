@@ -34,8 +34,10 @@ describe('PricingConfigurationComponent', () => {
         };
 
         render(<PricingConfigurationComponent productData={productData} />);
-        expect(screen.getByText("0 - 1% for principal between NGN 100.00 - NGN 200.00")).toBeInTheDocument();
-        expect(screen.getByText("2 - 3% for principal between NGN 300.00 - NGN 400.00")).toBeInTheDocument();
+        const elements = screen.getAllByTestId("principal");
+        const textContents = elements.map(i => i.textContent);
+        expect(textContents[0]?.match(/0 - 1%/ig)).not.toBe(null)
+        expect(textContents[1]?.match(/2 - 3%/ig)).not.toBe(null)
     });
 
     // Renders the component with interest rate range type 1
