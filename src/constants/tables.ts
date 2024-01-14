@@ -737,7 +737,7 @@ export const individualHeader = [
   },
   {
     label: "principal",
-    key: "prinncipal",
+    key: "principal",
     options: [],
     hasSelect: false,
     hasDateSelect: false,
@@ -750,8 +750,8 @@ export const individualHeader = [
     hasDateSelect: false,
   },
   {
-    label: "state",
-    key: "state",
+    label: "status",
+    key: "investmentBookingStatus",
     options: IndividualFilterOptions,
     hasSelect: true,
     hasDateSelect: false,

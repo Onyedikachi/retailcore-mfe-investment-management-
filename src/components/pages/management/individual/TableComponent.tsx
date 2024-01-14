@@ -195,6 +195,8 @@ export default function TableComponent({
   const [users, setUsers] = useState([]);
   const [searchResults, setSearchResults] = useState<any[]>([]);
 
+  console.log("category: " + JSON.stringify(category))
+  console.log("selected: " + JSON.stringify(selected))
   const [options, setOptions] = React.useState({
     fieldSeparator: ",",
     quoteStrings: '"',
@@ -330,6 +332,7 @@ export default function TableComponent({
   return (
     <section className="w-full h-full">
       {/* Table Top bar  */}
+      
       <div className="flex justify-end gap-x-[25px] items-center mb-[27px] h-auto">
         <SearchInput
           setSearchTerm={(value) =>
@@ -382,6 +385,7 @@ export default function TableComponent({
       </div>
 
       {/* main table  */}
+      {/* { category === StatusCategoryType?.Investments ? 't' : 'f'} */}
       <Table
         headers={
           category === StatusCategoryType?.Investments

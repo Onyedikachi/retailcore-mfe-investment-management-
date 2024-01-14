@@ -20,6 +20,7 @@ import {
 } from "@app/utils";
 import { FaBars, FaEye } from "react-icons/fa";
 import { Actions, Messages, Prompts } from "@app/constants/enums";
+import { InvestmentBookingStatus } from "@app/constants/investment";
 import { Confirm, Failed, Success } from "../modals";
 import Loader from "../Loader";
 import RequestDeactivation from "../modals/RequestDeactivation";
@@ -125,6 +126,7 @@ export const DropdownButton = ({ options, handleClick }: any) => {
 };
 
 export const handleProductsDropdown = (
+  statusType = "",
   status: string,
   isChecker,
   DropDownOptions,
@@ -135,11 +137,18 @@ export const handleProductsDropdown = (
 ): any => {
   if (!status) return [];
   if (isChecker) {
-    return DropDownOptions[status]?.filter(
-      (i: any) => i.text.toLowerCase() === "view"
-    );
+    return DropDownOptions[
+      statusType === "investments"
+        ? InvestmentBookingStatus[status].toLowerCase()
+        : status
+    ]?.filter((i: any) => i.text.toLowerCase() === "view");
   } else {
-    let options = DropDownOptions[status];
+    let options =
+      DropDownOptions[
+        statusType === "investments"
+          ? InvestmentBookingStatus[status].toLowerCase()
+          : status
+      ];
     if (!permissions?.includes("RE_OR_DEACTIVATE_INVESTMENT_PRODUCT")) {
       options = options?.filter(
         (i: any) =>
@@ -182,14 +191,32 @@ export const UpdatedOnCellContent = ({ value }) => (
   </span>
 );
 
-export const StateCellContent = ({ value }) => (
-  <span
-    className={`font-medium px-2 py-[4px] rounded capitalize max-h-[26px] relative leading-[24px] ${handleColorState(
-      value
-    )}`}
-  >
-    {value}
-  </span>
+export const StateCellContent = ({
+  value,
+  statusType = "",
+}: {
+  value: any;
+  statusType?: string;
+}) => (
+  <div>
+    {statusType === "investments" ? (
+      <span
+        className={`font-medium px-2 py-[4px] rounded capitalize max-h-[26px] relative leading-[24px] ${handleColorState(
+          InvestmentBookingStatus[value].toLowerCase()
+        )}`}
+      >
+        {InvestmentBookingStatus[value]}
+      </span>
+    ) : (
+      <span
+        className={`font-medium px-2 py-[4px] rounded capitalize max-h-[26px] relative leading-[24px] ${handleColorState(
+          value
+        )}`}
+      >
+        {value}
+      </span>
+    )}
+  </div>
 );
 export const StatusCellContent = ({ value, isChecker }) => (
   <span
@@ -407,6 +434,7 @@ export default function TableComponent<TableProps>({
                             <>
                               {typeof item[header.key] !== "object" &&
                                 header.key !== "state" &&
+                                header.key !== "investmentBookingStatus" &&
                                 header.key !== "updated_At" &&
                                 header.key !== "requestStatus" && (
                                   <TextCellContent
@@ -416,6 +444,13 @@ export default function TableComponent<TableProps>({
                               {header.key === "state" && (
                                 <StateCellContent value={item[header.key]} />
                               )}
+                              {header.key === "investmentBookingStatus" && (
+                                <StateCellContent
+                                  value={item[header.key]}
+                                  statusType={type}
+                                />
+                              )}
+                              {console.log("item" + JSON.stringify(item))}
                               {header.key === "requestStatus" && (
                                 <span
                                   onClick={() => handleAction("view", item)}
@@ -443,7 +478,12 @@ export default function TableComponent<TableProps>({
                                     type === StatusCategoryType.AllProducts ||
                                     type === StatusCategoryType.Investments
                                       ? handleProductsDropdown(
-                                          item.state,
+                                          type,
+                                          item.state
+                                            ? item.state
+                                            : item.investmentBookingStatus
+                                            ? item.investmentBookingStatus
+                                            : null,
                                           isChecker,
                                           dropDownOptions,
                                           item.islocked,
