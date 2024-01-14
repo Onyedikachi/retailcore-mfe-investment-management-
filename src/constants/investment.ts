@@ -1085,3 +1085,4 @@ export const CapitalizationOptions = [
     value: 2,
   },
 ];
+
