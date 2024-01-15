@@ -36,11 +36,34 @@ export const BookingCustomerInfoSchema = yup.object().shape({
 });
 export const FacilityDetailsModelSchema = yup.object().shape({
   investmentProductId: yup.string().uuid().required("Select an investment"),
-  investmentPurpose: yup.string().required(),
-  tenor: yup.number().integer().positive().required("Tenor is required"),
-  principal: yup.number().integer().positive().required("Principal is required"),
-  interestRate: yup.number().positive().required("Interest rate is required"),
+  investmentPurpose: yup.string(),
+  tenor: yup
+    .number().typeError("Invalid value")
+    .integer()
+    .positive()
+    .min(yup.ref("tenorMin"), "Tenor is too short")
+    .max(yup.ref("tenorMax"), "Tenor is too long")
+    .nullable().required("Tenor is required"),
+  principal: yup
+    .number().typeError("Invalid value")
+    .integer()
+    .positive()
+    .min(yup.ref("prinMin"), "Principal is too small")
+    .max(yup.ref("prinMax"), "Principal is too large")
+    .nullable().required("Principal is required"),
+  interestRate: yup
+    .number().typeError("Invalid value")
+    .positive()
+    .min(yup.ref("intMin"), "Interest rate is too low")
+    .max(yup.ref("intMax"), "Interest rate is too high")
+    .nullable().required("Interest is required"),
   capitalizationMethod: yup.number().integer().min(0).max(4).required(),
+  tenorMin: yup.number().typeError("Invalid value").integer().nullable(),
+  tenorMax: yup.number().typeError("Invalid value").integer().nullable(),
+  prinMin: yup.number().typeError("Invalid value").integer().nullable(),
+  prinMax: yup.number().typeError("Invalid value").integer().nullable(),
+  intMin: yup.number().typeError("Invalid value").nullable(),
+  intMax: yup.number().typeError("Invalid value").nullable(),
 });
 
 export const TransactionSettingModelSchema = yup.object().shape({

@@ -134,7 +134,7 @@ export const investmentApi: any = createApi({
         };
       },
     }),
-    createInvestment: builder.mutation<any,any>({
+    createInvestment: builder.mutation<any, any>({
       query: (data) => {
         return {
           url: urls.INVESTMENT_CREATE,
@@ -167,6 +167,15 @@ export const investmentApi: any = createApi({
         return {
           url: `${urls.REQUESTS}/edit/${data.id}`,
           method: "put",
+          body: data,
+        };
+      },
+    }),
+    bookingCalc: builder.mutation<any, any>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT_CALC}`,
+          method: "post",
           body: data,
         };
       },
@@ -418,7 +427,6 @@ export const investmentApi: any = createApi({
         };
       },
     }),
-    
   }),
 });
 
@@ -456,6 +464,6 @@ export const {
   useGetPostInvestmentMutation,
   useGetInvestmentRequestStatsQuery,
   useGetInvestmentStatsQuery,
-  useGetInvestmentDetailQuery
-  
+  useGetInvestmentDetailQuery,
+  useBookingCalcMutation,
 } = investmentApi;

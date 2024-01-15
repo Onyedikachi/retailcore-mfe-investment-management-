@@ -12,7 +12,7 @@ export default ({
   setFormData,
   setDisabled,
   isSavingDraft,
-  setProductDetail
+  setProductDetail,setCalcDetail
 }) => {
   return (
     <Fragment>
@@ -37,6 +37,7 @@ export default ({
             setDisabled={setDisabled}
             isSavingDraft={isSavingDraft}
             setProductDetail={setProductDetail}
+            setCalcDetail={setCalcDetail}
           />
         </span>
       )}

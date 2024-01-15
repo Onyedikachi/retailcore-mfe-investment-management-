@@ -13,18 +13,21 @@ import {
 } from "@app/constants";
 import { currencyFormatter } from "@app/utils/formatCurrency";
 import SearchInput from "@app/components/SearchInput";
-import { useGetPostProductsMutation, useGetProductDetailQuery } from "@app/api";
+import {
+  useBookingCalcMutation,
+  useGetPostProductsMutation,
+  useGetProductDetailQuery,
+} from "@app/api";
 import BottomBarLoader from "@app/components/BottomBarLoader";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 import { BorderlessSelect } from "@app/components/forms";
 import { AppContext } from "@app/utils";
 export const onProceed = (data, proceed, formData, setFormData) => {
-  console.log("🚀 ~ onProceed ~ data:", data);
-  // setFormData({
-  //   ...formData,
-  //   facilityDetailsModel: data,
-  // });
-  // proceed();
+  setFormData({
+    ...formData,
+    facilityDetailsModel: data,
+  });
+  proceed();
 };
 
 type FacilityDetailsProps = {
@@ -34,11 +37,22 @@ type FacilityDetailsProps = {
   setDisabled?: any;
   isSavingDraft?: boolean;
   setProductDetail?: (e) => void;
+  setCalcDetail?: (e) => void;
 };
 
-export const handleSearch = (value, data, setValue, setProductName) => {
-  setValue("investmentProductId", data?.value);
-  setValue("investmentProductName", data?.name);
+export const handleSearch = (
+  value,
+  data,
+  setValue,
+  setProductName,
+  trigger
+) => {
+  if (data) {
+    setValue("investmentProductId", data?.value);
+    setValue("investmentProductName", data?.name);
+    trigger("investmentProductId");
+  }
+
   setProductName(value);
 };
 export default function FacilityDetails({
@@ -48,6 +62,7 @@ export default function FacilityDetails({
   setDisabled,
   isSavingDraft,
   setProductDetail,
+  setCalcDetail,
 }: FacilityDetailsProps) {
   const { currencies } = useContext(AppContext);
   const {
@@ -75,6 +90,21 @@ export default function FacilityDetails({
     getProduct,
     { data, isSuccess, isError, error, isLoading: searchLoading },
   ] = useGetPostProductsMutation();
+
+  const [
+    bookingCalc,
+    {
+      data: calcData,
+      isSuccess: calcIsSuccess,
+      isError: calcIsError,
+      error: calcError,
+      isLoading: calcLoading,
+    },
+  ] = useBookingCalcMutation();
+
+  useEffect(() => {
+    setCalcDetail(calcData?.data);
+  }, [calcData, calcIsSuccess]);
 
   const {
     data: detail,
@@ -120,8 +150,53 @@ export default function FacilityDetails({
 
   // Set product detail
   useEffect(() => {
-    if (isSuccess) {
+    if (detailIsSuccess) {
       setProductDetail(detail?.data);
+      setValue(
+        "tenorMin",
+        detail?.data?.pricingConfiguration?.applicableTenorMin
+      );
+      setValue(
+        "tenorMax",
+        detail?.data?.pricingConfiguration?.applicableTenorMax
+      );
+      setValue(
+        "prinMin",
+        detail?.data?.pricingConfiguration?.applicablePrincipalMin
+      );
+      setValue(
+        "prinMax",
+        detail?.data?.pricingConfiguration?.applicablePrincipalMax
+      );
+
+      const rangeArr =
+        detail?.data?.pricingConfiguration?.interestRateConfigModels[0];
+      if (rangeArr.length) {
+        if (detail?.data?.pricingConfiguration?.interestRateRangeType === 0) {
+          if (
+            values.principal >= rangeArr.principalMin &&
+            values.principal <= rangeArr.principalMax
+          ) {
+            setValue("intMin", rangeArr.min);
+            setValue("intMax", rangeArr.max);
+          }
+        }
+
+        if (detail?.data?.pricingConfiguration?.interestRateRangeType === 1) {
+          if (
+            values.tenor >= rangeArr.tenorMin &&
+            values.tenor <= rangeArr.tenorMax
+          ) {
+            setValue("intMin", rangeArr.min);
+            setValue("intMax", rangeArr.max);
+          }
+        }
+      }
+
+      if (detail?.data?.pricingConfiguration?.interestRateRangeType === 2) {
+        setValue("intMin", detail?.data?.pricingConfiguration?.interestRateMin);
+        setValue("intMax", detail?.data?.pricingConfiguration?.interestRateMax);
+      }
     }
 
     return () => {
@@ -130,11 +205,87 @@ export default function FacilityDetails({
   }, [detailIsSuccess, detail]);
 
   useEffect(() => {
-    console.log("🚀 ~ values:", values);
-    console.log("🚀 ~ errors:", errors);
-    setDisabled(!isValid);
-  }, [isValid, values, errors]);
+    if (!values.investmentProductId) {
+      setProductDetail(null);
+    }
 
+    setDisabled(!isValid);
+  }, [isValid, values]);
+
+  useEffect(() => {
+    if (detail?.data?.pricingConfiguration?.interestRateRangeType === 0) {
+      detail?.data?.pricingConfiguration?.interestRateConfigModels?.forEach(
+        (i) => {
+          if (
+            values.principal >= i.principalMin &&
+            values.principal <= i.principalMax
+          ) {
+            setValue("intMin", i.min);
+            setValue("intMax", i.max);
+          }
+        }
+      );
+    }
+    if (detail?.data?.pricingConfiguration?.interestRateRangeType === 1) {
+      detail?.data?.pricingConfiguration?.interestRateConfigModels?.forEach(
+        (i) => {
+          if (values.tenor >= i.tenorMin && values.tenor <= i.tenorMax) {
+            setValue("intMin", i.min);
+            setValue("intMax", i.max);
+          }
+        }
+      );
+    }
+    if (detail?.data?.pricingConfiguration?.interestRateRangeType === 2) {
+      setValue("intMin", detail?.data?.pricingConfiguration?.interestRateMin);
+      setValue("intMax", detail?.data?.pricingConfiguration?.interestRateMax);
+    }
+    if ((values.tenor || values.principal) && values.interestRate) {
+      trigger("interestRate");
+    }
+
+    if (
+      detail?.data &&
+      values.tenor &&
+      values.principal &&
+      values.interestRate
+    ) {
+      fetchRate()
+    }
+  }, [values.tenor, values.principal, values.interestRate, detail]);
+
+  useEffect(() => {
+    setFormData({
+      ...formData,
+      facilityDetailsModel: values,
+    });
+  }, [isSavingDraft]);
+
+  useEffect(() => {
+    if (
+      detail?.data &&
+      values.tenor &&
+      values.principal &&
+      values.interestRate
+    ) {
+      fetchRate();
+    }
+  }, [
+    values.tenor,
+    values.principal,
+    values.interestRate,
+    values?.capitalizationMethod,
+  ]);
+
+  const fetchRate = () => {
+    bookingCalc({
+      principal: values.principal,
+      rate: values.interestRate,
+      tenor: values.tenor,
+      tenorUnit: detail?.data?.pricingConfiguration?.applicableTenorMaxUnit,
+      method: values.capitalizationMethod,
+    });
+  };
   return (
     <form
       id="facilityDetails"
@@ -164,7 +315,7 @@ export default function FacilityDetails({
                   setSearchResults={() => {}}
                   searchLoading={searchLoading}
                   handleSearch={(value, data) =>
-                    handleSearch(value, data, setValue, setProductName)
+                    handleSearch(value, data, setValue, setProductName, trigger)
                   }
                   placeholder={"Search Investment Product"}
                   customClass="shadow-none"
@@ -249,18 +400,47 @@ export default function FacilityDetails({
                         }
                       </span>
                     </div>
-                    <div className="text-sm text-[#AAAAAA]">
-                      <span>
-                        {detail?.data?.pricingConfiguration?.applicableTenorMin}{" "}
-                        -{" "}
-                        {detail?.data?.pricingConfiguration?.applicableTenorMax}{" "}
-                        {
-                          Interval[
+                    <div className="text-sm text-[#AAAAAA] mt-1">
+                      {detail?.data?.pricingConfiguration
+                        ?.interestRateRangeType === 2 && (
+                        <span>
+                          {
                             detail?.data?.pricingConfiguration
-                              ?.applicableTenorMaxUnit
-                          ]
-                        }
-                      </span>
+                              ?.applicableTenorMin
+                          }{" "}
+                          -{" "}
+                          {
+                            detail?.data?.pricingConfiguration
+                              ?.applicableTenorMax
+                          }{" "}
+                          {
+                            Interval[
+                              detail?.data?.pricingConfiguration
+                                ?.applicableTenorMaxUnit
+                            ]
+                          }
+                        </span>
+                      )}
+                      {detail?.data?.pricingConfiguration
+                        ?.interestRateRangeType !== 2 && (
+                        <span>
+                          {
+                            detail?.data?.pricingConfiguration
+                              ?.applicableTenorMin
+                          }{" "}
+                          -{" "}
+                          {
+                            detail?.data?.pricingConfiguration
+                              ?.applicableTenorMax
+                          }{" "}
+                          {
+                            Interval[
+                              detail?.data?.pricingConfiguration
+                                ?.applicableTenorMaxUnit
+                            ]
+                          }
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -270,7 +450,8 @@ export default function FacilityDetails({
                   <div className=" w-[360px]">
                     <MinMaxInput
                       currency={handleCurrencyName(
-                        detail?.data?.productInfo?.currency,currencies
+                        detail?.data?.productInfo?.currency,
+                        currencies
                       )}
                       isCurrency
                       inputName="principal"
@@ -281,13 +462,14 @@ export default function FacilityDetails({
                       clearErrors={clearErrors}
                       defaultValue={formData?.facilityDetailsModel.principal}
                     />
-                    <div className="text-sm text-[#AAAAAA]">
+                    <div className="text-sm text-[#AAAAAA] mt-1">
                       <span>
                         {currencyFormatter(
                           detail?.data?.pricingConfiguration
                             ?.applicablePrincipalMin,
                           handleCurrencyName(
-                            detail?.data?.productInfo?.currency,currencies
+                            detail?.data?.productInfo?.currency,
+                            currencies
                           )
                         )}{" "}
                         -{" "}
@@ -296,7 +478,8 @@ export default function FacilityDetails({
                             ?.applicablePrincipalMax,
 
                           handleCurrencyName(
-                            detail?.data?.productInfo?.currency,currencies
+                            detail?.data?.productInfo?.currency,
+                            currencies
                           )
                         )}
                       </span>
@@ -320,15 +503,55 @@ export default function FacilityDetails({
                       clearErrors={clearErrors}
                       defaultValue={formData?.facilityDetailsModel.interestRate}
                     />
-                    <div className="text-sm text-[#AAAAAA]">
-                      <span>
-                        {" "}
-                        {
-                          detail?.data?.pricingConfiguration?.interestRateMin
-                        } -{" "}
-                        {detail?.data?.pricingConfiguration?.interestRateMax}%
-                        per annum
-                      </span>
+                    <div className="text-sm text-[#AAAAAA] mt-1">
+                      {detail?.data?.pricingConfiguration
+                        ?.interestRateRangeType === 2 ? (
+                        <span>
+                          {detail?.data?.pricingConfiguration?.interestRateMin}{" "}
+                          -{" "}
+                          {detail?.data?.pricingConfiguration?.interestRateMax}%{" "}
+                          per annum
+                        </span>
+                      ) : (
+                        <span>
+                          {detail?.data?.pricingConfiguration?.interestRateConfigModels?.map(
+                            (i, idx) => (
+                              <div key={idx}>
+                                {detail?.data?.pricingConfiguration
+                                  ?.interestRateRangeType === 0 ? (
+                                  <span>
+                                    {" "}
+                                    {i?.min} - {i?.max}%{" "}
+                                    {"for principal between "}
+                                    {currencyFormatter(
+                                      i?.principalMin,
+                                      handleCurrencyName(
+                                        detail?.data?.productInfo?.currency,
+                                        currencies
+                                      )
+                                    )}{" "}
+                                    -
+                                    {currencyFormatter(
+                                      i?.principalMax,
+                                      handleCurrencyName(
+                                        detail?.data?.productInfo?.currency,
+                                        currencies
+                                      )
+                                    )}
+                                  </span>
+                                ) : (
+                                  <span>
+                                    {" "}
+                                    {i?.min} - {i?.max}% {"for tenor betweeen"}{" "}
+                                    {i?.tenorMin} - {i?.tenorMax}{" "}
+                                    {Interval[i?.tenorMaxUnit]}
+                                  </span>
+                                )}
+                              </div>
+                            )
+                          )}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -343,10 +566,11 @@ export default function FacilityDetails({
                       setValue={setValue}
                       inputName={"capitalizationMethod"}
                       labelName={""}
-                      defaultValue={formData?.facilityDetailsModel?.capitalizationMethod}
+                      defaultValue={
+                        formData?.facilityDetailsModel?.capitalizationMethod
+                      }
                       placeholder="Select currency"
                       clearErrors={clearErrors}
-                     
                       options={CapitalizationOptions}
                       trigger={trigger}
                     />
