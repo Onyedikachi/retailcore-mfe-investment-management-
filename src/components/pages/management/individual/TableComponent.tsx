@@ -5,6 +5,7 @@ import { StatusCategoryType } from "@app/constants/enums";
 import moment from "moment";
 import { ucObjectKeys, IndividualContext, AppContext } from "@app/utils";
 import {
+  useGetPostProductsMutation,
   useGetPostInvestmentMutation,
   useGetPostRequestsMutation,
   useGetUsersPermissionsQuery,
@@ -20,6 +21,7 @@ import {
   individualHeader,
   IndividualRequestHeader,
 } from "@app/constants";
+import { useProductList } from "@app/hooks";
 import optionsDataHandler from "@app/utils/optionsDataHandler";
 
 interface RequestDataProps {
@@ -189,11 +191,16 @@ export default function TableComponent({
   hasMore,
   fetchMoreData,
 }: any) {
+  // useEffect(() => {
+  //   if (isGetProductsSuccess) {
+  //     alert(fetchedProductsList);
+  //   }
+  // }, [isGetProductsSuccess]);
   const { category, setStatus, selected } = useContext(IndividualContext);
   const { isChecker } = useContext(AppContext);
   const [users, setUsers] = useState([]);
   const [searchResults, setSearchResults] = useState<any[]>([]);
-
+const [individualListHeaders, setIndividualListHeaders]= useState(individualHeader)
   // console.log("category: " + JSON.stringify(category))
   // console.log("selected: " + JSON.stringify(selected))
   const [options, setOptions] = React.useState({
@@ -211,6 +218,7 @@ export default function TableComponent({
     useBom: true,
     useKeysAsHeaders: true,
   });
+
   const csvExporter = new ExportToCsv(options);
 
   const [
@@ -221,6 +229,56 @@ export default function TableComponent({
     downloadProducts,
     { data: productDownloadData, isSuccess: productDownloadIsSuccess },
   ] = useGetPostInvestmentMutation();
+
+  const { fetchedProductsList, isGetProductsSuccess } = useProductList({
+    query: { page: 1, page_Size: 1000000, filter_by: selected?.value },
+  });
+
+  // const [
+  //   fetchProductsList,
+  //   {
+  //     data: fetchedProductsList,
+  //     isSuccess: isGetProductsSuccess,
+
+  //     isLoading: isGetProductsLoading,
+  //   },
+  // ] = useGetPostProductsMutation();
+
+  // useEffect(() => {
+  //   console.log('shoukld fetch' + selected?.value)
+  //   fetchProductsList({ page: 1, page_Size: 25, filter_by: selected?.value });
+  //   // console.log(JSON.stringify(fetchedProductsList));
+  // }, [selected]);
+  useEffect(() => {
+    const results = fetchedProductsList?.results;
+    if (results) {
+      console.log("fetchedProductsList:" + JSON.stringify(results));
+
+      const targetKey = "investmentProduct";
+      const mappedResults = results?.map((result) => {
+        return {
+          id: result.id,
+          name: result.productName,
+          value: result.id
+        }
+      })
+
+      const updatedItems = individualHeader.map((item) => {
+        if (item.key === targetKey) {
+          // Update the options for the target item
+          return {
+            ...item,
+            options: [...mappedResults],
+          };
+        }
+        // Leave other items unchanged
+        return item;
+      });
+      setIndividualListHeaders(updatedItems)
+
+     
+    }
+  }, [fetchedProductsList]);
 
   const [
     getRequests,
@@ -341,8 +399,8 @@ export default function TableComponent({
   }, [category]);
 
   const getOptionData = (value: any, label: string) => {
-    console.log(`${JSON.stringify(value)}, ${label}`)
-  
+    console.log(`${JSON.stringify(value)}, ${label}`);
+
     optionsDataHandler({ query, value, label, setQuery });
   };
   const onChangeDate = (value: any) => {
@@ -362,7 +420,7 @@ export default function TableComponent({
   return (
     <section className="w-full h-full">
       {/* Table Top bar  */}
-      
+
       <div className="flex justify-end gap-x-[25px] items-center mb-[27px] h-auto">
         <SearchInput
           setSearchTerm={(value) =>
@@ -420,7 +478,7 @@ export default function TableComponent({
       <Table
         headers={
           category === StatusCategoryType?.Investments
-            ? individualHeader
+            ? individualListHeaders
             : handleHeaders(
                 IndividualRequestHeader.map((i) => {
                   if (i.key === "created_By" || i.key === "approved_By") {
