@@ -1,5 +1,5 @@
-import { Interval } from "@app/constants";
-import { AppContext } from "@app/utils";
+import { GlAccountTypes, Interval, liquidities } from "@app/constants";
+import { AppContext, capitalizeFirstLetter } from "@app/utils";
 import { currencyFormatter } from "@app/utils/formatCurrency";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 import moment from "moment";
@@ -12,7 +12,10 @@ import { useParams } from "react-router-dom";
 //   activities: Array<any>;
 // }
 
-export default function ProductInfoInvestmentCalc({ productDetail }) {
+export default function ProductInfoInvestmentCalc({
+  productDetail,
+  calcDetail,
+}) {
   const { currencies } = useContext(AppContext);
   const [productDetailMap, setProductDetailMap] = useState(null);
   const [active, setActive] = useState([]);
@@ -38,6 +41,7 @@ export default function ProductInfoInvestmentCalc({ productDetail }) {
               productDetail?.productInfo?.currency,
               currencies
             ),
+            isOpen: true,
           },
           {
             name: "Life cycle",
@@ -50,13 +54,36 @@ export default function ProductInfoInvestmentCalc({ productDetail }) {
                   )
                 : "Unlimited"
             }`,
+            isOpen: true,
           },
         ],
         isOpen: false,
       },
       {
         name: "Customer Eligibility Criteria",
-        data: productDetail?.customerEligibility?.requireDocument,
+        data: [
+          {
+            name: "age range",
+            text: (
+              <span className="capitalize">
+                {" "}
+                {productDetail?.customerEligibility?.ageGroupMin} -{" "}
+                {productDetail?.customerEligibility?.ageGroupMax
+                  ? productDetail?.customerEligibility?.ageGroupMax
+                  : "Unimited"}{" "}
+                years
+              </span>
+            ),
+            isOpen: productDetail?.customerEligibility?.customerCategory === 0,
+          },
+          {
+            name: "documents",
+            text: productDetail?.customerEligibility?.requireDocument
+              ?.map((i) => capitalizeFirstLetter(i.name))
+              ?.join(", "),
+            isOpen: productDetail?.customerEligibility?.requireDocument.length,
+          },
+        ],
         isOpen: false,
       },
       {
@@ -80,6 +107,7 @@ export default function ProductInfoInvestmentCalc({ productDetail }) {
                 currencies
               )
             )}`,
+            isOpen: true,
           },
           {
             name: "Allowable tenor",
@@ -94,6 +122,7 @@ export default function ProductInfoInvestmentCalc({ productDetail }) {
                 }
               </span>
             ),
+            isOpen: true,
           },
           {
             name: "Interest rate",
@@ -105,25 +134,160 @@ export default function ProductInfoInvestmentCalc({ productDetail }) {
                 annum
               </span>
             ),
+            isOpen:
+              productDetail?.pricingConfiguration?.interestRateRangeType === 2,
+          },
+          {
+            name: "Interest rates",
+            text: productDetail?.pricingConfiguration?.interestRateConfigModels?.map(
+              (i, idx) => (
+                <div key={idx}>
+                  {productDetail?.pricingConfiguration
+                    ?.interestRateRangeType === 0 ? (
+                    <span>
+                      {" "}
+                      {i?.min} - {i?.max}% for{" "}
+                      {currencyFormatter(
+                        i?.principalMin,
+                        handleCurrencyName(
+                          productDetail?.productInfo?.currency,
+                          currencies
+                        )
+                      )}{" "}
+                      -
+                      {currencyFormatter(
+                        i?.principalMax,
+                        handleCurrencyName(
+                          productDetail?.productInfo?.currency,
+                          currencies
+                        )
+                      )}
+                    </span>
+                  ) : (
+                    <span>
+                      {" "}
+                      {i?.min} - {i?.max}% for {i?.tenorMin} - {i?.tenorMax}{" "}
+                      {Interval[i?.tenorMaxUnit]}
+                    </span>
+                  )}
+                </div>
+              )
+            ),
+            isOpen:
+              productDetail?.pricingConfiguration?.interestRateRangeType !== 2,
           },
         ],
         isOpen: false,
       },
       {
         name: "Early & Part Liquidation Configuration",
-        data: [],
-        isOpen: false,
+        data: [
+          {
+            name: "",
+            text: (
+              <div className="w-full text-sm font-normal text-[#636363]">
+                {productDetail?.liquidation?.part_AllowPartLiquidation ? (
+                  <span className="font-normal block">
+                    {productDetail?.liquidation
+                      ?.part_RequireNoticeBeforeLiquidation && (
+                      <span>
+                        <span>Require notice of</span>{" "}
+                        <span className="">
+                          {productDetail?.liquidation?.part_NoticePeriod}{" "}
+                          {
+                            Interval[
+                              productDetail?.liquidation?.part_NoticePeriodUnit
+                            ]
+                          }
+                        </span>{" "}
+                        <span>before liquidation</span>
+                      </span>
+                    )}
+                    {
+                      <div className="font-normal">
+                        <div className="flex gap-x-1">
+                          <span className="">Penalty:</span>{" "}
+                          <span>
+                            {liquidities[
+                              productDetail?.liquidation
+                                ?.part_LiquidationPenalty
+                            ] == "none" &&
+                              liquidities[
+                                productDetail?.liquidation
+                                  ?.part_LiquidationPenalty
+                              ]}
+                          </span>
+                          <span>
+                            {liquidities[
+                              productDetail?.liquidation
+                                ?.part_LiquidationPenalty
+                            ] == "ForfietAll" && "Forfeit all accrued interest"}
+                          </span>
+                          <span>
+                            {liquidities[
+                              productDetail?.liquidation
+                                ?.part_LiquidationPenalty
+                            ] == "ForfietPortion" &&
+                              `Forfeit a portion of accrued interest - ${productDetail?.liquidation?.part_LiquidationPenaltyPercentage}%`}
+                          </span>
+                          <span>
+                            {liquidities[
+                              productDetail?.liquidation
+                                ?.part_LiquidationPenalty
+                            ] == "RecalculateInterest" &&
+                              `Recalculate accrued interest of ${productDetail?.liquidation?.part_LiquidationPenaltyPercentage}%`}
+                          </span>
+                          <span className="flex flex-wrap gap-x-1 my-1">
+                            {liquidities[
+                              productDetail?.liquidation
+                                ?.part_LiquidationPenalty
+                            ] == "TakeCharge" && (
+                              <span>
+                                {" "}
+                                <span>
+                                  {" "}
+                                  Take a charge{" "}
+                                  <span className="flex flex-wrap">
+                                    {productDetail?.liquidation?.part_SpecificCharges?.map(
+                                      (charge) => (
+                                        <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
+                                          {" "}
+                                          {charge?.name} {charge?.amount}
+                                        </span>
+                                      )
+                                    )}
+                                  </span>
+                                </span>
+                              </span>
+                            )}
+                          </span>
+                        </div>
+                      </div>
+                    }
+                    Maximum of{" "}
+                    {productDetail?.liquidation?.part_MaxPartLiquidation}% of
+                    principal
+                  </span>
+                ) : (
+                  "Not Applicable"
+                )}
+              </div>
+            ),
+            isOpen: true,
+          },
+        ],
+        isOpen: true,
       },
       {
         name: "Charges & Taxes Configuration",
         data: [],
-        isOpen: false,
+        isOpen: true,
       },
     ]);
   }, [productDetail]);
 
   return (
-    <div className="flex flex-col max-w-[377px] w-full gap-[17px]">
+    <div className="flex flex-col w-full gap-[17px]">
       <div
         data-testid="product-info"
         className="border border-[#E5E9EB]  w-full rounded-lg bg-[#ffffff]"
@@ -164,30 +328,24 @@ export default function ProductInfoInvestmentCalc({ productDetail }) {
 
                 {active.includes(item?.name) && (
                   <div>
-                    {item.name !== "Customer Eligibility Criteria" ? (
-                      <div className="grid grid-cols-1 gap-y-1">
-                        {item?.data?.map((k) => (
-                          <div
-                            key={k?.name}
-                            className="grid grid-cols-2 gap-x-3  text-sm pl-5"
-                          >
-                            <span>{k?.name}</span>
-                            <span>{k?.text}</span>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-1 gap-y-1">
-                        {item?.data?.map((k) => (
-                          <div
-                            key={k?.name}
-                            className="grid grid-cols-1 gap-y-1  text-sm pl-5"
-                          >
-                            <span>{k?.name}</span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                    <div className="grid grid-cols-1 gap-y-1">
+                      {item?.data?.map((k) => (
+                        <div key={k?.name}>
+                          {k.isOpen && (
+                            <div className="flex gap-x-4  text-sm pl-5">
+                              {k?.name && (
+                                <span className="capitalize w-[150px]">
+                                  {k?.name}
+                                </span>
+                              )}
+                              <span className="flex-1">
+                                <span>{k?.text}</span>
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
@@ -205,20 +363,52 @@ export default function ProductInfoInvestmentCalc({ productDetail }) {
           </span>
         </div>
 
-        <div className="flex flex-col gap-6 px-6 py-[36px]">
-          <div className="flex flex-col ">
-            <span className="text-[#636363] font-medium text-base">
-              Value at Maturity
-            </span>
-            <span className="">-</span>
+        {calcDetail && (
+          <div className="flex flex-col gap-6 px-6 py-[36px]">
+            <div className="flex flex-col ">
+              <span className="text-[#636363] font-medium text-base">
+                Value at Maturity
+              </span>
+              <span className="">
+                {currencyFormatter(
+                  calcDetail?.maturityValue || 0,
+                  handleCurrencyName(
+                    productDetail?.productInfo?.currency,
+                    currencies
+                  )
+                )}
+              </span>
+            </div>
+            <div className="flex flex-col ">
+              <span className="text-[#636363] font-medium text-base">
+                Principal
+              </span>
+              <span className="">
+                {currencyFormatter(
+                  calcDetail?.principal || 0,
+                  handleCurrencyName(
+                    productDetail?.productInfo?.currency,
+                    currencies
+                  )
+                )}
+              </span>
+            </div>
+            <div className="flex flex-col ">
+              <span className="text-[#636363] font-medium text-base">
+                Maturity Date
+              </span>
+              <span className="">
+                {calcDetail?.maturityDate}{" "}
+                {
+                  Interval[
+                    productDetail?.pricingConfiguration?.applicableTenorMaxUnit
+                  ]
+                }
+                , effective after approval
+              </span>
+            </div>
           </div>
-          <div className="flex flex-col ">
-            <span className="text-[#636363] font-medium text-base">
-              Maturity Date
-            </span>
-            <span className="">-</span>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

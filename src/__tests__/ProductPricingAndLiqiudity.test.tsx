@@ -1,5 +1,6 @@
 import { act, fireEvent, queryByTestId, render, screen } from "@testing-library/react";
 import ProductPricingAndLiquidity from "../components/ProductPricingAndLiquidity"
+import React from "react";
 
 const details = {
     id: "4473a62d-5e40-4aa0-8bf4-3c179004c35b",
@@ -245,7 +246,7 @@ describe('ProductPricingAndLiquidity', () => {
         };
 
         // Act
-        render(<ProductPricingAndLiquidity productData={{ data: details }} />);
+        render(<ProductPricingAndLiquidity productData={{ data: details }} setOpen={undefined} />);
 
         // Assert
         expect(screen.getAllByTestId('interest-rate-config-model').length).toBe(2);
@@ -278,7 +279,7 @@ describe('ProductPricingAndLiquidity', () => {
         // };
 
         // Act
-        render(<ProductPricingAndLiquidity productData={{data: details}} />);
+        render(<ProductPricingAndLiquidity productData={{ data: details }} setOpen={undefined} />);
 
         expect(screen.getByText(/Require notice of/i)).toBeInTheDocument();
         expect(screen.getByText(/7days/i)).toBeInTheDocument();

@@ -138,9 +138,9 @@ export const handleRequestIsSuccess = ({ requestIsSuccess, requestData, process,
 }
 
 export const handleMessage = ({ isSuccess, modifySuccess, modifyRequestSuccess, isError, modifyError, modifyIsError, error,
-  modifyRequestError, setFailed, setFailedText, setFailedSubtext, setSuccessText, setIsSuccessOpen, modifyRequestIsError }) => {
+  modifyRequestError, setFailed, setFailedText, setFailedSubtext, setSuccessText, setIsSuccessOpen, modifyRequestIsError, type }) => {
   if (isSuccess || modifySuccess || modifyRequestSuccess) {
-    setSuccessText(Messages.PRODUCT_DRAFT_SUCCESS);
+    setSuccessText(type === "investment"?Messages.PRODUCT_DRAFT_SUCCESS: Messages.BOOKING_DRAFT_SUCCESS);
     setIsSuccessOpen(true);
   }
 
@@ -362,7 +362,7 @@ export default function CreateTermDeposit() {
   useEffect(() => {
     handleMessage({
       error, isError, isSuccess, modifyError, modifyIsError, modifyRequestError, modifyRequestIsError, modifyRequestSuccess,
-      modifySuccess, setFailed, setFailedSubtext, setFailedText, setIsSuccessOpen, setSuccessText
+      modifySuccess, setFailed, setFailedSubtext, setFailedText, setIsSuccessOpen, setSuccessText, type:"investment"
     });
   }, [
     isSuccess,
