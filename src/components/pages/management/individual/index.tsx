@@ -48,7 +48,7 @@ export const handleChange = (
   setQuery({
     ...query,
     page: 1,
-    investmentProducts_In: [],
+    investmentProducts_In: null,
 
     status_In:
       activeType === "all" ? null : [sortTabStatus(activeType, category)],
@@ -149,7 +149,6 @@ export default function Individual() {
   const preview = searchParams.get("preview");
   const [selected, setSelected] = useState<any>(null);
   const [specificCategory, setSpecificCategory] = useState<string>(SpecificCategory.individual);
-
   const [, setHideCreate] = useState(false);
   const [status, setStatus] = useState("");
   const [dateData, setDateData] = useState({ to: null, from: null });

@@ -30,6 +30,7 @@ import { useNavigate } from "react-router-dom";
 import {
   useActivateProductMutation,
   useDeleteProductRequestMutation,
+  useDeleteInvestmentRequestMutation,
 } from "@app/api";
 import Button from "../Button";
 import { ActiveFilterOptions } from "@app/constants";
@@ -56,6 +57,9 @@ interface TableProps {
 }
 
 export const statusHandler = ({
+  isDeleteInvestmentRequestSuccess,
+  isDeleteInvestmentRequestError,
+  deleteInvestmentRequestError,
   isSuccess,
   setSuccessText,
   setIsSuccessOpen,
@@ -69,6 +73,10 @@ export const statusHandler = ({
   error,
   role,
 }) => {
+  if (isDeleteInvestmentRequestSuccess) {
+    setSuccessText(Messages.PRODUCT_DELETE_SUCCESS);
+    setIsSuccessOpen(true);
+  }
   if (isSuccess) {
     setSuccessText(Messages.PRODUCT_DELETE_SUCCESS);
     setIsSuccessOpen(true);
@@ -86,6 +94,12 @@ export const statusHandler = ({
     setFailedSubtext(error?.message?.message || error?.message?.Message);
     setFailed(true);
   }
+  if (isDeleteInvestmentRequestError) {
+    setFailedText(Messages.PRODUCT_DELETE_FAILED);
+    setFailedSubtext(deleteInvestmentRequestError?.message?.message || deleteInvestmentRequestError?.message?.Message);
+    setFailed(true);
+  }
+  
 
   if (activateIsError) {
     setFailedText(Messages.PRODUCT_ACTIVATE_FAILED);
@@ -259,7 +273,6 @@ export default function TableComponent<TableProps>({
     detail,
     setDetail,
   }: any = useContext(Context);
- 
 
   const [action, setAction] = useState("");
   const navigate = useNavigate();
@@ -279,8 +292,8 @@ export default function TableComponent<TableProps>({
   // function getdata(item, key) {}
   // @ts-ignore
   const handleAction = (action, items) => {
-    console.log(JSON.stringify({action, items}))
-    
+    console.log(JSON.stringify({ action, items }));
+
     actionHandler({
       specificCategory,
       action,
@@ -306,6 +319,16 @@ export default function TableComponent<TableProps>({
     deleteRequest,
     { isSuccess, isError, error, isLoading: deleteLoading },
   ] = useDeleteProductRequestMutation();
+
+  const [
+    deleteInvestmentRequest,
+    {
+      isSuccess: isDeleteInvestmentRequestSuccess,
+      isError: isDeleteInvestmentRequestError,
+      error: deleteInvestmentRequestError,
+      isLoading: isDeleteInvestmentRequestLoading,
+    },
+  ] = useDeleteInvestmentRequestMutation();
   const [
     activateProduct,
     {
@@ -318,12 +341,14 @@ export default function TableComponent<TableProps>({
 
   const handleConfirm = () =>
     confirmationHandler({
+      specificCategory,
       action,
       detail,
       permissions,
       selected,
       previousData,
       deleteRequest,
+      deleteInvestmentRequest,
       setIsDeactivationOpen,
       activateProduct,
       navigate,
@@ -331,6 +356,9 @@ export default function TableComponent<TableProps>({
 
   useEffect(() => {
     statusHandler({
+      isDeleteInvestmentRequestSuccess,
+      isDeleteInvestmentRequestError,
+      deleteInvestmentRequestError,
       isSuccess,
       setSuccessText,
       setIsSuccessOpen,
@@ -344,7 +372,16 @@ export default function TableComponent<TableProps>({
       error,
       role,
     });
-  }, [isSuccess, isError, error, activateSuccess, activateIsError]);
+  }, [
+    isSuccess,
+    isError,
+    error,
+    activateSuccess,
+    activateIsError,
+    isDeleteInvestmentRequestSuccess,
+    isDeleteInvestmentRequestError,
+    deleteInvestmentRequestError,
+  ]);
 
   return (
     <div>
@@ -403,7 +440,7 @@ export default function TableComponent<TableProps>({
                               options={options}
                               getOptions={(e: any) => {
                                 // console.log('e:' + JSON.stringify(e))
-                                getOptionData(e, label)
+                                getOptionData(e, label);
                               }}
                             >
                               <span className="w-4 h-4 flex items-center justify-center">
@@ -603,7 +640,7 @@ export default function TableComponent<TableProps>({
         isDeactivationOpen={isDeactivationOpen}
         isDetailOpen={isDetailOpen}
         isIndividualDetailOpen={isIndividualDetailOpen}
-        deleteLoading={deleteLoading}
+        deleteLoading={deleteLoading || isDeleteInvestmentRequestLoading}
         activateIsLoading={activateIsLoading}
         confirmText={confirmText}
         detail={detail}

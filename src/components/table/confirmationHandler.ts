@@ -1,19 +1,28 @@
 import { Actions, Messages, Prompts } from "@app/constants/enums";
 import { errorToast } from "../Toast";
+import {SpecificCategory} from '@app/constants'
 
 export const confirmationHandler = ({
+  specificCategory,
   action,
   detail,
   permissions,
   selected,
   previousData,
   deleteRequest,
+  deleteInvestmentRequest,
   setIsDeactivationOpen,
   activateProduct,
   navigate,
 }) => {
   if (action.toLowerCase().includes("delete")) {
-    deleteRequest(detail.id);
+    if(specificCategory === SpecificCategory.individual){
+      deleteInvestmentRequest(detail.id);
+      return
+    }else {
+      deleteRequest(detail.id);
+    }
+    
   }
   if (action.toLowerCase() === Actions.DEACTIVATE) {
     setIsDeactivationOpen(true);

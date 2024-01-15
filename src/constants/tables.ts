@@ -88,7 +88,7 @@ export const DropDownOptions: any = {
         },
       ],
     },
-    {
+    { 
       draft: [
         {
           id: "",
@@ -281,7 +281,6 @@ export const IndividualDropDownOptions: any = {
         {
           id: "",
           text: "Continue Request",
-          action: 'continue request individual',
           icon: "FaEdit",
         },
         {
