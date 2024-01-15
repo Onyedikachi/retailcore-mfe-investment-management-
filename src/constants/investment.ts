@@ -65,12 +65,12 @@ export const IndividualStatusTypes = [
     color: "#252C32",
   },
   {
-    id: 2,
+    id: 1,
     type: "active",
     color: "#2FB755",
   },
   {
-    id: 1,
+    id: 2,
     type: "liquidated",
     color: "#AAAAAA",
   },
