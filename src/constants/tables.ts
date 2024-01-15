@@ -397,12 +397,12 @@ export const IndividualFilterOptions: any[] = [
   {
     id: 1,
     name: "active",
-    value: 2,
+    value: 1,
   },
   {
     id: 2,
     name: "liquidated",
-    value: 1,
+    value: 2,
   },
 ];
 export const ProductTypes: any[] = [
