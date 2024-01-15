@@ -13,25 +13,25 @@ interface Props {
 
   detail: any;
 }
-const TabHeader = ({ title, active }) => {
+export const TabHeader = ({ title, active }) => {
   return (
     <div className="border  flex gap-x-4 items-center py-1 px-4 border-[#eee]">
       {active.includes(title) ? (
         <FaCaretDown className="text-red-600" />
       ) : (
-        <FaCaretRight className="text-red-600" />
+        <FaCaretRight data-testid="caret-icon" className="text-red-600" />
       )}{" "}
       {title}
     </div>
   );
 };
 
-const TabContent = ({ title, content, detail }) => {
+export const TabContent = ({ title, content, detail }) => {
   return (
     <div className="grid grid-cols-1 gap-y-6 px-[70px] mt-[27px]">
       {content.map((item) => (
-        <div key={`${item.key}-idx`} className="flex gap-x-[60px] items-center">
-          <div className="text-base font-medium w-[200px] capitalize">
+        <div data-testid="tab-content-item" key={`${item.key}-idx`} className="flex gap-x-[60px] items-center">
+          <div data-testid="tab-content-label" className="text-base font-medium w-[200px] capitalize">
             {item.label}
           </div>
           {item.type === "date" ? (
