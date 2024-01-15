@@ -5,7 +5,7 @@ import { StatusCategoryType } from "@app/constants/enums";
 import moment from "moment";
 import { ucObjectKeys, IndividualContext, AppContext } from "@app/utils";
 import {
-  useGetPostProductsMutation,
+  useGetPostInvestmentMutation,
   useGetPostRequestsMutation,
   useGetUsersPermissionsQuery,
 } from "@app/api";
@@ -217,11 +217,11 @@ export default function TableComponent({
   const [
     getProducts,
     { data, isSuccess, isError, error, isLoading: searchLoading },
-  ] = useGetPostProductsMutation();
+  ] = useGetPostInvestmentMutation();
   const [
     downloadProducts,
     { data: productDownloadData, isSuccess: productDownloadIsSuccess },
-  ] = useGetPostProductsMutation();
+  ] = useGetPostInvestmentMutation();
 
   const [
     getRequests,
@@ -352,6 +352,7 @@ export default function TableComponent({
           setSearchResults={setSearchResults}
           searchLoading={searchLoading}
           handleSearch={(value) => handleSearch(value, setQuery, query)}
+          type={category}
         />
         <div className="relative  after:content-[''] after:w-1 after:h-[80%] after:absolute after:border-r after:right-[-15px] after:top-1/2 after:translate-y-[-50%] after:border-[#E5E9EB]">
           {/* Refresh button  */}

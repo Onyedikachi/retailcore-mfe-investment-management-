@@ -19,6 +19,7 @@ export const actionHandler = ({
   setEarlyLiquidationOpen,
   navigate,
 }) => {
+  // console.log("Show action", JSON.stringify({action, items, selected, category}));
   setAction(action);
   setDetail(items);
   dropDownClick(action, items);
@@ -76,12 +77,10 @@ export const actionHandler = ({
     return;
   }
   if (action.toLowerCase() === Actions.PART_LIQUIDATE) {
-
     setPartLiquidationOpen(true);
     return;
   }
   if (action.toLowerCase() === Actions.EARLY_LIQUIDATE) {
-
     setEarlyLiquidationOpen(true);
     return;
   }

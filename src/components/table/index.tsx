@@ -138,14 +138,14 @@ export const handleProductsDropdown = (
   if (!status) return [];
   if (isChecker) {
     return DropDownOptions[
-      statusType === "investments"
+      statusType === StatusCategoryType.Investments
         ? InvestmentBookingStatus[status].toLowerCase()
         : status
     ]?.filter((i: any) => i.text.toLowerCase() === "view");
   } else {
     let options =
       DropDownOptions[
-        statusType === "investments"
+        statusType === StatusCategoryType.Investments
           ? InvestmentBookingStatus[status].toLowerCase()
           : status
       ];
@@ -199,7 +199,7 @@ export const StateCellContent = ({
   statusType?: string;
 }) => (
   <div>
-    {statusType === "investments" ? (
+    {statusType === StatusCategoryType.Investments ? (
       <span
         className={`font-medium px-2 py-[4px] rounded capitalize max-h-[26px] relative leading-[24px] ${handleColorState(
           InvestmentBookingStatus[value].toLowerCase()
@@ -277,6 +277,8 @@ export default function TableComponent<TableProps>({
   // function getdata(item, key) {}
   // @ts-ignore
   const handleAction = (action, items) => {
+    console.log(JSON.stringify({action, items}))
+    
     actionHandler({
       action,
       items,
