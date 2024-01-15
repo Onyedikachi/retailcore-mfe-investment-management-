@@ -22,6 +22,7 @@ import BottomBarLoader from "@app/components/BottomBarLoader";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 import { BorderlessSelect } from "@app/components/forms";
 import { AppContext } from "@app/utils";
+import { handleDetailsSuccess } from "@app/pages/investment/term-deposit/create-term-deposit/IndexComponent";
 export const onProceed = (data, proceed, formData, setFormData) => {
   setFormData({
     ...formData,
@@ -29,6 +30,57 @@ export const onProceed = (data, proceed, formData, setFormData) => {
   });
   proceed();
 };
+
+export const hanldleDetailsIsSuccess = ({detailIsSuccess, detail, values, setValue, setProductDetail}) => {
+  if (detailIsSuccess) {
+    setProductDetail(detail?.data);
+    setValue(
+      "tenorMin",
+      detail?.data?.pricingConfiguration?.applicableTenorMin
+    );
+    setValue(
+      "tenorMax",
+      detail?.data?.pricingConfiguration?.applicableTenorMax
+    );
+    setValue(
+      "prinMin",
+      detail?.data?.pricingConfiguration?.applicablePrincipalMin
+    );
+    setValue(
+      "prinMax",
+      detail?.data?.pricingConfiguration?.applicablePrincipalMax
+    );
+
+    const rangeArr =
+      detail?.data?.pricingConfiguration?.interestRateConfigModels[0];
+    if (rangeArr.length) {
+      if (detail?.data?.pricingConfiguration?.interestRateRangeType === 0) {
+        if (
+          values.principal >= rangeArr.principalMin &&
+          values.principal <= rangeArr.principalMax
+        ) {
+          setValue("intMin", rangeArr.min);
+          setValue("intMax", rangeArr.max);
+        }
+      }
+
+      if (detail?.data?.pricingConfiguration?.interestRateRangeType === 1) {
+        if (
+          values.tenor >= rangeArr.tenorMin &&
+          values.tenor <= rangeArr.tenorMax
+        ) {
+          setValue("intMin", rangeArr.min);
+          setValue("intMax", rangeArr.max);
+        }
+      }
+    }
+
+    if (detail?.data?.pricingConfiguration?.interestRateRangeType === 2) {
+      setValue("intMin", detail?.data?.pricingConfiguration?.interestRateMin);
+      setValue("intMax", detail?.data?.pricingConfiguration?.interestRateMax);
+    }
+  }
+}
 
 type FacilityDetailsProps = {
   formData?: any;
@@ -150,55 +202,7 @@ export default function FacilityDetails({
 
   // Set product detail
   useEffect(() => {
-    if (detailIsSuccess) {
-      setProductDetail(detail?.data);
-      setValue(
-        "tenorMin",
-        detail?.data?.pricingConfiguration?.applicableTenorMin
-      );
-      setValue(
-        "tenorMax",
-        detail?.data?.pricingConfiguration?.applicableTenorMax
-      );
-      setValue(
-        "prinMin",
-        detail?.data?.pricingConfiguration?.applicablePrincipalMin
-      );
-      setValue(
-        "prinMax",
-        detail?.data?.pricingConfiguration?.applicablePrincipalMax
-      );
-
-      const rangeArr =
-        detail?.data?.pricingConfiguration?.interestRateConfigModels[0];
-      if (rangeArr.length) {
-        if (detail?.data?.pricingConfiguration?.interestRateRangeType === 0) {
-          if (
-            values.principal >= rangeArr.principalMin &&
-            values.principal <= rangeArr.principalMax
-          ) {
-            setValue("intMin", rangeArr.min);
-            setValue("intMax", rangeArr.max);
-          }
-        }
-
-        if (detail?.data?.pricingConfiguration?.interestRateRangeType === 1) {
-          if (
-            values.tenor >= rangeArr.tenorMin &&
-            values.tenor <= rangeArr.tenorMax
-          ) {
-            setValue("intMin", rangeArr.min);
-            setValue("intMax", rangeArr.max);
-          }
-        }
-      }
-
-      if (detail?.data?.pricingConfiguration?.interestRateRangeType === 2) {
-        setValue("intMin", detail?.data?.pricingConfiguration?.interestRateMin);
-        setValue("intMax", detail?.data?.pricingConfiguration?.interestRateMax);
-      }
-    }
-
+    hanldleDetailsIsSuccess({detailIsSuccess, detail, values, setValue, setProductDetail})
     return () => {
       setProductDetail([]);
     };
@@ -312,7 +316,7 @@ export default function FacilityDetails({
                     setQuery(e);
                   }}
                   searchResults={productsData}
-                  setSearchResults={() => {}}
+                  setSearchResults={() => { }}
                   searchLoading={searchLoading}
                   handleSearch={(value, data) =>
                     handleSearch(value, data, setValue, setProductName, trigger)
@@ -394,8 +398,8 @@ export default function FacilityDetails({
                       <span className="text-base font-normal text-[#636363] capitalize">
                         {
                           Interval[
-                            detail?.data?.pricingConfiguration
-                              ?.applicableTenorMaxUnit
+                          detail?.data?.pricingConfiguration
+                            ?.applicableTenorMaxUnit
                           ]
                         }
                       </span>
@@ -403,44 +407,44 @@ export default function FacilityDetails({
                     <div className="text-sm text-[#AAAAAA] mt-1">
                       {detail?.data?.pricingConfiguration
                         ?.interestRateRangeType === 2 && (
-                        <span>
-                          {
-                            detail?.data?.pricingConfiguration
-                              ?.applicableTenorMin
-                          }{" "}
-                          -{" "}
-                          {
-                            detail?.data?.pricingConfiguration
-                              ?.applicableTenorMax
-                          }{" "}
-                          {
-                            Interval[
+                          <span>
+                            {
+                              detail?.data?.pricingConfiguration
+                                ?.applicableTenorMin
+                            }{" "}
+                            -{" "}
+                            {
+                              detail?.data?.pricingConfiguration
+                                ?.applicableTenorMax
+                            }{" "}
+                            {
+                              Interval[
                               detail?.data?.pricingConfiguration
                                 ?.applicableTenorMaxUnit
-                            ]
-                          }
-                        </span>
-                      )}
+                              ]
+                            }
+                          </span>
+                        )}
                       {detail?.data?.pricingConfiguration
                         ?.interestRateRangeType !== 2 && (
-                        <span>
-                          {
-                            detail?.data?.pricingConfiguration
-                              ?.applicableTenorMin
-                          }{" "}
-                          -{" "}
-                          {
-                            detail?.data?.pricingConfiguration
-                              ?.applicableTenorMax
-                          }{" "}
-                          {
-                            Interval[
+                          <span>
+                            {
+                              detail?.data?.pricingConfiguration
+                                ?.applicableTenorMin
+                            }{" "}
+                            -{" "}
+                            {
+                              detail?.data?.pricingConfiguration
+                                ?.applicableTenorMax
+                            }{" "}
+                            {
+                              Interval[
                               detail?.data?.pricingConfiguration
                                 ?.applicableTenorMaxUnit
-                            ]
-                          }
-                        </span>
-                      )}
+                              ]
+                            }
+                          </span>
+                        )}
                     </div>
                   </div>
                 </div>
