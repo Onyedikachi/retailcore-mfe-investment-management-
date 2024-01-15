@@ -107,7 +107,7 @@ Object {
                             class="relative flex items-center max-w-[642px]"
                           >
                             <input
-                              class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                              class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                               data-testid="min-max-input"
                               placeholder="0"
                               type="number"
@@ -228,7 +228,7 @@ Object {
                             class="relative flex items-center max-w-[642px]"
                           >
                             <input
-                              class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                              class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                               data-testid="min-max-input"
                               placeholder="0"
                               type="number"
@@ -424,7 +424,7 @@ Object {
                           class="relative flex items-center max-w-[642px]"
                         >
                           <input
-                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                             id="applicablePrincipalMin"
                             inputmode="decimal"
                             name="applicablePrincipalMin"
@@ -459,7 +459,7 @@ Object {
                           class="relative flex items-center max-w-[642px]"
                         >
                           <input
-                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                             id="applicablePrincipalMax"
                             inputmode="decimal"
                             name="applicablePrincipalMax"
@@ -628,7 +628,7 @@ Object {
                           class="relative flex items-center max-w-[642px]"
                         >
                           <input
-                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                             id="interestRateMin"
                             inputmode="decimal"
                             name="interestRateMin"
@@ -669,7 +669,7 @@ Object {
                           class="relative flex items-center max-w-[642px]"
                         >
                           <input
-                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                             id="interestRateMax"
                             inputmode="decimal"
                             name="interestRateMax"
@@ -894,7 +894,7 @@ Object {
                           class="relative flex items-center max-w-[642px]"
                         >
                           <input
-                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                             data-testid="min-max-input"
                             placeholder="0"
                             type="number"
@@ -1015,7 +1015,7 @@ Object {
                           class="relative flex items-center max-w-[642px]"
                         >
                           <input
-                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                             data-testid="min-max-input"
                             placeholder="0"
                             type="number"
@@ -1211,7 +1211,7 @@ Object {
                         class="relative flex items-center max-w-[642px]"
                       >
                         <input
-                          class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                          class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                           id="applicablePrincipalMin"
                           inputmode="decimal"
                           name="applicablePrincipalMin"
@@ -1246,7 +1246,7 @@ Object {
                         class="relative flex items-center max-w-[642px]"
                       >
                         <input
-                          class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                          class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                           id="applicablePrincipalMax"
                           inputmode="decimal"
                           name="applicablePrincipalMax"
@@ -1415,7 +1415,7 @@ Object {
                         class="relative flex items-center max-w-[642px]"
                       >
                         <input
-                          class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                          class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                           id="interestRateMin"
                           inputmode="decimal"
                           name="interestRateMin"
@@ -1456,7 +1456,7 @@ Object {
                         class="relative flex items-center max-w-[642px]"
                       >
                         <input
-                          class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                          class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                           id="interestRateMax"
                           inputmode="decimal"
                           name="interestRateMax"
@@ -1764,7 +1764,7 @@ Object {
                                   class="relative flex items-center max-w-[642px]"
                                 >
                                   <input
-                                    class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                                    class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                                     id="part_MaxPartLiquidation"
                                     inputmode="decimal"
                                     name="part_MaxPartLiquidation"
@@ -1832,7 +1832,7 @@ Object {
                                   class="relative flex items-center max-w-[642px]"
                                 >
                                   <input
-                                    class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                                    class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                                     data-testid="min-max-input"
                                     max="10"
                                     placeholder="0"
@@ -2238,7 +2238,7 @@ Object {
                                 class="relative flex items-center max-w-[642px]"
                               >
                                 <input
-                                  class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                                  class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                                   id="part_MaxPartLiquidation"
                                   inputmode="decimal"
                                   name="part_MaxPartLiquidation"
@@ -2306,7 +2306,7 @@ Object {
                                 class="relative flex items-center max-w-[642px]"
                               >
                                 <input
-                                  class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                                  class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                                   data-testid="min-max-input"
                                   max="10"
                                   placeholder="0"

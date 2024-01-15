@@ -36,6 +36,7 @@ jest.mock("react-router-dom", () => ({
   BrowserRouter: ({ children }) => <div>{children}</div>,
   Link: ({ to, children }) => <a href={to}>{children}</a>,
   useNavigate: jest.fn(),
+  useParams: jest.fn().mockResolvedValue({process: "continue"})
 }));
 jest
   .spyOn(require("react-router-dom"), "useNavigate")
@@ -190,6 +191,7 @@ describe("TableComponent", () => {
           dropDownOptions={[]}
           dropDownClick={() => { }}
           onChangeDate={() => { }}
+          Context={InvestmentContext}
         />
       </InvestmentContext.Provider>
     );
@@ -224,6 +226,7 @@ describe("TableComponent", () => {
           dropDownOptions={[]}
           dropDownClick={() => { }}
           onChangeDate={() => { }}
+          Context={InvestmentContext}
         />
       </Provider>
     );

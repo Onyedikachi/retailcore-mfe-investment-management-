@@ -8,7 +8,7 @@ jest.mock("react-router-dom", () => ({
   Routes: ({ children }) => <div>{children}</div>,
   Route: ({ element }) => element,
   useNavigate: jest.fn(),
-  useParams: jest.fn(),
+  useParams: jest.fn().mockReturnValue({ process: "continue" }),
   useLocation: jest.fn(),
 }));
 const navigate = jest.fn();
@@ -74,7 +74,7 @@ describe("Success Modal", () => {
 
     const setIsOpen = jest.fn();
     const { findByTestId } = render(
-      <Success isOpen={true} setIsOpen={setIsOpen} text={""} canClose />
+      <Success isOpen={true} setIsOpen={setIsOpen} canCreate={true} text={""} canClose />
     );
     const closebtn = await findByTestId("dashboard-link");
     fireEvent.click(closebtn);
@@ -150,7 +150,7 @@ describe("Prompt Modal", () => {
         <Prompt isOpen={true} setIsOpen={setIsOpen} canClose text1={""} />{" "}
       </BrowserRouter>
     );
-    const closebtn = await findByTestId("dashboard-link");
+    const closebtn = await findByTestId("close-btn");
     fireEvent.click(closebtn);
     // expect(window.location.href).toHaveBeenCalled();
   });
