@@ -4,9 +4,12 @@ import { InvestmentContext, AppContext } from "../utils/context";
 import { StatusCategoryType } from "../constants/enums";
 import { Select } from "./forms";
 import {
+  SpecificCategory,
   StatusTypes,
   CheckerStatusRequests,
   StatusRequests,
+  InvestmentRequestOptions,
+  InvestmentProductOptions,
   ProductOptions,
   RequestOptions,
   ApproveProductOptions,
@@ -210,12 +213,23 @@ export function handleActiveType(activeType, setStatus) {
 }
 
 export function handlePermission(
+  specificCategory,
+  InvestmentRequestOptions,
+  InvestmentProductOptions,
   setFilteredRequestOptions,
   permissions,
   ProductOptions,
   RequestOptions,
   setFilteredProductOptions
 ) {
+  let mutableProductOptions =
+    specificCategory === SpecificCategory?.individual
+      ? InvestmentProductOptions
+      : ProductOptions;
+  let mutableRequestOptions =
+    specificCategory === SpecificCategory?.individual
+      ? InvestmentRequestOptions
+      : RequestOptions;
   if (!permissions?.length) return;
   if (
     permissions?.includes(
@@ -227,11 +241,14 @@ export function handlePermission(
       permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS")
       // ||permissions?.includes("CREATE_INVESTMENT_PRODUCT")
     ) {
-      setFilteredProductOptions(ProductOptions);
+      setFilteredProductOptions(mutableProductOptions);
     } else {
       setFilteredProductOptions(
-        ProductOptions.map((i: any) => {
-          if (i.value === "created_by_anyone") {
+        mutableProductOptions.map((i: any) => {
+          if (
+            i.value === "created_by_anyone" ||
+            i.value === "created_system_wide"
+          ) {
             i.disabled = true;
           }
           if (i.value === "approved_system_wide") {
@@ -245,14 +262,17 @@ export function handlePermission(
       permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS")
       // || permissions?.includes("CREATE_INVESTMENT_PRODUCT")
     ) {
-      setFilteredRequestOptions(RequestOptions);
+      setFilteredRequestOptions(mutableRequestOptions);
     } else {
       setFilteredRequestOptions(
-        RequestOptions.map((i: any) => {
-          if (i.value === "created_by_anyone") {
+        mutableRequestOptions.map((i: any) => {
+          if (
+            i.value === "created_by_anyone" ||
+            i.value === "created_system_wide"
+          ) {
             i.disabled = true;
           }
-          if (i.value === "sent_to_anyone") {
+          if (i.value === "sent_to_anyone" || i.value === "sent_system_wide") {
             i.disabled = true;
           }
           return i;
@@ -273,7 +293,10 @@ export function handlePermission(
     } else {
       setFilteredProductOptions(
         CreateProductOptions.map((i: any) => {
-          if (i.value === "created_by_anyone") {
+          if (
+            i.value === "created_by_anyone" ||
+            i.value === "created_system_wide"
+          ) {
             i.disabled = true;
           }
 
@@ -289,7 +312,10 @@ export function handlePermission(
     } else {
       setFilteredRequestOptions(
         CreateRequestOptions.map((i: any) => {
-          if (i.value === "created_by_anyone") {
+          if (
+            i.value === "created_by_anyone" ||
+            i.value === "created_system_wide"
+          ) {
             i.disabled = true;
           }
 
@@ -331,7 +357,7 @@ export function handlePermission(
     } else {
       setFilteredRequestOptions(
         ApproveRequestOptions.map((i: any) => {
-          if (i.value === "sent_to_anyone") {
+          if (i.value === "sent_to_anyone" || i.value === "sent_system_wide") {
             i.disabled = true;
           }
           return i;
@@ -358,8 +384,14 @@ export default function StatusCard({
   const [activeType, setActiveType] = useState<string | undefined>("all");
   const [filteredProductOptions, setFilteredProductOptions] = useState([]);
   const [filteredRequestOptions, setFilteredRequestOptions] = useState([]);
-  const { selected, setSelected, category, setCategory, status }: any =
-    useContext(Context);
+  const {
+    specificCategory,
+    selected,
+    setSelected,
+    category,
+    setCategory,
+    status,
+  }: any = useContext(Context);
   const { permissions, isChecker } = useContext(AppContext);
 
   // Get select value
@@ -388,6 +420,9 @@ export default function StatusCard({
 
   useEffect(() => {
     handlePermission(
+      specificCategory,
+      InvestmentRequestOptions,
+      InvestmentProductOptions,
       setFilteredRequestOptions,
       permissions,
       ProductOptions,
@@ -408,6 +443,7 @@ export default function StatusCard({
     <div className="flex border border-[#E5E9EB] rounded-lg">
       <div className=" w-[208px] rounded-l-lg border-r border-[#D0D5DD] overflow-hidden">
         {StatusCategories.map((item, idx) => (
+          //use specificCategory context here
           <StatusCategoryButton
             key={item.id}
             item={item}
