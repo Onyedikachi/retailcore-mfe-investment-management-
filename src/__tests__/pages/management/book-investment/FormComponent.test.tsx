@@ -41,7 +41,7 @@ describe('code snippet', () => {
     it('should render the customer information form when step is 2', () => {
       const step = 2;
       const handleNav = jest.fn();
-      const { getByTestId } = renderWithProviders(<FormComponent setFormData={jest.fn()} step={step} handleNav={handleNav} setDisabled={setDisabled} formData={mockFormData} setCalcDetail={jest.fn()} />);
+      const { getByTestId } = renderWithProviders(<FormComponent setFormData={jest.fn()} step={step} handleNav={handleNav} setDisabled={setDisabled} formData={mockFormData} setCalcDetail={jest.fn()} setProductDetail={jest.fn()} />);
       expect(getByTestId('facility-details')).toBeInTheDocument();
     });
     
