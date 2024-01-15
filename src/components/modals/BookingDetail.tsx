@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { IoArrowUndo } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { FaBan, FaRegTimesCircle, FaPlayCircle, FaTimes } from "react-icons/fa";
@@ -12,7 +12,7 @@ import {
   liquidities,
 } from "@app/constants";
 import { currencyFormatter } from "@app/utils/formatCurrency";
-import { useGetProductDetailQuery } from "@app/api";
+import { useGetInvestmentDetailQuery } from "@app/api";
 import { AppContext } from "@app/utils";
 import PricingConfigurationComponent from "./PricingConfigurationComponent";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
@@ -36,6 +36,7 @@ export const BookingDetailLayout = ({
   handleClick,
 }) => {
   const { currencies } = useContext(AppContext);
+
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
       <div
@@ -78,9 +79,10 @@ export const BookingDetailLayout = ({
                       Customer/ Account Number
                     </span>
                     <span className="font-normal block uppercase">
-                      {ProductTypes.find(
+                      {/* {ProductTypes.find(
                         (i) => i.id == productData?.data?.productType
-                      )?.name || "-"}
+                      )?.name || "-"} */}
+                      {`${productData?.data?.customerBookingInfoModel?.customerName}/${productData?.data?.customerBookingInfoModel?.customerAccount}`}
                     </span>
                   </div>
                   <div>
@@ -88,7 +90,7 @@ export const BookingDetailLayout = ({
                       Investment ID
                     </span>
                     <span className="font-normal block uppercase">
-                      {productData?.data?.productCode || "-"}
+                      {productData?.data?.facilityDetailsModel?.investmentProductId || "-"}
                     </span>
                   </div>
                   <div>
@@ -332,11 +334,15 @@ export default function BookingDetail({
 }: Props) {
   const { permissions } = useContext(AppContext);
 
-  const { data: productData, isLoading } = useGetProductDetailQuery({
+  const { data: productData, isLoading } = useGetInvestmentDetailQuery({
     id: detail?.id,
   });
 
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    console.log("InvestmentData Effect: " + JSON.stringify(productData));
+  }, [productData]);
 
   return (
     <BookingDetailLayout

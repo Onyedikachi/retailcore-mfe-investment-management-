@@ -380,6 +380,7 @@ export default function TableComponent({
           setSearchResults={setSearchResults}
           searchLoading={searchLoading}
           handleSearch={(value) => handleSearch(value, setQuery, query)}
+          type={category}
         />
         <div className="relative  after:content-[''] after:w-1 after:h-[80%] after:absolute after:border-r after:right-[-15px] after:top-1/2 after:translate-y-[-50%] after:border-[#E5E9EB]">
           {/* Refresh button  */}

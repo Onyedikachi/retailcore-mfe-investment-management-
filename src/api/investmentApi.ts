@@ -413,9 +413,7 @@ export const investmentApi: any = createApi({
       query: (data) => {
         if (!data.id) return;
         return {
-          url: `${urls.PRODUCT_DETAILS}?${new URLSearchParams(
-            cleanObject(data)
-          )}`,
+          url: `${urls.INVESTMENT}/${data.id}`,
           method: "get",
         };
       },
@@ -458,5 +456,6 @@ export const {
   useGetPostInvestmentMutation,
   useGetInvestmentRequestStatsQuery,
   useGetInvestmentStatsQuery,
+  useGetInvestmentDetailQuery
   
 } = investmentApi;

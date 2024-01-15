@@ -27,10 +27,17 @@ export function SearchValues({
   handleSearch,
 }) {
   const handleClick = () => {
+   if(type === 'investments'){
+    setInputValue(item?.customerName);
+    setSearchTerm(item?.customerName);
+    setShowBox(false);
+    handleSearch(item?.customerName, item);
+   }else{
     setInputValue(item?.name);
     setSearchTerm(item?.name);
     setShowBox(false);
     handleSearch(item?.name, item);
+   }
   };
 
   return (
@@ -43,7 +50,11 @@ export function SearchValues({
       </span>
       <span>
         <span className="block max-w-max truncate text-[#636363] capitalize">
-          {item?.name}
+          {type === "investments" ? (
+            <span>{item.customerName}</span>
+          ) : (
+            <span>{item?.name}</span>
+          )}
         </span>
         {type === "multi" && (
           <span className="block text-xs max-w-max truncate text-[#636363] capitalize">
@@ -89,6 +100,17 @@ export function SearchItem({
         </div>
       ) : (
         <div className="">
+          {/* {type == "investments" && (
+            <SearchValues
+              item={item}
+              type={type}
+              setInputValue={setInputValue}
+              setSearchTerm={setSearchTerm}
+              setShowBox={setShowBox}
+              handleSearch={handleSearch}
+            />
+          )} */}
+
           {item?.products?.length > 0 ? (
             <>
               {item?.products?.map((val, index) => (
@@ -132,7 +154,7 @@ export default function SearchInput({
   handleSearch,
   type,
   customClass = "",
-  defaultValue
+  defaultValue,
 }: {
   setSearchTerm: (e: string) => void;
   placeholder?: string;
@@ -146,7 +168,7 @@ export default function SearchInput({
   handleSearch?: (e: string, item?: any) => void;
   type?: string;
   customClass?: string;
-  defaultValue?: string
+  defaultValue?: string;
 }) {
   const [inputValue, setInputValue] = useState("");
   const [showBox, setShowBox] = useState(false);
@@ -162,7 +184,6 @@ export default function SearchInput({
 
   useEffect(() => {
     if (defaultValue?.length) {
-     
       setInputValue(defaultValue);
     }
   }, [defaultValue]);
@@ -211,6 +232,7 @@ export default function SearchInput({
             {!searchLoading ? (
               <div>
                 <div>
+                  {/* {JSON.stringify(searchResults[0])} */}
                   {searchResults?.length > 0 ? (
                     <ul className="grid gap-y-[10px]">
                       {searchResults?.map((item, indrx) => (
