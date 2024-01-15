@@ -234,25 +234,10 @@ const [individualListHeaders, setIndividualListHeaders]= useState(individualHead
     query: { page: 1, page_Size: 1000000, filter_by: selected?.value },
   });
 
-  // const [
-  //   fetchProductsList,
-  //   {
-  //     data: fetchedProductsList,
-  //     isSuccess: isGetProductsSuccess,
-
-  //     isLoading: isGetProductsLoading,
-  //   },
-  // ] = useGetPostProductsMutation();
-
-  // useEffect(() => {
-  //   console.log('shoukld fetch' + selected?.value)
-  //   fetchProductsList({ page: 1, page_Size: 25, filter_by: selected?.value });
-  //   // console.log(JSON.stringify(fetchedProductsList));
-  // }, [selected]);
+  
   useEffect(() => {
     const results = fetchedProductsList?.results;
     if (results) {
-      console.log("fetchedProductsList:" + JSON.stringify(results));
 
       const targetKey = "investmentProduct";
       const mappedResults = results?.map((result) => {

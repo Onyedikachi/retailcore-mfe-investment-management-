@@ -90,8 +90,8 @@ export default function IndexComponent() {
       principal: null,
       interestRate: null,
       capitalizationMethod: 0,
-      maturityValue:null,
-      discountRate:null,
+      maturityValue: null,
+      discountRate: null,
     },
     transactionSettingModel: {
       accountForLiquidation: "",
@@ -121,6 +121,7 @@ export default function IndexComponent() {
       url: `/product-factory/investment/management/${investmentType}`,
     },
   ];
+
   function handleLinks(links, process) {
     // const extraLinks = [
     //   {
@@ -142,6 +143,14 @@ export default function IndexComponent() {
     //   let filteredLinks = links.filter((i) => i.id !== 3);
     //   return [...filteredLinks, ...extraLinks];
     // }
+    if (process === "restructure") {
+      const linkWithId2 = links.find((link) => link.id === 2);
+
+      // Update its title property
+      if (linkWithId2) {
+        linkWithId2.title = "Restructure Investment";
+      }
+    }
 
     return links;
   }

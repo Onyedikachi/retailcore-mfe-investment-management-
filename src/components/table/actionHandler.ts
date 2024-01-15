@@ -97,6 +97,13 @@ export const actionHandler = ({
     );
     return;
   }
+  if (action.toLowerCase() === Actions.RESTRUCTURE) {
+    navigate(
+      `/product-factory/investment/management/${Actions.RESTRUCTURE}/individual?id=${items.id}`
+    );
+    return;
+  }
+  
 
   if (action.toLowerCase() === Actions.VIEW) {
     category === StatusCategoryType.AllProducts
