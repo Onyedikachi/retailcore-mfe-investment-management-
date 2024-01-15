@@ -194,8 +194,8 @@ export default function TableComponent({
   const [users, setUsers] = useState([]);
   const [searchResults, setSearchResults] = useState<any[]>([]);
 
-  console.log("category: " + JSON.stringify(category))
-  console.log("selected: " + JSON.stringify(selected))
+  // console.log("category: " + JSON.stringify(category))
+  // console.log("selected: " + JSON.stringify(selected))
   const [options, setOptions] = React.useState({
     fieldSeparator: ",",
     quoteStrings: '"',
@@ -341,6 +341,8 @@ export default function TableComponent({
   }, [category]);
 
   const getOptionData = (value: any, label: string) => {
+    console.log(`${JSON.stringify(value)}, ${label}`)
+  
     optionsDataHandler({ query, value, label, setQuery });
   };
   const onChangeDate = (value: any) => {
