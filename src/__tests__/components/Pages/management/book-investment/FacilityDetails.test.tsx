@@ -1,4 +1,4 @@
-import {hanldleDetailsIsSuccess} from "../../../../components/pages/management/book-investment/FacilityDetails.tsx"
+import {hanldleDetailsIsSuccess} from "../../../../../components/pages/management/book-investment/FacilityDetails.tsx"
 
 describe('hanldleDetailsIsSuccess', () => {
 
