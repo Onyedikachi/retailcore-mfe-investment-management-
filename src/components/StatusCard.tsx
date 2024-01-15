@@ -224,7 +224,7 @@ export function handlePermission(
     permissions?.includes("CREATE_INVESTMENT_PRODUCT")
   ) {
     if (
-      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS") 
+      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS")
       // ||permissions?.includes("CREATE_INVESTMENT_PRODUCT")
     ) {
       setFilteredProductOptions(ProductOptions);
@@ -242,7 +242,7 @@ export function handlePermission(
       );
     }
     if (
-      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS") 
+      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS")
       // || permissions?.includes("CREATE_INVESTMENT_PRODUCT")
     ) {
       setFilteredRequestOptions(RequestOptions);
@@ -266,7 +266,7 @@ export function handlePermission(
     )
   ) {
     if (
-      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS") 
+      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS")
       // ||permissions?.includes("CREATE_INVESTMENT_PRODUCT")
     ) {
       setFilteredProductOptions(CreateProductOptions);
@@ -282,7 +282,7 @@ export function handlePermission(
       );
     }
     if (
-      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS") 
+      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS")
       // ||permissions?.includes("CREATE_INVESTMENT_PRODUCT")
     ) {
       setFilteredRequestOptions(CreateRequestOptions);
@@ -304,7 +304,7 @@ export function handlePermission(
     )
   ) {
     if (
-      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS") 
+      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS")
       // ||
       // permissions?.includes(
       //   "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
@@ -322,7 +322,7 @@ export function handlePermission(
       );
     }
     if (
-      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS") 
+      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS")
       // ||permissions?.includes(
       //   "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
       // )

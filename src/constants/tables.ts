@@ -281,6 +281,7 @@ export const IndividualDropDownOptions: any = {
         {
           id: "",
           text: "Continue Request",
+          action: 'continue request individual',
           icon: "FaEdit",
         },
         {
@@ -1120,3 +1121,6 @@ export const ButtonOptions = [
     ],
   },
 ];
+export const SpecificCategory = {
+  individual: 'individual'
+}

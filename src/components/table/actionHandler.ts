@@ -1,7 +1,8 @@
 import { Actions, Messages, Prompts } from "@app/constants/enums";
 import { StatusCategoryType } from "@app/types";
-
+import { SpecificCategory } from "@app/constants";
 export const actionHandler = ({
+  specificCategory,
   action,
   items,
   selected,
@@ -90,12 +91,19 @@ export const actionHandler = ({
     return;
   }
   if (action.toLowerCase() === Actions.CONTINUE_REQUEST) {
-    navigate(
-      `/product-factory/investment/${encodeURIComponent(
-        "term deposit"
-      )}/continue/?id=${items.id}&type=draft&filter=${selected.value}`
-    );
-    return;
+    if (specificCategory === SpecificCategory.individual) {
+      navigate(
+        `/product-factory/investment/management/continue/individual?id=${items.id}`
+      );
+      return;
+    } else {
+      navigate(
+        `/product-factory/investment/${encodeURIComponent(
+          "term deposit"
+        )}/continue/?id=${items.id}&type=draft&filter=${selected.value}`
+      );
+      return;
+    }
   }
   if (action.toLowerCase() === Actions.RESTRUCTURE) {
     navigate(
@@ -103,7 +111,6 @@ export const actionHandler = ({
     );
     return;
   }
-  
 
   if (action.toLowerCase() === Actions.VIEW) {
     category === StatusCategoryType.AllProducts

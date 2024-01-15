@@ -249,6 +249,7 @@ export default function TableComponent<TableProps>({
 }) {
   const { role, permissions, userId, isChecker } = useContext(AppContext);
   const {
+    specificCategory,
     category,
     selected,
     isDetailOpen,
@@ -258,6 +259,7 @@ export default function TableComponent<TableProps>({
     detail,
     setDetail,
   }: any = useContext(Context);
+ 
 
   const [action, setAction] = useState("");
   const navigate = useNavigate();
@@ -280,6 +282,7 @@ export default function TableComponent<TableProps>({
     console.log(JSON.stringify({action, items}))
     
     actionHandler({
+      specificCategory,
       action,
       items,
       category,
