@@ -398,7 +398,10 @@ export default function TableComponent<TableProps>({
                                 userId
                               }
                               options={options}
-                              getOptions={(e: any) => getOptionData(e, label)}
+                              getOptions={(e: any) => {
+                                // console.log('e:' + JSON.stringify(e))
+                                getOptionData(e, label)
+                              }}
                             >
                               <span className="w-4 h-4 flex items-center justify-center">
                                 <BsFunnel />

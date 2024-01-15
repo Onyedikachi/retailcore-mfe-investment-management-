@@ -1,4 +1,5 @@
 export default ({query, value, label, setQuery}) => {
+  // console.log('Label: ' + label)
     if (label === "product type") {
       setQuery({
         ...query,
@@ -25,9 +26,17 @@ export default ({query, value, label, setQuery}) => {
       });
     }
     if (label === "state" || label === "status") {
+      // console.log('investment product filter')
       setQuery({
         ...query,
         status_In: value.length ? value.map((i) => i.value) : null,
+      });
+    }
+    if (label === "investment product") {
+      // console.log('investment product filter')
+      setQuery({
+        ...query,
+        investmentProducts_In: value.length ? value.map((i) => i.value) : null,
       });
     }
   };

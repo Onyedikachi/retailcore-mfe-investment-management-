@@ -47,6 +47,7 @@ export const handleChange = (
   setQuery({
     ...query,
     page: 1,
+    investmentProducts_In: [],
 
     status_In:
       activeType === "all" ? null : [sortTabStatus(activeType, category)],
@@ -163,6 +164,7 @@ export default function Individual() {
     // filter_by: selected?.value,
     status_In: null,
     search: "",
+   investmentProducts_In: null,
     start_Date: null,
     end_Date: null,
     page: 1,
@@ -280,6 +282,7 @@ export default function Individual() {
     selected,
     query.search,
     query.status_In,
+    query.investmentProducts_In,
     query.productType_In,
     query.start_Date,
     query.end_Date,
