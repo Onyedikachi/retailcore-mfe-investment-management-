@@ -1165,3 +1165,9 @@ export const CapitalizationOptions = [
     value: 2,
   },
 ];
+
+export   const GlAccountTypes = [
+  "Term deposit account",
+  "Interest accural account",
+  "Interest expense account",
+];

@@ -20,6 +20,7 @@ import {
 } from "@app/api";
 import { Confirm, Failed, Success } from "@app/components/modals";
 import { Prompts } from "@app/constants/enums";
+import { handleMessage } from "@app/pages/investment/term-deposit/create-term-deposit/IndexComponent";
 
 export function handleNext(step, setStep, BookInvestmentFormSteps) {
   console.log(step);
@@ -60,7 +61,7 @@ export default function IndexComponent() {
   const refresh = searchParams.get("refresh");
   const activeId = useRef(null);
   const previousData = useRef({});
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [subText, setSubText] = useState("");
   const [successText, setSuccessText] = useState("");
@@ -72,26 +73,31 @@ export default function IndexComponent() {
   const [disabled, setDisabled] = useState(true);
   const [isSavingDraft, setIsSavingDraft] = useState(false);
   const [productDetail, setProductDetail] = useState(null);
+  const [calcDetail, setCalcDetail] = useState(null);
   const navigate = useNavigate();
   const [formData, setFormData] = useState<any>({
     id: "",
     customerBookingInfoModel: {
-      customerId: "63762c09-3f83-4200-be5c-dcba0ac8fe15",
-      customerName: "Ibrahim Adefemi Cole",
-      customerAccount: "2000000019",
-      investmentformUrl:
-        "http://retailcore-investment-management-api.dev.bepeerless.co/uploads/79dc1d11-d3e9-41cd-90ec-4827226d2764.jpg",
+      customerId: "",
+      customerName: "",
+      customerAccount: "",
+      investmentformUrl: "",
     },
     facilityDetailsModel: {
-      investmentProductName: "",
-      investmentProductId: "",
-      investmentPurpose: "",
-      tenor: null,
-      principal: null,
-      interestRate: null,
       capitalizationMethod: 0,
-      maturityValue: null,
-      discountRate: null,
+      interestRate: null,
+      principal: null,
+      tenor: null,
+      investmentPurpose: "",
+      investmentProductId: "",
+      investmentProductName: "",
+
+      tenorMin: null,
+      tenorMax: null,
+      prinMin: null,
+      prinMax: null,
+      intMin: null,
+      intMax: null,
     },
     transactionSettingModel: {
       accountForLiquidation: "",
@@ -210,6 +216,35 @@ export default function IndexComponent() {
   useEffect(() => {
     handleFormRef({ step, setFormRef });
   }, [step]);
+
+  useEffect(() => {
+    handleMessage({
+      error,
+      isError,
+      isSuccess,
+      modifyError,
+      modifyIsError,
+      modifyRequestError,
+      modifyRequestIsError,
+      modifyRequestSuccess,
+      modifySuccess,
+      setFailed,
+      setFailedSubtext,
+      setFailedText,
+      setIsSuccessOpen,
+      setSuccessText,
+      type: "booking",
+    });
+  }, [
+    isSuccess,
+    isError,
+    error,
+    modifyIsError,
+    modifySuccess,
+    modifyError,
+    modifyRequestSuccess,
+    modifyRequestIsError,
+  ]);
   return (
     <div>
       {!stage && (
@@ -240,6 +275,7 @@ export default function IndexComponent() {
                     setDisabled={setDisabled}
                     isSavingDraft={isSavingDraft}
                     setProductDetail={setProductDetail}
+                    setCalcDetail={setCalcDetail}
                   />
 
                   <div className="h-px w-full bg-[#CCCCCC] mb-12 mt-16"></div>
@@ -283,8 +319,11 @@ export default function IndexComponent() {
                 </div>
               </div>
               {step === 2 && productDetail && (
-                <div className="min-w-[377px]">
-                  <ProductInfoInvestmentCalc productDetail={productDetail} />
+                <div className="w-full max-w-[400px]">
+                  <ProductInfoInvestmentCalc
+                    productDetail={productDetail}
+                    calcDetail={calcDetail}
+                  />
                 </div>
               )}
             </div>
