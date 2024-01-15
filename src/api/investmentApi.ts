@@ -427,6 +427,14 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    deleteInvestmentRequest: builder.mutation<any, any>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT_REQUEST}/delete/${data}`,
+          method: "delete",
+        };
+      },
+    }),
   }),
 });
 
@@ -465,5 +473,7 @@ export const {
   useGetInvestmentRequestStatsQuery,
   useGetInvestmentStatsQuery,
   useGetInvestmentDetailQuery,
+  useDeleteInvestmentRequestMutation,
+
   useBookingCalcMutation,
 } = investmentApi;

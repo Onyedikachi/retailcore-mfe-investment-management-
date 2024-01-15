@@ -1,6 +1,8 @@
 import { createContext, useContext } from "react";
 
 interface ContextProps {
+  specificCategory?: string;
+  setSpecificCategory?: (e: any) => void;
   category?: any;
   setCategory?: (e: any) => void;
   selected?: { id: number; text: string; value?: string } | null;
@@ -67,6 +69,8 @@ export const AppContext = createContext<{
 });
 
 export const InvestmentContext = createContext<ContextProps>({
+  specificCategory: null,
+  setSpecificCategory: () => {},
   category: null,
   setCategory: () => {},
   selected: null,

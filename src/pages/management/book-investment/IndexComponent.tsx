@@ -81,8 +81,7 @@ export default function IndexComponent() {
       customerId: "",
       customerName: "",
       customerAccount: "",
-      investmentformUrl:
-        "",
+      investmentformUrl: "",
     },
     facilityDetailsModel: {
       capitalizationMethod: 0,
@@ -128,6 +127,7 @@ export default function IndexComponent() {
       url: `/product-factory/investment/management/${investmentType}`,
     },
   ];
+
   function handleLinks(links, process) {
     // const extraLinks = [
     //   {
@@ -149,6 +149,14 @@ export default function IndexComponent() {
     //   let filteredLinks = links.filter((i) => i.id !== 3);
     //   return [...filteredLinks, ...extraLinks];
     // }
+    if (process === "restructure") {
+      const linkWithId2 = links.find((link) => link.id === 2);
+
+      // Update its title property
+      if (linkWithId2) {
+        linkWithId2.title = "Restructure Investment";
+      }
+    }
 
     return links;
   }
