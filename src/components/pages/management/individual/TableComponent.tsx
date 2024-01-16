@@ -6,8 +6,9 @@ import moment from "moment";
 import { ucObjectKeys, IndividualContext, AppContext } from "@app/utils";
 import {
   useGetPostProductsMutation,
+  
   useGetPostInvestmentMutation,
-  useGetPostRequestsMutation,
+    useGetPostInvestmentRequestsMutation,
   useGetUsersPermissionsQuery,
 } from "@app/api";
 import SearchInput from "@app/components/SearchInput";
@@ -270,11 +271,11 @@ const [individualListHeaders, setIndividualListHeaders]= useState(individualHead
       error: requestError,
       isLoading: isRequestLoading,
     },
-  ] = useGetPostRequestsMutation();
+  ] =   useGetPostInvestmentRequestsMutation();
   const [
     downloadRequests,
     { data: requestsDownloadData, isSuccess: requestsDownloadIsSuccess },
-  ] = useGetPostRequestsMutation();
+  ] =   useGetPostInvestmentRequestsMutation();
 
   const { data: initData, isSuccess: initSuccess } =
     useGetUsersPermissionsQuery({ permissions: ["CREATE_INVESTMENT_PRODUCT"] });
