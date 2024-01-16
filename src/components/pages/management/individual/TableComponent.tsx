@@ -6,9 +6,8 @@ import moment from "moment";
 import { ucObjectKeys, IndividualContext, AppContext } from "@app/utils";
 import {
   useGetPostProductsMutation,
-  
   useGetPostInvestmentMutation,
-    useGetPostInvestmentRequestsMutation,
+  useGetPostInvestmentRequestsMutation,
   useGetUsersPermissionsQuery,
 } from "@app/api";
 import SearchInput from "@app/components/SearchInput";
@@ -17,8 +16,8 @@ import {
   IndividualDropDownOptions,
   ProductTypes,
   StatusFilterOptions,
-  StatusTypes,
-  TypeFilterOptions,
+  IndividualStatusTypes,
+  IndividualTypeFilterOptions,
   individualHeader,
   IndividualRequestHeader,
 } from "@app/constants";
@@ -35,10 +34,11 @@ interface RequestDataProps {
 }
 
 interface ProductDataProps {
-  "product name": string;
-  "product code": string;
-  "product type": string;
-  state: string;
+  "customer name": string;
+  "customer id": string;
+  "principal": string;
+  'investment product' : string
+  status: string;
   "updated on": string;
 }
 
@@ -128,10 +128,11 @@ export function handleDownload(downloadData, isChecker, csvExporter, category) {
     const productData = downloadData.map((i) => {
       // @ts-ignore
       let obj: ProductDataProps = {
-        "product name": i?.productName || "",
-        "product code": i?.productCode || "",
-        "product type": i?.productType || "",
-        state: i?.state || "",
+        "customer name": i?.customerName || "",
+        "customer id": i?.investmentId || "",
+        "principal": i?.principal || "",
+        'investment product' : i?.investmentProduct || "",
+        status: i?.status || "",
         "updated on": moment(i.updated_At).format("DD MMM YYYY, hh:mm A"),
       };
 
@@ -192,12 +193,12 @@ export default function TableComponent({
   hasMore,
   fetchMoreData,
 }: any) {
- 
   const { category, setStatus, selected } = useContext(IndividualContext);
   const { isChecker } = useContext(AppContext);
   const [users, setUsers] = useState([]);
   const [searchResults, setSearchResults] = useState<any[]>([]);
-const [individualListHeaders, setIndividualListHeaders]= useState(individualHeader)
+  const [individualListHeaders, setIndividualListHeaders] =
+    useState(individualHeader);
   // console.log("category: " + JSON.stringify(category))
   // console.log("selected: " + JSON.stringify(selected))
   const [options, setOptions] = React.useState({
@@ -231,19 +232,17 @@ const [individualListHeaders, setIndividualListHeaders]= useState(individualHead
     query: { page: 1, page_Size: 1000000, filter_by: selected?.value },
   });
 
-  
   useEffect(() => {
     const results = fetchedProductsList?.results;
     if (results) {
-
       const targetKey = "investmentProduct";
       const mappedResults = results?.map((result) => {
         return {
           id: result.id,
           name: result.productName,
-          value: result.id
-        }
-      })
+          value: result.id,
+        };
+      });
 
       const updatedItems = individualHeader.map((item) => {
         if (item.key === targetKey) {
@@ -256,9 +255,7 @@ const [individualListHeaders, setIndividualListHeaders]= useState(individualHead
         // Leave other items unchanged
         return item;
       });
-      setIndividualListHeaders(updatedItems)
-
-     
+      setIndividualListHeaders(updatedItems);
     }
   }, [fetchedProductsList]);
 
@@ -271,11 +268,11 @@ const [individualListHeaders, setIndividualListHeaders]= useState(individualHead
       error: requestError,
       isLoading: isRequestLoading,
     },
-  ] =   useGetPostInvestmentRequestsMutation();
+  ] = useGetPostInvestmentRequestsMutation();
   const [
     downloadRequests,
     { data: requestsDownloadData, isSuccess: requestsDownloadIsSuccess },
-  ] =   useGetPostInvestmentRequestsMutation();
+  ] = useGetPostInvestmentRequestsMutation();
 
   const { data: initData, isSuccess: initSuccess } =
     useGetUsersPermissionsQuery({ permissions: ["CREATE_INVESTMENT_PRODUCT"] });
@@ -336,8 +333,9 @@ const [individualListHeaders, setIndividualListHeaders]= useState(individualHead
       handleDownload(
         productDownloadData?.results.map((i) => ({
           ...i,
-          state: StatusTypes.find((n) => n.id === i.state)?.type,
-          productType: ProductTypes.find((n) => n.id === i.productType)?.name,
+          status: IndividualStatusTypes.find(
+            (n) => n.id === i.investmentBookingStatus
+          )?.type,
         })),
         isChecker,
         csvExporter,
@@ -351,8 +349,9 @@ const [individualListHeaders, setIndividualListHeaders]= useState(individualHead
           requestStatus: StatusFilterOptions.find(
             (n) => n.value === i.requestStatus
           )?.name,
-          requestType: TypeFilterOptions.find((n) => n.value === i.requestType)
-            ?.name,
+          requestType: IndividualTypeFilterOptions.find(
+            (n) => n.value === i.requestType
+          )?.name,
         })),
         isChecker,
         csvExporter,
