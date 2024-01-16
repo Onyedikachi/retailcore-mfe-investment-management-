@@ -27,80 +27,31 @@ const individualDashboard = "/product-factory/investment/management/individual";
 const factoryRequests = "/product-factory/investment?category=requests";
 const individualRequests =
   "/product-factory/investment/management/individual?category=requests";
-export function handleNavigations(
-  { pathname, search },
-  process,
-  role = "superadmin",
-
-  specificCategory = null,
-  closeModal = () => {},
-  action = ""
-) {
-  if(specificCategory === SpecificCategory?.individual){
-    closeModal()
-    return
+  
+  export function handleNavigations(
+    { pathname, search },
+    process,
+    role = "superadmin",
+    specificCategory = null,
+    closeModal = () => {},
+    action = ""
+  ) {
+    const isIndividual = pathname.includes("management") && pathname.includes("individual");
+    const isModifyOrContinue = process === "modify" || process === "continue" || process === "withdraw_modify";
+  
+    if (specificCategory === SpecificCategory?.individual) {
+      closeModal();
+      return;
+    }
+  
+    if (isIndividual || isModifyOrContinue) {
+      return role === "superadmin" && action !== "draft" ? individualDashboard : individualRequests;
+    }
+  
+    // Default case
+    return role === "superadmin" && action !== "draft" ? factoryDashboard : factoryRequests;
   }
-
-
-  if (process === "create") {
-    if (pathname.includes("management") && pathname.includes("individual")) {
-      return role === "superadmin" && action !== "draft"
-        ? individualDashboard
-        : individualRequests;
-    }
-    if (!pathname.includes("management") && !pathname.includes("individual")) {
-      return role === "superadmin" && action !== "draft"
-        ? factoryDashboard
-        : factoryRequests;
-    }
-  }
-
-  if (process === "modify") {
-    if (pathname.includes("management") && pathname.includes("individual")) {
-      return role === "superadmin" && action !== "draft"
-        ? individualDashboard
-        : individualRequests;
-    }
-    if (!pathname.includes("management") && !pathname.includes("individual")) {
-      return role === "superadmin" && action !== "draft"
-        ? factoryDashboard
-        : factoryRequests;
-    }
-  }
-
-  if (process === "continue") {
-    if (pathname.includes("management") && pathname.includes("individual")) {
-      return role === "superadmin" && action !== "draft"
-        ? individualDashboard
-        : individualRequests;
-    }
-    if (!pathname.includes("management") && !pathname.includes("individual")) {
-      return role === "superadmin" && action !== "draft"
-        ? factoryDashboard
-        : factoryRequests;
-    }
-  }
-  if (process === "withdraw_modify") {
-    if (pathname.includes("management") && pathname.includes("individual")) {
-      return role === "superadmin" && action !== "draft"
-        ? individualDashboard
-        : individualRequests;
-    }
-    if (!pathname.includes("management") && !pathname.includes("individual")) {
-      return role === "superadmin" && action !== "draft"
-        ? factoryDashboard
-        : factoryRequests;
-    }
-  }
-  if (process === "verdict") {
-    if (pathname.includes("management") && pathname.includes("individual")) {
-      return individualRequests;
-    }
-    if (!pathname.includes("management") && !pathname.includes("individual")) {
-      return factoryRequests;
-    }
-  }
-}
+  
 
 export function handleNewCreate({ pathname }) {
   if (!pathname.includes("management")) {

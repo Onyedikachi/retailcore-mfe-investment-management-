@@ -134,16 +134,15 @@ export default function Preview({
   const [searchParams] = useSearchParams();
   const { investmentType, process } = useParams();
   const id = searchParams.get("id");
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isDeactivationOpen, setIsDeactivationOpen] = useState(false);
   const [confirmText, setConfirmText] = useState("");
-  const [subText, setSubText] = useState("");
   const [successText, setSuccessText] = useState("");
-  const [isFailed, setFailed] = useState(false);
+  const [subText, setSubText] = useState("");
   const [failedSubText, setFailedSubtext] = useState("");
+  const [isFailed, setFailed] = useState(false);
   const [failedText, setFailedText] = useState("");
-
   const [state, setState] = useState();
 
   const { data: activityData, isLoading: activityIsLoading } =
@@ -308,7 +307,15 @@ export default function Preview({
           activities={activityData?.results}
         />
       </div>
-      <Loader isOpen={false} text={""} />
+      {isSuccessOpen && (
+        <Success
+          text={successText}
+          isOpen={isSuccessOpen}
+          setIsOpen={setIsSuccessOpen}
+          canCreate={process === "create"}
+          subtext={subText}
+        />
+      )}
       {isConfirmOpen && (
         <Confirm
           text={confirmText}
@@ -322,15 +329,6 @@ export default function Preview({
           onCancel={() => {
             setIsConfirmOpen(false);
           }}
-        />
-      )}
-      {isSuccessOpen && (
-        <Success
-          text={successText}
-          isOpen={isSuccessOpen}
-          setIsOpen={setIsSuccessOpen}
-          canCreate={process === "create"}
-          subtext={subText}
         />
       )}
       {isFailed && (

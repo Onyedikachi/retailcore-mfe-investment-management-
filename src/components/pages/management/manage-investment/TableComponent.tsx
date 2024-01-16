@@ -6,7 +6,8 @@ import moment from "moment";
 import { ucObjectKeys, IndividualContext, AppContext } from "@app/utils";
 import {
   useGetPostProductsMutation,
-  useGetPostRequestsMutation,
+  useGetPostInvestmentMutation,
+  useGetPostInvestmentRequestsMutation,
   useGetUsersPermissionsQuery,
 } from "@app/api";
 import SearchInput from "@app/components/SearchInput";
@@ -15,11 +16,12 @@ import {
   IndividualDropDownOptions,
   ProductTypes,
   StatusFilterOptions,
-  StatusTypes,
-  TypeFilterOptions,
+  IndividualStatusTypes,
+  IndividualTypeFilterOptions,
   individualHeader,
-  IndividualProductsHeader,
+  IndividualRequestHeader,
 } from "@app/constants";
+import { useProductList } from "@app/hooks";
 import optionsDataHandler from "@app/utils/optionsDataHandler";
 
 interface RequestDataProps {
@@ -32,10 +34,11 @@ interface RequestDataProps {
 }
 
 interface ProductDataProps {
-  "product name": string;
-  "product code": string;
-  "product type": string;
-  state: string;
+  "customer name": string;
+  "customer id": string;
+  "principal": string;
+  'investment product' : string
+  status: string;
   "updated on": string;
 }
 
@@ -125,10 +128,11 @@ export function handleDownload(downloadData, isChecker, csvExporter, category) {
     const productData = downloadData.map((i) => {
       // @ts-ignore
       let obj: ProductDataProps = {
-        "product name": i?.productName || "",
-        "product code": i?.productCode || "",
-        "product type": i?.productType || "",
-        state: i?.state || "",
+        "customer name": i?.customerName || "",
+        "customer id": i?.investmentId || "",
+        "principal": i?.principal || "",
+        'investment product' : i?.investmentProduct || "",
+        status: i?.status || "",
         "updated on": moment(i.updated_At).format("DD MMM YYYY, hh:mm A"),
       };
 
@@ -193,7 +197,10 @@ export default function TableComponent({
   const { isChecker } = useContext(AppContext);
   const [users, setUsers] = useState([]);
   const [searchResults, setSearchResults] = useState<any[]>([]);
-
+  const [individualListHeaders, setIndividualListHeaders] =
+    useState(individualHeader);
+  // console.log("category: " + JSON.stringify(category))
+  // console.log("selected: " + JSON.stringify(selected))
   const [options, setOptions] = React.useState({
     fieldSeparator: ",",
     quoteStrings: '"',
@@ -209,16 +216,48 @@ export default function TableComponent({
     useBom: true,
     useKeysAsHeaders: true,
   });
+
   const csvExporter = new ExportToCsv(options);
 
   const [
     getProducts,
     { data, isSuccess, isError, error, isLoading: searchLoading },
-  ] = useGetPostProductsMutation();
+  ] = useGetPostInvestmentMutation();
   const [
     downloadProducts,
     { data: productDownloadData, isSuccess: productDownloadIsSuccess },
-  ] = useGetPostProductsMutation();
+  ] = useGetPostInvestmentMutation();
+
+  const { fetchedProductsList, isGetProductsSuccess } = useProductList({
+    query: { page: 1, page_Size: 1000000, filter_by: selected?.value },
+  });
+
+  useEffect(() => {
+    const results = fetchedProductsList?.results;
+    if (results) {
+      const targetKey = "investmentProduct";
+      const mappedResults = results?.map((result) => {
+        return {
+          id: result.id,
+          name: result.productName,
+          value: result.id,
+        };
+      });
+
+      const updatedItems = individualHeader.map((item) => {
+        if (item.key === targetKey) {
+          // Update the options for the target item
+          return {
+            ...item,
+            options: [...mappedResults],
+          };
+        }
+        // Leave other items unchanged
+        return item;
+      });
+      setIndividualListHeaders(updatedItems);
+    }
+  }, [fetchedProductsList]);
 
   const [
     getRequests,
@@ -229,11 +268,11 @@ export default function TableComponent({
       error: requestError,
       isLoading: isRequestLoading,
     },
-  ] = useGetPostRequestsMutation();
+  ] = useGetPostInvestmentRequestsMutation();
   const [
     downloadRequests,
     { data: requestsDownloadData, isSuccess: requestsDownloadIsSuccess },
-  ] = useGetPostRequestsMutation();
+  ] = useGetPostInvestmentRequestsMutation();
 
   const { data: initData, isSuccess: initSuccess } =
     useGetUsersPermissionsQuery({ permissions: ["CREATE_INVESTMENT_PRODUCT"] });
@@ -294,8 +333,9 @@ export default function TableComponent({
       handleDownload(
         productDownloadData?.results.map((i) => ({
           ...i,
-          state: StatusTypes.find((n) => n.id === i.state)?.type,
-          productType: ProductTypes.find((n) => n.id === i.productType)?.name,
+          status: IndividualStatusTypes.find(
+            (n) => n.id === i.investmentBookingStatus
+          )?.type,
         })),
         isChecker,
         csvExporter,
@@ -309,8 +349,9 @@ export default function TableComponent({
           requestStatus: StatusFilterOptions.find(
             (n) => n.value === i.requestStatus
           )?.name,
-          requestType: TypeFilterOptions.find((n) => n.value === i.requestType)
-            ?.name,
+          requestType: IndividualTypeFilterOptions.find(
+            (n) => n.value === i.requestType
+          )?.name,
         })),
         isChecker,
         csvExporter,
@@ -326,7 +367,7 @@ export default function TableComponent({
       decimalSeparator: ".",
       showLabels: true,
       showTitle: false,
-      title: "Investment management",
+      title: "Product management",
       filename:
         category === StatusCategoryType?.Investments
           ? "dashboard_products_data"
@@ -339,6 +380,8 @@ export default function TableComponent({
   }, [category]);
 
   const getOptionData = (value: any, label: string) => {
+    console.log(`${JSON.stringify(value)}, ${label}`);
+
     optionsDataHandler({ query, value, label, setQuery });
   };
   const onChangeDate = (value: any) => {
@@ -358,6 +401,7 @@ export default function TableComponent({
   return (
     <section className="w-full h-full">
       {/* Table Top bar  */}
+
       <div className="flex justify-end gap-x-[25px] items-center mb-[27px] h-auto">
         <SearchInput
           setSearchTerm={(value) =>
@@ -370,13 +414,14 @@ export default function TableComponent({
               selected
             )
           }
-          placeholder={`Search by product name${
+          placeholder={`Search by customer name${
             category !== StatusCategoryType.Requests ? "/code" : ""
           }`}
           searchResults={searchResults}
           setSearchResults={setSearchResults}
           searchLoading={searchLoading}
           handleSearch={(value) => handleSearch(value, setQuery, query)}
+          type={category}
         />
         <div className="relative  after:content-[''] after:w-1 after:h-[80%] after:absolute after:border-r after:right-[-15px] after:top-1/2 after:translate-y-[-50%] after:border-[#E5E9EB]">
           {/* Refresh button  */}
@@ -389,16 +434,34 @@ export default function TableComponent({
             <HiRefresh className="text-lg" /> Refresh table
           </button>
         </div>{" "}
-     
+        <div>
+          {/* download button  */}{" "}
+          <button
+            onClick={() =>
+              initiateDownload(
+                query,
+                category,
+                downloadProducts,
+                downloadRequests,
+                selected
+              )
+            }
+            data-testid="download-btn"
+            className="flex gap-x-2 items-center bg-transparent border-none text-[#636363] text-base"
+          >
+            <HiDownload className="text-lg" /> Download
+          </button>
+        </div>
       </div>
 
       {/* main table  */}
+      {/* { category === StatusCategoryType?.Investments ? 't' : 'f'} */}
       <Table
         headers={
           category === StatusCategoryType?.Investments
-            ? individualHeader
+            ? individualListHeaders
             : handleHeaders(
-                IndividualProductsHeader.map((i) => {
+                IndividualRequestHeader.map((i) => {
                   if (i.key === "created_By" || i.key === "approved_By") {
                     i.options = users;
                   }
@@ -407,7 +470,11 @@ export default function TableComponent({
                 isChecker
               )
         }
-        tableRows={productData}
+        tableRows={
+          category === StatusCategoryType?.Investments
+            ? productData
+            : requestData
+        }
         page={1}
         total={query.total}
         fetchMoreData={fetchMoreData}
@@ -417,13 +484,14 @@ export default function TableComponent({
         dropDownOptions={IndividualDropDownOptions}
         dropDownClick={handleDropClick}
         onChangeDate={onChangeDate}
-        type={category?.toLowerCase()}
+        type={category.toLowerCase()}
         noData={
           StatusCategoryType.Requests === category
             ? "No request available"
             : "No investment available"
         }
         Context={IndividualContext}
+        handleRefresh={handleRefresh}
       />
     </section>
   );

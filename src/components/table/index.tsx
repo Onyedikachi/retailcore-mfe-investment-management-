@@ -190,7 +190,7 @@ export const handleProductsDropdown = (
 export const TextCellContent = ({ value, isCurrencyValue = false }) => (
   <span className="relative">
     <span className="relative max-w-[290px] whitespace-normal">
-      {`${isCurrencyValue ? currencyFormatter(value, 'NGN', true, 2) : value}` || "-"}
+      {`${isCurrencyValue ? currencyFormatter(value, 'NGN') : value}` || "-"}
     </span>
   </span>
 );
