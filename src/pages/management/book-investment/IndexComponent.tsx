@@ -15,13 +15,18 @@ import {
   useBookingCalcMutation,
   useCreateInvestmentMutation,
   useGetProductDetailQuery,
-  useGetRequestDetailQuery,
-  useModifyProductMutation,
-  useModifyRequestMutation,
+  useGetInvestmentDetailQuery,
+  useGetInvestmentRequestDetailQuery,
+  useModifyInvestmentMutation,
+  useModifyInvestmentRequestMutation,
 } from "@app/api";
 import { Confirm, Failed, Success } from "@app/components/modals";
 import { Prompts } from "@app/constants/enums";
-import { handleMessage } from "@app/pages/investment/term-deposit/create-term-deposit/IndexComponent";
+import {
+  handleMessage,
+  handleRequestIsSuccess,
+} from "@app/pages/investment/term-deposit/create-term-deposit/IndexComponent";
+import BottomBarLoader from "@app/components/BottomBarLoader";
 
 export function handleNext(step, setStep, BookInvestmentFormSteps) {
   console.log(step);
@@ -118,7 +123,7 @@ export default function IndexComponent() {
   const [calcDetail, setCalcDetail] = useState(null);
   const navigate = useNavigate();
   const [formData, setFormData] = useState<any>({
-    id: null,
+    id: id || null,
     customerId: "",
     customerBookingInfoModel: {
       customerId: "",
@@ -201,7 +206,7 @@ export default function IndexComponent() {
       isError: modifyIsError,
       error: modifyError,
     },
-  ] = useModifyProductMutation();
+  ] = useModifyInvestmentMutation();
 
   const [
     modifyRequest,
@@ -211,13 +216,13 @@ export default function IndexComponent() {
       isError: modifyRequestIsError,
       error: modifyRequestError,
     },
-  ] = useModifyRequestMutation();
+  ] = useModifyInvestmentRequestMutation();
 
   const {
     data: requestData,
     isLoading: requestIsLoading,
     isSuccess: requestIsSuccess,
-  } = useGetRequestDetailQuery(
+  } = useGetInvestmentRequestDetailQuery(
     {
       id,
     },
@@ -228,7 +233,7 @@ export default function IndexComponent() {
     data: productDetails,
     isLoading: productDetailsIsLoading,
     isSuccess: productDetailsIsSuccess,
-  } = useGetProductDetailQuery(
+  } = useGetInvestmentDetailQuery(
     {
       id,
     },
@@ -279,6 +284,13 @@ export default function IndexComponent() {
   useEffect(() => {
     if (detailIsSuccess) {
       setProductDetail(detail?.data);
+      setFormData({
+        ...formData,
+        facilityDetailsModel: {
+          ...formData.facilityDetailsModel,
+          investmentProductName: detail?.data?.productInfo?.productName,
+        },
+      });
     }
   }, [detailIsSuccess, detail]);
 
@@ -314,6 +326,18 @@ export default function IndexComponent() {
     modifyRequestSuccess,
     modifyRequestIsError,
   ]);
+
+  useEffect(() => {
+    handleRequestIsSuccess({
+      activeId,
+      previousData,
+      process,
+      requestData,
+      requestIsSuccess,
+      setFormData,
+      type: "individual_booking",
+    });
+  }, [requestIsSuccess]);
   return (
     <div>
       {!stage && (
@@ -336,17 +360,21 @@ export default function IndexComponent() {
                 </div>
                 <div className=" bg-[#ffffff] border border-[#EEEEEE] rounded-[10px] px-[87px] pt-[100px] pb-[43px] ">
                   {/* {form component} */}
-                  <BookInvestmentFormComponent
-                    formData={formData}
-                    setFormData={setFormData}
-                    step={step}
-                    handleNav={() => handleNav({ step, setStep, navigate, investmentType })}
-                    setDisabled={setDisabled}
-                    isSavingDraft={isSavingDraft}
-                    setProductDetail={setProductDetail}
-                    productDetail={productDetail}
-                    detailLoading={detailLoading}
-                  />
+                  {!requestIsLoading ? (
+                    <BookInvestmentFormComponent
+                      formData={formData}
+                      setFormData={setFormData}
+                      step={step}
+                      handleNav={() => handleNav({ step, setStep, navigate, investmentType })}
+                      setDisabled={setDisabled}
+                      isSavingDraft={isSavingDraft}
+                      setProductDetail={setProductDetail}
+                      productDetail={productDetail}
+                      detailLoading={detailLoading}
+                    />
+                  ) : (
+                    <BottomBarLoader />
+                  )}
 
                   <div className="h-px w-full bg-[#CCCCCC] mb-12 mt-16"></div>
 
