@@ -513,7 +513,6 @@ export default function LiquiditySetup({
                         max={7}
                       />
                     </div>
-
                     <div className="flex gap-4">
                       <div
                         className={`w-[150px] ${
