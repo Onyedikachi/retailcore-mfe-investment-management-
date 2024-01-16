@@ -454,6 +454,14 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    getInvestmentDashboardStats: builder.query<any, any>({
+      query: () => {
+        return {
+          url: `${urls.INVESTMENT_DASHBOARD_STATS}`,
+          method: "get",
+        };
+      },
+    }),
   }),
 });
 
@@ -497,4 +505,5 @@ export const {
   useBookingCalcMutation,
   useModifyInvestmentMutation,
   useModifyInvestmentRequestMutation,
+  useGetInvestmentDashboardStatsQuery,
 } = investmentApi;

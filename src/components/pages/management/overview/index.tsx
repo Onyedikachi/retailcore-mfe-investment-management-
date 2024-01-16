@@ -1,39 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   OverviewDonutChartInfo,
   InvestmentVolume,
 } from "@app/components/Charts";
-import { OverviewContext, defaultOverviewContext } from "@app/utils";
+import { OverviewContext } from "@app/utils";
 import { OverviewDiv, QuickLinks } from "@app/components";
 import { InvestmentsRanking } from "@app/components/management";
 import { useNavigate, useParams } from "react-router-dom";
-
+import { useGetInvestmentDashboardStatsQuery } from "@app/api";
 import { WithdrawSvg, UserSvg, InvestmentSvg } from "@app/assets/images";
+import { currencyFormatter } from "@app/utils/formatCurrency"
 
 // import { createOverviewState } from '../../../utils'
 export default function Overview() {
-  const [overviewState, setOverviewState] = useState(defaultOverviewContext);
+  const [overviewTabStats, setOverviewTabStats] = useState(null);
   const navigate = useNavigate();
-  const tabs = [
+  const {
+    data: dashboardStats,
+    refetch: getStats,
+    isLoading: isLoadingDashboardStats,
+    isSuccess: isDashboardStatsSuccess,
+  } = useGetInvestmentDashboardStatsQuery();
+  const [tabs, setTabs] = useState([
     {
       title: "All Investments",
-      amount: "NGN 900,000,000.00",
-      description: "1004 total investments",
+      amount: 0.00,
+      totalValue: "",
       icon: <InvestmentSvg />,
     },
     {
       title: "Active Investments",
-      amount: "NGN 1, 900,000,000.00",
-      description: "2994 active investments",
+      amount: 0.00,
+      totalValue: "",
       icon: <UserSvg />,
     },
     {
       title: "Liquidated Investments",
-      amount: "NGN 40,000,000.00",
-      description: "104 liquidated investments",
+      amount: 0.00,
+      totalValue: "",
       icon: <WithdrawSvg />,
     },
-  ];
+  ]);
   const portFolioLabels = [
     { text: "Term Deposit", color: "#F8961E", amount: "20,000.00", data: 20 },
     { text: "Treasury Bill", color: "#F94144", amount: "20,000.00", data: 50 },
@@ -50,24 +57,70 @@ export default function Overview() {
   ];
 
   const dataChange = (tab) => {
-    navigate(`/product-factory/investment/management/products/${tab.title}`)
-    
+    navigate(`/product-factory/investment/management/products/${tab.title}`);
+
     // setOverviewState({ name: tab.title });
     // state?.setData('name', tab.title)
   };
+
+  const updateInvestmentTabs = (data, tabs) => {
+    return tabs.map((tab) => {
+      let key;
+      if (tab.title === "All Investments") {
+        key = "All";
+      } else if (tab.title === "Active Investments") {
+        key = "A";
+      } else if (tab.title === "Liquidated Investments") {
+        key = "L";
+      }
+
+      const tabData = data[key] || { count: 0, totalValue: 0 };
+
+      return {
+        ...tab,
+        amount: ` ${tabData.totalValue}`,
+        totalValue: `${tabData.count} total investments`,
+      };
+    });
+  };
+
+  useEffect(() => {
+    if (dashboardStats) {
+      console.log("🚀 ~ useEffect ~ dashboardStats:", dashboardStats.data);
+
+      setOverviewTabStats(dashboardStats.data);
+    }
+  }, [dashboardStats, isDashboardStatsSuccess]);
+
+  useEffect(() => {
+    if (overviewTabStats) {
+      setTabs( updateInvestmentTabs(overviewTabStats, tabs));
+    }
+  }, [overviewTabStats]);
+
+
+  const value = useMemo(
+    () => ({
+      overviewTabStats,
+      setOverviewTabStats,
+      getStats,
+    }),
+    [overviewTabStats, setOverviewTabStats, getStats]
+  );
   return (
-    <OverviewContext.Provider value={overviewState}>
+    <OverviewContext.Provider value={value}>
       <div className="flex gap-x-5 w-full flex-1">
         <div className="flex flex-col gap-[25px] flex-1">
           <div className="flex  gap-[25px]">
             <div className="grid w-full max-w-[350px]  gap-5">
               {tabs.map((tab) => (
                 <div
+
                   onClick={() => {
                     dataChange(tab);
                   }}
                   key={tab.title}
-                  className="cursor-pointer flex gap-3 rounded-[5px] bg-[#FFFFFF] px-6 py-8 shadow-custom"
+                  className={`${isLoadingDashboardStats ? 'animate-pulse opacity-50' : ''}  cursor-pointer flex gap-3 rounded-[5px] bg-[#FFFFFF] px-6 py-8 shadow-custom`}
                 >
                   <div className="flex items-center">
                     <div className="h-[45px] w-[45px] rounded-full bg-[#D4F7DC] flex items-center justify-center">
@@ -79,10 +132,10 @@ export default function Overview() {
                       {tab.title}
                     </span>
                     <span className="text-[20px] font-semibold text-[#636363]">
-                      {tab.amount}
+                      {currencyFormatter(tab.amount, 'NGN', true, 2)}
                     </span>
                     <span className="text-xs text-[#63636380]">
-                      {tab.description}
+                      {tab.totalValue}
                     </span>
                   </div>
                 </div>
