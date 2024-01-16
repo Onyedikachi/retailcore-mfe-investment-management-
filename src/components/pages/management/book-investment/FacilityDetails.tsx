@@ -88,8 +88,9 @@ type FacilityDetailsProps = {
   proceed?: () => void;
   setDisabled?: any;
   isSavingDraft?: boolean;
+  productDetail?: any;
   setProductDetail?: (e) => void;
-  setCalcDetail?: (e) => void;
+  detailLoading?: boolean;
 };
 
 export const handleSearch = (
@@ -97,12 +98,21 @@ export const handleSearch = (
   data,
   setValue,
   setProductName,
-  trigger
+  trigger,
+  formData,
+  setFormData
 ) => {
   if (data) {
     setValue("investmentProductId", data?.value);
     setValue("investmentProductName", data?.name);
     trigger("investmentProductId");
+    setFormData({
+      ...formData,
+      facilityDetailsModel: {
+        ...formData.facilityDetailsModel,
+        investmentProductId: data.value,
+      },
+    });
   }
 
   setProductName(value);
@@ -113,8 +123,9 @@ export default function FacilityDetails({
   proceed,
   setDisabled,
   isSavingDraft,
+  productDetail,
   setProductDetail,
-  setCalcDetail,
+  detailLoading,
 }: FacilityDetailsProps) {
   const { currencies } = useContext(AppContext);
   const {
@@ -143,33 +154,6 @@ export default function FacilityDetails({
     { data, isSuccess, isError, error, isLoading: searchLoading },
   ] = useGetPostProductsMutation();
 
-  const [
-    bookingCalc,
-    {
-      data: calcData,
-      isSuccess: calcIsSuccess,
-      isError: calcIsError,
-      error: calcError,
-      isLoading: calcLoading,
-    },
-  ] = useBookingCalcMutation();
-
-  useEffect(() => {
-    setCalcDetail(calcData?.data);
-  }, [calcData, calcIsSuccess]);
-
-  const {
-    data: detail,
-    isSuccess: detailIsSuccess,
-    isError: detailIsError,
-    error: detailError,
-    isLoading: detailLoading,
-  } = useGetProductDetailQuery(
-    { id: values.investmentProductId },
-    {
-      skip: !values.investmentProductId,
-    }
-  );
   // Search product
   useEffect(() => {
     if (query.length) {
@@ -194,19 +178,64 @@ export default function FacilityDetails({
         })
       );
     }
-
-    return () => {
-      setProductsData([]);
-    };
   }, [isError, isSuccess, searchLoading, data]);
 
   // Set product detail
   useEffect(() => {
-    hanldleDetailsIsSuccess({detailIsSuccess, detail, values, setValue, setProductDetail})
-    return () => {
-      setProductDetail([]);
-    };
-  }, [detailIsSuccess, detail]);
+    if (productDetail) {
+      setValue(
+        "tenorMin",
+        productDetail?.pricingConfiguration?.applicableTenorMin
+      );
+      setValue(
+        "tenorMax",
+        productDetail?.pricingConfiguration?.applicableTenorMax
+      );
+      setValue(
+        "prinMin",
+        productDetail?.pricingConfiguration?.applicablePrincipalMin
+      );
+      setValue(
+        "prinMax",
+        productDetail?.pricingConfiguration?.applicablePrincipalMax
+      );
+
+      const rangeArr =
+        productDetail?.pricingConfiguration?.interestRateConfigModels[0];
+      if (rangeArr.length) {
+        if (productDetail?.pricingConfiguration?.interestRateRangeType === 0) {
+          if (
+            values.principal >= rangeArr.principalMin &&
+            values.principal <= rangeArr.principalMax
+          ) {
+            setValue("intMin", rangeArr.min);
+            setValue("intMax", rangeArr.max);
+          }
+        }
+
+        if (productDetail?.pricingConfiguration?.interestRateRangeType === 1) {
+          if (
+            values.tenor >= rangeArr.tenorMin &&
+            values.tenor <= rangeArr.tenorMax
+          ) {
+            setValue("intMin", rangeArr.min);
+            setValue("intMax", rangeArr.max);
+          }
+        }
+      }
+
+      if (productDetail?.pricingConfiguration?.interestRateRangeType === 2) {
+        setValue(
+          "intMin",
+          productDetail?.pricingConfiguration?.interestRateMin
+        );
+        setValue(
+          "intMax",
+          productDetail?.pricingConfiguration?.interestRateMax
+        );
+      }
+    }
+  }, [productDetail]);
 
   useEffect(() => {
     if (!values.investmentProductId) {
@@ -217,8 +246,8 @@ export default function FacilityDetails({
   }, [isValid, values]);
 
   useEffect(() => {
-    if (detail?.data?.pricingConfiguration?.interestRateRangeType === 0) {
-      detail?.data?.pricingConfiguration?.interestRateConfigModels?.forEach(
+    if (productDetail?.pricingConfiguration?.interestRateRangeType === 0) {
+      productDetail?.pricingConfiguration?.interestRateConfigModels?.forEach(
         (i) => {
           if (
             values.principal >= i.principalMin &&
@@ -230,8 +259,8 @@ export default function FacilityDetails({
         }
       );
     }
-    if (detail?.data?.pricingConfiguration?.interestRateRangeType === 1) {
-      detail?.data?.pricingConfiguration?.interestRateConfigModels?.forEach(
+    if (productDetail?.pricingConfiguration?.interestRateRangeType === 1) {
+      productDetail?.pricingConfiguration?.interestRateConfigModels?.forEach(
         (i) => {
           if (values.tenor >= i.tenorMin && values.tenor <= i.tenorMax) {
             setValue("intMin", i.min);
@@ -240,23 +269,21 @@ export default function FacilityDetails({
         }
       );
     }
-    if (detail?.data?.pricingConfiguration?.interestRateRangeType === 2) {
-      setValue("intMin", detail?.data?.pricingConfiguration?.interestRateMin);
-      setValue("intMax", detail?.data?.pricingConfiguration?.interestRateMax);
+    if (productDetail?.pricingConfiguration?.interestRateRangeType === 2) {
+      setValue("intMin", productDetail?.pricingConfiguration?.interestRateMin);
+      setValue("intMax", productDetail?.pricingConfiguration?.interestRateMax);
     }
     if ((values.tenor || values.principal) && values.interestRate) {
       trigger("interestRate");
     }
+  }, [values.tenor, values.principal, values.interestRate, productDetail]);
 
-    if (
-      detail?.data &&
-      values.tenor &&
-      values.principal &&
-      values.interestRate
-    ) {
-      fetchRate()
-    }
-  }, [values.tenor, values.principal, values.interestRate, detail]);
+  useEffect(() => {
+    setFormData({
+      ...formData,
+      facilityDetailsModel: values,
+    });
+  }, [values.tenor, values.principal, values.interestRate, values.capitalizationMethod]);
 
   useEffect(() => {
     setFormData({
@@ -265,31 +292,6 @@ export default function FacilityDetails({
     });
   }, [isSavingDraft]);
 
-  useEffect(() => {
-    if (
-      detail?.data &&
-      values.tenor &&
-      values.principal &&
-      values.interestRate
-    ) {
-      fetchRate();
-    }
-  }, [
-    values.tenor,
-    values.principal,
-    values.interestRate,
-    values?.capitalizationMethod,
-  ]);
-
-  const fetchRate = () => {
-    bookingCalc({
-      principal: values.principal,
-      rate: values.interestRate,
-      tenor: values.tenor,
-      tenorUnit: detail?.data?.pricingConfiguration?.applicableTenorMaxUnit,
-      method: values.capitalizationMethod,
-    });
-  };
   return (
     <form
       id="facilityDetails"
@@ -319,7 +321,15 @@ export default function FacilityDetails({
                   setSearchResults={() => { }}
                   searchLoading={searchLoading}
                   handleSearch={(value, data) =>
-                    handleSearch(value, data, setValue, setProductName, trigger)
+                    handleSearch(
+                      value,
+                      data,
+                      setValue,
+                      setProductName,
+                      trigger,
+                      formData,
+                      setFormData
+                    )
                   }
                   placeholder={"Search Investment Product"}
                   customClass="shadow-none"
@@ -348,10 +358,10 @@ export default function FacilityDetails({
                     <span className="text-base font-normal text-[#636363] capitalize">
                       {
                         // CustomerCategory[
-                        //   detail?.data?.customerEligibility?.customerCategory
+                        //   productDetail?.customerEligibility?.customerCategory
                         // ]
                         ProductTypes.find(
-                          (n) => n.id === detail?.data?.productType
+                          (n) => n.id === productDetail?.productType
                         )?.name
                       }
                     </span>
@@ -398,48 +408,48 @@ export default function FacilityDetails({
                       <span className="text-base font-normal text-[#636363] capitalize">
                         {
                           Interval[
-                          detail?.data?.pricingConfiguration
-                            ?.applicableTenorMaxUnit
+                            productDetail?.pricingConfiguration
+                              ?.applicableTenorMaxUnit
                           ]
                         }
                       </span>
                     </div>
                     <div className="text-sm text-[#AAAAAA] mt-1">
-                      {detail?.data?.pricingConfiguration
+                      {productDetail?.pricingConfiguration
                         ?.interestRateRangeType === 2 && (
-                          <span>
-                            {
-                              detail?.data?.pricingConfiguration
-                                ?.applicableTenorMin
-                            }{" "}
-                            -{" "}
-                            {
-                              detail?.data?.pricingConfiguration
-                                ?.applicableTenorMax
-                            }{" "}
-                            {
-                              Interval[
-                              detail?.data?.pricingConfiguration
+                        <span>
+                          {
+                            productDetail?.pricingConfiguration
+                              ?.applicableTenorMin
+                          }{" "}
+                          -{" "}
+                          {
+                            productDetail?.pricingConfiguration
+                              ?.applicableTenorMax
+                          }{" "}
+                          {
+                            Interval[
+                              productDetail?.pricingConfiguration
                                 ?.applicableTenorMaxUnit
-                              ]
-                            }
-                          </span>
-                        )}
-                      {detail?.data?.pricingConfiguration
+                            ]
+                          }
+                        </span>
+                      )}
+                      {productDetail?.pricingConfiguration
                         ?.interestRateRangeType !== 2 && (
-                          <span>
-                            {
-                              detail?.data?.pricingConfiguration
-                                ?.applicableTenorMin
-                            }{" "}
-                            -{" "}
-                            {
-                              detail?.data?.pricingConfiguration
-                                ?.applicableTenorMax
-                            }{" "}
-                            {
-                              Interval[
-                              detail?.data?.pricingConfiguration
+                        <span>
+                          {
+                            productDetail?.pricingConfiguration
+                              ?.applicableTenorMin
+                          }{" "}
+                          -{" "}
+                          {
+                            productDetail?.pricingConfiguration
+                              ?.applicableTenorMax
+                          }{" "}
+                          {
+                            Interval[
+                              productDetail?.pricingConfiguration
                                 ?.applicableTenorMaxUnit
                               ]
                             }
@@ -454,7 +464,7 @@ export default function FacilityDetails({
                   <div className=" w-[360px]">
                     <MinMaxInput
                       currency={handleCurrencyName(
-                        detail?.data?.productInfo?.currency,
+                        productDetail?.productInfo?.currency,
                         currencies
                       )}
                       isCurrency
@@ -469,20 +479,20 @@ export default function FacilityDetails({
                     <div className="text-sm text-[#AAAAAA] mt-1">
                       <span>
                         {currencyFormatter(
-                          detail?.data?.pricingConfiguration
+                          productDetail?.pricingConfiguration
                             ?.applicablePrincipalMin,
                           handleCurrencyName(
-                            detail?.data?.productInfo?.currency,
+                            productDetail?.productInfo?.currency,
                             currencies
                           )
                         )}{" "}
                         -{" "}
                         {currencyFormatter(
-                          detail?.data?.pricingConfiguration
+                          productDetail?.pricingConfiguration
                             ?.applicablePrincipalMax,
 
                           handleCurrencyName(
-                            detail?.data?.productInfo?.currency,
+                            productDetail?.productInfo?.currency,
                             currencies
                           )
                         )}
@@ -508,20 +518,20 @@ export default function FacilityDetails({
                       defaultValue={formData?.facilityDetailsModel.interestRate}
                     />
                     <div className="text-sm text-[#AAAAAA] mt-1">
-                      {detail?.data?.pricingConfiguration
+                      {productDetail?.pricingConfiguration
                         ?.interestRateRangeType === 2 ? (
                         <span>
-                          {detail?.data?.pricingConfiguration?.interestRateMin}{" "}
+                          {productDetail?.pricingConfiguration?.interestRateMin}{" "}
                           -{" "}
-                          {detail?.data?.pricingConfiguration?.interestRateMax}%{" "}
-                          per annum
+                          {productDetail?.pricingConfiguration?.interestRateMax}
+                          % per annum
                         </span>
                       ) : (
                         <span>
-                          {detail?.data?.pricingConfiguration?.interestRateConfigModels?.map(
+                          {productDetail?.pricingConfiguration?.interestRateConfigModels?.map(
                             (i, idx) => (
                               <div key={idx}>
-                                {detail?.data?.pricingConfiguration
+                                {productDetail?.pricingConfiguration
                                   ?.interestRateRangeType === 0 ? (
                                   <span>
                                     {" "}
@@ -530,7 +540,7 @@ export default function FacilityDetails({
                                     {currencyFormatter(
                                       i?.principalMin,
                                       handleCurrencyName(
-                                        detail?.data?.productInfo?.currency,
+                                        productDetail?.productInfo?.currency,
                                         currencies
                                       )
                                     )}{" "}
@@ -538,7 +548,7 @@ export default function FacilityDetails({
                                     {currencyFormatter(
                                       i?.principalMax,
                                       handleCurrencyName(
-                                        detail?.data?.productInfo?.currency,
+                                        productDetail?.productInfo?.currency,
                                         currencies
                                       )
                                     )}

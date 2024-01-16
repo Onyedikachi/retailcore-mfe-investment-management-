@@ -73,26 +73,25 @@ export default function IndexComponent() {
   const [disabled, setDisabled] = useState(true);
   const [isSavingDraft, setIsSavingDraft] = useState(false);
   const [productDetail, setProductDetail] = useState(null);
-  const [calcDetail, setCalcDetail] = useState(null);
   const navigate = useNavigate();
   const [formData, setFormData] = useState<any>({
     id: "",
+    customerId: "",
     customerBookingInfoModel: {
-      customerId: "",
-      customerName: "",
-      customerAccount: "",
+      customerId: "63762c09-3f83-4200-be5c-dcba0ac8fe15",
+      customerName: "Ibrahim Adefemi Cole",
+      customerAccount: "2000000019",
       investmentformUrl:
-        "",
+        "http://retailcore-investment-management-api.dev.bepeerless.co/uploads/79dc1d11-d3e9-41cd-90ec-4827226d2764.jpg",
     },
     facilityDetailsModel: {
       capitalizationMethod: 0,
-      interestRate: null,
-      principal: null,
-      tenor: null,
-      investmentPurpose: "",
-      investmentProductId: "",
-      investmentProductName: "",
-
+      interestRate: 2,
+      principal: 3000,
+      tenor: 3,
+      investmentPurpose: "Purpose",
+      investmentProductId: "87e95dfb-f13d-465e-93a9-a214617699f9",
+      investmentProductName: "Leke Test Draft withdrawn",
       tenorMin: null,
       tenorMax: null,
       prinMin: null,
@@ -128,6 +127,7 @@ export default function IndexComponent() {
       url: `/product-factory/investment/management/${investmentType}`,
     },
   ];
+
   function handleLinks(links, process) {
     // const extraLinks = [
     //   {
@@ -149,6 +149,14 @@ export default function IndexComponent() {
     //   let filteredLinks = links.filter((i) => i.id !== 3);
     //   return [...filteredLinks, ...extraLinks];
     // }
+    if (process === "restructure") {
+      const linkWithId2 = links.find((link) => link.id === 2);
+
+      // Update its title property
+      if (linkWithId2) {
+        linkWithId2.title = "Restructure Investment";
+      }
+    }
 
     return links;
   }
@@ -160,6 +168,19 @@ export default function IndexComponent() {
           `/product-factory/investment/management/${process}/${investmentType}?stage=summary`
         );
   }
+
+  const {
+    data: detail,
+    isSuccess: detailIsSuccess,
+    isError: detailIsError,
+    error: detailError,
+    isLoading: detailLoading,
+  } = useGetProductDetailQuery(
+    { id: formData?.facilityDetailsModel?.investmentProductId },
+    {
+      skip: !formData?.facilityDetailsModel?.investmentProductId,
+    }
+  );
 
   const [createInvestment, { data, isLoading, isSuccess, isError, error }] =
     useCreateInvestmentMutation();
@@ -204,6 +225,12 @@ export default function IndexComponent() {
     },
     { skip: !id }
   );
+
+  useEffect(() => {
+    if (detailIsSuccess) {
+      setProductDetail(detail?.data);
+    }
+  }, [detailIsSuccess, detail]);
 
   useEffect(() => {
     handleFormRef({ step, setFormRef });
@@ -267,7 +294,8 @@ export default function IndexComponent() {
                     setDisabled={setDisabled}
                     isSavingDraft={isSavingDraft}
                     setProductDetail={setProductDetail}
-                    setCalcDetail={setCalcDetail}
+                    productDetail={productDetail}
+                    detailLoading={detailLoading}
                   />
 
                   <div className="h-px w-full bg-[#CCCCCC] mb-12 mt-16"></div>
@@ -310,11 +338,11 @@ export default function IndexComponent() {
                   </div>
                 </div>
               </div>
-              {step === 2 && productDetail && (
+              {step !== 1 && productDetail && (
                 <div className="w-full max-w-[400px]">
                   <ProductInfoInvestmentCalc
                     productDetail={productDetail}
-                    calcDetail={calcDetail}
+                    formData={formData}
                   />
                 </div>
               )}
@@ -363,6 +391,7 @@ export default function IndexComponent() {
           text={successText}
           isOpen={isSuccessOpen}
           setIsOpen={setIsSuccessOpen}
+          action="draft"
         />
       )}
     </div>

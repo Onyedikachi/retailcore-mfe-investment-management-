@@ -39,12 +39,17 @@ export function InputDivs({
       <div
         className={`flex gap-x-[50px] items-center ${divClass ? divClass : ""}`}
       >
-        <span
+      <div className="w-[300px]">
+      <span
           data-testid="input-div"
-          className="min-w-[300px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium"
+          className="flex items-start gap-x-[1px] text-[#636363] text-base font-medium mb-1"
         >
           {label} {isCompulsory && <RedDot />}
         </span>
+        <span  className="flex items-start gap-x-[1px] text-[#AAAAAA] text-sm font-normal">
+          {subLabel}
+        </span>
+      </div>
         <div>
           <div className="mb-[2px]">{children}</div>
           {errors && name && (

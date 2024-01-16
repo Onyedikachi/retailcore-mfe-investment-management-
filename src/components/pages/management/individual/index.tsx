@@ -19,6 +19,7 @@ import {
   StatusFilterOptions,
   StatusTypes,
   TypeFilterOptions,
+  SpecificCategory
 } from "@app/constants";
 import { sortTabStatus } from "@app/utils/sortTabStatus";
 import { useSearchParams } from "react-router-dom";
@@ -47,7 +48,7 @@ export const handleChange = (
   setQuery({
     ...query,
     page: 1,
-    investmentProducts_In: [],
+    investmentProducts_In: null,
 
     status_In:
       activeType === "all" ? null : [sortTabStatus(activeType, category)],
@@ -147,6 +148,7 @@ export default function Individual() {
   const productId = searchParams.get("productId");
   const preview = searchParams.get("preview");
   const [selected, setSelected] = useState<any>(null);
+  const [specificCategory, setSpecificCategory] = useState<string>(SpecificCategory.individual);
   const [, setHideCreate] = useState(false);
   const [status, setStatus] = useState("");
   const [dateData, setDateData] = useState({ to: null, from: null });
@@ -177,6 +179,8 @@ export default function Individual() {
   });
   const value = useMemo(
     () => ({
+      specificCategory,
+      setSpecificCategory,
       selected,
       setSelected,
       category,
@@ -201,6 +205,8 @@ export default function Individual() {
       setDetail,
     }),
     [
+      specificCategory,
+      setSpecificCategory,
       selected,
       setSelected,
 
@@ -367,7 +373,7 @@ export default function Individual() {
           <StatusCard
             StatusCategories={ManagementCategories}
             categoryType1={StatusCategoryType?.Investments}
-            categoryType2={StatusCategoryType.Requests}
+            categoryType2={StatusCategoryType?.Requests}
             data={prodStatData}
             requests={requestStatData}
             handleChange={({ selected, activeType }) =>

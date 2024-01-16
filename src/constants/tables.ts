@@ -88,7 +88,7 @@ export const DropDownOptions: any = {
         },
       ],
     },
-    {
+    { 
       draft: [
         {
           id: "",
@@ -1120,3 +1120,6 @@ export const ButtonOptions = [
     ],
   },
 ];
+export const SpecificCategory = {
+  individual: 'individual'
+}

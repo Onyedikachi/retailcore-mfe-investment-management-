@@ -8,6 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 import DropDown from "@app/components/DropDown";
 import { MultiSelect, DateSelect } from "@app/components/forms";
 import moment from "moment";
+import { currencyFormatter } from "@app/utils/formatCurrency";
+
 import { BsFunnel } from "react-icons/bs";
 import BottomBarLoader from "../BottomBarLoader";
 // import Tooltip from "@app/components/ui/Tooltip";
@@ -30,6 +32,7 @@ import { useNavigate } from "react-router-dom";
 import {
   useActivateProductMutation,
   useDeleteProductRequestMutation,
+  useDeleteInvestmentRequestMutation,
 } from "@app/api";
 import Button from "../Button";
 import { ActiveFilterOptions } from "@app/constants";
@@ -56,6 +59,9 @@ interface TableProps {
 }
 
 export const statusHandler = ({
+  isDeleteInvestmentRequestSuccess,
+  isDeleteInvestmentRequestError,
+  deleteInvestmentRequestError,
   isSuccess,
   setSuccessText,
   setIsSuccessOpen,
@@ -69,6 +75,10 @@ export const statusHandler = ({
   error,
   role,
 }) => {
+  if (isDeleteInvestmentRequestSuccess) {
+    setSuccessText(Messages.PRODUCT_DELETE_SUCCESS);
+    setIsSuccessOpen(true);
+  }
   if (isSuccess) {
     setSuccessText(Messages.PRODUCT_DELETE_SUCCESS);
     setIsSuccessOpen(true);
@@ -84,6 +94,14 @@ export const statusHandler = ({
   if (isError) {
     setFailedText(Messages.PRODUCT_DELETE_FAILED);
     setFailedSubtext(error?.message?.message || error?.message?.Message);
+    setFailed(true);
+  }
+  if (isDeleteInvestmentRequestError) {
+    setFailedText(Messages.PRODUCT_DELETE_FAILED);
+    setFailedSubtext(
+      deleteInvestmentRequestError?.message?.message ||
+        deleteInvestmentRequestError?.message?.Message
+    );
     setFailed(true);
   }
 
@@ -168,17 +186,29 @@ export const handleProductsDropdown = (
   }
 };
 
-export const TextCellContent = ({ value }) => (
+export const TextCellContent = ({ value, isCurrencyValue = false }) => (
   <span className="relative">
-    <span className="relative">{value || "-"}</span>
+    <span className="relative">
+      {`${isCurrencyValue ? currencyFormatter(value, 'NGN', true, 2) : value}` || "-"}
+    </span>
   </span>
 );
+
+currencyFormatter;
 
 export const ProductNameCellContent = ({ value }) => (
   <>
     <br />
     <span className="relative font-medium text-sm text-[#aaaaaa] uppercase">
       {value?.productCode || "-"}
+    </span>
+  </>
+);
+export const CustomerNameCellContent = ({ value }) => (
+  <>
+    <br />
+    <span className="relative font-medium text-sm text-[#aaaaaa] uppercase">
+      {value?.investmentId || "-"}
     </span>
   </>
 );
@@ -249,6 +279,7 @@ export default function TableComponent<TableProps>({
 }) {
   const { role, permissions, userId, isChecker } = useContext(AppContext);
   const {
+    specificCategory,
     category,
     selected,
     isDetailOpen,
@@ -277,9 +308,10 @@ export default function TableComponent<TableProps>({
   // function getdata(item, key) {}
   // @ts-ignore
   const handleAction = (action, items) => {
-    console.log(JSON.stringify({action, items}))
-    
+    // console.log(JSON.stringify({ action, items }));
+
     actionHandler({
+      specificCategory,
       action,
       items,
       category,
@@ -303,6 +335,16 @@ export default function TableComponent<TableProps>({
     deleteRequest,
     { isSuccess, isError, error, isLoading: deleteLoading },
   ] = useDeleteProductRequestMutation();
+
+  const [
+    deleteInvestmentRequest,
+    {
+      isSuccess: isDeleteInvestmentRequestSuccess,
+      isError: isDeleteInvestmentRequestError,
+      error: deleteInvestmentRequestError,
+      isLoading: isDeleteInvestmentRequestLoading,
+    },
+  ] = useDeleteInvestmentRequestMutation();
   const [
     activateProduct,
     {
@@ -315,12 +357,14 @@ export default function TableComponent<TableProps>({
 
   const handleConfirm = () =>
     confirmationHandler({
+      specificCategory,
       action,
       detail,
       permissions,
       selected,
       previousData,
       deleteRequest,
+      deleteInvestmentRequest,
       setIsDeactivationOpen,
       activateProduct,
       navigate,
@@ -328,6 +372,9 @@ export default function TableComponent<TableProps>({
 
   useEffect(() => {
     statusHandler({
+      isDeleteInvestmentRequestSuccess,
+      isDeleteInvestmentRequestError,
+      deleteInvestmentRequestError,
       isSuccess,
       setSuccessText,
       setIsSuccessOpen,
@@ -341,7 +388,16 @@ export default function TableComponent<TableProps>({
       error,
       role,
     });
-  }, [isSuccess, isError, error, activateSuccess, activateIsError]);
+  }, [
+    isSuccess,
+    isError,
+    error,
+    activateSuccess,
+    activateIsError,
+    isDeleteInvestmentRequestSuccess,
+    isDeleteInvestmentRequestError,
+    deleteInvestmentRequestError,
+  ]);
 
   return (
     <div>
@@ -400,7 +456,7 @@ export default function TableComponent<TableProps>({
                               options={options}
                               getOptions={(e: any) => {
                                 // console.log('e:' + JSON.stringify(e))
-                                getOptionData(e, label)
+                                getOptionData(e, label);
                               }}
                             >
                               <span className="w-4 h-4 flex items-center justify-center">
@@ -439,6 +495,7 @@ export default function TableComponent<TableProps>({
                             <>
                               {typeof item[header.key] !== "object" &&
                                 header.key !== "state" &&
+                                header.key !== "principal" &&
                                 header.key !== "investmentBookingStatus" &&
                                 header.key !== "updated_At" &&
                                 header.key !== "requestStatus" && (
@@ -455,7 +512,12 @@ export default function TableComponent<TableProps>({
                                   statusType={type}
                                 />
                               )}
-                              {console.log("item" + JSON.stringify(item))}
+                              {header.key === "principal" && (
+                                <TextCellContent
+                                  isCurrencyValue={true}
+                                  value={item[header.key] || "-"}
+                                />
+                              )}
                               {header.key === "requestStatus" && (
                                 <span
                                   onClick={() => handleAction("view", item)}
@@ -473,6 +535,9 @@ export default function TableComponent<TableProps>({
                               )}
                               {header.key === "productName" && (
                                 <ProductNameCellContent value={item} />
+                              )}
+                              {header.key === "customerName" && (
+                                <CustomerNameCellContent value={item} />
                               )}
                             </>
                           ) : (
@@ -593,6 +658,7 @@ export default function TableComponent<TableProps>({
       </div>
       {/* @ts-ignore */}
       <MessagesComponent
+        specificCategory={specificCategory}
         isConfirmOpen={isConfirmOpen}
         isSuccessOpen={isSuccessOpen}
         setIsConfirmOpen={setIsConfirmOpen}
@@ -600,7 +666,7 @@ export default function TableComponent<TableProps>({
         isDeactivationOpen={isDeactivationOpen}
         isDetailOpen={isDetailOpen}
         isIndividualDetailOpen={isIndividualDetailOpen}
-        deleteLoading={deleteLoading}
+        deleteLoading={deleteLoading || isDeleteInvestmentRequestLoading}
         activateIsLoading={activateIsLoading}
         confirmText={confirmText}
         detail={detail}
