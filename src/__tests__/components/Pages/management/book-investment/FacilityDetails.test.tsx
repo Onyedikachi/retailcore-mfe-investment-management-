@@ -76,6 +76,29 @@ describe('handleProductDetails', () => {
     expect(setValue).toHaveBeenCalledWith("intMin", 9);
     expect(setValue).toHaveBeenCalledWith("intMax", 12);
   });
+  it('Should set values if interestRangeConfigModel is 2', () => {
+    const rangeArr = {tenorMin: 10, tenorMax: 20, min: 9, max: 12}
+    const productDetail = {
+      pricingConfiguration: {
+        applicableTenorMin: 10,
+        applicableTenorMax: 20,
+        applicablePrincipalMin: 1000,
+        applicablePrincipalMax: 5000,
+        interestRateConfigModels: [rangeArr],
+        interestRateRangeType: 1,
+        interestRateMin: 1,
+        interestRateMax: 5
+      }
+    };
+    const values = {tenor: 14};
+    const setValue = jest.fn();
+    const setProductDetail = jest.fn();
+
+    handleProductDetails({ productDetail, values, setValue, setProductDetail });
+
+    expect(setValue).toHaveBeenCalledWith("intMin", 1);
+    expect(setValue).toHaveBeenCalledWith("intMax", 5);
+  });
 
   // Sets the maximum tenor value to the applicableTenorMax value of the productDetail's pricingConfiguration
   it('should set the maximum tenor value when productDetail is not null and pricingConfiguration is not null', () => {

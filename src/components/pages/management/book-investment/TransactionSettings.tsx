@@ -17,11 +17,11 @@ function classNames(...classes) {
 }
 
 export const onProceed = (data, proceed, formData, setFormData) => {
-  console.log("🚀 ~ onProceed ~ data:", data);
-  // setFormData({
-  //   ...formData,
-  //   transactionSettingModel: data,
-  // });
+  // console.log("🚀 ~ onProceed ~ data:", data);
+  // // setFormData({
+  // //   ...formData,
+  // //   transactionSettingModel: data,
+  // // });
   proceed();
 };
 
@@ -41,7 +41,7 @@ export default function TransactionSettings({
   isSavingDraft,
   productDetail,
 }: TransactionSettingsProps) {
-  console.log("🚀 ~ formData:", formData)
+  // console.log("🚀 ~ formData:", formData)
   const {
     register,
     handleSubmit,
@@ -58,7 +58,7 @@ export default function TransactionSettings({
     mode: "all",
   });
   const values = getValues();
-  console.log("🚀 ~ values:", values)
+  // console.log("🚀 ~ values:", values)
 
   const [customerData, setCustomerData] = useState<any>([]);
   const {
