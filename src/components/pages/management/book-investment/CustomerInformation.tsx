@@ -28,6 +28,72 @@ export const onProceed = (data, proceed, formData, setFormData) => {
   proceed();
 };
 
+export const handleKYCStatus = ({ profileIsSuccess, profileData, setValidKyc, accountNumber, setKycFailed }) => {
+  if (profileIsSuccess) {
+    const status =
+      profileData?.data?.risk_assessments
+
+        ?.find(
+          (i) =>
+            i.parameter?.toLowerCase() ===
+            "status of customer identity verification"
+        )
+        ?.parameterOption?.toLowerCase() === "passed";
+
+    setValidKyc(status);
+
+    if (status === false && accountNumber && profileData) {
+      setKycFailed(true);
+    } else {
+      setKycFailed(false);
+    }
+  }
+}
+
+export const handleAccountNumberAndData = ({ accountNumber, data, setCustomerData, setValue, trigger }) => {
+  if (accountNumber && data) {
+    const foundObject = data?.data?.find((item) => {
+      return (
+        item.customer_products &&
+        item.customer_products.some(
+          (product) => product.accountNumber === accountNumber
+        )
+      );
+    });
+
+    setCustomerData(foundObject);
+    setValue("customerId", foundObject?.customerId);
+    const customerProfile = foundObject?.customer_profiles[0];
+    const customerName = `${capitalizeFirstLetter(customerProfile?.firstName)} ${capitalizeFirstLetter(customerProfile?.otherNames)} ${capitalizeFirstLetter(customerProfile?.surname)}`;
+    setValue("customerName", customerName);
+    setValue("customerAccount", accountNumber);
+    trigger("customerAccount");
+  }
+}
+
+export const updateCustomerData = ({ isSuccess, formData, customerData, setFormData, setCustomersData, data }) => {
+  if (isSuccess) {
+    setCustomersData(
+      data.data.map((i) => {
+        return {
+          id: i.customerId,
+          name: i.customer_products[0]?.accountNumber,
+          code: `${capitalizeFirstLetter(
+            i.customer_profiles[0].firstName
+          )} ${capitalizeFirstLetter(
+            i.customer_profiles[0].otherNames
+          )} ${capitalizeFirstLetter(i.customer_profiles[0].surname)}`,
+          value: i,
+        };
+      })
+    );
+    setFormData({
+      ...formData,
+      customerId: customerData?.customerId,
+    });
+  }
+}
+
 type CustomerInformationProps = {
   formData?: any;
   setFormData?: (e) => void;
@@ -99,26 +165,7 @@ export default function CustomerInformation({
   } = useGetAccountBalanceQuery(query, { skip: !accountNumber });
 
   useEffect(() => {
-    if (isSuccess) {
-      setCustomersData(
-        data.data.map((i) => {
-          return {
-            id: i.customerId,
-            name: i.customer_products[0]?.accountNumber,
-            code: `${capitalizeFirstLetter(
-              i.customer_profiles[0].firstName
-            )} ${capitalizeFirstLetter(
-              i.customer_profiles[0].otherNames
-            )} ${capitalizeFirstLetter(i.customer_profiles[0].surname)}`,
-            value: i,
-          };
-        })
-      );
-      setFormData({
-        ...formData,
-        customerId: customerData?.customerId,
-      });
-    }
+    updateCustomerData({ isSuccess, formData, customerData, setFormData, setCustomersData, data });
   }, [isError, isSuccess, searchLoading, data]);
 
   useEffect(() => {
@@ -137,29 +184,7 @@ export default function CustomerInformation({
   }, [accountIsError, accountIsSuccess, isLoading, accountData]);
 
   useEffect(() => {
-    if (accountNumber && data) {
-      const foundObject = data?.data?.find((item) => {
-        return (
-          item.customer_products &&
-          item.customer_products.some(
-            (product) => product.accountNumber === accountNumber
-          )
-        );
-      });
-
-      setCustomerData(foundObject);
-      setValue("customerId", foundObject?.customerId);
-      setValue(
-        "customerName",
-        `${capitalizeFirstLetter(
-          foundObject?.customer_profiles[0]?.firstName
-        )} ${capitalizeFirstLetter(
-          foundObject?.customer_profiles[0]?.otherNames
-        )} ${capitalizeFirstLetter(foundObject?.customer_profiles[0]?.surname)}`
-      );
-      setValue("customerAccount", accountNumber);
-      trigger("customerAccount");
-    }
+    handleAccountNumberAndData({ accountNumber, data, setCustomerData, setValue, trigger })
   }, [accountNumber, data]);
 
   useEffect(() => {
@@ -175,25 +200,7 @@ export default function CustomerInformation({
   }, [isValid, validKyc]);
 
   useEffect(() => {
-    if (profileIsSuccess) {
-      const status =
-        profileData?.data?.risk_assessments
-
-          ?.find(
-            (i) =>
-              i.parameter?.toLowerCase() ===
-              "status of customer identity verification"
-          )
-          ?.parameterOption?.toLowerCase() === "passed";
-
-      setValidKyc(status);
-
-      if (status === false && accountNumber && profileData) {
-        setKycFailed(true);
-      } else {
-        setKycFailed(false);
-      }
-    }
+    handleKYCStatus({ profileIsSuccess, profileData, setValidKyc, accountNumber, setKycFailed });
   }, [profileData, profileIsSuccess]);
 
   useEffect(() => {
@@ -231,7 +238,7 @@ export default function CustomerInformation({
                     setQuery(e);
                   }}
                   searchResults={customersData}
-                  setSearchResults={() => {}}
+                  setSearchResults={() => { }}
                   searchLoading={searchLoading}
                   handleSearch={(value) =>
                     handleSearch(value, setAccountNumber)
