@@ -359,20 +359,18 @@ export default function LiquiditySetup({
                   )}
                   {watchPartLiquidationPenalty === 4 && (
                     <InputDivs required label={"Specify charge"}>
-                      <div className="">
+                      <>
                         <div className="w-[300px] flex items-center mb-4">
                           <MultiSelectForm2
                             isCharge={true}
-                            labelName=""
                             placeholder="Search and select"
-                            register={register}
-                            inputName={"part_SpecificCharges"}
-                            errors={errors}
                             setValue={setValue}
                             options={chargeOptions}
                             allLabel="All"
+                            labelName=""
                             clearErrors={clearErrors}
                             trigger={trigger}
+                            register={register}
                             handleSelected={({ inputName, selectedOptions }) =>
                               handleSelected(
                                 inputName,
@@ -382,6 +380,8 @@ export default function LiquiditySetup({
                                 setValue
                               )
                             }
+                            inputName={"part_SpecificCharges"}
+                            errors={errors}
                           />
                         </div>
                         {watchPartLiquidationPenalty === 4 && (
@@ -406,7 +406,7 @@ export default function LiquiditySetup({
                             ))}
                           </div>
                         )}
-                      </div>
+                      </>
                     </InputDivs>
                   )}
                   {watchPartLiquidationPenalty === 5 && (

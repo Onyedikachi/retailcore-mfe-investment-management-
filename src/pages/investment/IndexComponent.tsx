@@ -55,7 +55,35 @@ export const handleChange = (
       activeType === "all" ? null : [sortTabStatus(activeType, category)],
   });
 };
+export const handleRequestStatus = ({
+  query,
+  setRequestData,
+  setHasMore,
+  request,
+  isRequestSuccess,
 
+}) => {
+  if (query.page === 1) {
+    setRequestData([]);
+  }
+
+  if (isRequestSuccess && request.results.length) {
+    setRequestData((prevData) => [
+      ...prevData.concat(
+        ...request.results.map((i) => ({
+          ...i,
+          requestStatus: StatusFilterOptions.find(
+            (n) => n.value === i.requestStatus
+          )?.name,
+          requestType: TypeFilterOptions.find((n) => n.value === i.requestType)
+            ?.name,
+        }))
+      ),
+    ]);
+
+    setHasMore(!!request?.next);
+  }
+};
 export const handleProductStatus = ({
   query,
   setProductData,
@@ -81,34 +109,7 @@ export const handleProductStatus = ({
     setHasMore(!!data?.next);
   }
 };
-export const handleRequestStatus = ({
-  query,
-  setRequestData,
-  setHasMore,
-  isRequestSuccess,
-  request,
-}) => {
-  if (query.page === 1) {
-    setRequestData([]);
-  }
 
-  if (isRequestSuccess && request.results.length) {
-    setRequestData((prevData) => [
-      ...prevData.concat(
-        ...request.results.map((i) => ({
-          ...i,
-          requestStatus: StatusFilterOptions.find(
-            (n) => n.value === i.requestStatus
-          )?.name,
-          requestType: TypeFilterOptions.find((n) => n.value === i.requestType)
-            ?.name,
-        }))
-      ),
-    ]);
-
-    setHasMore(!!request?.next);
-  }
-};
 
 export const handleRefresh = (
   category,
