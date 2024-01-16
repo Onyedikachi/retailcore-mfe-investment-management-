@@ -13,6 +13,17 @@ import { useParams } from "react-router-dom";
 //   activities: Array<any>;
 // }
 
+
+export const toggleTab = (val, setActive) => {
+  setActive((prevActive) => {
+    if (prevActive.includes(val)) {
+      return prevActive.filter((i) => i !== val);
+    } else {
+      return [...prevActive, val];
+    }
+  });
+};
+
 export default function ProductInfoInvestmentCalc({
   productDetail,
   formData,
@@ -23,15 +34,6 @@ export default function ProductInfoInvestmentCalc({
   const [active, setActive] = useState([]);
 
 
-  const toggleTab = (val) => {
-    setActive((prevActive) => {
-      if (prevActive.includes(val)) {
-        return prevActive.filter((i) => i !== val);
-      } else {
-        return [...prevActive, val];
-      }
-    });
-  };
   
   useEffect(() => {
     setProductDetailMap([
@@ -323,7 +325,7 @@ export default function ProductInfoInvestmentCalc({
                   )}
 
                   <span
-                    onClick={() => toggleTab(item?.name)}
+                    onClick={() => toggleTab(item?.name, setActive)}
                     className="text-[#636363] text-base font-medium"
                   >
                     {item?.name}

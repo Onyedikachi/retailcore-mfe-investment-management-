@@ -347,7 +347,7 @@ Object {
                        
                     </div>
                     <p
-                      class="font-normal text-2xl"
+                      class="font-normal text-2xl mb-2"
                     >
                       Operation successful
                     </p>
@@ -524,7 +524,7 @@ Object {
                        
                     </div>
                     <p
-                      class="font-normal text-2xl"
+                      class="font-normal text-2xl mb-2"
                     >
                       Operation successful
                     </p>

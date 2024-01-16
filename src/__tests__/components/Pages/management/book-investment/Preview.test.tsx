@@ -12,6 +12,7 @@ jest
   .spyOn(require("react-router-dom"), "useNavigate")
   .mockReturnValue(jest.fn());
 
+  // Updated mock formdata?? 
 const fData = {
   productInfo: {
     productName: "",
@@ -71,6 +72,22 @@ const fData = {
     early_specialInterestRate: 0,
     early_SpecificCharges: [],
   },
+  customerBookingInfoModel: "Tstt",
+  facilityDetailsModel: {
+    investmentProductId: "",
+    investmentProductName: "",
+    investmentPurpose: "",
+    tenor: 0,
+    principal: 0,
+    interestRate: 0,
+    capitalizationMethod: 0,
+    tenorMin: 0,
+    tenorMax: 0,
+    prinMin: 0,
+    prinMax: 0,
+    intMin: 0,
+    intMax: 0,
+  },
   productGlMappings: [],
   interestComputationMethod: 2,
   TermDepositLiabilityAccount: "",
@@ -103,17 +120,17 @@ describe("handleSuccess", () => {
 
   it("Sets success message if isSuccess and role === superadmin", () => {
     handleSuccessMessage(true, setSuccessText, setIsSuccessOpen, "superadmin");
-    expect(setSuccessText).toBeCalledWith("Product created successfully")
+    expect(setSuccessText).toBeCalledWith("Investment Booking creation request submitted for approval")
     expect(setIsSuccessOpen).toBeCalledWith(true)
   })
   it("Sets success message if isSuccess is false and role === superadmin", () => {
     handleSuccessMessage(false, setSuccessText, setIsSuccessOpen, "superadmin");
-    expect(setSuccessText).toBeCalledWith("Product modified successfully")
+    expect(setSuccessText).toBeCalledWith( "Investment Booking creation request submitted for approval")
     expect(setIsSuccessOpen).toBeCalledWith(true)
   })
   it("Sets success message if role !== superadmin", () => {
     handleSuccessMessage(true, setSuccessText, setIsSuccessOpen, "admin");
-    expect(setSuccessText).toBeCalledWith("Product creation request submitted for approval")
+    expect(setSuccessText).toBeCalledWith("Investment Booking creation request submitted for approval")
     expect(setIsSuccessOpen).toBeCalledWith(true)
   })
 })
@@ -125,14 +142,14 @@ describe("handleErrorMessage", () => {
 
   it("Sets error message if isError === true", () => {
     handleErrorMessage({ message: { message: "Error message" } }, {}, {}, true, setFailedText, setFailedSubtext, setFailed)
-    expect(setFailedText).toBeCalledWith("Product creation request failed")
+    expect(setFailedText).toBeCalledWith("Investment Booking creation request failed")
     expect(setFailedSubtext).toBeCalledWith("Error message")
     expect(setFailed).toBeCalledWith(true)
   })
 
   it("Sets error message if isError === false", () => {
     handleErrorMessage({ message: { message: "Error message" } }, {}, {}, false, setFailedText, setFailedSubtext, setFailed)
-    expect(setFailedText).toBeCalledWith("Product modification request failed")
+    expect(setFailedText).toBeCalledWith("Investment Booking modification request failed")
     expect(setFailedSubtext).toBeCalledWith("Error message")
     expect(setFailed).toBeCalledWith(true)
   })
@@ -184,12 +201,12 @@ describe("handleCancel", () => {
 
   it("Sets correct message when process === create", () => {
     cancelProcess("create", setConfirmText, setIsConfirmOpen)
-    expect(setConfirmText).toBeCalledWith("Do you want to cancel product creation?")
+    expect(setConfirmText).toBeCalledWith("Do you want to cancel investment creation?")
     expect(setIsConfirmOpen).toBeCalledWith(true);
   })
   it("Sets correct message when process === modify", () => {
     cancelProcess("modify", setConfirmText, setIsConfirmOpen)
-    expect(setConfirmText).toBeCalledWith("Do you want to cancel product modification?")
+    expect(setConfirmText).toBeCalledWith("Do you want to cancel investment modification?")
     expect(setIsConfirmOpen).toBeCalledWith(true);
   })
   it("Sets correct message when process === continue", () => {
