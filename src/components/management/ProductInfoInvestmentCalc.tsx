@@ -396,7 +396,7 @@ export default function ProductInfoInvestmentCalc({
         </div>
       </div>{" "}
       <div
-        data-testid="product-info"
+        data-testid="investment-calculation"
         className="border border-[#E5E9EB]  w-full rounded-lg bg-[#ffffff]"
       >
         <div className="pt-[30px] pb-[19px] border-b border-[#cccccc] px-6 ">
