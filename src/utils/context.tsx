@@ -100,6 +100,18 @@ export const CommonContext = createContext<ContextProps>({
 export const InvestmentContext = CommonContext;
 
 export const IndividualContext = CommonContext;
+interface IOverviewContext {
+  overviewTabStats: any;
+  setOverviewTabStats: (e: any) => void;
+  getStats: () => void;
+}
+
+export const OverviewContext = createContext<IOverviewContext>({
+  overviewTabStats: null,
+  setOverviewTabStats: () => {},
+  getStats: () => {},
+});
+
 
 
 export const ProductDeactivationContext =
@@ -118,16 +130,9 @@ export const SummaryContextProps = createContext<ISummaryContextProps>({
   uploadData: [],
 });
 
-interface IOverviewContext {
-  name: string;
-}
-export const defaultOverviewContext = {
-  name: "All Investments",
-};
-
-export const OverviewContext = createContext<undefined | IOverviewContext>(
-  undefined
-);
+// export const defaultOverviewContext = {
+//   name: "All Investments",
+// };
 
 export function useOverviewContext() {
   const overviewState = useContext(OverviewContext);

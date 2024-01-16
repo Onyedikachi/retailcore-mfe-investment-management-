@@ -2,10 +2,8 @@ import React from "react";
 import Icon from "@app/components/ui/Icon";
 import { DateSelect } from "@app/components/forms";
 
-import { useOverviewContext } from "@app/utils";
 import Chart from "react-apexcharts";
 export default function ChartInfo() {
-  const overviewState = useOverviewContext();
   function formatYAxis(value) {
     if (value === 0) {
       return '0';
