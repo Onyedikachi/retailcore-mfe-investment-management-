@@ -221,17 +221,32 @@ export default function FacilityDetails({
       setValue("intMin", productDetail?.pricingConfiguration?.interestRateMin);
       setValue("intMax", productDetail?.pricingConfiguration?.interestRateMax);
     }
-    if ((values.tenor || values.principal) && values.interestRate) {
-      trigger("interestRate");
+    if (
+      (values.tenor || values.principal) &&
+      values.interestRate &&
+      values.investmentProductId
+    ) {
+      trigger();
     }
-  }, [values.tenor, values.principal, values.interestRate, productDetail]);
+  }, [
+    values.tenor,
+    values.principal,
+    values.interestRate,
+    values.investmentProductId,
+    productDetail,
+  ]);
 
   useEffect(() => {
     setFormData({
       ...formData,
       facilityDetailsModel: values,
     });
-  }, [values.tenor, values.principal, values.interestRate, values.capitalizationMethod]);
+  }, [
+    values.tenor,
+    values.principal,
+    values.interestRate,
+    values.capitalizationMethod,
+  ]);
 
   useEffect(() => {
     setFormData({

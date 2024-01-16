@@ -16,11 +16,12 @@ import { useParams } from "react-router-dom";
 export default function ProductInfoInvestmentCalc({
   productDetail,
   formData,
+  calcDetail
 }) {
   const { currencies } = useContext(AppContext);
   const [productDetailMap, setProductDetailMap] = useState(null);
   const [active, setActive] = useState([]);
-  const [calcDetail, setCalcDetail] = useState(null);
+
 
   const toggleTab = (val) => {
     setActive((prevActive) => {
@@ -287,46 +288,7 @@ export default function ProductInfoInvestmentCalc({
       },
     ]);
   }, [productDetail]);
-  const [
-    bookingCalc,
-    {
-      data: calcData,
-      isSuccess: calcIsSuccess,
-      isError: calcIsError,
-      error: calcError,
-      isLoading: calcLoading,
-    },
-  ] = useBookingCalcMutation();
 
-  const fetchRate = () => {
-    bookingCalc({
-      principal: formData?.facilityDetailsModel?.principal,
-      rate: formData?.facilityDetailsModel?.interestRate,
-      tenor: formData?.facilityDetailsModel?.tenor,
-      tenorUnit: productDetail?.pricingConfiguration?.applicableTenorMaxUnit,
-      method: formData?.facilityDetailsModel?.capitalizationMethod,
-    });
-  };
-
-  useEffect(() => {
-    if (
-      productDetail &&
-      formData?.facilityDetailsModel?.tenor &&
-      formData?.facilityDetailsModel?.principal &&
-      formData?.facilityDetailsModel?.interestRate
-    ) {
-      fetchRate();
-    }
-  }, [
-    formData?.facilityDetailsModel?.tenor,
-    formData?.facilityDetailsModel?.principal,
-    formData?.facilityDetailsModel?.interestRate,
-    formData?.facilityDetailsModel?.capitalizationMethod,
-  ]);
-
-  useEffect(() => {
-    setCalcDetail(calcData?.data);
-  }, [calcData, calcIsSuccess]);
 
   return (
     <div className="flex flex-col w-full gap-[17px]">

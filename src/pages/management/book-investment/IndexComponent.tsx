@@ -12,6 +12,7 @@ import {
 } from "@app/components";
 import BookInvestmentFormComponent from "./FormComponent";
 import {
+  useBookingCalcMutation,
   useCreateInvestmentMutation,
   useGetProductDetailQuery,
   useGetRequestDetailQuery,
@@ -73,6 +74,7 @@ export default function IndexComponent() {
   const [disabled, setDisabled] = useState(true);
   const [isSavingDraft, setIsSavingDraft] = useState(false);
   const [productDetail, setProductDetail] = useState(null);
+  const [calcDetail, setCalcDetail] = useState(null);
   const navigate = useNavigate();
   const [formData, setFormData] = useState<any>({
     id: "",
@@ -100,6 +102,7 @@ export default function IndexComponent() {
       intMax: null,
     },
     transactionSettingModel: {
+      accountName:"",
       accountForLiquidation: "",
       notifyCustomerOnMaturity: false,
       rollOverAtMaturity: false,
@@ -184,6 +187,7 @@ export default function IndexComponent() {
 
   const [createInvestment, { data, isLoading, isSuccess, isError, error }] =
     useCreateInvestmentMutation();
+
   const [
     modifyProduct,
     {
@@ -225,6 +229,47 @@ export default function IndexComponent() {
     },
     { skip: !id }
   );
+  const [
+    bookingCalc,
+    {
+      data: calcData,
+      isSuccess: calcIsSuccess,
+      isError: calcIsError,
+      error: calcError,
+      isLoading: calcLoading,
+    },
+  ] = useBookingCalcMutation();
+
+  const fetchRate = () => {
+    bookingCalc({
+      principal: formData?.facilityDetailsModel?.principal,
+      rate: formData?.facilityDetailsModel?.interestRate,
+      tenor: formData?.facilityDetailsModel?.tenor,
+      tenorUnit: productDetail?.pricingConfiguration?.applicableTenorMaxUnit,
+      method: formData?.facilityDetailsModel?.capitalizationMethod,
+    });
+  };
+
+  useEffect(() => {
+    if (
+      productDetail &&
+      formData?.facilityDetailsModel?.tenor &&
+      formData?.facilityDetailsModel?.principal &&
+      formData?.facilityDetailsModel?.interestRate
+    ) {
+      fetchRate();
+    }
+  }, [
+    formData?.facilityDetailsModel?.tenor,
+    formData?.facilityDetailsModel?.principal,
+    formData?.facilityDetailsModel?.interestRate,
+    formData?.facilityDetailsModel?.capitalizationMethod,
+    productDetail,
+  ]);
+
+  useEffect(() => {
+    setCalcDetail(calcData?.data);
+  }, [calcData, calcIsSuccess]);
 
   useEffect(() => {
     if (detailIsSuccess) {
@@ -343,6 +388,7 @@ export default function IndexComponent() {
                   <ProductInfoInvestmentCalc
                     productDetail={productDetail}
                     formData={formData}
+                    calcDetail={calcDetail}
                   />
                 </div>
               )}
@@ -350,7 +396,12 @@ export default function IndexComponent() {
           </div>
         </div>
       )}
-      {stage && stage === "summary" && <Preview />}
+      {stage && stage === "summary" && (
+        <Preview
+          productDetail={productDetail}
+          formData={{ ...formData, calcDetail }}
+        />
+      )}
 
       <Loader
         isOpen={isLoading || modifyLoading || modifyRequestLoading}

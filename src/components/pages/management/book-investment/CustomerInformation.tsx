@@ -36,6 +36,7 @@ type CustomerInformationProps = {
   isSavingDraft?: boolean;
 };
 export const handleSearch = (value, setAccountNumber) => {
+  console.log("🚀 ~ handleSearch ~ value:", value);
   setAccountNumber(value);
 };
 export default function CustomerInformation({
@@ -119,10 +120,6 @@ export default function CustomerInformation({
         customerId: customerData?.customerId,
       });
     }
-
-    return () => {
-      setCustomersData([]);
-    };
   }, [isError, isSuccess, searchLoading, data]);
 
   useEffect(() => {
@@ -163,9 +160,9 @@ export default function CustomerInformation({
 
   useEffect(() => {
     if (searchLoading) {
-      setCustomersData([]);
-      setCustomerData(null);
-      setAccountBalance(null);
+      // setCustomersData([]);
+      // setCustomerData(null);
+      // setAccountBalance(null);
     }
   }, [searchLoading]);
 
@@ -199,9 +196,11 @@ export default function CustomerInformation({
     });
   }, [isSavingDraft]);
   useEffect(() => {
-    setAccountNumber(formData?.customerBookingInfoModel.customerAccount);
-    setQuery(formData?.customerBookingInfoModel.customerAccount);
-  }, [formData]);
+    if (formData?.customerBookingInfoModel.customerAccount) {
+      setAccountNumber(formData?.customerBookingInfoModel.customerAccount);
+      setQuery(formData?.customerBookingInfoModel.customerAccount);
+    }
+  }, [formData?.customerBookingInfoModel.customerAccount]);
   return (
     <form
       id="customerInformation"
