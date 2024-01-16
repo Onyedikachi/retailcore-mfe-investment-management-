@@ -8,8 +8,10 @@ import Button from "../Button";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { AppContext } from "@app/utils";
 import { IoChevronForward } from "react-icons/io5";
+import { SpecificCategory } from "@app/constants";
 
 interface SuccessProps {
+  specificCategory?: string;
   text: string;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
@@ -27,10 +29,21 @@ export function handleNavigations(
   { pathname, search },
   process,
   role = "superadmin",
+
+  specificCategory = null,
+  closeModal=() => {},
   action = ""
+
+
 ) {
+  if(specificCategory === SpecificCategory?.individual){
+    closeModal()
+  }
+
+
   console.log("🚀 ~ role:", role)
   console.log("🚀 ~ process:", process)
+
   if (process === "create") {
     if (pathname.includes("management") && pathname.includes("individual")) {
       return role === "superadmin" && action !== "draft"
@@ -89,8 +102,11 @@ export function handleNavigations(
       return factoryRequests;
     }
   }
+
+ 
 }
 export function Success({
+  specificCategory,
   text,
   isOpen,
   setIsOpen,
@@ -102,6 +118,9 @@ export function Success({
   const location = useLocation();
   const { role } = useContext(AppContext);
   const { process } = useParams();
+  const closeModal = () => {
+    setIsOpen(false)
+  }
 
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -115,7 +134,7 @@ export function Success({
         <p className="font-normal text-2xl">{text}</p>
         <div className="flex justify-between items-center gap-x-[6px] w-full">
           <Button
-            onClick={() => navigate(handleNavigations(location, process, role, action))}
+            onClick={() => handleNavigations(location, process, role, specificCategory, closeModal, action)}
             type="button"
             data-testid="close-btn"
             className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-10 text-[#667085] outline-none"

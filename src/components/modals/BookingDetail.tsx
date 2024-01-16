@@ -60,12 +60,12 @@ export const BookingDetailLayout = ({
                 </h1>
                 <span
                   className={`${
-                    productData?.data?.state === 2
+                    detail?.investmentBookingStatus === 1
                       ? "text-[#15692A] bg-[#D4F7DC]"
                       : "text-[#1E0A3C] bg-[#E5E5EA]"
                   } px-2 py-[1px] rounded font-medium capitalize`}
                 >
-                  {productData?.data?.state === 2 ? "Active" : "Inactive"}
+                  {detail?.investmentBookingStatus === 1 ? "Active" : "Liquidated"}
                 </span>
               </div>
               <button
@@ -87,7 +87,7 @@ export const BookingDetailLayout = ({
                       {/* {ProductTypes.find(
                         (i) => i.id == productData?.data?.productType
                       )?.name || "-"} */}
-                      {`${investmentData?.data?.customerBookingInfoModel?.customerName}/${investmentData?.data?.customerBookingInfoModel?.customerAccount}`}
+                      {`${investmentData?.data?.customerBookingInfoModel?.customerName}/ ${investmentData?.data?.customerBookingInfoModel?.customerAccount}`}
                     </span>
                   </div>
                   <div>
@@ -101,33 +101,45 @@ export const BookingDetailLayout = ({
                   <div>
                     <span className="font-bold block mb-[15px]">Principal</span>
                     <span className="font-normal block">
-                      {currencyFormatter(detail?.principal) || "-"}
+                      {currencyFormatter(detail?.principal, 'NGN', true, 2) || "-"}
                     </span>
                   </div>
-                  <div>
-                    <span className="font-bold block mb-[15px]">
-                      Current Value of Investment
-                    </span>
-                    <span className="font-normal block">
-                      {productData?.data?.productInfo?.description || "-"}{" "}
-                    </span>
-                  </div>
+                  {
+                    detail?.investmentBookingStatus === 1 && (
+                      <div>
+                      <span className="font-bold block mb-[15px]">
+                        Current Value of Investment
+                      </span>
+                      <span className="font-normal block">
+                        { '?? ' || "-"}{" "}
+                      </span>
+                    </div>
+                    )
+                  }
+              
 
-                  <div>
-                    <span className="font-bold block mb-[15px]">
-                      Value at Liquidation
-                    </span>
-                    <span className="font-normal block">
-                      {productData?.data?.productInfo?.description || "-"}{" "}
-                    </span>
-                  </div>
+                  {
+                    detail?.investmentBookingStatus === 2 &&  (
+                      <div>
+                      <span className="font-bold block mb-[15px]">
+                        Value at Liquidation
+                      </span>
+                      <span className="font-normal block">
+                        {'?? ' || "-"}{" "}
+                      </span>
+                    </div>
+
+                    )
+                  }
+
+                
 
                   <div>
                     <span className="font-bold block mb-[15px]">
                       Value at Maturity
                     </span>
                     <span className="font-normal block">
-                      {productData?.data?.productInfo?.description || "-"}{" "}
+                      {currencyFormatter(detail?.maturityValue, 'NGN', true, 2) || "-"}{" "}
                     </span>
                   </div>
 
@@ -165,10 +177,7 @@ export const BookingDetailLayout = ({
                     </span>
                     <span className="font-normal block">
                       {
-                        CustomerCategory[
-                          productData?.data?.customerEligibility
-                            ?.customerCategory
-                        ]
+                       detail?.maturityDate
                       }{" "}
                     </span>
                   </div>
@@ -186,10 +195,7 @@ export const BookingDetailLayout = ({
                     </span>
                     <span className="font-normal block">
                       {
-                        CustomerCategory[
-                          productData?.data?.customerEligibility
-                            ?.customerCategory
-                        ]
+                        detail?.interestRate
                       }{" "}
                     </span>
                   </div>
@@ -238,11 +244,7 @@ export const BookingDetailLayout = ({
                   </div>
 
                   <a
-                    href={`/product-factory/investment/${encodeURIComponent(
-                      "term deposit"
-                    )}/process-summary/preview/${
-                      productData?.data.id
-                    }?category=product`}
+                    href={`/product-factory/investment/management/preview/individual?id=${detail?.investmentProductId}`}
                   >
                     <button
                       className={`group flex items-center whitespace-nowrap py-[1px] text-base text-[#636363] gap-x-3 underline outline-none`}
@@ -254,16 +256,16 @@ export const BookingDetailLayout = ({
               </div>
               <div className="border border-[#E5E9EB] rounded-lg py-[25px] px-[30px] h-[593px]">
                 <div className="p-6 flex flex-col gap-y-[35px] max-h-[463px] overflow-y-auto">
-                  {/* {detail?.reason && (
+                  {detail?.reason && (
                     <div>
                       <span className="font-bold block mb-[15px]">
-                        Reason for Deactivation
+                        Reason for Liquidation
                       </span>
                       <span className="font-normal block">
                         {detail?.reason}
                       </span>
                     </div>
-                  )} */}
+                  )}
                   <div>
                     <span className="font-bold block mb-[15px]">
                       Product Type
