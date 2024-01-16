@@ -183,6 +183,42 @@ export const handleSearch = (value, setQuery, query) => {
     search: value,
   });
 };
+
+export const handleProductIsSuccess = ({productDownloadIsSuccess, category, isChecker, csvExporter, productDownloadData, requestsDownloadIsSuccess, requestsDownloadData}) => {
+  if (
+    productDownloadIsSuccess &&
+    category === StatusCategoryType?.Investments
+  ) {
+    handleDownload(
+      productDownloadData?.results.map((i) => ({
+        ...i,
+        status: IndividualStatusTypes.find(
+          (n) => n.id === i.investmentBookingStatus
+        )?.type,
+      })),
+      isChecker,
+      csvExporter,
+      category
+    );
+  }
+  if (requestsDownloadIsSuccess && category === StatusCategoryType.Requests) {
+    handleDownload(
+      requestsDownloadData?.results.map((i) => ({
+        ...i,
+        requestStatus: StatusFilterOptions.find(
+          (n) => n.value === i.requestStatus
+        )?.name,
+        requestType: IndividualTypeFilterOptions.find(
+          (n) => n.value === i.requestType
+        )?.name,
+      })),
+      isChecker,
+      csvExporter,
+      category
+    );
+  }
+}
+
 export default function TableComponent({
   productData,
   requestData,
@@ -328,38 +364,7 @@ export default function TableComponent({
 
   useEffect(() => {
     // handleProductIsSuccess
-    if (
-      productDownloadIsSuccess &&
-      category === StatusCategoryType?.Investments
-    ) {
-      handleDownload(
-        productDownloadData?.results.map((i) => ({
-          ...i,
-          status: IndividualStatusTypes.find(
-            (n) => n.id === i.investmentBookingStatus
-          )?.type,
-        })),
-        isChecker,
-        csvExporter,
-        category
-      );
-    }
-    if (requestsDownloadIsSuccess && category === StatusCategoryType.Requests) {
-      handleDownload(
-        requestsDownloadData?.results.map((i) => ({
-          ...i,
-          requestStatus: StatusFilterOptions.find(
-            (n) => n.value === i.requestStatus
-          )?.name,
-          requestType: IndividualTypeFilterOptions.find(
-            (n) => n.value === i.requestType
-          )?.name,
-        })),
-        isChecker,
-        csvExporter,
-        category
-      );
-    }
+    handleProductIsSuccess({productDownloadIsSuccess, category, isChecker, csvExporter, productDownloadData, requestsDownloadIsSuccess, requestsDownloadData});
   }, [productDownloadIsSuccess, requestsDownloadIsSuccess]);
 
   React.useEffect(() => {
