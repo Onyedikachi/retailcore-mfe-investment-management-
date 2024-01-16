@@ -20,8 +20,7 @@ import {
   productHeader,
   requestHeader,
 } from "@app/constants";
-import optionsDataHandler from "./optionsDataHandler";
-
+import optionsDataHandler from "@app/utils/optionsDataHandler";
 interface RequestDataProps {
   request: string;
   type: string;
@@ -85,12 +84,18 @@ export function initiateDownload(
   downloadRequests,
   selected
 ) {
- 
   if (category === StatusCategoryType.AllProducts) {
-    
-    downloadProducts({ ...query, page_Size: 1000000 , filter_by: selected?.value,});
+    downloadProducts({
+      ...query,
+      page_Size: 1000000,
+      filter_by: selected?.value,
+    });
   } else {
-    downloadRequests({ ...query, page_Size: 1000000, filter_by: selected?.value, });
+    downloadRequests({
+      ...query,
+      page_Size: 1000000,
+      filter_by: selected?.value,
+    });
   }
 }
 export function handleDownload(downloadData, isChecker, csvExporter, category) {
@@ -183,9 +188,8 @@ export default function TableComponent({
   hasMore,
   fetchMoreData,
 }: any) {
-  const { category, setStatus, isChecker, selected } =
-    useContext(InvestmentContext);
-  const { permissions } = useContext(AppContext);
+  const { category, setStatus, selected } = useContext(InvestmentContext);
+  const { isChecker } = useContext(AppContext);
   const [users, setUsers] = useState([]);
   const [searchResults, setSearchResults] = useState<any[]>([]);
 
@@ -439,6 +443,7 @@ export default function TableComponent({
             ? "No request available"
             : "No product available"
         }
+        Context={InvestmentContext}
       />
     </section>
   );

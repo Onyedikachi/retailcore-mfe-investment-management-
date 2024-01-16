@@ -44,6 +44,31 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    getCustomerSearch: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `https://customer-management-api.dev.bepeerless.co/v1/customer/search?search=${params}`,
+          method: "get",
+        };
+      },
+    }),
+    getAccountBalance: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `https://customer-management-api.dev.bepeerless.co/v1/accounts/${params}`,
+          method: "get",
+        };
+      },
+    }),
+    getCustomerProfile: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `https://customer-management-api.dev.bepeerless.co/v1/customer/profile/${params}`,
+          method: "get",
+        };
+      },
+    }),
+
     getSystemAlert: builder.query<any, any>({
       query: () => {
         return {
@@ -109,6 +134,15 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    createInvestment: builder.mutation<any, any>({
+      query: (data) => {
+        return {
+          url: urls.INVESTMENT_CREATE,
+          method: "post",
+          body: data,
+        };
+      },
+    }),
 
     modifyProduct: builder.mutation<any, any>({
       query: (data) => {
@@ -119,11 +153,38 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    modifyInvestment: builder.mutation<any, any>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT}/edit`,
+          method: "put",
+          body: data,
+        };
+      },
+    }),
     modifyRequest: builder.mutation<any, any>({
       query: (data) => {
         return {
           url: `${urls.REQUESTS}/edit/${data.id}`,
           method: "put",
+          body: data,
+        };
+      },
+    }),
+    modifyInvestmentRequest: builder.mutation<any, any>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT_REQUEST}/edit/${data.id}`,
+          method: "put",
+          body: data,
+        };
+      },
+    }),
+    bookingCalc: builder.mutation<any, any>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT_CALC}`,
+          method: "post",
           body: data,
         };
       },
@@ -285,6 +346,122 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    getPostInvestment: builder.mutation<
+      any,
+      {
+        filter_by: string;
+        status_In: number[];
+        search: string;
+        start_Date: string;
+        end_Date: string;
+        page: number;
+        page_Size: number;
+      }
+    >({
+      query: (params) => {
+        if (!params?.filter_by) return;
+        return {
+          url: urls.INVESTMENT,
+          method: "post",
+          body: cleanObject(params),
+        };
+      },
+    }),
+    getPostInvestmentRequests: builder.mutation<
+      any,
+      {
+        filter_by: string;
+        status_In: number[];
+        search: string;
+        start_Date: string;
+        end_Date: string;
+        page: number;
+        page_Size: number;
+      }
+    >({
+      query: (params) => {
+        if (!params?.filter_by) return;
+        return {
+          url: urls.INVESTMENT_REQUEST,
+          method: "post",
+          body: cleanObject(params),
+        };
+      },
+    }),
+    getInvestmentActivityLog: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `${urls.INVESTMEENT_ACTIVITY_LOG}?${new URLSearchParams(
+            cleanObject(params)
+          )}`,
+          method: "get",
+          params: cleanObject(params),
+        };
+      },
+    }),
+    getInvestmentStats: builder.query<any, any>({
+      query: (data) => {
+        if (!data.filter_by) return;
+        return {
+          url: `${urls.INVESTMENT_STATS}?${new URLSearchParams(
+            cleanObject({
+              ...data,
+              filterBy: data.filter_by,
+            })
+          )}`,
+          method: "get",
+        };
+      },
+    }),
+    getInvestmentRequestStats: builder.query<any, any>({
+      query: (data) => {
+        if (!data.filter_by) return;
+        return {
+          url: `${urls.INVESTMENT_REQUEST_STATS}?${new URLSearchParams(
+            cleanObject({
+              ...data,
+              filterBy: data.filter_by,
+            })
+          )}`,
+          method: "get",
+        };
+      },
+    }),
+    getInvestmentDetail: builder.query<any, any>({
+      query: (data) => {
+        if (!data.id) return;
+        return {
+          url: `${urls.INVESTMENT}/${data.id}`,
+          method: "get",
+        };
+      },
+    }),
+
+    getInvestmentRequestDetail: builder.query<any, any>({
+      query: (data) => {
+        if (!data.id) return;
+        return {
+          url: `${urls.INVESTMENT_REQUEST}/${data.id}`,
+          method: "get",
+        };
+      },
+    }),
+    deleteInvestmentRequest: builder.mutation<any, any>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT_REQUEST}/delete/${data}`,
+          method: "delete",
+        };
+      },
+    }),
+    getInvestmentDashboardStats: builder.query<any, any>({
+      query: () => {
+        return {
+          url: `${urls.INVESTMENT_DASHBOARD_STATS}`,
+          method: "get",
+        };
+      },
+    }),
   }),
 });
 
@@ -313,4 +490,20 @@ export const {
   useApproveProductMutation,
   useRejectProductMutation,
   useGetSystemAlertQuery,
+  useGetCustomerSearchQuery,
+  useGetAccountBalanceQuery,
+  useGetCustomerProfileQuery,
+  useCreateInvestmentMutation,
+  useGetInvestmentActivityLogQuery,
+  useGetPostInvestmentRequestsMutation,
+  useGetPostInvestmentMutation,
+  useGetInvestmentRequestStatsQuery,
+  useGetInvestmentStatsQuery,
+  useGetInvestmentDetailQuery,
+  useDeleteInvestmentRequestMutation,
+  useGetInvestmentRequestDetailQuery,
+  useBookingCalcMutation,
+  useModifyInvestmentMutation,
+  useModifyInvestmentRequestMutation,
+  useGetInvestmentDashboardStatsQuery,
 } = investmentApi;

@@ -4,6 +4,7 @@ import { RedDot } from "@app/components/forms";
 import { glMappingSchema } from "@app/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+import { ErrorMessage } from "@hookform/error-message";
 
 export const handleClear = (
   setClearField,
@@ -16,16 +17,52 @@ export const handleClear = (
   reset();
   setClearField(!clearFields);
 };
-export function InputDivs({ children, label }) {
+export function InputDivs({
+  children,
+  label,
+  isCompulsory = true,
+  divClass = "",
+  subLabel = "",
+  errors,
+  name,
+}: {
+  children: any;
+  label: string;
+  isCompulsory?: boolean;
+  divClass?: string;
+  subLabel?: string;
+  errors?: any;
+  name?: string;
+}) {
   return (
-    <div className="flex gap-[10px] items-center">
-      <span
-        data-testid="input-div"
-        className="min-w-[250px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium"
+    <div>
+      <div
+        className={`flex gap-x-[50px] items-center ${divClass ? divClass : ""}`}
       >
-        {label} <RedDot />
-      </span>
-      <div>{children}</div>
+      <div className="w-[300px]">
+      <span
+          data-testid="input-div"
+          className="flex items-start gap-x-[1px] text-[#636363] text-base font-medium mb-1"
+        >
+          {label} {isCompulsory && <RedDot />}
+        </span>
+        <span  className="flex items-start gap-x-[1px] text-[#AAAAAA] text-sm font-normal">
+          {subLabel}
+        </span>
+      </div>
+        <div>
+          <div className="mb-[2px]">{children}</div>
+          {errors && name && (
+            <ErrorMessage
+              errors={errors}
+              name={name}
+              render={({ message }) => (
+                <p className="text-red-600 text-xs">{message}</p>
+              )}
+            />
+          )}
+        </div>
+      </div>
     </div>
   );
 }

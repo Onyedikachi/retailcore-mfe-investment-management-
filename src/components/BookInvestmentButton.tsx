@@ -15,7 +15,6 @@ export default function BookInvestmentButton({
 
   const goToUrl = (url) => {
     navigate(url);
-    console.log("🚀 ~ goToUrl ~  navigate(url);:", url);
 
     setIsOpen(false);
   };

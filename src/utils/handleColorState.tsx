@@ -9,6 +9,7 @@ export function handleColorState(value: string) {
 
     case "in-review":
     case "P":
+    case "pending":
       return colorState["in-review"];
 
     case "in-issue":
@@ -18,6 +19,7 @@ export function handleColorState(value: string) {
     case "draft":
     case "D":
     case "inactive":
+    case "liquidated":
     case "I":
       return colorState["draft"];
 

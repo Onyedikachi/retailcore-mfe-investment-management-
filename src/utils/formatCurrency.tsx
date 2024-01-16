@@ -8,12 +8,12 @@ export default function formatCurrency(price, fraction = 0, currency = "NGN") {
   return value.format(price);
 }
 
-export function currencyFormatter(value, currency = "NGN", showSymbol = true) {
+export function currencyFormatter(value, currency = "NGN", showSymbol = true, minimumFractionDigits = 0) {
   const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: currency ||  "NGN",
-    // currencyDisplay: "narrowSymbol",
-    minimumFractionDigits: 2,
+    currencyDisplay: "code",
+    minimumFractionDigits,
   });
 
   const formattedValue = formatter.format(value);

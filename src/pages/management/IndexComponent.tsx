@@ -3,13 +3,10 @@ import Icon from "@app/components/ui/Icon";
 import { BookInvestmentButton } from "@app/components";
 import { useState } from "react";
 import SearchInput from "@app/components/SearchInput";
-import {
-  Corporate,
-  Overview,
-  Individual,
-} from "@app/components/pages/dashboard";
+import { Overview, Individual } from "@app/components/pages";
 import { useGetPostProductsMutation } from "@app/api";
 import { StatusCategoryType } from "@app/types";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const handleSearch = (value, setQuery, query) => {
   setQuery({
@@ -34,9 +31,11 @@ export default function Dashboard() {
   //     loadSimulator()
   //   }, [])
   //create array of tabs
+  const { tab } = useParams();
+  const navigate = useNavigate();
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [query, setQuery] = useState("");
-  const dashboardTabs = ["Overview", "Individual", "Corporate"];
+  const dashboardTabs = ["overview", "individual", "corporate"];
   const [selectedTab, setSelectedTab] = useState(dashboardTabs[0]);
 
   const [
@@ -44,13 +43,6 @@ export default function Dashboard() {
     { data, isSuccess, isError, error, isLoading: searchLoading },
   ] = useGetPostProductsMutation();
 
-  const tabSelector = (tab) => {
-    setSelectedTab(tab);
-    console.log(
-      "🚀 ~ file: Dashboard.tsx:16 ~ tabSelector ~   selectedTab.value:",
-      selectedTab
-    );
-  };
   return (
     <div className="h-full w-full">
       <div className="bg-white px-4 sm:px-6 lg:px-8 border-[#E5E9EB] border-b">
@@ -72,21 +64,23 @@ export default function Dashboard() {
         </div>
         <div className="flex justify-between items-end">
           <div className="flex gap-[32px] ">
-            {dashboardTabs.map((tab) => (
-              <div
-                onClick={() => tabSelector(tab)}
-                key={tab}
+            {dashboardTabs.map((item) => (
+              <div data-testid={`${item}-tab`}
+                onClick={() =>
+                  navigate(`/product-factory/investment/management/${item}`)
+                }
+                key={item}
                 className={`${
-                  selectedTab == tab
+                  item == tab
                     ? "text-[20px] font-semibold text-[#252C32]"
                     : "text-[16px] font-normal text-[#636363]"
-                } flex cursor-pointer flex-col justify-between gap-[6px]`}
+                } flex cursor-pointer flex-col justify-between gap-[6px] capitalize`}
               >
                 <div></div>
-                <span>{tab}</span>
+                <span>{item}</span>
                 <div
                   className={`${
-                    selectedTab == tab
+                    item == tab
                       ? "h-[3px] w-full rounded-lg bg-sterling-red-800 shadow-lg"
                       : "h-[1.5px] w-full rounded-lg bg-[#DDE2E4] shadow-lg"
                   } `}
@@ -115,9 +109,9 @@ export default function Dashboard() {
         </div>
       </div>
       <div className="bg-[#F7F7F7] px-4 sm:px-6 lg:px-8 py-[30px] max-h-[100vh] overflow-y-auto">
-        {selectedTab.toLowerCase() == "overview" && <Overview />}
-        {selectedTab.toLowerCase() == "corporate" && <Corporate />}
-        {selectedTab.toLowerCase() == "individual" && <Individual />}
+        {tab.toLowerCase() == "overview" && <Overview />}
+        {/* {tab.toLowerCase() == "corporate" && <Corporate />} */}
+        {tab.toLowerCase() == "individual" && <Individual />}
       </div>
     </div>
   );

@@ -16,7 +16,9 @@ export function handleRole(setRole, value) {
 const Layout = () => {
   const [permissions, setPermissions] = useState([]);
   const [role, setRole] = useState("default");
+  const [isChecker, setIsChecker] = useState(false);
   const [currencies, setCurrencies] = useState<any[]>([]);
+  
   const userId = useRef(null);
   const value = useMemo(
     () => ({
@@ -26,9 +28,12 @@ const Layout = () => {
       currencies,
       setCurrencies,
       userId: userId.current,
+      isChecker,
+      setIsChecker,
     }),
 
-    [role, setRole, permissions, currencies, setCurrencies, userId.current]
+    [role, setRole, permissions, currencies, setCurrencies, userId.current, isChecker,
+      setIsChecker,]
   );
   useEffect(() => {
     auth$?.subscribe((value) => {

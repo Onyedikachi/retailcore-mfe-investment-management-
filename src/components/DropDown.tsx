@@ -9,7 +9,10 @@ import {
   FaPlayCircle,
   FaBan,
   FaClone,
+  FaRegTimesCircle,
 } from "react-icons/fa";
+
+import { BiSolidReceipt } from "react-icons/bi";
 import { usePopper } from "../hooks/use-popper";
 
 export function handleIcons(value: string) {
@@ -26,6 +29,10 @@ export function handleIcons(value: string) {
       return <FaPlayCircle className="text-[#2FB755]" />;
     case "FaClone":
       return <FaClone className="text-[#085CA5]" />;
+    case "FaRegTimesCircle":
+      return <FaRegTimesCircle className="text-[#444444]" />;
+    case "BiSolidReceipt":
+      return <BiSolidReceipt className="text-[#D4A62F]" />;
   }
 }
 export default function TestDrop({

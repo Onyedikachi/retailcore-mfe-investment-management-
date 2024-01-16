@@ -8,6 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 import DropDown from "@app/components/DropDown";
 import { MultiSelect, DateSelect } from "@app/components/forms";
 import moment from "moment";
+import { currencyFormatter } from "@app/utils/formatCurrency";
+
 import { BsFunnel } from "react-icons/bs";
 import BottomBarLoader from "../BottomBarLoader";
 // import Tooltip from "@app/components/ui/Tooltip";
@@ -20,6 +22,7 @@ import {
 } from "@app/utils";
 import { FaBars, FaEye } from "react-icons/fa";
 import { Actions, Messages, Prompts } from "@app/constants/enums";
+import { InvestmentBookingStatus } from "@app/constants/investment";
 import { Confirm, Failed, Success } from "../modals";
 import Loader from "../Loader";
 import RequestDeactivation from "../modals/RequestDeactivation";
@@ -29,6 +32,7 @@ import { useNavigate } from "react-router-dom";
 import {
   useActivateProductMutation,
   useDeleteProductRequestMutation,
+  useDeleteInvestmentRequestMutation,
 } from "@app/api";
 import Button from "../Button";
 import { ActiveFilterOptions } from "@app/constants";
@@ -52,9 +56,13 @@ interface TableProps {
   onChangeDate?: any;
   type?: string;
   noData?: string;
+  handleRefresh?: () => void
 }
 
 export const statusHandler = ({
+  isDeleteInvestmentRequestSuccess,
+  isDeleteInvestmentRequestError,
+  deleteInvestmentRequestError,
   isSuccess,
   setSuccessText,
   setIsSuccessOpen,
@@ -68,6 +76,10 @@ export const statusHandler = ({
   error,
   role,
 }) => {
+  if (isDeleteInvestmentRequestSuccess) {
+    setSuccessText(Messages.PRODUCT_DELETE_SUCCESS);
+    setIsSuccessOpen(true);
+  }
   if (isSuccess) {
     setSuccessText(Messages.PRODUCT_DELETE_SUCCESS);
     setIsSuccessOpen(true);
@@ -83,6 +95,14 @@ export const statusHandler = ({
   if (isError) {
     setFailedText(Messages.PRODUCT_DELETE_FAILED);
     setFailedSubtext(error?.message?.message || error?.message?.Message);
+    setFailed(true);
+  }
+  if (isDeleteInvestmentRequestError) {
+    setFailedText(Messages.PRODUCT_DELETE_FAILED);
+    setFailedSubtext(
+      deleteInvestmentRequestError?.message?.message ||
+        deleteInvestmentRequestError?.message?.Message
+    );
     setFailed(true);
   }
 
@@ -125,6 +145,7 @@ export const DropdownButton = ({ options, handleClick }: any) => {
 };
 
 export const handleProductsDropdown = (
+  statusType = "",
   status: string,
   isChecker,
   DropDownOptions,
@@ -135,11 +156,18 @@ export const handleProductsDropdown = (
 ): any => {
   if (!status) return [];
   if (isChecker) {
-    return DropDownOptions[status]?.filter(
-      (i: any) => i.text.toLowerCase() === "view"
-    );
+    return DropDownOptions[
+      statusType === StatusCategoryType.Investments
+        ? InvestmentBookingStatus[status].toLowerCase()
+        : status
+    ]?.filter((i: any) => i.text.toLowerCase() === "view");
   } else {
-    let options = DropDownOptions[status];
+    let options =
+      DropDownOptions[
+        statusType === StatusCategoryType.Investments
+          ? InvestmentBookingStatus[status].toLowerCase()
+          : status
+      ];
     if (!permissions?.includes("RE_OR_DEACTIVATE_INVESTMENT_PRODUCT")) {
       options = options?.filter(
         (i: any) =>
@@ -153,26 +181,34 @@ export const handleProductsDropdown = (
         !permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS") &&
         created_By_Id !== userId)
     ) {
-      options = options?.filter(
-        (i: any) =>
-          i.text.toLowerCase() !== "modify" && i.text.toLowerCase() !== "clone"
-      );
+      options = options?.filter((i: any) => i.text.toLowerCase() === "view");
     }
     return options;
   }
 };
 
-export const TextCellContent = ({ value }) => (
+export const TextCellContent = ({ value, isCurrencyValue = false }) => (
   <span className="relative">
-    <span className="relative">{value || "-"}</span>
+    <span className="relative max-w-[290px] whitespace-normal">
+      {`${isCurrencyValue ? currencyFormatter(value, 'NGN', true, 2) : value}` || "-"}
+    </span>
   </span>
 );
+
 
 export const ProductNameCellContent = ({ value }) => (
   <>
     <br />
     <span className="relative font-medium text-sm text-[#aaaaaa] uppercase">
       {value?.productCode || "-"}
+    </span>
+  </>
+);
+export const CustomerNameCellContent = ({ value }) => (
+  <>
+    <br />
+    <span className="relative font-medium text-sm text-[#aaaaaa] uppercase">
+      {value?.investmentId || "-"}
     </span>
   </>
 );
@@ -185,14 +221,32 @@ export const UpdatedOnCellContent = ({ value }) => (
   </span>
 );
 
-export const StateCellContent = ({ value }) => (
-  <span
-    className={`font-medium px-2 py-[4px] rounded capitalize max-h-[26px] relative leading-[24px] ${handleColorState(
-      value
-    )}`}
-  >
-    {value}
-  </span>
+export const StateCellContent = ({
+  value,
+  statusType = "",
+}: {
+  value: any;
+  statusType?: string;
+}) => (
+  <div>
+    {statusType === StatusCategoryType.Investments ? (
+      <span
+        className={`font-medium px-2 py-[4px] rounded capitalize max-h-[26px] relative leading-[24px] ${handleColorState(
+          InvestmentBookingStatus[value].toLowerCase()
+        )}`}
+      >
+        {InvestmentBookingStatus[value]}
+      </span>
+    ) : (
+      <span
+        className={`font-medium px-2 py-[4px] rounded capitalize max-h-[26px] relative leading-[24px] ${handleColorState(
+          value
+        )}`}
+      >
+        {value}
+      </span>
+    )}
+  </div>
 );
 export const StatusCellContent = ({ value, isChecker }) => (
   <span
@@ -221,22 +275,29 @@ export default function TableComponent<TableProps>({
   onChangeDate,
   type = "",
   noData = "No data available",
+  Context,
+  handleRefresh = () => {}
 }) {
-  const { role, permissions, userId } = useContext(AppContext);
+  const { role, permissions, userId, isChecker } = useContext(AppContext);
   const {
-    isChecker,
+    specificCategory,
     category,
     selected,
     isDetailOpen,
     setDetailOpen,
+    isIndividualDetailOpen,
+    setIndividualDetailOpen,
     detail,
     setDetail,
-  } = useContext(InvestmentContext);
+  }: any = useContext(Context);
+
   const [action, setAction] = useState("");
   const navigate = useNavigate();
   const previousData = useRef({});
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
+  const [liquidationType, setLiquidationType] = useState(null);
+  const [isLiquidation, setLiquidationOpen] = useState(false);
   const [isDeactivationOpen, setIsDeactivationOpen] = useState(false);
   const [confirmText, setConfirmText] = useState("");
   const [subText, setSubText] = useState("");
@@ -248,7 +309,10 @@ export default function TableComponent<TableProps>({
   // function getdata(item, key) {}
   // @ts-ignore
   const handleAction = (action, items) => {
+    // console.log(JSON.stringify({ action, items }));
+
     actionHandler({
+      specificCategory,
       action,
       items,
       category,
@@ -259,7 +323,10 @@ export default function TableComponent<TableProps>({
       previousData,
       setConfirmText,
       setIsConfirmOpen,
+      setLiquidationOpen,
+      setLiquidationType,
       setDetailOpen,
+      setIndividualDetailOpen,
       navigate,
       selected,
     });
@@ -269,6 +336,16 @@ export default function TableComponent<TableProps>({
     deleteRequest,
     { isSuccess, isError, error, isLoading: deleteLoading },
   ] = useDeleteProductRequestMutation();
+
+  const [
+    deleteInvestmentRequest,
+    {
+      isSuccess: isDeleteInvestmentRequestSuccess,
+      isError: isDeleteInvestmentRequestError,
+      error: deleteInvestmentRequestError,
+      isLoading: isDeleteInvestmentRequestLoading,
+    },
+  ] = useDeleteInvestmentRequestMutation();
   const [
     activateProduct,
     {
@@ -281,12 +358,14 @@ export default function TableComponent<TableProps>({
 
   const handleConfirm = () =>
     confirmationHandler({
+      specificCategory,
       action,
       detail,
       permissions,
       selected,
       previousData,
       deleteRequest,
+      deleteInvestmentRequest,
       setIsDeactivationOpen,
       activateProduct,
       navigate,
@@ -294,6 +373,9 @@ export default function TableComponent<TableProps>({
 
   useEffect(() => {
     statusHandler({
+      isDeleteInvestmentRequestSuccess,
+      isDeleteInvestmentRequestError,
+      deleteInvestmentRequestError,
       isSuccess,
       setSuccessText,
       setIsSuccessOpen,
@@ -307,7 +389,16 @@ export default function TableComponent<TableProps>({
       error,
       role,
     });
-  }, [isSuccess, isError, error, activateSuccess, activateIsError]);
+  }, [
+    isSuccess,
+    isError,
+    error,
+    activateSuccess,
+    activateIsError,
+    isDeleteInvestmentRequestSuccess,
+    isDeleteInvestmentRequestError,
+    deleteInvestmentRequestError,
+  ]);
 
   return (
     <div>
@@ -358,8 +449,16 @@ export default function TableComponent<TableProps>({
                         <span>
                           {hasSelect && (
                             <MultiSelect
+                              showMe={
+                                (key.toLowerCase() === "created_by" ||
+                                  key.toLowerCase() === "approved_by") &&
+                                userId
+                              }
                               options={options}
-                              getOptions={(e: any) => getOptionData(e, label)}
+                              getOptions={(e: any) => {
+                                // console.log('e:' + JSON.stringify(e))
+                                getOptionData(e, label);
+                              }}
                             >
                               <span className="w-4 h-4 flex items-center justify-center">
                                 <BsFunnel />
@@ -392,11 +491,13 @@ export default function TableComponent<TableProps>({
                         className="text-base font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative"
                         key={idx.toString() + header.key}
                       >
-                        <div className="relative max-w-max">
+                        <div className="relative">
                           {header.key !== "actions" ? (
                             <>
                               {typeof item[header.key] !== "object" &&
                                 header.key !== "state" &&
+                                header.key !== "principal" &&
+                                header.key !== "investmentBookingStatus" &&
                                 header.key !== "updated_At" &&
                                 header.key !== "requestStatus" && (
                                   <TextCellContent
@@ -405,6 +506,18 @@ export default function TableComponent<TableProps>({
                                 )}
                               {header.key === "state" && (
                                 <StateCellContent value={item[header.key]} />
+                              )}
+                              {header.key === "investmentBookingStatus" && (
+                                <StateCellContent
+                                  value={item[header.key]}
+                                  statusType={type}
+                                />
+                              )}
+                              {header.key === "principal" && (
+                                <TextCellContent
+                                  isCurrencyValue={true}
+                                  value={item[header.key] || "-"}
+                                />
                               )}
                               {header.key === "requestStatus" && (
                                 <span
@@ -424,15 +537,24 @@ export default function TableComponent<TableProps>({
                               {header.key === "productName" && (
                                 <ProductNameCellContent value={item} />
                               )}
+                              {header.key === "customerName" && (
+                                <CustomerNameCellContent value={item} />
+                              )}
                             </>
                           ) : (
                             <div>
                               {!isChecker ? (
                                 <ActionsCellContent
                                   dropDownOptions={
-                                    type === StatusCategoryType.AllProducts
+                                    type === StatusCategoryType.AllProducts ||
+                                    type === StatusCategoryType.Investments
                                       ? handleProductsDropdown(
-                                          item.state,
+                                          type,
+                                          item.state
+                                            ? item.state
+                                            : item.investmentBookingStatus
+                                            ? item.investmentBookingStatus
+                                            : null,
                                           isChecker,
                                           dropDownOptions,
                                           item.islocked,
@@ -464,7 +586,7 @@ export default function TableComponent<TableProps>({
                                   ) : (
                                     <Button
                                       onClick={() => handleAction("view", item)}
-                                      className="px-[7px] py-[6px] text-sm font-normal bg-white shadow-[0px_2px_8px_0px_rgba(0,0,0,0.25)] text-[#636363]"
+                                      className="px-[7px] py-[6px] text-sm font-normal roounded bg-white shadow-[0px_2px_8px_0px_rgba(0,0,0,0.25)] text-[#636363]"
                                     >
                                       View
                                     </Button>
@@ -537,13 +659,15 @@ export default function TableComponent<TableProps>({
       </div>
       {/* @ts-ignore */}
       <MessagesComponent
+        specificCategory={specificCategory}
         isConfirmOpen={isConfirmOpen}
         isSuccessOpen={isSuccessOpen}
         setIsConfirmOpen={setIsConfirmOpen}
         isFailed={isFailed}
         isDeactivationOpen={isDeactivationOpen}
         isDetailOpen={isDetailOpen}
-        deleteLoading={deleteLoading}
+        isIndividualDetailOpen={isIndividualDetailOpen}
+        deleteLoading={deleteLoading || isDeleteInvestmentRequestLoading}
         activateIsLoading={activateIsLoading}
         confirmText={confirmText}
         detail={detail}
@@ -556,7 +680,12 @@ export default function TableComponent<TableProps>({
         setFailed={setFailed}
         setIsDeactivationOpen={setIsDeactivationOpen}
         setDetailOpen={setDetailOpen}
+        setIndividualDetailOpen={setIndividualDetailOpen}
         handleAction={handleAction}
+        isLiquidation={isLiquidation}    
+        setLiquidationOpen={setLiquidationOpen}
+        liquidationType={liquidationType}
+        handleRefresh={handleRefresh}
       />
     </div>
   );

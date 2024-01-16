@@ -1,10 +1,6 @@
-
-export async function downloadUsingFetch(
-  file = "https://dev2-retailcore-teams-management-api.dev.bepeerless.co/v1/Product/template"
-) {
-  
-  const fetchedfiLE = await fetch(file);
-  const FILE_NAME = `bulksheet.xlsx`;
+export async function downloadUsingFetch(url) {
+  const fetchedfiLE = await fetch(url);
+  const FILE_NAME = `download`;
   const blob = await fetchedfiLE.blob();
   const linkURL = URL.createObjectURL(blob);
 

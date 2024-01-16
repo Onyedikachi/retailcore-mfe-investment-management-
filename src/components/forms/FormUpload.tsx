@@ -45,6 +45,7 @@ export const handleDrop = async function (
   setFileInfo(file);
   const type = file?.name?.split(".").pop();
   const fileName = file?.name;
+  console.log("🚀 ~ fileName:", fileName);
   const lastDotIndex = fileName?.lastIndexOf(".");
   const fileType = lastDotIndex !== -1 ? fileName?.slice(lastDotIndex + 1) : "";
 
@@ -55,10 +56,10 @@ export const handleDrop = async function (
     return;
   }
 
-  // if (accept.length > 0 && !accept?.includes(fileType)) {
-  //   setError("File type not supported , please delete and upload another file");
-  //   setHasError(true);
-  // }
+  if (accept.length > 0 && !accept?.includes(fileType)) {
+    setError("File type not supported , please delete and upload another file");
+    setHasError(true);
+  }
 
   const reader = new FileReader();
   reader.onload = () => {
@@ -94,9 +95,11 @@ export const handleFileChange = (
 ) => {
   const file = event?.target?.files?.[0];
   const type = file?.name?.split(".").pop();
+  console.log("🚀 ~ type:", type);
   const fileName = file?.name;
   const lastDotIndex = fileName?.lastIndexOf(".");
   const fileType = lastDotIndex !== -1 ? fileName?.slice(lastDotIndex + 1) : "";
+  console.log("🚀 ~ fileType:", fileType);
 
   setFileType(fileType);
 
@@ -111,10 +114,10 @@ export const handleFileChange = (
     return;
   }
 
-  // if (!accept?.includes(fileType)) {
-  //   setError("File type not supported , please delete and upload another file");
-  //   setHasError(true);
-  // }
+  if (!accept?.includes(fileType)) {
+    setError("File type not supported , please delete and upload another file");
+    setHasError(true);
+  }
 
   const reader = new FileReader();
   reader.onload = () => {
@@ -144,10 +147,14 @@ const FormUpload = ({
   label,
   accept,
   onUploadComplete,
+  defaultValue,
+  setDefaultValue,
 }: {
   label?: string;
   accept?: string[];
   onUploadComplete: (imageUrl: string) => void;
+  defaultValue?: string;
+  setDefaultValue?: (e) => void;
 }): React.JSX.Element => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileType, setFileType] = useState("");
@@ -155,6 +162,7 @@ const FormUpload = ({
   const [error, setError] = useState("");
   const [dragActive, setDragActive] = React.useState(false);
   const [hasError, setHasError] = useState(false);
+
   const [fileInfo, setFileInfo] = useState<FileProp | null>(null);
 
   const [uploadDocument, { data, isLoading, isError, isSuccess, reset }] =
@@ -162,7 +170,7 @@ const FormUpload = ({
 
   React.useEffect(() => {
     if (isSuccess) {
-      onUploadComplete(data.data);
+      onUploadComplete(data.message);
     }
   }, [isSuccess, isError]);
 
@@ -181,7 +189,9 @@ const FormUpload = ({
           hasError ? "border-danger-500 " : "border-[#C4C4C4]"
         } rounded-lg max-w-[392px] px-4 py-[11px] relative  ${
           dragActive ? "opacity-50" : ""
-        } ${isSuccess ? "border-green-500 " : "border-[#C4C4C4]"}`}
+        } ${
+          isSuccess || defaultValue ? "border-green-500 " : "border-[#C4C4C4]"
+        }`}
         onDragEnter={(e) => handleDrag(e, setDragActive)}
         onDragLeave={(e) => handleDrag(e, setDragActive)}
         onDragOver={(e) => handleDrag(e, setDragActive)}
@@ -199,7 +209,7 @@ const FormUpload = ({
           )
         }
       >
-        {!selectedFile && (
+        {!selectedFile && !defaultValue && (
           <label
             data-testid="upload-btn"
             className="flex gap-x-12 items-center text-[#636363] text-sm cursor-pointer font-normal capitalize"
@@ -261,29 +271,38 @@ const FormUpload = ({
             </span>
           </label>
         )}
-        {selectedFile && (
+        {(selectedFile || defaultValue) && (
           <div className="flex justify-between w-full">
             <div className="flex items-center gap-x-2 text-sm text-[#636363]">
               <span className="w-11 h-11 bg-[#F9FAFB] rounded-full flex items-center justify-center">
                 <FaFile className="text-xl text-[#5C6879]" />
               </span>{" "}
-              {selectedFile?.name}
+              <span className="inline-block truncate max-w-[260px]">
+                {" "}
+                {selectedFile?.name || defaultValue}
+              </span>
             </div>
-            <span
-              className="absolute bottom-2 right-3 cursor-pointer"
-              data-testid="reset"
-              onClick={() =>
-                handleReset(
-                  setSelectedFile,
-                  setError,
-                  setHasError,
-                  reset,
-                  setBase64Image
-                )
-              }
-            >
-              <HiOutlineTrash className="text-lg text-[#96989A]" />
-            </span>
+            {isLoading ? (
+              <div className="absolute bottom-2 right-3 spinner-border h-4 w-4 border-t border-gray-600 rounded-full animate-spin"></div>
+            ) : (
+              <span
+                className="absolute bottom-2 right-3 cursor-pointer"
+                data-testid="reset"
+                onClick={() => {
+                  handleReset(
+                    setSelectedFile,
+                    setError,
+                    setHasError,
+                    reset,
+                    setBase64Image
+                  );
+                  setDefaultValue("");
+                  onUploadComplete("");
+                }}
+              >
+                <HiOutlineTrash className="text-lg text-[#96989A]" />
+              </span>
+            )}
           </div>
         )}
       </div>
@@ -292,7 +311,7 @@ const FormUpload = ({
           {error}
         </span>
       )}
-      {isSuccess && (
+      {(isSuccess || defaultValue) && (
         <span className="block py-1  text-green-500 text-xs pl-4">
           File uploaded successfully
         </span>

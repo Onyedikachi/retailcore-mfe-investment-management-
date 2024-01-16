@@ -5,79 +5,184 @@ import { RiErrorWarningFill } from "react-icons/ri";
 import { FaTimes, FaAngleRight } from "react-icons/fa";
 import ModalLayout from "./Layout";
 import Button from "../Button";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { AppContext } from "@app/utils";
 import { IoChevronForward } from "react-icons/io5";
+import { SpecificCategory } from "@app/constants";
 
 interface SuccessProps {
+  handleRefresh?: () => void;
+  specificCategory?: string;
   text: string;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   canClose?: boolean;
   canCreate?: boolean;
+  action?: string;
+  subtext?: string;
 }
 
+const factoryDashboard = "/product-factory/investment";
+const individualDashboard = "/product-factory/investment/management/individual";
+const factoryRequests = "/product-factory/investment?category=requests";
+const individualRequests =
+  "/product-factory/investment/management/individual?category=requests";
+export function handleNavigations(
+  { pathname, search },
+  process,
+  role = "superadmin",
+
+  specificCategory = null,
+  closeModal = () => {},
+  action = ""
+) {
+  if(specificCategory === SpecificCategory?.individual){
+    closeModal()
+    return
+  }
+
+
+  if (process === "create") {
+    if (pathname.includes("management") && pathname.includes("individual")) {
+      return role === "superadmin" && action !== "draft"
+        ? individualDashboard
+        : individualRequests;
+    }
+    if (!pathname.includes("management") && !pathname.includes("individual")) {
+      return role === "superadmin" && action !== "draft"
+        ? factoryDashboard
+        : factoryRequests;
+    }
+  }
+
+  if (process === "modify") {
+    if (pathname.includes("management") && pathname.includes("individual")) {
+      return role === "superadmin" && action !== "draft"
+        ? individualDashboard
+        : individualRequests;
+    }
+    if (!pathname.includes("management") && !pathname.includes("individual")) {
+      return role === "superadmin" && action !== "draft"
+        ? factoryDashboard
+        : factoryRequests;
+    }
+  }
+
+  if (process === "continue") {
+    if (pathname.includes("management") && pathname.includes("individual")) {
+      return role === "superadmin" && action !== "draft"
+        ? individualDashboard
+        : individualRequests;
+    }
+    if (!pathname.includes("management") && !pathname.includes("individual")) {
+      return role === "superadmin" && action !== "draft"
+        ? factoryDashboard
+        : factoryRequests;
+    }
+  }
+  if (process === "withdraw_modify") {
+    if (pathname.includes("management") && pathname.includes("individual")) {
+      return role === "superadmin" && action !== "draft"
+        ? individualDashboard
+        : individualRequests;
+    }
+    if (!pathname.includes("management") && !pathname.includes("individual")) {
+      return role === "superadmin" && action !== "draft"
+        ? factoryDashboard
+        : factoryRequests;
+    }
+  }
+  if (process === "verdict") {
+    if (pathname.includes("management") && pathname.includes("individual")) {
+      return individualRequests;
+    }
+    if (!pathname.includes("management") && !pathname.includes("individual")) {
+      return factoryRequests;
+    }
+  }
+}
+
+export function handleNewCreate({ pathname }) {
+  if (!pathname.includes("management")) {
+    window.location.href = "/product-factory/investment/term deposit/create";
+    return;
+  }
+  if (pathname.includes("management")) {
+    window.location.href =  "/product-factory/investment/management/create/individual";
+    return;
+  }
+}
+
+export function handleNewCreateText({ pathname }) {
+  if (!pathname.includes("management")) {
+    return "Create new product";
+  }
+  if (pathname.includes("management")) {
+    return "Book another investment";
+  }
+}
 export function Success({
+  handleRefresh = () => {},
+  specificCategory,
   text,
+  subtext,
   isOpen,
   setIsOpen,
   canClose = false,
   canCreate = false,
+  action = "",
 }: SuccessProps): React.JSX.Element {
   const navigate = useNavigate();
   const location = useLocation();
   const { role } = useContext(AppContext);
+  const { process } = useParams();
+  const closeModal = () => {
+    setIsOpen(false)
+    handleRefresh()
+
+  }
 
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="relative h-[400px] w-[606px] flex flex-col justify-between px-10 py-8 rounded-lg bg-white text-center items-center">
         <div className="flex justify-center items-center">
-          <HiCheckCircle data-testid="check-circle-icon" className="text-[80px] text-[#2FB755]" />{" "}
+          <HiCheckCircle
+            data-testid="check-circle-icon"
+            className="text-[80px] text-[#2FB755]"
+          />{" "}
         </div>
-        <p className="font-normal text-2xl">{text}</p>
+        <p className="font-normal text-2xl mb-2">{text}</p>
+        {subtext && (
+          <p className="font-normal text-base mb-[26px]">{subtext}</p>
+        )}
         <div className="flex justify-between items-center gap-x-[6px] w-full">
-          {location?.pathname === "/product-factory/investment" ? (
-            <Button
-              onClick={() =>
-                role === "superadmin" ||
-                location?.search === "?category=requests"
-                  ? navigate(0)
-                  : navigate("/product-factory/investment?category=requests")
-              }
-              type="button"
-              data-testid="close-btn"
-              className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-10 text-[#667085] outline-none"
-            >
-              <IoIosUndo className="text-sterling-red-800 text-4xl" /> Return to
-              dashboard
-            </Button>
-          ) : (
-            <Button
-              onClick={() =>
-                location?.search === "?category=requests"
-                  ? navigate(0)
-                  : navigate("/product-factory/investment?category=requests")
-              }
-              type="button"
-              data-testid="dashboard-link"
-              className={`text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full text-[#667085] outline-none`}
-            >
-              <IoIosUndo className="text-sterling-red-800 text-4xl" /> Return to
-              dashboard
-            </Button>
-          )}
+          <Button
+            onClick={() =>
+              handleNavigations(
+                location,
+                process,
+                role,
+                specificCategory,
+                closeModal,
+                action
+              )
+            }
+            type="button"
+            data-testid="close-btn"
+            className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-10 text-[#667085] outline-none"
+          >
+            <IoIosUndo className="text-sterling-red-800 text-4xl" /> Return to
+            dashboard
+          </Button>
 
           {canCreate && (
             <Button
-              onClick={() =>
-                (window.location.href =
-                  "/product-factory/investment/term deposit/create")
-              }
+              onClick={() => handleNewCreate(location)}
               type="button"
               data-testid="dashboard-link"
               className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full text-[#667085] outline-none"
             >
-              Create another product{" "}
+              {handleNewCreateText(location)}
               <FaAngleRight className="text-sterling-red-800 text-2xl" />
             </Button>
           )}
@@ -116,6 +221,7 @@ export function Failed({
   canProceed = false,
 }: FailedProps): React.JSX.Element {
   const navigate = useNavigate();
+  const { process } = useParams();
   const location = useLocation();
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -131,31 +237,15 @@ export function Failed({
           }`}
         >
           <div>
-            {location?.pathname === "/product-factory/investment" ? (
-              <Button
-                onClick={() => navigate(0)}
-                type="button"
-                data-testid="close-btn"
-                className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-1 text-[#667085] outline-none"
-              >
-                <IoIosUndo className="text-sterling-red-800 text-4xl" /> Return
-                to dashboard
-              </Button>
-            ) : (
-              <Button
-                onClick={() =>
-                  location?.search === "?category=requests"
-                    ? navigate(0)
-                    : navigate("/product-factory/investment?category=requests")
-                }
-                type="button"
-                data-testid="dashboard-link"
-                className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-1 text-[#667085] outline-none"
-              >
-                <IoIosUndo className="text-sterling-red-800 text-4xl" /> Return
-                to dashboard
-              </Button>
-            )}
+            <Button
+              onClick={() => navigate(handleNavigations(location, process))}
+              type="button"
+              data-testid="dashboard-link"
+              className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-1 text-[#667085] outline-none"
+            >
+              <IoIosUndo className="text-sterling-red-800 text-4xl" /> Return to
+              dashboard
+            </Button>
           </div>
           {canRetry && (
             <div>
@@ -174,7 +264,7 @@ export function Failed({
             <div>
               {" "}
               <Button
-                onClick={() => setIsOpen(false)}
+                onClick={() => navigate(handleNavigations(location, process))}
                 type="button"
                 data-testid="close-btn"
                 className="flex gap-x-1 items-center text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-1 text-[#667085] outline-none"
@@ -238,31 +328,16 @@ export function Prompt({
             canProceed ? "justify-between" : "justify-center"
           } w-full flex  items-center gap-x-[6px]`}
         >
-          {location?.pathname === "/product-factory/investment" ? (
-            <Button
-              onClick={() => setIsOpen(false)}
-              type="button"
-              data-testid="close-btn"
-              className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-10 text-[#667085] outline-none"
-            >
-              <IoIosUndo className="text-sterling-red-800 text-4xl" /> Return to
-              dashboard
-            </Button>
-          ) : (
-            <Button
-              onClick={() =>
-                location?.search === "?category=requests"
-                  ? navigate(0)
-                  : navigate("/product-factory/investment?category=requests")
-              }
-              type="button"
-              data-testid="dashboard-link"
-              className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-10 text-[#667085] outline-none"
-            >
-              <IoIosUndo className="text-sterling-red-800 text-4xl" /> Return to
-              dashboard
-            </Button>
-          )}
+          <Button
+            onClick={() => setIsOpen(false)}
+            type="button"
+            data-testid="close-btn"
+            className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-10 text-[#667085] outline-none"
+          >
+            <IoIosUndo className="text-sterling-red-800 text-4xl" /> Return to
+            dashboard
+          </Button>
+
           {canProceed && (
             <Button
               type="button"

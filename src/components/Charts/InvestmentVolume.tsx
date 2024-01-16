@@ -2,10 +2,8 @@ import React from "react";
 import Icon from "@app/components/ui/Icon";
 import { DateSelect } from "@app/components/forms";
 
-import { useOverviewContext } from "@app/utils";
 import Chart from "react-apexcharts";
 export default function ChartInfo() {
-  const overviewState = useOverviewContext();
   function formatYAxis(value) {
     if (value === 0) {
       return '0';
@@ -18,7 +16,7 @@ export default function ChartInfo() {
   
     const formattedValue =
       suffixIndex < suffixes.length
-        ? scaledValue.toFixed(2) + suffixes[suffixIndex]
+        ? scaledValue.toFixed(2).replace(/((\.\d*?[1-9])0*|(\.0*))$/, '$2') + suffixes[suffixIndex]
         : value;
   
     return formattedValue;
