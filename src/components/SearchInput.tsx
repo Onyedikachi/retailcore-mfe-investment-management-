@@ -50,7 +50,7 @@ export function SearchValues({
       </span>
       <span>
         <span className="block max-w-max truncate text-[#636363] capitalize">
-          {type.toLowerCase() === "investments" ? (
+          {type?.toLowerCase() === "investments" ? (
             <span className="flex flex-col gap-[1px]">
               <span>{item.customerName}</span>
               <span className="">

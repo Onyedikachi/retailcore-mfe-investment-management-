@@ -32,6 +32,16 @@ export default function BookingDetail({
             Customer information
           </h4>
           <div className="grid grid-cols-1 gap-[25px] px-12">
+          <div className=" flex gap-[54px]">
+              <div className="w-[300px]   text-base font-medium text-[#636363]">
+               Customer Id
+              </div>
+              <div className="w-full text-base font-normal text-[#636363] capitalize">
+                {" "}
+                {detail?.customerBookingInfoModel?.customerName},{" "}
+                {detail?.customerBookingInfoModel?.customerProfileid}{" "}
+              </div>
+            </div>
             <div className=" flex gap-[54px]">
               <div className="w-[300px]   text-base font-medium text-[#636363]">
                 Customer type
@@ -45,9 +55,10 @@ export default function BookingDetail({
               <div className="w-[300px]   text-base font-medium text-[#636363]">
                 Account number
               </div>
-              <div className="w-full text-base font-normal text-[#636363]">
+              <div className="w-full text-base font-normal text-[#636363] capitalize">
                 {" "}
-                {detail?.customerBookingInfoModel.customerAccount}{" "}
+               
+                {detail?.customerBookingInfoModel?.customerAccount}{" "}
               </div>
             </div>
 
@@ -56,7 +67,7 @@ export default function BookingDetail({
                 Account status
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-              {detail?.customerBookingInfoModel.accountStatus}{" "}
+                {detail?.customerBookingInfoModel.accountStatus}{" "}
               </div>
             </div>
           </div>
@@ -177,7 +188,7 @@ export default function BookingDetail({
                       (i) =>
                         i.value ===
                         detail?.transactionSettingModel?.capitalizationMethod
-                    ).text
+                    )?.text
                   : "No"}
               </div>
             </div>

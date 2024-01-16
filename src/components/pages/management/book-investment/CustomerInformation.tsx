@@ -23,7 +23,7 @@ export const onProceed = (data, proceed, formData, setFormData) => {
   console.log("🚀 ~ onProceed ~ data:", data);
   setFormData({
     ...formData,
-    customerBookingInfoModel: data,
+    customerBookingInfoModel: { ...formData.customerBookingInfoModel, ...data },
   });
   proceed();
 };
@@ -36,7 +36,6 @@ type CustomerInformationProps = {
   isSavingDraft?: boolean;
 };
 export const handleSearch = (value, setAccountNumber) => {
-  console.log("🚀 ~ handleSearch ~ value:", value);
   setAccountNumber(value);
 };
 export default function CustomerInformation({
@@ -125,11 +124,16 @@ export default function CustomerInformation({
   useEffect(() => {
     if (accountIsSuccess) {
       setAccountBalance(accountData.data);
+      setFormData({
+        ...formData,
+        customerBookingInfoModel: {
+          ...formData.customerBookingInfoModel,
+          accountStatus: accountData?.data?.status,
+        },
+      });
     }
-
-    return () => {
-      setAccountBalance(null);
-    };
+    console.log("🚀 ~ useEffect ~ accountData.data:", accountData?.data);
+    setValue("accountStatus", accountData?.data?.status);
   }, [accountIsError, accountIsSuccess, isLoading, accountData]);
 
   useEffect(() => {
@@ -167,9 +171,6 @@ export default function CustomerInformation({
   }, [searchLoading]);
 
   useEffect(() => {
-    if (validKyc === false && accountNumber && profileData) {
-      setKycFailed(true);
-    }
     setDisabled(!isValid || !validKyc);
   }, [isValid, validKyc]);
 
@@ -180,12 +181,18 @@ export default function CustomerInformation({
 
           ?.find(
             (i) =>
-              i.parameter.toLowerCase() ===
+              i.parameter?.toLowerCase() ===
               "status of customer identity verification"
           )
           ?.parameterOption?.toLowerCase() === "passed";
 
       setValidKyc(status);
+
+      if (status === false && accountNumber && profileData) {
+        setKycFailed(true);
+      } else {
+        setKycFailed(false);
+      }
     }
   }, [profileData, profileIsSuccess]);
 

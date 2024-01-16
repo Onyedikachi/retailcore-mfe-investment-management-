@@ -25,7 +25,8 @@ import { AppContext } from "@app/utils";
 export const onProceed = (data, proceed, formData, setFormData) => {
   setFormData({
     ...formData,
-    facilityDetailsModel: data,
+   
+    facilityDetailsModel: {...formData.facilityDetailsModel, ...data},
   });
   proceed();
 };
