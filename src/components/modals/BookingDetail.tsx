@@ -12,7 +12,10 @@ import {
   liquidities,
 } from "@app/constants";
 import { currencyFormatter } from "@app/utils/formatCurrency";
-import { useGetInvestmentDetailQuery } from "@app/api";
+import {
+  useGetInvestmentDetailQuery,
+  useGetProductDetailQuery,
+} from "@app/api";
 import { AppContext } from "@app/utils";
 import PricingConfigurationComponent from "./PricingConfigurationComponent";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
@@ -26,9 +29,11 @@ interface Props {
 }
 
 export const BookingDetailLayout = ({
+  detail,
   isOpen,
   setIsOpen,
   isLoading,
+  investmentData,
   productData,
   permissions,
   open,
@@ -82,7 +87,7 @@ export const BookingDetailLayout = ({
                       {/* {ProductTypes.find(
                         (i) => i.id == productData?.data?.productType
                       )?.name || "-"} */}
-                      {`${productData?.data?.customerBookingInfoModel?.customerName}/${productData?.data?.customerBookingInfoModel?.customerAccount}`}
+                      {`${investmentData?.data?.customerBookingInfoModel?.customerName}/${investmentData?.data?.customerBookingInfoModel?.customerAccount}`}
                     </span>
                   </div>
                   <div>
@@ -90,13 +95,13 @@ export const BookingDetailLayout = ({
                       Investment ID
                     </span>
                     <span className="font-normal block uppercase">
-                      {productData?.data?.facilityDetailsModel?.investmentProductId || "-"}
+                      {detail?.investmentId|| "-"}
                     </span>
                   </div>
                   <div>
                     <span className="font-bold block mb-[15px]">Principal</span>
                     <span className="font-normal block">
-                      {productData?.data?.productInfo?.slogan || "-"}
+                      {currencyFormatter(detail?.principal) || "-"}
                     </span>
                   </div>
                   <div>
@@ -145,10 +150,13 @@ export const BookingDetailLayout = ({
                   <div>
                     <span className="font-bold block mb-[15px]">Currency</span>
                     <span className="font-normal block">
-                      {handleCurrencyName(
+                      {/* {handleCurrencyName(
                         productData?.data?.productInfo?.currency,
                         currencies
-                      )}{" "}
+                      )}{" "} */}
+                      {
+                        productData?.data?.productInfo?.currency
+                      }
                     </span>
                   </div>
                   <div>
@@ -168,10 +176,7 @@ export const BookingDetailLayout = ({
                     <span className="font-bold block mb-[15px]">Tenor</span>
                     <span className="font-normal block">
                       {
-                        CustomerCategory[
-                          productData?.data?.customerEligibility
-                            ?.customerCategory
-                        ]
+                        detail?.tenor  
                       }{" "}
                     </span>
                   </div>
@@ -332,24 +337,43 @@ export default function BookingDetail({
   handleClick,
   detail,
 }: Props) {
+  console.log("detail:" + JSON.stringify(detail))
   const { permissions } = useContext(AppContext);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const { data: productData, isLoading } = useGetInvestmentDetailQuery({
-    id: detail?.id,
+  const { data: investmentData, isInvestmentLoading } =
+    useGetInvestmentDetailQuery({
+      id: detail?.id,
+    });
+  const {
+    data: productData,
+    isProductLoading,
+    isSuccess,
+  } = useGetProductDetailQuery({
+    id: detail?.investmentProductId,
   });
 
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    console.log("InvestmentData Effect: " + JSON.stringify(productData));
-  }, [productData]);
+    console.log("InvestmentData Effect: " + JSON.stringify(investmentData));
+    console.log("ProductData Effect: " + JSON.stringify(productData));
+  }, [productData, investmentData]);
+
+  useEffect(() => {
+    if (!isInvestmentLoading && !isProductLoading) {
+      setIsLoading(false)
+    }
+  }, [isInvestmentLoading, isProductLoading]);
 
   return (
     <BookingDetailLayout
       {...{
+        detail,
         isOpen,
         setIsOpen,
         isLoading,
+        investmentData,
         productData,
         permissions,
         open,
