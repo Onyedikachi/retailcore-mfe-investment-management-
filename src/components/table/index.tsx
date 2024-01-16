@@ -8,6 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 import DropDown from "@app/components/DropDown";
 import { MultiSelect, DateSelect } from "@app/components/forms";
 import moment from "moment";
+import { currencyFormatter } from "@app/utils/formatCurrency";
+
 import { BsFunnel } from "react-icons/bs";
 import BottomBarLoader from "../BottomBarLoader";
 // import Tooltip from "@app/components/ui/Tooltip";
@@ -96,10 +98,12 @@ export const statusHandler = ({
   }
   if (isDeleteInvestmentRequestError) {
     setFailedText(Messages.PRODUCT_DELETE_FAILED);
-    setFailedSubtext(deleteInvestmentRequestError?.message?.message || deleteInvestmentRequestError?.message?.Message);
+    setFailedSubtext(
+      deleteInvestmentRequestError?.message?.message ||
+        deleteInvestmentRequestError?.message?.Message
+    );
     setFailed(true);
   }
-  
 
   if (activateIsError) {
     setFailedText(Messages.PRODUCT_ACTIVATE_FAILED);
@@ -182,11 +186,15 @@ export const handleProductsDropdown = (
   }
 };
 
-export const TextCellContent = ({ value }) => (
+export const TextCellContent = ({ value, isCurrencyValue = false }) => (
   <span className="relative">
-    <span className="relative">{value || "-"}</span>
+    <span className="relative">
+      {`${isCurrencyValue ? currencyFormatter(value, 'NGN', true, 2) : value}` || "-"}
+    </span>
   </span>
 );
+
+currencyFormatter;
 
 export const ProductNameCellContent = ({ value }) => (
   <>
@@ -300,7 +308,7 @@ export default function TableComponent<TableProps>({
   // function getdata(item, key) {}
   // @ts-ignore
   const handleAction = (action, items) => {
-    console.log(JSON.stringify({ action, items }));
+    // console.log(JSON.stringify({ action, items }));
 
     actionHandler({
       specificCategory,
@@ -487,6 +495,7 @@ export default function TableComponent<TableProps>({
                             <>
                               {typeof item[header.key] !== "object" &&
                                 header.key !== "state" &&
+                                header.key !== "principal" &&
                                 header.key !== "investmentBookingStatus" &&
                                 header.key !== "updated_At" &&
                                 header.key !== "requestStatus" && (
@@ -503,7 +512,12 @@ export default function TableComponent<TableProps>({
                                   statusType={type}
                                 />
                               )}
-                              {console.log("item" + JSON.stringify(item))}
+                              {header.key === "principal" && (
+                                <TextCellContent
+                                  isCurrencyValue={true}
+                                  value={item[header.key] || "-"}
+                                />
+                              )}
                               {header.key === "requestStatus" && (
                                 <span
                                   onClick={() => handleAction("view", item)}
@@ -522,7 +536,7 @@ export default function TableComponent<TableProps>({
                               {header.key === "productName" && (
                                 <ProductNameCellContent value={item} />
                               )}
-                                {header.key === "customerName" && (
+                              {header.key === "customerName" && (
                                 <CustomerNameCellContent value={item} />
                               )}
                             </>
@@ -644,7 +658,7 @@ export default function TableComponent<TableProps>({
       </div>
       {/* @ts-ignore */}
       <MessagesComponent
-      specificCategory={specificCategory}
+        specificCategory={specificCategory}
         isConfirmOpen={isConfirmOpen}
         isSuccessOpen={isSuccessOpen}
         setIsConfirmOpen={setIsConfirmOpen}
