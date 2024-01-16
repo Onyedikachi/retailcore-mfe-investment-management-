@@ -68,7 +68,7 @@ export const AppContext = createContext<{
   setIsChecker: () => {},
 });
 
-export const InvestmentContext = createContext<ContextProps>({
+export const CommonContext = createContext<ContextProps>({
   specificCategory: null,
   setSpecificCategory: () => {},
   category: null,
@@ -97,33 +97,10 @@ export const InvestmentContext = createContext<ContextProps>({
   setDetail: () => {},
 });
 
-export const IndividualContext = createContext<ContextProps>({
-  category: null,
-  setCategory: () => {},
-  selected: null,
-  setSelected: () => {},
+export const InvestmentContext = CommonContext;
 
-  setStatus: () => {},
-  status: "",
-  dateData: null,
-  setDateData: () => {},
-  search: "",
-  setSearch: () => {},
-  type: "",
-  setType: () => {},
-  initiator: "",
-  setInitiator: () => {},
-  setDuration: () => {},
-  duration: "",
-  isRefreshing: false,
-  setRefreshing: () => {},
-  role: "",
-  setRole: () => {},
-  isIndividualDetailOpen: false,
-  setIndividualDetailOpen: () => {},
-  detail: false,
-  setDetail: () => {},
-});
+export const IndividualContext = CommonContext;
+
 
 export const ProductDeactivationContext =
   createContext<branchDeactivationContextProps>({

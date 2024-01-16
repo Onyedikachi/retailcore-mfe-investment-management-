@@ -1,6 +1,8 @@
 import Icon from "@app/components/ui/Icon";
 import { useState } from "react";
-import { Corporate, Overview, Individual } from "@app/components/pages";
+import {
+  //  Corporate,
+   Overview, Individual } from "@app/components/pages";
 
 export default function Dashboard() {
   //   useEffect(() => {

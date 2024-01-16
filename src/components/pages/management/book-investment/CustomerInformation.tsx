@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ErrorMessage } from "@hookform/error-message";
-import AccountSearch from "@app/components/AccountSearch";
 import { InputDivs } from "@app/components/pages/term-deposit/forms/accounting-entries-and-events";
 import { FormUpload } from "@app/components/forms";
 import CustomerInfoCard from "./CustomerInfoCard";

@@ -3,7 +3,7 @@ import Icon from "@app/components/ui/Icon";
 import { BookInvestmentButton } from "@app/components";
 import { useState } from "react";
 import SearchInput from "@app/components/SearchInput";
-import { Corporate, Overview, Individual } from "@app/components/pages";
+import { Overview, Individual } from "@app/components/pages";
 import { useGetPostProductsMutation } from "@app/api";
 import { StatusCategoryType } from "@app/types";
 import { useNavigate, useParams } from "react-router-dom";
@@ -110,7 +110,7 @@ export default function Dashboard() {
       </div>
       <div className="bg-[#F7F7F7] px-4 sm:px-6 lg:px-8 py-[30px] max-h-[100vh] overflow-y-auto">
         {tab.toLowerCase() == "overview" && <Overview />}
-        {tab.toLowerCase() == "corporate" && <Corporate />}
+        {/* {tab.toLowerCase() == "corporate" && <Corporate />} */}
         {tab.toLowerCase() == "individual" && <Individual />}
       </div>
     </div>

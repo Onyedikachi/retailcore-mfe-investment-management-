@@ -101,74 +101,76 @@ export default function CustomerInfoCard({
           <h1 className="font-bold text-[20px] text-[#747373]">
             Customer’s Information
           </h1>
-          <div className="grid grid-cols-4 gap-8">
-            <Info
-              title={"Customer Name"}
-              data={`${capitalizeFirstLetter(
-                customerData?.customer_profiles[0]?.firstName
-              )} ${capitalizeFirstLetter(
-                customerData?.customer_profiles[0]?.otherNames
-              )} ${capitalizeFirstLetter(
-                customerData?.customer_profiles[0]?.surname
-              )}`}
-              type={"customerName"}
-              setIsOpen={setIsOpen}
-            />
-            <Info title={"Customer ID"} data={customerData?.accountNumber} />
-            <Info title={"Customer Type"} data={customerData?.customerType} />
-            <Info
-              title={"Status"}
-              data={customerData?.status}
-              type={"status"}
-            />
-            <Info
-              title={"BVN"}
-              data={customerData?.customer_profiles[0]?.bvn}
-            />
-            <Info
-              title={" Phone Number"}
-              data={customerData?.customer_profiles[0]?.mobileNumber}
-            />
-            <Info
-              title={"Email Address"}
-              data={customerData?.customer_profiles[0]?.emailAddress}
-            />
-            <Info
-              title={"Customer Persona"}
-              data={
-                customerData?.risk_assessments?.find(
-                  (i) => i.parameter.toLowerCase() === "customer persona"
-                )?.parameterOption
-              }
-              type={"customerPersona"}
-            />
+          {customerData && customerData?.customer_profiles?.length && (
+            <div className="grid grid-cols-4 gap-8">
+              <Info
+                title={"Customer Name"}
+                data={`${capitalizeFirstLetter(
+                  customerData?.customer_profiles[0]?.firstName
+                )} ${capitalizeFirstLetter(
+                  customerData?.customer_profiles[0]?.otherNames
+                )} ${capitalizeFirstLetter(
+                  customerData?.customer_profiles[0]?.surname
+                )}`}
+                type={"customerName"}
+                setIsOpen={setIsOpen}
+              />
+              <Info title={"Customer ID"} data={customerData?.accountNumber} />
+              <Info title={"Customer Type"} data={customerData?.customerType} />
+              <Info
+                title={"Status"}
+                data={customerData?.status}
+                type={"status"}
+              />
+              <Info
+                title={"BVN"}
+                data={customerData?.customer_profiles[0]?.bvn}
+              />
+              <Info
+                title={" Phone Number"}
+                data={customerData?.customer_profiles[0]?.mobileNumber}
+              />
+              <Info
+                title={"Email Address"}
+                data={customerData?.customer_profiles[0]?.emailAddress}
+              />
+              <Info
+                title={"Customer Persona"}
+                data={
+                  customerData?.risk_assessments?.find(
+                    (i) => i.parameter.toLowerCase() === "customer persona"
+                  )?.parameterOption
+                }
+                type={"customerPersona"}
+              />
 
-            <Info
-              title={"KYC Status"}
-              data={
-                customerData?.risk_assessments
-                  ?.find(
-                    (i) =>
-                      i.parameter.toLowerCase() ===
-                      "status of customer identity verification"
-                  )
-                  ?.parameterOption?.toLowerCase() === "passed"
-                  ? "Complete"
-                  : "Incomplete"
-              }
-              type={"kycStatus"}
-            />
-            <Info
-              title={"Risk Status"}
-              data={customerData?.riskStatus}
-              type={"riskStatus"}
-            />
-            <Info
-              title={"Relationship Manager"}
-              data={customerData?.customer_profiles[0]?.relationshipOfficer}
-              type={"relationshipManager"}
-            />
-          </div>
+              <Info
+                title={"KYC Status"}
+                data={
+                  customerData?.risk_assessments
+                    ?.find(
+                      (i) =>
+                        i.parameter.toLowerCase() ===
+                        "status of customer identity verification"
+                    )
+                    ?.parameterOption?.toLowerCase() === "passed"
+                    ? "Complete"
+                    : "Incomplete"
+                }
+                type={"kycStatus"}
+              />
+              <Info
+                title={"Risk Status"}
+                data={customerData?.riskStatus}
+                type={"riskStatus"}
+              />
+              <Info
+                title={"Relationship Manager"}
+                data={customerData?.customer_profiles[0]?.relationshipOfficer}
+                type={"relationshipManager"}
+              />
+            </div>
+          )}
         </div>
       )}
     </div>

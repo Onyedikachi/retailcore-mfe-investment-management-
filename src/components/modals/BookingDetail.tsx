@@ -65,7 +65,9 @@ export const BookingDetailLayout = ({
                       : "text-[#1E0A3C] bg-[#E5E5EA]"
                   } px-2 py-[1px] rounded font-medium capitalize`}
                 >
-                  {detail?.investmentBookingStatus === 1 ? "Active" : "Liquidated"}
+                  {detail?.investmentBookingStatus === 1
+                    ? "Active"
+                    : "Liquidated"}
                 </span>
               </div>
               <button
@@ -95,51 +97,45 @@ export const BookingDetailLayout = ({
                       Investment ID
                     </span>
                     <span className="font-normal block uppercase">
-                      {detail?.investmentId|| "-"}
+                      {detail?.investmentId || "-"}
                     </span>
                   </div>
                   <div>
                     <span className="font-bold block mb-[15px]">Principal</span>
                     <span className="font-normal block">
-                      {currencyFormatter(detail?.principal, 'NGN', true, 2) || "-"}
+                      {currencyFormatter(detail?.principal, "NGN", true, 2) ||
+                        "-"}
                     </span>
                   </div>
-                  {
-                    detail?.investmentBookingStatus === 1 && (
-                      <div>
+                  {detail?.investmentBookingStatus === 1 && (
+                    <div>
                       <span className="font-bold block mb-[15px]">
                         Current Value of Investment
                       </span>
-                      <span className="font-normal block">
-                        { '?? ' || "-"}{" "}
-                      </span>
+                      <span className="font-normal block">{"?? " || "-"} </span>
                     </div>
-                    )
-                  }
-              
+                  )}
 
-                  {
-                    detail?.investmentBookingStatus === 2 &&  (
-                      <div>
+                  {detail?.investmentBookingStatus === 2 && (
+                    <div>
                       <span className="font-bold block mb-[15px]">
                         Value at Liquidation
                       </span>
-                      <span className="font-normal block">
-                        {'?? ' || "-"}{" "}
-                      </span>
+                      <span className="font-normal block">{"?? " || "-"} </span>
                     </div>
-
-                    )
-                  }
-
-                
+                  )}
 
                   <div>
                     <span className="font-bold block mb-[15px]">
                       Value at Maturity
                     </span>
                     <span className="font-normal block">
-                      {currencyFormatter(detail?.maturityValue, 'NGN', true, 2) || "-"}{" "}
+                      {currencyFormatter(
+                        detail?.maturityValue,
+                        "NGN",
+                        true,
+                        2
+                      ) || "-"}{" "}
                     </span>
                   </div>
 
@@ -166,9 +162,7 @@ export const BookingDetailLayout = ({
                         productData?.data?.productInfo?.currency,
                         currencies
                       )}{" "} */}
-                      {
-                        productData?.data?.productInfo?.currency
-                      }
+                      {productData?.data?.productInfo?.currency}
                     </span>
                   </div>
                   <div>
@@ -176,27 +170,19 @@ export const BookingDetailLayout = ({
                       Investment Timeline
                     </span>
                     <span className="font-normal block">
-                      {
-                       detail?.maturityDate
-                      }{" "}
+                      {detail?.maturityDate}{" "}
                     </span>
                   </div>
                   <div>
                     <span className="font-bold block mb-[15px]">Tenor</span>
-                    <span className="font-normal block">
-                      {
-                        detail?.tenor  
-                      }{" "}
-                    </span>
+                    <span className="font-normal block">{detail?.tenor} </span>
                   </div>
                   <div>
                     <span className="font-bold block mb-[15px]">
                       Interest Rate Per Annum
                     </span>
                     <span className="font-normal block">
-                      {
-                        detail?.interestRate
-                      }{" "}
+                      {detail?.interestRate}{" "}
                     </span>
                   </div>
                 </div>
@@ -339,7 +325,7 @@ export default function BookingDetail({
   handleClick,
   detail,
 }: Props) {
-  console.log("detail:" + JSON.stringify(detail))
+  console.log("detail:" + JSON.stringify(detail));
   const { permissions } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -364,7 +350,7 @@ export default function BookingDetail({
 
   useEffect(() => {
     if (!isInvestmentLoading && !isProductLoading) {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }, [isInvestmentLoading, isProductLoading]);
 

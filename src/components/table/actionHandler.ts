@@ -16,8 +16,8 @@ export const actionHandler = ({
   setIsConfirmOpen,
   setDetailOpen,
   setIndividualDetailOpen,
-  setPartLiquidationOpen,
-  setEarlyLiquidationOpen,
+  setLiquidationOpen,
+  setLiquidationType,
   navigate,
 }) => {
   // console.log("Show action", JSON.stringify({action, items, selected, category}));
@@ -78,11 +78,15 @@ export const actionHandler = ({
     return;
   }
   if (action.toLowerCase() === Actions.PART_LIQUIDATE) {
-    setPartLiquidationOpen(true);
+   
+    setLiquidationType("part")
+    setLiquidationOpen(true)
+
     return;
   }
   if (action.toLowerCase() === Actions.EARLY_LIQUIDATE) {
-    setEarlyLiquidationOpen(true);
+    setLiquidationType("early")
+    setLiquidationOpen(true)
     return;
   }
   if (action.toLowerCase() === Actions.DELETE_DRAFT) {

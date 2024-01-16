@@ -19,7 +19,8 @@ import {
   StatusFilterOptions,
   StatusTypes,
   TypeFilterOptions,
-  SpecificCategory
+  SpecificCategory,
+  InvestmentBookingRequestType
 } from "@app/constants";
 import { sortTabStatus } from "@app/utils/sortTabStatus";
 import { useSearchParams } from "react-router-dom";
@@ -99,8 +100,7 @@ export const handleRequestStatus = ({
           requestStatus: StatusFilterOptions.find(
             (n) => n.value === i.requestStatus
           )?.name,
-          requestType: TypeFilterOptions.find((n) => n.value === i.requestType)
-            ?.name,
+          requestType: InvestmentBookingRequestType[i.requestType],
         }))
       ),
     ]);
