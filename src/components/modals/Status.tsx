@@ -15,50 +15,78 @@ interface SuccessProps {
   setIsOpen: (isOpen: boolean) => void;
   canClose?: boolean;
   canCreate?: boolean;
+  action?: string;
 }
 
 const factoryDashboard = "/product-factory/investment";
 const individualDashboard = "/product-factory/investment/management/individual";
-const factoryRequests = "/product-factory/investment?category=requsts";
+const factoryRequests = "/product-factory/investment?category=requests";
 const individualRequests =
   "/product-factory/investment/management/individual?category=requests";
 export function handleNavigations(
   { pathname, search },
   process,
-  role = "superadmin"
+  role = "superadmin",
+  action = ""
 ) {
+  console.log("🚀 ~ role:", role)
+  console.log("🚀 ~ process:", process)
   if (process === "create") {
     if (pathname.includes("management") && pathname.includes("individual")) {
-      return individualDashboard;
+      return role === "superadmin" && action !== "draft"
+        ? individualDashboard
+        : individualRequests;
     }
     if (!pathname.includes("management") && !pathname.includes("individual")) {
-      return factoryDashboard;
+      return role === "superadmin" && action !== "draft"
+        ? factoryDashboard
+        : factoryRequests;
     }
   }
 
   if (process === "modify") {
     if (pathname.includes("management") && pathname.includes("individual")) {
-      return individualDashboard;
+      return role === "superadmin" && action !== "draft"
+        ? individualDashboard
+        : individualRequests;
     }
     if (!pathname.includes("management") && !pathname.includes("individual")) {
-      return factoryDashboard;
+      return role === "superadmin" && action !== "draft"
+        ? factoryDashboard
+        : factoryRequests;
     }
   }
 
   if (process === "continue") {
     if (pathname.includes("management") && pathname.includes("individual")) {
-      return individualDashboard;
+      return role === "superadmin" && action !== "draft"
+        ? individualDashboard
+        : individualRequests;
     }
     if (!pathname.includes("management") && !pathname.includes("individual")) {
-      return factoryDashboard;
+      return role === "superadmin" && action !== "draft"
+        ? factoryDashboard
+        : factoryRequests;
     }
   }
   if (process === "withdraw_modify") {
     if (pathname.includes("management") && pathname.includes("individual")) {
-      return individualDashboard;
+      return role === "superadmin" && action !== "draft"
+        ? individualDashboard
+        : individualRequests;
     }
     if (!pathname.includes("management") && !pathname.includes("individual")) {
-      return factoryDashboard;
+      return role === "superadmin" && action !== "draft"
+        ? factoryDashboard
+        : factoryRequests;
+    }
+  }
+  if (process === "verdict") {
+    if (pathname.includes("management") && pathname.includes("individual")) {
+      return individualRequests;
+    }
+    if (!pathname.includes("management") && !pathname.includes("individual")) {
+      return factoryRequests;
     }
   }
 }
@@ -68,6 +96,7 @@ export function Success({
   setIsOpen,
   canClose = false,
   canCreate = false,
+  action = "",
 }: SuccessProps): React.JSX.Element {
   const navigate = useNavigate();
   const location = useLocation();
@@ -86,7 +115,7 @@ export function Success({
         <p className="font-normal text-2xl">{text}</p>
         <div className="flex justify-between items-center gap-x-[6px] w-full">
           <Button
-            onClick={() => handleNavigations(location, process, role)}
+            onClick={() => navigate(handleNavigations(location, process, role, action))}
             type="button"
             data-testid="close-btn"
             className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-10 text-[#667085] outline-none"
@@ -144,6 +173,7 @@ export function Failed({
   canProceed = false,
 }: FailedProps): React.JSX.Element {
   const navigate = useNavigate();
+  const { process } = useParams();
   const location = useLocation();
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -160,7 +190,7 @@ export function Failed({
         >
           <div>
             <Button
-              onClick={() => handleNavigations(location, process)}
+              onClick={() => navigate(handleNavigations(location, process))}
               type="button"
               data-testid="dashboard-link"
               className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-1 text-[#667085] outline-none"
@@ -186,7 +216,7 @@ export function Failed({
             <div>
               {" "}
               <Button
-                onClick={() => handleNavigations(location, process)}
+                onClick={() => navigate(handleNavigations(location, process))}
                 type="button"
                 data-testid="close-btn"
                 className="flex gap-x-1 items-center text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-1 text-[#667085] outline-none"
@@ -250,17 +280,16 @@ export function Prompt({
             canProceed ? "justify-between" : "justify-center"
           } w-full flex  items-center gap-x-[6px]`}
         >
-          
-            <Button
-              onClick={() => setIsOpen(false)}
-              type="button"
-              data-testid="close-btn"
-              className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-10 text-[#667085] outline-none"
-            >
-              <IoIosUndo className="text-sterling-red-800 text-4xl" /> Return to
-              dashboard
-            </Button>
-       
+          <Button
+            onClick={() => setIsOpen(false)}
+            type="button"
+            data-testid="close-btn"
+            className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-10 text-[#667085] outline-none"
+          >
+            <IoIosUndo className="text-sterling-red-800 text-4xl" /> Return to
+            dashboard
+          </Button>
+
           {canProceed && (
             <Button
               type="button"

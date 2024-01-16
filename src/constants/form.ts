@@ -32,7 +32,7 @@ export const BookingCustomerInfoSchema = yup.object().shape({
   customerId: yup.string().uuid().required("Select a customer account"),
   customerName: yup.string().required("Select a customer account"),
   customerAccount: yup.string().required("Select a customer account"),
-  investmentformUrl: yup.string().required("Request is required"),
+  investmentformUrl: yup.string().required("Request form is required"),
 });
 export const FacilityDetailsModelSchema = yup.object().shape({
   investmentProductId: yup.string().uuid().required("Select an investment"),
@@ -67,10 +67,10 @@ export const FacilityDetailsModelSchema = yup.object().shape({
 });
 
 export const TransactionSettingModelSchema = yup.object().shape({
-  accountForLiquidation: yup.string().required(),
-  notifyCustomerOnMaturity: yup.boolean().required(),
-  rollOverAtMaturity: yup.boolean().required(),
-  rollOverOption: yup.number().integer().min(0).max(2).required(),
+  accountForLiquidation: yup.mixed().required("Select an account"),
+  notifyCustomerOnMaturity: yup.boolean().required("Required"),
+  rollOverAtMaturity: yup.boolean().required("Required"),
+  rollOverOption: yup.number().integer().min(0).max(2).required("Required"),
 });
 
 export const CustomerEligibilityCriteriaSchema = yup
