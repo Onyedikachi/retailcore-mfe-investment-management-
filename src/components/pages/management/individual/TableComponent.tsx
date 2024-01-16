@@ -491,6 +491,7 @@ export default function TableComponent({
             : "No investment available"
         }
         Context={IndividualContext}
+        handleRefresh={handleRefresh}
       />
     </section>
   );
