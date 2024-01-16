@@ -1,3 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/layouts/Layout.test.tsx">
+    <testCase name="Layout renders AuthGuard and Outlet components" duration="1110"/>
+    <testCase name="handleRole should handle cases where is_superuser property is not a boolean" duration="13"/>
+    <testCase name="handleRole should handle cases where is_superuser property is not a boolean" duration="9"/>
+    <testCase name="handleRole should handle cases where is_superuser property is not present in user object" duration="3"/>
+    <testCase name="checkPermissions should not redirect and set permissions when user has all required investment permissions" duration="70"/>
+    <testCase name="checkPermissions should not redirect and set permissions when user has some required investment permissions" duration="41"/>
+    <testCase name="checkPermissions should redirect to specific URL when user has no required investment permissions" duration="19"/>
+    <testCase name="checkPermissions should redirect to specific URL when user has null permissions" duration="47"/>
+  </file>
 </testExecutions>

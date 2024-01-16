@@ -32,7 +32,7 @@ export function handleNavigations(
   process,
   role = "superadmin",
 
-  specificCategory = null,
+  specificCategory = "",
   closeModal = () => {},
   action = ""
 ) {

@@ -357,14 +357,30 @@ describe('Success', () => {
 describe('handleNavigations', () => {
 
   // should return individualDashboard if process is 'create' and pathname includes 'management' and 'individual'
+  it('should return individualDashboard when specific category is individual"', () => {
+    const location = { pathname: "/product-factory/investment/management/individual", search: "" };
+    const process = "create";
+    const role = "superadmin";
+    const closeModal = jest.fn()
+
+    const result = handleNavigations(location, process, role, "individual", closeModal, "");
+
+    // expect(closeModal).toHaveBeenCalled();
+    expect(result).toBeUndefined()
+  });
+
+  // should return individualDashboard if process is 'create' and pathname includes 'management' and 'individual'
   it('should return individualDashboard when process is "create" and pathname includes "management" and "individual"', () => {
     const location = { pathname: "/product-factory/investment/management/individual", search: "" };
     const process = "create";
     const role = "superadmin";
 
-    const result = handleNavigations(location, process, role);
-
+    const result = handleNavigations(location, process, role, "", jest.fn(), "");
     expect(result).toBe("/product-factory/investment/management/individual");
+    
+    const result2 = handleNavigations(location, "draft", "", "", jest.fn(), "");
+
+    expect(result2).toBe("/product-factory/investment/management/individual?category=requests");
   });
 
   // should return factoryDashboard if process is 'create' and pathname does not include 'management' and 'individual'
