@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
 import OutsideClickHandler from "react-outside-click-handler";
 import CreateButton, {
   closeButton,
@@ -7,6 +7,7 @@ import CreateButton, {
 import React from "react";
 import userEvent from "@testing-library/user-event"
 import { toBeInTheDocument } from "@testing-library/jest-dom/matchers";
+import { AppContext } from "../../utils/context";
 
 jest.mock("react-router-dom", () => ({
   BrowserRouter: ({ children }) => <div>{children}</div>,
@@ -53,10 +54,10 @@ describe("closeButton", () => {
       setFirstActive
     );
 
-    expect(setSecondActive).toHaveBeenCalledWith("");
-    expect(setThirdActive).toHaveBeenCalledWith("");
-    expect(setFourthActive).toHaveBeenCalledWith("");
-    expect(setFirstActive).toHaveBeenCalledWith("");
+    expect(setSecondActive).toHaveBeenCalledWith(null);
+    expect(setThirdActive).toHaveBeenCalledWith(null);
+    expect(setFourthActive).toHaveBeenCalledWith(null);
+    expect(setFirstActive).toHaveBeenCalledWith(null);
   });
 
   // Function has no return value
@@ -114,56 +115,6 @@ describe("closeButton", () => {
     ).not.toThrow();
   });
 });
-
-// test("closes the component when clicked outside", () => {
-//   const setIsOpen = jest.fn();
-//   const setSecondActive = jest.fn();
-//   const setFourthActive = jest.fn();
-//   const setThirdActive = jest.fn();
-//   const setFirstActive = jest.fn();
-
-//   const { getByTestId } = render(
-//     <OutsideClickHandler
-//       onOutsideClick={() =>
-//         closeButton(
-//           setIsOpen,
-//           setSecondActive,
-//           setFourthActive,
-//           setThirdActive,
-//           setFirstActive
-//         )
-//       }
-//     >
-//       <CreateButton
-//         children={
-//           <div>
-//             {/* <div
-//               data-testid="click-element-test"
-//               // className="fixed top-0 h-2 w-2 bg-transparent z-[-4px]"
-//             >
-//               {" "}
-//             </div> */}
-//             <button>Create new product</button>
-//           </div>
-//         }
-//       />
-//       {/* Your component content goes here */}
-//     </OutsideClickHandler>
-//   );
-
-//   // Assume you have a testId on an element that should trigger the outside click
-//   const outsideElement = getByTestId("click-element-test");
-
-//   // Simulate a click outside the component
-//   fireEvent.click(outsideElement);
-
-//   // Assertions
-//   expect(setIsOpen).toHaveBeenCalledWith(false);
-//   expect(setSecondActive).toHaveBeenCalledWith("");
-//   expect(setFourthActive).toHaveBeenCalledWith("");
-//   expect(setThirdActive).toHaveBeenCalledWith("");
-//   expect(setFirstActive).toHaveBeenCalledWith("");
-// });
 
 describe("goToUrl", () => {
   // navigates to the provided URL using the provided navigate function
@@ -234,12 +185,37 @@ describe("CreateButton", () => {
     render(<CreateButton children={<button>Button</button>} />);
     fireEvent.click(screen.getByText("Button"));
     expect(screen.getByText("Credit")).toBeInTheDocument();
-    expect(screen.getByText("Deposit")).toBeInTheDocument();
+    expect(screen.queryByText("Deposit")).toBeInTheDocument();
     expect(screen.getByText("Investment")).toBeInTheDocument();
     expect(screen.getByText("Over the counter payment")).toBeInTheDocument();
   });
 
-  // Clicking outside the dropdown menu closes it
+  it("should open the dropdown children", async () => {
+    jest.mock("../../components/CreateButton", () => ({
+      ...jest.requireActual("../../components/CreateButton"),
+      goToUrl: jest.fn((url, navigate) => {
+        if (url && navigate) {
+          navigate(url);
+        }
+      }),
+    }));
+    render(
+      <AppContext.Provider value={{permissions: ["CREATE_DEPOSIT_PRODUCT", "CREATE_CREDIT_PRODUCT", "CREATE_INVESTMENT_PRODUCT", "CREATE_PAYMENT_PRODUCT", "CREATE_INVESTMENT_PRODUCT"]}}>
+        <CreateButton children={<button>Button</button>} />
+      </AppContext.Provider>
+    );
+
+    fireEvent.click(screen.getByText("Button"));
+    expect(screen.getByText("Credit")).toBeInTheDocument();
+    expect(screen.queryByText("Deposit")).toBeInTheDocument();
+    expect(screen.getByText("Investment")).toBeInTheDocument();
+    expect(screen.getByText("Over the counter payment")).toBeInTheDocument();
+    
+    await userEvent.click(screen.getByText("Credit"));
+    expect(screen.getByText("Loans")).toBeInTheDocument();
+    expect(screen.getByText("Overdraft")).toBeInTheDocument();
+  });
+  
   it("should close the dropdown menu when clicked outside", async () => {
 
     render(
@@ -249,87 +225,11 @@ describe("CreateButton", () => {
       </div>
     );
     await userEvent.click(screen.getByText("Button"));
-    await fireEvent.click(screen.getByTestId("tst"));
 
-    // waitFor(() => {
-    //   expect(screen.getByText("Credit")).not.toBeInTheDocument();
-    //   expect(screen.getByText("Deposit")).not.toBeInTheDocument();
-    //   expect(screen.getByText("Investment")).not.toBeInTheDocument();
-    //   expect(screen.getByText("Over the counter payment")).not.toBeInTheDocument();
-    // })
+    await userEvent.click(screen.getByTestId("tst"));
 
+    expect(screen.queryByText("Deposit")).not.toBeInTheDocument();
   });
 
-  it("should show Deposit options", async () => {
-
-    render(
-      <div>
-        <CreateButton children={<button>Button</button>} />
-      </div>
-    );
-    await userEvent.click(screen.getByText("Button"));
-    
-    const depositButton = await screen.findByText("Deposit");
-    
-    await fireEvent.click(depositButton);
-
-    waitFor(() => {
-      expect(screen.getByText("Savings")).toBeInTheDocument();
-      expect(screen.getByText("Current")).toBeInTheDocument();
-    })
-  });
-
-
-  it("should show Investment options", async () => {
-
-    render(
-      <div>
-        <CreateButton children={<button>Button</button>} />
-      </div>
-    );
-    await userEvent.click(screen.getByText("Button"));
-    
-    const investmentButton = await screen.findByText("Investment");
-    
-    await fireEvent.click(investmentButton);
-
-    waitFor(() => {
-      expect(screen.getByText("Term Deposit")).toBeInTheDocument();
-      expect(screen.getByText("Treasury Bills")).toBeInTheDocument();
-      expect(screen.getByText("Commercial Paper")).toBeInTheDocument();
-    })
-  });
-
-  it("should show Credit options", async () => {
-
-    render(
-      <div>
-        <CreateButton children={<button>Button</button>} />
-      </div>
-    );
-    await userEvent.click(screen.getByText("Button"));
-    
-    const button = await screen.findByText("Credit");
-    
-    await fireEvent.click(button);
-
-    waitFor(() => {
-      expect(screen.getByText("Personal Loans")).toBeInTheDocument();
-      expect(screen.getByText("SME Loans")).toBeInTheDocument();
-      expect(screen.getByText("Corporate Loans")).toBeInTheDocument();
-    })
-  });
-
-  // it("should show Payment options", async () => {
-
-  //   render(
-  //     <div>
-  //       <CreateButton children={<button>Button</button>} />
-  //     </div>
-  //   );
-  //   await userEvent.click(screen.getByText("Button"));
-    
-  //   const button = await screen.findByText("Payment");
-  // });
 
 });

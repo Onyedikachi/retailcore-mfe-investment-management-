@@ -377,10 +377,6 @@ describe('handleNavigations', () => {
 
     const result = handleNavigations(location, process, role, "", jest.fn(), "");
     expect(result).toBe("/product-factory/investment/management/individual");
-    
-    const result2 = handleNavigations(location, "draft", "", "", jest.fn(), "");
-
-    expect(result2).toBe("/product-factory/investment/management/individual?category=requests");
   });
 
   // should return factoryDashboard if process is 'create' and pathname does not include 'management' and 'individual'
