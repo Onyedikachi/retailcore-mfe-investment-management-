@@ -21,6 +21,8 @@ import { Confirm, Failed, Success } from "@app/components/modals";
 import { Messages, Prompts } from "@app/constants/enums";
 import { AppContext } from "@app/utils";
 import { summaryLinks } from "@app/constants";
+import { currencyFormatter } from "@app/utils/formatCurrency";
+import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 export function Container({ children }) {
   return (
     <div className="rounded-[10px] border border-[#EEE] px-12 py-10">
@@ -33,7 +35,9 @@ export const handleSuccessMessage = (
   isSuccess,
   setSuccessText,
   setIsSuccessOpen,
-  role
+  setSubText,
+  role,
+  text = ""
 ) => {
   setSuccessText(
     role === "superadmin"
@@ -42,6 +46,9 @@ export const handleSuccessMessage = (
         : Messages.BOOKING_MODIFY_SUCCESS
       : Messages.ADMIN_BOOKING_CREATE_SUCCESS
   );
+  if (text) {
+    setSubText(text);
+  }
   setIsSuccessOpen(true);
 };
 
@@ -122,7 +129,7 @@ export default function Preview({
   productDetail,
   previousData = null,
 }: any) {
-  const { role } = useContext(AppContext);
+  const { role, currencies } = useContext(AppContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { investmentType, process } = useParams();
@@ -186,7 +193,25 @@ export default function Preview({
     );
   useEffect(() => {
     if (isSuccess || modifySuccess || modifyRequestSuccess) {
-      handleSuccessMessage(isSuccess, setSuccessText, setIsSuccessOpen, role);
+      let text;
+      if (process === "create" && role === "superadmin") {
+        text = `${currencyFormatter(
+          formData?.facilityDetailsModel?.principal,
+          handleCurrencyName(productDetail?.productInfo?.currency, currencies)
+        )} will be deducted from ${
+          formData?.transactionSettingModel?.accountForLiquidation
+        }, once approval is granted`;
+        setSubText(text);
+      }
+
+      handleSuccessMessage(
+        isSuccess,
+        setSuccessText,
+        setIsSuccessOpen,
+        setSubText,
+        role,
+        text
+      );
     }
 
     if (isError || modifyIsError || modifyRequestIsError) {
@@ -284,6 +309,7 @@ export default function Preview({
           isOpen={isSuccessOpen}
           setIsOpen={setIsSuccessOpen}
           canCreate={process === "create"}
+          subtext={subText}
         />
       )}
       {isFailed && (

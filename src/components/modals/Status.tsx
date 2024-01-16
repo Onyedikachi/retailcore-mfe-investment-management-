@@ -19,6 +19,7 @@ interface SuccessProps {
   canClose?: boolean;
   canCreate?: boolean;
   action?: string;
+  subtext?: string;
 }
 
 const factoryDashboard = "/product-factory/investment";
@@ -32,19 +33,14 @@ export function handleNavigations(
   role = "superadmin",
 
   specificCategory = null,
-  closeModal=() => {},
+  closeModal = () => {},
   action = ""
-
-
 ) {
   if(specificCategory === SpecificCategory?.individual){
     closeModal()
     return
   }
 
-
-  console.log("🚀 ~ role:", role)
-  console.log("🚀 ~ process:", process)
 
   if (process === "create") {
     if (pathname.includes("management") && pathname.includes("individual")) {
@@ -104,13 +100,32 @@ export function handleNavigations(
       return factoryRequests;
     }
   }
+}
 
- 
+export function handleNewCreate({ pathname }) {
+  if (!pathname.includes("management")) {
+    window.location.href = "/product-factory/investment/term deposit/create";
+    return;
+  }
+  if (pathname.includes("management")) {
+    window.location.href =  "/product-factory/investment/management/create/individual";
+    return;
+  }
+}
+
+export function handleNewCreateText({ pathname }) {
+  if (!pathname.includes("management")) {
+    return "Create new product";
+  }
+  if (pathname.includes("management")) {
+    return "Book another investment";
+  }
 }
 export function Success({
   handleRefresh = () => {},
   specificCategory,
   text,
+  subtext,
   isOpen,
   setIsOpen,
   canClose = false,
@@ -136,10 +151,22 @@ export function Success({
             className="text-[80px] text-[#2FB755]"
           />{" "}
         </div>
-        <p className="font-normal text-2xl">{text}</p>
+        <p className="font-normal text-2xl mb-2">{text}</p>
+        {subtext && (
+          <p className="font-normal text-base mb-[26px]">{subtext}</p>
+        )}
         <div className="flex justify-between items-center gap-x-[6px] w-full">
           <Button
-            onClick={() => handleNavigations(location, process, role, specificCategory, closeModal, action)}
+            onClick={() =>
+              handleNavigations(
+                location,
+                process,
+                role,
+                specificCategory,
+                closeModal,
+                action
+              )
+            }
             type="button"
             data-testid="close-btn"
             className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-10 text-[#667085] outline-none"
@@ -150,15 +177,12 @@ export function Success({
 
           {canCreate && (
             <Button
-              onClick={() =>
-                (window.location.href =
-                  "/product-factory/investment/term deposit/create")
-              }
+              onClick={() => handleNewCreate(location)}
               type="button"
               data-testid="dashboard-link"
               className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full text-[#667085] outline-none"
             >
-              Create another product{" "}
+              {handleNewCreateText(location)}
               <FaAngleRight className="text-sterling-red-800 text-2xl" />
             </Button>
           )}

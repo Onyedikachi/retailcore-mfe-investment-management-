@@ -58,7 +58,7 @@ export enum Messages {
   BOOKING_DRAFT_SUCCESS = "Booking Setup saved to draft",
   UNABLE_TO_BOOK = "Unable to proceed with booking",
   UNABLE_TO_BOOK_SUB = "Customer's KYC is not completed",
-  BOOKING_CREATE_SUCCESS = "Investment Booking Request Created",
+  BOOKING_CREATE_SUCCESS = "Investment Booking Created",
   ADMIN_BOOKING_SETUP_SENT = "Investment Booking Setup Sent for Approval",
   BOOKING_CREATE_FAILED = "Investment Booking creation failed",
   BOOKING_CREATE_APPROVED = "Investment Booking creation approved",

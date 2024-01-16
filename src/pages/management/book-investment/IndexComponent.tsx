@@ -77,16 +77,15 @@ export default function IndexComponent() {
   const [calcDetail, setCalcDetail] = useState(null);
   const navigate = useNavigate();
   const [formData, setFormData] = useState<any>({
-    id: "",
+    id: null,
     customerId: "",
     customerBookingInfoModel: {
       customerId: "",
       customerName: "",
       customerAccount: "",
-      investmentformUrl:
-        "",
+      investmentformUrl: "",
       accountStatus: "",
-      customerProfileid: ""
+      customerProfileid: "",
     },
     facilityDetailsModel: {
       capitalizationMethod: 0,

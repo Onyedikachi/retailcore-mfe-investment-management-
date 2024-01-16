@@ -492,7 +492,7 @@ export default function TableComponent<TableProps>({
                         className="text-base font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative"
                         key={idx.toString() + header.key}
                       >
-                        <div className="relative max-w-max">
+                        <div className="relative max-w-max truncate">
                           {header.key !== "actions" ? (
                             <>
                               {typeof item[header.key] !== "object" &&
