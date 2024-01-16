@@ -184,7 +184,7 @@ export const handleSearch = (value, setQuery, query) => {
   });
 };
 
-export const handleProductIsSuccess = ({productDownloadIsSuccess, category, isChecker, csvExporter, productDownloadData, requestsDownloadIsSuccess, requestsDownloadData}) => {
+export const handleProductIsSuccess = ({productDownloadIsSuccess, category, isChecker, csvExporter, productDownloadData, requestsDownloadIsSuccess, requestsDownloadData, handleDownload}) => {
   if (
     productDownloadIsSuccess &&
     category === StatusCategoryType?.Investments
@@ -364,7 +364,7 @@ export default function TableComponent({
 
   useEffect(() => {
     // handleProductIsSuccess
-    handleProductIsSuccess({productDownloadIsSuccess, category, isChecker, csvExporter, productDownloadData, requestsDownloadIsSuccess, requestsDownloadData});
+    handleProductIsSuccess({productDownloadIsSuccess, category, isChecker, csvExporter, productDownloadData, requestsDownloadIsSuccess, requestsDownloadData, handleDownload});
   }, [productDownloadIsSuccess, requestsDownloadIsSuccess]);
 
   React.useEffect(() => {
