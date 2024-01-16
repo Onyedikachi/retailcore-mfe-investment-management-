@@ -12,6 +12,7 @@ import {
 } from "@app/components";
 import BookInvestmentFormComponent from "./FormComponent";
 import {
+  useBookingCalcMutation,
   useCreateInvestmentMutation,
   useGetProductDetailQuery,
   useGetRequestDetailQuery,
@@ -73,25 +74,27 @@ export default function IndexComponent() {
   const [disabled, setDisabled] = useState(true);
   const [isSavingDraft, setIsSavingDraft] = useState(false);
   const [productDetail, setProductDetail] = useState(null);
+  const [calcDetail, setCalcDetail] = useState(null);
   const navigate = useNavigate();
   const [formData, setFormData] = useState<any>({
-    id: "",
+    id: null,
     customerId: "",
     customerBookingInfoModel: {
-      customerId: "63762c09-3f83-4200-be5c-dcba0ac8fe15",
-      customerName: "Ibrahim Adefemi Cole",
-      customerAccount: "2000000019",
-      investmentformUrl:
-        "http://retailcore-investment-management-api.dev.bepeerless.co/uploads/79dc1d11-d3e9-41cd-90ec-4827226d2764.jpg",
+      customerId: "",
+      customerName: "",
+      customerAccount: "",
+      investmentformUrl: "",
+      accountStatus: "",
+      customerProfileid: "",
     },
     facilityDetailsModel: {
       capitalizationMethod: 0,
-      interestRate: 2,
-      principal: 3000,
-      tenor: 3,
-      investmentPurpose: "Purpose",
-      investmentProductId: "87e95dfb-f13d-465e-93a9-a214617699f9",
-      investmentProductName: "Leke Test Draft withdrawn",
+      interestRate: null,
+      principal: null,
+      tenor: null,
+      investmentPurpose: "",
+      investmentProductId: "",
+      investmentProductName: "",
       tenorMin: null,
       tenorMax: null,
       prinMin: null,
@@ -100,6 +103,7 @@ export default function IndexComponent() {
       intMax: null,
     },
     transactionSettingModel: {
+      accountName: "",
       accountForLiquidation: "",
       notifyCustomerOnMaturity: false,
       rollOverAtMaturity: false,
@@ -184,6 +188,7 @@ export default function IndexComponent() {
 
   const [createInvestment, { data, isLoading, isSuccess, isError, error }] =
     useCreateInvestmentMutation();
+
   const [
     modifyProduct,
     {
@@ -225,6 +230,47 @@ export default function IndexComponent() {
     },
     { skip: !id }
   );
+  const [
+    bookingCalc,
+    {
+      data: calcData,
+      isSuccess: calcIsSuccess,
+      isError: calcIsError,
+      error: calcError,
+      isLoading: calcLoading,
+    },
+  ] = useBookingCalcMutation();
+
+  const fetchRate = () => {
+    bookingCalc({
+      principal: formData?.facilityDetailsModel?.principal,
+      rate: formData?.facilityDetailsModel?.interestRate,
+      tenor: formData?.facilityDetailsModel?.tenor,
+      tenorUnit: productDetail?.pricingConfiguration?.applicableTenorMaxUnit,
+      method: formData?.facilityDetailsModel?.capitalizationMethod,
+    });
+  };
+
+  useEffect(() => {
+    if (
+      productDetail &&
+      formData?.facilityDetailsModel?.tenor &&
+      formData?.facilityDetailsModel?.principal &&
+      formData?.facilityDetailsModel?.interestRate
+    ) {
+      fetchRate();
+    }
+  }, [
+    formData?.facilityDetailsModel?.tenor,
+    formData?.facilityDetailsModel?.principal,
+    formData?.facilityDetailsModel?.interestRate,
+    formData?.facilityDetailsModel?.capitalizationMethod,
+    productDetail,
+  ]);
+
+  useEffect(() => {
+    setCalcDetail(calcData?.data);
+  }, [calcData, calcIsSuccess]);
 
   useEffect(() => {
     if (detailIsSuccess) {
@@ -343,6 +389,7 @@ export default function IndexComponent() {
                   <ProductInfoInvestmentCalc
                     productDetail={productDetail}
                     formData={formData}
+                    calcDetail={calcDetail}
                   />
                 </div>
               )}
@@ -350,7 +397,12 @@ export default function IndexComponent() {
           </div>
         </div>
       )}
-      {stage && stage === "summary" && <Preview />}
+      {stage && stage === "summary" && (
+        <Preview
+          productDetail={productDetail}
+          formData={{ ...formData, calcDetail }}
+        />
+      )}
 
       <Loader
         isOpen={isLoading || modifyLoading || modifyRequestLoading}

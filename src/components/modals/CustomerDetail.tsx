@@ -87,7 +87,7 @@ export const CustomerDetail = ({ isOpen, setIsOpen, detail }: Props) => {
         className="relative  w-[1218px]  rounded-lg bg-white px-16 pb-16"
       >
         <div>
-          <div className="flex justify-between items-center pb-6 pt-8 px-16 border-b border-[#CCCCCC] w-full mb-[52px]">
+          <div className="flex justify-between items-center pb-6 pt-8 border-b border-[#CCCCCC] w-full mb-[52px]">
             <div className="flex gap-x-5 items-center">
               <h1
                 data-testid="product-name"

@@ -26,7 +26,8 @@ import { handleDetailsSuccess } from "@app/pages/investment/term-deposit/create-
 export const onProceed = (data, proceed, formData, setFormData) => {
   setFormData({
     ...formData,
-    facilityDetailsModel: data,
+   
+    facilityDetailsModel: {...formData.facilityDetailsModel, ...data},
   });
   proceed();
 };
@@ -59,8 +60,12 @@ export const handleInterestRateValues = ({productDetail, values, setValue, trigg
     setValue("intMin", productDetail?.pricingConfiguration?.interestRateMin);
     setValue("intMax", productDetail?.pricingConfiguration?.interestRateMax);
   }
-  if ((values.tenor || values.principal) && values.interestRate) {
-    trigger("interestRate");
+  if (
+    (values.tenor || values.principal) &&
+    values.interestRate &&
+    values.investmentProductId
+  ) {
+    trigger();
   }
 }
 
@@ -234,14 +239,20 @@ export default function FacilityDetails({
 
   useEffect(() => {
     handleInterestRateValues({productDetail, values, setValue, trigger});
-  }, [values.tenor, values.principal, values.interestRate, productDetail]);
+  }, [values.tenor, values.principal, values.interestRate, productDetail, values.investmentProductId ]);
+    
 
   useEffect(() => {
     setFormData({
       ...formData,
       facilityDetailsModel: values,
     });
-  }, [values.tenor, values.principal, values.interestRate, values.capitalizationMethod]);
+  }, [
+    values.tenor,
+    values.principal,
+    values.interestRate,
+    values.capitalizationMethod,
+  ]);
 
   useEffect(() => {
     setFormData({

@@ -23,7 +23,7 @@ export const onProceed = (data, proceed, formData, setFormData) => {
   console.log("🚀 ~ onProceed ~ data:", data);
   setFormData({
     ...formData,
-    customerBookingInfoModel: data,
+    customerBookingInfoModel: { ...formData.customerBookingInfoModel, ...data },
   });
   proceed();
 };
@@ -119,20 +119,21 @@ export default function CustomerInformation({
         customerId: customerData?.customerId,
       });
     }
-
-    return () => {
-      setCustomersData([]);
-    };
   }, [isError, isSuccess, searchLoading, data]);
 
   useEffect(() => {
     if (accountIsSuccess) {
       setAccountBalance(accountData.data);
+      setFormData({
+        ...formData,
+        customerBookingInfoModel: {
+          ...formData.customerBookingInfoModel,
+          accountStatus: accountData?.data?.status,
+        },
+      });
     }
-
-    return () => {
-      setAccountBalance(null);
-    };
+    console.log("🚀 ~ useEffect ~ accountData.data:", accountData?.data);
+    setValue("accountStatus", accountData?.data?.status);
   }, [accountIsError, accountIsSuccess, isLoading, accountData]);
 
   useEffect(() => {
@@ -163,16 +164,13 @@ export default function CustomerInformation({
 
   useEffect(() => {
     if (searchLoading) {
-      setCustomersData([]);
-      setCustomerData(null);
-      setAccountBalance(null);
+      // setCustomersData([]);
+      // setCustomerData(null);
+      // setAccountBalance(null);
     }
   }, [searchLoading]);
 
   useEffect(() => {
-    if (validKyc === false && accountNumber && profileData) {
-      setKycFailed(true);
-    }
     setDisabled(!isValid || !validKyc);
   }, [isValid, validKyc]);
 
@@ -183,12 +181,18 @@ export default function CustomerInformation({
 
           ?.find(
             (i) =>
-              i.parameter.toLowerCase() ===
+              i.parameter?.toLowerCase() ===
               "status of customer identity verification"
           )
           ?.parameterOption?.toLowerCase() === "passed";
 
       setValidKyc(status);
+
+      if (status === false && accountNumber && profileData) {
+        setKycFailed(true);
+      } else {
+        setKycFailed(false);
+      }
     }
   }, [profileData, profileIsSuccess]);
 
@@ -199,9 +203,11 @@ export default function CustomerInformation({
     });
   }, [isSavingDraft]);
   useEffect(() => {
-    setAccountNumber(formData?.customerBookingInfoModel.customerAccount);
-    setQuery(formData?.customerBookingInfoModel.customerAccount);
-  }, [formData]);
+    if (formData?.customerBookingInfoModel.customerAccount) {
+      setAccountNumber(formData?.customerBookingInfoModel.customerAccount);
+      setQuery(formData?.customerBookingInfoModel.customerAccount);
+    }
+  }, [formData?.customerBookingInfoModel.customerAccount]);
   return (
     <form
       id="customerInformation"

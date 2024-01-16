@@ -273,17 +273,21 @@ export default function Individual() {
     }
   );
 
+  function fetch () {
+    if (category === StatusCategoryType?.Investments) {
+      getProducts({ ...query, page: 1, filter_by: selected?.value });
+    } else {
+      getRequests({ ...query, page: 1, filter_by: selected?.value });
+    }
+  }
+
   React.useEffect(() => {
     setQuery({
       ...query,
       page: 1,
     });
 
-    if (category === StatusCategoryType?.Investments) {
-      getProducts({ ...query, page: 1, filter_by: selected?.value });
-    } else {
-      getRequests({ ...query, page: 1, filter_by: selected?.value });
-    }
+    fetch()
   }, [
     selected,
     query.search,

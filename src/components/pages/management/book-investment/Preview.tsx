@@ -4,22 +4,25 @@ import {
   ActivityLog,
   Actions,
   MiniTermDepositDetail,
-  ProductDetail,
+  BookingDetail,
   ReviewStatus,
+  InvestmentCalculation,
 } from "@app/components/summary";
 import { Breadcrumbs, Loader, Button } from "@app/components";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import {
   useGetInvestmentActivityLogQuery,
-  useCreateProductMutation,
   useModifyProductMutation,
   useModifyRequestMutation,
+  useCreateInvestmentMutation,
 } from "@app/api";
 import { Confirm, Failed, Success } from "@app/components/modals";
 
 import { Messages, Prompts } from "@app/constants/enums";
 import { AppContext } from "@app/utils";
 import { summaryLinks } from "@app/constants";
+import { currencyFormatter } from "@app/utils/formatCurrency";
+import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 export function Container({ children }) {
   return (
     <div className="rounded-[10px] border border-[#EEE] px-12 py-10">
@@ -28,49 +31,75 @@ export function Container({ children }) {
   );
 }
 
-export const handleSuccessMessage = (isSuccess, setSuccessText, setIsSuccessOpen, role) => {
+export const handleSuccessMessage = (
+  isSuccess,
+  setSuccessText,
+  setIsSuccessOpen,
+  setSubText,
+  role,
+  text = ""
+) => {
   setSuccessText(
     role === "superadmin"
       ? isSuccess
-        ? Messages.PRODUCT_CREATE_SUCCESS
-        : Messages.PRODUCT_MODIFY_SUCCESS
-      : Messages.ADMIN_PRODUCT_CREATE_SUCCESS
+        ? Messages.BOOKING_CREATE_SUCCESS
+        : Messages.BOOKING_MODIFY_SUCCESS
+      : Messages.ADMIN_BOOKING_CREATE_SUCCESS
   );
+  if (text) {
+    setSubText(text);
+  }
   setIsSuccessOpen(true);
-}
+};
 
-export const handleErrorMessage = (error, modifyError, modifyRequestError, isError, setFailedText, setFailedSubtext, setFailed) => {
+export const handleErrorMessage = (
+  error,
+  modifyError,
+  modifyRequestError,
+  isError,
+  setFailedText,
+  setFailedSubtext,
+  setFailed
+) => {
   setFailedText(
     isError
-      ? Messages.ADMIN_PRODUCT_CREATE_FAILED
-      : Messages.ADMIN_PRODUCT_MODIFY_FAILED
+      ? Messages.ADMIN_BOOKING_CREATE_FAILED
+      : Messages.ADMIN_BOOKING_MODIFY_FAILED
   );
   setFailedSubtext(
     error?.message?.message ||
-    modifyError?.message?.message ||
-    modifyRequestError?.message?.message ||
-    error?.message?.Message ||
-    modifyError?.message?.Message ||
-    modifyRequestError?.message?.Message
+      modifyError?.message?.message ||
+      modifyRequestError?.message?.message ||
+      error?.message?.Message ||
+      modifyError?.message?.Message ||
+      modifyRequestError?.message?.Message
   );
   setFailed(true);
-}
+};
 
 export const cancelProcess = (process, setConfirmText, setIsConfirmOpen) => {
   if (process === "create") {
-    setConfirmText(Prompts.CANCEL_CREATION);
+    setConfirmText(Prompts.CANCEL_INVESTMENT_CREATION);
   }
   if (process === "modify" || process === "withdraw_modify") {
-    setConfirmText(Prompts.CANCEL_MODIFICATION);
+    setConfirmText(Prompts.CANCEL_INVESTMENT_MODIFICATION);
   }
   if (process === "verdict" || process === "continue") {
     setConfirmText(Prompts.CANCEL_PROCESS);
   }
   setIsConfirmOpen(true);
   return;
-}
+};
 
-export const submitForm = (formData, modifyProduct, modifyRequest, createProduct, process, id, previousData) => {
+export const submitForm = (
+  formData,
+  modifyProduct,
+  modifyRequest,
+  createProduct,
+  process,
+  id,
+  previousData
+) => {
   if (process === "modify") {
     modifyProduct({
       ...formData,
@@ -88,18 +117,22 @@ export const submitForm = (formData, modifyProduct, modifyRequest, createProduct
     });
   }
 
-  if (process === "create"  || process === "clone") {
+  if (process === "create" || process === "clone") {
     createProduct({ ...formData, isDraft: false });
   }
 
   // navigate(paths.INVESTMENT_DASHBOARD);
-}
+};
 
-export default function Preview({ formData, previousData = null }: any) {
-  const { role } = useContext(AppContext);
+export default function Preview({
+  formData,
+  productDetail,
+  previousData = null,
+}: any) {
+  const { role, currencies } = useContext(AppContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { type, process } = useParams();
+  const { investmentType, process } = useParams();
   const id = searchParams.get("id");
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
@@ -113,7 +146,6 @@ export default function Preview({ formData, previousData = null }: any) {
 
   const [state, setState] = useState();
 
-
   const { data: activityData, isLoading: activityIsLoading } =
     useGetInvestmentActivityLogQuery(
       { bookingrequestId: id },
@@ -123,7 +155,7 @@ export default function Preview({ formData, previousData = null }: any) {
   const [
     createProduct,
     { isLoading: createProductLoading, isSuccess, isError, reset, error },
-  ] = useCreateProductMutation();
+  ] = useCreateInvestmentMutation();
   const [
     modifyProduct,
     {
@@ -143,20 +175,55 @@ export default function Preview({ formData, previousData = null }: any) {
     },
   ] = useModifyRequestMutation();
 
-
   const handleModify = () => {
     navigate(-1);
   };
-  const handleCancel = () => cancelProcess(process, setConfirmText, setIsConfirmOpen);
+  const handleCancel = () =>
+    cancelProcess(process, setConfirmText, setIsConfirmOpen);
 
-  const handleSubmit = () => submitForm(formData, modifyProduct, modifyRequest, createProduct, process, id, previousData);
+  const handleSubmit = () =>
+    submitForm(
+      formData,
+      modifyProduct,
+      modifyRequest,
+      createProduct,
+      process,
+      id,
+      previousData
+    );
   useEffect(() => {
     if (isSuccess || modifySuccess || modifyRequestSuccess) {
-      handleSuccessMessage(isSuccess, setSuccessText, setIsSuccessOpen, role)
+      let text;
+      if (process === "create" && role === "superadmin") {
+        text = `${currencyFormatter(
+          formData?.facilityDetailsModel?.principal,
+          handleCurrencyName(productDetail?.productInfo?.currency, currencies)
+        )} will be deducted from ${
+          formData?.transactionSettingModel?.accountForLiquidation
+        }, once approval is granted`;
+        setSubText(text);
+      }
+
+      handleSuccessMessage(
+        isSuccess,
+        setSuccessText,
+        setIsSuccessOpen,
+        setSubText,
+        role,
+        text
+      );
     }
 
     if (isError || modifyIsError || modifyRequestIsError) {
-      handleErrorMessage(error, modifyError, modifyRequestError, isError, setFailedText, setFailedSubtext, setFailed)
+      handleErrorMessage(
+        error,
+        modifyError,
+        modifyRequestError,
+        isError,
+        setFailedText,
+        setFailedSubtext,
+        setFailed
+      );
     }
   }, [
     isSuccess,
@@ -178,7 +245,7 @@ export default function Preview({ formData, previousData = null }: any) {
         </h1>
         <Breadcrumbs
           links={summaryLinks.map((i) =>
-            i.id === 3 ? { ...i, title: type } : i
+            i.id === 3 ? { ...i, title: investmentType } : i
           )}
         />
       </div>{" "}
@@ -193,7 +260,18 @@ export default function Preview({ formData, previousData = null }: any) {
               <ReviewStatus status={"r"} reason={"r"} type={""} text="failed" />
             )}
             <Container>
-              <ProductDetail detail={formData} previousData={previousData} />
+              <InvestmentCalculation
+                detail={formData}
+                productDetail={productDetail}
+              />
+            </Container>
+            <Container>
+              <BookingDetail
+                detail={formData}
+                productDetail={productDetail}
+                previousData={previousData}
+                type="individual"
+              />
             </Container>
           </div>
           <Actions
@@ -231,6 +309,7 @@ export default function Preview({ formData, previousData = null }: any) {
           isOpen={isSuccessOpen}
           setIsOpen={setIsSuccessOpen}
           canCreate={process === "create"}
+          subtext={subText}
         />
       )}
       {isFailed && (
