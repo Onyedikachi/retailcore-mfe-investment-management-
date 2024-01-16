@@ -196,6 +196,14 @@ export const ProductNameCellContent = ({ value }) => (
     </span>
   </>
 );
+export const CustomerNameCellContent = ({ value }) => (
+  <>
+    <br />
+    <span className="relative font-medium text-sm text-[#aaaaaa] uppercase">
+      {value?.investmentId || "-"}
+    </span>
+  </>
+);
 
 export const UpdatedOnCellContent = ({ value }) => (
   <span className="relative">
@@ -513,6 +521,9 @@ export default function TableComponent<TableProps>({
                               )}
                               {header.key === "productName" && (
                                 <ProductNameCellContent value={item} />
+                              )}
+                                {header.key === "customerName" && (
+                                <CustomerNameCellContent value={item} />
                               )}
                             </>
                           ) : (
