@@ -1166,8 +1166,20 @@ export const CapitalizationOptions = [
   },
 ];
 
-export   const GlAccountTypes = [
+export const GlAccountTypes = [
   "Term deposit account",
   "Interest accural account",
   "Interest expense account",
+];
+export const RollOverOptions = [
+  {
+    id: 1,
+    text: "Using principal",
+    value: 0,
+  },
+  {
+    id: 1,
+    text: "Using principal + Interest",
+    value: 1,
+  },
 ];

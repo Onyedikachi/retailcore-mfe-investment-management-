@@ -68,6 +68,9 @@ export default function CustomerInformation({
   const [accountBalance, setAccountBalance] = useState(null);
   const [validKyc, setValidKyc] = useState(null);
   const [isKycFailed, setKycFailed] = useState(false);
+  const [defaultValue, setDefaultValue] = useState(
+    formData?.customerBookingInfoModel?.investmentformUrl
+  );
   const values = getValues();
   const {
     data,
@@ -111,6 +114,10 @@ export default function CustomerInformation({
           };
         })
       );
+      setFormData({
+        ...formData,
+        customerId: customerData?.customerId,
+      });
     }
 
     return () => {
@@ -249,7 +256,7 @@ export default function CustomerInformation({
               <CustomerInfoCard
                 customerData={profileData?.data}
                 setIsOpen={setIsOpen}
-                isLoading={profileLoading || isLoading }
+                isLoading={profileLoading || isLoading}
               />
             </div>
           )}
@@ -267,6 +274,8 @@ export default function CustomerInformation({
                   setValue("investmentformUrl", value);
                   trigger("investmentformUrl");
                 }}
+                defaultValue={defaultValue}
+                setDefaultValue={setDefaultValue}
               />{" "}
             </div>
           </InputDivs>
