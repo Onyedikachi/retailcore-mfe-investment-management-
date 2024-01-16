@@ -31,6 +31,39 @@ export const onProceed = (data, proceed, formData, setFormData) => {
   proceed();
 };
 
+export const handleInterestRateValues = ({productDetail, values, setValue, trigger}) => {
+  if (productDetail?.pricingConfiguration?.interestRateRangeType === 0) {
+    productDetail?.pricingConfiguration?.interestRateConfigModels?.forEach(
+      (i) => {
+        if (
+          values.principal >= i.principalMin &&
+          values.principal <= i.principalMax
+        ) {
+          setValue("intMin", i.min);
+          setValue("intMax", i.max);
+        }
+      }
+    );
+  }
+  if (productDetail?.pricingConfiguration?.interestRateRangeType === 1) {
+    productDetail?.pricingConfiguration?.interestRateConfigModels?.forEach(
+      (i) => {
+        if (values.tenor >= i.tenorMin && values.tenor <= i.tenorMax) {
+          setValue("intMin", i.min);
+          setValue("intMax", i.max);
+        }
+      }
+    );
+  }
+  if (productDetail?.pricingConfiguration?.interestRateRangeType === 2) {
+    setValue("intMin", productDetail?.pricingConfiguration?.interestRateMin);
+    setValue("intMax", productDetail?.pricingConfiguration?.interestRateMax);
+  }
+  if ((values.tenor || values.principal) && values.interestRate) {
+    trigger("interestRate");
+  }
+}
+
 export const handleProductDetails = ({productDetail, values, setValue, setProductDetail}) => {
   if (productDetail) {
     setValue(
@@ -52,7 +85,7 @@ export const handleProductDetails = ({productDetail, values, setValue, setProduc
 
     const rangeArr =
       productDetail?.pricingConfiguration?.interestRateConfigModels[0];
-    if (rangeArr.length) {
+    if (rangeArr) {
       if (productDetail?.pricingConfiguration?.interestRateRangeType === 0) {
         if (
           values.principal >= rangeArr.principalMin &&
@@ -200,36 +233,7 @@ export default function FacilityDetails({
   }, [isValid, values]);
 
   useEffect(() => {
-    if (productDetail?.pricingConfiguration?.interestRateRangeType === 0) {
-      productDetail?.pricingConfiguration?.interestRateConfigModels?.forEach(
-        (i) => {
-          if (
-            values.principal >= i.principalMin &&
-            values.principal <= i.principalMax
-          ) {
-            setValue("intMin", i.min);
-            setValue("intMax", i.max);
-          }
-        }
-      );
-    }
-    if (productDetail?.pricingConfiguration?.interestRateRangeType === 1) {
-      productDetail?.pricingConfiguration?.interestRateConfigModels?.forEach(
-        (i) => {
-          if (values.tenor >= i.tenorMin && values.tenor <= i.tenorMax) {
-            setValue("intMin", i.min);
-            setValue("intMax", i.max);
-          }
-        }
-      );
-    }
-    if (productDetail?.pricingConfiguration?.interestRateRangeType === 2) {
-      setValue("intMin", productDetail?.pricingConfiguration?.interestRateMin);
-      setValue("intMax", productDetail?.pricingConfiguration?.interestRateMax);
-    }
-    if ((values.tenor || values.principal) && values.interestRate) {
-      trigger("interestRate");
-    }
+    handleInterestRateValues({productDetail, values, setValue, trigger});
   }, [values.tenor, values.principal, values.interestRate, productDetail]);
 
   useEffect(() => {
