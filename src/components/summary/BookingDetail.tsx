@@ -12,6 +12,8 @@ import {
 import { currencyFormatter } from "@app/utils/formatCurrency";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 import { AppContext } from "@app/utils";
+import { CustomerDetail } from "../modals/CustomerDetail";
+import { useGetCustomerProfileQuery } from "@app/api";
 
 export default function BookingDetail({
   detail,
@@ -20,9 +22,27 @@ export default function BookingDetail({
   productDetail,
 }: any) {
   const { currencies } = useContext(AppContext);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [customerData, setCustomerData] = useState(null);
 
+  const {
+    data: profileData,
+    isSuccess: profileIsSuccess,
+    isError: profileIsError,
+    error: profileError,
+    isLoading: profileLoading,
+  } = useGetCustomerProfileQuery(detail?.customerBookingInfoModel?.customerId, {
+    skip: !detail?.customerBookingInfoModel?.customerId,
+  });
   return (
     <div>
+      {isOpen && profileData && (
+        <CustomerDetail
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          detail={profileData?.data?.customer_profiles[0]}
+        />
+      )}
       <h3 className="text-[#636363] text-[18px] font-semibold capitalize mb-[56px]">
         {type} Investment Detail
       </h3>
@@ -32,14 +52,22 @@ export default function BookingDetail({
             Customer information
           </h4>
           <div className="grid grid-cols-1 gap-[25px] px-12">
-          <div className=" flex gap-[54px]">
+            <div className=" flex gap-[54px]">
               <div className="w-[300px]   text-base font-medium text-[#636363]">
-               Customer Id
+                Customer Id
               </div>
-              <div className="w-full text-base font-normal text-[#636363] capitalize">
+              <div className="w-full text-base font-normal text-[#636363] capitalize flex gap-x-4 items-center">
                 {" "}
-                {detail?.customerBookingInfoModel?.customerName},{" "}
-                {detail?.customerBookingInfoModel?.customerProfileid}{" "}
+                <span>
+                  {detail?.customerBookingInfoModel?.customerName},{" "}
+                  {detail?.customerBookingInfoModel?.customerAccount}{" "}
+                </span>{" "}
+                <button
+                  className="px-[7px] py-[4px] text-sm font-normal bg-white shadow-[0px_2px_8px_0px_rgba(0,0,0,0.25)] text-[#636363]"
+                  onClick={() => setIsOpen(true)}
+                >
+                  View
+                </button>
               </div>
             </div>
             <div className=" flex gap-[54px]">
@@ -57,7 +85,6 @@ export default function BookingDetail({
               </div>
               <div className="w-full text-base font-normal text-[#636363] capitalize">
                 {" "}
-               
                 {detail?.customerBookingInfoModel?.customerAccount}{" "}
               </div>
             </div>

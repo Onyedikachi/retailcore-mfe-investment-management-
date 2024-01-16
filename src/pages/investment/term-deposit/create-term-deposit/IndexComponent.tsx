@@ -64,8 +64,7 @@ export const handlePreviousData = ({ prevProductData, productDetails }) => {
     pricingConfiguration: pricingConfigurationCopy,
     liquidation: productDetails?.data?.liquidation,
     productGlMappings: productDetails?.data?.productGlMappings,
-    interestComputationMethod:
-      productDetails?.data?.interestComputationMethod,
+    interestComputationMethod: productDetails?.data?.interestComputationMethod,
     TermDepositLiabilityAccount:
       productDetails?.data?.TermDepositLiabilityAccount,
     InterestAccrualAccount: productDetails?.data?.InterestAccrualAccount,
@@ -73,7 +72,7 @@ export const handlePreviousData = ({ prevProductData, productDetails }) => {
     isDraft: productDetails?.data?.isDraft,
     productType: productDetails?.data?.productType,
   };
-}
+};
 
 export const handleDetailsSuccess = (
   activeId,
@@ -102,12 +101,33 @@ export const handleDetailsSuccess = (
     };
   }
 
-  setProductData((prevProductData) => handlePreviousData({ prevProductData, productDetails }));
+  setProductData((prevProductData) =>
+    handlePreviousData({ prevProductData, productDetails })
+  );
 };
 
-export const handleRequestIsSuccess = ({ requestIsSuccess, requestData, process, activeId, previousData, setProductData }) => {
+export const handleRequestIsSuccess = ({
+  requestIsSuccess,
+  requestData,
+  process,
+  activeId,
+  previousData,
+  setProductData,
+  setFormData,
+  type = "investment",
+}: {
+  requestIsSuccess: any;
+  requestData: any;
+  process: any;
+  activeId: any;
+  previousData: any;
+  setProductData?: any;
+  setFormData?: any;
+  type?: any;
+}) => {
   if (requestIsSuccess && requestData?.data?.metaInfo) {
     const data = JSON.parse(requestData?.data?.metaInfo);
+    console.log("🚀 ~ data:", data)
     if (process === "continue" && data?.id) {
       activeId.current = data?.id;
     }
@@ -127,20 +147,44 @@ export const handleRequestIsSuccess = ({ requestIsSuccess, requestData, process,
         approved_By_Id: requestData?.data?.approved_By_Id,
       };
     }
-    setProductData({
-      ...data,
-      pricingConfiguration: {
-        ...data?.pricingConfiguration,
-        interestComputationMethod: 2,
-      },
-    });
+    if (type === "investment") {
+      setProductData({
+        ...data,
+        pricingConfiguration: {
+          ...data?.pricingConfiguration,
+          interestComputationMethod: 2,
+        },
+      });
+    }
+    if (type === "individual_booking") {
+      setFormData(data);
+    }
   }
-}
+};
 
-export const handleMessage = ({ isSuccess, modifySuccess, modifyRequestSuccess, isError, modifyError, modifyIsError, error,
-  modifyRequestError, setFailed, setFailedText, setFailedSubtext, setSuccessText, setIsSuccessOpen, modifyRequestIsError, type }) => {
+export const handleMessage = ({
+  isSuccess,
+  modifySuccess,
+  modifyRequestSuccess,
+  isError,
+  modifyError,
+  modifyIsError,
+  error,
+  modifyRequestError,
+  setFailed,
+  setFailedText,
+  setFailedSubtext,
+  setSuccessText,
+  setIsSuccessOpen,
+  modifyRequestIsError,
+  type,
+}) => {
   if (isSuccess || modifySuccess || modifyRequestSuccess) {
-    setSuccessText(type === "investment"?Messages.PRODUCT_DRAFT_SUCCESS: Messages.BOOKING_DRAFT_SUCCESS);
+    setSuccessText(
+      type === "investment"
+        ? Messages.PRODUCT_DRAFT_SUCCESS
+        : Messages.BOOKING_DRAFT_SUCCESS
+    );
     setIsSuccessOpen(true);
   }
 
@@ -148,23 +192,24 @@ export const handleMessage = ({ isSuccess, modifySuccess, modifyRequestSuccess, 
     setFailedText(Messages.PRODUCT_DRAFT_FAILED);
     setFailedSubtext(
       error?.message?.message ||
-      modifyError?.message?.message ||
-      modifyRequestError?.message?.message ||
-      error?.message?.Message ||
-      modifyError?.message?.Message ||
-      modifyRequestError?.message?.Message
+        modifyError?.message?.message ||
+        modifyRequestError?.message?.message ||
+        error?.message?.Message ||
+        modifyError?.message?.Message ||
+        modifyRequestError?.message?.Message
     );
     setFailed(true);
   }
-}
+};
 
 export function handleNav({ process, step, setStep, navigate, id }) {
   step < termDepositFormSteps.length
     ? handleNext(step, setStep, termDepositFormSteps)
     : navigate(
-      `/product-factory/investment/term-deposit/${process}?${id ? `id=${id}&` : ""
-      }stage=summary`
-    );
+        `/product-factory/investment/term-deposit/${process}?${
+          id ? `id=${id}&` : ""
+        }stage=summary`
+      );
 }
 
 export default function CreateTermDeposit() {
@@ -337,8 +382,6 @@ export default function CreateTermDeposit() {
     }
   }, [productDetails]);
 
-
-
   const [formRef, setFormRef] = useState(null);
 
   useEffect(() => {
@@ -354,15 +397,33 @@ export default function CreateTermDeposit() {
   }, [step]);
 
   useEffect(() => {
-    handleRequestIsSuccess({ activeId, previousData, process, requestData, requestIsSuccess, setProductData });
+    handleRequestIsSuccess({
+      activeId,
+      previousData,
+      process,
+      requestData,
+      requestIsSuccess,
+      setProductData,
+    });
   }, [requestIsSuccess]);
-
-
 
   useEffect(() => {
     handleMessage({
-      error, isError, isSuccess, modifyError, modifyIsError, modifyRequestError, modifyRequestIsError, modifyRequestSuccess,
-      modifySuccess, setFailed, setFailedSubtext, setFailedText, setIsSuccessOpen, setSuccessText, type:"investment"
+      error,
+      isError,
+      isSuccess,
+      modifyError,
+      modifyIsError,
+      modifyRequestError,
+      modifyRequestIsError,
+      modifyRequestSuccess,
+      modifySuccess,
+      setFailed,
+      setFailedSubtext,
+      setFailedText,
+      setIsSuccessOpen,
+      setSuccessText,
+      type: "investment",
     });
   }, [
     isSuccess,
@@ -430,7 +491,9 @@ export default function CreateTermDeposit() {
                   step={step}
                   productData={productData}
                   activeId={activeId}
-                  handleNav={() => handleNav({ process, id, navigate, setStep, step })}
+                  handleNav={() =>
+                    handleNav({ process, id, navigate, setStep, step })
+                  }
                   setProductData={setProductData}
                   setDisabled={setDisabled}
                   initiateDraft={initiateDraft}

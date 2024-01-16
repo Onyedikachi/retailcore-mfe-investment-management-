@@ -76,6 +76,7 @@ export default function FacilityDetails({
   setProductDetail,
   detailLoading,
 }: FacilityDetailsProps) {
+
   const { currencies } = useContext(AppContext);
   const {
     register,
@@ -235,6 +236,7 @@ export default function FacilityDetails({
     values.interestRate,
     values.investmentProductId,
     productDetail,
+    formData.facilityDetailsModel
   ]);
 
   useEffect(() => {
@@ -247,6 +249,7 @@ export default function FacilityDetails({
     values.principal,
     values.interestRate,
     values.capitalizationMethod,
+   
   ]);
 
   useEffect(() => {

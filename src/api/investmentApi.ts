@@ -171,6 +171,15 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    modifyInvestmentRequest: builder.mutation<any, any>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT_REQUEST}/edit/${data.id}`,
+          method: "put",
+          body: data,
+        };
+      },
+    }),
     bookingCalc: builder.mutation<any, any>({
       query: (data) => {
         return {
@@ -427,6 +436,16 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+
+    getInvestmentRequestDetail: builder.query<any, any>({
+      query: (data) => {
+        if (!data.id) return;
+        return {
+          url: `${urls.INVESTMENT_REQUEST}/${data.id}`,
+          method: "get",
+        };
+      },
+    }),
     deleteInvestmentRequest: builder.mutation<any, any>({
       query: (data) => {
         return {
@@ -474,6 +493,8 @@ export const {
   useGetInvestmentStatsQuery,
   useGetInvestmentDetailQuery,
   useDeleteInvestmentRequestMutation,
-
+  useGetInvestmentRequestDetailQuery,
   useBookingCalcMutation,
+  useModifyInvestmentMutation,
+  useModifyInvestmentRequestMutation,
 } = investmentApi;

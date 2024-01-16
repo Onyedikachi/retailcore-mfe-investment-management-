@@ -99,6 +99,16 @@ export default function CustomerInformation({
   } = useGetAccountBalanceQuery(query, { skip: !accountNumber });
 
   useEffect(() => {
+    if (formData?.customerBookingInfoModel?.investmentformUrl) {
+      setDefaultValue(formData?.customerBookingInfoModel?.investmentformUrl);
+      setValue(
+        "investmentformUrl",
+        formData?.customerBookingInfoModel?.investmentformUrl
+      );
+    }
+  }, [formData?.customerBookingInfoModel?.investmentformUrl]);
+
+  useEffect(() => {
     if (isSuccess) {
       setCustomersData(
         data.data.map((i) => {
@@ -132,7 +142,7 @@ export default function CustomerInformation({
         },
       });
     }
-    console.log("🚀 ~ useEffect ~ accountData.data:", accountData?.data);
+
     setValue("accountStatus", accountData?.data?.status);
   }, [accountIsError, accountIsSuccess, isLoading, accountData]);
 
@@ -260,7 +270,7 @@ export default function CustomerInformation({
           {accountNumber && (
             <div className="w-full">
               <CustomerInfoCard
-                customerData={profileData?.data}
+                customerData={{ ...profileData?.data, accountNumber }}
                 setIsOpen={setIsOpen}
                 isLoading={profileLoading || isLoading}
               />
@@ -291,7 +301,7 @@ export default function CustomerInformation({
         <CustomerDetail
           isOpen={isOpen}
           setIsOpen={setIsOpen}
-          detail={customerData?.customer_profiles[0]}
+          detail={{...customerData?.customer_profiles[0],accountNumber}}
         />
       )}
       {isKycFailed && !profileLoading && (

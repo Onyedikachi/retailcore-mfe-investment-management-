@@ -47,7 +47,9 @@ const TabContent = ({ title, content, detail }) => {
                       <span>Uploaded </span>{" "}
                       <button
                         onClick={() =>
-                          downloadUsingFetch(JSON.parse(detail[item.key])[0][item.subkey])
+                          downloadUsingFetch(
+                            JSON.parse(detail[item.key])[0][item.subkey]
+                          )
                         }
                       >
                         (View)
@@ -120,9 +122,10 @@ export const CustomerDetail = ({ isOpen, setIsOpen, detail }: Props) => {
               </p>
               <p className="text-base font-normal">
                 <span className="font-semibold">ID</span>:{" "}
-                {detail?.validId && JSON.parse(detail?.validId).length
+                {/* {detail?.validId && JSON.parse(detail?.validId).length
                   ? JSON.parse(detail?.validId)
-                  : "-"}
+                  : "-"} */}
+                {detail?.accountNumber}
               </p>
             </div>
           </div>

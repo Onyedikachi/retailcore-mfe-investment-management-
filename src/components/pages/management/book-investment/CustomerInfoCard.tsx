@@ -92,7 +92,6 @@ export default function CustomerInfoCard({
   setIsOpen,
   isLoading,
 }) {
- 
   return (
     <div className="py-6 px-10 rounded-lg shadow-custom bg-gray-100 w-full ">
       {isLoading ? (
@@ -115,10 +114,7 @@ export default function CustomerInfoCard({
               type={"customerName"}
               setIsOpen={setIsOpen}
             />
-            <Info
-              title={"Customer ID"}
-              data={customerData?.customer_profiles[0]?.customerNumber}
-            />
+            <Info title={"Customer ID"} data={customerData?.accountNumber} />
             <Info title={"Customer Type"} data={customerData?.customerType} />
             <Info
               title={"Status"}

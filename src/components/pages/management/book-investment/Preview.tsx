@@ -12,8 +12,8 @@ import { Breadcrumbs, Loader, Button } from "@app/components";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import {
   useGetInvestmentActivityLogQuery,
-  useModifyProductMutation,
-  useModifyRequestMutation,
+  useModifyInvestmentMutation,
+  useModifyInvestmentRequestMutation,
   useCreateInvestmentMutation,
 } from "@app/api";
 import { Confirm, Failed, Success } from "@app/components/modals";
@@ -164,7 +164,7 @@ export default function Preview({
       isError: modifyIsError,
       error: modifyError,
     },
-  ] = useModifyProductMutation();
+  ] = useModifyInvestmentMutation();
   const [
     modifyRequest,
     {
@@ -173,7 +173,7 @@ export default function Preview({
       isError: modifyRequestIsError,
       error: modifyRequestError,
     },
-  ] = useModifyRequestMutation();
+  ] = useModifyInvestmentRequestMutation();
 
   const handleModify = () => {
     navigate(-1);
@@ -236,7 +236,28 @@ export default function Preview({
     modifyRequestIsError,
     modifyRequestSuccess,
   ]);
-
+  const links = [
+    {
+      id: 1,
+      title: "Investment Management",
+      url: "/product-factory/investment/management/overview",
+    },
+    {
+      id: 2,
+      title: "book new Investment",
+      url: "/product-factory/investment/management/individual",
+    },
+    {
+      id: 3,
+      title: investmentType,
+      url: `/product-factory/investment/management/${investmentType}`,
+    },
+    {
+      id: 4,
+      title: "Process summary",
+      url: "#",
+    },
+  ];
   return (
     <div data-testid="preview" className="flex flex-col min-h-[100vh] ">
       <div className="px-[37px] py-[11px] bg-white">
@@ -244,7 +265,7 @@ export default function Preview({
           Process summary
         </h1>
         <Breadcrumbs
-          links={summaryLinks.map((i) =>
+          links={links.map((i) =>
             i.id === 3 ? { ...i, title: investmentType } : i
           )}
         />
