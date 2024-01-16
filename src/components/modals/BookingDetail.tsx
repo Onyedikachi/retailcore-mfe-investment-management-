@@ -94,13 +94,13 @@ export const BookingDetailLayout = ({
                     <span className="font-bold block mb-[15px]">
                       Investment ID
                     </span>
-                    <span className="font-normal block uppercase">
+                    <span className="font-normal block uppercase" data-testid="id-value">
                       {detail?.investmentId|| "-"}
                     </span>
                   </div>
                   <div>
                     <span className="font-bold block mb-[15px]">Principal</span>
-                    <span className="font-normal block">
+                    <span className="font-normal block" data-testid="principal-value">
                       {currencyFormatter(detail?.principal, 'NGN', true, 2) || "-"}
                     </span>
                   </div>

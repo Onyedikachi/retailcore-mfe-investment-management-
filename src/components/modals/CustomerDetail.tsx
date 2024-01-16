@@ -15,7 +15,7 @@ interface Props {
 }
 export const TabHeader = ({ title, active }) => {
   return (
-    <div className="border  flex gap-x-4 items-center py-1 px-4 border-[#eee]">
+    <div data-testid="tab-header" className="border  flex gap-x-4 items-center py-1 px-4 border-[#eee]">
       {active.includes(title) ? (
         <FaCaretDown className="text-red-600" />
       ) : (

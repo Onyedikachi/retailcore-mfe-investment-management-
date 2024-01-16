@@ -31,7 +31,7 @@ export const onProceed = (data, proceed, formData, setFormData) => {
   proceed();
 };
 
-export const handleProductDetail = ({productDetail, values, setValue, setProductDetail}) => {
+export const handleProductDetails = ({productDetail, values, setValue, setProductDetail}) => {
   if (productDetail) {
     setValue(
       "tenorMin",
@@ -188,7 +188,7 @@ export default function FacilityDetails({
   // Set product detail
   useEffect(() => {
     // setProductDetail
-    handleProductDetail({productDetail, values, setValue, setProductDetail})
+    handleProductDetails({productDetail, values, setValue, setProductDetail})
   }, [productDetail]);
 
   useEffect(() => {

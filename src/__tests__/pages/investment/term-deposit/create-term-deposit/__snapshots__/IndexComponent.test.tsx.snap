@@ -2705,30 +2705,37 @@ Object {
                   <div
                     class="flex gap-x-[50px] items-center "
                   >
-                    <span
-                      class="min-w-[300px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium"
-                      data-testid="input-div"
+                    <div
+                      class="w-[300px]"
                     >
-                      Term Deposit Liability account
-                       
-                      <div>
-                        <svg
-                          data-testid="red-dot"
-                          fill="none"
-                          height="5"
-                          viewBox="0 0 5 5"
-                          width="5"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <circle
-                            cx="2.5"
-                            cy="2.5"
-                            fill="#CF2A2A"
-                            r="2.5"
-                          />
-                        </svg>
-                      </div>
-                    </span>
+                      <span
+                        class="flex items-start gap-x-[1px] text-[#636363] text-base font-medium mb-1"
+                        data-testid="input-div"
+                      >
+                        Term Deposit Liability account
+                         
+                        <div>
+                          <svg
+                            data-testid="red-dot"
+                            fill="none"
+                            height="5"
+                            viewBox="0 0 5 5"
+                            width="5"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle
+                              cx="2.5"
+                              cy="2.5"
+                              fill="#CF2A2A"
+                              r="2.5"
+                            />
+                          </svg>
+                        </div>
+                      </span>
+                      <span
+                        class="flex items-start gap-x-[1px] text-[#AAAAAA] text-sm font-normal"
+                      />
+                    </div>
                     <div>
                       <div
                         class="mb-[2px]"
@@ -2791,30 +2798,37 @@ Object {
                   <div
                     class="flex gap-x-[50px] items-center "
                   >
-                    <span
-                      class="min-w-[300px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium"
-                      data-testid="input-div"
+                    <div
+                      class="w-[300px]"
                     >
-                      Interest accural account
-                       
-                      <div>
-                        <svg
-                          data-testid="red-dot"
-                          fill="none"
-                          height="5"
-                          viewBox="0 0 5 5"
-                          width="5"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <circle
-                            cx="2.5"
-                            cy="2.5"
-                            fill="#CF2A2A"
-                            r="2.5"
-                          />
-                        </svg>
-                      </div>
-                    </span>
+                      <span
+                        class="flex items-start gap-x-[1px] text-[#636363] text-base font-medium mb-1"
+                        data-testid="input-div"
+                      >
+                        Interest accural account
+                         
+                        <div>
+                          <svg
+                            data-testid="red-dot"
+                            fill="none"
+                            height="5"
+                            viewBox="0 0 5 5"
+                            width="5"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle
+                              cx="2.5"
+                              cy="2.5"
+                              fill="#CF2A2A"
+                              r="2.5"
+                            />
+                          </svg>
+                        </div>
+                      </span>
+                      <span
+                        class="flex items-start gap-x-[1px] text-[#AAAAAA] text-sm font-normal"
+                      />
+                    </div>
                     <div>
                       <div
                         class="mb-[2px]"
@@ -2877,30 +2891,37 @@ Object {
                   <div
                     class="flex gap-x-[50px] items-center "
                   >
-                    <span
-                      class="min-w-[300px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium"
-                      data-testid="input-div"
+                    <div
+                      class="w-[300px]"
                     >
-                      Interest expense account
-                       
-                      <div>
-                        <svg
-                          data-testid="red-dot"
-                          fill="none"
-                          height="5"
-                          viewBox="0 0 5 5"
-                          width="5"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <circle
-                            cx="2.5"
-                            cy="2.5"
-                            fill="#CF2A2A"
-                            r="2.5"
-                          />
-                        </svg>
-                      </div>
-                    </span>
+                      <span
+                        class="flex items-start gap-x-[1px] text-[#636363] text-base font-medium mb-1"
+                        data-testid="input-div"
+                      >
+                        Interest expense account
+                         
+                        <div>
+                          <svg
+                            data-testid="red-dot"
+                            fill="none"
+                            height="5"
+                            viewBox="0 0 5 5"
+                            width="5"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle
+                              cx="2.5"
+                              cy="2.5"
+                              fill="#CF2A2A"
+                              r="2.5"
+                            />
+                          </svg>
+                        </div>
+                      </span>
+                      <span
+                        class="flex items-start gap-x-[1px] text-[#AAAAAA] text-sm font-normal"
+                      />
+                    </div>
                     <div>
                       <div
                         class="mb-[2px]"
@@ -3017,30 +3038,37 @@ Object {
                 <div
                   class="flex gap-x-[50px] items-center "
                 >
-                  <span
-                    class="min-w-[300px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium"
-                    data-testid="input-div"
+                  <div
+                    class="w-[300px]"
                   >
-                    Term Deposit Liability account
-                     
-                    <div>
-                      <svg
-                        data-testid="red-dot"
-                        fill="none"
-                        height="5"
-                        viewBox="0 0 5 5"
-                        width="5"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <circle
-                          cx="2.5"
-                          cy="2.5"
-                          fill="#CF2A2A"
-                          r="2.5"
-                        />
-                      </svg>
-                    </div>
-                  </span>
+                    <span
+                      class="flex items-start gap-x-[1px] text-[#636363] text-base font-medium mb-1"
+                      data-testid="input-div"
+                    >
+                      Term Deposit Liability account
+                       
+                      <div>
+                        <svg
+                          data-testid="red-dot"
+                          fill="none"
+                          height="5"
+                          viewBox="0 0 5 5"
+                          width="5"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle
+                            cx="2.5"
+                            cy="2.5"
+                            fill="#CF2A2A"
+                            r="2.5"
+                          />
+                        </svg>
+                      </div>
+                    </span>
+                    <span
+                      class="flex items-start gap-x-[1px] text-[#AAAAAA] text-sm font-normal"
+                    />
+                  </div>
                   <div>
                     <div
                       class="mb-[2px]"
@@ -3103,30 +3131,37 @@ Object {
                 <div
                   class="flex gap-x-[50px] items-center "
                 >
-                  <span
-                    class="min-w-[300px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium"
-                    data-testid="input-div"
+                  <div
+                    class="w-[300px]"
                   >
-                    Interest accural account
-                     
-                    <div>
-                      <svg
-                        data-testid="red-dot"
-                        fill="none"
-                        height="5"
-                        viewBox="0 0 5 5"
-                        width="5"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <circle
-                          cx="2.5"
-                          cy="2.5"
-                          fill="#CF2A2A"
-                          r="2.5"
-                        />
-                      </svg>
-                    </div>
-                  </span>
+                    <span
+                      class="flex items-start gap-x-[1px] text-[#636363] text-base font-medium mb-1"
+                      data-testid="input-div"
+                    >
+                      Interest accural account
+                       
+                      <div>
+                        <svg
+                          data-testid="red-dot"
+                          fill="none"
+                          height="5"
+                          viewBox="0 0 5 5"
+                          width="5"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle
+                            cx="2.5"
+                            cy="2.5"
+                            fill="#CF2A2A"
+                            r="2.5"
+                          />
+                        </svg>
+                      </div>
+                    </span>
+                    <span
+                      class="flex items-start gap-x-[1px] text-[#AAAAAA] text-sm font-normal"
+                    />
+                  </div>
                   <div>
                     <div
                       class="mb-[2px]"
@@ -3189,30 +3224,37 @@ Object {
                 <div
                   class="flex gap-x-[50px] items-center "
                 >
-                  <span
-                    class="min-w-[300px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium"
-                    data-testid="input-div"
+                  <div
+                    class="w-[300px]"
                   >
-                    Interest expense account
-                     
-                    <div>
-                      <svg
-                        data-testid="red-dot"
-                        fill="none"
-                        height="5"
-                        viewBox="0 0 5 5"
-                        width="5"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <circle
-                          cx="2.5"
-                          cy="2.5"
-                          fill="#CF2A2A"
-                          r="2.5"
-                        />
-                      </svg>
-                    </div>
-                  </span>
+                    <span
+                      class="flex items-start gap-x-[1px] text-[#636363] text-base font-medium mb-1"
+                      data-testid="input-div"
+                    >
+                      Interest expense account
+                       
+                      <div>
+                        <svg
+                          data-testid="red-dot"
+                          fill="none"
+                          height="5"
+                          viewBox="0 0 5 5"
+                          width="5"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle
+                            cx="2.5"
+                            cy="2.5"
+                            fill="#CF2A2A"
+                            r="2.5"
+                          />
+                        </svg>
+                      </div>
+                    </span>
+                    <span
+                      class="flex items-start gap-x-[1px] text-[#AAAAAA] text-sm font-normal"
+                    />
+                  </div>
                   <div>
                     <div
                       class="mb-[2px]"

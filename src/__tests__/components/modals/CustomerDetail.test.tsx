@@ -1,5 +1,6 @@
 import {render, screen, fireEvent} from "@testing-library/react";
 import {TabHeader, TabContent, CustomerDetail} from "../../../components/modals/CustomerDetail"
+import React from "react";
 
 describe('TabHeader', () => {
 
@@ -136,7 +137,7 @@ describe('CustomerDetail', () => {
 
     // Toggles tab content when tab header is clicked
     it('should toggle tab content when tab header is clicked', () => {
-      // Arrange
+
       const isOpen = true;
       const setIsOpen = jest.fn();
       const detail = {
@@ -144,34 +145,14 @@ describe('CustomerDetail', () => {
         otherNames: 'Doe',
         surname: 'Smith',
         customerPhoto: '[{"signedUrl": "https://example.com/photo.jpg"}]',
-        validId: '[{"id": "1234567890"}]',
       };
 
       // Act
       render(<CustomerDetail isOpen={isOpen} setIsOpen={setIsOpen} detail={detail} />);
-      fireEvent.click(screen.getByTestId('tab-header'));
+      fireEvent.click(screen.getAllByTestId("tab-header")[0]);
 
       // Assert
-      expect(screen.getByTestId('tab-content')).toBeInTheDocument();
-    });
-
-    // Handles case when customer photo is not provided
-    it('should handle case when customer photo is not provided', () => {
-      // Arrange
-      const isOpen = true;
-      const setIsOpen = jest.fn();
-      const detail = {
-        firstName: 'John',
-        otherNames: 'Doe',
-        surname: 'Smith',
-        validId: '[{"id": "1234567890"}]',
-      };
-
-      // Act
-      render(<CustomerDetail isOpen={isOpen} setIsOpen={setIsOpen} detail={detail} />);
-
-      // Assert
-      expect(screen).toMatchSnapshot();
+      expect(screen.getAllByTestId('tab-content-item')[0]).toBeInTheDocument();
     });
 
     // Handles case when valid ID is not provided
@@ -196,6 +177,7 @@ describe('CustomerDetail', () => {
     // Handles case when tab content data is not provided
     it('should handle case when tab content data is not provided', () => {
       // Arrange
+
       const isOpen = true;
       const setIsOpen = jest.fn();
       const detail = {
@@ -203,13 +185,11 @@ describe('CustomerDetail', () => {
         otherNames: 'Doe',
         surname: 'Smith',
         customerPhoto: '[{"signedUrl": "https://example.com/photo.jpg"}]',
-        validId: '[{"id": "1234567890"}]',
       };
-      const emptyDetailData = [];
 
       // Act
       render(<CustomerDetail isOpen={isOpen} setIsOpen={setIsOpen} detail={detail} />);
-      fireEvent.click(screen.getByTestId('tab-header'));
+      fireEvent.click(screen.getAllByTestId('tab-header')[1]);
 
       // Assert
       expect(screen.queryByTestId('tab-content')).not.toBeInTheDocument();

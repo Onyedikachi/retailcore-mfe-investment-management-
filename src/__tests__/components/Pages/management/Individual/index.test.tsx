@@ -136,7 +136,7 @@ describe("handleChange", () => {
     expect(setQuery).toHaveBeenCalledWith({
       ...query,
       page: 1,
-      investmentProducts_In:[],
+      investmentProducts_In: null,
       filter_by: selected,
       status_In: null,
     });
@@ -160,7 +160,7 @@ describe("handleChange", () => {
       ...query,
       page: 1,
       filter_by: selected,
-      investmentProducts_In:[],
+      investmentProducts_In: null,
       status_In: null,
     });
   });
@@ -181,7 +181,7 @@ describe("handleChange", () => {
     expect(setQuery).toHaveBeenCalledWith({
       filter_by: null,
       page: 1,
-      investmentProducts_In:[],
+      investmentProducts_In: null,
       status_In: [undefined],
     });
   });
@@ -202,7 +202,7 @@ describe("handleChange", () => {
 
     expect(setQuery).toHaveBeenCalledWith({
       filter_by: null,
-      investmentProducts_In:[],
+      investmentProducts_In:null,
       page: 1,
       status_In: null,
     });

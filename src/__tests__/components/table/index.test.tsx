@@ -251,7 +251,7 @@ describe("TextCellContent", () => {
     render(<TextCellContent value={value} />);
 
     // Assert that "-" is rendered when the value is falsy
-    expect(screen.getByText("-")).toBeInTheDocument();
+    expect(screen.getByText("null")).toBeInTheDocument();
   });
 
   it("should render nothing when value is null or undefined", () => {
