@@ -47,7 +47,7 @@ export const investmentApi: any = createApi({
     getCustomerSearch: builder.query<any, any>({
       query: (params) => {
         return {
-          url: `https://customer-management-api.dev.bepeerless.co/v1/customer/search?search=${params}`,
+          url: `https://dev2-customer-management-api.dev.bepeerless.co/v1/customer/search?search=${params}`,
           method: "get",
         };
       },
@@ -55,7 +55,7 @@ export const investmentApi: any = createApi({
     getAccountBalance: builder.query<any, any>({
       query: (params) => {
         return {
-          url: `https://customer-management-api.dev.bepeerless.co/v1/accounts/${params}`,
+          url: `https://dev2-customer-management-api.dev.bepeerless.co/v1/accounts/${params}`,
           method: "get",
         };
       },
@@ -63,7 +63,7 @@ export const investmentApi: any = createApi({
     getCustomerProfile: builder.query<any, any>({
       query: (params) => {
         return {
-          url: `https://customer-management-api.dev.bepeerless.co/v1/customer/profile/${params}`,
+          url: `https://dev2-customer-management-api.dev.bepeerless.co/v1/customer/profile/${params}`,
           method: "get",
         };
       },
