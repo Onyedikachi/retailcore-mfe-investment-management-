@@ -27,17 +27,17 @@ export function SearchValues({
   handleSearch,
 }) {
   const handleClick = () => {
-   if(type === 'investments'){
-    setInputValue(item?.customerName);
-    setSearchTerm(item?.customerName);
-    setShowBox(false);
-    handleSearch(item?.customerName, item);
-   }else{
-    setInputValue(item?.name);
-    setSearchTerm(item?.name);
-    setShowBox(false);
-    handleSearch(item?.name, item);
-   }
+    if (type === "investments") {
+      setInputValue(item?.customerName);
+      setSearchTerm(item?.customerName);
+      setShowBox(false);
+      handleSearch(item?.customerName, item);
+    } else {
+      setInputValue(item?.name);
+      setSearchTerm(item?.name);
+      setShowBox(false);
+      handleSearch(item?.name, item);
+    }
   };
 
   return (
@@ -50,8 +50,16 @@ export function SearchValues({
       </span>
       <span>
         <span className="block max-w-max truncate text-[#636363] capitalize">
-          {type === "investments" ? (
-            <span>{item.customerName}</span>
+          {type.toLowerCase() === "investments" ? (
+            <span className="flex flex-col gap-[1px]">
+              <span>{item.customerName}</span>
+              <span className="">
+               
+                <span className="relative font-medium text-sm text-[#aaaaaa] uppercase">
+                  {item?.investmentId || "-"}
+                </span>
+              </span>
+            </span>
           ) : (
             <span>{item?.name}</span>
           )}
@@ -169,6 +177,7 @@ export default function SearchInput({
   type?: string;
   customClass?: string;
   defaultValue?: string;
+  // Context?:
 }) {
   const [inputValue, setInputValue] = useState("");
   const [showBox, setShowBox] = useState(false);
@@ -233,6 +242,7 @@ export default function SearchInput({
               <div>
                 <div>
                   {/* {JSON.stringify(searchResults[0])} */}
+                  {/* under search */}
                   {searchResults?.length > 0 ? (
                     <ul className="grid gap-y-[10px]">
                       {searchResults?.map((item, indrx) => (
