@@ -125,7 +125,7 @@ export default function Preview({
   const { role } = useContext(AppContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { type, process } = useParams();
+  const { investmentType, process } = useParams();
   const id = searchParams.get("id");
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
@@ -220,7 +220,7 @@ export default function Preview({
         </h1>
         <Breadcrumbs
           links={summaryLinks.map((i) =>
-            i.id === 3 ? { ...i, title: type } : i
+            i.id === 3 ? { ...i, title: investmentType } : i
           )}
         />
       </div>{" "}
