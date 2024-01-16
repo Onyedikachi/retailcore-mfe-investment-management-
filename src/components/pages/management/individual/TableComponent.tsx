@@ -76,6 +76,32 @@ export const handleDropdown = (
   }
 };
 
+export const handleIndividualListHeaders = ({results, setIndividualListHeaders}) => {
+  if (results) {
+    const targetKey = "investmentProduct";
+    const mappedResults = results?.map((result) => {
+      return {
+        id: result.id,
+        name: result.productName,
+        value: result.id,
+      };
+    });
+
+    const updatedItems = individualHeader.map((item) => {
+      if (item.key === targetKey) {
+        // Update the options for the target item
+        return {
+          ...item,
+          options: [...mappedResults],
+        };
+      }
+      // Leave other items unchanged
+      return item;
+    });
+    setIndividualListHeaders(updatedItems);
+  }
+}
+
 export const handleHeaders = (headers: any, isChecker) => {
   return isChecker
     ? headers.filter((i) => i.label !== "initiator")
@@ -183,42 +209,6 @@ export const handleSearch = (value, setQuery, query) => {
     search: value,
   });
 };
-
-export const handleProductIsSuccess = ({productDownloadIsSuccess, category, isChecker, csvExporter, productDownloadData, requestsDownloadIsSuccess, requestsDownloadData, handleDownload}) => {
-  if (
-    productDownloadIsSuccess &&
-    category === StatusCategoryType?.Investments
-  ) {
-    handleDownload(
-      productDownloadData?.results.map((i) => ({
-        ...i,
-        status: IndividualStatusTypes.find(
-          (n) => n.id === i.investmentBookingStatus
-        )?.type,
-      })),
-      isChecker,
-      csvExporter,
-      category
-    );
-  }
-  if (requestsDownloadIsSuccess && category === StatusCategoryType.Requests) {
-    handleDownload(
-      requestsDownloadData?.results.map((i) => ({
-        ...i,
-        requestStatus: StatusFilterOptions.find(
-          (n) => n.value === i.requestStatus
-        )?.name,
-        requestType: IndividualTypeFilterOptions.find(
-          (n) => n.value === i.requestType
-        )?.name,
-      })),
-      isChecker,
-      csvExporter,
-      category
-    );
-  }
-}
-
 export default function TableComponent({
   productData,
   requestData,
@@ -271,29 +261,8 @@ export default function TableComponent({
 
   useEffect(() => {
     const results = fetchedProductsList?.results;
-    if (results) {
-      const targetKey = "investmentProduct";
-      const mappedResults = results?.map((result) => {
-        return {
-          id: result.id,
-          name: result.productName,
-          value: result.id,
-        };
-      });
-
-      const updatedItems = individualHeader.map((item) => {
-        if (item.key === targetKey) {
-          // Update the options for the target item
-          return {
-            ...item,
-            options: [...mappedResults],
-          };
-        }
-        // Leave other items unchanged
-        return item;
-      });
-      setIndividualListHeaders(updatedItems);
-    }
+    
+    handleIndividualListHeaders({results, setIndividualListHeaders});
   }, [fetchedProductsList]);
 
   const [
@@ -363,8 +332,8 @@ export default function TableComponent({
   }, [data, request, isSuccess, isRequestSuccess]);
 
   useEffect(() => {
-    // handleProductIsSuccess
-    handleProductIsSuccess({productDownloadIsSuccess, category, isChecker, csvExporter, productDownloadData, requestsDownloadIsSuccess, requestsDownloadData, handleDownload});
+    // handleProductDownloadIsSuccess
+    handleProductDownloadSuccess({productDownloadIsSuccess, category, isChecker, csvExporter, productDownloadData, requestsDownloadIsSuccess, requestsDownloadData, handleDownload});
   }, [productDownloadIsSuccess, requestsDownloadIsSuccess]);
 
   React.useEffect(() => {
