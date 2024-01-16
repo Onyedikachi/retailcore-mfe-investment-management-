@@ -633,6 +633,7 @@ export default function TableComponent<TableProps>({
       </div>
       {/* @ts-ignore */}
       <MessagesComponent
+      specificCategory={specificCategory}
         isConfirmOpen={isConfirmOpen}
         isSuccessOpen={isSuccessOpen}
         setIsConfirmOpen={setIsConfirmOpen}

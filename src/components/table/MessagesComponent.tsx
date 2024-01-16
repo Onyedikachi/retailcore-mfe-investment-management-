@@ -8,6 +8,7 @@ import PartLiquidation from "../modals/PartLiquidation";
 import Loader from "../Loader";
 
 export default function MessagesComponent({
+  specificCategory,
   isConfirmOpen,
   isSuccessOpen,
   isFailed,
@@ -60,6 +61,7 @@ export default function MessagesComponent({
       )}
       {(isSuccessOpen || isSuccess) && (
         <Success
+        specificCategory={specificCategory}
           text={successText}
           isOpen={isSuccessOpen}
           setIsOpen={setIsSuccessOpen}

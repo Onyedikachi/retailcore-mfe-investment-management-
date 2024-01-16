@@ -191,11 +191,7 @@ export default function TableComponent({
   hasMore,
   fetchMoreData,
 }: any) {
-  // useEffect(() => {
-  //   if (isGetProductsSuccess) {
-  //     alert(fetchedProductsList);
-  //   }
-  // }, [isGetProductsSuccess]);
+ 
   const { category, setStatus, selected } = useContext(IndividualContext);
   const { isChecker } = useContext(AppContext);
   const [users, setUsers] = useState([]);

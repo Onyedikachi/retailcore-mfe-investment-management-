@@ -8,8 +8,10 @@ import Button from "../Button";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { AppContext } from "@app/utils";
 import { IoChevronForward } from "react-icons/io5";
+import { SpecificCategory } from "@app/constants";
 
 interface SuccessProps {
+  specificCategory?: string;
   text: string;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
@@ -25,8 +27,15 @@ const individualRequests =
 export function handleNavigations(
   { pathname, search },
   process,
-  role = "superadmin"
+  role = "superadmin",
+  specificCategory = null,
+  closeModal=() => {},
+
+
 ) {
+  if(specificCategory === SpecificCategory?.individual){
+    closeModal()
+  }
   if (process === "create") {
     if (pathname.includes("management") && pathname.includes("individual")) {
       return individualDashboard;
@@ -61,8 +70,11 @@ export function handleNavigations(
       return factoryDashboard;
     }
   }
+
+ 
 }
 export function Success({
+  specificCategory,
   text,
   isOpen,
   setIsOpen,
@@ -73,6 +85,9 @@ export function Success({
   const location = useLocation();
   const { role } = useContext(AppContext);
   const { process } = useParams();
+  const closeModal = () => {
+    setIsOpen(false)
+  }
 
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -86,7 +101,7 @@ export function Success({
         <p className="font-normal text-2xl">{text}</p>
         <div className="flex justify-between items-center gap-x-[6px] w-full">
           <Button
-            onClick={() => handleNavigations(location, process, role)}
+            onClick={() => handleNavigations(location, process, role, specificCategory, closeModal)}
             type="button"
             data-testid="close-btn"
             className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-10 text-[#667085] outline-none"
@@ -160,7 +175,7 @@ export function Failed({
         >
           <div>
             <Button
-              onClick={() => handleNavigations(location, process)}
+              onClick={() => handleNavigations(location, process, )}
               type="button"
               data-testid="dashboard-link"
               className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-1 text-[#667085] outline-none"
