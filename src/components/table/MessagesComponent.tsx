@@ -40,7 +40,8 @@ export default function MessagesComponent({
   isEarlyLiquidation,
   isPartLiquidation,
   setPartLiquidationOpen,
-  setEarlyLiquidationOpen
+  setEarlyLiquidationOpen,
+  handleRefresh = () => {}
 }) {
   return (
     <Fragment>
@@ -61,6 +62,7 @@ export default function MessagesComponent({
       )}
       {(isSuccessOpen || isSuccess) && (
         <Success
+        handleRefresh={handleRefresh}
         specificCategory={specificCategory}
           text={successText}
           isOpen={isSuccessOpen}

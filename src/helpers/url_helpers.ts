@@ -29,7 +29,10 @@ const urls = {
   INVESTMENT_REQUEST_STATS: '/InvestmentRequest/stats',
   INVESTMEENT_ACTIVITY_LOG: '/InvestmentRequest/activitylog',
 
-  INVESTMENT_CALC: "/investment/calc"
+  INVESTMENT_CALC: "/investment/calc",
+  INVESTMENT_DASHBOARD_STATS: '/Dashboard/investmentstats',
+
+
 };
 
 export default urls;

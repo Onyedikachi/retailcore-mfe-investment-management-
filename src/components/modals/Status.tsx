@@ -11,6 +11,7 @@ import { IoChevronForward } from "react-icons/io5";
 import { SpecificCategory } from "@app/constants";
 
 interface SuccessProps {
+  handleRefresh?: () => void;
   specificCategory?: string;
   text: string;
   isOpen: boolean;
@@ -38,6 +39,7 @@ export function handleNavigations(
 ) {
   if(specificCategory === SpecificCategory?.individual){
     closeModal()
+    return
   }
 
 
@@ -106,6 +108,7 @@ export function handleNavigations(
  
 }
 export function Success({
+  handleRefresh = () => {},
   specificCategory,
   text,
   isOpen,
@@ -120,6 +123,8 @@ export function Success({
   const { process } = useParams();
   const closeModal = () => {
     setIsOpen(false)
+    handleRefresh()
+
   }
 
   return (

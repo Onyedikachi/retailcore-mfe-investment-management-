@@ -56,6 +56,7 @@ interface TableProps {
   onChangeDate?: any;
   type?: string;
   noData?: string;
+  handleRefresh?: () => void
 }
 
 export const statusHandler = ({
@@ -276,6 +277,7 @@ export default function TableComponent<TableProps>({
   type = "",
   noData = "No data available",
   Context,
+  handleRefresh = () => {}
 }) {
   const { role, permissions, userId, isChecker } = useContext(AppContext);
   const {
@@ -685,6 +687,7 @@ export default function TableComponent<TableProps>({
         isPartLiquidation={isPartLiquidation}
         setPartLiquidationOpen={setPartLiquidationOpen}
         setEarlyLiquidationOpen={setEarlyLiquidationOpen}
+        handleRefresh={handleRefresh}
       />
     </div>
   );
