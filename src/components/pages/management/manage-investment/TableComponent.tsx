@@ -53,24 +53,24 @@ export const handleDropdown = (
 ) => {
   if (locked)
     return IndividualDropDownOptions[setOptionsByStatus(status)].filter(
-      (i: any) => i.text.toLowerCase() === "view"
+      (i: any) => i.text?.toLowerCase() === "view"
     );
   if (!status) return [];
   if (isChecker) {
     return IndividualDropDownOptions[setOptionsByStatus(status)].filter(
-      (i: any) => i.text.toLowerCase() === "view"
+      (i: any) => i.text?.toLowerCase() === "view"
     );
   } else {
     let options = IndividualDropDownOptions[setOptionsByStatus(status)];
     if (!permissions?.includes("CREATE_PRODUCT")) {
       options = options?.filter(
         (i: any) =>
-          i.text.toLowerCase() !== "deactivate" &&
-          i.text.toLowerCase() !== "activate"
+          i.text?.toLowerCase() !== "deactivate" &&
+          i.text?.toLowerCase() !== "activate"
       );
     }
     if (!permissions?.includes("CREATE_PRODUCT")) {
-      options = options?.filter((i: any) => i.text.toLowerCase() !== "modify");
+      options = options?.filter((i: any) => i.text?.toLowerCase() !== "modify");
     }
     return options;
   }
@@ -454,7 +454,7 @@ export default function TableComponent({
         dropDownOptions={IndividualDropDownOptions}
         dropDownClick={handleDropClick}
         onChangeDate={onChangeDate}
-        type={category.toLowerCase()}
+        type={category?.toLowerCase()}
         noData={
           StatusCategoryType.Requests === category
             ? "No request available"
