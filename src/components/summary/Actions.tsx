@@ -233,44 +233,8 @@ export default function Actions({
       data-testid="actions-div"
       className=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-[60px] py-[40px]  "
     >
-      {/* Submission  */}
-      {createProcesses.includes(process) && (
-        <div className=" flex  gap-6">
-          <button
-            onClick={handleCancel}
-            type="button"
-            className="max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"
-          >
-            <CancelSvg />
-
-            <div className=" text-gray-500 text-base font-medium leading-normal">
-              Cancel
-            </div>
-          </button>
-
-          <Button
-            onClick={handleModify}
-            className="ml-auto max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"
-          >
-            <ModifySvg />
-            <span className="text-gray-500 text-base font-medium leading-normal">
-              Modify
-            </span>
-          </Button>
-
-          <button
-            onClick={handleSubmit}
-            disabled={false}
-            type="submit"
-            className="px-10 py-[5px] flex items-center gap-2 justify-center text-[#ffffff] bg-sterling-red-800 rounded-lg active:scale-95"
-          >
-            <SubmitSvg />
-            <span className=" font-medium text-base">Submit</span>
-          </button>
-        </div>
-      )}
-      {/* Preview  */}
-      {((process !== "verdict" && !createProcesses.includes(process)) ||
+       {/* Preview  */}
+       {((process !== "verdict" && !createProcesses.includes(process)) ||
         !permissions.some((permission) =>
           validPermissions.includes(permission)
         )) && (
@@ -341,6 +305,43 @@ export default function Actions({
           </Button> */}
         </div>
       )}
+      {/* Submission/creation  */}
+      {createProcesses.includes(process) && (
+        <div className=" flex  gap-6">
+          <button
+            onClick={handleCancel}
+            type="button"
+            className="max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"
+          >
+            <CancelSvg />
+
+            <div className=" text-gray-500 text-base font-medium leading-normal">
+              Cancel
+            </div>
+          </button>
+
+          <Button
+            onClick={handleModify}
+            className="ml-auto max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"
+          >
+            <ModifySvg />
+            <span className="text-gray-500 text-base font-medium leading-normal">
+              Modify
+            </span>
+          </Button>
+
+          <button
+            onClick={handleSubmit}
+            disabled={false}
+            type="submit"
+            className="px-10 py-[5px] flex items-center gap-2 justify-center text-[#ffffff] bg-sterling-red-800 rounded-lg active:scale-95"
+          >
+            <SubmitSvg />
+            <span className=" font-medium text-base">Submit</span>
+          </button>
+        </div>
+      )}
+     
       {/* Approval/ Rejection  */}
       {process === "verdict" &&
         permissions.some((permission) =>
