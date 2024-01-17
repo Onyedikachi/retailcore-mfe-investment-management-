@@ -24,7 +24,7 @@ export default function Select({
   error,
   disabled = false,
 }: BorderlessSelectProps): React.JSX.Element {
-  const [selected, setSelected] = useState<any>(null);
+  const [selected, setSelected] = useState<any>("");
 
   // useEffect(() => {
   //   handleSelected(selected);

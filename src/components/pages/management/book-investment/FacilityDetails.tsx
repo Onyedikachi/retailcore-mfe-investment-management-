@@ -21,11 +21,13 @@ import BottomBarLoader from "@app/components/BottomBarLoader";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 import { BorderlessSelect } from "@app/components/forms";
 import { AppContext } from "@app/utils";
+import { Failed } from "@app/components/modals";
+import { Messages } from "@app/constants/enums";
 export const onProceed = (data, proceed, formData, setFormData) => {
   setFormData({
     ...formData,
-   
-    facilityDetailsModel: {...formData.facilityDetailsModel, ...data},
+
+    facilityDetailsModel: { ...formData.facilityDetailsModel, ...data },
   });
   proceed();
 };
@@ -75,7 +77,6 @@ export default function FacilityDetails({
   setProductDetail,
   detailLoading,
 }: FacilityDetailsProps) {
-
   const { currencies } = useContext(AppContext);
   const {
     register,
@@ -96,6 +97,7 @@ export default function FacilityDetails({
   const [productData, setProductData] = useState(null);
   const [productName, setProductName] = useState(null);
   const [productsData, setProductsData] = useState([]);
+  const [balanceError, setBalanceError] = useState(true);
   const values = getValues();
 
   const [
@@ -235,7 +237,7 @@ export default function FacilityDetails({
     values.interestRate,
     values.investmentProductId,
     productDetail,
-    formData.facilityDetailsModel
+    formData.facilityDetailsModel,
   ]);
 
   useEffect(() => {
@@ -248,7 +250,6 @@ export default function FacilityDetails({
     values.principal,
     values.interestRate,
     values.capitalizationMethod,
-   
   ]);
 
   useEffect(() => {
@@ -257,6 +258,17 @@ export default function FacilityDetails({
       facilityDetailsModel: values,
     });
   }, [isSavingDraft]);
+
+  useEffect(() => {
+    if (
+      formData.customerBookingInfoModel?.balance <
+      productDetail?.pricingConfiguration?.applicablePrincipalMin || formData.customerBookingInfoModel?.balance === 0
+    ) {
+      setBalanceError(true);
+    } else {
+      setBalanceError(false);
+    }
+  }, [formData.customerBookingInfoModel?.balance, productDetail]);
 
   return (
     <form
@@ -561,6 +573,15 @@ export default function FacilityDetails({
           )}
         </div>
       </div>
+      {balanceError && (
+        <Failed
+          text={Messages.UNABLE_TO_BOOK}
+          subtext={Messages.INSUFFICIENT_BALANCE}
+          isOpen={balanceError}
+          setIsOpen={setBalanceError}
+          canRetry
+        />
+      )}
     </form>
   );
 }
