@@ -249,10 +249,10 @@ export function handlePermission(
             i.value === "created_by_anyone" ||
             i.value === "created_system_wide"
           ) {
-            i.disabled = true;
+            i.disabled = false;
           }
           if (i.value === "approved_system_wide") {
-            i.disabled = true;
+            i.disabled = false;
           }
           return i;
         })
@@ -270,10 +270,10 @@ export function handlePermission(
             i.value === "created_by_anyone" ||
             i.value === "created_system_wide"
           ) {
-            i.disabled = true;
+            i.disabled = false;
           }
           if (i.value === "sent_to_anyone" || i.value === "sent_system_wide") {
-            i.disabled = true;
+            i.disabled = false;
           }
           return i;
         })
@@ -297,7 +297,7 @@ export function handlePermission(
             i.value === "created_by_anyone" ||
             i.value === "created_system_wide"
           ) {
-            i.disabled = true;
+            i.disabled = false;
           }
 
           return i;
@@ -316,7 +316,7 @@ export function handlePermission(
             i.value === "created_by_anyone" ||
             i.value === "created_system_wide"
           ) {
-            i.disabled = true;
+            i.disabled = false;
           }
 
           return i;
@@ -341,7 +341,7 @@ export function handlePermission(
       setFilteredProductOptions(
         ApproveProductOptions.map((i: any) => {
           if (i.value === "approved_system_wide") {
-            i.disabled = true;
+            i.disabled = false;
           }
           return i;
         })
@@ -358,7 +358,7 @@ export function handlePermission(
       setFilteredRequestOptions(
         ApproveRequestOptions.map((i: any) => {
           if (i.value === "sent_to_anyone" || i.value === "sent_system_wide") {
-            i.disabled = true;
+            i.disabled = false;
           }
           return i;
         })

@@ -585,7 +585,7 @@ export default function FacilityDetails({
                       defaultValue={
                         formData?.facilityDetailsModel?.capitalizationMethod
                       }
-                      placeholder="Select currency"
+                      placeholder="Select option"
                       clearErrors={clearErrors}
                       options={capMethodOptions}
                       trigger={trigger}
