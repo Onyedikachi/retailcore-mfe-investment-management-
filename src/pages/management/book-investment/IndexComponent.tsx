@@ -91,6 +91,7 @@ export default function IndexComponent() {
       investmentformUrl: "",
       accountStatus: "",
       customerProfileid: "",
+      balance:""
     },
     facilityDetailsModel: {
       capitalizationMethod: 0,
