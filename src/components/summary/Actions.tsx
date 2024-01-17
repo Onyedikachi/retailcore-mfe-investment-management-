@@ -18,6 +18,7 @@ import {
   useApproveProductMutation,
   useRejectProductMutation,
   useApproveInvestmentMutation,
+  useRejectInvestmentMutation,
 } from "@app/api";
 import { Messages } from "@app/constants/enums";
 import Rejection from "../modals/Rejection";
@@ -82,9 +83,16 @@ export const handleMessages = ({
   investmentApproveSuccess,
   investmentApproveIsError,
   investmentApproveError,
+  investmentRejectSuccess,
+  investmentRejectIsError,
+  investmentRejectError,
 }) => {
   if (rejectSuccess) {
     setSuccessText(Messages.PRODUCT_CREATE_REJECTED);
+    setIsSuccessOpen(true);
+  }
+  if (investmentRejectSuccess) {
+    setSuccessText(Messages.BOOKING_CREATE_REJECTED);
     setIsSuccessOpen(true);
   }
   if (approveSuccess) {
@@ -115,6 +123,14 @@ export const handleMessages = ({
     setFailedSubtext(
       investmentApproveError?.message?.message ||
         investmentApproveError?.message?.Message
+    );
+    setFailed(true);
+  }
+  if (investmentRejectIsError) {
+    setFailedText(Messages.BOOKING_REJECT_FAILED);
+    setFailedSubtext(
+      investmentRejectError?.message?.message ||
+        investmentRejectError?.message?.Message
     );
     setFailed(true);
   }
@@ -175,6 +191,16 @@ export default function Actions({
     },
   ] = useRejectProductMutation();
 
+  const [
+    rejectInvestment,
+    {
+      isSuccess: investmentRejectSuccess,
+      isError: investmentRejectIsError,
+      error: investmentRejectError,
+      isLoading: investmentRejectLoading,
+    },
+  ] = useRejectInvestmentMutation();
+
   const initiateVerdict = (value) => {
     handleVerdict({
       value,
@@ -189,7 +215,13 @@ export default function Actions({
 
   const handleRejection = () => {
     setRejection(false);
-    rejectProduct({ reason, id, routeTo });
+    // console.log(reason, id, routeTo);
+    // return;
+    if (type.toLowerCase() === "individual") {
+      rejectInvestment({ reason, id, routeTo });
+    } else {
+      rejectProduct({ reason, id, routeTo });
+    }
   };
   useEffect(() => {
     handleMessages({
@@ -207,6 +239,9 @@ export default function Actions({
       investmentApproveSuccess,
       investmentApproveIsError,
       investmentApproveError,
+      investmentRejectSuccess,
+      investmentRejectIsError,
+      investmentRejectError,
     });
   }, [
     rejectSuccess,
@@ -216,6 +251,8 @@ export default function Actions({
     approveIsError,
     investmentApproveSuccess,
     investmentApproveIsError,
+    investmentRejectSuccess,
+    investmentRejectIsError,
   ]);
   const factoryDashboard = `/product-factory/investment?category=requests${
     filter ? "&filter=" + filter : ""
@@ -233,8 +270,8 @@ export default function Actions({
       data-testid="actions-div"
       className=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-[60px] py-[40px]  "
     >
-       {/* Preview  */}
-       {((process !== "verdict" && !createProcesses.includes(process)) ||
+      {/* Preview  */}
+      {((process !== "verdict" && !createProcesses.includes(process)) ||
         !permissions.some((permission) =>
           validPermissions.includes(permission)
         )) && (
@@ -341,7 +378,7 @@ export default function Actions({
           </button>
         </div>
       )}
-     
+
       {/* Approval/ Rejection  */}
       {process === "verdict" &&
         permissions.some((permission) =>
@@ -478,9 +515,17 @@ export default function Actions({
           setRouteTo={setRouteTo}
         />
       )}
-      {(approveLoading || rejectLoading || investmentApproveLoading) && (
+      {(approveLoading ||
+        rejectLoading ||
+        investmentApproveLoading ||
+        investmentRejectLoading) && (
         <Loader
-          isOpen={approveLoading || rejectLoading || investmentApproveLoading}
+          isOpen={
+            approveLoading ||
+            rejectLoading ||
+            investmentApproveLoading ||
+            investmentRejectLoading
+          }
           text={"Submitting"}
         />
       )}
