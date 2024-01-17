@@ -14,7 +14,11 @@ import {
 } from "react-router-dom";
 import { Confirm, Failed, Prompt, Success } from "../modals";
 import { AppContext } from "@app/utils";
-import { useApproveProductMutation, useRejectProductMutation } from "@app/api";
+import {
+  useApproveProductMutation,
+  useRejectProductMutation,
+  useApproveInvestmentMutation,
+} from "@app/api";
 import { Messages } from "@app/constants/enums";
 import Rejection from "../modals/Rejection";
 import handleVerdict from "./handleVerdict";
@@ -22,6 +26,8 @@ import handleVerdict from "./handleVerdict";
 export const handlePrint = () => {
   window.print();
 };
+
+
 const createProcesses = [
   "create",
   "modify",
@@ -36,13 +42,19 @@ const validPermissions = [
 export const handleConfirm = ({
   action,
   id,
+  type,
+  approveInvestment,
   approveProduct,
   setRejection,
   navigate,
   filter,
 }) => {
   if (action === "approve") {
-    approveProduct({ id });
+    if (type.toLowerCase() === "individual") {
+      approveInvestment({ id });
+    } else {
+      approveProduct({ id });
+    }
   }
   if (action === "reject") {
     setRejection(true);
@@ -68,6 +80,9 @@ export const handleMessages = ({
   setFailed,
   approveError,
   rejectError,
+  investmentApproveSuccess,
+  investmentApproveIsError,
+  investmentApproveError,
 }) => {
   if (rejectSuccess) {
     setSuccessText(Messages.PRODUCT_CREATE_REJECTED);
@@ -75,6 +90,10 @@ export const handleMessages = ({
   }
   if (approveSuccess) {
     setSuccessText(Messages.PRODUCT_CREATE_APPROVED);
+    setIsSuccessOpen(true);
+  }
+  if (investmentApproveSuccess) {
+    setSuccessText(Messages.BOOKING_CREATE_APPROVED);
     setIsSuccessOpen(true);
   }
   if (rejectIsError) {
@@ -92,6 +111,13 @@ export const handleMessages = ({
     );
     setFailed(true);
   }
+  if (investmentApproveIsError) {
+    setFailedText(Messages.BOOKING_APPROVE_FAILED);
+    setFailedSubtext(
+      investmentApproveError?.message?.message || investmentApproveError?.message?.Message
+    );
+    setFailed(true);
+  }
 };
 
 export default function Actions({
@@ -106,7 +132,7 @@ export default function Actions({
   const location = useLocation();
   const sub_type = searchParams.get("sub_type");
   const filter = searchParams.get("filter");
-  const { id, process } = useParams() || {};
+  const { id, process, type } = useParams() || {};
   const [action, setAction] = useState("");
   const [confirmText, setConfirmText] = useState("");
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -130,6 +156,16 @@ export default function Actions({
   ] = useApproveProductMutation();
 
   const [
+    approveInvestment,
+    {
+      isSuccess: investmentApproveSuccess,
+      isError: investmentApproveIsError,
+      error: investmentApproveError,
+      isLoading: investmentApproveLoading,
+    },
+  ] = useApproveInvestmentMutation();
+
+  const [
     rejectProduct,
     {
       isSuccess: rejectSuccess,
@@ -142,6 +178,7 @@ export default function Actions({
   const initiateVerdict = (value) => {
     handleVerdict({
       value,
+      type,
       sub_type,
       process,
       setConfirmText,
@@ -167,6 +204,9 @@ export default function Actions({
       setFailed,
       approveError,
       rejectError,
+      investmentApproveSuccess,
+      investmentApproveIsError,
+      investmentApproveError,
     });
   }, [
     rejectSuccess,
@@ -174,6 +214,8 @@ export default function Actions({
     rejectError,
     approveSuccess,
     approveIsError,
+    investmentApproveSuccess,
+    investmentApproveIsError,
   ]);
   const factoryDashboard = `/product-factory/investment?category=requests${
     filter ? "&filter=" + filter : ""
@@ -397,6 +439,8 @@ export default function Actions({
           handleConfirm({
             action,
             id,
+            type,
+            approveInvestment,
             approveProduct,
             setRejection,
             navigate,
@@ -434,8 +478,8 @@ export default function Actions({
           setRouteTo={setRouteTo}
         />
       )}
-      {(approveLoading || rejectLoading) && (
-        <Loader isOpen={approveLoading || rejectLoading} text={"Submitting"} />
+      {(approveLoading || rejectLoading || investmentApproveLoading) && (
+        <Loader isOpen={approveLoading || rejectLoading || investmentApproveLoading} text={"Submitting"} />
       )}
     </div>
   );

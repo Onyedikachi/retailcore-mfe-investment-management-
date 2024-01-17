@@ -339,7 +339,7 @@ export default function TableComponent<TableProps>({
   // @ts-ignore
   const handleAction = (action, items) => {
     // console.log(JSON.stringify({ action, items }));
-
+    // return;
     actionHandler({
       specificCategory,
       action,
