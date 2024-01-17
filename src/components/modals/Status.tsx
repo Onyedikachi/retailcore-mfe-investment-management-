@@ -109,14 +109,14 @@ export function Success({
         <div className="flex justify-between items-center gap-x-[6px] w-full">
           <Button
             onClick={() =>
-              handleNavigations(
+              navigate(handleNavigations(
                 location,
                 process,
                 role,
                 specificCategory,
                 closeModal,
                 action
-              )
+              ))
             }
             type="button"
             data-testid="close-btn"

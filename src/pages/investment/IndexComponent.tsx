@@ -61,8 +61,9 @@ export const handleRequestStatus = ({
   setHasMore,
   request,
   isRequestSuccess,
+  typeOptions
 
-}) => {
+}: any) => {
   if (query.page === 1) {
     setRequestData([]);
   }
@@ -75,7 +76,7 @@ export const handleRequestStatus = ({
           requestStatus: StatusFilterOptions.find(
             (n) => n.value === i.requestStatus
           )?.name,
-          requestType: TypeFilterOptions.find((n) => n.value === i.requestType)
+          requestType: typeOptions?.find((n) => n.value === i.requestType)
             ?.name,
         }))
       ),
@@ -320,6 +321,7 @@ export default function IndexComponent() {
         setHasMore,
         isRequestSuccess,
         request,
+        typeOptions:TypeFilterOptions
       }),
     [request, isRequestSuccess, isRequestError, query]
   );

@@ -101,7 +101,7 @@ export default function IndexComponent() {
       principal: null,
       tenor: null,
       investmentPurpose: "",
-      investmentProductId: "",
+      investmentProductId: null,
       investmentProductName: "",
       tenorMin: null,
       tenorMax: null,
