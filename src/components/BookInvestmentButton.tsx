@@ -5,15 +5,18 @@ import { useNavigate } from "react-router-dom";
 
 type BookInvestmentButton = {
   children?: any;
+  disabled?: boolean;
 };
 
 export default function BookInvestmentButton({
   children,
+  disabled,
 }: BookInvestmentButton) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
   const goToUrl = (url) => {
+    if (disabled) return;
     navigate(url);
 
     setIsOpen(false);
@@ -34,6 +37,7 @@ export default function BookInvestmentButton({
                 {BookInvestmentOptions?.map((item: IBookInvestmentOptions) => (
                   <li className="group" key={item.title}>
                     <button
+                      disabled={disabled}
                       onClick={() => {
                         goToUrl(item.url);
                       }}

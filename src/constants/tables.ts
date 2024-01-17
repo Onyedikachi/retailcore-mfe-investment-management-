@@ -355,21 +355,25 @@ export const IndividualDropDownOptions: any = {
       id: "",
       text: "View",
       icon: "FaEye",
+      key: "view"
     },
     {
       id: "",
       text: "Part Liquidate",
       icon: "FaBan",
+      key: "part_liquidate"
     },
     {
       id: "",
       text: "Early Liquidate",
       icon: "FaRegTimesCircle",
+      key: "early_liquidate"
     },
     {
       id: "",
       text: "Restructure",
       icon: "BiSolidReceipt",
+      key: "restructure"
     },
   ],
   liquidated: [
@@ -377,6 +381,7 @@ export const IndividualDropDownOptions: any = {
       id: "",
       text: "View",
       icon: "FaEye",
+      key: "view"
     },
   ],
 };

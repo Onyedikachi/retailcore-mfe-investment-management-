@@ -213,7 +213,7 @@ export default function ProductInfoInvestmentCalc({
                       {
                         <div className="font-normal">
                           <div className="flex gap-x-[2px]">
-                            <span className="">Penalty:{" "}</span>
+                            <span className="">Penalty: </span>
                             <span>
                               {liquidities[
                                 productDetail?.liquidation
@@ -304,7 +304,7 @@ export default function ProductInfoInvestmentCalc({
                       {
                         <div className="font-normal">
                           <div className="flex gap-x-[2px]">
-                            <span className="">Penalty:{" "}</span>
+                            <span className="">Penalty: </span>
                             <span>
                               {liquidities[
                                 productDetail?.liquidation
@@ -366,6 +366,12 @@ export default function ProductInfoInvestmentCalc({
                     </span>
                   </div>
                 )}
+                {!productDetail?.liquidation?.early_AllowEarlyLiquidation &&
+                  !productDetail?.liquidation?.part_AllowEarlyLiquidation && (
+                    <span className="text-sm text-[#a3a3a3">
+                      Not applicable
+                    </span>
+                  )}
               </div>
             ),
             isOpen: true,

@@ -78,7 +78,7 @@ export default function FacilityDetails({
   setProductDetail,
   detailLoading,
 }: FacilityDetailsProps) {
-  console.log("🚀 ~ formData:", formData)
+  console.log("🚀 ~ formData:", formData);
   const { currencies } = useContext(AppContext);
   const {
     register,
@@ -102,6 +102,7 @@ export default function FacilityDetails({
   const [balanceError, setBalanceError] = useState(false);
   const [showError, setShowError] = useState(false);
   const [validDoc, setValidDoc] = useState(null);
+  const [capMethodOptions,setCapMethodOptions] = useState(CapitalizationOptions)
   const values = getValues();
 
   const [
@@ -276,14 +277,17 @@ export default function FacilityDetails({
     }
 
     const validateDocs = checkDocuments(
-      productDetail?.customerEligibility.requireDocument.map(i=>i.name),
+      productDetail?.customerEligibility.requireDocument.map((i) => i.name),
       formData?.customerProfile
     );
-    
-    if (validateDocs.hasAllDocuments) {
-      setValidDoc(true);
-    } else {
-      setValidDoc(false);
+
+    setValidDoc(validateDocs?.hasAllDocuments);
+
+    // Hanle booking options  
+    if(productDetail?.liquidation?.part_AllowPartLiquidation || productDetail?.liquidation?.early_AllowPartLiquidation){
+      setCapMethodOptions(CapitalizationOptions.filter(i=> i.value !== 0))
+    }else{
+      setCapMethodOptions(CapitalizationOptions)
     }
   }, [formData.customerBookingInfoModel?.balance, productDetail]);
 
@@ -335,7 +339,7 @@ export default function FacilityDetails({
                 />
               </div>
             </div>
-            {validDoc === false && (
+            {values?.investmentProductId && !validDoc && !detailLoading && (
               <p className="text-red-600 text-sm mt-[2px]">
                 Customer's documentation does not meet requirements for this
                 products
@@ -358,7 +362,6 @@ export default function FacilityDetails({
                   <div className=" ">
                     <span className="text-base font-normal text-[#636363] capitalize">
                       {
-                     
                         ProductTypes.find(
                           (n) => n.id === productDetail?.productType
                         )?.name
@@ -584,7 +587,7 @@ export default function FacilityDetails({
                       }
                       placeholder="Select currency"
                       clearErrors={clearErrors}
-                      options={CapitalizationOptions}
+                      options={capMethodOptions}
                       trigger={trigger}
                     />
                   </div>

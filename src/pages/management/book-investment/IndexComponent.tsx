@@ -257,7 +257,7 @@ export default function IndexComponent() {
       rate: formData?.facilityDetailsModel?.interestRate,
       tenor: formData?.facilityDetailsModel?.tenor,
       tenorUnit: productDetail?.pricingConfiguration?.applicableTenorMaxUnit,
-      method: formData?.facilityDetailsModel?.capitalizationMethod,
+      method: productDetail?.pricingConfiguration?.interestComputationMethod,
     });
   };
 

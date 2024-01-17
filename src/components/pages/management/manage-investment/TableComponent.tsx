@@ -50,10 +50,7 @@ export const handleDropdown = (
   locked = false,
   permissions: string[] = []
 ) => {
-  if (locked)
-    return IndividualDropDownOptions[setOptionsByStatus(status)].filter(
-      (i: any) => i.text.toLowerCase() === "view"
-    );
+
   if (!status) return [];
   if (isChecker) {
     return IndividualDropDownOptions[setOptionsByStatus(status)].filter(
@@ -61,15 +58,15 @@ export const handleDropdown = (
     );
   } else {
     let options = IndividualDropDownOptions[setOptionsByStatus(status)];
-    if (!permissions?.includes("CREATE_PRODUCT")) {
+    if (!permissions?.includes("LIQUIDATE_INVESTMENT")) {
       options = options?.filter(
         (i: any) =>
-          i.text.toLowerCase() !== "deactivate" &&
-          i.text.toLowerCase() !== "activate"
+          i.text.toLowerCase() !== "part liquidate" &&
+          i.text.toLowerCase() !== "early liquidate"
       );
     }
-    if (!permissions?.includes("CREATE_PRODUCT")) {
-      options = options?.filter((i: any) => i.text.toLowerCase() !== "modify");
+    if (!permissions?.includes("BOOK_INVESTMENT")) {
+      options = options?.filter((i: any) => i.text.toLowerCase() !== "restructure");
     }
     return options;
   }
@@ -275,11 +272,11 @@ export default function TableComponent({
   ] = useGetPostInvestmentRequestsMutation();
 
   const { data: initData, isSuccess: initSuccess } =
-    useGetUsersPermissionsQuery({ permissions: ["CREATE_INVESTMENT_PRODUCT"] });
+    useGetUsersPermissionsQuery({ permissions: ["BOOK_INVESTMENT"] });
   const { data: reviewData, isSuccess: reviewSuccess } =
     useGetUsersPermissionsQuery({
       permissions: [
-        "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS",
+        "AUTHORIZE_INVESTMENT_MANAGEMENT_REQUESTS",
       ],
     });
 
