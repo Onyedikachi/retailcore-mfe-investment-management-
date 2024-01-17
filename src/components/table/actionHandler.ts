@@ -139,6 +139,12 @@ export const actionHandler = ({
       ? setDetailOpen(true)
       : category === StatusCategoryType.Investments
       ? setIndividualDetailOpen(true)
+      : specificCategory === SpecificCategory.individual
+      ? navigate(
+          `/product-factory/investment/management/verdict/individual?id=${items?.id}?stage=summary&filter=${
+            selected.value
+          }`
+        )
       : navigate(
           `/product-factory/investment/${encodeURIComponent(
             "term deposit"
