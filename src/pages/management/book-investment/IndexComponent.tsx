@@ -96,7 +96,7 @@ export default function IndexComponent() {
     
     },
     facilityDetailsModel: {
-      capitalizationMethod: 0,
+      capitalizationMethod: 2,
       interestRate: null,
       principal: null,
       tenor: null,
