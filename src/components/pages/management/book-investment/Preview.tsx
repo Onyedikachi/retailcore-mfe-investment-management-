@@ -105,7 +105,7 @@ export const submitForm = (
       ...formData,
       isDraft: false,
       id,
-      recentlyUpdatedMeta: JSON.stringify(previousData),
+      recentlyUpdatedMeta: previousData ? JSON.stringify(previousData) : null,
     });
   }
   if (process === "withdraw_modify" || process === "continue") {
@@ -113,7 +113,7 @@ export const submitForm = (
       ...formData,
       isDraft: false,
       id,
-      recentlyUpdatedMeta: JSON.stringify(previousData),
+      recentlyUpdatedMeta: previousData ? JSON.stringify(previousData) : null,
     });
   }
 

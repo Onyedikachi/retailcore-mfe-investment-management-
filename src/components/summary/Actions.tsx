@@ -27,7 +27,6 @@ export const handlePrint = () => {
   window.print();
 };
 
-
 const createProcesses = [
   "create",
   "modify",
@@ -114,7 +113,8 @@ export const handleMessages = ({
   if (investmentApproveIsError) {
     setFailedText(Messages.BOOKING_APPROVE_FAILED);
     setFailedSubtext(
-      investmentApproveError?.message?.message || investmentApproveError?.message?.Message
+      investmentApproveError?.message?.message ||
+        investmentApproveError?.message?.Message
     );
     setFailed(true);
   }
@@ -270,8 +270,7 @@ export default function Actions({
         </div>
       )}
       {/* Preview  */}
-      {(process === "preview" ||
-        !createProcesses.includes(process) ||
+      {((process !== "verdict" && !createProcesses.includes(process)) ||
         !permissions.some((permission) =>
           validPermissions.includes(permission)
         )) && (
@@ -479,7 +478,10 @@ export default function Actions({
         />
       )}
       {(approveLoading || rejectLoading || investmentApproveLoading) && (
-        <Loader isOpen={approveLoading || rejectLoading || investmentApproveLoading} text={"Submitting"} />
+        <Loader
+          isOpen={approveLoading || rejectLoading || investmentApproveLoading}
+          text={"Submitting"}
+        />
       )}
     </div>
   );

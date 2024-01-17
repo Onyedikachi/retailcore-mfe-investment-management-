@@ -30,7 +30,7 @@ export const confirmationHandler = ({
   if (action.toLowerCase() === Actions.ACTIVATE) {
     activateProduct({
       id: detail?.id,
-      recentlyUpdatedMeta: JSON.stringify(previousData.current),
+      recentlyUpdatedMeta: previousData.current?JSON.stringify(previousData.current):null,
     });
   }
   if (action.toLowerCase() === Actions.MODIFY) {
