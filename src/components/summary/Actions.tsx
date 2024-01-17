@@ -7,6 +7,7 @@ import { IoArrowUndo } from "react-icons/io5";
 import ShareButton from "../ShareButton";
 import {
   Link,
+  useLocation,
   useNavigate,
   useParams,
   useSearchParams,
@@ -26,6 +27,18 @@ export const handlePrint = () => {
   window.print();
 };
 
+
+const createProcesses = [
+  "create",
+  "modify",
+  "continue",
+  "withdraw_modify",
+  "clone",
+];
+const validPermissions = [
+  "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS",
+  "AUTHORIZE_INVESTMENT_MANAGEMENT_REQUESTS",
+];
 export const handleConfirm = ({
   action,
   id,
@@ -116,7 +129,7 @@ export default function Actions({
   const { role, permissions } = useContext(AppContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-
+  const location = useLocation();
   const sub_type = searchParams.get("sub_type");
   const filter = searchParams.get("filter");
   const { id, process, type } = useParams() || {};
@@ -204,17 +217,24 @@ export default function Actions({
     investmentApproveSuccess,
     investmentApproveIsError,
   ]);
+  const factoryDashboard = `/product-factory/investment?category=requests${
+    filter ? "&filter=" + filter : ""
+  }`;
+  const individualDashboard = `/product-factory/investment/management/individual?category=requests${
+    filter ? "&filter=" + filter : ""
+  }`;
+
+  const handleNavigation = () => {
+    if (location.pathname.includes("management")) return individualDashboard;
+    if (!location.pathname.includes("management")) return factoryDashboard;
+  };
   return (
     <div
       data-testid="actions-div"
       className=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-[60px] py-[40px]  "
     >
       {/* Submission  */}
-      {(process === "create" ||
-        process === "modify" ||
-        process === "continue" ||
-        process === "withdraw_modify" ||
-        process === "clone") && (
+      {createProcesses.includes(process) && (
         <div className=" flex  gap-6">
           <button
             onClick={handleCancel}
@@ -250,7 +270,11 @@ export default function Actions({
         </div>
       )}
       {/* Preview  */}
-      {process == "preview" && (
+      {(process === "preview" ||
+        !createProcesses.includes(process) ||
+        !permissions.some((permission) =>
+          validPermissions.includes(permission)
+        )) && (
         <div className=" flex  gap-x-6 justify-end">
           <Button
             data-testid="print"
@@ -281,11 +305,7 @@ export default function Actions({
             url={window.location.href}
           />
 
-          <Link
-            to={`/product-factory/investment?category=requests${
-              filter ? "&filter=" + filter : ""
-            }`}
-          >
+          <Link to={handleNavigation()}>
             <Button
               data-testid="gotodashboard"
               className="cursor-pointer max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"
@@ -324,10 +344,9 @@ export default function Actions({
       )}
       {/* Approval/ Rejection  */}
       {process === "verdict" &&
-        (permissions.includes(
-          "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
-        ) ||
-          permissions.includes("AUTHORIZE_INVESTMENT_MANAGEMENT_REQUESTS")) && (
+        permissions.some((permission) =>
+          validPermissions.includes(permission)
+        ) && (
           <div className="flex  gap-6">
             <Button
               onClick={() => initiateVerdict("cancel")}
