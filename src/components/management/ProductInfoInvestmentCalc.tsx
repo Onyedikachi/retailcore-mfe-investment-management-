@@ -212,7 +212,7 @@ export default function ProductInfoInvestmentCalc({
                       )}
                       {
                         <div className="font-normal">
-                          <div className="flex">
+                          <div className="flex gap-x-[2px]">
                             <span className="">Penalty:{" "}</span>
                             <span>
                               {liquidities[
@@ -303,7 +303,7 @@ export default function ProductInfoInvestmentCalc({
                       )}
                       {
                         <div className="font-normal">
-                          <div className="flex">
+                          <div className="flex gap-x-[2px]">
                             <span className="">Penalty:{" "}</span>
                             <span>
                               {liquidities[

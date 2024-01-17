@@ -19,7 +19,7 @@ import { Failed } from "@app/components/modals";
 import { Messages } from "@app/constants/enums";
 import BottomBarLoader from "@app/components/BottomBarLoader";
 export const onProceed = (data, proceed, formData, setFormData) => {
-  console.log("🚀 ~ onProceed ~ data:", data);
+
   setFormData({
     ...formData,
     customerBookingInfoModel: { ...formData.customerBookingInfoModel, ...data },
@@ -54,13 +54,12 @@ export default function CustomerInformation({
     getValues,
     trigger,
     formState: { errors, isValid },
-
   } = useForm({
     resolver: yupResolver(BookingCustomerInfoSchema),
     defaultValues: formData.customerBookingInfoModel,
     mode: "all",
   });
-  console.log("🚀 ~ errors:", errors)
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [query, setQuery] = useState("");
   const [customerData, setCustomerData] = useState(null);
@@ -73,7 +72,7 @@ export default function CustomerInformation({
     formData?.customerBookingInfoModel?.investmentformUrl
   );
   const values = getValues();
-  console.log("🚀 ~ values:", values)
+
   const {
     data,
     isSuccess,
@@ -126,10 +125,8 @@ export default function CustomerInformation({
           };
         })
       );
-      setFormData({
-        ...formData,
-        customerId: customerData?.customerId,
-      });
+     
+      
     }
   }, [isError, isSuccess, searchLoading, data]);
 
@@ -147,7 +144,7 @@ export default function CustomerInformation({
 
     setValue("accountStatus", accountData?.data?.status);
     setValue("balance", parseFloat(accountData?.data?.balance));
-    trigger("balance")
+    trigger("balance");
   }, [accountIsError, accountIsSuccess, isLoading, accountData]);
 
   useEffect(() => {
@@ -162,6 +159,11 @@ export default function CustomerInformation({
       });
 
       setCustomerData(foundObject);
+      setFormData({
+        ...formData,
+        customerId: foundObject?.customerId,
+        customerProfile: foundObject?.customer_profiles[0],
+      });
       setValue("customerId", foundObject?.customerId);
       setValue(
         "customerName",

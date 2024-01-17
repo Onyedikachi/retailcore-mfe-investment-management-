@@ -23,6 +23,7 @@ import { BorderlessSelect } from "@app/components/forms";
 import { AppContext } from "@app/utils";
 import { Failed } from "@app/components/modals";
 import { Messages } from "@app/constants/enums";
+import { checkDocuments } from "@app/utils/checkDocunent";
 export const onProceed = (data, proceed, formData, setFormData) => {
   setFormData({
     ...formData,
@@ -77,6 +78,7 @@ export default function FacilityDetails({
   setProductDetail,
   detailLoading,
 }: FacilityDetailsProps) {
+  console.log("🚀 ~ formData:", formData)
   const { currencies } = useContext(AppContext);
   const {
     register,
@@ -97,7 +99,9 @@ export default function FacilityDetails({
   const [productData, setProductData] = useState(null);
   const [productName, setProductName] = useState(null);
   const [productsData, setProductsData] = useState([]);
-  const [balanceError, setBalanceError] = useState(true);
+  const [balanceError, setBalanceError] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [validDoc, setValidDoc] = useState(null);
   const values = getValues();
 
   const [
@@ -193,8 +197,8 @@ export default function FacilityDetails({
       setProductDetail(null);
     }
 
-    setDisabled(!isValid);
-  }, [isValid, values]);
+    setDisabled(!isValid || balanceError || !validDoc);
+  }, [isValid, values, validDoc, balanceError]);
 
   useEffect(() => {
     if (productDetail?.pricingConfiguration?.interestRateRangeType === 0) {
@@ -262,11 +266,24 @@ export default function FacilityDetails({
   useEffect(() => {
     if (
       formData.customerBookingInfoModel?.balance <
-      productDetail?.pricingConfiguration?.applicablePrincipalMin || formData.customerBookingInfoModel?.balance === 0
+        productDetail?.pricingConfiguration?.applicablePrincipalMin ||
+      formData.customerBookingInfoModel?.balance === 0
     ) {
       setBalanceError(true);
+      setShowError(true);
     } else {
       setBalanceError(false);
+    }
+
+    const validateDocs = checkDocuments(
+      productDetail?.customerEligibility.requireDocument.map(i=>i.name),
+      formData?.customerProfile
+    );
+    
+    if (validateDocs.hasAllDocuments) {
+      setValidDoc(true);
+    } else {
+      setValidDoc(false);
     }
   }, [formData.customerBookingInfoModel?.balance, productDetail]);
 
@@ -318,6 +335,12 @@ export default function FacilityDetails({
                 />
               </div>
             </div>
+            {validDoc === false && (
+              <p className="text-red-600 text-sm mt-[2px]">
+                Customer's documentation does not meet requirements for this
+                products
+              </p>
+            )}
           </InputDivs>
 
           {detailLoading && (
@@ -335,9 +358,7 @@ export default function FacilityDetails({
                   <div className=" ">
                     <span className="text-base font-normal text-[#636363] capitalize">
                       {
-                        // CustomerCategory[
-                        //   productDetail?.customerEligibility?.customerCategory
-                        // ]
+                     
                         ProductTypes.find(
                           (n) => n.id === productDetail?.productType
                         )?.name
@@ -573,12 +594,12 @@ export default function FacilityDetails({
           )}
         </div>
       </div>
-      {balanceError && (
+      {showError && (
         <Failed
           text={Messages.UNABLE_TO_BOOK}
           subtext={Messages.INSUFFICIENT_BALANCE}
-          isOpen={balanceError}
-          setIsOpen={setBalanceError}
+          isOpen={showError}
+          setIsOpen={setShowError}
           canRetry
         />
       )}
