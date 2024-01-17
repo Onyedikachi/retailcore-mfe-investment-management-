@@ -493,6 +493,14 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    approveInvestment: builder.mutation<{ id: string }, { id: string }>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT_REQUEST}/approve/${data.id}`,
+          method: "put",
+        };
+      },
+    }),
   }),
 });
 
@@ -540,4 +548,5 @@ export const {
   useGetInvestmentDashboardStatsQuery,
   useGetFormDocumentsQuery,
   useGetFormTypeQuery,
+  useApproveInvestmentMutation,
 } = investmentApi;

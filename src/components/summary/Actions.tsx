@@ -13,7 +13,11 @@ import {
 } from "react-router-dom";
 import { Confirm, Failed, Prompt, Success } from "../modals";
 import { AppContext } from "@app/utils";
-import { useApproveProductMutation, useRejectProductMutation } from "@app/api";
+import {
+  useApproveProductMutation,
+  useRejectProductMutation,
+  useApproveInvestmentMutation,
+} from "@app/api";
 import { Messages } from "@app/constants/enums";
 import Rejection from "../modals/Rejection";
 import handleVerdict from "./handleVerdict";
@@ -22,22 +26,51 @@ export const handlePrint = () => {
   window.print();
 };
 
-export const handleConfirm = ({ action, id, approveProduct, setRejection, navigate, filter }) => {
+export const handleConfirm = ({
+  action,
+  id,
+  type,
+  approveInvestment,
+  approveProduct,
+  setRejection,
+  navigate,
+  filter,
+}) => {
   if (action === "approve") {
-    approveProduct({ id });
+    if (type.toLowerCase() === "individual") {
+      approveInvestment({ id });
+    } else {
+      approveProduct({ id });
+    }
   }
   if (action === "reject") {
     setRejection(true);
   }
   if (action === "cancel") {
     navigate(
-      `/product-factory/investment?category=requests${filter ? "&filter=" + filter : ""
+      `/product-factory/investment?category=requests${
+        filter ? "&filter=" + filter : ""
       }`
     );
   }
 };
 
-export const handleMessages = ({rejectSuccess, approveSuccess, rejectIsError, approveIsError, setSuccessText, setIsSuccessOpen, setFailedText, setFailedSubtext, setFailed, approveError, rejectError}) => {
+export const handleMessages = ({
+  rejectSuccess,
+  approveSuccess,
+  rejectIsError,
+  approveIsError,
+  setSuccessText,
+  setIsSuccessOpen,
+  setFailedText,
+  setFailedSubtext,
+  setFailed,
+  approveError,
+  rejectError,
+  investmentApproveSuccess,
+  investmentApproveIsError,
+  investmentApproveError,
+}) => {
   if (rejectSuccess) {
     setSuccessText(Messages.PRODUCT_CREATE_REJECTED);
     setIsSuccessOpen(true);
@@ -46,18 +79,33 @@ export const handleMessages = ({rejectSuccess, approveSuccess, rejectIsError, ap
     setSuccessText(Messages.PRODUCT_CREATE_APPROVED);
     setIsSuccessOpen(true);
   }
+  if (investmentApproveSuccess) {
+    setSuccessText(Messages.BOOKING_CREATE_APPROVED);
+    setIsSuccessOpen(true);
+  }
   if (rejectIsError) {
     setFailedText(Messages.PRODUCT_REJECT_FAILED);
-    setFailedSubtext(rejectError?.message?.message || rejectError?.message?.Message);
+    setFailedSubtext(
+      rejectError?.message?.message || rejectError?.message?.Message
+    );
     setFailed(true);
   }
 
   if (approveIsError) {
     setFailedText(Messages.PRODUCT_APPROVE_FAILED);
-    setFailedSubtext(approveError?.message?.message || approveError?.message?.Message);
+    setFailedSubtext(
+      approveError?.message?.message || approveError?.message?.Message
+    );
     setFailed(true);
   }
-}
+  if (investmentApproveIsError) {
+    setFailedText(Messages.BOOKING_APPROVE_FAILED);
+    setFailedSubtext(
+      investmentApproveError?.message?.message || investmentApproveError?.message?.Message
+    );
+    setFailed(true);
+  }
+};
 
 export default function Actions({
   handleSubmit,
@@ -71,7 +119,7 @@ export default function Actions({
 
   const sub_type = searchParams.get("sub_type");
   const filter = searchParams.get("filter");
-  const { id, process } = useParams() || {};
+  const { id, process, type } = useParams() || {};
   const [action, setAction] = useState("");
   const [confirmText, setConfirmText] = useState("");
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -95,6 +143,16 @@ export default function Actions({
   ] = useApproveProductMutation();
 
   const [
+    approveInvestment,
+    {
+      isSuccess: investmentApproveSuccess,
+      isError: investmentApproveIsError,
+      error: investmentApproveError,
+      isLoading: investmentApproveLoading,
+    },
+  ] = useApproveInvestmentMutation();
+
+  const [
     rejectProduct,
     {
       isSuccess: rejectSuccess,
@@ -105,27 +163,58 @@ export default function Actions({
   ] = useRejectProductMutation();
 
   const initiateVerdict = (value) => {
-    handleVerdict({ value, sub_type, process, setConfirmText, setAction, setIsConfirmOpen })
+    handleVerdict({
+      value,
+      type,
+      sub_type,
+      process,
+      setConfirmText,
+      setAction,
+      setIsConfirmOpen,
+    });
   };
-
 
   const handleRejection = () => {
     setRejection(false);
     rejectProduct({ reason, id, routeTo });
   };
   useEffect(() => {
-    handleMessages({rejectSuccess, approveSuccess, rejectIsError, approveIsError, setSuccessText, setIsSuccessOpen, setFailedText, setFailedSubtext, setFailed, approveError, rejectError})
+    handleMessages({
+      rejectSuccess,
+      approveSuccess,
+      rejectIsError,
+      approveIsError,
+      setSuccessText,
+      setIsSuccessOpen,
+      setFailedText,
+      setFailedSubtext,
+      setFailed,
+      approveError,
+      rejectError,
+      investmentApproveSuccess,
+      investmentApproveIsError,
+      investmentApproveError,
+    });
   }, [
     rejectSuccess,
     rejectIsError,
     rejectError,
     approveSuccess,
     approveIsError,
+    investmentApproveSuccess,
+    investmentApproveIsError,
   ]);
   return (
-    <div data-testid="actions-div" className=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-[60px] py-[40px]  ">
+    <div
+      data-testid="actions-div"
+      className=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-[60px] py-[40px]  "
+    >
       {/* Submission  */}
-      {(process === "create" || process === "modify" || process === "continue" || process === "withdraw_modify" || process === "clone") && (
+      {(process === "create" ||
+        process === "modify" ||
+        process === "continue" ||
+        process === "withdraw_modify" ||
+        process === "clone") && (
         <div className=" flex  gap-6">
           <button
             onClick={handleCancel}
@@ -193,8 +282,9 @@ export default function Actions({
           />
 
           <Link
-            to={`/product-factory/investment?category=requests${filter ? "&filter=" + filter : ""
-              }`}
+            to={`/product-factory/investment?category=requests${
+              filter ? "&filter=" + filter : ""
+            }`}
           >
             <Button
               data-testid="gotodashboard"
@@ -236,9 +326,8 @@ export default function Actions({
       {process === "verdict" &&
         (permissions.includes(
           "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
-        ) || permissions.includes(
-          "AUTHORIZE_INVESTMENT_MANAGEMENT_REQUESTS"
-        )) && (
+        ) ||
+          permissions.includes("AUTHORIZE_INVESTMENT_MANAGEMENT_REQUESTS")) && (
           <div className="flex  gap-6">
             <Button
               onClick={() => initiateVerdict("cancel")}
@@ -328,7 +417,16 @@ export default function Actions({
         setIsOpen={setIsConfirmOpen}
         onConfirm={() => {
           setIsConfirmOpen(false);
-          handleConfirm({ action, id, approveProduct, setRejection, navigate, filter });
+          handleConfirm({
+            action,
+            id,
+            type,
+            approveInvestment,
+            approveProduct,
+            setRejection,
+            navigate,
+            filter,
+          });
         }}
         onCancel={() => {
           setIsConfirmOpen(false);
@@ -361,8 +459,8 @@ export default function Actions({
           setRouteTo={setRouteTo}
         />
       )}
-      {(approveLoading || rejectLoading) && (
-        <Loader isOpen={approveLoading || rejectLoading} text={"Submitting"} />
+      {(approveLoading || rejectLoading || investmentApproveLoading) && (
+        <Loader isOpen={approveLoading || rejectLoading || investmentApproveLoading} text={"Submitting"} />
       )}
     </div>
   );
