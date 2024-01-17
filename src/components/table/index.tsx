@@ -120,7 +120,7 @@ export function handleUpdated(key, value, options) {
   if (!options || !value) return;
 
   const parseOptions = JSON.parse(options);
-  if (!parseOptions[key]) return;
+  if (!parseOptions || !parseOptions[key]) return;
 
   if (key === "state") {
     // const newState = ActiveFilterOptions.find(
