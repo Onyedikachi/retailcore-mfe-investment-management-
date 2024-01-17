@@ -123,7 +123,7 @@ export const actionHandler = ({
       ? setIndividualDetailOpen(true)
       : specificCategory === SpecificCategory.individual
       ? navigate(
-          `/product-factory/investment/management/preview/individual?id=${items?.id}`
+          `/product-factory/investment/management/${specificCategory}/process-summary/preview/${items.id}`
         )
       : navigate(
           `/product-factory/investment/${encodeURIComponent(
@@ -139,13 +139,17 @@ export const actionHandler = ({
       ? setDetailOpen(true)
       : category === StatusCategoryType.Investments
       ? setIndividualDetailOpen(true)
+      : specificCategory === SpecificCategory.individual
+      ? navigate(
+          `/product-factory/investment/management/${specificCategory}/process-summary/verdict/${items.id}`
+        )
       : navigate(
-          `/product-factory/investment/${encodeURIComponent(
-            "term deposit"
-          )}/process-summary/verdict/${items.id}?category=request&filter=${
-            selected.value
-          }`
-        );
+        `/product-factory/investment/${encodeURIComponent(
+          "term deposit"
+        )}/process-summary/verdict/${items.id}?category=request&filter=${
+          selected.value
+        }`
+      );
     return;
   }
 };

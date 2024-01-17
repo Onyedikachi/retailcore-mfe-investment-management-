@@ -27,7 +27,8 @@ const urls = {
   INVESTMENT_REQUEST: '/InvestmentRequest',
   INVESTMENT_STATS: '/Investment/stats',
   INVESTMENT_REQUEST_STATS: '/InvestmentRequest/stats',
-  INVESTMEENT_ACTIVITY_LOG: '/InvestmentRequest/activitylog',
+  INVESTMENT_ACTIVITY_LOG: '/Investment/activitylog',
+  INVESTMENT_REQUEST_ACTIVITY_LOG: '/InvestmentRequest/activitylog',
 
   INVESTMENT_CALC: "/investment/calc",
   INVESTMENT_DASHBOARD_STATS: '/Dashboard/investmentstats',

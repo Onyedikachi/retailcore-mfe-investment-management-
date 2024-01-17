@@ -21,6 +21,7 @@ import {
   TypeFilterOptions,
   SpecificCategory,
   InvestmentBookingRequestType,
+  IndividualTypeFilterOptions,
 } from "@app/constants";
 import { sortTabStatus } from "@app/utils/sortTabStatus";
 import { useSearchParams } from "react-router-dom";
@@ -311,6 +312,7 @@ export default function Individual() {
         setHasMore,
         request,
         isRequestSuccess,
+        typeOptions: IndividualTypeFilterOptions,
       }),
     [request, isRequestSuccess, isRequestError, query]
   );

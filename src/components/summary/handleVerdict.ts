@@ -1,9 +1,15 @@
 import { Prompts } from "@app/constants/enums";
 
-export default ({value, sub_type, process, setConfirmText, setAction, setIsConfirmOpen}) => {
+export default ({value, type = null, sub_type, process, setConfirmText, setAction, setIsConfirmOpen}) => {
     setAction(value);
+    
     if (value === "approve" && !sub_type) {
-      setConfirmText(Prompts.PRODUCT_CREATION_APPROVE);
+      if(type?.toLowerCase() === 'individual'){
+        setConfirmText(Prompts.BOOKING_CREATION_APPROVE);
+      }else {
+        setConfirmText(Prompts.PRODUCT_CREATION_APPROVE);
+      }
+      
     }
     if (value === "reject" && !sub_type) {
       setConfirmText(Prompts.PRODUCT_CREATION_REJECT);

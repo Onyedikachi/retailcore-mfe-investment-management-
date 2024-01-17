@@ -5,6 +5,9 @@ import { IGetProducts, ICreateProduct } from "./types/investmentApi.types";
 import urls from "../helpers/url_helpers";
 import { cleanObject } from "@app/utils/cleanObject";
 
+const formApi ="https://customer-management-forms-api.dev.bepeerless.co/v1"
+const customerApi = "https://customer-management-api.dev.bepeerless.co/v1"
+const productApi = "https://product-mgt-api.dev.bepeerless.co/v1"
 export const investmentApi: any = createApi({
   reducerPath: "investmentApi",
   baseQuery: axiosBaseQuery({ serviceKey: "investment" }),
@@ -39,7 +42,7 @@ export const investmentApi: any = createApi({
     getCharges: builder.query<any, any>({
       query: () => {
         return {
-          url: `https://product-mgt-api.dev.bepeerless.co/v1/charges/state?state=active`,
+          url: `${productApi}/charges/state?state=active`,
           method: "get",
         };
       },
@@ -47,7 +50,7 @@ export const investmentApi: any = createApi({
     getCustomerSearch: builder.query<any, any>({
       query: (params) => {
         return {
-          url: `https://customer-management-api.dev.bepeerless.co/v1/customer/search?search=${params}`,
+          url: `${customerApi}/customer/search?search=${params}`,
           method: "get",
         };
       },
@@ -55,7 +58,7 @@ export const investmentApi: any = createApi({
     getAccountBalance: builder.query<any, any>({
       query: (params) => {
         return {
-          url: `https://customer-management-api.dev.bepeerless.co/v1/accounts/${params}`,
+          url: `${customerApi}/accounts/${params}`,
           method: "get",
         };
       },
@@ -63,7 +66,23 @@ export const investmentApi: any = createApi({
     getCustomerProfile: builder.query<any, any>({
       query: (params) => {
         return {
-          url: `https://customer-management-api.dev.bepeerless.co/v1/customer/profile/${params}`,
+          url: `${customerApi}/customer/profile/${params}`,
+          method: "get",
+        };
+      },
+    }),
+    getFormType: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `${formApi}/form/customer/published/type/${params}`,
+          method: "get",
+        };
+      },
+    }),
+    getFormDocuments: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `${customerApi}/column-map/form-documents/${params}`,
           method: "get",
         };
       },
@@ -391,7 +410,7 @@ export const investmentApi: any = createApi({
     getInvestmentActivityLog: builder.query<any, any>({
       query: (params) => {
         return {
-          url: `${urls.INVESTMEENT_ACTIVITY_LOG}?${new URLSearchParams(
+          url: `${urls.INVESTMENT_ACTIVITY_LOG}?${new URLSearchParams(
             cleanObject(params)
           )}`,
           method: "get",
@@ -399,6 +418,18 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    getInvestmentRequestActivityLog: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `${urls.INVESTMENT_REQUEST_ACTIVITY_LOG}?${new URLSearchParams(
+            cleanObject(params)
+          )}`,
+          method: "get",
+          params: cleanObject(params),
+        };
+      },
+    }),
+    
     getInvestmentStats: builder.query<any, any>({
       query: (data) => {
         if (!data.filter_by) return;
@@ -462,6 +493,14 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    approveInvestment: builder.mutation<{ id: string }, { id: string }>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT_REQUEST}/approve/${data.id}`,
+          method: "put",
+        };
+      },
+    }),
   }),
 });
 
@@ -495,6 +534,7 @@ export const {
   useGetCustomerProfileQuery,
   useCreateInvestmentMutation,
   useGetInvestmentActivityLogQuery,
+  useGetInvestmentRequestActivityLogQuery,
   useGetPostInvestmentRequestsMutation,
   useGetPostInvestmentMutation,
   useGetInvestmentRequestStatsQuery,
@@ -506,4 +546,7 @@ export const {
   useModifyInvestmentMutation,
   useModifyInvestmentRequestMutation,
   useGetInvestmentDashboardStatsQuery,
+  useGetFormDocumentsQuery,
+  useGetFormTypeQuery,
+  useApproveInvestmentMutation,
 } = investmentApi;

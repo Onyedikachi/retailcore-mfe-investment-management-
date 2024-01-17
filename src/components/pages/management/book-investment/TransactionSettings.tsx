@@ -44,11 +44,11 @@ export const handleAccountForLiquidation = ({profileIsSuccess, profileData, form
 }
 
 export const onProceed = (data, proceed, formData, setFormData) => {
-  // console.log("🚀 ~ onProceed ~ data:", data);
-  // // setFormData({
-  // //   ...formData,
-  // //   transactionSettingModel: data,
-  // // });
+  console.log("🚀 ~ onProceed ~ data:", data);
+  setFormData({
+    ...formData,
+    transactionSettingModel: {...data},
+  });
   proceed();
 };
 
@@ -300,7 +300,7 @@ export default function TransactionSettings({
                       <SvgInfo />
                     </span>
                     <span className="font-normal text-[#747373]">
-                      [liquidText]{" "}
+                      {liquidText}{" "}
                       <span className="font-bold">
                         {" "}
                         {productDetail?.liquidation?.part_NoticePeriod}{" "}

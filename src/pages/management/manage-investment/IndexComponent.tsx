@@ -74,9 +74,9 @@ export default function IndexComponent() {
         <div className="flex gap-6 h-full px-[37px] py-[30px] bg-[#F7F7F7]">
           <div className="flex w-full bg-[#ffffff] rounded-md px-[24px] pt-[30px] pb-[49px] gap-3 ">
             <div className="border border-[#E5E9EB] rounded-lg py-6 px-3 min-w-[243px] flex flex-col gap-[26px]">
-              <span className="text-[#636363] text-base font-bold uppercase">
+              <h2 className="text-[#636363] text-base font-bold uppercase">
                 Investment PRODUCTS
-              </span>
+              </h2>
 
               <div>
                 {" "}

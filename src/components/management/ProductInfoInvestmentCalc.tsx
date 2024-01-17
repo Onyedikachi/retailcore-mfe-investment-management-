@@ -27,13 +27,11 @@ export const toggleTab = (val, setActive) => {
 export default function ProductInfoInvestmentCalc({
   productDetail,
   formData,
-  calcDetail
+  calcDetail,
 }) {
   const { currencies } = useContext(AppContext);
   const [productDetailMap, setProductDetailMap] = useState(null);
   const [active, setActive] = useState([]);
-
-
   
   useEffect(() => {
     setProductDetailMap([
@@ -185,97 +183,196 @@ export default function ProductInfoInvestmentCalc({
         isOpen: false,
       },
       {
-        name: "Early & Part Liquidation Configuration",
+        name: "Liquidation Configuration",
         data: [
           {
             name: "",
             text: (
               <div className="w-full text-sm font-normal text-[#636363]">
-                {productDetail?.liquidation?.part_AllowPartLiquidation ? (
-                  <span className="font-normal block">
-                    {productDetail?.liquidation
-                      ?.part_RequireNoticeBeforeLiquidation && (
-                      <span>
-                        <span>Require notice of</span>{" "}
-                        <span className="">
-                          {productDetail?.liquidation?.part_NoticePeriod}{" "}
-                          {
-                            Interval[
-                              productDetail?.liquidation?.part_NoticePeriodUnit
-                            ]
-                          }
-                        </span>{" "}
-                        <span>before liquidation</span>
-                      </span>
-                    )}
-                    {
-                      <div className="font-normal">
-                        <div className="flex gap-x-1">
-                          <span className="">Penalty:</span>{" "}
-                          <span>
-                            {liquidities[
-                              productDetail?.liquidation
-                                ?.part_LiquidationPenalty
-                            ] == "none" &&
-                              liquidities[
+                {productDetail?.liquidation?.part_AllowPartLiquidation && (
+                  <div className="mb-3">
+                    <span className="font-semibold block mb-1">
+                      Part Liquidation Configuration
+                    </span>
+                    <span className="font-normal block">
+                      {productDetail?.liquidation
+                        ?.part_RequireNoticeBeforeLiquidation && (
+                        <span>
+                          <span>Require notice of</span>{" "}
+                          <span className="">
+                            {productDetail?.liquidation?.part_NoticePeriod}{" "}
+                            {
+                              Interval[
+                                productDetail?.liquidation
+                                  ?.part_NoticePeriodUnit
+                              ]
+                            }
+                          </span>{" "}
+                          <span>before part liquidation.</span>
+                        </span>
+                      )}
+                      {
+                        <div className="font-normal">
+                          <div className="flex gap-x-[2px]">
+                            <span className="">Penalty: </span>
+                            <span>
+                              {liquidities[
                                 productDetail?.liquidation
                                   ?.part_LiquidationPenalty
-                              ]}
-                          </span>
-                          <span>
-                            {liquidities[
-                              productDetail?.liquidation
-                                ?.part_LiquidationPenalty
-                            ] == "ForfietAll" && "Forfeit all accrued interest"}
-                          </span>
-                          <span>
-                            {liquidities[
-                              productDetail?.liquidation
-                                ?.part_LiquidationPenalty
-                            ] == "ForfietPortion" &&
-                              `Forfeit a portion of accrued interest - ${productDetail?.liquidation?.part_LiquidationPenaltyPercentage}%`}
-                          </span>
-                          <span>
-                            {liquidities[
-                              productDetail?.liquidation
-                                ?.part_LiquidationPenalty
-                            ] == "RecalculateInterest" &&
-                              `Recalculate accrued interest of ${productDetail?.liquidation?.part_LiquidationPenaltyPercentage}%`}
-                          </span>
-                          <span className="flex flex-wrap gap-x-1 my-1">
-                            {liquidities[
-                              productDetail?.liquidation
-                                ?.part_LiquidationPenalty
-                            ] == "TakeCharge" && (
-                              <span>
-                                {" "}
+                              ] == "none" &&
+                                liquidities[
+                                  productDetail?.liquidation
+                                    ?.part_LiquidationPenalty
+                                ]}
+                            </span>
+                            <span>
+                              {liquidities[
+                                productDetail?.liquidation
+                                  ?.part_LiquidationPenalty
+                              ] == "ForfietAll" &&
+                                "Forfeit all accrued interest"}
+                            </span>
+                            <span>
+                              {liquidities[
+                                productDetail?.liquidation
+                                  ?.part_LiquidationPenalty
+                              ] == "ForfietPortion" &&
+                                `Forfeit ${productDetail?.liquidation?.part_LiquidationPenaltyPercentage}% of accrued interest.`}
+                            </span>
+                            <span>
+                              {liquidities[
+                                productDetail?.liquidation
+                                  ?.part_LiquidationPenalty
+                              ] == "RecalculateInterest" &&
+                                `Recalculate accrued interest of ${productDetail?.liquidation?.part_LiquidationPenaltyPercentage}%.`}
+                            </span>
+                            <span className="flex flex-wrap gap-x-1 my-1">
+                              {liquidities[
+                                productDetail?.liquidation
+                                  ?.part_LiquidationPenalty
+                              ] == "TakeCharge" && (
                                 <span>
                                   {" "}
-                                  Take a charge{" "}
-                                  <span className="flex flex-wrap">
-                                    {productDetail?.liquidation?.part_SpecificCharges?.map(
-                                      (charge) => (
-                                        <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
-                                          {" "}
-                                          {charge?.name} {charge?.amount}
-                                        </span>
-                                      )
-                                    )}
+                                  <span>
+                                    {" "}
+                                    Take a charge{" "}
+                                    <span className="flex flex-wrap">
+                                      {productDetail?.liquidation?.part_SpecificCharges?.map(
+                                        (charge) => (
+                                          <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
+                                            {" "}
+                                            {charge?.name} {charge?.amount}
+                                          </span>
+                                        )
+                                      )}
+                                    </span>
                                   </span>
                                 </span>
-                              </span>
-                            )}
-                          </span>
+                              )}
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                    }
-                    Maximum of{" "}
-                    {productDetail?.liquidation?.part_MaxPartLiquidation}% of
-                    principal
-                  </span>
-                ) : (
-                  "Not Applicable"
+                      }
+                      Part Liquidate Maximum of{" "}
+                      {productDetail?.liquidation?.part_MaxPartLiquidation}% of
+                      principal
+                    </span>
+                  </div>
                 )}
+
+                {productDetail?.liquidation?.early_AllowEarlyLiquidation && (
+                  <div>
+                    <span className="font-semibold block mb-1">
+                      Early Liquidation Configuration
+                    </span>
+                    <span className="font-normal block">
+                      {productDetail?.liquidation
+                        ?.early_RequireNoticeBeforeLiquidation && (
+                        <span>
+                          <span>Require notice of</span>{" "}
+                          <span className="">
+                            {productDetail?.liquidation?.early_NoticePeriod}{" "}
+                            {
+                              Interval[
+                                productDetail?.liquidation
+                                  ?.early_NoticePeriodUnit
+                              ]
+                            }
+                          </span>{" "}
+                          <span>before liquidation.</span>
+                        </span>
+                      )}
+                      {
+                        <div className="font-normal">
+                          <div className="flex gap-x-[2px]">
+                            <span className="">Penalty: </span>
+                            <span>
+                              {liquidities[
+                                productDetail?.liquidation
+                                  ?.early_LiquidationPenalty
+                              ] == "none" &&
+                                liquidities[
+                                  productDetail?.liquidation
+                                    ?.early_LiquidationPenalty
+                                ]}
+                            </span>
+                            <span>
+                              {liquidities[
+                                productDetail?.liquidation
+                                  ?.early_LiquidationPenalty
+                              ] == "ForfietAll" &&
+                                "Forfeit all accrued interest"}
+                            </span>
+                            <span>
+                              {liquidities[
+                                productDetail?.liquidation
+                                  ?.early_LiquidationPenalty
+                              ] == "ForfietPortion" &&
+                                `Forfeit ${productDetail?.liquidation?.early_LiquidationPenaltyPercentage}% of accrued interest.`}
+                            </span>
+                            <span>
+                              {liquidities[
+                                productDetail?.liquidation
+                                  ?.early_LiquidationPenalty
+                              ] == "RecalculateInterest" &&
+                                `Recalculate accrued interest of ${productDetail?.liquidation?.early_LiquidationPenaltyPercentage}%.`}
+                            </span>
+                            <span className="flex flex-wrap gap-x-1 my-1">
+                              {liquidities[
+                                productDetail?.liquidation
+                                  ?.early_LiquidationPenalty
+                              ] == "TakeCharge" && (
+                                <span>
+                                  {" "}
+                                  <span>
+                                    {" "}
+                                    Take a charge{" "}
+                                    <span className="flex flex-wrap">
+                                      {productDetail?.liquidation?.early_SpecificCharges?.map(
+                                        (charge) => (
+                                          <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
+                                            {" "}
+                                            {charge?.name} {charge?.amount}
+                                          </span>
+                                        )
+                                      )}
+                                    </span>
+                                  </span>
+                                </span>
+                              )}
+                            </span>
+                          </div>
+                        </div>
+                      }
+                    </span>
+                  </div>
+                )}
+                {!productDetail?.liquidation?.early_AllowEarlyLiquidation &&
+                  !productDetail?.liquidation?.part_AllowEarlyLiquidation && (
+                    <span className="text-sm text-[#a3a3a3">
+                      Not applicable
+                    </span>
+                  )}
               </div>
             ),
             isOpen: true,
@@ -290,7 +387,6 @@ export default function ProductInfoInvestmentCalc({
       },
     ]);
   }, [productDetail]);
-
 
   return (
     <div className="flex flex-col w-full gap-[17px]">
@@ -338,9 +434,9 @@ export default function ProductInfoInvestmentCalc({
                       {item?.data?.map((k) => (
                         <div key={k?.name}>
                           {k.isOpen && (
-                            <div className="flex gap-x-4  text-sm pl-5">
+                            <div className="flex flex-col  text-sm pl-5">
                               {k?.name && (
-                                <span className="capitalize w-[150px]">
+                                <span className="capitalize w-[150px] font-semibold">
                                   {k?.name}
                                 </span>
                               )}

@@ -411,7 +411,7 @@ export default function TableComponent({
         dropDownOptions={DropDownOptions}
         dropDownClick={handleDropClick}
         onChangeDate={onChangeDate}
-        type={category.toLowerCase()}
+        type={category?.toLowerCase()}
         noData={
           StatusCategoryType.Requests === category
             ? "No request available"

@@ -176,7 +176,7 @@ export default function BookingDetail({
                     (i) =>
                       i.value ===
                       detail?.facilityDetailsModel?.capitalizationMethod
-                  ).text
+                  )?.text
                 }
               </div>
             </div>
@@ -214,7 +214,7 @@ export default function BookingDetail({
                   ? RollOverOptions.find(
                       (i) =>
                         i.value ===
-                        detail?.transactionSettingModel?.capitalizationMethod
+                        detail?.transactionSettingModel?.rollOverOption
                     )?.text
                   : "No"}
               </div>
