@@ -28,7 +28,12 @@ export function Container({ children }) {
   );
 }
 
-export const handleSuccessMessage = (isSuccess, setSuccessText, setIsSuccessOpen, role) => {
+export const handleSuccessMessage = (
+  isSuccess,
+  setSuccessText,
+  setIsSuccessOpen,
+  role
+) => {
   setSuccessText(
     role === "superadmin"
       ? isSuccess
@@ -37,9 +42,17 @@ export const handleSuccessMessage = (isSuccess, setSuccessText, setIsSuccessOpen
       : Messages.ADMIN_PRODUCT_CREATE_SUCCESS
   );
   setIsSuccessOpen(true);
-}
+};
 
-export const handleErrorMessage = (error, modifyError, modifyRequestError, isError, setFailedText, setFailedSubtext, setFailed) => {
+export const handleErrorMessage = (
+  error,
+  modifyError,
+  modifyRequestError,
+  isError,
+  setFailedText,
+  setFailedSubtext,
+  setFailed
+) => {
   setFailedText(
     isError
       ? Messages.ADMIN_PRODUCT_CREATE_FAILED
@@ -47,14 +60,14 @@ export const handleErrorMessage = (error, modifyError, modifyRequestError, isErr
   );
   setFailedSubtext(
     error?.message?.message ||
-    modifyError?.message?.message ||
-    modifyRequestError?.message?.message ||
-    error?.message?.Message ||
-    modifyError?.message?.Message ||
-    modifyRequestError?.message?.Message
+      modifyError?.message?.message ||
+      modifyRequestError?.message?.message ||
+      error?.message?.Message ||
+      modifyError?.message?.Message ||
+      modifyRequestError?.message?.Message
   );
   setFailed(true);
-}
+};
 
 export const cancelProcess = (process, setConfirmText, setIsConfirmOpen) => {
   if (process === "create") {
@@ -68,15 +81,23 @@ export const cancelProcess = (process, setConfirmText, setIsConfirmOpen) => {
   }
   setIsConfirmOpen(true);
   return;
-}
+};
 
-export const submitForm = (formData, modifyProduct, modifyRequest, createProduct, process, id, previousData) => {
+export const submitForm = (
+  formData,
+  modifyProduct,
+  modifyRequest,
+  createProduct,
+  process,
+  id,
+  previousData
+) => {
   if (process === "modify") {
     modifyProduct({
       ...formData,
       isDraft: false,
       id,
-      recentlyUpdatedMeta: JSON.stringify(previousData),
+      recentlyUpdatedMeta: previousData ? JSON.stringify(previousData) : null,
     });
   }
   if (process === "withdraw_modify" || process === "continue") {
@@ -84,16 +105,16 @@ export const submitForm = (formData, modifyProduct, modifyRequest, createProduct
       ...formData,
       isDraft: false,
       id,
-      recentlyUpdatedMeta: JSON.stringify(previousData),
+      recentlyUpdatedMeta: previousData ? JSON.stringify(previousData) : null,
     });
   }
 
-  if (process === "create"  || process === "clone") {
+  if (process === "create" || process === "clone") {
     createProduct({ ...formData, isDraft: false });
   }
 
   // navigate(paths.INVESTMENT_DASHBOARD);
-}
+};
 
 export default function Preview({ formData, previousData = null }: any) {
   const { role } = useContext(AppContext);
@@ -112,7 +133,6 @@ export default function Preview({ formData, previousData = null }: any) {
   const [failedText, setFailedText] = useState("");
 
   const [state, setState] = useState();
-
 
   const { data: activityData, isLoading: activityIsLoading } =
     useGetProductActivityLogQuery(
@@ -143,20 +163,37 @@ export default function Preview({ formData, previousData = null }: any) {
     },
   ] = useModifyRequestMutation();
 
-
   const handleModify = () => {
     navigate(-1);
   };
-  const handleCancel = () => cancelProcess(process, setConfirmText, setIsConfirmOpen);
+  const handleCancel = () =>
+    cancelProcess(process, setConfirmText, setIsConfirmOpen);
 
-  const handleSubmit = () => submitForm(formData, modifyProduct, modifyRequest, createProduct, process, id, previousData);
+  const handleSubmit = () =>
+    submitForm(
+      formData,
+      modifyProduct,
+      modifyRequest,
+      createProduct,
+      process,
+      id,
+      previousData
+    );
   useEffect(() => {
     if (isSuccess || modifySuccess || modifyRequestSuccess) {
-      handleSuccessMessage(isSuccess, setSuccessText, setIsSuccessOpen, role)
+      handleSuccessMessage(isSuccess, setSuccessText, setIsSuccessOpen, role);
     }
 
     if (isError || modifyIsError || modifyRequestIsError) {
-      handleErrorMessage(error, modifyError, modifyRequestError, isError, setFailedText, setFailedSubtext, setFailed)
+      handleErrorMessage(
+        error,
+        modifyError,
+        modifyRequestError,
+        isError,
+        setFailedText,
+        setFailedSubtext,
+        setFailed
+      );
     }
   }, [
     isSuccess,
