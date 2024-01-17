@@ -2,7 +2,6 @@ import React from "react";
 import Icon from "@app/components/ui/Icon";
 import { DateSelect } from "@app/components/forms";
 
-import { useOverviewContext } from "@app/utils";
 
 type OverviewDivProps = {
   children: any;
@@ -14,7 +13,6 @@ export default function OverviewDiv({
   title,
   hasDateFilter,
 }: OverviewDivProps) {
-  const overviewState = useOverviewContext();
 
   return (
     <div className="rounded-[5px] bg-white px-5 py-6 shadow-custom h-full">

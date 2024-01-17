@@ -7,11 +7,13 @@ import { removeNullEmptyKeys } from "@app/utils";
 import { Switch } from "@headlessui/react";
 import { ProductSearch, Button, FormToolTip } from "@app/components";
 import { FormUpload, RedDot } from "../forms";
-interface Rejection {
+interface LiquidationProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   onConfirm: () => void;
-  detail: any
+  detail: any;
+  title: string;
+  type: string;
 }
 
 export function handleSuccess(userIsSuccess, setUsers, branchMembersData) {
@@ -27,12 +29,14 @@ export function handleSuccess(userIsSuccess, setUsers, branchMembersData) {
     );
   }
 }
-export default function PartLiquidation({
+export default function Liquidation({
   isOpen,
   setIsOpen,
   onConfirm,
-  detail
-}: Rejection): React.JSX.Element {
+  detail,
+  title,
+  type,
+}: LiquidationProps): React.JSX.Element {
   const [reason, setReason] = React.useState<any>("");
   const [users, setUsers] = React.useState([]);
   const [isTrue, setIsTrue] = React.useState(true);
@@ -55,7 +59,8 @@ export default function PartLiquidation({
   // React.useEffect(() => {
   //   handleSuccess(userIsSuccess, setUsers, branchMembersData);
   // }, [userIsSuccess]);
-
+  const text =
+    "The customer is required to provide a 10-day notice before requesting part liquidation, proceeding with this request implies that the customer has given ample notice as specified.";
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
@@ -64,7 +69,7 @@ export default function PartLiquidation({
       <div className="w-[700px] p-8 rounded-lg bg-white text-left shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]">
         <div className="flex justify-between items-center pb-4 mb-[42px] border-b border-[#CCCCCC]">
           <h3 className="text-[#747373] font-bold text-xl uppercase">
-            Part liquidation Request
+            {title}
           </h3>
           <button
             data-testid="cancel-btn"
@@ -80,51 +85,52 @@ export default function PartLiquidation({
             <span className="inline-flex mt-1">
               <FaInfoCircle className="text-[#D4A62F]" />
             </span>
-            <span className="text-sm text-[#747373]">
-              The customer is required to provide a 10-day notice before
-              requesting part liquidation, proceeding with this request implies
-              that the customer has given ample notice as specified.
-            </span>
+            <span className="text-sm text-[#747373]">{text}</span>
           </div>
 
           <div>
-            <div className="mb-10">
-              <label
-                htmlFor="reason"
-                className="flex items-center text-[#333333] mb-2 gap-x-1"
-              >
-                Amount to liquidate{" "}
-                <span className="flex">
-                  {" "}
-                  <RedDot />
-                </span>
-              </label>
-              <div className="relative flex items-center max-w-[642px] mb-[2px]">
-                <input
-                  id="productName"
-                  data-testid="product-name"
-                  className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB] `}
-                  placeholder="Enter value"
-                />
-                <div className="overflow-hidden absolute right-0 text-[10px] text-[#8F8F8F] flex items-center   rounded-full shadow-[0px_0px_1px_0px_rgba(26,32,36,0.32),0px_1px_2px_0px_rgba(91,104,113,0.32)] border-[#E5E9EB]">
-                  <span className="w-[55px] border-r border-[#E5E9EB] py-1 px-2">
+            {type === "part" && (
+              <div className="mb-10">
+                <label
+                  htmlFor="reason"
+                  className="flex items-center text-[#333333] mb-2 gap-x-1"
+                >
+                  Amount to liquidate{" "}
+                  <span className="flex">
                     {" "}
-                    NGN
+                    <RedDot />
                   </span>
+                </label>
+                <div className="relative flex items-center max-w-[642px] mb-[2px]">
+                  <input
+                    id="productName"
+                    data-testid="product-name"
+                    className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB] `}
+                    placeholder="Enter value"
+                  />
+                  <div className="overflow-hidden absolute right-0 text-[10px] text-[#8F8F8F] flex items-center   rounded-full shadow-[0px_0px_1px_0px_rgba(26,32,36,0.32),0px_1px_2px_0px_rgba(91,104,113,0.32)] border-[#E5E9EB]">
+                    <span className="w-[55px] border-r border-[#E5E9EB] py-1 px-2">
+                      {" "}
+                      NGN
+                    </span>
 
-                  <span className="w-[55px] py-1 px-2 bg-[#FFE9E9]"> Percent</span>
+                    <span className="w-[55px] py-1 px-2 bg-[#FFE9E9]">
+                      {" "}
+                      Percent
+                    </span>
+                  </div>
+                </div>
+                <div className="text-sm text-[#AAAAAA]">
+                  <span> Max: 50% of investment(NGN 500,000)</span>{" "}
                 </div>
               </div>
-              <div className="text-sm text-[#AAAAAA]">
-                <span> Max: 50% of investment(NGN 500,000)</span>{" "}
-              </div>
-            </div>
+            )}
             <div className="mb-10">
               <label
                 htmlFor="reason"
                 className="flex items-center text-[#333333] mb-2 gap-x-1"
               >
-                Provide justification for early liquidation{" "}
+                Provide justification for {type} liquidation{" "}
                 <span className="flex">
                   {" "}
                   <RedDot />
@@ -199,8 +205,8 @@ export default function PartLiquidation({
                 <span className="inline-flex mr-1">
                   <FaInfoCircle className="text-[#D4A62F]" />
                 </span>
-                <span className="text-sm text-[#747373] font-semibold">
-                  Part Liquidation Penalties
+                <span className="text-sm text-[#747373] font-semibold capitalize">
+                  {type} Liquidation Penalties
                 </span>
                 <span className="text-xs  font-semibold text-red-600">
                   [<span>Prototype only</span>:{" "}

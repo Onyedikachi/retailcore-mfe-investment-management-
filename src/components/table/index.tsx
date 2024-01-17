@@ -189,13 +189,12 @@ export const handleProductsDropdown = (
 
 export const TextCellContent = ({ value, isCurrencyValue = false }) => (
   <span className="relative">
-    <span className="relative">
-      {`${isCurrencyValue ? currencyFormatter(value, 'NGN', true, 2) : value}` || "-"}
+    <span className="relative max-w-[290px] whitespace-normal">
+      {`${isCurrencyValue ? currencyFormatter(value, 'NGN') : value}` || "-"}
     </span>
   </span>
 );
 
-currencyFormatter;
 
 export const ProductNameCellContent = ({ value }) => (
   <>
@@ -297,8 +296,8 @@ export default function TableComponent<TableProps>({
   const previousData = useRef({});
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
-  const [isEarlyLiquidation, setEarlyLiquidationOpen] = useState(false);
-  const [isPartLiquidation, setPartLiquidationOpen] = useState(false);
+  const [liquidationType, setLiquidationType] = useState(null);
+  const [isLiquidation, setLiquidationOpen] = useState(false);
   const [isDeactivationOpen, setIsDeactivationOpen] = useState(false);
   const [confirmText, setConfirmText] = useState("");
   const [subText, setSubText] = useState("");
@@ -324,8 +323,8 @@ export default function TableComponent<TableProps>({
       previousData,
       setConfirmText,
       setIsConfirmOpen,
-      setPartLiquidationOpen,
-      setEarlyLiquidationOpen,
+      setLiquidationOpen,
+      setLiquidationType,
       setDetailOpen,
       setIndividualDetailOpen,
       navigate,
@@ -492,7 +491,7 @@ export default function TableComponent<TableProps>({
                         className="text-base font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative"
                         key={idx.toString() + header.key}
                       >
-                        <div className="relative max-w-max truncate">
+                        <div className="relative">
                           {header.key !== "actions" ? (
                             <>
                               {typeof item[header.key] !== "object" &&
@@ -587,7 +586,7 @@ export default function TableComponent<TableProps>({
                                   ) : (
                                     <Button
                                       onClick={() => handleAction("view", item)}
-                                      className="px-[7px] py-[6px] text-sm font-normal bg-white shadow-[0px_2px_8px_0px_rgba(0,0,0,0.25)] text-[#636363]"
+                                      className="px-[7px] py-[6px] text-sm font-normal roounded bg-white shadow-[0px_2px_8px_0px_rgba(0,0,0,0.25)] text-[#636363]"
                                     >
                                       View
                                     </Button>
@@ -683,10 +682,9 @@ export default function TableComponent<TableProps>({
         setDetailOpen={setDetailOpen}
         setIndividualDetailOpen={setIndividualDetailOpen}
         handleAction={handleAction}
-        isEarlyLiquidation={isEarlyLiquidation}
-        isPartLiquidation={isPartLiquidation}
-        setPartLiquidationOpen={setPartLiquidationOpen}
-        setEarlyLiquidationOpen={setEarlyLiquidationOpen}
+        isLiquidation={isLiquidation}    
+        setLiquidationOpen={setLiquidationOpen}
+        liquidationType={liquidationType}
         handleRefresh={handleRefresh}
       />
     </div>

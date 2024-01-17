@@ -34,7 +34,7 @@ export const BookingDetailLayout = ({
   setIsOpen,
   isLoading,
   investmentData,
-  productData,
+  productInfo,
   permissions,
   open,
   setOpen,
@@ -56,7 +56,7 @@ export const BookingDetailLayout = ({
                   data-testid="product-name"
                   className="text-[#636363] font-bold text-2xl uppercase"
                 >
-                  {productData?.data?.productInfo?.productName || "-"}
+                  {productInfo?.data?.productInfo?.productName || "-"}
                 </h1>
                 <span
                   className={`${
@@ -65,7 +65,9 @@ export const BookingDetailLayout = ({
                       : "text-[#1E0A3C] bg-[#E5E5EA]"
                   } px-2 py-[1px] rounded font-medium capitalize`}
                 >
-                  {detail?.investmentBookingStatus === 1 ? "Active" : "Liquidated"}
+                  {detail?.investmentBookingStatus === 1
+                    ? "Active"
+                    : "Liquidated"}
                 </span>
               </div>
               <button
@@ -85,7 +87,7 @@ export const BookingDetailLayout = ({
                     </span>
                     <span className="font-normal block uppercase">
                       {/* {ProductTypes.find(
-                        (i) => i.id == productData?.data?.productType
+                        (i) => i.id == productInfo?.data?.productType
                       )?.name || "-"} */}
                       {`${investmentData?.data?.customerBookingInfoModel?.customerName}/ ${investmentData?.data?.customerBookingInfoModel?.customerAccount}`}
                     </span>
@@ -104,42 +106,30 @@ export const BookingDetailLayout = ({
                       {currencyFormatter(detail?.principal, 'NGN', true, 2) || "-"}
                     </span>
                   </div>
-                  {
-                    detail?.investmentBookingStatus === 1 && (
-                      <div>
+                  {detail?.investmentBookingStatus === 1 && (
+                    <div>
                       <span className="font-bold block mb-[15px]">
                         Current Value of Investment
                       </span>
-                      <span className="font-normal block">
-                        { '?? ' || "-"}{" "}
-                      </span>
+                      <span className="font-normal block">{"?? " || "-"} </span>
                     </div>
-                    )
-                  }
-              
+                  )}
 
-                  {
-                    detail?.investmentBookingStatus === 2 &&  (
-                      <div>
+                  {detail?.investmentBookingStatus === 2 && (
+                    <div>
                       <span className="font-bold block mb-[15px]">
                         Value at Liquidation
                       </span>
-                      <span className="font-normal block">
-                        {'?? ' || "-"}{" "}
-                      </span>
+                      <span className="font-normal block">{"?? " || "-"} </span>
                     </div>
-
-                    )
-                  }
-
-                
+                  )}
 
                   <div>
                     <span className="font-bold block mb-[15px]">
                       Value at Maturity
                     </span>
                     <span className="font-normal block">
-                      {currencyFormatter(detail?.maturityValue, 'NGN', true, 2) || "-"}{" "}
+                      {currencyFormatter(detail?.maturityValue, "NGN") || "-"}{" "}
                     </span>
                   </div>
 
@@ -148,13 +138,13 @@ export const BookingDetailLayout = ({
                       Product Life Cycle
                     </span>
                     <span className="font-normal block">
-                      {moment(productData?.data?.productInfo?.startDate).format(
+                      {moment(productInfo?.data?.productInfo?.startDate).format(
                         "DD MMM YYYY"
                       )}{" "}
                       -{" "}
-                      {productData?.data?.productInfo?.endDate
+                      {productInfo?.data?.productInfo?.endDate
                         ? moment(
-                            productData?.data?.productInfo?.endDate
+                            productInfo?.data?.productInfo?.endDate
                           ).format("DD MMM YYYY")
                         : "Unspecified"}
                     </span>
@@ -163,12 +153,10 @@ export const BookingDetailLayout = ({
                     <span className="font-bold block mb-[15px]">Currency</span>
                     <span className="font-normal block">
                       {/* {handleCurrencyName(
-                        productData?.data?.productInfo?.currency,
+                        productInfo?.data?.productInfo?.currency,
                         currencies
                       )}{" "} */}
-                      {
-                        productData?.data?.productInfo?.currency
-                      }
+                      {productInfo?.data?.productInfo?.currency}
                     </span>
                   </div>
                   <div>
@@ -176,27 +164,19 @@ export const BookingDetailLayout = ({
                       Investment Timeline
                     </span>
                     <span className="font-normal block">
-                      {
-                       detail?.maturityDate
-                      }{" "}
+                      {detail?.maturityDate}{" "}
                     </span>
                   </div>
                   <div>
                     <span className="font-bold block mb-[15px]">Tenor</span>
-                    <span className="font-normal block">
-                      {
-                        detail?.tenor  
-                      }{" "}
-                    </span>
+                    <span className="font-normal block">{detail?.tenor} </span>
                   </div>
                   <div>
                     <span className="font-bold block mb-[15px]">
                       Interest Rate Per Annum
                     </span>
                     <span className="font-normal block">
-                      {
-                        detail?.interestRate
-                      }{" "}
+                      {detail?.interestRate}{" "}
                     </span>
                   </div>
                 </div>
@@ -205,7 +185,7 @@ export const BookingDetailLayout = ({
                     {permissions?.includes("CREATE_INVESTMENT_PRODUCT") && (
                       <button
                         data-testid="modify"
-                        onClick={() => handleClick("modify", productData?.data)}
+                        onClick={() => handleClick("modify", productInfo?.data)}
                         className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3`}
                       >
                         <FaRegTimesCircle className="text-[#444]" /> Early
@@ -216,12 +196,12 @@ export const BookingDetailLayout = ({
                       "RE_OR_DEACTIVATE_INVESTMENT_PRODUCT"
                     ) && (
                       <>
-                        {productData?.data?.state === 1 ? (
+                        {productInfo?.data?.state === 1 ? (
                           <button
                             type="button"
                             data-testid="activate-btn"
                             onClick={() =>
-                              handleClick("activate", productData?.data)
+                              handleClick("activate", productInfo?.data)
                             }
                             className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
                           >
@@ -231,7 +211,7 @@ export const BookingDetailLayout = ({
                           <button
                             data-testid="deactivate-btn"
                             onClick={() =>
-                              handleClick("deactivate", productData?.data)
+                              handleClick("deactivate", productInfo?.data)
                             }
                             className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
                           >
@@ -272,7 +252,7 @@ export const BookingDetailLayout = ({
                     </span>
                     <span className="font-normal block uppercase">
                       {ProductTypes.find(
-                        (i) => i.id == productData?.data?.productType
+                        (i) => i.id == productInfo?.data?.productType
                       )?.name || "-"}
                     </span>
                   </div>
@@ -281,7 +261,7 @@ export const BookingDetailLayout = ({
                       Product Code
                     </span>
                     <span className="font-normal block uppercase">
-                      {productData?.data?.productCode || "-"}
+                      {productInfo?.data?.productCode || "-"}
                     </span>
                   </div>
                   <div>
@@ -289,7 +269,7 @@ export const BookingDetailLayout = ({
                       Product Slogan
                     </span>
                     <span className="font-normal block">
-                      {productData?.data?.productInfo?.slogan || "-"}
+                      {productInfo?.data?.productInfo?.slogan || "-"}
                     </span>
                   </div>
 
@@ -298,7 +278,7 @@ export const BookingDetailLayout = ({
                       Product Description
                     </span>
                     <span className="font-normal block">
-                      {productData?.data?.productInfo?.description || "-"}{" "}
+                      {productInfo?.data?.productInfo?.description || "-"}{" "}
                     </span>
                   </div>
                 </div>
@@ -317,7 +297,7 @@ export const BookingDetailLayout = ({
         <ModalLayout isOpen={open} setIsOpen={setOpen}>
           <div className="px-[30px] pt-[64px] pb-[20px] bg-white w-[400px] rounded-lg relative">
             <ul className="max-h-[345px] overflow-y-auto flex flex-col gap-y-5">
-              <PricingConfigurationComponent {...productData} />
+              <PricingConfigurationComponent {...productInfo} />
             </ul>
             <button
               onClick={() => setOpen(false)}
@@ -339,7 +319,7 @@ export default function BookingDetail({
   handleClick,
   detail,
 }: Props) {
-  console.log("detail:" + JSON.stringify(detail))
+  console.log("detail:" + JSON.stringify(detail));
   const { permissions } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -348,7 +328,7 @@ export default function BookingDetail({
       id: detail?.id,
     });
   const {
-    data: productData,
+    data: productInfo,
     isProductLoading,
     isSuccess,
   } = useGetProductDetailQuery({
@@ -359,12 +339,12 @@ export default function BookingDetail({
 
   useEffect(() => {
     console.log("InvestmentData Effect: " + JSON.stringify(investmentData));
-    console.log("ProductData Effect: " + JSON.stringify(productData));
-  }, [productData, investmentData]);
+    console.log("productInfo Effect: " + JSON.stringify(productInfo));
+  }, [productInfo, investmentData]);
 
   useEffect(() => {
     if (!isInvestmentLoading && !isProductLoading) {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }, [isInvestmentLoading, isProductLoading]);
 
@@ -376,7 +356,7 @@ export default function BookingDetail({
         setIsOpen,
         isLoading,
         investmentData,
-        productData,
+        productInfo,
         permissions,
         open,
         setOpen,

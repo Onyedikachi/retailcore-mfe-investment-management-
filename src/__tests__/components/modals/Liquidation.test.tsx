@@ -1,9 +1,10 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import PartLiquidation from "../../../components/modals/PartLiquidation"
+import Liquidation from "../../../components/modals/Liquidation"
 import { renderWithProviders } from "../../../__mocks__/api/Wrapper";
+import React from "react";
 
 
-describe('PartLiquidation', () => {
+describe('Liquidation', () => {
 
     // Renders the component with default props
     it('should render the component with default props', () => {
@@ -14,7 +15,7 @@ describe('PartLiquidation', () => {
         const detail = {};
 
         // Act
-        renderWithProviders(<PartLiquidation isOpen={isOpen} setIsOpen={setIsOpen} onConfirm={onConfirm} detail={detail} />);
+        renderWithProviders(<Liquidation isOpen={isOpen} setIsOpen={setIsOpen} onConfirm={onConfirm} detail={detail} title={"part liquidation request"} type={"part"} />);
         expect(screen).toMatchSnapshot();
         // Assert   
         // Add assertions here
@@ -27,7 +28,7 @@ describe('PartLiquidation', () => {
         const setIsOpen = jest.fn();
         const onConfirm = jest.fn();
         const detail = {};
-        renderWithProviders(<PartLiquidation isOpen={isOpen} setIsOpen={setIsOpen} onConfirm={onConfirm} detail={detail} />);
+        renderWithProviders(<Liquidation isOpen={isOpen} setIsOpen={setIsOpen} onConfirm={onConfirm} detail={detail} title={"part liquidation request"} type={"part"} />);
 
         // Act
         fireEvent.click(screen.getByTestId('cancel-btn'));
@@ -43,13 +44,13 @@ describe('PartLiquidation', () => {
         const setIsOpen = jest.fn();
         const onConfirm = jest.fn();
         const detail = {};
-        renderWithProviders(<PartLiquidation isOpen={isOpen} setIsOpen={setIsOpen} onConfirm={onConfirm} detail={detail} />);
+        renderWithProviders(<Liquidation isOpen={isOpen} setIsOpen={setIsOpen} onConfirm={onConfirm} detail={detail} title={"part liquidation request"} type={"part"} />);
         const amountInput = screen.getByPlaceholderText('Enter value');
 
         // Act
         fireEvent.change(amountInput, { target: { value: '1000' } });
 
         // Assert
-        expect(amountInput.value).toBe('1000');
+        expect(amountInput?.value).toBe('1000');
     });
 });

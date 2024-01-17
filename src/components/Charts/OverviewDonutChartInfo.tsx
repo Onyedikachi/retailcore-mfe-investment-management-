@@ -2,16 +2,14 @@ import React from "react";
 import Icon from "@app/components/ui/Icon";
 import { DateSelect } from "@app/components/forms";
 
-import { useOverviewContext } from "@app/utils";
 import { DonutChart } from "@app/components/Charts";
 export default function ChartInfo({labels, title}) {
-  const overviewState = useOverviewContext();
 
   return (
     <div className="rounded-[5px] bg-white px-5 py-6 shadow-custom h-full">
       <div className="flex items-center justify-between border-b border-[#ccc] pb-1">
         <span className="text-base font-semibold text-[#636363]">
-          {overviewState.name} {title}
+          All Investments {title}
         </span>
 
         <button className="flex h-[32px] items-center gap-[8px] rounded-[6px] bg-transparent px-3 py-[4px] text-[#8F8F8F] ">

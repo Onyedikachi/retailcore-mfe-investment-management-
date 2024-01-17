@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { AppContext, IndividualContext } from "@app/utils/context";
 import { StatusCategoryType } from "@app/constants/enums";
 import { StatusCard, QuickLinks } from "@app/components";
-import TableComponent from "@app/components/pages/management/individual/TableComponent";
+import TableComponent from "@app/components/pages/management/manage-investment/TableComponent";
 import {
   useGetPostInvestmentMutation,
   useGetPostInvestmentRequestsMutation,
@@ -19,11 +19,13 @@ import {
   StatusFilterOptions,
   StatusTypes,
   TypeFilterOptions,
-  SpecificCategory
+  SpecificCategory,
+  InvestmentBookingRequestType,
 } from "@app/constants";
 import { sortTabStatus } from "@app/utils/sortTabStatus";
 import { useSearchParams } from "react-router-dom";
 import { errorToast } from "@app/components/Toast";
+import { handleRequestStatus } from "@app/pages/investment/IndexComponent";
 
 export function handleToggle(selected, setIsChecker, setHideCreate) {
   if (
@@ -80,34 +82,6 @@ export const handleProductStatus = ({
     setHasMore(!!data?.next);
   }
 };
-export const handleRequestStatus = ({
-  query,
-  setRequestData,
-  setHasMore,
-  isRequestSuccess,
-  request,
-}) => {
-  if (query.page === 1) {
-    setRequestData([]);
-  }
-
-  if (isRequestSuccess && request.results.length) {
-    setRequestData((prevData) => [
-      ...prevData.concat(
-        ...request.results.map((i) => ({
-          ...i,
-          requestStatus: StatusFilterOptions.find(
-            (n) => n.value === i.requestStatus
-          )?.name,
-          requestType: TypeFilterOptions.find((n) => n.value === i.requestType)
-            ?.name,
-        }))
-      ),
-    ]);
-
-    setHasMore(!!request?.next);
-  }
-};
 
 export const handleRefresh = (
   category,
@@ -139,7 +113,7 @@ export const handleSearch = (value, query, setQuery) => {
   });
 };
 export default function Individual() {
-  const {isChecker, setIsChecker} = useContext(AppContext)
+  const { isChecker, setIsChecker } = useContext(AppContext);
   const [category, setCategory] = useState<string>(
     StatusCategoryType?.Investments
   );
@@ -148,7 +122,9 @@ export default function Individual() {
   const productId = searchParams.get("productId");
   const preview = searchParams.get("preview");
   const [selected, setSelected] = useState<any>(null);
-  const [specificCategory, setSpecificCategory] = useState<string>(SpecificCategory.individual);
+  const [specificCategory, setSpecificCategory] = useState<string>(
+    SpecificCategory.individual
+  );
   const [, setHideCreate] = useState(false);
   const [status, setStatus] = useState("");
   const [dateData, setDateData] = useState({ to: null, from: null });
@@ -166,7 +142,7 @@ export default function Individual() {
     // filter_by: selected?.value,
     status_In: null,
     search: "",
-   investmentProducts_In: null,
+    investmentProducts_In: null,
     start_Date: null,
     end_Date: null,
     page: 1,
@@ -273,7 +249,7 @@ export default function Individual() {
     }
   );
 
-  function fetch () {
+  function fetch() {
     if (category === StatusCategoryType?.Investments) {
       getProducts({ ...query, page: 1, filter_by: selected?.value });
     } else {
@@ -287,7 +263,7 @@ export default function Individual() {
       page: 1,
     });
 
-    fetch()
+    fetch();
   }, [
     selected,
     query.search,
@@ -307,6 +283,14 @@ export default function Individual() {
         : StatusCategoryType?.Investments
     );
   }, [queryCategory]);
+  const { data: systemAlertData, isSuccess: systemAlertDataSuccess } =
+    useGetSystemAlertQuery();
+
+  useEffect(() => {
+    if (systemAlertDataSuccess) {
+      errorToast(systemAlertData);
+    }
+  }, [systemAlertDataSuccess]);
 
   useEffect(
     () =>
@@ -325,20 +309,11 @@ export default function Individual() {
         query,
         setRequestData,
         setHasMore,
-        isRequestSuccess,
         request,
+        isRequestSuccess,
       }),
     [request, isRequestSuccess, isRequestError, query]
   );
-
-  const { data: systemAlertData, isSuccess: systemAlertDataSuccess } =
-    useGetSystemAlertQuery();
-
-  useEffect(() => {
-    if (systemAlertDataSuccess) {
-      errorToast(systemAlertData);
-    }
-  }, [systemAlertDataSuccess]);
 
   useEffect(() => {
     if (preview === "search_product") {
@@ -389,7 +364,6 @@ export default function Individual() {
 
           <div className="bg-white px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16">
             {" "}
-            
             <TableComponent
               handleRefresh={() => {
                 handleRefresh(

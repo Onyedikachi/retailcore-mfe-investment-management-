@@ -351,7 +351,7 @@ export default function IndexComponent() {
           {/* {productData.productInfo.productName} */}
           <div className="">
             <div className="flex gap-6 h-full px-[37px] py-[30px] bg-[#F7F7F7]">
-              <div className="flex-1 bg-[#ffffff] rounded-md px-[100px] pt-[54px] pb-[49px] ">
+              <div className="flex-1 bg-[#ffffff] rounded-md px-10 lg:px-[100px] pt-[54px] pb-[49px] oveflow-x-auto">
                 <div className="pb-[49px] ">
                   <FormStepComponent
                     formStepItems={BookInvestmentFormSteps}
@@ -417,7 +417,7 @@ export default function IndexComponent() {
                 </div>
               </div>
               {step !== 1 && productDetail && (
-                <div className="w-full max-w-[400px]">
+                <div className="w-[370px]">
                   <ProductInfoInvestmentCalc
                     productDetail={productDetail}
                     formData={formData}

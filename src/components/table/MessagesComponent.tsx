@@ -3,9 +3,8 @@ import { Confirm, Failed, Success } from "../modals";
 import RequestDeactivation from "../modals/RequestDeactivation";
 import ProductDetail from "../modals/ProductDetail";
 import BookingDetail from "../modals/BookingDetail";
-import EarlyLiquidation from "../modals/EarlyLiquidation";
-import PartLiquidation from "../modals/PartLiquidation";
 import Loader from "../Loader";
+import Liquidation from "../modals/Liquidation";
 
 export default function MessagesComponent({
   specificCategory,
@@ -37,11 +36,10 @@ export default function MessagesComponent({
   isIndividualDetailOpen,
   setIndividualDetailOpen,
 
-  isEarlyLiquidation,
-  isPartLiquidation,
-  setPartLiquidationOpen,
-  setEarlyLiquidationOpen,
-  handleRefresh = () => {}
+  isLiquidation,
+  setLiquidationOpen,
+  liquidationType,
+  handleRefresh = () => {},
 }) {
   return (
     <Fragment>
@@ -62,8 +60,8 @@ export default function MessagesComponent({
       )}
       {(isSuccessOpen || isSuccess) && (
         <Success
-        handleRefresh={handleRefresh}
-        specificCategory={specificCategory}
+          handleRefresh={handleRefresh}
+          specificCategory={specificCategory}
           text={successText}
           isOpen={isSuccessOpen}
           setIsOpen={setIsSuccessOpen}
@@ -87,21 +85,19 @@ export default function MessagesComponent({
           // setReason={() => {}}
         />
       )}
-       {isEarlyLiquidation && (
-        <EarlyLiquidation
-          isOpen={isEarlyLiquidation}
-          setIsOpen={setEarlyLiquidationOpen}
+
+      {isLiquidation && (
+        <Liquidation
+          isOpen={isLiquidation}
+          setIsOpen={setLiquidationOpen}
           onConfirm={() => {}}
           detail={detail}
-          // setReason={() => {}}
-        />
-      )}
-       {isPartLiquidation && (
-        <PartLiquidation
-          isOpen={isPartLiquidation}
-          setIsOpen={setPartLiquidationOpen}
-          onConfirm={() => {}}
-          detail={detail}
+          type={liquidationType}
+          title={
+            liquidationType === "part"
+              ? "part liquidation request"
+              : "early liquidation request"
+          }
           // setReason={() => {}}
         />
       )}

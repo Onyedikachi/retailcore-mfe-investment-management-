@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { InputDivs } from "@app/components/pages/term-deposit/forms/accounting-entries-and-events";
-import AccountSearch from "@app/components/AccountSearch";
 import MinMaxInput from "@app/components/forms/MinMaxInput";
 import {
   CapitalizationOptions,
