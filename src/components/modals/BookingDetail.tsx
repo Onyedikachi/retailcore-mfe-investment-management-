@@ -86,9 +86,6 @@ export const BookingDetailLayout = ({
                       Customer/ Account Number
                     </span>
                     <span className="font-normal block uppercase">
-                      {/* {ProductTypes.find(
-                        (i) => i.id == productInfo?.data?.productType
-                      )?.name || "-"} */}
                       {`${investmentData?.data?.customerBookingInfoModel?.customerName}/ ${investmentData?.data?.customerBookingInfoModel?.customerAccount}`}
                     </span>
                   </div>
@@ -103,7 +100,13 @@ export const BookingDetailLayout = ({
                   <div>
                     <span className="font-bold block mb-[15px]">Principal</span>
                     <span className="font-normal block">
-                      {currencyFormatter(detail?.principal, "NGN") || "-"}
+                      {currencyFormatter(
+                        detail?.principal,
+                        handleCurrencyName(
+                          productInfo?.data?.productInfo?.currency,
+                          currencies
+                        )
+                      ) || "-"}
                     </span>
                   </div>
                   {detail?.investmentBookingStatus === 1 && (
@@ -129,7 +132,13 @@ export const BookingDetailLayout = ({
                       Value at Maturity
                     </span>
                     <span className="font-normal block">
-                      {currencyFormatter(detail?.maturityValue, "NGN") || "-"}{" "}
+                      {currencyFormatter(
+                        detail?.maturityValue,
+                        handleCurrencyName(
+                          productInfo?.data?.productInfo?.currency,
+                          currencies
+                        )
+                      ) || "-"}{" "}
                     </span>
                   </div>
 
@@ -152,11 +161,11 @@ export const BookingDetailLayout = ({
                   <div>
                     <span className="font-bold block mb-[15px]">Currency</span>
                     <span className="font-normal block">
-                      {/* {handleCurrencyName(
+                      {handleCurrencyName(
                         productInfo?.data?.productInfo?.currency,
                         currencies
-                      )}{" "} */}
-                      {productInfo?.data?.productInfo?.currency}
+                      )}{" "}
+                   
                     </span>
                   </div>
                   <div>
@@ -164,64 +173,48 @@ export const BookingDetailLayout = ({
                       Investment Timeline
                     </span>
                     <span className="font-normal block">
-                      {detail?.maturityDate}{" "}
+                      {moment(detail?.maturityDate).format("dd MM YY")}{" "}
                     </span>
                   </div>
                   <div>
                     <span className="font-bold block mb-[15px]">Tenor</span>
-                    <span className="font-normal block">{detail?.tenor} </span>
+                    <span className="font-normal block">{detail?.tenor}{Interval[productInfo?.data?.pricingConfiguration?.applicableTenorMaxUnit]} </span>
                   </div>
                   <div>
                     <span className="font-bold block mb-[15px]">
                       Interest Rate Per Annum
                     </span>
                     <span className="font-normal block">
-                      {detail?.interestRate}{" "}
+                      {detail?.interestRate}%{" "}
                     </span>
                   </div>
                 </div>
                 <div className="border border-[#E5E9EB] rounded-lg py-[35px] px-[30px] flex justify-between items-center">
-                  <div className="flex gap-x-6 items-center">
-                    {permissions?.includes("CREATE_INVESTMENT_PRODUCT") && (
+                  {permissions?.includes("LIQUIDATE_INVESTMENT") && (
+                    <div className="flex gap-x-6 items-center">
                       <button
                         data-testid="modify"
-                        onClick={() => handleClick("modify", productInfo?.data)}
+                        onClick={() =>
+                          handleClick("liquidate", productInfo?.data)
+                        }
                         className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3`}
                       >
                         <FaRegTimesCircle className="text-[#444]" /> Early
                         Liquidate
                       </button>
-                    )}
-                    {permissions?.includes(
-                      "RE_OR_DEACTIVATE_INVESTMENT_PRODUCT"
-                    ) && (
-                      <>
-                        {productInfo?.data?.state === 1 ? (
-                          <button
-                            type="button"
-                            data-testid="activate-btn"
-                            onClick={() =>
-                              handleClick("activate", productInfo?.data)
-                            }
-                            className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
-                          >
-                            <FaPlayCircle className="text-[#2FB755]" /> Activate
-                          </button>
-                        ) : (
-                          <button
-                            data-testid="deactivate-btn"
-                            onClick={() =>
-                              handleClick("deactivate", productInfo?.data)
-                            }
-                            className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
-                          >
-                            <FaBan className="text-sterling-red-800" /> Part
-                            Liquidate
-                          </button>
-                        )}
-                      </>
-                    )}
-                  </div>
+
+                      <button
+                        data-testid="deactivate-btn"
+                        onClick={() =>
+                          handleClick("liquidate", productInfo?.data)
+                        }
+                        className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
+                      >
+                        <FaBan className="text-sterling-red-800" /> Part
+                        Liquidate
+                      </button>
+                    </div>
+                  )}
 
                   <a
                     href={`/product-factory/investment/management/preview/individual?id=${detail?.investmentProductId}`}

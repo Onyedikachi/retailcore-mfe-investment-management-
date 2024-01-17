@@ -234,9 +234,11 @@ export default function Actions({
       )}
       {/* Approval/ Rejection  */}
       {process === "verdict" &&
-        permissions.includes(
+        (permissions.includes(
           "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
-        ) && (
+        ) || permissions.includes(
+          "AUTHORIZE_INVESTMENT_MANAGEMENT_REQUESTS"
+        )) && (
           <div className="flex  gap-6">
             <Button
               onClick={() => initiateVerdict("cancel")}

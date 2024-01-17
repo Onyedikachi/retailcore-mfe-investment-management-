@@ -176,7 +176,7 @@ export default function BookingDetail({
                     (i) =>
                       i.value ===
                       detail?.facilityDetailsModel?.capitalizationMethod
-                  ).text
+                  )?.text
                 }
               </div>
             </div>
