@@ -19,7 +19,7 @@ import { Failed } from "@app/components/modals";
 import { Messages } from "@app/constants/enums";
 import BottomBarLoader from "@app/components/BottomBarLoader";
 export const onProceed = (data, proceed, formData, setFormData) => {
-  console.log("🚀 ~ onProceed ~ data:", data);
+
   setFormData({
     ...formData,
     customerBookingInfoModel: { ...formData.customerBookingInfoModel, ...data },
@@ -59,6 +59,7 @@ export default function CustomerInformation({
     defaultValues: formData.customerBookingInfoModel,
     mode: "all",
   });
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [query, setQuery] = useState("");
   const [customerData, setCustomerData] = useState(null);
@@ -71,6 +72,7 @@ export default function CustomerInformation({
     formData?.customerBookingInfoModel?.investmentformUrl
   );
   const values = getValues();
+
   const {
     data,
     isSuccess,
@@ -123,10 +125,8 @@ export default function CustomerInformation({
           };
         })
       );
-      setFormData({
-        ...formData,
-        customerId: customerData?.customerId,
-      });
+     
+      
     }
   }, [isError, isSuccess, searchLoading, data]);
 
@@ -143,6 +143,8 @@ export default function CustomerInformation({
     }
 
     setValue("accountStatus", accountData?.data?.status);
+    setValue("balance", parseFloat(accountData?.data?.balance));
+    trigger("balance");
   }, [accountIsError, accountIsSuccess, isLoading, accountData]);
 
   useEffect(() => {
@@ -157,6 +159,11 @@ export default function CustomerInformation({
       });
 
       setCustomerData(foundObject);
+      setFormData({
+        ...formData,
+        customerId: foundObject?.customerId,
+        customerProfile: foundObject?.customer_profiles[0],
+      });
       setValue("customerId", foundObject?.customerId);
       setValue(
         "customerName",
@@ -252,16 +259,25 @@ export default function CustomerInformation({
                 />
               </div>
               {accountBalance && (
-                <div className="p-[10px] max-w-max rounded-lg bg-[#F9F9F9] border border-[#EBEBEB]">
-                  <span className="text-base font-medium text-[#636363]">
-                    Available Bal:{" "}
-                    <span className="text-base font-normal text-[#636363]">
-                      {currencyFormatter(
-                        accountBalance.balance,
-                        accountBalance?.currency
-                      )}
+                <div>
+                  <div className="p-[10px] max-w-max rounded-lg bg-[#F9F9F9] border border-[#EBEBEB]">
+                    <span className="text-base font-medium text-[#636363]">
+                      Available Bal:{" "}
+                      <span className="text-base font-normal text-[#636363]">
+                        {currencyFormatter(
+                          accountBalance.balance,
+                          accountBalance?.currency
+                        )}
+                      </span>
                     </span>
-                  </span>
+                  </div>
+                  <ErrorMessage
+                    errors={errors}
+                    name="balance"
+                    render={({ message }) => (
+                      <p className="text-red-600 text-xs">{message}</p>
+                    )}
+                  />
                 </div>
               )}
             </div>
@@ -300,7 +316,7 @@ export default function CustomerInformation({
         <CustomerDetail
           isOpen={isOpen}
           setIsOpen={setIsOpen}
-          detail={{...customerData?.customer_profiles[0],accountNumber}}
+          detail={{ ...customerData?.customer_profiles[0], accountNumber }}
         />
       )}
       {isKycFailed && !profileLoading && (

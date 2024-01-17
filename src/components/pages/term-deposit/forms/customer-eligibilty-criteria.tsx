@@ -18,8 +18,14 @@ import { CustomerCategoryType } from "@app/constants/enums";
 import MultiSelectForm from "@app/components/forms/MultiSelectForm";
 import { useParams } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
+import { useGetFormDocumentsQuery, useGetFormTypeQuery } from "@app/api";
+import uuid from "react-uuid";
 
-export const handleCheckedRequirement = ({ document, toggledRequirements, setToggledRequirements }) => {
+export const handleCheckedRequirement = ({
+  document,
+  toggledRequirements,
+  setToggledRequirements,
+}) => {
   const isDocumentToggled = toggledRequirements.some(
     (d) => d.id === document.id
   );
@@ -34,7 +40,11 @@ export const handleCheckedRequirement = ({ document, toggledRequirements, setTog
   }
 };
 
-export const requirementDeleteHandler = ({ itemToDelete, selectedRequirements, setSelectedRequirements }) => {
+export const requirementDeleteHandler = ({
+  itemToDelete,
+  selectedRequirements,
+  setSelectedRequirements,
+}) => {
   // Filter out the item to delete
   const updatedRequirement = selectedRequirements.filter(
     (item) => item !== itemToDelete
@@ -42,9 +52,14 @@ export const requirementDeleteHandler = ({ itemToDelete, selectedRequirements, s
 
   // Update the state with the new array
   setSelectedRequirements(updatedRequirement);
-}
+};
 
-export const handleSelectAllChange = ({ setToggledRequirements, documents, selectAll, setSelectAll }) => {
+export const handleSelectAllChange = ({
+  setToggledRequirements,
+  documents,
+  selectAll,
+  setSelectAll,
+}) => {
   // If "Select All" is checked, set all documents to toggledDocuments; if unchecked, clear the array
   if (selectAll) {
     setToggledRequirements([]);
@@ -54,8 +69,6 @@ export const handleSelectAllChange = ({ setToggledRequirements, documents, selec
   setSelectAll(!selectAll);
 };
 
-
-
 export default function CustomerEligibilityCriteria({
   formData,
   setFormData,
@@ -63,10 +76,8 @@ export default function CustomerEligibilityCriteria({
   proceed,
   initiateDraft,
 }) {
-  console.log("🚀 ~ file: customer-eligibilty-criteria.tsx:29 ~ formData:", formData)
-  console.log("checkin'")
   const { process } = useParams();
-  const [documents, setDocuments] = useState([...documentOptions]);
+  const [documents, setDocuments] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedRequirements, setSelectedRequirements] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
@@ -88,6 +99,9 @@ export default function CustomerEligibilityCriteria({
     defaultValues: formData,
     // values,
   });
+  const watchCustomerCategory = watch("customerCategory");
+  const watchageGroupMin = watch("ageGroupMin");
+  const watchageGroupMax = watch("ageGroupMax");
 
   const selectedCategory = watch("category");
 
@@ -96,14 +110,42 @@ export default function CustomerEligibilityCriteria({
   const values = getValues();
   console.log("🚀 ~ file: customer-eligibilty-criteria.tsx:58 ~ values:", values)
 
-
   const deleteRequirementItem = (itemToDelete) => {
-    requirementDeleteHandler({ itemToDelete, selectedRequirements, setSelectedRequirements })
+    requirementDeleteHandler({
+      itemToDelete,
+      selectedRequirements,
+      setSelectedRequirements,
+    });
   };
   const handleOptions = (val: any) => {
     setSearchQuery(val.name);
   };
 
+  // Api calls
+
+  const {
+    data: formTypeData,
+    isLoading: typeLoading,
+    isSuccess: typeSuccess,
+  } = useGetFormTypeQuery(
+    watchCustomerCategory === 0 ? "individualLegacy" : "smeLegacy",
+    { skip: watchCustomerCategory === null }
+  );
+  const {
+    data: documentList,
+    isLoading: docLoading,
+    isSuccess: docSuccess,
+  } = useGetFormDocumentsQuery(formTypeData?.data?._id, {
+    skip: !formTypeData?.data?._id,
+  });
+
+  useEffect(() => {
+    if (docSuccess) {
+      setDocuments(
+        documentList?.data?.map((i) => ({ name: i.title, id: uuid() }))
+      );
+    }
+  }, [documentList, docSuccess, docLoading]);
 
   function onProceed(d: any) {
     setFormData({
@@ -119,7 +161,6 @@ export default function CustomerEligibilityCriteria({
 
   useEffect(() => {
     if (formData) {
-      console.log("🚀 ~ file: customer-eligibilty-criteria.tsx:111 ~ useEffect ~ formData:", formData)
       Object.entries(formData).forEach(([name, value]) =>
         setValue(name, value)
       );
@@ -131,10 +172,6 @@ export default function CustomerEligibilityCriteria({
       }
     }
   }, [setValue, formData, setSelectedRequirements]);
-
-  const watchCustomerCategory = watch("customerCategory");
-  const watchageGroupMin = watch("ageGroupMin");
-  const watchageGroupMax = watch("ageGroupMax");
 
   useEffect(() => {
     const fieldsToRegister = ["ageGroupMin", "ageGroupMax", "customerType"];
@@ -240,7 +277,7 @@ export default function CustomerEligibilityCriteria({
         <div className="flex justify-end mt-10">
           <button
             type="button"
-            disabled={watchCustomerCategory === null}
+            disabled={watchCustomerCategory === null || docLoading || typeLoading}
             onClick={() => setIsRequirementsOpen(true)}
             className="cursor-pointer flex items-center gap-[10px] disabled:opacity-60 disabled:cursor-not-allowed"
           >
@@ -301,12 +338,19 @@ export default function CustomerEligibilityCriteria({
             </span>
           </button>
         </div>
-        <div>
-          <SelectedRequirementsTable
-            tableItems={selectedRequirements || []}
-            deleteTableItem={deleteRequirementItem}
-          />
+        {!docLoading && !typeLoading ? (
+          <div>
+            <SelectedRequirementsTable
+              tableItems={selectedRequirements || []}
+              deleteTableItem={deleteRequirementItem}
+            />
+          </div>
+        ) : (
+          <div className="text-xs text-center py-6 text-gray-500 relative flex itemx-center justify-center gap-x-1">
+          Fetching document list...
+          <span className="spinner-border h-4 w-4 border-t border-gray-500 rounded-full animate-spin"></span>
         </div>
+        )}
 
         <div className="max-w-[527px]">
           {isRequirementsOpen && (
@@ -364,7 +408,14 @@ export default function CustomerEligibilityCriteria({
                                 type="checkbox"
                                 id="doc-requirement-all"
                                 checked={selectAll}
-                                onChange={() => handleSelectAllChange({ documents, selectAll, setSelectAll, setToggledRequirements })}
+                                onChange={() =>
+                                  handleSelectAllChange({
+                                    documents,
+                                    selectAll,
+                                    setSelectAll,
+                                    setToggledRequirements,
+                                  })
+                                }
                                 className="h-4 w-4 rounded border-gray-300  !accent-sterling-red-800 ring-0"
                               />
                             </div>
@@ -397,7 +448,11 @@ export default function CustomerEligibilityCriteria({
                                       type="checkbox"
                                       value={JSON.stringify(document)}
                                       onChange={() =>
-                                        handleCheckedRequirement({ document, toggledRequirements, setToggledRequirements })
+                                        handleCheckedRequirement({
+                                          document,
+                                          toggledRequirements,
+                                          setToggledRequirements,
+                                        })
                                       }
                                       checked={toggledRequirements.some(
                                         (d) => d.id === document.id

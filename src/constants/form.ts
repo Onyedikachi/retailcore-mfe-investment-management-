@@ -33,6 +33,7 @@ export const BookingCustomerInfoSchema = yup.object().shape({
   customerName: yup.string().required("Select a customer account"),
   customerAccount: yup.string().required("Select a customer account"),
   investmentformUrl: yup.string().required("Request form is required"),
+  balance: yup.number().typeError("Invalid value").nullable().min(1,"Insufficient balance").required()
 });
 export const FacilityDetailsModelSchema = yup.object().shape({
   investmentProductId: yup.string().uuid().required("Select an investment"),

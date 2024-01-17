@@ -11,7 +11,6 @@ import { RedDot } from "@app/components/forms";
 
 import {
   ProductInformationFormSchema,
-  currencyOptions,
   toolTips,
 } from "@app/constants";
 import { debounce } from "lodash";
@@ -184,7 +183,10 @@ export default function ProductInformation({
     const currency = currencies.find(
       (i) => i.text.toLowerCase() === "ngn"
     )?.value;
-    formData.currency = currency;
+    setFormData({
+      ...formData,
+      currency
+    });
     setValue("productName", currency);
   }, [currencies]);
 
@@ -497,7 +499,23 @@ export default function ProductInformation({
 
           <div className="flex items-end gap">
             {/* <InputDiv> */}
-            
+            <div className="w-[300px]">
+              <BorderlessSelect
+                inputError={errors?.currency}
+                register={register}
+                errors={errors}
+                setValue={setValue}
+                inputName={"currency"}
+                labelName={"Product Currency"}
+                defaultValue={formData?.currency}
+                placeholder="Select currency"
+                clearErrors={clearErrors}
+                requiredField={true}
+                tip={toolTips.currency}
+                options={currencies}
+                trigger={trigger}
+              />
+            </div>
 
             {/* </InputDiv> */}
           </div>
