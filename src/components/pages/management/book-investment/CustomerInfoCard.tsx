@@ -105,11 +105,11 @@ export default function CustomerInfoCard({
             <Info
               title={"Customer Name"}
               data={`${capitalizeFirstLetter(
-                customerData?.customer_profiles[0]?.firstName
+                customerData?.customer_profiles?.[0]?.firstName
               )} ${capitalizeFirstLetter(
-                customerData?.customer_profiles[0]?.otherNames
+                customerData?.customer_profiles?.[0]?.otherNames
               )} ${capitalizeFirstLetter(
-                customerData?.customer_profiles[0]?.surname
+                customerData?.customer_profiles?.[0]?.surname
               )}`}
               type={"customerName"}
               setIsOpen={setIsOpen}
@@ -123,15 +123,15 @@ export default function CustomerInfoCard({
             />
             <Info
               title={"BVN"}
-              data={customerData?.customer_profiles[0]?.bvn}
+              data={customerData?.customer_profiles?.[0]?.bvn}
             />
             <Info
               title={" Phone Number"}
-              data={customerData?.customer_profiles[0]?.mobileNumber}
+              data={customerData?.customer_profiles?.[0]?.mobileNumber}
             />
             <Info
               title={"Email Address"}
-              data={customerData?.customer_profiles[0]?.emailAddress}
+              data={customerData?.customer_profiles?.[0]?.emailAddress}
             />
             <Info
               title={"Customer Persona"}
@@ -165,7 +165,7 @@ export default function CustomerInfoCard({
             />
             <Info
               title={"Relationship Manager"}
-              data={customerData?.customer_profiles[0]?.relationshipOfficer}
+              data={customerData?.customer_profiles?.[0]?.relationshipOfficer}
               type={"relationshipManager"}
             />
           </div>
