@@ -410,7 +410,7 @@ export const investmentApi: any = createApi({
     getInvestmentActivityLog: builder.query<any, any>({
       query: (params) => {
         return {
-          url: `${urls.INVESTMEENT_ACTIVITY_LOG}?${new URLSearchParams(
+          url: `${urls.INVESTMENT_ACTIVITY_LOG}?${new URLSearchParams(
             cleanObject(params)
           )}`,
           method: "get",
@@ -418,6 +418,18 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    getInvestmentRequestActivityLog: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `${urls.INVESTMENT_REQUEST_ACTIVITY_LOG}?${new URLSearchParams(
+            cleanObject(params)
+          )}`,
+          method: "get",
+          params: cleanObject(params),
+        };
+      },
+    }),
+    
     getInvestmentStats: builder.query<any, any>({
       query: (data) => {
         if (!data.filter_by) return;
@@ -514,6 +526,7 @@ export const {
   useGetCustomerProfileQuery,
   useCreateInvestmentMutation,
   useGetInvestmentActivityLogQuery,
+  useGetInvestmentRequestActivityLogQuery,
   useGetPostInvestmentRequestsMutation,
   useGetPostInvestmentMutation,
   useGetInvestmentRequestStatsQuery,

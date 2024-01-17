@@ -51,6 +51,13 @@ export const routes = [
     component: lazy(() => import("../pages/investment/term-deposit/Summary")),
   },
   {
+    path: paths.BOOKING_SUMMARY,
+    name: "Booking Summary",
+    exact: true,
+    component: lazy(() => import("../pages/management/SummaryComponent")),
+  },
+  
+  {
     path: paths.INVESTMENT_MANAGEMENT,
     name: "Investment Management",
     exact: true,
