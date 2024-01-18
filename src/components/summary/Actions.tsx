@@ -49,7 +49,7 @@ export const handleConfirm = ({
   filter,
 }) => {
   if (action === "approve") {
-    if (type.toLowerCase() === "individual") {
+    if (type?.toLowerCase() === "individual") {
       approveInvestment({ id });
     } else {
       approveProduct({ id });

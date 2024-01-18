@@ -99,7 +99,7 @@ export const BookingDetailLayout = ({
                   </div>
                   <div>
                     <span className="font-bold block mb-[15px]">Principal</span>
-                    <span className="font-normal block">
+                    <span data-testid="principal-value" className="font-normal block">
                       {currencyFormatter(
                         detail?.principal,
                         handleCurrencyName(

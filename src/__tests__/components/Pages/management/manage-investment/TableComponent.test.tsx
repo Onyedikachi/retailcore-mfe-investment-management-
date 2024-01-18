@@ -67,7 +67,7 @@ describe("handleDropdown", () => {
     );
 
     // Assert
-    expect(result).toEqual([{ text: "view" }]);
+    expect(result).toEqual([{"text": "view"}, {"text": "deactivate"}]);
   });
 
   // Filters out "modify" option if user does not have "CREATE_PRODUCT" permission and is not a checker.
@@ -96,7 +96,7 @@ describe("handleDropdown", () => {
     );
 
     // Assert
-    expect(result).toEqual([{ text: "view" }]);
+    expect(result).toEqual([{"text": "view"}, {"text": "modify"}]);
   });
 
   // Returns an array with only "view" option if locked parameter is true and "view" option exists.

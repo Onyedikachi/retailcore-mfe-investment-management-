@@ -22,6 +22,7 @@ jest.mock("react-router-dom", () => ({
   useNavigate: jest.fn(),
   useSearchParams: jest.fn(),
   useParams: jest.fn(),
+  useLocation: jest.fn().mockReturnValue({pathname: ""})
 }));
 jest
   .spyOn(require("react-router-dom"), "useNavigate")

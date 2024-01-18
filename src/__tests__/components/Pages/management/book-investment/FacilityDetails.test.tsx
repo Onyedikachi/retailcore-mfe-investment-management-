@@ -443,6 +443,13 @@ describe('FacilityDetails', () => {
             },
           ],
         },
+        customerEligibility: {
+          ageGroupMin: 0,
+          ageGroupMax: null,
+          requireDocument: [],
+          customerType: [],
+          customerCategory: null,
+        },
         productInfo: {
           currency: "USD",
         },
