@@ -165,7 +165,6 @@ export const BookingDetailLayout = ({
                         productInfo?.data?.productInfo?.currency,
                         currencies
                       )}{" "}
-                   
                     </span>
                   </div>
                   <div>
@@ -178,7 +177,15 @@ export const BookingDetailLayout = ({
                   </div>
                   <div>
                     <span className="font-bold block mb-[15px]">Tenor</span>
-                    <span className="font-normal block">{detail?.tenor}{Interval[productInfo?.data?.pricingConfiguration?.applicableTenorMaxUnit]} </span>
+                    <span className="font-normal block">
+                      {detail?.tenor}
+                      {
+                        Interval[
+                          productInfo?.data?.pricingConfiguration
+                            ?.applicableTenorMaxUnit
+                        ]
+                      }{" "}
+                    </span>
                   </div>
                   <div>
                     <span className="font-bold block mb-[15px]">
@@ -215,16 +222,15 @@ export const BookingDetailLayout = ({
                       </button>
                     </div>
                   )}
-
-                  <a
-                    href={`/product-factory/investment/management/preview/individual?id=${detail?.investmentProductId}`}
+                  <Link
+                    to={`/product-factory/investment/management/individual/process-summary/preview/${detail?.id}`}
                   >
                     <button
                       className={`group flex items-center whitespace-nowrap py-[1px] text-base text-[#636363] gap-x-3 underline outline-none`}
                     >
                       View Activity Log
                     </button>
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="border border-[#E5E9EB] rounded-lg py-[25px] px-[30px] h-[593px]">
@@ -312,7 +318,6 @@ export default function BookingDetail({
   handleClick,
   detail,
 }: Props) {
-  console.log("detail:" + JSON.stringify(detail));
   const { permissions } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
 

@@ -34,6 +34,7 @@ import {
   useActivateProductMutation,
   useDeleteProductRequestMutation,
   useDeleteInvestmentRequestMutation,
+  useGetProductDetailQuery,
 } from "@app/api";
 import Button from "../Button";
 import { ActiveFilterOptions } from "@app/constants";
@@ -367,12 +368,13 @@ export default function TableComponent<TableProps>({
   const [isFailed, setFailed] = useState(false);
   const [failedSubText, setFailedSubtext] = useState("");
   const [failedText, setFailedText] = useState("");
+  const [productDetails, setProductDetails] = useState(null);
 
   // function getdata(item, key) {}
   // @ts-ignore
   const handleLiquidation = (data, type) => {
     if (type.toLowerCase() === "part") {
-      partLiquidateInvestment({...data, investementBookingId: 'experiment'})
+      partLiquidateInvestment(data);
     }
 
     if (type.toLowerCase() === "early") {
@@ -380,8 +382,6 @@ export default function TableComponent<TableProps>({
     }
   };
   const handleAction = (action, items) => {
-    // console.log(JSON.stringify({ action, items }));
-    // return;
     actionHandler({
       specificCategory,
       action,
@@ -447,6 +447,14 @@ export default function TableComponent<TableProps>({
     },
   ] = useActivateProductMutation();
 
+  const {
+    data: productData,
+    isLoading: productDetailLoading,
+    isSuccess: productDetailSuccess,
+  } = useGetProductDetailQuery({
+    id: detail?.investmentProductId,
+  });
+
   const handleConfirm = () =>
     confirmationHandler({
       specificCategory,
@@ -502,6 +510,19 @@ export default function TableComponent<TableProps>({
     partLiquidateIsError,
     partLiquidateError,
   ]);
+
+  useEffect(() => {
+    if (productDetailSuccess) {
+      console.log(
+        "🚀 ~ useEffect ~ detail?.investmentProductId:",
+        detail?.investmentProductId
+      );
+      console.log("🚀 ~ useEffect ~ productData:", productData.data);
+      setProductDetails(productData.data);
+    }
+  }, [productData, productDetailSuccess]);
+
+ 
 
   return (
     <div>
@@ -763,6 +784,7 @@ export default function TableComponent<TableProps>({
       </div>
       {/* @ts-ignore */}
       <MessagesComponent
+        productDetails={productDetails}
         specificCategory={specificCategory}
         isConfirmOpen={isConfirmOpen}
         isSuccessOpen={isSuccessOpen}
