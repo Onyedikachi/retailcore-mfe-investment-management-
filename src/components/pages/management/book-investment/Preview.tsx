@@ -147,7 +147,7 @@ export default function Preview({
 
   const { data: activityData, isLoading: activityIsLoading } =
     useGetInvestmentActivityLogQuery(
-      { bookingrequestId: id },
+      { bookingId: id },
       { skip: process === "create" }
     );
 
@@ -324,7 +324,7 @@ export default function Preview({
           setIsOpen={setIsConfirmOpen}
           onConfirm={() => {
             setIsConfirmOpen(false);
-            // navigate("/product-factory/investment?category=requests");
+            navigate(`/product-factory/investment/management/${investmentType}?category=requests`);
           }}
           onCancel={() => {
             setIsConfirmOpen(false);

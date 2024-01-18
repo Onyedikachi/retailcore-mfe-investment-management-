@@ -19,7 +19,6 @@ import { Failed } from "@app/components/modals";
 import { Messages } from "@app/constants/enums";
 import BottomBarLoader from "@app/components/BottomBarLoader";
 export const onProceed = (data, proceed, formData, setFormData) => {
-
   setFormData({
     ...formData,
     customerBookingInfoModel: { ...formData.customerBookingInfoModel, ...data },
@@ -125,8 +124,6 @@ export default function CustomerInformation({
           };
         })
       );
-     
-      
     }
   }, [isError, isSuccess, searchLoading, data]);
 
@@ -138,12 +135,14 @@ export default function CustomerInformation({
         customerBookingInfoModel: {
           ...formData.customerBookingInfoModel,
           accountStatus: accountData?.data?.status,
+          currencyId: accountData?.data?.currencyId,
         },
       });
     }
 
     setValue("accountStatus", accountData?.data?.status);
     setValue("balance", parseFloat(accountData?.data?.balance));
+    setValue("currencyId", accountData?.data?.currencyId);
     trigger("balance");
   }, [accountIsError, accountIsSuccess, isLoading, accountData]);
 
