@@ -18,6 +18,7 @@ import {
   useApproveProductMutation,
   useRejectProductMutation,
   useApproveInvestmentMutation,
+  useRejectInvestmentMutation,
 } from "@app/api";
 import { Messages } from "@app/constants/enums";
 import Rejection from "../modals/Rejection";
@@ -59,11 +60,18 @@ export const handleConfirm = ({
     setRejection(true);
   }
   if (action === "cancel") {
-    navigate(
-      `/product-factory/investment?category=requests${
-        filter ? "&filter=" + filter : ""
-      }`
-    );
+    if (type.toLowerCase() === "individual") {
+      navigate(
+        `/product-factory/investment/management/individual`
+      );
+    } else {
+      navigate(
+        `/product-factory/investment?category=requests${
+          filter ? "&filter=" + filter : ""
+        }`
+      );
+    }
+   
   }
 };
 
@@ -82,9 +90,16 @@ export const handleMessages = ({
   investmentApproveSuccess,
   investmentApproveIsError,
   investmentApproveError,
+  investmentRejectSuccess,
+  investmentRejectIsError,
+  investmentRejectError,
 }) => {
   if (rejectSuccess) {
     setSuccessText(Messages.PRODUCT_CREATE_REJECTED);
+    setIsSuccessOpen(true);
+  }
+  if (investmentRejectSuccess) {
+    setSuccessText(Messages.BOOKING_CREATE_REJECTED);
     setIsSuccessOpen(true);
   }
   if (approveSuccess) {
@@ -115,6 +130,14 @@ export const handleMessages = ({
     setFailedSubtext(
       investmentApproveError?.message?.message ||
         investmentApproveError?.message?.Message
+    );
+    setFailed(true);
+  }
+  if (investmentRejectIsError) {
+    setFailedText(Messages.BOOKING_REJECT_FAILED);
+    setFailedSubtext(
+      investmentRejectError?.message?.message ||
+        investmentRejectError?.message?.Message
     );
     setFailed(true);
   }
@@ -175,6 +198,16 @@ export default function Actions({
     },
   ] = useRejectProductMutation();
 
+  const [
+    rejectInvestment,
+    {
+      isSuccess: investmentRejectSuccess,
+      isError: investmentRejectIsError,
+      error: investmentRejectError,
+      isLoading: investmentRejectLoading,
+    },
+  ] = useRejectInvestmentMutation();
+
   const initiateVerdict = (value) => {
     handleVerdict({
       value,
@@ -189,7 +222,13 @@ export default function Actions({
 
   const handleRejection = () => {
     setRejection(false);
-    rejectProduct({ reason, id, routeTo });
+    // console.log(reason, id, routeTo);
+    // return;
+    if (type.toLowerCase() === "individual") {
+      rejectInvestment({ reason, id, routeTo });
+    } else {
+      rejectProduct({ reason, id, routeTo });
+    }
   };
   useEffect(() => {
     handleMessages({
@@ -207,6 +246,9 @@ export default function Actions({
       investmentApproveSuccess,
       investmentApproveIsError,
       investmentApproveError,
+      investmentRejectSuccess,
+      investmentRejectIsError,
+      investmentRejectError,
     });
   }, [
     rejectSuccess,
@@ -216,6 +258,8 @@ export default function Actions({
     approveIsError,
     investmentApproveSuccess,
     investmentApproveIsError,
+    investmentRejectSuccess,
+    investmentRejectIsError,
   ]);
   const factoryDashboard = `/product-factory/investment?category=requests${
     filter ? "&filter=" + filter : ""
@@ -233,47 +277,12 @@ export default function Actions({
       data-testid="actions-div"
       className=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-[60px] py-[40px]  "
     >
-      {/* Submission  */}
-      {createProcesses.includes(process) && (
-        <div className=" flex  gap-6">
-          <button
-            onClick={handleCancel}
-            type="button"
-            className="max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"
-          >
-            <CancelSvg />
-
-            <div className=" text-gray-500 text-base font-medium leading-normal">
-              Cancel
-            </div>
-          </button>
-
-          <Button
-            onClick={handleModify}
-            className="ml-auto max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"
-          >
-            <ModifySvg />
-            <span className="text-gray-500 text-base font-medium leading-normal">
-              Modify
-            </span>
-          </Button>
-
-          <button
-            onClick={handleSubmit}
-            disabled={false}
-            type="submit"
-            className="px-10 py-[5px] flex items-center gap-2 justify-center text-[#ffffff] bg-sterling-red-800 rounded-lg active:scale-95"
-          >
-            <SubmitSvg />
-            <span className=" font-medium text-base">Submit</span>
-          </button>
-        </div>
-      )}
       {/* Preview  */}
       {((process !== "verdict" && !createProcesses.includes(process)) ||
-        !permissions.some((permission) =>
-          validPermissions.includes(permission)
-        )) && (
+        (process == "verdict" &&
+          !permissions.some((permission) =>
+            validPermissions.includes(permission)
+          ))) && (
         <div className=" flex  gap-x-6 justify-end">
           <Button
             data-testid="print"
@@ -316,31 +325,45 @@ export default function Actions({
               </div>
             </Button>
           </Link>
-
-          {/* <Button
-            data-testid="request_modify"
-            className="max-w-max  px-10 py-[5px] text-white rounded-lg border border-sterling-red-800 bg-sterling-red-800 justify-center items-center gap-2.5 inline-flex"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="25"
-              height="24"
-              viewBox="0 0 25 24"
-              fill="none"
-            >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M10.3546 1.09184C10.3548 0.864339 10.284 0.642467 10.1521 0.457273C10.0202 0.272079 9.83384 0.132831 9.61905 0.0590163C9.40427 -0.0147986 9.17182 -0.0194868 8.95425 0.045608C8.73667 0.110703 8.54486 0.242323 8.40564 0.422049L0.78409 10.2398C0.63541 10.4313 0.554688 10.667 0.554688 10.9096C0.554687 11.1522 0.63541 11.3879 0.78409 11.5794L8.40564 21.3972C8.54486 21.5769 8.73667 21.7085 8.95425 21.7736C9.17182 21.8387 9.40427 21.8341 9.61905 21.7602C9.83384 21.6864 10.0202 21.5472 10.1521 21.362C10.284 21.1768 10.3548 20.9549 10.3546 20.7274V16.3749C16.2112 16.497 19.0246 17.6108 20.4379 18.8217C21.7815 19.9725 22.0275 21.3263 22.2834 22.7444L22.3498 23.1099C22.3987 23.3714 22.5412 23.6059 22.7506 23.7695C22.9601 23.933 23.2219 24.0143 23.4869 23.9979C23.752 23.9816 24.0019 23.8688 24.1897 23.6807C24.3775 23.4926 24.4902 23.2423 24.5067 22.9768C24.6929 19.9791 24.4131 15.6353 22.2997 12.0016C20.2484 8.47482 16.5542 5.76292 10.3546 5.4793V1.09184Z"
-                fill="#fff"
-              />
-            </svg>
-            <span className="text-white text-base font-medium leading-normal">
-              Modify
-            </span>
-          </Button> */}
         </div>
       )}
+      {/* Submission/creation  */}
+      {createProcesses.includes(process) && (
+        <div className=" flex  gap-6">
+          <button
+            onClick={handleCancel}
+            type="button"
+            className="max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"
+          >
+            <CancelSvg />
+
+            <div className=" text-gray-500 text-base font-medium leading-normal">
+              Cancel
+            </div>
+          </button>
+
+          <Button
+            onClick={handleModify}
+            className="ml-auto max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"
+          >
+            <ModifySvg />
+            <span className="text-gray-500 text-base font-medium leading-normal">
+              Modify
+            </span>
+          </Button>
+
+          <button
+            onClick={handleSubmit}
+            disabled={false}
+            type="submit"
+            className="px-10 py-[5px] flex items-center gap-2 justify-center text-[#ffffff] bg-sterling-red-800 rounded-lg active:scale-95"
+          >
+            <SubmitSvg />
+            <span className=" font-medium text-base">Submit</span>
+          </button>
+        </div>
+      )}
+
       {/* Approval/ Rejection  */}
       {process === "verdict" &&
         permissions.some((permission) =>
@@ -477,9 +500,17 @@ export default function Actions({
           setRouteTo={setRouteTo}
         />
       )}
-      {(approveLoading || rejectLoading || investmentApproveLoading) && (
+      {(approveLoading ||
+        rejectLoading ||
+        investmentApproveLoading ||
+        investmentRejectLoading) && (
         <Loader
-          isOpen={approveLoading || rejectLoading || investmentApproveLoading}
+          isOpen={
+            approveLoading ||
+            rejectLoading ||
+            investmentApproveLoading ||
+            investmentRejectLoading
+          }
           text={"Submitting"}
         />
       )}

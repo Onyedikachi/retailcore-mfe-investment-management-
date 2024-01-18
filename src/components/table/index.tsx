@@ -30,6 +30,7 @@ import ProductDetail from "../modals/ProductDetail";
 import { StatusCategoryType } from "@app/types";
 import { useNavigate } from "react-router-dom";
 import {
+  useEarlyLiquidateMutation,
   useActivateProductMutation,
   useDeleteProductRequestMutation,
   useDeleteInvestmentRequestMutation,
@@ -61,6 +62,12 @@ interface TableProps {
 }
 
 export const statusHandler = ({
+  partLiquidateSuccess,
+  partLiquidateIsError,
+  partLiquidateError,
+  earlyLiquidateSuccess,
+  earlyLiquidateIsError,
+  earlyLiquidateError,
   isDeleteInvestmentRequestSuccess,
   isDeleteInvestmentRequestError,
   deleteInvestmentRequestError,
@@ -77,6 +84,14 @@ export const statusHandler = ({
   error,
   role,
 }) => {
+  if (earlyLiquidateSuccess) {
+    setSuccessText(Messages.EARLY_LIQUIDATION_REQUEST);
+    setIsSuccessOpen(true);
+  }
+  if (partLiquidateSuccess) {
+    setSuccessText(Messages.PART_LIQUIDATION_REQUEST);
+    setIsSuccessOpen(true);
+  }
   if (isDeleteInvestmentRequestSuccess) {
     setSuccessText(Messages.PRODUCT_DELETE_SUCCESS);
     setIsSuccessOpen(true);
@@ -111,6 +126,24 @@ export const statusHandler = ({
     setFailedText(Messages.PRODUCT_ACTIVATE_FAILED);
     setFailedSubtext(
       activateError?.message?.message || activateError?.message?.Message
+    );
+    setFailed(true);
+  }
+
+  if (earlyLiquidateIsError) {
+    setFailedText(Messages.REQUEST_FAILED);
+    setFailedSubtext(
+      earlyLiquidateError?.message?.message ||
+        earlyLiquidateError?.message?.Message
+    );
+    setFailed(true);
+  }
+
+  if (partLiquidateIsError) {
+    setFailedText(Messages.REQUEST_FAILED);
+    setFailedSubtext(
+      partLiquidateError?.message?.message ||
+        partLiquidateError?.message?.Message
     );
     setFailed(true);
   }
@@ -337,6 +370,15 @@ export default function TableComponent<TableProps>({
 
   // function getdata(item, key) {}
   // @ts-ignore
+  const handleLiquidation = (data, type) => {
+    if (type.toLowerCase() === "part") {
+      partLiquidateInvestment({...data, investementBookingId: 'experiment'})
+    }
+
+    if (type.toLowerCase() === "early") {
+      earlyLiquidateInvestment(data);
+    }
+  };
   const handleAction = (action, items) => {
     // console.log(JSON.stringify({ action, items }));
     // return;
@@ -360,6 +402,26 @@ export default function TableComponent<TableProps>({
       selected,
     });
   };
+
+  const [
+    earlyLiquidateInvestment,
+    {
+      isSuccess: earlyLiquidateSuccess,
+      isError: earlyLiquidateIsError,
+      error: earlyLiquidateError,
+      isLoading: earlyLiquidateIsLoading,
+    },
+  ] = useEarlyLiquidateMutation();
+
+  const [
+    partLiquidateInvestment,
+    {
+      isSuccess: partLiquidateSuccess,
+      isError: partLiquidateIsError,
+      error: partLiquidateError,
+      isLoading: partLiquidateIsLoading,
+    },
+  ] = useEarlyLiquidateMutation();
 
   const [
     deleteRequest,
@@ -402,6 +464,12 @@ export default function TableComponent<TableProps>({
 
   useEffect(() => {
     statusHandler({
+      partLiquidateSuccess,
+      partLiquidateIsError,
+      partLiquidateError,
+      earlyLiquidateSuccess,
+      earlyLiquidateIsError,
+      earlyLiquidateError,
       isDeleteInvestmentRequestSuccess,
       isDeleteInvestmentRequestError,
       deleteInvestmentRequestError,
@@ -427,6 +495,12 @@ export default function TableComponent<TableProps>({
     isDeleteInvestmentRequestSuccess,
     isDeleteInvestmentRequestError,
     deleteInvestmentRequestError,
+    earlyLiquidateSuccess,
+    earlyLiquidateIsError,
+    earlyLiquidateError,
+    partLiquidateSuccess,
+    partLiquidateIsError,
+    partLiquidateError,
   ]);
 
   return (
@@ -715,6 +789,8 @@ export default function TableComponent<TableProps>({
         isLiquidation={isLiquidation}
         setLiquidationOpen={setLiquidationOpen}
         liquidationType={liquidationType}
+        handleLiquidation={handleLiquidation}
+        liquidationLoading={earlyLiquidateIsLoading || partLiquidateIsLoading}
         handleRefresh={handleRefresh}
       />
     </div>

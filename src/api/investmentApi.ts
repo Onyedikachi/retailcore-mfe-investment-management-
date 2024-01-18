@@ -501,6 +501,33 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    rejectInvestment: builder.mutation<{ id: string }, { id: string }>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT_REQUEST}/reject/${data.id}`,
+          method: "put",
+          body: data,
+        };
+      },
+    }),
+    earlyLiquidate: builder.mutation<{ id: string }, { id: string }>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT}/early-liquidate`,
+          method: "put",
+          body: data
+        };
+      },
+    }),
+    partLiquidate: builder.mutation<{ id: string }, { id: string }>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT}/part-liquidate`,
+          method: "put",
+          body: data
+        };
+      },
+    }),
   }),
 });
 
@@ -549,4 +576,7 @@ export const {
   useGetFormDocumentsQuery,
   useGetFormTypeQuery,
   useApproveInvestmentMutation,
+  useRejectInvestmentMutation,
+  useEarlyLiquidateMutation,
+  usePartLiquidateMutation,
 } = investmentApi;

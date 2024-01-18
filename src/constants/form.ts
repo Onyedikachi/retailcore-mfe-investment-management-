@@ -33,31 +33,42 @@ export const BookingCustomerInfoSchema = yup.object().shape({
   customerName: yup.string().required("Select a customer account"),
   customerAccount: yup.string().required("Select a customer account"),
   investmentformUrl: yup.string().required("Request form is required"),
-  balance: yup.number().typeError("Invalid value").nullable().min(1,"Insufficient balance").required()
+  balance: yup
+    .number()
+    .typeError("Invalid value")
+    .nullable()
+    .min(1, "Insufficient balance")
+    .required(),
 });
 export const FacilityDetailsModelSchema = yup.object().shape({
   investmentProductId: yup.string().uuid().required("Select an investment"),
   investmentPurpose: yup.string(),
   tenor: yup
-    .number().typeError("Invalid value")
+    .number()
+    .typeError("Invalid value")
     .integer()
     .positive()
     .min(yup.ref("tenorMin"), "Tenor is too short")
     .max(yup.ref("tenorMax"), "Tenor is too long")
-    .nullable().required("Tenor is required"),
+    .nullable()
+    .required("Tenor is required"),
   principal: yup
-    .number().typeError("Invalid value")
+    .number()
+    .typeError("Invalid value")
     .integer()
     .positive()
     .min(yup.ref("prinMin"), "Principal is too small")
     .max(yup.ref("prinMax"), "Principal is too large")
-    .nullable().required("Principal is required"),
+    .nullable()
+    .required("Principal is required"),
   interestRate: yup
-    .number().typeError("Invalid value")
+    .number()
+    .typeError("Invalid value")
     .positive()
     .min(yup.ref("intMin"), "Interest rate is too low")
     .max(yup.ref("intMax"), "Interest rate is too high")
-    .nullable().required("Interest is required"),
+    .nullable()
+    .required("Interest is required"),
   capitalizationMethod: yup.number().integer().min(0).max(4).required(),
   tenorMin: yup.number().typeError("Invalid value").integer().nullable(),
   tenorMax: yup.number().typeError("Invalid value").integer().nullable(),
@@ -611,6 +622,20 @@ export const liquiditySetupSchema = yup
       }),
   })
   .required();
+
+export const LiquidationSchema = yup.object({
+  investementBookingId: yup.string().required(),
+  reason: yup.string().required("Provide a reason"),
+  documentUrl: yup.string().required("Upload supporting document"),
+  notify: yup.boolean().required(),
+  // amount: yup
+  //   .number()
+  //   .typeError("Invalid value")
+  //   .integer()
+  //   .positive()
+  //   .max(yup.ref("maxAmount"), "Exceeded max amount"),
+  maxAmount: yup.number(),
+});
 
 export const glMappingSchema = yup.object({
   TermDepositLiabilityAccount: yup

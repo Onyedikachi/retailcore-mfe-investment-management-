@@ -12,7 +12,12 @@ export default ({value, type = null, sub_type, process, setConfirmText, setActio
       
     }
     if (value === "reject" && !sub_type) {
-      setConfirmText(Prompts.PRODUCT_CREATION_REJECT);
+      if(type?.toLowerCase() === 'individual'){
+        setConfirmText(Prompts.BOOKING_CREATION_REJECT);
+      }else {
+        setConfirmText(Prompts.PRODUCT_CREATION_REJECT);
+      }
+     
     }
 
     if (value === "approve" && sub_type === "activation") {

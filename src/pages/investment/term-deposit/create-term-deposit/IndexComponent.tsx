@@ -134,10 +134,10 @@ export const handleRequestIsSuccess = ({
     if (process === "withdraw_modify") {
       previousData.current = {
         ...previousData.current,
-        productName: data?.productInfo.productName,
-        description: data?.productInfo.description,
-        slogan: data?.productInfo.slogan,
-        currency: data?.productInfo.currency,
+        productName: data?.productInfo?.productName,
+        description: data?.productInfo?.description,
+        slogan: data?.productInfo?.slogan,
+        currency: data?.productInfo?.currency,
         prodType: data?.productType,
         state: data?.state,
         requestStatus: requestData?.data?.requestStatus,
@@ -220,7 +220,7 @@ export default function CreateTermDeposit() {
   const refresh = searchParams.get("refresh");
   const activeId = useRef(null);
   const previousData = useRef({});
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [subText, setSubText] = useState("");
   const [successText, setSuccessText] = useState("");

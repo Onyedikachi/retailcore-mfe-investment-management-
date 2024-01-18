@@ -78,15 +78,14 @@ export const actionHandler = ({
     return;
   }
   if (action.toLowerCase() === Actions.PART_LIQUIDATE) {
-   
-    setLiquidationType("part")
-    setLiquidationOpen(true)
+    setLiquidationType("part");
+    setLiquidationOpen(true);
 
     return;
   }
   if (action.toLowerCase() === Actions.EARLY_LIQUIDATE) {
-    setLiquidationType("early")
-    setLiquidationOpen(true)
+    setLiquidationType("early");
+    setLiquidationOpen(true);
     return;
   }
   if (action.toLowerCase() === Actions.DELETE_DRAFT) {
@@ -144,12 +143,12 @@ export const actionHandler = ({
           `/product-factory/investment/management/${specificCategory}/process-summary/verdict/${items.id}`
         )
       : navigate(
-        `/product-factory/investment/${encodeURIComponent(
-          "term deposit"
-        )}/process-summary/verdict/${items.id}?category=request&filter=${
-          selected.value
-        }`
-      );
+          `/product-factory/investment/${encodeURIComponent(
+            "term deposit"
+          )}/process-summary/verdict/${items.id}?category=request&filter=${
+            selected.value
+          }`
+        );
     return;
   }
 };

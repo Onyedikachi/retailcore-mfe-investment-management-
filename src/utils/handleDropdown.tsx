@@ -8,7 +8,7 @@ export function handleDropdown(
   userId?: string
 ) {
   if (!status || !type) return [];
-
+  
   //returns table options depending on whether its creation or activation
   const firstLevel =
     DropDownOptions[
@@ -32,3 +32,4 @@ export function handleDropdown(
     return selectedType[status].filter((i) => i.text.toLowerCase() === "view");
   }
 }
+

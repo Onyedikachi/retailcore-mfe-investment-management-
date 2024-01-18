@@ -195,7 +195,10 @@ export default function FacilityDetails({
   const [balanceError, setBalanceError] = useState(false);
   const [showError, setShowError] = useState(false);
   const [validDoc, setValidDoc] = useState(null);
-  const [capMethodOptions,setCapMethodOptions] = useState(CapitalizationOptions)
+  const [validCurrency, setValidCurency] = useState(null);
+  const [capMethodOptions, setCapMethodOptions] = useState(
+    CapitalizationOptions
+  );
   const values = getValues();
 
   const [
@@ -240,7 +243,7 @@ export default function FacilityDetails({
       setProductDetail(null);
     }
 
-    setDisabled(!isValid || balanceError || !validDoc);
+    setDisabled(!isValid || balanceError || !validDoc || !validCurrency);
   }, [isValid, values, validDoc, balanceError]);
 
   useEffect(() => {
@@ -286,13 +289,29 @@ export default function FacilityDetails({
 
     setValidDoc(validateDocs?.hasAllDocuments);
 
-    // Hanle booking options  
-    if(productDetail?.liquidation?.part_AllowPartLiquidation || productDetail?.liquidation?.early_AllowPartLiquidation){
-      setCapMethodOptions(CapitalizationOptions.filter(i=> i.value !== 0))
-    }else{
-      setCapMethodOptions(CapitalizationOptions)
+    // Hanle booking options
+    if (
+      productDetail?.liquidation?.part_AllowPartLiquidation ||
+      productDetail?.liquidation?.early_AllowPartLiquidation
+    ) {
+      setCapMethodOptions(CapitalizationOptions.filter((i) => i.value !== 0));
+    } else {
+      setCapMethodOptions(CapitalizationOptions);
     }
-  }, [formData.customerBookingInfoModel?.balance, productDetail]);
+    if (
+      formData?.customerBookingInfoModel?.currencyId !==
+      productDetail?.productInfo?.currency
+    ) {
+      setValidCurency(false);
+      setShowError(true);
+    } else {
+      setValidCurency(true);
+    }
+  }, [
+    formData.customerBookingInfoModel?.balance,
+    productDetail,
+    formData.customerBookingInfoModel?.currencyId,
+  ]);
 
   return (
     <form
@@ -588,7 +607,7 @@ export default function FacilityDetails({
                       defaultValue={
                         formData?.facilityDetailsModel?.capitalizationMethod
                       }
-                      placeholder="Select currency"
+                      placeholder="Select option"
                       clearErrors={clearErrors}
                       options={capMethodOptions}
                       trigger={trigger}
@@ -600,10 +619,14 @@ export default function FacilityDetails({
           )}
         </div>
       </div>
-      {showError && (
+      {showError && productDetail && (balanceError || !validCurrency) && (
         <Failed
           text={Messages.UNABLE_TO_BOOK}
-          subtext={Messages.INSUFFICIENT_BALANCE}
+          subtext={
+            balanceError
+              ? Messages.INSUFFICIENT_BALANCE
+              : Messages.CURRENCY_ERROR
+          }
           isOpen={showError}
           setIsOpen={setShowError}
           canRetry
