@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { BookInvestmentFormSteps } from "@app/constants";
 import { ProductInfoInvestmentCalc } from "@app/components/management";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import handleFormRef from "./HandleFormRef";
+import handleFormRef from "./handleFormRef";
 import { Preview } from "@app/components/pages/management/book-investment";
 import {
   Breadcrumbs,
@@ -31,6 +31,47 @@ import BottomBarLoader from "@app/components/BottomBarLoader";
 export function handleNext(step, setStep, BookInvestmentFormSteps) {
   console.log(step);
   step < BookInvestmentFormSteps.length && setStep(step + 1);
+}
+
+export function handleNav({step, setStep, navigate, investmentType}) {
+  step < BookInvestmentFormSteps.length
+    ? handleNext(step, setStep, BookInvestmentFormSteps)
+    : navigate(
+      `/product-factory/investment/management/${process}/${investmentType}?stage=summary`
+    );
+}
+
+export function handleLinks(links, process) {
+  // const extraLinks = [
+  //   {
+  //     id: 3,
+  //     title: "Te\rm Deposit",
+  //     url: "/product-factory/investment",
+  //   },
+  //   {
+  //     id: 4,
+  //     title: productData?.productInfo?.productName,
+  //     url: "#",
+  //   },
+  // ];
+  // if (
+  //   process === "continue" ||
+  //   process === "modify" ||
+  //   process === "withdraw_modify"
+  // ) {
+  //   let filteredLinks = links.filter((i) => i.id !== 3);
+  //   return [...filteredLinks, ...extraLinks];
+  // }
+  if (process === "restructure") {
+    const linkWithId2 = links.find((link) => link.id === 2);
+
+    // Update its title property
+    if (linkWithId2) {
+      linkWithId2.title = "Restructure Investment";
+    }
+  }
+
+  return links;
 }
 
 export function handlePrev(step, setStep, BookInvestmentFormSteps) {
@@ -140,48 +181,9 @@ export default function IndexComponent() {
     },
   ];
 
-  function handleLinks(links, process) {
-    // const extraLinks = [
-    //   {
-    //     id: 3,
-    //     title: "Te\rm Deposit",
-    //     url: "/product-factory/investment",
-    //   },
-    //   {
-    //     id: 4,
-    //     title: productData?.productInfo?.productName,
-    //     url: "#",
-    //   },
-    // ];
-    // if (
-    //   process === "continue" ||
-    //   process === "modify" ||
-    //   process === "withdraw_modify"
-    // ) {
-    //   let filteredLinks = links.filter((i) => i.id !== 3);
-    //   return [...filteredLinks, ...extraLinks];
-    // }
-    if (process === "restructure") {
-      const linkWithId2 = links.find((link) => link.id === 2);
 
-      // Update its title property
-      if (linkWithId2) {
-        linkWithId2.title = "Restructure Investment";
-      }
-    }
 
-    return links;
-  }
 
-  function handleNav() {
-    step < BookInvestmentFormSteps.length
-      ? handleNext(step, setStep, BookInvestmentFormSteps)
-      : navigate(
-          `/product-factory/investment/management/${process}/${investmentType}?${
-            id ? `id=${id}&` : ""
-          }stage=summary`
-        );
-  }
 
   const {
     data: detail,
@@ -366,7 +368,7 @@ export default function IndexComponent() {
                       formData={formData}
                       setFormData={setFormData}
                       step={step}
-                      handleNav={handleNav}
+                      handleNav={() => handleNav({ step, setStep, navigate, investmentType })}
                       setDisabled={setDisabled}
                       isSavingDraft={isSavingDraft}
                       setProductDetail={setProductDetail}

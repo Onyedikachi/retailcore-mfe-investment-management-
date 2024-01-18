@@ -49,7 +49,7 @@ Object {
                 class="flex items-end cursor-pointer"
               >
                 <div
-                  aria-describedby="tippy-tooltip-27"
+                  aria-describedby="tippy-tooltip-21"
                   class="bg-white max-w-[320px]"
                   data-tooltipped=""
                   style="display: inline;"
@@ -107,7 +107,7 @@ Object {
                             class="relative flex items-center max-w-[642px]"
                           >
                             <input
-                              class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                              class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                               data-testid="min-max-input"
                               placeholder="0"
                               type="number"
@@ -177,7 +177,7 @@ Object {
                           aria-haspopup="listbox"
                           class="relative w-full cursor-pointer  bg-white py-1  pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm border-[#8F8F8F]"
                           data-headlessui-state=""
-                          id="headlessui-listbox-button-9"
+                          id="headlessui-listbox-button-3"
                           type="button"
                         >
                           <span
@@ -228,7 +228,7 @@ Object {
                             class="relative flex items-center max-w-[642px]"
                           >
                             <input
-                              class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                              class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                               data-testid="min-max-input"
                               placeholder="0"
                               type="number"
@@ -298,7 +298,7 @@ Object {
                           aria-haspopup="listbox"
                           class="relative w-full cursor-pointer  bg-white py-1  pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm border-[#8F8F8F]"
                           data-headlessui-state=""
-                          id="headlessui-listbox-button-10"
+                          id="headlessui-listbox-button-4"
                           type="button"
                         >
                           <span
@@ -369,7 +369,7 @@ Object {
                 class="flex items-end cursor-pointer"
               >
                 <div
-                  aria-describedby="tippy-tooltip-28"
+                  aria-describedby="tippy-tooltip-22"
                   class="bg-white max-w-[320px]"
                   data-tooltipped=""
                   style="display: inline;"
@@ -424,7 +424,7 @@ Object {
                           class="relative flex items-center max-w-[642px]"
                         >
                           <input
-                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                             id="applicablePrincipalMin"
                             inputmode="decimal"
                             name="applicablePrincipalMin"
@@ -459,7 +459,7 @@ Object {
                           class="relative flex items-center max-w-[642px]"
                         >
                           <input
-                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                             id="applicablePrincipalMax"
                             inputmode="decimal"
                             name="applicablePrincipalMax"
@@ -517,7 +517,7 @@ Object {
                 class="flex items-end cursor-pointer"
               >
                 <div
-                  aria-describedby="tippy-tooltip-29"
+                  aria-describedby="tippy-tooltip-23"
                   class="bg-white max-w-[320px]"
                   data-tooltipped=""
                   style="display: inline;"
@@ -628,7 +628,7 @@ Object {
                           class="relative flex items-center max-w-[642px]"
                         >
                           <input
-                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                             id="interestRateMin"
                             inputmode="decimal"
                             name="interestRateMin"
@@ -669,7 +669,7 @@ Object {
                           class="relative flex items-center max-w-[642px]"
                         >
                           <input
-                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                             id="interestRateMax"
                             inputmode="decimal"
                             name="interestRateMax"
@@ -703,7 +703,7 @@ Object {
             >
               Interest Computation Days in Year Method
               <div
-                aria-describedby="tippy-tooltip-30"
+                aria-describedby="tippy-tooltip-24"
                 class="bg-white max-w-[320px]"
                 data-tooltipped=""
                 style="display: inline;"
@@ -758,7 +758,7 @@ Object {
                     class="relative w-full cursor-pointer  bg-white py-1  pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm border-[#8F8F8F]"
                     data-headlessui-state="disabled"
                     disabled=""
-                    id="headlessui-listbox-button-11"
+                    id="headlessui-listbox-button-5"
                     type="button"
                   >
                     <span
@@ -836,7 +836,7 @@ Object {
               class="flex items-end cursor-pointer"
             >
               <div
-                aria-describedby="tippy-tooltip-27"
+                aria-describedby="tippy-tooltip-21"
                 class="bg-white max-w-[320px]"
                 data-tooltipped=""
                 style="display: inline;"
@@ -894,7 +894,7 @@ Object {
                           class="relative flex items-center max-w-[642px]"
                         >
                           <input
-                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                             data-testid="min-max-input"
                             placeholder="0"
                             type="number"
@@ -964,7 +964,7 @@ Object {
                         aria-haspopup="listbox"
                         class="relative w-full cursor-pointer  bg-white py-1  pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm border-[#8F8F8F]"
                         data-headlessui-state=""
-                        id="headlessui-listbox-button-9"
+                        id="headlessui-listbox-button-3"
                         type="button"
                       >
                         <span
@@ -1015,7 +1015,7 @@ Object {
                           class="relative flex items-center max-w-[642px]"
                         >
                           <input
-                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                            class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                             data-testid="min-max-input"
                             placeholder="0"
                             type="number"
@@ -1085,7 +1085,7 @@ Object {
                         aria-haspopup="listbox"
                         class="relative w-full cursor-pointer  bg-white py-1  pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm border-[#8F8F8F]"
                         data-headlessui-state=""
-                        id="headlessui-listbox-button-10"
+                        id="headlessui-listbox-button-4"
                         type="button"
                       >
                         <span
@@ -1156,7 +1156,7 @@ Object {
               class="flex items-end cursor-pointer"
             >
               <div
-                aria-describedby="tippy-tooltip-28"
+                aria-describedby="tippy-tooltip-22"
                 class="bg-white max-w-[320px]"
                 data-tooltipped=""
                 style="display: inline;"
@@ -1211,7 +1211,7 @@ Object {
                         class="relative flex items-center max-w-[642px]"
                       >
                         <input
-                          class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                          class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                           id="applicablePrincipalMin"
                           inputmode="decimal"
                           name="applicablePrincipalMin"
@@ -1246,7 +1246,7 @@ Object {
                         class="relative flex items-center max-w-[642px]"
                       >
                         <input
-                          class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                          class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                           id="applicablePrincipalMax"
                           inputmode="decimal"
                           name="applicablePrincipalMax"
@@ -1304,7 +1304,7 @@ Object {
               class="flex items-end cursor-pointer"
             >
               <div
-                aria-describedby="tippy-tooltip-29"
+                aria-describedby="tippy-tooltip-23"
                 class="bg-white max-w-[320px]"
                 data-tooltipped=""
                 style="display: inline;"
@@ -1415,7 +1415,7 @@ Object {
                         class="relative flex items-center max-w-[642px]"
                       >
                         <input
-                          class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                          class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                           id="interestRateMin"
                           inputmode="decimal"
                           name="interestRateMin"
@@ -1456,7 +1456,7 @@ Object {
                         class="relative flex items-center max-w-[642px]"
                       >
                         <input
-                          class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                          class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                           id="interestRateMax"
                           inputmode="decimal"
                           name="interestRateMax"
@@ -1490,7 +1490,7 @@ Object {
           >
             Interest Computation Days in Year Method
             <div
-              aria-describedby="tippy-tooltip-30"
+              aria-describedby="tippy-tooltip-24"
               class="bg-white max-w-[320px]"
               data-tooltipped=""
               style="display: inline;"
@@ -1545,7 +1545,7 @@ Object {
                   class="relative w-full cursor-pointer  bg-white py-1  pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm border-[#8F8F8F]"
                   data-headlessui-state="disabled"
                   disabled=""
-                  id="headlessui-listbox-button-11"
+                  id="headlessui-listbox-button-5"
                   type="button"
                 >
                   <span
@@ -1664,7 +1664,7 @@ Object {
                   class="flex items-end cursor-pointer"
                 >
                   <div
-                    aria-describedby="tippy-tooltip-31"
+                    aria-describedby="tippy-tooltip-25"
                     class="bg-white max-w-[320px]"
                     data-tooltipped=""
                     style="display: inline;"
@@ -1709,7 +1709,7 @@ Object {
                 class="bg-[#CF2A2A] border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
                 data-headlessui-state="checked"
                 data-testid="part_AllowPartLiquidation"
-                id="headlessui-switch-12"
+                id="headlessui-switch-6"
                 role="switch"
                 tabindex="0"
                 type="button"
@@ -1764,7 +1764,7 @@ Object {
                                   class="relative flex items-center max-w-[642px]"
                                 >
                                   <input
-                                    class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                                    class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                                     id="part_MaxPartLiquidation"
                                     inputmode="decimal"
                                     name="part_MaxPartLiquidation"
@@ -1832,7 +1832,7 @@ Object {
                                   class="relative flex items-center max-w-[642px]"
                                 >
                                   <input
-                                    class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                                    class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                                     data-testid="min-max-input"
                                     max="10"
                                     placeholder="0"
@@ -1907,7 +1907,7 @@ Object {
                                   class="relative w-full cursor-pointer  bg-white py-1  pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm border-[#8F8F8F]"
                                   data-headlessui-state="disabled"
                                   disabled=""
-                                  id="headlessui-listbox-button-14"
+                                  id="headlessui-listbox-button-8"
                                   type="button"
                                 >
                                   <span
@@ -2005,7 +2005,7 @@ Object {
                                 aria-haspopup="listbox"
                                 class="relative w-full cursor-pointer  bg-white py-1  pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm border-[#8F8F8F]"
                                 data-headlessui-state=""
-                                id="headlessui-listbox-button-15"
+                                id="headlessui-listbox-button-9"
                                 type="button"
                               >
                                 <span
@@ -2056,7 +2056,7 @@ Object {
                   class="flex items-end cursor-pointer"
                 >
                   <div
-                    aria-describedby="tippy-tooltip-32"
+                    aria-describedby="tippy-tooltip-26"
                     class="bg-white max-w-[320px]"
                     data-tooltipped=""
                     style="display: inline;"
@@ -2093,7 +2093,7 @@ Object {
                 class="bg-transparent border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
                 data-headlessui-state=""
                 data-testid="early_AllowEarlyLiquidation"
-                id="headlessui-switch-13"
+                id="headlessui-switch-7"
                 role="switch"
                 tabindex="0"
                 type="button"
@@ -2138,7 +2138,7 @@ Object {
                 class="flex items-end cursor-pointer"
               >
                 <div
-                  aria-describedby="tippy-tooltip-31"
+                  aria-describedby="tippy-tooltip-25"
                   class="bg-white max-w-[320px]"
                   data-tooltipped=""
                   style="display: inline;"
@@ -2183,7 +2183,7 @@ Object {
               class="bg-[#CF2A2A] border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
               data-headlessui-state="checked"
               data-testid="part_AllowPartLiquidation"
-              id="headlessui-switch-12"
+              id="headlessui-switch-6"
               role="switch"
               tabindex="0"
               type="button"
@@ -2238,7 +2238,7 @@ Object {
                                 class="relative flex items-center max-w-[642px]"
                               >
                                 <input
-                                  class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                                  class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                                   id="part_MaxPartLiquidation"
                                   inputmode="decimal"
                                   name="part_MaxPartLiquidation"
@@ -2306,7 +2306,7 @@ Object {
                                 class="relative flex items-center max-w-[642px]"
                               >
                                 <input
-                                  class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
+                                  class="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] border-[#8F8F8F]"
                                   data-testid="min-max-input"
                                   max="10"
                                   placeholder="0"
@@ -2381,7 +2381,7 @@ Object {
                                 class="relative w-full cursor-pointer  bg-white py-1  pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm border-[#8F8F8F]"
                                 data-headlessui-state="disabled"
                                 disabled=""
-                                id="headlessui-listbox-button-14"
+                                id="headlessui-listbox-button-8"
                                 type="button"
                               >
                                 <span
@@ -2479,7 +2479,7 @@ Object {
                               aria-haspopup="listbox"
                               class="relative w-full cursor-pointer  bg-white py-1  pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm border-[#8F8F8F]"
                               data-headlessui-state=""
-                              id="headlessui-listbox-button-15"
+                              id="headlessui-listbox-button-9"
                               type="button"
                             >
                               <span
@@ -2530,7 +2530,7 @@ Object {
                 class="flex items-end cursor-pointer"
               >
                 <div
-                  aria-describedby="tippy-tooltip-32"
+                  aria-describedby="tippy-tooltip-26"
                   class="bg-white max-w-[320px]"
                   data-tooltipped=""
                   style="display: inline;"
@@ -2567,7 +2567,7 @@ Object {
               class="bg-transparent border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
               data-headlessui-state=""
               data-testid="early_AllowEarlyLiquidation"
-              id="headlessui-switch-13"
+              id="headlessui-switch-7"
               role="switch"
               tabindex="0"
               type="button"
@@ -2701,77 +2701,90 @@ Object {
               <div
                 class="flex flex-col items-start gap-y-5"
               >
-                <div
-                  class="flex gap-[10px] items-center "
-                >
-                  <span
-                    class="min-w-[250px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium"
-                    data-testid="input-div"
+                <div>
+                  <div
+                    class="flex gap-x-[50px] items-center "
                   >
-                    Term Deposit Liability account
-                     
-                    <div>
-                      <svg
-                        data-testid="red-dot"
-                        fill="none"
-                        height="5"
-                        viewBox="0 0 5 5"
-                        width="5"
-                        xmlns="http://www.w3.org/2000/svg"
+                    <div
+                      class="w-[300px]"
+                    >
+                      <span
+                        class="flex items-start gap-x-[1px] text-[#636363] text-base font-medium mb-1"
+                        data-testid="input-div"
                       >
-                        <circle
-                          cx="2.5"
-                          cy="2.5"
-                          fill="#CF2A2A"
-                          r="2.5"
-                        />
-                      </svg>
+                        Term Deposit Liability account
+                         
+                        <div>
+                          <svg
+                            data-testid="red-dot"
+                            fill="none"
+                            height="5"
+                            viewBox="0 0 5 5"
+                            width="5"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle
+                              cx="2.5"
+                              cy="2.5"
+                              fill="#CF2A2A"
+                              r="2.5"
+                            />
+                          </svg>
+                        </div>
+                      </span>
+                      <span
+                        class="flex items-start gap-x-[1px] text-[#AAAAAA] text-sm font-normal"
+                      />
                     </div>
-                  </span>
-                  <div>
                     <div>
                       <div
-                        class="w-[360px] relative"
+                        class="mb-[2px]"
                       >
-                        <div
-                          class=" "
-                        >
-                          <div>
+                        <div>
+                          <div
+                            class="w-[360px] relative"
+                          >
                             <div
-                              class="w-full"
-                              data-testid="gli"
+                              class=" "
                             >
-                              <div
-                                class="relative bg-[#fff] w-full"
-                              >
+                              <div>
                                 <div
-                                  class="flex items-center  border-b border-[#8F8F8F]"
-                                  data-testid="open-button"
+                                  class="w-full"
+                                  data-testid="gli"
                                 >
-                                  <span
-                                    class="w-8 h-8 flex items-center justify-center"
+                                  <div
+                                    class="relative bg-[#fff] w-full"
                                   >
-                                    <svg
-                                      class="text-[#48535B] text-lg"
-                                      fill="currentColor"
-                                      height="1em"
-                                      stroke="currentColor"
-                                      stroke-width="0"
-                                      viewBox="0 0 512 512"
-                                      width="1em"
-                                      xmlns="http://www.w3.org/2000/svg"
+                                    <div
+                                      class="flex items-center  border-b border-[#8F8F8F]"
+                                      data-testid="open-button"
                                     >
-                                      <path
-                                        d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+                                      <span
+                                        class="w-8 h-8 flex items-center justify-center"
+                                      >
+                                        <svg
+                                          class="text-[#48535B] text-lg"
+                                          fill="currentColor"
+                                          height="1em"
+                                          stroke="currentColor"
+                                          stroke-width="0"
+                                          viewBox="0 0 512 512"
+                                          width="1em"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+                                          />
+                                        </svg>
+                                      </span>
+                                       
+                                      <input
+                                        class="w-full  ring-0 outline-none bg-transparent"
+                                        data-testid="gli-input"
+                                        value="Test asset primum ledger 100"
                                       />
-                                    </svg>
-                                  </span>
-                                   
-                                  <input
-                                    class="w-full  ring-0 outline-none bg-transparent"
-                                    data-testid="gli-input"
-                                    value="Test asset primum ledger 100"
-                                  />
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -2781,77 +2794,90 @@ Object {
                     </div>
                   </div>
                 </div>
-                <div
-                  class="flex gap-[10px] items-center "
-                >
-                  <span
-                    class="min-w-[250px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium"
-                    data-testid="input-div"
+                <div>
+                  <div
+                    class="flex gap-x-[50px] items-center "
                   >
-                    Interest accural account
-                     
-                    <div>
-                      <svg
-                        data-testid="red-dot"
-                        fill="none"
-                        height="5"
-                        viewBox="0 0 5 5"
-                        width="5"
-                        xmlns="http://www.w3.org/2000/svg"
+                    <div
+                      class="w-[300px]"
+                    >
+                      <span
+                        class="flex items-start gap-x-[1px] text-[#636363] text-base font-medium mb-1"
+                        data-testid="input-div"
                       >
-                        <circle
-                          cx="2.5"
-                          cy="2.5"
-                          fill="#CF2A2A"
-                          r="2.5"
-                        />
-                      </svg>
+                        Interest accural account
+                         
+                        <div>
+                          <svg
+                            data-testid="red-dot"
+                            fill="none"
+                            height="5"
+                            viewBox="0 0 5 5"
+                            width="5"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle
+                              cx="2.5"
+                              cy="2.5"
+                              fill="#CF2A2A"
+                              r="2.5"
+                            />
+                          </svg>
+                        </div>
+                      </span>
+                      <span
+                        class="flex items-start gap-x-[1px] text-[#AAAAAA] text-sm font-normal"
+                      />
                     </div>
-                  </span>
-                  <div>
                     <div>
                       <div
-                        class="w-[360px] relative"
+                        class="mb-[2px]"
                       >
-                        <div
-                          class=" "
-                        >
-                          <div>
+                        <div>
+                          <div
+                            class="w-[360px] relative"
+                          >
                             <div
-                              class="w-full"
-                              data-testid="gli"
+                              class=" "
                             >
-                              <div
-                                class="relative bg-[#fff] w-full"
-                              >
+                              <div>
                                 <div
-                                  class="flex items-center  border-b border-[#8F8F8F]"
-                                  data-testid="open-button"
+                                  class="w-full"
+                                  data-testid="gli"
                                 >
-                                  <span
-                                    class="w-8 h-8 flex items-center justify-center"
+                                  <div
+                                    class="relative bg-[#fff] w-full"
                                   >
-                                    <svg
-                                      class="text-[#48535B] text-lg"
-                                      fill="currentColor"
-                                      height="1em"
-                                      stroke="currentColor"
-                                      stroke-width="0"
-                                      viewBox="0 0 512 512"
-                                      width="1em"
-                                      xmlns="http://www.w3.org/2000/svg"
+                                    <div
+                                      class="flex items-center  border-b border-[#8F8F8F]"
+                                      data-testid="open-button"
                                     >
-                                      <path
-                                        d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+                                      <span
+                                        class="w-8 h-8 flex items-center justify-center"
+                                      >
+                                        <svg
+                                          class="text-[#48535B] text-lg"
+                                          fill="currentColor"
+                                          height="1em"
+                                          stroke="currentColor"
+                                          stroke-width="0"
+                                          viewBox="0 0 512 512"
+                                          width="1em"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+                                          />
+                                        </svg>
+                                      </span>
+                                       
+                                      <input
+                                        class="w-full  ring-0 outline-none bg-transparent"
+                                        data-testid="gli-input"
+                                        value="Test asset primum ledger 21"
                                       />
-                                    </svg>
-                                  </span>
-                                   
-                                  <input
-                                    class="w-full  ring-0 outline-none bg-transparent"
-                                    data-testid="gli-input"
-                                    value="Test asset primum ledger 21"
-                                  />
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -2861,77 +2887,90 @@ Object {
                     </div>
                   </div>
                 </div>
-                <div
-                  class="flex gap-[10px] items-center "
-                >
-                  <span
-                    class="min-w-[250px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium"
-                    data-testid="input-div"
+                <div>
+                  <div
+                    class="flex gap-x-[50px] items-center "
                   >
-                    Interest expense account
-                     
-                    <div>
-                      <svg
-                        data-testid="red-dot"
-                        fill="none"
-                        height="5"
-                        viewBox="0 0 5 5"
-                        width="5"
-                        xmlns="http://www.w3.org/2000/svg"
+                    <div
+                      class="w-[300px]"
+                    >
+                      <span
+                        class="flex items-start gap-x-[1px] text-[#636363] text-base font-medium mb-1"
+                        data-testid="input-div"
                       >
-                        <circle
-                          cx="2.5"
-                          cy="2.5"
-                          fill="#CF2A2A"
-                          r="2.5"
-                        />
-                      </svg>
+                        Interest expense account
+                         
+                        <div>
+                          <svg
+                            data-testid="red-dot"
+                            fill="none"
+                            height="5"
+                            viewBox="0 0 5 5"
+                            width="5"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle
+                              cx="2.5"
+                              cy="2.5"
+                              fill="#CF2A2A"
+                              r="2.5"
+                            />
+                          </svg>
+                        </div>
+                      </span>
+                      <span
+                        class="flex items-start gap-x-[1px] text-[#AAAAAA] text-sm font-normal"
+                      />
                     </div>
-                  </span>
-                  <div>
                     <div>
                       <div
-                        class="w-[360px] relative"
+                        class="mb-[2px]"
                       >
-                        <div
-                          class=" "
-                        >
-                          <div>
+                        <div>
+                          <div
+                            class="w-[360px] relative"
+                          >
                             <div
-                              class="w-full"
-                              data-testid="gli"
+                              class=" "
                             >
-                              <div
-                                class="relative bg-[#fff] w-full"
-                              >
+                              <div>
                                 <div
-                                  class="flex items-center  border-b border-[#8F8F8F]"
-                                  data-testid="open-button"
+                                  class="w-full"
+                                  data-testid="gli"
                                 >
-                                  <span
-                                    class="w-8 h-8 flex items-center justify-center"
+                                  <div
+                                    class="relative bg-[#fff] w-full"
                                   >
-                                    <svg
-                                      class="text-[#48535B] text-lg"
-                                      fill="currentColor"
-                                      height="1em"
-                                      stroke="currentColor"
-                                      stroke-width="0"
-                                      viewBox="0 0 512 512"
-                                      width="1em"
-                                      xmlns="http://www.w3.org/2000/svg"
+                                    <div
+                                      class="flex items-center  border-b border-[#8F8F8F]"
+                                      data-testid="open-button"
                                     >
-                                      <path
-                                        d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+                                      <span
+                                        class="w-8 h-8 flex items-center justify-center"
+                                      >
+                                        <svg
+                                          class="text-[#48535B] text-lg"
+                                          fill="currentColor"
+                                          height="1em"
+                                          stroke="currentColor"
+                                          stroke-width="0"
+                                          viewBox="0 0 512 512"
+                                          width="1em"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+                                          />
+                                        </svg>
+                                      </span>
+                                       
+                                      <input
+                                        class="w-full  ring-0 outline-none bg-transparent"
+                                        data-testid="gli-input"
+                                        value="Test asset primum ledger 11"
                                       />
-                                    </svg>
-                                  </span>
-                                   
-                                  <input
-                                    class="w-full  ring-0 outline-none bg-transparent"
-                                    data-testid="gli-input"
-                                    value="Test asset primum ledger 11"
-                                  />
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -2995,77 +3034,90 @@ Object {
             <div
               class="flex flex-col items-start gap-y-5"
             >
-              <div
-                class="flex gap-[10px] items-center "
-              >
-                <span
-                  class="min-w-[250px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium"
-                  data-testid="input-div"
+              <div>
+                <div
+                  class="flex gap-x-[50px] items-center "
                 >
-                  Term Deposit Liability account
-                   
-                  <div>
-                    <svg
-                      data-testid="red-dot"
-                      fill="none"
-                      height="5"
-                      viewBox="0 0 5 5"
-                      width="5"
-                      xmlns="http://www.w3.org/2000/svg"
+                  <div
+                    class="w-[300px]"
+                  >
+                    <span
+                      class="flex items-start gap-x-[1px] text-[#636363] text-base font-medium mb-1"
+                      data-testid="input-div"
                     >
-                      <circle
-                        cx="2.5"
-                        cy="2.5"
-                        fill="#CF2A2A"
-                        r="2.5"
-                      />
-                    </svg>
+                      Term Deposit Liability account
+                       
+                      <div>
+                        <svg
+                          data-testid="red-dot"
+                          fill="none"
+                          height="5"
+                          viewBox="0 0 5 5"
+                          width="5"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle
+                            cx="2.5"
+                            cy="2.5"
+                            fill="#CF2A2A"
+                            r="2.5"
+                          />
+                        </svg>
+                      </div>
+                    </span>
+                    <span
+                      class="flex items-start gap-x-[1px] text-[#AAAAAA] text-sm font-normal"
+                    />
                   </div>
-                </span>
-                <div>
                   <div>
                     <div
-                      class="w-[360px] relative"
+                      class="mb-[2px]"
                     >
-                      <div
-                        class=" "
-                      >
-                        <div>
+                      <div>
+                        <div
+                          class="w-[360px] relative"
+                        >
                           <div
-                            class="w-full"
-                            data-testid="gli"
+                            class=" "
                           >
-                            <div
-                              class="relative bg-[#fff] w-full"
-                            >
+                            <div>
                               <div
-                                class="flex items-center  border-b border-[#8F8F8F]"
-                                data-testid="open-button"
+                                class="w-full"
+                                data-testid="gli"
                               >
-                                <span
-                                  class="w-8 h-8 flex items-center justify-center"
+                                <div
+                                  class="relative bg-[#fff] w-full"
                                 >
-                                  <svg
-                                    class="text-[#48535B] text-lg"
-                                    fill="currentColor"
-                                    height="1em"
-                                    stroke="currentColor"
-                                    stroke-width="0"
-                                    viewBox="0 0 512 512"
-                                    width="1em"
-                                    xmlns="http://www.w3.org/2000/svg"
+                                  <div
+                                    class="flex items-center  border-b border-[#8F8F8F]"
+                                    data-testid="open-button"
                                   >
-                                    <path
-                                      d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+                                    <span
+                                      class="w-8 h-8 flex items-center justify-center"
+                                    >
+                                      <svg
+                                        class="text-[#48535B] text-lg"
+                                        fill="currentColor"
+                                        height="1em"
+                                        stroke="currentColor"
+                                        stroke-width="0"
+                                        viewBox="0 0 512 512"
+                                        width="1em"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                      >
+                                        <path
+                                          d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+                                        />
+                                      </svg>
+                                    </span>
+                                     
+                                    <input
+                                      class="w-full  ring-0 outline-none bg-transparent"
+                                      data-testid="gli-input"
+                                      value="Test asset primum ledger 100"
                                     />
-                                  </svg>
-                                </span>
-                                 
-                                <input
-                                  class="w-full  ring-0 outline-none bg-transparent"
-                                  data-testid="gli-input"
-                                  value="Test asset primum ledger 100"
-                                />
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -3075,77 +3127,90 @@ Object {
                   </div>
                 </div>
               </div>
-              <div
-                class="flex gap-[10px] items-center "
-              >
-                <span
-                  class="min-w-[250px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium"
-                  data-testid="input-div"
+              <div>
+                <div
+                  class="flex gap-x-[50px] items-center "
                 >
-                  Interest accural account
-                   
-                  <div>
-                    <svg
-                      data-testid="red-dot"
-                      fill="none"
-                      height="5"
-                      viewBox="0 0 5 5"
-                      width="5"
-                      xmlns="http://www.w3.org/2000/svg"
+                  <div
+                    class="w-[300px]"
+                  >
+                    <span
+                      class="flex items-start gap-x-[1px] text-[#636363] text-base font-medium mb-1"
+                      data-testid="input-div"
                     >
-                      <circle
-                        cx="2.5"
-                        cy="2.5"
-                        fill="#CF2A2A"
-                        r="2.5"
-                      />
-                    </svg>
+                      Interest accural account
+                       
+                      <div>
+                        <svg
+                          data-testid="red-dot"
+                          fill="none"
+                          height="5"
+                          viewBox="0 0 5 5"
+                          width="5"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle
+                            cx="2.5"
+                            cy="2.5"
+                            fill="#CF2A2A"
+                            r="2.5"
+                          />
+                        </svg>
+                      </div>
+                    </span>
+                    <span
+                      class="flex items-start gap-x-[1px] text-[#AAAAAA] text-sm font-normal"
+                    />
                   </div>
-                </span>
-                <div>
                   <div>
                     <div
-                      class="w-[360px] relative"
+                      class="mb-[2px]"
                     >
-                      <div
-                        class=" "
-                      >
-                        <div>
+                      <div>
+                        <div
+                          class="w-[360px] relative"
+                        >
                           <div
-                            class="w-full"
-                            data-testid="gli"
+                            class=" "
                           >
-                            <div
-                              class="relative bg-[#fff] w-full"
-                            >
+                            <div>
                               <div
-                                class="flex items-center  border-b border-[#8F8F8F]"
-                                data-testid="open-button"
+                                class="w-full"
+                                data-testid="gli"
                               >
-                                <span
-                                  class="w-8 h-8 flex items-center justify-center"
+                                <div
+                                  class="relative bg-[#fff] w-full"
                                 >
-                                  <svg
-                                    class="text-[#48535B] text-lg"
-                                    fill="currentColor"
-                                    height="1em"
-                                    stroke="currentColor"
-                                    stroke-width="0"
-                                    viewBox="0 0 512 512"
-                                    width="1em"
-                                    xmlns="http://www.w3.org/2000/svg"
+                                  <div
+                                    class="flex items-center  border-b border-[#8F8F8F]"
+                                    data-testid="open-button"
                                   >
-                                    <path
-                                      d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+                                    <span
+                                      class="w-8 h-8 flex items-center justify-center"
+                                    >
+                                      <svg
+                                        class="text-[#48535B] text-lg"
+                                        fill="currentColor"
+                                        height="1em"
+                                        stroke="currentColor"
+                                        stroke-width="0"
+                                        viewBox="0 0 512 512"
+                                        width="1em"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                      >
+                                        <path
+                                          d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+                                        />
+                                      </svg>
+                                    </span>
+                                     
+                                    <input
+                                      class="w-full  ring-0 outline-none bg-transparent"
+                                      data-testid="gli-input"
+                                      value="Test asset primum ledger 21"
                                     />
-                                  </svg>
-                                </span>
-                                 
-                                <input
-                                  class="w-full  ring-0 outline-none bg-transparent"
-                                  data-testid="gli-input"
-                                  value="Test asset primum ledger 21"
-                                />
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -3155,77 +3220,90 @@ Object {
                   </div>
                 </div>
               </div>
-              <div
-                class="flex gap-[10px] items-center "
-              >
-                <span
-                  class="min-w-[250px] flex items-start gap-x-[1px] text-[##636363] text-base font-medium"
-                  data-testid="input-div"
+              <div>
+                <div
+                  class="flex gap-x-[50px] items-center "
                 >
-                  Interest expense account
-                   
-                  <div>
-                    <svg
-                      data-testid="red-dot"
-                      fill="none"
-                      height="5"
-                      viewBox="0 0 5 5"
-                      width="5"
-                      xmlns="http://www.w3.org/2000/svg"
+                  <div
+                    class="w-[300px]"
+                  >
+                    <span
+                      class="flex items-start gap-x-[1px] text-[#636363] text-base font-medium mb-1"
+                      data-testid="input-div"
                     >
-                      <circle
-                        cx="2.5"
-                        cy="2.5"
-                        fill="#CF2A2A"
-                        r="2.5"
-                      />
-                    </svg>
+                      Interest expense account
+                       
+                      <div>
+                        <svg
+                          data-testid="red-dot"
+                          fill="none"
+                          height="5"
+                          viewBox="0 0 5 5"
+                          width="5"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle
+                            cx="2.5"
+                            cy="2.5"
+                            fill="#CF2A2A"
+                            r="2.5"
+                          />
+                        </svg>
+                      </div>
+                    </span>
+                    <span
+                      class="flex items-start gap-x-[1px] text-[#AAAAAA] text-sm font-normal"
+                    />
                   </div>
-                </span>
-                <div>
                   <div>
                     <div
-                      class="w-[360px] relative"
+                      class="mb-[2px]"
                     >
-                      <div
-                        class=" "
-                      >
-                        <div>
+                      <div>
+                        <div
+                          class="w-[360px] relative"
+                        >
                           <div
-                            class="w-full"
-                            data-testid="gli"
+                            class=" "
                           >
-                            <div
-                              class="relative bg-[#fff] w-full"
-                            >
+                            <div>
                               <div
-                                class="flex items-center  border-b border-[#8F8F8F]"
-                                data-testid="open-button"
+                                class="w-full"
+                                data-testid="gli"
                               >
-                                <span
-                                  class="w-8 h-8 flex items-center justify-center"
+                                <div
+                                  class="relative bg-[#fff] w-full"
                                 >
-                                  <svg
-                                    class="text-[#48535B] text-lg"
-                                    fill="currentColor"
-                                    height="1em"
-                                    stroke="currentColor"
-                                    stroke-width="0"
-                                    viewBox="0 0 512 512"
-                                    width="1em"
-                                    xmlns="http://www.w3.org/2000/svg"
+                                  <div
+                                    class="flex items-center  border-b border-[#8F8F8F]"
+                                    data-testid="open-button"
                                   >
-                                    <path
-                                      d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+                                    <span
+                                      class="w-8 h-8 flex items-center justify-center"
+                                    >
+                                      <svg
+                                        class="text-[#48535B] text-lg"
+                                        fill="currentColor"
+                                        height="1em"
+                                        stroke="currentColor"
+                                        stroke-width="0"
+                                        viewBox="0 0 512 512"
+                                        width="1em"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                      >
+                                        <path
+                                          d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+                                        />
+                                      </svg>
+                                    </span>
+                                     
+                                    <input
+                                      class="w-full  ring-0 outline-none bg-transparent"
+                                      data-testid="gli-input"
+                                      value="Test asset primum ledger 11"
                                     />
-                                  </svg>
-                                </span>
-                                 
-                                <input
-                                  class="w-full  ring-0 outline-none bg-transparent"
-                                  data-testid="gli-input"
-                                  value="Test asset primum ledger 11"
-                                />
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>

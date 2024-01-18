@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PartLiquidation should render the component with default props 1`] = `
+exports[`ProductInfoInvestmentCalc should render without errors 1`] = `
 Object {
   "debug": [Function],
   "findAllByAltText": [Function],

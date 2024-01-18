@@ -27,7 +27,7 @@ describe("downloadUsingFetch", () => {
   });
 
   it("should download file", async () => {
-    await downloadUsingFetch();
+    await downloadUsingFetch("https://dev2-retailcore-teams-management-api.dev.bepeerless.co/v1/Product/template");
 
     expect(mockFetch).toHaveBeenCalledWith(
       "https://dev2-retailcore-teams-management-api.dev.bepeerless.co/v1/Product/template"

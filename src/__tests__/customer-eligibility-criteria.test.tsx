@@ -26,7 +26,6 @@ describe("ProductInformation", () => {
     const form = renderWithProviders(<CustomerEligibilityCriteria proceed={jest.fn()} formData={fData} setDisabled={jest.fn()} setFormData={jest.fn()} initiateDraft={null} />)
     await waitFor(() => {
       expect(form).toMatchSnapshot()
-      screen.debug();
     })
   })
 })

@@ -12,7 +12,7 @@ export default ({ productData }) => {
         <div className="flex flex-col">
           {productData?.data?.pricingConfiguration.interestRateConfigModels?.map(
             (configModel, index) => (
-              <span key={index} className="block  mb-2 text-[#636363]">
+              <span key={index} data-testid="principal" className="block  mb-2 text-[#636363]">
                 {" "}
                 {`${configModel.min} - ${configModel.max}%`} for principal
                 between{" "}

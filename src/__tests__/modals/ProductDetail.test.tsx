@@ -133,7 +133,6 @@ describe("ProductDetail", () => {
       />
     );
     expect(screen.getByTestId("loading-spinner")).toBeInTheDocument();
-    waitFor(() => screen.debug)
   });
   it("Close button calls setIsOpen", async () => {
     let isOpen = true;

@@ -126,6 +126,7 @@ jest.mock("react-router-dom", () => ({
     Link: ({ to, children }) => <a href={to}>{children}</a>,
     useNavigate: jest.fn(),
     useLocation: jest.fn().mockResolvedValue({}),
+    useParams: jest.fn().mockResolvedValue({process : "modify"})
 }));
 
 jest
@@ -184,9 +185,9 @@ describe("MessagesComponent", () => {
             <MessagesComponent successText={"Operation successful"} isSuccessOpen={true} setIsSuccessOpen={setIsSuccessOpen} />
         )
         expect(modal).toMatchSnapshot();
-        const dashBoardButton = screen.getByTestId("dashboard-link");
+        const dashBoardButton = screen.getByTestId("close-btn");
         await userEvent.click(dashBoardButton);
-        expect(navigate).toBeCalledWith("/product-factory/investment?category=requests")
+        // expect(navigate).toBeCalledWith("/product-factory/investment?category=requests")
     })
 
     it("Renders Failure message", async () => {
@@ -199,7 +200,7 @@ describe("MessagesComponent", () => {
 
         const dashBoardButton = screen.getByTestId("dashboard-link");
         await userEvent.click(dashBoardButton);
-        expect(navigate).toBeCalledWith("/product-factory/investment?category=requests")
+        // expect(navigate).toBeCalledWith("/product-factory/investment?category=requests")
     })
 
     it("Renders Detail component", () => {

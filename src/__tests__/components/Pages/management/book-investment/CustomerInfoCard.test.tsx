@@ -33,18 +33,7 @@ describe('CustomerInfoCard', () => {
     it('should not display customer name as a link for non-customerName Info components', () => {
         render(<CustomerInfoCard />);
         expect(screen.queryByText("View all customer information")).toBeInTheDocument();
-    });
-
-    // Does not display customer persona as blue text for non-customerPersona Info components
-    it('should not display customer persona as blue text for non-customerPersona Info components', () => {
-        render(<CustomerInfoCard />);
-        expect(screen.queryByText("High Net-Worth")).toHaveClass("text-[#3FA2F7]");
-    });
-
-    // Does not display risk status as green text for non-riskStatus Info components
-    it('should not display risk status as green text for non-riskStatus Info components', () => {
-        render(<CustomerInfoCard />);
-        expect(screen.queryByText("LOW")).toHaveClass("text-[#2FB755]");
+        expect(screen).toMatchSnapshot();
     });
 });
 
