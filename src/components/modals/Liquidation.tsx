@@ -11,18 +11,21 @@ import { Switch } from "@headlessui/react";
 import { ProductSearch, Button, FormToolTip } from "@app/components";
 import { FormUpload, MinMaxInput, RedDot } from "../forms";
 import { LiquidationSchema } from "@app/constants";
+// import {useEarlyLiquidateMutation} from '@app/api'
 
 interface LiquidationProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  onConfirm: () => void;
+  onConfirm: (data:any, type: string) => void;
   detail: any;
   title: string;
   type: string;
+  // handleLiquidation?: (e: any) => {};
 }
 
-export const onProceed = (data, onProceed) => {
-  console.log("🚀 ~ onProceed ~ data:", data);
+export const onProceed = (data, onConfirm, type) => {
+  // console.log("🚀 ~ onProceed ~ data:", data);
+  onConfirm(data, type)
 };
 export default function Liquidation({
   isOpen,
@@ -31,6 +34,7 @@ export default function Liquidation({
   detail,
   title,
   type,
+  
 }: LiquidationProps): React.JSX.Element {
   const initialValues = {
     investementBookingId: detail?.id,
@@ -83,7 +87,7 @@ export default function Liquidation({
   }
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen} data-testid="Layout">
-      <form onSubmit={handleSubmit((d) => onProceed(d, onConfirm))}>
+      <form onSubmit={handleSubmit((d) => onProceed(d, onConfirm, type))}>
         <div className="w-[700px] p-8 rounded-lg bg-white text-left shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]">
           <div className="flex justify-between items-center pb-4 mb-[42px] border-b border-[#CCCCCC]">
             <h3 className="text-[#747373] font-bold text-xl uppercase">
@@ -209,7 +213,10 @@ export default function Liquidation({
                 <FormUpload
                   data-testid="input"
                   accept={["jpg", "jpeg", "png", "pdf"]}
-                  onUploadComplete={(value) => {setValue("documentUrl", value); trigger()}}
+                  onUploadComplete={(value) => {
+                    setValue("documentUrl", value);
+                    trigger();
+                  }}
                   setDefaultValue={setDefaultValue}
                 />
                 <ErrorMessage

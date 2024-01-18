@@ -58,7 +58,7 @@ export enum Messages {
   BOOKING_DRAFT_SUCCESS = "Booking Setup saved to draft",
   UNABLE_TO_BOOK = "Unable to proceed with booking",
   UNABLE_TO_BOOK_SUB = "Customer's KYC is not complete",
-  INSUFFICIENT_BALANCE= "Customer has insufficient balance",
+  INSUFFICIENT_BALANCE = "Customer has insufficient balance",
   BOOKING_CREATE_SUCCESS = "Investment Booking Created",
   ADMIN_BOOKING_SETUP_SENT = "Investment Booking Setup Sent for Approval",
   BOOKING_CREATE_FAILED = "Investment Booking creation failed",
@@ -90,6 +90,9 @@ export enum Messages {
   BOOKING_DELETE_FAILED = "Unable to delete",
   BOOKING_APPROVE_FAILED = "Unable to approve investment Booking ",
   BOOKING_REJECT_FAILED = "Unable to reject investment Booking ",
+  PART_LIQUIDATION_REQUEST = "Investment Partial Liquidation Request Submitted for Approval",
+  EARLY_LIQUIDATION_REQUEST = "Investment Early Liquidation Request Submitted for Approval",
+  REQUEST_FAILED = "Request Failed",
 }
 
 export enum Prompts {

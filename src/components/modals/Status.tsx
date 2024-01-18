@@ -27,31 +27,38 @@ const individualDashboard = "/product-factory/investment/management/individual";
 const factoryRequests = "/product-factory/investment?category=requests";
 const individualRequests =
   "/product-factory/investment/management/individual?category=requests";
-  
-  export function handleNavigations(
-    { pathname, search },
-    process,
-    role = "superadmin",
-    specificCategory = null,
-    closeModal = () => {},
-    action = ""
-  ) {
-    const isIndividual = pathname.includes("management") && pathname.includes("individual");
-    const isModifyOrContinue = process === "modify" || process === "continue" || process === "withdraw_modify";
-  
-    if (specificCategory === SpecificCategory?.individual) {
-      closeModal();
-      return;
-    }
-  
-    if (isIndividual || isModifyOrContinue) {
-      return role === "superadmin" && action !== "draft" ? individualDashboard : individualRequests;
-    }
-  
-    // Default case
-    return role === "superadmin" && action !== "draft" ? factoryDashboard : factoryRequests;
+
+export function handleNavigations(
+  { pathname, search },
+  process,
+  role = "superadmin",
+  specificCategory = null,
+  closeModal = () => {},
+  action = ""
+) {
+  const isIndividual =
+    pathname.includes("management") && pathname.includes("individual");
+  const isModifyOrContinue =
+    process === "modify" ||
+    process === "continue" ||
+    process === "withdraw_modify";
+
+  if (specificCategory === SpecificCategory?.individual) {
+    closeModal();
+    return;
   }
-  
+
+  if (isIndividual || isModifyOrContinue) {
+    return role === "superadmin" && action !== "draft"
+      ? individualDashboard
+      : individualRequests;
+  }
+
+  // Default case
+  return role === "superadmin" && action !== "draft"
+    ? factoryDashboard
+    : factoryRequests;
+}
 
 export function handleNewCreate({ pathname }) {
   if (!pathname.includes("management")) {
@@ -59,7 +66,8 @@ export function handleNewCreate({ pathname }) {
     return;
   }
   if (pathname.includes("management")) {
-    window.location.href =  "/product-factory/investment/management/create/individual";
+    window.location.href =
+      "/product-factory/investment/management/create/individual";
     return;
   }
 }
@@ -88,10 +96,9 @@ export function Success({
   const { role } = useContext(AppContext);
   const { process } = useParams();
   const closeModal = () => {
-    setIsOpen(false)
-    handleRefresh()
-
-  }
+    setIsOpen(false);
+    handleRefresh();
+  };
 
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -109,14 +116,16 @@ export function Success({
         <div className="flex justify-between items-center gap-x-[6px] w-full">
           <Button
             onClick={() =>
-              navigate(handleNavigations(
-                location,
-                process,
-                role,
-                specificCategory,
-                closeModal,
-                action
-              ))
+              navigate(
+                handleNavigations(
+                  location,
+                  process,
+                  role,
+                  specificCategory,
+                  closeModal,
+                  action
+                )
+              )
             }
             type="button"
             data-testid="close-btn"
@@ -154,6 +163,8 @@ export function Success({
 }
 
 interface FailedProps {
+  handleRefresh?: () => void;
+  specificCategory?: string;
   text: string;
   subtext: string;
   isOpen: boolean;
@@ -161,8 +172,11 @@ interface FailedProps {
   canClose?: boolean;
   canRetry?: boolean;
   canProceed?: boolean;
+  action?: "";
 }
 export function Failed({
+  handleRefresh = () => {},
+  specificCategory,
   text,
   isOpen,
   subtext,
@@ -170,10 +184,17 @@ export function Failed({
   canClose = false,
   canRetry = false,
   canProceed = false,
+  action,
 }: FailedProps): React.JSX.Element {
   const navigate = useNavigate();
+  const { role } = useContext(AppContext);
   const { process } = useParams();
   const location = useLocation();
+  const closeModal = () => {
+    setIsOpen(false);
+    // handleRefresh();
+  };
+
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="relative h-[400px] w-[556px] overflow-y-auto flex flex-col justify-between px-10 py-8 rounded-lg bg-white text-center items-center">
@@ -189,7 +210,18 @@ export function Failed({
         >
           <div>
             <Button
-              onClick={() => navigate(handleNavigations(location, process))}
+              onClick={() =>
+                navigate(
+                  handleNavigations(
+                    location,
+                    process,
+                    role,
+                    specificCategory,
+                    closeModal,
+                    action
+                  )
+                )
+              }
               type="button"
               data-testid="dashboard-link"
               className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-1 text-[#667085] outline-none"
