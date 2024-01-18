@@ -11,12 +11,13 @@ import { Switch } from "@headlessui/react";
 import { ProductSearch, Button, FormToolTip } from "@app/components";
 import { FormUpload, MinMaxInput, RedDot } from "../forms";
 import { LiquidationSchema } from "@app/constants";
+import { liquiditiesPenaltyStrings } from "@app/constants";
 // import {useEarlyLiquidateMutation} from '@app/api'
 
 interface LiquidationProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  onConfirm: (data:any, type: string) => void;
+  onConfirm: (data: any, type: string) => void;
   detail: any;
   title: string;
   type: string;
@@ -26,7 +27,7 @@ interface LiquidationProps {
 
 export const onProceed = (data, onConfirm, type) => {
   // console.log("🚀 ~ onProceed ~ data:", data);
-  onConfirm(data, type)
+  onConfirm(data, type);
 };
 export default function Liquidation({
   isOpen,
@@ -35,8 +36,7 @@ export default function Liquidation({
   detail,
   title,
   type,
-  productDetails
-  
+  productDetails,
 }: LiquidationProps): React.JSX.Element {
   const initialValues = {
     investementBookingId: detail?.id,
@@ -87,6 +87,23 @@ export default function Liquidation({
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
+
+  const handleLiquidationPenalty = (penaltyEnum, percentage) => {
+    // console.log(
+    //   "🚀 ~ handleLiquidationPenalty ~ type, penaltyEnum, percentage:",
+    //   type,
+    //   penaltyEnum,
+    //   percentage
+    // );
+    let penalty = "";
+
+    penalty =
+      penaltyEnum == 2 || penaltyEnum == 3
+        ? liquiditiesPenaltyStrings[penaltyEnum]?.replace("%", percentage + "%")
+        : liquiditiesPenaltyStrings[penaltyEnum];
+
+    return penalty;
+  };
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen} data-testid="Layout">
       <form onSubmit={handleSubmit((d) => onProceed(d, onConfirm, type))}>
@@ -278,28 +295,52 @@ export default function Liquidation({
                   <span className="text-sm text-[#747373] font-semibold capitalize">
                     {type} Liquidation Penalties
                   </span>
-                  <span className="text-xs  font-semibold text-red-600">
+                  {/* <span className="text-xs  font-semibold text-red-600">
                     [<span>Prototype only</span>:{" "}
                     <span className="font-normal">Possible displays</span>]
-                  </span>
+                  </span> */}
                 </div>
 
-                <span>Early {productDetails?.liquidation?.early_LiquidationPenalty} {productDetails?.liquidation?.early_LiquidationPenaltyPercentage}</span>
-                <span>Part{productDetails?.liquidation?.part_LiquidationPenalty} {productDetails?.liquidation?.part_LiquidationPenaltyPercentage}</span>
+                {/* <span>
+                  Early {productDetails?.liquidation?.early_LiquidationPenalty}{" "}
+                  {
+                    productDetails?.liquidation
+                      ?.early_LiquidationPenaltyPercentage
+                  }
+                </span>
+                <span>
+                  Part{productDetails?.liquidation?.part_LiquidationPenalty}{" "}
+                  {
+                    productDetails?.liquidation
+                      ?.part_LiquidationPenaltyPercentage
+                  }
+                </span> */}
 
-                <span className="block text-sm text-[#747373] mb-4">None</span>
-                <span className="block text-sm text-[#747373] mb-4">
-                  Forfeiture of 20% of accrued interests
-                </span>
-                <span className="block text-sm text-[#747373] mb-4">
-                  Forfeiture of all accrued interests
-                </span>
-                <div className="flex items-center mb-2  gap-x-1">
-                  <span className="text-sm text-[#747373]">Charge: </span>
-                  <span className="text-sm text-[#747373] font-semibold">
-                    Term Deposition Liquidation Charge [NGN 1,859]
+                {liquiditiesPenaltyStrings[
+                  productDetails?.liquidation?.early_LiquidationPenalty
+                ] === "charge" ? (
+                  <div className="flex items-center mb-2  gap-x-1">
+                    <span className="text-sm text-[#747373]">Charge: </span>
+                    <span className="text-sm text-[#747373] font-semibold">
+                      Term Deposition Liquidation Charge [NGN 1,859]
+                    </span>
+                  </div>
+                ) : (
+                  <span className="block text-sm text-[#747373] mb-4">
+                    {type.toLowerCase() == "early" &&
+                      handleLiquidationPenalty(
+                        productDetails?.liquidation?.early_LiquidationPenalty,
+                        productDetails?.liquidation
+                          ?.early_LiquidationPenaltyPercentage
+                      )}
+                    {type.toLowerCase() == "part" &&
+                      handleLiquidationPenalty(
+                        productDetails?.liquidation?.part_LiquidationPenalty,
+                        productDetails?.liquidation
+                          ?.part_LiquidationPenaltyPercentage
+                      )}
                   </span>
-                </div>
+                )}
               </div>
               <div className="flex items-center mb-10 rounded-[10px] border border-[#EBEBEB] bg-[#AAAAAA12] py-6 px-5 gap-x-1">
                 <span className="text-sm text-[#747373]">
