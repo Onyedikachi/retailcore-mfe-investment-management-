@@ -123,23 +123,21 @@ describe("TableComponent", () => {
 
     const tableRows = [];
 
-    render(
-      <Provider store={store}>
-        <TableComponent
-          headers={headers}
-          tableRows={tableRows}
-          page={1}
-          total={0}
-          fetchMoreData={() => { }}
-          hasMore={true}
-          getOptionData={() => { }}
-          isLoading={true}
-          dropDownOptions={[]}
-          dropDownClick={() => { }}
-          onChangeDate={() => { }}
-          Context={InvestmentContext}
-        />
-      </Provider>
+    renderWithProviders(
+      <TableComponent
+        headers={headers}
+        tableRows={tableRows}
+        page={1}
+        total={0}
+        fetchMoreData={() => { }}
+        hasMore={true}
+        getOptionData={() => { }}
+        isLoading={true}
+        dropDownOptions={[]}
+        dropDownClick={() => { }}
+        onChangeDate={() => { }}
+        Context={InvestmentContext}
+      />
     );
 
     // Assert
@@ -712,7 +710,7 @@ describe('handleProductsDropdown', () => {
     );
 
     // Assert
-    expect(result).toEqual([{"text": "View", "value": "view"}]);
+    expect(result).toEqual([{ "text": "View", "value": "view" }]);
   });
   // Returns an empty array if status is falsy
   it('should return an empty array if status is falsy', () => {
