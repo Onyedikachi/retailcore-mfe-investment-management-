@@ -143,7 +143,7 @@ export default function Summary() {
             )}
             <Container>
               <BookingDetail
-                detail={investmentData?.data || detail}
+                detail={detail || investmentData?.data}
                 oldData={null}
                 type={type}
                 productDetail={productDetail?.data}

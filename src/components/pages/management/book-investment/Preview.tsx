@@ -160,6 +160,7 @@ export default function Preview({
     createProduct,
     { isLoading: createProductLoading, isSuccess, isError, reset, error },
   ] = useCreateInvestmentMutation();
+  
   const [
     modifyProduct,
     {
