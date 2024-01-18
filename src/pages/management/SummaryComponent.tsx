@@ -69,8 +69,15 @@ export default function Summary() {
   );
   useEffect(() => {
     if (isError && requestDetailIsSuccess)
-      setProductId(requestDetail?.data?.investementProductId);
+      setProductId(requestDetail?.data?.investementBookingId);
+    if (requestDetail?.data?.metaInfo) {
+      const data = JSON.parse(requestDetail?.data?.metaInfo);
+      console.log("🚀 ~ data:", data);
+      if (process === "withdraw_modify") {
+      }
+    }
   }, [requestDetailIsSuccess, isError]);
+
   const links = [
     {
       id: 1,
