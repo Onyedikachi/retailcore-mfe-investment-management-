@@ -15,6 +15,7 @@ import {
   useModifyInvestmentMutation,
   useModifyInvestmentRequestMutation,
   useCreateInvestmentMutation,
+  useGetInvestmentRequestActivityLogQuery,
 } from "@app/api";
 import { Confirm, Failed, Success } from "@app/components/modals";
 
@@ -150,7 +151,11 @@ export default function Preview({
       { bookingId: id },
       { skip: process === "create" }
     );
-
+    const { data: activityRequestData, isLoading: activityRequestIsLoading } =
+    useGetInvestmentRequestActivityLogQuery(
+      { bookingrequestId: id },
+      { skip: !id }
+    );
   const [
     createProduct,
     { isLoading: createProductLoading, isSuccess, isError, reset, error },
@@ -303,8 +308,12 @@ export default function Preview({
 
         <ActivityLog
           isFetching={false}
-          isLoading={activityIsLoading}
-          activities={activityData?.results}
+          isLoading={activityIsLoading || activityRequestIsLoading}
+          activities={
+            activityData?.results.length
+              ? activityData?.results
+              : activityRequestData?.results
+          }
         />
       </div>
       {isSuccessOpen && (
