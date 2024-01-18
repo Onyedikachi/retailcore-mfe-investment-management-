@@ -41,7 +41,7 @@ export default function Liquidation({
     reason: "",
     documentUrl: "",
     notify: false,
-    amount: null,
+    // amount: null,
     maxAmount: 100,
   };
   const {
