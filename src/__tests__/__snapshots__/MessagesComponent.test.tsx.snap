@@ -321,7 +321,7 @@ Object {
                   class="relative transform overflow-hidden rounded-lg text-left align-middle transition-all ease-out duration-300 opacity-0 scale-95"
                 >
                   <div
-                    class="relative h-[400px] w-[606px] flex flex-col justify-between px-10 py-8 rounded-lg bg-white text-center items-center"
+                    class="relative h-[400px] w-[606px] overflow-y-auto flex flex-col justify-between px-10 py-8 rounded-lg bg-white text-center items-center"
                   >
                     <div
                       class="flex justify-center items-center"

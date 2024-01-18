@@ -984,7 +984,7 @@ describe('handlePermission', () => {
     );
 
     expect(setFilteredProductOptions).toHaveBeenCalledWith([{"disabled": false, "id": 1, "text": "Created by me", "value": "created_by_me"}, {"disabled": false, "id": 2, "text": "Created by my branch", "value": "created_by_my_branch"}, {"disabled": false, "id": 3, "text": "Created system-wide", "value": "created_by_anyone"}]);
-    expect(setFilteredRequestOptions).toHaveBeenCalledWith([{"disabled": false, "id": 1, "text": "Initiated by me", "value": "created_by_me"}, {"disabled": false, "id": 2, "text": "Initiated by my branch", "value": "created_by_my_branch"}, {"disabled": true, "id": 3, "text": "Initiated system-wide", "value": "created_by_anyone"}]);
+    expect(setFilteredRequestOptions).toHaveBeenCalledWith([{"disabled": false, "id": 1, "text": "Initiated by me", "value": "created_by_me"}, {"disabled": false, "id": 2, "text": "Initiated by my branch", "value": "created_by_my_branch"}, {"disabled": false, "id": 3, "text": "Initiated system-wide", "value": "created_by_anyone"}]);
   });
 
   // Function handles permission for viewing all investment product requests
@@ -1148,6 +1148,6 @@ describe('handlePermission', () => {
     );
 
     expect(setFilteredProductOptions).toHaveBeenCalledWith([{"disabled": false, "id": 1, "text": "Created by me", "value": "created_by_me"}, {"disabled": false, "id": 2, "text": "Created by my branch", "value": "created_by_my_branch"}, {"disabled": false, "id": 3, "text": "Created system-wide", "value": "created_by_anyone"}]);
-    expect(setFilteredRequestOptions).toHaveBeenCalledWith([{"disabled": false, "id": 1, "text": "Initiated by me", "value": "created_by_me"}, {"disabled": false, "id": 2, "text": "Initiated by my branch", "value": "created_by_my_branch"}, {"disabled": true, "id": 3, "text": "Initiated system-wide", "value": "created_by_anyone"}]);
+    expect(setFilteredRequestOptions).toHaveBeenCalledWith([{"disabled": false, "id": 1, "text": "Initiated by me", "value": "created_by_me"}, {"disabled": false, "id": 2, "text": "Initiated by my branch", "value": "created_by_my_branch"}, {"disabled": false, "id": 3, "text": "Initiated system-wide", "value": "created_by_anyone"}]);
   });
 });

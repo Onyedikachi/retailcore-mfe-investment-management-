@@ -60,7 +60,7 @@ export const handleConfirm = ({
     setRejection(true);
   }
   if (action === "cancel") {
-    if (type.toLowerCase() === "individual") {
+    if (type?.toLowerCase() === "individual") {
       navigate(
         `/product-factory/investment/management/individual`
       );
