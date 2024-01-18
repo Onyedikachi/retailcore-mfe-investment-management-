@@ -20,6 +20,7 @@ interface LiquidationProps {
   detail: any;
   title: string;
   type: string;
+  productDetails?: any;
   // handleLiquidation?: (e: any) => {};
 }
 
@@ -34,6 +35,7 @@ export default function Liquidation({
   detail,
   title,
   type,
+  productDetails
   
 }: LiquidationProps): React.JSX.Element {
   const initialValues = {
@@ -281,6 +283,10 @@ export default function Liquidation({
                     <span className="font-normal">Possible displays</span>]
                   </span>
                 </div>
+
+                <span>Early {productDetails?.liquidation?.early_LiquidationPenalty} {productDetails?.liquidation?.early_LiquidationPenaltyPercentage}</span>
+                <span>Part{productDetails?.liquidation?.part_LiquidationPenalty} {productDetails?.liquidation?.part_LiquidationPenaltyPercentage}</span>
+
                 <span className="block text-sm text-[#747373] mb-4">None</span>
                 <span className="block text-sm text-[#747373] mb-4">
                   Forfeiture of 20% of accrued interests
