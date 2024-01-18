@@ -134,10 +134,10 @@ export const handleRequestIsSuccess = ({
     if (process === "withdraw_modify") {
       previousData.current = {
         ...previousData.current,
-        productName: data?.productInfo.productName,
-        description: data?.productInfo.description,
-        slogan: data?.productInfo.slogan,
-        currency: data?.productInfo.currency,
+        productName: data?.productInfo?.productName,
+        description: data?.productInfo?.description,
+        slogan: data?.productInfo?.slogan,
+        currency: data?.productInfo?.currency,
         prodType: data?.productType,
         state: data?.state,
         requestStatus: requestData?.data?.requestStatus,
