@@ -39,6 +39,8 @@ export default function MessagesComponent({
   isLiquidation,
   setLiquidationOpen,
   liquidationType,
+  handleLiquidation = (data, type) => {},
+  liquidationLoading,
   handleRefresh = () => {},
 }) {
   return (
@@ -69,6 +71,8 @@ export default function MessagesComponent({
       )}
       {isFailed && (
         <Failed
+        handleRefresh={handleRefresh}
+        specificCategory={specificCategory}
           text={failedText}
           subtext={failedSubText}
           isOpen={isFailed}
@@ -90,7 +94,7 @@ export default function MessagesComponent({
         <Liquidation
           isOpen={isLiquidation}
           setIsOpen={setLiquidationOpen}
-          onConfirm={() => {}}
+          onConfirm={(data, type) => handleLiquidation(data, type)}
           detail={detail}
           type={liquidationType}
           title={
@@ -98,6 +102,7 @@ export default function MessagesComponent({
               ? "part liquidation request"
               : "early liquidation request"
           }
+          
           // setReason={() => {}}
         />
       )}
@@ -119,9 +124,9 @@ export default function MessagesComponent({
           // setReason={() => {}}
         />
       )}
-      {(deleteLoading || activateIsLoading) && (
+      {(deleteLoading || activateIsLoading || liquidationLoading) && (
         <Loader
-          isOpen={deleteLoading || activateIsLoading}
+          isOpen={deleteLoading || activateIsLoading || liquidationLoading}
           text={"Submitting"}
         />
       )}

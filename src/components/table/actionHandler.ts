@@ -2,8 +2,6 @@ import { Actions, Messages, Prompts } from "@app/constants/enums";
 import { StatusCategoryType } from "@app/types";
 import { SpecificCategory } from "@app/constants";
 export const actionHandler = ({
-  bookingId,
-  setBookingId,
   specificCategory,
   action,
   items,
@@ -25,7 +23,6 @@ export const actionHandler = ({
   // console.log("Show action", JSON.stringify({action, items, selected, category}));
   setAction(action);
   setDetail(items);
-  setBookingId(items?.id);
   dropDownClick(action, items);
   setSubText("");
   previousData.current = {
