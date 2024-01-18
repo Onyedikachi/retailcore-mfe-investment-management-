@@ -84,7 +84,7 @@ export default function IndexComponent() {
   const [formData, setFormData] = useState<any>({
     id: id || null,
     customerId: "",
-    customerProfile:null,
+    customerProfile: null,
     customerBookingInfoModel: {
       customerId: "",
       customerName: "",
@@ -92,8 +92,8 @@ export default function IndexComponent() {
       investmentformUrl: "",
       accountStatus: "",
       customerProfileid: "",
-      balance:"",
-    
+      balance: "",
+      currencyId:"",
     },
     facilityDetailsModel: {
       capitalizationMethod: 2,
