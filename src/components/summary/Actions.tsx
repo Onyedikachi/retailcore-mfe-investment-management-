@@ -60,11 +60,18 @@ export const handleConfirm = ({
     setRejection(true);
   }
   if (action === "cancel") {
-    navigate(
-      `/product-factory/investment?category=requests${
-        filter ? "&filter=" + filter : ""
-      }`
-    );
+    if (type.toLowerCase() === "individual") {
+      navigate(
+        `/product-factory/investment/management/individual`
+      );
+    } else {
+      navigate(
+        `/product-factory/investment?category=requests${
+          filter ? "&filter=" + filter : ""
+        }`
+      );
+    }
+   
   }
 };
 
