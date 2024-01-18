@@ -2,6 +2,8 @@ import { Actions, Messages, Prompts } from "@app/constants/enums";
 import { StatusCategoryType } from "@app/types";
 import { SpecificCategory } from "@app/constants";
 export const actionHandler = ({
+  bookingId,
+  setBookingId,
   specificCategory,
   action,
   items,
@@ -23,6 +25,7 @@ export const actionHandler = ({
   // console.log("Show action", JSON.stringify({action, items, selected, category}));
   setAction(action);
   setDetail(items);
+  setBookingId(items?.id);
   dropDownClick(action, items);
   setSubText("");
   previousData.current = {
@@ -78,15 +81,14 @@ export const actionHandler = ({
     return;
   }
   if (action.toLowerCase() === Actions.PART_LIQUIDATE) {
-   
-    setLiquidationType("part")
-    setLiquidationOpen(true)
+    setLiquidationType("part");
+    setLiquidationOpen(true);
 
     return;
   }
   if (action.toLowerCase() === Actions.EARLY_LIQUIDATE) {
-    setLiquidationType("early")
-    setLiquidationOpen(true)
+    setLiquidationType("early");
+    setLiquidationOpen(true);
     return;
   }
   if (action.toLowerCase() === Actions.DELETE_DRAFT) {
@@ -123,7 +125,7 @@ export const actionHandler = ({
       ? setIndividualDetailOpen(true)
       : specificCategory === SpecificCategory.individual
       ? navigate(
-          `/product-factory/investment/management/preview/individual?id=${items?.id}`
+          `/product-factory/investment/management/${specificCategory}/process-summary/preview/${items.id}`
         )
       : navigate(
           `/product-factory/investment/${encodeURIComponent(
@@ -139,6 +141,10 @@ export const actionHandler = ({
       ? setDetailOpen(true)
       : category === StatusCategoryType.Investments
       ? setIndividualDetailOpen(true)
+      : specificCategory === SpecificCategory.individual
+      ? navigate(
+          `/product-factory/investment/management/${specificCategory}/process-summary/verdict/${items.id}`
+        )
       : navigate(
           `/product-factory/investment/${encodeURIComponent(
             "term deposit"

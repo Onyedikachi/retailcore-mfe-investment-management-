@@ -95,7 +95,7 @@ export function Success({
 
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
-      <div className="relative h-[400px] w-[606px] flex flex-col justify-between px-10 py-8 rounded-lg bg-white text-center items-center">
+      <div className="relative h-[400px] w-[606px] overflow-y-auto flex flex-col justify-between px-10 py-8 rounded-lg bg-white text-center items-center">
         <div className="flex justify-center items-center">
           <HiCheckCircle
             data-testid="check-circle-icon"
@@ -176,7 +176,7 @@ export function Failed({
   const location = useLocation();
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
-      <div className="relative h-[400px] w-[556px] flex flex-col justify-between px-10 py-8 rounded-lg bg-white text-center items-center">
+      <div className="relative h-[400px] w-[556px] overflow-y-auto flex flex-col justify-between px-10 py-8 rounded-lg bg-white text-center items-center">
         <div className="flex justify-center items-center mb-6">
           <RiErrorWarningFill className="text-[80px] text-danger-500" />{" "}
         </div>
@@ -265,7 +265,7 @@ export function Prompt({
 
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
-      <div className="relative h-[400px] w-[556px] flex flex-col justify-between px-10 py-8 rounded-lg bg-white text-center items-center">
+      <div className="relative h-[400px] w-[556px] overflow-y-auto flex flex-col justify-between px-10 py-8 rounded-lg bg-white text-center items-center">
         <div className="flex flex-col justify-center items-center">
           <RiErrorWarningFill className="text-[80px] text-sterling-red-800 mb-6" />{" "}
           {heading && <h4 className="font-normal text-2xl">{heading}</h4>}

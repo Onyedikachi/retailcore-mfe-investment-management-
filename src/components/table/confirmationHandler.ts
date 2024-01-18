@@ -1,6 +1,6 @@
 import { Actions, Messages, Prompts } from "@app/constants/enums";
 import { errorToast } from "../Toast";
-import {SpecificCategory} from '@app/constants'
+import { SpecificCategory } from "@app/constants";
 
 export const confirmationHandler = ({
   specificCategory,
@@ -16,13 +16,12 @@ export const confirmationHandler = ({
   navigate,
 }) => {
   if (action.toLowerCase().includes("delete")) {
-    if(specificCategory === SpecificCategory.individual){
+    if (specificCategory === SpecificCategory.individual) {
       deleteInvestmentRequest(detail.id);
-      return
-    }else {
+      return;
+    } else {
       deleteRequest(detail.id);
     }
-    
   }
   if (action.toLowerCase() === Actions.DEACTIVATE) {
     setIsDeactivationOpen(true);
@@ -30,7 +29,9 @@ export const confirmationHandler = ({
   if (action.toLowerCase() === Actions.ACTIVATE) {
     activateProduct({
       id: detail?.id,
-      recentlyUpdatedMeta: JSON.stringify(previousData.current),
+      recentlyUpdatedMeta: previousData.current
+        ? JSON.stringify(previousData.current)
+        : null,
     });
   }
   if (action.toLowerCase() === Actions.MODIFY) {
@@ -49,11 +50,17 @@ export const confirmationHandler = ({
     if (!permissions?.includes("CREATE_INVESTMENT_PRODUCT")) {
       errorToast("You do not have permission to make changes!");
     } else {
-      navigate(
-        `/product-factory/investment/${encodeURIComponent(
-          "term deposit"
-        )}/withdraw_modify/?id=${detail.id}&filter=${selected.value}`
-      );
+      if (specificCategory === SpecificCategory.individual) {
+        navigate(
+          `/product-factory/investment/management/withdraw_modify/individual?id=${detail.id}&filter=${selected.value}`
+        );
+      } else {
+        navigate(
+          `/product-factory/investment/${encodeURIComponent(
+            "term deposit"
+          )}/withdraw_modify/?id=${detail.id}&filter=${selected.value}`
+        );
+      }
     }
   }
 };

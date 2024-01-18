@@ -15,6 +15,7 @@ import {
   useModifyInvestmentMutation,
   useModifyInvestmentRequestMutation,
   useCreateInvestmentMutation,
+  useGetInvestmentRequestActivityLogQuery,
 } from "@app/api";
 import { Confirm, Failed, Success } from "@app/components/modals";
 
@@ -105,7 +106,7 @@ export const submitForm = (
       ...formData,
       isDraft: false,
       id,
-      recentlyUpdatedMeta: JSON.stringify(previousData),
+      recentlyUpdatedMeta: previousData ? JSON.stringify(previousData) : null,
     });
   }
   if (process === "withdraw_modify" || process === "continue") {
@@ -113,7 +114,7 @@ export const submitForm = (
       ...formData,
       isDraft: false,
       id,
-      recentlyUpdatedMeta: JSON.stringify(previousData),
+      recentlyUpdatedMeta: previousData ? JSON.stringify(previousData) : null,
     });
   }
 
@@ -147,14 +148,19 @@ export default function Preview({
 
   const { data: activityData, isLoading: activityIsLoading } =
     useGetInvestmentActivityLogQuery(
-      { bookingrequestId: id },
+      { bookingId: id },
       { skip: process === "create" }
     );
-
+    const { data: activityRequestData, isLoading: activityRequestIsLoading } =
+    useGetInvestmentRequestActivityLogQuery(
+      { bookingrequestId: id },
+      { skip: !id }
+    );
   const [
     createProduct,
     { isLoading: createProductLoading, isSuccess, isError, reset, error },
   ] = useCreateInvestmentMutation();
+  
   const [
     modifyProduct,
     {
@@ -303,8 +309,12 @@ export default function Preview({
 
         <ActivityLog
           isFetching={false}
-          isLoading={activityIsLoading}
-          activities={activityData?.results}
+          isLoading={activityIsLoading || activityRequestIsLoading}
+          activities={
+            activityData?.results.length
+              ? activityData?.results
+              : activityRequestData?.results
+          }
         />
       </div>
       {isSuccessOpen && (
@@ -324,7 +334,7 @@ export default function Preview({
           setIsOpen={setIsConfirmOpen}
           onConfirm={() => {
             setIsConfirmOpen(false);
-            // navigate("/product-factory/investment?category=requests");
+            navigate(`/product-factory/investment/management/${investmentType}?category=requests`);
           }}
           onCancel={() => {
             setIsConfirmOpen(false);

@@ -21,6 +21,7 @@ export default function BookingDetail({
   type,
   productDetail,
 }: any) {
+  console.log("🚀 ~ detail:", detail)
   const { currencies } = useContext(AppContext);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [customerData, setCustomerData] = useState(null);
@@ -176,7 +177,7 @@ export default function BookingDetail({
                     (i) =>
                       i.value ===
                       detail?.facilityDetailsModel?.capitalizationMethod
-                  ).text
+                  )?.text
                 }
               </div>
             </div>

@@ -39,6 +39,7 @@ import { ActiveFilterOptions } from "@app/constants";
 import MessagesComponent from "./MessagesComponent";
 import { actionHandler } from "./actionHandler";
 import { confirmationHandler } from "./confirmationHandler";
+import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 
 interface TableProps {
   headers: any[];
@@ -56,7 +57,7 @@ interface TableProps {
   onChangeDate?: any;
   type?: string;
   noData?: string;
-  handleRefresh?: () => void
+  handleRefresh?: () => void;
 }
 
 export const statusHandler = ({
@@ -119,7 +120,7 @@ export function handleUpdated(key, value, options) {
   if (!options || !value) return;
 
   const parseOptions = JSON.parse(options);
-  if (!parseOptions[key]) return;
+  if (!parseOptions || !parseOptions[key]) return;
 
   if (key === "state") {
     // const newState = ActiveFilterOptions.find(
@@ -175,9 +176,23 @@ export const handleProductsDropdown = (
           i.text.toLowerCase() !== "activate"
       );
     }
+    if (!permissions?.includes("LIQUIDATE_INVESTMENT")) {
+      options = options?.filter(
+        (i: any) =>
+          i.text.toLowerCase() !== "part liquidate" &&
+          i.text.toLowerCase() !== "early liquidate"
+      );
+    }
+    if (!permissions?.includes("BOOK_INVESTMENT")) {
+      options = options?.filter(
+        (i: any) => i.text.toLowerCase() !== "restructure"
+      );
+    }
     if (
       !permissions?.includes("CREATE_INVESTMENT_PRODUCT") ||
-      (permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&
+      !permissions?.includes("BOOK_INVESTMENT") ||
+      ((permissions?.includes("CREATE_INVESTMENT_PRODUCT") ||
+        !permissions?.includes("BOOK_INVESTMENT")) &&
         !permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS") &&
         created_By_Id !== userId)
     ) {
@@ -187,14 +202,28 @@ export const handleProductsDropdown = (
   }
 };
 
-export const TextCellContent = ({ value, isCurrencyValue = false }) => (
-  <span className="relative">
-    <span className="relative max-w-[290px] whitespace-normal">
-      {`${isCurrencyValue ? currencyFormatter(value, 'NGN') : value}` || "-"}
+export const TextCellContent = ({
+  value,
+  isCurrencyValue = false,
+  currency,
+}: {
+  value: any;
+  isCurrencyValue?: boolean;
+  currency?: string;
+}) => {
+  const { currencies } = useContext(AppContext);
+  return (
+    <span className="relative">
+      <span className="relative max-w-[290px] whitespace-normal">
+        {`${
+          isCurrencyValue
+            ? currencyFormatter(value, handleCurrencyName(currency, currencies))
+            : value
+        }` || "-"}
+      </span>
     </span>
-  </span>
-);
-
+  );
+};
 
 export const ProductNameCellContent = ({ value }) => (
   <>
@@ -276,7 +305,7 @@ export default function TableComponent<TableProps>({
   type = "",
   noData = "No data available",
   Context,
-  handleRefresh = () => {}
+  handleRefresh = () => {},
 }) {
   const { role, permissions, userId, isChecker } = useContext(AppContext);
   const {
@@ -292,6 +321,7 @@ export default function TableComponent<TableProps>({
   }: any = useContext(Context);
 
   const [action, setAction] = useState("");
+  const [bookingId, setBookingId] = useState("");
   const navigate = useNavigate();
   const previousData = useRef({});
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -310,8 +340,10 @@ export default function TableComponent<TableProps>({
   // @ts-ignore
   const handleAction = (action, items) => {
     // console.log(JSON.stringify({ action, items }));
-
+    // return;
     actionHandler({
+      bookingId,
+      setBookingId,
       specificCategory,
       action,
       items,
@@ -517,6 +549,7 @@ export default function TableComponent<TableProps>({
                                 <TextCellContent
                                   isCurrencyValue={true}
                                   value={item[header.key] || "-"}
+                                  currency={item?.currency}
                                 />
                               )}
                               {header.key === "requestStatus" && (
@@ -659,6 +692,7 @@ export default function TableComponent<TableProps>({
       </div>
       {/* @ts-ignore */}
       <MessagesComponent
+      
         specificCategory={specificCategory}
         isConfirmOpen={isConfirmOpen}
         isSuccessOpen={isSuccessOpen}
@@ -682,7 +716,7 @@ export default function TableComponent<TableProps>({
         setDetailOpen={setDetailOpen}
         setIndividualDetailOpen={setIndividualDetailOpen}
         handleAction={handleAction}
-        isLiquidation={isLiquidation}    
+        isLiquidation={isLiquidation}
         setLiquidationOpen={setLiquidationOpen}
         liquidationType={liquidationType}
         handleRefresh={handleRefresh}

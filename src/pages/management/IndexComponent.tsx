@@ -1,12 +1,13 @@
 import Icon from "@app/components/ui/Icon";
 
 import { BookInvestmentButton } from "@app/components";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import SearchInput from "@app/components/SearchInput";
 import { Overview, Individual } from "@app/components/pages";
 import { useGetPostProductsMutation } from "@app/api";
 import { StatusCategoryType } from "@app/types";
 import { useNavigate, useParams } from "react-router-dom";
+import { AppContext } from "@app/utils";
 
 export const handleSearch = (value, setQuery, query) => {
   setQuery({
@@ -31,6 +32,7 @@ export default function Dashboard() {
   //     loadSimulator()
   //   }, [])
   //create array of tabs
+  const { permissions } = useContext(AppContext);
   const { tab } = useParams();
   const navigate = useNavigate();
   const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -51,7 +53,9 @@ export default function Dashboard() {
             Investment Management
           </span>
 
-          <BookInvestmentButton>
+          <BookInvestmentButton
+            disabled={!permissions.includes("BOOK_INVESTMENT")}
+          >
             <button className="flex h-[32px] items-center gap-[8px] rounded-[6px] bg-sterling-red-800 px-3 py-[4px] text-white ">
               <span className="p-[5px]">
                 <Icon icon="eva:plus-fill" />
@@ -65,7 +69,8 @@ export default function Dashboard() {
         <div className="flex justify-between items-end">
           <div className="flex gap-[32px] ">
             {dashboardTabs.map((item) => (
-              <div data-testid={`${item}-tab`}
+              <div
+                data-testid={`${item}-tab`}
                 onClick={() =>
                   navigate(`/product-factory/investment/management/${item}`)
                 }

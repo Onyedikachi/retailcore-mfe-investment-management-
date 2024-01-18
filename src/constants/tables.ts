@@ -103,6 +103,65 @@ export const DropDownOptions: any = {
       ],
     },
   ],
+  booking: [
+    {
+      approved: [
+        {
+          id: "",
+          text: "View",
+          icon: "FaEye",
+        },
+      ],
+    },
+    {
+      "in-issue": [
+        {
+          id: "",
+          text: "View",
+          icon: "FaEye",
+        },
+
+        {
+          id: "",
+          text: "Delete Request",
+          icon: "FaTrash",
+        },
+      ],
+    },
+    {
+      "in-review": [
+        {
+          id: "View",
+          text: "View",
+          icon: "FaEye",
+        },
+        {
+          id: "",
+          text: "Withdraw & Modify",
+          icon: "FaEdit",
+        },
+        {
+          id: "",
+          text: "Withdraw & Delete Request",
+          icon: "FaTrash",
+        },
+      ],
+    },
+    { 
+      draft: [
+        {
+          id: "",
+          text: "Continue Request",
+          icon: "FaEdit",
+        },
+        {
+          id: "",
+          text: "Delete Draft",
+          icon: "FaTrash",
+        },
+      ],
+    },
+  ],
   activation: [
     {
       approved: [
@@ -355,21 +414,25 @@ export const IndividualDropDownOptions: any = {
       id: "",
       text: "View",
       icon: "FaEye",
+      key: "view"
     },
     {
       id: "",
       text: "Part Liquidate",
       icon: "FaBan",
+      key: "part_liquidate"
     },
     {
       id: "",
       text: "Early Liquidate",
       icon: "FaRegTimesCircle",
+      key: "early_liquidate"
     },
     {
       id: "",
       text: "Restructure",
       icon: "BiSolidReceipt",
+      key: "restructure"
     },
   ],
   liquidated: [
@@ -377,6 +440,66 @@ export const IndividualDropDownOptions: any = {
       id: "",
       text: "View",
       icon: "FaEye",
+      key: "view"
+    },
+  ],
+  booking: [
+    {
+      approved: [
+        {
+          id: "",
+          text: "View",
+          icon: "FaEye",
+        },
+      ],
+    },
+    {
+      "in-issue": [
+        {
+          id: "",
+          text: "View",
+          icon: "FaEye",
+        },
+
+        {
+          id: "",
+          text: "Delete Request",
+          icon: "FaTrash",
+        },
+      ],
+    },
+    {
+      "in-review": [
+        {
+          id: "View",
+          text: "View",
+          icon: "FaEye",
+        },
+        {
+          id: "",
+          text: "Withdraw & Modify",
+          icon: "FaEdit",
+        },
+        {
+          id: "",
+          text: "Withdraw & Delete Request",
+          icon: "FaTrash",
+        },
+      ],
+    },
+    { 
+      draft: [
+        {
+          id: "",
+          text: "Continue Request",
+          icon: "FaEdit",
+        },
+        {
+          id: "",
+          text: "Delete Draft",
+          icon: "FaTrash",
+        },
+      ],
     },
   ],
 };

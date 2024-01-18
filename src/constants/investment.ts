@@ -389,6 +389,7 @@ export const creationMap = [
   "bulk_create",
   "change",
   "deactivation",
+  "booking"
 ];
 export const colorState = {
   approved: "bg-[#D4F7DC] text-[#15692A]",
@@ -1151,20 +1152,22 @@ export const detailData = [
 
 export const CapitalizationOptions = [
   {
-    id: 1,
-    text: "Upon booking",
-    value: 0,
+    id: 3,
+    text: "At Maturity",
+    value: 2,
   },
+ 
   {
     id: 2,
     text: "At Interval",
     value: 1,
   },
   {
-    id: 3,
-    text: "At Maturity",
-    value: 2,
+    id: 1,
+    text: "Upon booking",
+    value: 0,
   },
+  
 ];
 
 export const GlAccountTypes = [

@@ -410,7 +410,7 @@ export const investmentApi: any = createApi({
     getInvestmentActivityLog: builder.query<any, any>({
       query: (params) => {
         return {
-          url: `${urls.INVESTMEENT_ACTIVITY_LOG}?${new URLSearchParams(
+          url: `${urls.INVESTMENT_ACTIVITY_LOG}?${new URLSearchParams(
             cleanObject(params)
           )}`,
           method: "get",
@@ -418,6 +418,18 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    getInvestmentRequestActivityLog: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `${urls.INVESTMENT_REQUEST_ACTIVITY_LOG}?${new URLSearchParams(
+            cleanObject(params)
+          )}`,
+          method: "get",
+          params: cleanObject(params),
+        };
+      },
+    }),
+    
     getInvestmentStats: builder.query<any, any>({
       query: (data) => {
         if (!data.filter_by) return;
@@ -481,6 +493,41 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    approveInvestment: builder.mutation<{ id: string }, { id: string }>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT_REQUEST}/approve/${data.id}`,
+          method: "put",
+        };
+      },
+    }),
+    rejectInvestment: builder.mutation<{ id: string }, { id: string }>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT_REQUEST}/reject/${data.id}`,
+          method: "put",
+          body: data,
+        };
+      },
+    }),
+    earlyLiquidate: builder.mutation<{ id: string }, { id: string }>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT}/early-liquidate`,
+          method: "put",
+          body: data
+        };
+      },
+    }),
+    partLiquidate: builder.mutation<{ id: string }, { id: string }>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT}/part-liquidate`,
+          method: "put",
+          body: data
+        };
+      },
+    }),
   }),
 });
 
@@ -514,6 +561,7 @@ export const {
   useGetCustomerProfileQuery,
   useCreateInvestmentMutation,
   useGetInvestmentActivityLogQuery,
+  useGetInvestmentRequestActivityLogQuery,
   useGetPostInvestmentRequestsMutation,
   useGetPostInvestmentMutation,
   useGetInvestmentRequestStatsQuery,
@@ -527,4 +575,8 @@ export const {
   useGetInvestmentDashboardStatsQuery,
   useGetFormDocumentsQuery,
   useGetFormTypeQuery,
+  useApproveInvestmentMutation,
+  useRejectInvestmentMutation,
+  useEarlyLiquidateMutation,
+  usePartLiquidateMutation,
 } = investmentApi;
