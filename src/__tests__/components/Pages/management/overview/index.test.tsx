@@ -1,4 +1,17 @@
-import { updateInvestmentTabs } from "../../../../../components/pages/management/overview/index"
+import { renderWithProviders } from "../../../../../__mocks__/api/Wrapper";
+import Overview, { updateInvestmentTabs } from "../../../../../components/pages/management/overview/index"
+import {render, screen} from "@testing-library/react"
+
+
+jest.mock("react-router-dom", () => ({
+    BrowserRouter: ({ children }) => <div>{children}</div>,
+    Link: ({ to, children }) => <a href={to}>{children}</a>,
+    useNavigate: jest.fn(),
+    useSearchParams: jest.fn(),
+    useParams: jest.fn(),
+    useLocation: jest.fn().mockReturnValue({pathname: ""})
+  }));
+
 describe('updateInvestmentTabs', () => {
 
     // Returns an array of objects with updated 'amount' and 'totalValue' properties.
@@ -189,4 +202,63 @@ describe('updateInvestmentTabs', () => {
 
         expect(updatedTabs.length).toBe(tabs.length);
     });
+});
+
+
+describe('Overview', () => {
+
+    // Renders the component without crashing
+    it('should render Overview component without crashing', () => {
+        renderWithProviders(<Overview />);
+        expect(screen.getByText('All Investments')).toBeInTheDocument();
+    });
+
+    // // Displays investment tabs with correct titles and icons
+    // it('should display investment tabs with correct titles and icons', () => {
+    //     render(<Overview />);
+    //     expect(screen.getByText('All Investments')).toBeInTheDocument();
+    //     expect(screen.getByText('Active Investments')).toBeInTheDocument();
+    //     expect(screen.getByText('Liquidated Investments')).toBeInTheDocument();
+    //     expect(screen.getByTestId('investment-svg')).toBeInTheDocument();
+    //     expect(screen.getByTestId('user-svg')).toBeInTheDocument();
+    //     expect(screen.getByTestId('withdraw-svg')).toBeInTheDocument();
+    // });
+
+    // // Displays investment amounts and total values correctly formatted
+    // it('should display investment amounts and total values correctly formatted', () => {
+    //     render(<Overview />);
+    //     expect(screen.getByText('NGN 0.00')).toBeInTheDocument();
+    //     expect(screen.getByText('NGN 0.00')).toBeInTheDocument();
+    //     expect(screen.getByText('NGN 0.00')).toBeInTheDocument();
+    // });
+
+    // // Handles loading state correctly
+    // it('should handle loading state correctly', async () => {
+    //     useGetInvestmentDashboardStatsQuery.mockReturnValue({
+    //         isLoading: true,
+    //     });
+    //     render(<Overview />);
+    //     expect(screen.getByTestId('overview-loader')).toBeInTheDocument();
+    // });
+
+    // // Handles error state correctly
+    // it('should handle error state correctly', async () => {
+    //     useGetInvestmentDashboardStatsQuery.mockReturnValue({
+    //         isError: true,
+    //     });
+    //     render(<Overview />);
+    //     expect(screen.getByTestId('overview-error')).toBeInTheDocument();
+    // });
+
+    // // Handles missing data gracefully
+    // it('should handle missing data gracefully', async () => {
+    //     useGetInvestmentDashboardStatsQuery.mockReturnValue({
+    //         data: null,
+    //         isSuccess: true,
+    //     });
+    //     render(<Overview />);
+    //     expect(screen.getByText('NGN 0.00')).toBeInTheDocument();
+    //     expect(screen.getByText('NGN 0.00')).toBeInTheDocument();
+    //     expect(screen.getByText('NGN 0.00')).toBeInTheDocument();
+    // });
 });
