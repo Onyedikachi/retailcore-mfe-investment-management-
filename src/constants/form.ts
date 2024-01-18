@@ -628,12 +628,13 @@ export const LiquidationSchema = yup.object({
   reason: yup.string().required("Provide a reason"),
   documentUrl: yup.string().required("Upload supporting document"),
   notify: yup.boolean().required(),
-  // amount: yup
-  //   .number()
-  //   .typeError("Invalid value")
-  //   .integer()
-  //   .positive()
-  //   .max(yup.ref("maxAmount"), "Exceeded max amount"),
+  amount: yup
+    .number()
+    .typeError("Invalid value")
+    .integer()
+    .positive()
+    .max(yup.ref("maxAmount"), "Exceeded max amount")
+    .nullable(),
   maxAmount: yup.number(),
 });
 

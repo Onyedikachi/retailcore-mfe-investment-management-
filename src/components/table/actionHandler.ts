@@ -140,7 +140,7 @@ export const actionHandler = ({
       ? setIndividualDetailOpen(true)
       : specificCategory === SpecificCategory.individual
       ? navigate(
-          `/product-factory/investment/management/${specificCategory}/process-summary/verdict/${items.id}`
+          `/product-factory/investment/management/${specificCategory}/process-summary/verdict/${items.id}?process_type=${items.requestType}`
         )
       : navigate(
           `/product-factory/investment/${encodeURIComponent(

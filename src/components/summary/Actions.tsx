@@ -75,6 +75,17 @@ export const handleConfirm = ({
   }
 };
 
+function handlePermissionType(type:string, process_type?: string){
+ 
+  if(type=== "individual"){
+    process_type==="booking"? "BOOK_INVESTMENT":"LIQUIDATE_INVESTMENT"
+  }
+  if(type=== "investment"){
+    return "CREATE_INVESTMENT_PRODUCT"
+  }
+  
+}
+
 export const handleMessages = ({
   rejectSuccess,
   approveSuccess,
@@ -154,6 +165,7 @@ export default function Actions({
   const [searchParams] = useSearchParams();
   const location = useLocation();
   const sub_type = searchParams.get("sub_type");
+  const process_type = searchParams.get("process_type");
   const filter = searchParams.get("filter");
   const { id, process, type } = useParams() || {};
   const [action, setAction] = useState("");
@@ -498,6 +510,7 @@ export default function Actions({
           setReason={setReason}
           reason={reason}
           setRouteTo={setRouteTo}
+          permissionType={handlePermissionType(type,process_type)}
         />
       )}
       {(approveLoading ||

@@ -13,6 +13,7 @@ interface Rejection {
   reason: string;
   setRouteTo?: any;
   creatorId: string;
+  permissionType?: string;
 }
 
 export function handleSuccess(userIsSuccess, setUsers, branchMembersData) {
@@ -36,6 +37,7 @@ export default function Rejection({
   reason,
   setRouteTo,
   creatorId,
+  permissionType
 }: Rejection): React.JSX.Element {
   const [selected, setSelected] = React.useState<any>(null);
   const [users, setUsers] = React.useState([]);
@@ -61,7 +63,7 @@ export default function Rejection({
     isSuccess: userIsSuccess,
     isLoading: userLoading,
   } = useGetUsersPermissionsQuery({
-    permissions: ["CREATE_INVESTMENT_PRODUCT"],
+    permissions: [permissionType],
   });
 
   React.useEffect(() => {

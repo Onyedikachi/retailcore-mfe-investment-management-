@@ -95,7 +95,7 @@ export default function BookingDetail({
                 Account status
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                {detail?.customerBookingInfoModel.accountStatus}{" "}
+                {detail?.customerBookingInfoModel?.accountStatus}{" "}
               </div>
             </div>
           </div>
