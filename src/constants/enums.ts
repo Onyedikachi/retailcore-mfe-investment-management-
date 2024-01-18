@@ -91,6 +91,9 @@ export enum Messages {
   BOOKING_DELETE_FAILED = "Unable to delete",
   BOOKING_APPROVE_FAILED = "Unable to approve investment Booking ",
   BOOKING_REJECT_FAILED = "Unable to reject investment Booking ",
+  PART_LIQUIDATION_REQUEST = "Investment Partial Liquidation Request Submitted for Approval",
+  EARLY_LIQUIDATION_REQUEST = "Investment Early Liquidation Request Submitted for Approval",
+  REQUEST_FAILED = "Request Failed",
 }
 
 export enum Prompts {
