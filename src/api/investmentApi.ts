@@ -510,6 +510,24 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    earlyLiquidate: builder.mutation<{ id: string }, { id: string }>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT}/early-liquidate`,
+          method: "put",
+          body: data
+        };
+      },
+    }),
+    partLiquidate: builder.mutation<{ id: string }, { id: string }>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT}/part-liquidate`,
+          method: "put",
+          body: data
+        };
+      },
+    }),
   }),
 });
 
@@ -559,4 +577,6 @@ export const {
   useGetFormTypeQuery,
   useApproveInvestmentMutation,
   useRejectInvestmentMutation,
+  useEarlyLiquidateMutation,
+  usePartLiquidateMutation,
 } = investmentApi;
