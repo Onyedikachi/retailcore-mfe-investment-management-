@@ -636,6 +636,17 @@ export const liquidities = {
   3: "RecalculateInterest",
   4: "TakeCharge",
 };
+
+export const liquiditiesPenaltyStrings = {
+  0: "None",
+  1: "Forfeit all accrued interest",
+  2: "Forfeiture of % of accrued interests",
+  3: "Recalculate accrued interest of %",
+  4: "Charge",
+};
+
+
+
 export const LiquidityOptions = [
   {
     id: "none",
