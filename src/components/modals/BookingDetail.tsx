@@ -233,6 +233,7 @@ export const BookingDetailLayout = ({
                   </Link>
                 </div>
               </div>
+              
               <div className="border border-[#E5E9EB] rounded-lg py-[25px] px-[30px] h-[593px]">
                 <div className="p-6 flex flex-col gap-y-[35px] max-h-[463px] overflow-y-auto">
                   {detail?.reason && (

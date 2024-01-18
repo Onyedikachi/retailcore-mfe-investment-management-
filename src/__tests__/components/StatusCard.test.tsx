@@ -8,10 +8,10 @@ import StatusCard, {
   handlePermission,
   sortOptions,
 } from "../../components/StatusCard";
-import React from "react";
+import React, { createContext } from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
-import { ApproveProductOptions, ApproveRequestOptions, CreateProductOptions, CreateRequestOptions, FactoryCategories, ProductOptions, RequestOptions } from "../../constants";
+import { ApproveProductOptions, ApproveRequestOptions, CreateProductOptions, CreateRequestOptions, FactoryCategories, ProductOptions, RequestOptions, SpecificCategory } from "../../constants";
 import { InvestmentContext, AppContext } from "../../utils/context";
 import { ProviderValue } from "../../__mocks__/fileMocks";
 import { StatusCategoryType } from "../../constants/enums";
@@ -28,12 +28,11 @@ const mockAppContext = {
 };
 describe("StatusCard", () => {
 
-  const IndividualContext = ({
+  const InvestmentContext = createContext({
     category: null,
     setCategory: () => {},
     selected: null,
-    setSelected: () => {},
-  
+    setSelected: jest.fn(),
     setStatus: () => {},
     status: "",
     dateData: null,
@@ -58,21 +57,18 @@ describe("StatusCard", () => {
 
   it("Renders without error", () => {
     render(
-      <InvestmentContext.Provider value={ProviderValue}>
-        <AppContext.Provider value={mockAppContext}
-        >
-          {/* <StatusCard Context={IndividualContext} handleChange={jest.fn()} /> */}
-          <StatusCard
-              StatusCategories={FactoryCategories}
-              categoryType1={StatusCategoryType.AllProducts}
-              categoryType2={StatusCategoryType.Requests}
-              data={null}
-              requests={null}
-              handleChange={jest.fn()}
-              isLoading={true}
-              Context={InvestmentContext}
-            />
-        </AppContext.Provider>
+      <InvestmentContext.Provider value={{...InvestmentContext, setSelected: jest.fn()}}>
+        {/* <StatusCard Context={IndividualContext} handleChange={jest.fn()} /> */}
+        <StatusCard
+          StatusCategories={FactoryCategories}
+          categoryType1={StatusCategoryType.AllProducts}
+          categoryType2={StatusCategoryType.Requests}
+          data={null}
+          requests={null}
+          handleChange={jest.fn()}
+          isLoading={true}
+          Context={InvestmentContext}
+        />
       </InvestmentContext.Provider>
     );
     expect(screen.getByTestId("rejected")).toBeInTheDocument();
@@ -740,509 +736,418 @@ const mockRequestOptions = [
   { value: "sent_to_anyone" },
 ];
 
-// Test cases
-// describe("handlePermission", () => {
-//   afterEach(() => {
-//     jest.clearAllMocks();
-//   });
-
-//   // Sets filtered product and request options based on user permissions
-//   it('should set filtered product and request options based on user permissions', () => {
-//     const setFilteredRequestOptions = jest.fn();
-//     const setFilteredProductOptions = jest.fn();
-//     const permissions = [
-//       "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS",
-//       "CREATE_INVESTMENT_PRODUCT",
-//       "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS",
-//       "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS",
-//     ];
-//     const ProductOptions = [
-//       {
-//         id: 1,
-//         text: "Created by me",
-//         value: "created_by_me",
-//         disabled: false,
-//       },
-//       {
-//         id: 2,
-//         text: "Created by my branch",
-//         value: "created_by_my_branch",
-//         disabled: false,
-//       },
-//       {
-//         id: 3,
-//         text: "Created system-wide",
-//         value: "created_by_anyone",
-//         disabled: false,
-//       },
-//     ];
-//     const RequestOptions = [
-//       {
-//         id: 1,
-//         text: "Initiated by me",
-//         value: "created_by_me",
-//         disabled: false,
-//       },
-//       {
-//         id: 2,
-//         text: "Initiated by my branch",
-//         value: "created_by_my_branch",
-//         disabled: false,
-//       },
-//       {
-//         id: 3,
-//         text: "Initiated system-wide",
-//         value: "created_by_anyone",
-//         disabled: false,
-//       },
-//     ];
-
-//     handlePermission(
-//       setFilteredRequestOptions,
-//       permissions,
-//       ProductOptions,
-//       RequestOptions,
-//       setFilteredProductOptions
-//     );
-
-//     expect(setFilteredRequestOptions).toHaveBeenCalledWith(RequestOptions);
-//     expect(setFilteredProductOptions).toHaveBeenCalledWith(ProductOptions);
-//   });
-
-//   it("should not modify options if permissions are not provided", () => {
-//     handlePermission(
-//       mockSetFilteredRequestOptions,
-//       [],
-//       mockProductOptions,
-//       mockRequestOptions,
-//       mockSetFilteredProductOptions
-//     );
-
-//     // Ensure that setFilteredProductOptions and setFilteredRequestOptions were called with empty arrays
-//     expect(mockSetFilteredProductOptions).not.toHaveBeenCalled();
-//     expect(mockSetFilteredRequestOptions).not.toHaveBeenCalled();
-//   });
-
-//   it("should handle permissions to view all product records and requests", () => {
-//     handlePermission(
-//       mockSetFilteredRequestOptions,
-//       [
-//         "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS",
-//         "CREATE_INVESTMENT_PRODUCT",
-//         "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS",
-//         "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS",
-//       ],
-//       mockProductOptions,
-//       mockRequestOptions,
-//       mockSetFilteredProductOptions
-//     );
-
-//     // Ensure that setFilteredProductOptions and setFilteredRequestOptions were called with original options
-//     expect(mockSetFilteredProductOptions).toHaveBeenCalledWith(
-//       mockProductOptions
-//     );
-//     expect(mockSetFilteredRequestOptions).toHaveBeenCalledWith(
-//       mockRequestOptions
-//     );
-//   });
-
-//   it("should handle permissions to create investment product without authorization", () => {
-//     // Similar test cases for other scenarios can be added
-//     handlePermission(
-//       mockSetFilteredRequestOptions,
-//       ["CREATE_INVESTMENT_PRODUCT"],
-//       mockProductOptions,
-//       mockRequestOptions,
-//       mockSetFilteredProductOptions
-//     );
-
-//     // Ensure that setFilteredProductOptions and setFilteredRequestOptions were called with modified options
-//     // Add more specific expectations based on your function's logic
-//     expect(
-//       mockSetFilteredProductOptions
-//     ).toHaveBeenCalledWith(CreateProductOptions);
-//     expect(
-//       mockSetFilteredRequestOptions
-//     ).toHaveBeenCalledWith(CreateRequestOptions);
-//   });
-
-//   // Add more test cases as needed
-//   // Sets filtered product and request options based on user permissions
-//   it("should set filtered product and request options based on user permissions", () => {
-//     const setFilteredRequestOptions = jest.fn();
-//     const setFilteredProductOptions = jest.fn();
-//     const permissions = [
-//       "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS",
-//       "CREATE_INVESTMENT_PRODUCT",
-//       "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS",
-//       "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS",
-//     ];
-//     const ProductOptions = [
-//       {
-//         id: 1,
-//         text: "Created by me",
-//         value: "created_by_me",
-//         disabled: false,
-//       },
-//       {
-//         id: 2,
-//         text: "Created by my branch",
-//         value: "created_by_my_branch",
-//         disabled: false,
-//       },
-//       {
-//         id: 3,
-//         text: "Created system-wide",
-//         value: "created_by_anyone",
-//         disabled: false,
-//       },
-//     ];
-//     const RequestOptions = [
-//       {
-//         id: 1,
-//         text: "Initiated by me",
-//         value: "created_by_me",
-//         disabled: false,
-//       },
-//       {
-//         id: 2,
-//         text: "Initiated by my branch",
-//         value: "created_by_my_branch",
-//         disabled: false,
-//       },
-//       {
-//         id: 3,
-//         text: "Initiated system-wide",
-//         value: "created_by_anyone",
-//         disabled: false,
-//       },
-//     ];
-
-//     handlePermission(
-//       setFilteredRequestOptions,
-//       permissions,
-//       ProductOptions,
-//       RequestOptions,
-//       setFilteredProductOptions
-//     );
-
-//     expect(setFilteredProductOptions).toHaveBeenCalledWith(ProductOptions);
-//     expect(setFilteredRequestOptions).toHaveBeenCalledWith(RequestOptions);
-//   });
-//   it("should set filtered product and request options based on user permissions", () => {
-//     const setFilteredRequestOptions = jest.fn();
-//     const setFilteredProductOptions = jest.fn();
-//     const permissions = [
-//       "CREATE_INVESTMENT_PRODUCT",
-//       "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS",
-//       "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS",
-//     ];
-//     const ProductOptions = [
-//       {
-//         id: 1,
-//         text: "Created by me",
-//         value: "created_by_me",
-//         disabled: false,
-//       },
-//       {
-//         id: 2,
-//         text: "Created by my branch",
-//         value: "created_by_my_branch",
-//         disabled: false,
-//       },
-//       {
-//         id: 3,
-//         text: "Created system-wide",
-//         value: "created_by_anyone",
-//         disabled: false,
-//       },
-//     ];
-//     const RequestOptions = [
-//       {
-//         id: 1,
-//         text: "Initiated by me",
-//         value: "created_by_me",
-//         disabled: false,
-//       },
-//       {
-//         id: 2,
-//         text: "Initiated by my branch",
-//         value: "created_by_my_branch",
-//         disabled: false,
-//       },
-//       {
-//         id: 3,
-//         text: "Initiated system-wide",
-//         value: "created_by_anyone",
-//         disabled: false,
-//       },
-//     ];
-
-//     handlePermission(
-//       setFilteredRequestOptions,
-//       permissions,
-//       ProductOptions,
-//       RequestOptions,
-//       setFilteredProductOptions
-//     );
-
-//     const expectedProductOptions = [...ProductOptions]
-//     expectedProductOptions[2].disabled = true
-//     const expectedRequestOptions = [...RequestOptions]
-//     expectedProductOptions[2].disabled = true
-
-//     expect(setFilteredProductOptions).toHaveBeenCalledWith(expectedProductOptions);
-//     expect(setFilteredRequestOptions).toHaveBeenCalledWith(expectedRequestOptions);
-//   });
-// });
-
-
-
-
-
-
-
-
 // Generated by CodiumAI
 
 describe('handlePermission', () => {
 
-  // When permissions include 'AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS' and 'CREATE_INVESTMENT_PRODUCT', and 'VIEW_ALL_INVESTMENT_PRODUCT_RECORDS' and 'VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS', set filtered product options to ProductOptions and filtered request options to RequestOptions.
-  it('should set filtered product options to ProductOptions and filtered request options to RequestOptions when permissions include "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS" and "CREATE_INVESTMENT_PRODUCT", and "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS" and "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS"', () => {
+  // Function handles permission for all investment product and request options
+  it('should handle permission for all investment product and request options', () => {
+    const specificCategory = SpecificCategory.individual;
+    const investmentRequestOptions = [
+      {
+        id: 1,
+        text: "Option 1",
+        value: "option1",
+        disabled: false,
+      },
+      {
+        id: 2,
+        text: "Option 2",
+        value: "option2",
+        disabled: false,
+      },
+    ];
+    const investmentProductOptions = [
+      {
+        id: 1,
+        text: "Option 1",
+        value: "option1",
+        disabled: false,
+      },
+      {
+        id: 2,
+        text: "Option 2",
+        value: "option2",
+        disabled: false,
+      },
+    ];
     const setFilteredRequestOptions = jest.fn();
-    const setFilteredProductOptions = jest.fn();
     const permissions = [
       "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS",
       "CREATE_INVESTMENT_PRODUCT",
       "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS",
       "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS",
     ];
-
-    handlePermission(
-      setFilteredRequestOptions,
-      permissions,
-      ProductOptions,
-      RequestOptions,
-      setFilteredProductOptions
-    );
-
-    expect(setFilteredProductOptions).toHaveBeenCalledWith(ProductOptions);
-    expect(setFilteredRequestOptions).toHaveBeenCalledWith(RequestOptions);
-  });
-
-  // When permissions include 'CREATE_INVESTMENT_PRODUCT' and not 'AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS', and 'VIEW_ALL_INVESTMENT_PRODUCT_RECORDS' and 'VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS', set filtered product options to CreateProductOptions and filtered request options to CreateRequestOptions.
-  it('should set filtered product options to CreateProductOptions and filtered request options to CreateRequestOptions when permissions include "CREATE_INVESTMENT_PRODUCT" and not "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS", and "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS" and "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS"', () => {
-    const setFilteredRequestOptions = jest.fn();
-    const setFilteredProductOptions = jest.fn();
-    const permissions = [
-      "CREATE_INVESTMENT_PRODUCT",
-      "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS",
-      "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS",
+    const productOptions = [
+      {
+        id: 1,
+        text: "Option 1",
+        value: "option1",
+        disabled: false,
+      },
+      {
+        id: 2,
+        text: "Option 2",
+        value: "option2",
+        disabled: false,
+      },
     ];
-
-    handlePermission(
-      setFilteredRequestOptions,
-      permissions,
-      ProductOptions,
-      RequestOptions,
-      setFilteredProductOptions
-    );
-
-    expect(setFilteredProductOptions).toHaveBeenCalledWith(CreateProductOptions);
-    expect(setFilteredRequestOptions).toHaveBeenCalledWith(CreateRequestOptions);
-  });
-  // When not 'CREATE_INVESTMENT_PRODUCT' and permissions include 'AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS', and 'VIEW_ALL_INVESTMENT_PRODUCT_RECORDS' and 'VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS', set filtered product options to ApproveProductOptions and filtered request options to ApproveRequestOptions.
-  it('should set filtered product options to ApproveProductOptions and filtered request options to ApproveRequestOptions when not "CREATE_INVESTMENT_PRODUCT" and permissions include "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS", and "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS" and "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS"', () => {
-    const setFilteredRequestOptions = jest.fn();
-    const setFilteredProductOptions = jest.fn();
-    const permissions = [
-      "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS",
-      "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS",
-      "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS",
+    const requestOptions = [
+      {
+        id: 1,
+        text: "Option 1",
+        value: "option1",
+        disabled: false,
+      },
+      {
+        id: 2,
+        text: "Option 2",
+        value: "option2",
+        disabled: false,
+      },
     ];
+    const setFilteredProductOptions = jest.fn();
 
     handlePermission(
+      specificCategory,
+      investmentRequestOptions,
+      investmentProductOptions,
       setFilteredRequestOptions,
       permissions,
-      ProductOptions,
-      RequestOptions,
+      productOptions,
+      requestOptions,
       setFilteredProductOptions
     );
 
-    expect(setFilteredProductOptions).toHaveBeenCalledWith(ApproveProductOptions);
-    expect(setFilteredRequestOptions).toHaveBeenCalledWith(ApproveRequestOptions);
+    expect(setFilteredProductOptions).toHaveBeenCalledWith(investmentProductOptions);
+    expect(setFilteredRequestOptions).toHaveBeenCalledWith(investmentRequestOptions);
   });
-  it('should set filtered product options to ApproveProductOptions and filtered request options to ApproveRequestOptions when not "CREATE_INVESTMENT_PRODUCT" and permissions include "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS", and "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS" and "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS"', () => {
-    const setFilteredRequestOptions = jest.fn();
-    const setFilteredProductOptions = jest.fn();
-    const permissions = [
-      "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS",
+
+  // Function handles permission for individual investment product and request options
+  it('should handle permission for individual investment product and request options', () => {
+    const specificCategory = SpecificCategory.individual;
+    const investmentRequestOptions = [
+      {
+        id: 1,
+        text: "Option 1",
+        value: "option1",
+        disabled: false,
+      },
+      {
+        id: 2,
+        text: "Option 2",
+        value: "option2",
+        disabled: false,
+      },
     ];
-
-    handlePermission(
-      setFilteredRequestOptions,
-      permissions,
-      ProductOptions,
-      RequestOptions,
-      setFilteredProductOptions
-    );
-
-    expect(setFilteredProductOptions).toHaveBeenCalledWith(ApproveProductOptions);
-    expect(setFilteredRequestOptions).toHaveBeenCalledWith(ApproveRequestOptions);
-  });
-
-  // // When none of the above conditions are met, set filtered product options to CreateProductOptions and filtered request options to CreateRequestOptions.
-  // it('should set filtered product options to CreateProductOptions and filtered request options to CreateRequestOptions when none of the above conditions are met', () => {
-  //   const setFilteredRequestOptions = jest.fn();
-  //   const setFilteredProductOptions = jest.fn();
-  //   const permissions = [];
-
-  //   handlePermission(
-  //     setFilteredRequestOptions,
-  //     permissions,
-  //     ProductOptions,
-  //     RequestOptions,
-  //     setFilteredProductOptions
-  //   );
-
-  //   expect(setFilteredProductOptions),.toHaveBeenCalledWith(CreateProductOptions);
-  //   expect(setFilteredRequestOptions).toHaveBeenCalledWith(CreateRequestOptions);
-  // });
-
-  // When permissions include 'AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS' and 'CREATE_INVESTMENT_PRODUCT', but not 'VIEW_ALL_INVESTMENT_PRODUCT_RECORDS' and 'VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS', set filtered product options to ProductOptions without 'created_by_anyone' and 'approved_system_wide', and filtered request options to RequestOptions without 'created_by_anyone' and 'sent_to_anyone'.
-  it('should set filtered product options to ProductOptions without "created_by_anyone" and "approved_system_wide", and filtered request options to RequestOptions without "created_by_anyone" and "sent_to_anyone" when permissions include "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS" and "CREATE_INVESTMENT_PRODUCT", but not "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS" and "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS"', () => {
-    const setFilteredRequestOptions = jest.fn();
-    const setFilteredProductOptions = jest.fn();
-    const permissions = [
-      "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS",
-      "CREATE_INVESTMENT_PRODUCT",
+    const investmentProductOptions = [
+      {
+        id: 1,
+        text: "Option 1",
+        value: "option1",
+        disabled: false,
+      },
+      {
+        id: 2,
+        text: "Option 2",
+        value: "option2",
+        disabled: false,
+      },
     ];
-
-    handlePermission(
-      setFilteredRequestOptions,
-      permissions,
-      ProductOptions,
-      RequestOptions,
-      setFilteredProductOptions
-    );
-
-    expect(setFilteredProductOptions).toHaveBeenCalledWith(
-      ProductOptions.map((i: any) => {
-        if (i.value === "created_by_anyone") {
-          i.disabled = true;
-        }
-        if (i.value === "approved_system_wide") {
-          i.disabled = true;
-        }
-        return i;
-      })
-    );
-    expect(setFilteredRequestOptions).toHaveBeenCalledWith(
-      RequestOptions.map((i: any) => {
-        if (i.value === "created_by_anyone") {
-          i.disabled = true;
-        }
-        if (i.value === "sent_to_anyone") {
-          i.disabled = true;
-        }
-        return i;
-      })
-    );
-  });
-
-  // When permissions include 'CREATE_INVESTMENT_PRODUCT', but not 'AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS' and not 'VIEW_ALL_INVESTMENT_PRODUCT_RECORDS' and not 'VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS', set filtered product options to CreateProductOptions without 'created_by_anyone', and filtered request options to CreateRequestOptions without 'created_by_anyone'.
-  it('should set filtered product options to CreateProductOptions without "created_by_anyone", and filtered request options to CreateRequestOptions without "created_by_anyone" when permissions include "CREATE_INVESTMENT_PRODUCT", but not "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS" and not "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS" and not "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS"', () => {
     const setFilteredRequestOptions = jest.fn();
-    const setFilteredProductOptions = jest.fn();
-    const permissions = ["CREATE_INVESTMENT_PRODUCT"];
-
-    handlePermission(
-      setFilteredRequestOptions,
-      permissions,
-      ProductOptions,
-      RequestOptions,
-      setFilteredProductOptions
-    );
-
-    expect(setFilteredProductOptions).toHaveBeenCalledWith(
-      CreateProductOptions.map((i: any) => {
-        if (i.value === "created_by_anyone") {
-          i.disabled = true;
-        }
-        return i;
-      })
-    );
-    expect(setFilteredRequestOptions).toHaveBeenCalledWith(
-      CreateRequestOptions.map((i: any) => {
-        if (i.value === "created_by_anyone") {
-          i.disabled = true;
-        }
-        return i;
-      })
-    );
-  });
-
-  // When not 'CREATE_INVESTMENT_PRODUCT' and permissions include 'AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS', but not 'VIEW_ALL_INVESTMENT_PRODUCT_RECORDS' and not 'VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS', set filtered product options to ApproveProductOptions without 'approved_system_wide', and filtered request options to ApproveRequestOptions without 'sent_to_anyone'.
-  it('should set filtered product options to ApproveProductOptions without "approved_system_wide", and filtered request options to ApproveRequestOptions without "sent_to_anyone" when not "CREATE_INVESTMENT_PRODUCT" and permissions include "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS", but not "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS" and not "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS"', () => {
-    const setFilteredRequestOptions = jest.fn();
-    const setFilteredProductOptions = jest.fn();
-    const permissions = [
-      "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS",
-      "CREATE_INVESTMENT_PRODUCT"
-    ];
-
-    handlePermission(
-      setFilteredRequestOptions,
-      permissions,
-      ProductOptions,
-      RequestOptions,
-      setFilteredProductOptions
-    );
-
-    expect(setFilteredProductOptions).toHaveBeenCalledWith(
-      [{ "disabled": false, "id": 1, "text": "Created by me", "value": "created_by_me" }, { "disabled": false, "id": 2, "text": "Created by my branch", "value": "created_by_my_branch" }, { "disabled": true, "id": 3, "text": "Created system-wide", "value": "created_by_anyone" }, { "disabled": false, "id": 4, "text": "Approved by me", "value": "approved_by_me" }, { "disabled": false, "id": 5, "text": "Approved by my branch", "value": "approved_by_my_branch" }, { "disabled": true, "id": 6, "text": "Approved system-wide", "value": "approved_system_wide" }]
-    );
-    expect(setFilteredRequestOptions).toHaveBeenCalledWith([{ "disabled": false, "id": 1, "text": "Initiated by me", "value": "created_by_me" }, { "disabled": false, "id": 2, "text": "Initiated by my branch", "value": "created_by_my_branch" }, { "disabled": true, "id": 3, "text": "Initiated system-wide", "value": "created_by_anyone" }, { "disabled": false, "id": 4, "text": "Sent to me", "value": "sent_to_me" }, { "disabled": false, "id": 5, "text": "Sent to my branch", "value": "sent_to_my_branch" }, { "disabled": true, "id": 6, "text": "Sent system-wide", "value": "sent_to_anyone" }]);
-  });
-
-  // When permissions is empty, set filtered product options and filtered request options to empty array.
-  it('should set filtered product options and filtered request options to empty array when permissions is empty', () => {
-    const setFilteredRequestOptions = jest.fn();
-    const setFilteredProductOptions = jest.fn();
-    const permissions = [];
-
-    handlePermission(
-      setFilteredRequestOptions,
-      permissions,
-      ProductOptions,
-      RequestOptions,
-      setFilteredProductOptions
-    );
-
-    expect(setFilteredProductOptions).not.toHaveBeenCalledWith();
-    expect(setFilteredRequestOptions).not.toBeCalled();
-  });
-
-  // When status is empty, set activeType to 'all'.
-  it('should set activeType to "all" when status is empty', () => {
-    const setFilteredRequestOptions = jest.fn();
-    const setFilteredProductOptions = jest.fn();
     const permissions = [
       "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS",
       "CREATE_INVESTMENT_PRODUCT",
       "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS",
       "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS",
     ];
+    const productOptions = [
+      {
+        id: 1,
+        text: "Option 1",
+        value: "option1",
+        disabled: false,
+      },
+      {
+        id: 2,
+        text: "Option 2",
+        value: "option2",
+        disabled: false,
+      },
+    ];
+    const requestOptions = [
+      {
+        id: 1,
+        text: "Option 1",
+        value: "option1",
+        disabled: false,
+      },
+      {
+        id: 2,
+        text: "Option 2",
+        value: "option2",
+        disabled: false,
+      },
+    ];
+    const setFilteredProductOptions = jest.fn();
 
     handlePermission(
+      specificCategory,
+      investmentRequestOptions,
+      investmentProductOptions,
       setFilteredRequestOptions,
       permissions,
-      ProductOptions,
-      RequestOptions,
+      productOptions,
+      requestOptions,
       setFilteredProductOptions
     );
 
-    expect(setFilteredProductOptions).toHaveBeenCalledWith(ProductOptions);
-    expect(setFilteredRequestOptions).toHaveBeenCalledWith(RequestOptions);
+    expect(setFilteredProductOptions).toHaveBeenCalledWith(investmentProductOptions);
+    expect(setFilteredRequestOptions).toHaveBeenCalledWith(investmentRequestOptions);
+  });
+
+  // Function handles permission for viewing all investment product records
+  it('should handle permission for viewing all investment product records', () => {
+    const specificCategory = SpecificCategory.individual;
+    const investmentRequestOptions = [
+      {
+        id: 1,
+        text: "Option 1",
+        value: "option1",
+        disabled: false,
+      },
+      {
+        id: 2,
+        text: "Option 2",
+        value: "option2",
+        disabled: false,
+      },
+    ];
+    const investmentProductOptions = [
+      {
+        id: 1,
+        text: "Option 1",
+        value: "option1",
+        disabled: false,
+      },
+      {
+        id: 2,
+        text: "Option 2",
+        value: "option2",
+        disabled: false,
+      },
+    ];
+    const setFilteredRequestOptions = jest.fn();
+    const permissions = [
+      "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS",
+      "CREATE_INVESTMENT_PRODUCT",
+    ];
+    const productOptions = [
+      {
+        id: 1,
+        text: "Option 1",
+        value: "option1",
+        disabled: false,
+      },
+      {
+        id: 2,
+        text: "Option 2",
+        value: "option2",
+        disabled: false,
+      },
+    ];
+    const requestOptions = [
+      {
+        id: 1,
+        text: "Option 1",
+        value: "option1",
+        disabled: false,
+      },
+      {
+        id: 2,
+        text: "Option 2",
+        value: "option2",
+        disabled: false,
+      },
+    ];
+    const setFilteredProductOptions = jest.fn();
+
+    handlePermission(
+      specificCategory,
+      investmentRequestOptions,
+      investmentProductOptions,
+      setFilteredRequestOptions,
+      permissions,
+      productOptions,
+      requestOptions,
+      setFilteredProductOptions
+    );
+
+    expect(setFilteredProductOptions).toHaveBeenCalledWith([{"disabled": false, "id": 1, "text": "Created by me", "value": "created_by_me"}, {"disabled": false, "id": 2, "text": "Created by my branch", "value": "created_by_my_branch"}, {"disabled": false, "id": 3, "text": "Created system-wide", "value": "created_by_anyone"}]);
+    expect(setFilteredRequestOptions).toHaveBeenCalledWith([{"disabled": false, "id": 1, "text": "Initiated by me", "value": "created_by_me"}, {"disabled": false, "id": 2, "text": "Initiated by my branch", "value": "created_by_my_branch"}, {"disabled": true, "id": 3, "text": "Initiated system-wide", "value": "created_by_anyone"}]);
+  });
+
+  // Function handles permission for viewing all investment product requests
+  it('should handle permission for viewing all investment product requests', () => {
+    const specificCategory = SpecificCategory.individual;
+    const investmentRequestOptions = [
+      {
+        id: 1,
+        text: "Option 1",
+        value: "option1",
+        disabled: false,
+      },
+      {
+        id: 2,
+        text: "Option 2",
+        value: "option2",
+        disabled: false,
+      },
+    ];
+    const investmentProductOptions = [
+      {
+        id: 1,
+        text: "Option 1",
+        value: "option1",
+        disabled: false,
+      },
+      {
+        id: 2,
+        text: "Option 2",
+        value: "option2",
+        disabled: false,
+      },
+    ];
+    const setFilteredRequestOptions = jest.fn();
+    const permissions = [
+      "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS",
+      "CREATE_INVESTMENT_PRODUCT",
+      "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS",
+    ];
+    const productOptions = [
+      {
+        id: 1,
+        text: "Option 1",
+        value: "option1",
+        disabled: false,
+      },
+      {
+        id: 2,
+        text: "Option 2",
+        value: "option2",
+        disabled: false,
+      },
+    ];
+    const requestOptions = [
+      {
+        id: 1,
+        text: "Option 1",
+        value: "option1",
+        disabled: false,
+      },
+      {
+        id: 2,
+        text: "Option 2",
+        value: "option2",
+        disabled: false,
+      },
+    ];
+    const setFilteredProductOptions = jest.fn();
+
+    handlePermission(
+      specificCategory,
+      investmentRequestOptions,
+      investmentProductOptions,
+      setFilteredRequestOptions,
+      permissions,
+      productOptions,
+      requestOptions,
+      setFilteredProductOptions
+    );
+
+    expect(setFilteredProductOptions).toHaveBeenCalledWith(investmentProductOptions);
+    expect(setFilteredRequestOptions).toHaveBeenCalledWith(investmentRequestOptions);
+  });
+
+  // Function handles permission for creating investment products
+  it('should handle permission for creating investment products', () => {
+    const specificCategory = SpecificCategory.individual;
+    const investmentRequestOptions = [
+      {
+        id: 1,
+        text: "Option 1",
+        value: "option1",
+        disabled: false,
+      },
+      {
+        id: 2,
+        text: "Option 2",
+        value: "option2",
+        disabled: false,
+      },
+    ];
+    const investmentProductOptions = [
+      {
+        id: 1,
+        text: "Option 1",
+        value: "option1",
+        disabled: false,
+      },
+      {
+        id: 2,
+        text: "Option 2",
+        value: "option2",
+        disabled: false,
+      },
+    ];
+    const setFilteredRequestOptions = jest.fn();
+    const permissions = [
+      "CREATE_INVESTMENT_PRODUCT",
+      "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS",
+      "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS",
+    ];
+    const productOptions = [
+      {
+        id: 1,
+        text: "Option 1",
+        value: "option1",
+        disabled: false,
+      },
+      {
+        id: 2,
+        text: "Option 2",
+        value: "option2",
+        disabled: false,
+      },
+    ];
+    const requestOptions = [
+      {
+        id: 1,
+        text: "Option 1",
+        value: "option1",
+        disabled: false,
+      },
+      {
+        id: 2,
+        text: "Option 2",
+        value: "option2",
+        disabled: false,
+      },
+    ];
+    const setFilteredProductOptions = jest.fn();
+
+    handlePermission(
+      specificCategory,
+      investmentRequestOptions,
+      investmentProductOptions,
+      setFilteredRequestOptions,
+      permissions,
+      productOptions,
+      requestOptions,
+      setFilteredProductOptions
+    );
+
+    expect(setFilteredProductOptions).toHaveBeenCalledWith([{"disabled": false, "id": 1, "text": "Created by me", "value": "created_by_me"}, {"disabled": false, "id": 2, "text": "Created by my branch", "value": "created_by_my_branch"}, {"disabled": false, "id": 3, "text": "Created system-wide", "value": "created_by_anyone"}]);
+    expect(setFilteredRequestOptions).toHaveBeenCalledWith([{"disabled": false, "id": 1, "text": "Initiated by me", "value": "created_by_me"}, {"disabled": false, "id": 2, "text": "Initiated by my branch", "value": "created_by_my_branch"}, {"disabled": true, "id": 3, "text": "Initiated system-wide", "value": "created_by_anyone"}]);
   });
 });

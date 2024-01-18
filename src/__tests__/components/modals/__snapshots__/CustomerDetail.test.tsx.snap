@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`code snippet should render the component with the correct UI elements and styles 1`] = `
+exports[`CustomerDetail should handle case when valid ID is not provided 1`] = `
 Object {
   "debug": [Function],
   "findAllByAltText": [Function],

@@ -43,7 +43,7 @@ export default function ProductSearch({
       return options;
     } else {
       return options?.filter((item) => {
-        return item.name.toLowerCase().includes(query.toLowerCase());
+        return item.name?.toLowerCase().includes(query?.toLowerCase());
       });
     }
   }, [query, options]);

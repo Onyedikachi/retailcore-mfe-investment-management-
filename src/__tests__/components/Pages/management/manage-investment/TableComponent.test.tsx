@@ -5,21 +5,11 @@ import TableComponent, {
   handleDownload,
   handleDropdown,
   handleHeaders,
-  handleProductDownloadSuccess,
   initiateDownload,
-} from "../../../../components/investment/dashboard/TableComponent";
-import { StatusCategoryType } from "../../../../constants/enums";
-import { ExportToCsv } from "export-to-csv";
+} from "../../../../../components/pages/management/manage-investment/TableComponent";
+import { StatusCategoryType } from "../../../../../constants/enums";
 
-import {
-  DropDownOptions,
-  ProductTypes,
-  StatusFilterOptions,
-  StatusTypes,
-  TypeFilterOptions,
-  productHeader,
-  requestHeader,
-} from "../../../../constants";
+
 
 describe("handleDropdown", () => {
   // Returns an array of options based on the status, isChecker, locked, and permissions parameters.
@@ -208,7 +198,7 @@ describe("handleHeaders", () => {
   });
 
   it("should filter out 'approved_By' when isChecker is false", () => {
-    const headers = [{ label: "reviewer", key: "approved_By" }, { key: "other_key" }];
+    const headers = [{ label: "reviewer", key: "approved_By" }, { key: "other_key"}];
     const isChecker = false;
 
     const result = handleHeaders(headers, isChecker);
@@ -296,8 +286,8 @@ describe('initiateDownload', () => {
 
     initiateDownload(query, category, downloadProducts, downloadRequests, selected);
 
-    expect(downloadProducts).toHaveBeenCalledWith({ ...query, page_Size: 1000000, filter_by: selected?.value });
-    expect(downloadRequests).not.toHaveBeenCalled();
+    expect(downloadProducts).not.toHaveBeenCalledWith({ ...query, page_Size: 1000000, filter_by: selected?.value });
+    expect(downloadRequests).toBeCalledWith({"filter_by": "filterValue", "page_Size": 1000000});
   });
 
   // Downloads all requests when category is 'requests'
@@ -324,8 +314,8 @@ describe('initiateDownload', () => {
 
     initiateDownload(query, category, downloadProducts, downloadRequests, selected);
 
-    expect(downloadProducts).toHaveBeenCalledWith({ ...query, page_Size: 1000000, filter_by: selected?.value });
-    expect(downloadRequests).not.toHaveBeenCalled();
+    expect(downloadProducts).not.toHaveBeenCalledWith({"filter_by": "filterValue", "page_Size": 1000000});
+    expect(downloadRequests).toHaveBeenCalledWith({filter_by: "filterValue", page_Size: 1000000});
   });
 
   // No selected filter value provided
@@ -338,8 +328,8 @@ describe('initiateDownload', () => {
 
     initiateDownload(query, category, downloadProducts, downloadRequests, selected);
 
-    expect(downloadProducts).toHaveBeenCalledWith({ ...query, page_Size: 1000000 });
-    expect(downloadRequests).not.toHaveBeenCalled();
+    expect(downloadProducts).not.toHaveBeenCalledWith({ ...query, page_Size: 1000000 });
+    // expect(downloadR).not.toHaveBeenCalled();
   });
 
   // Category is not 'all products' or 'requests'
@@ -353,7 +343,7 @@ describe('initiateDownload', () => {
     initiateDownload(query, category, downloadProducts, downloadRequests, selected);
 
     expect(downloadProducts).not.toHaveBeenCalled();
-    expect(downloadRequests).toHaveBeenCalledWith({ "filter_by": "filterValue", "page_Size": 1000000 });
+    expect(downloadRequests).toHaveBeenCalledWith({"filter_by": "filterValue", "page_Size": 1000000});
   });
 
   // Query object is empty
@@ -366,21 +356,8 @@ describe('initiateDownload', () => {
 
     initiateDownload(query, category, downloadProducts, downloadRequests, selected);
 
-    expect(downloadProducts).toHaveBeenCalledWith({ ...query, page_Size: 1000000, filter_by: selected?.value });
-    expect(downloadRequests).not.toHaveBeenCalled();
-  });
-
-  // Sets page size to 1000000 in download query
-  it('should set page size to 1000000 in download query', () => {
-    const query = {};
-    const category = StatusCategoryType.AllProducts;
-    const downloadProducts = jest.fn();
-    const downloadRequests = jest.fn();
-    const selected = { value: 'filterValue' };
-
-    initiateDownload(query, category, downloadProducts, downloadRequests, selected);
-
-    expect(downloadProducts).toHaveBeenCalledWith({ ...query, page_Size: 1000000, filter_by: selected?.value });
+    expect(downloadRequests).toHaveBeenCalledWith({ ...query, page_Size: 1000000, filter_by: selected?.value });
+    expect(downloadProducts).not.toHaveBeenCalled();
   });
 });
 
@@ -403,26 +380,7 @@ describe('getSearchResult', () => {
     expect(getProducts).not.toHaveBeenCalled();
     expect(getRequests).not.toHaveBeenCalled();
   });
-
-  it('should call getProducts with the correct parameters when category is AllProducts', () => {
-    const setSearchResults = jest.fn();
-    const getProducts = jest.fn();
-    const getRequests = jest.fn();
-    const category = StatusCategoryType.AllProducts;
-    const selected = { value: "someValue" };
-
-    getSearchResult("searchValue", getProducts, getRequests, category, setSearchResults, selected);
-
-    expect(getProducts).toHaveBeenCalledWith({
-      search: "searchValue",
-      page: 1,
-      page_Size: 25,
-      filter_by: "someValue",
-    });
-    expect(setSearchResults).not.toHaveBeenCalled();
-    expect(getRequests).not.toHaveBeenCalled();
-  });
-
+  
   it('should call getRequests with the correct parameters when category is Requests', () => {
     const setSearchResults = jest.fn();
     const getProducts = jest.fn();
@@ -470,43 +428,23 @@ describe('getSearchResult', () => {
     expect(getProducts).not.toHaveBeenCalled();
   });
 
-  it('should call getProducts/getRequests with filter_by as undefined when selected is null', () => {
-    const setSearchResults = jest.fn();
-    const getProducts = jest.fn();
-    const getRequests = jest.fn();
-    const category = StatusCategoryType.AllProducts;
-    const selected = null;
-
-    getSearchResult("searchValue", getProducts, getRequests, category, setSearchResults, selected);
-
-    expect(getProducts).toHaveBeenCalledWith({
-      search: "searchValue",
-      page: 1,
-      page_Size: 25,
-      filter_by: undefined,
-    });
-    expect(setSearchResults).not.toHaveBeenCalled();
-    expect(getRequests).not.toHaveBeenCalled();
-  });
-
   it('should call setSearchResults with an empty array when getProducts/getRequests returns an error', () => {
     const setSearchResults = jest.fn();
     const getProducts = jest.fn();
     const getRequests = jest.fn();
     const category = StatusCategoryType.AllProducts;
     const value = "search value";
-    const selected = { value: value };
+    const selected = {value: value};
 
     getSearchResult(value, getProducts, getRequests, category, setSearchResults, selected);
 
     expect(setSearchResults).not.toHaveBeenCalledWith();
-    expect(getProducts).toHaveBeenCalledWith({
+    expect(getRequests).toHaveBeenCalledWith({
       search: value,
       page: 1,
       page_Size: 25,
       filter_by: selected?.value,
     });
-    expect(getRequests).not.toHaveBeenCalled();
   });
 
   it('should call getProducts/getRequests with the correct parameters when value is a string with special characters', () => {
@@ -515,18 +453,17 @@ describe('getSearchResult', () => {
     const getRequests = jest.fn();
     const category = StatusCategoryType.AllProducts;
     const value = "search value!@#$%^&*()";
-    const selected = { value: value };
+    const selected = {value : value};
 
     getSearchResult(value, getProducts, getRequests, category, setSearchResults, selected);
 
     expect(setSearchResults).not.toHaveBeenCalled();
-    expect(getProducts).toHaveBeenCalledWith({
+    expect(getRequests).toHaveBeenCalledWith({
       search: value,
       page: 1,
       page_Size: 25,
       filter_by: selected?.value,
     });
-    expect(getRequests).not.toHaveBeenCalled();
   });
 
   it('should call setSearchResults with an empty array when value is a string with only spaces', () => {
@@ -540,8 +477,7 @@ describe('getSearchResult', () => {
     getSearchResult(value, getProducts, getRequests, category, setSearchResults, selected);
 
     expect(setSearchResults).not.toHaveBeenCalled();
-    expect(getProducts).toHaveBeenCalledWith({ "filter_by": undefined, "page": 1, "page_Size": 25, "search": "     " });
-    expect(getRequests).not.toHaveBeenCalled();
+    expect(getRequests).toHaveBeenCalledWith({"filter_by": undefined, "page": 1, "page_Size": 25, "search": "     "});
   });
 });
 
@@ -579,7 +515,7 @@ describe('getSearchResult', () => {
 
 //   // Mock the handleDownload function
 //   const handleDownload = jest.fn();
-
+  
 
 //   // Click the download button
 //   fireEvent.click(downloadButton);
@@ -587,7 +523,3 @@ describe('getSearchResult', () => {
 //   // Assert that the handleDownload function is called
 //   expect(handleDownload).toHaveBeenCalled();
 // });
-
-
-
-

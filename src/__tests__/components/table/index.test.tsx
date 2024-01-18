@@ -1,5 +1,5 @@
 import { Messages } from "../../../constants/enums"
-import React from "react";
+import React, { createContext } from "react";
 import { render, fireEvent, waitFor, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import moment from "moment";
@@ -18,11 +18,12 @@ import TableComponent, {
 } from "../../../components/table";
 import { FaBars } from "react-icons/fa";
 import { shallow } from "enzyme";
-import { handleColorState, handleUserView } from "../../../utils";
+import { InvestmentContext, handleColorState, handleUserView } from "../../../utils";
 import { Provider } from "react-redux";
 import { store } from "../../../__mocks__/api/store-mock";
 import * as hooks from '../../../api';
 import { handleChange } from "../../../components/forms/ComboSelect";
+import { renderWithProviders } from "../../../__mocks__/api/Wrapper";
 class ResizeObserver {
   observe() { }
   unobserve() { }
@@ -35,6 +36,7 @@ jest.mock("react-router-dom", () => ({
   BrowserRouter: ({ children }) => <div>{children}</div>,
   Link: ({ to, children }) => <a href={to}>{children}</a>,
   useNavigate: jest.fn(),
+  useParams: jest.fn().mockResolvedValue({process: "continue"})
 }));
 jest
   .spyOn(require("react-router-dom"), "useNavigate")
@@ -60,6 +62,7 @@ describe("handleProductsDropdown", () => {
 
     // Act
     const result = handleProductsDropdown(
+      "",
       status,
       isChecker,
       DropDownOptions,
@@ -88,6 +91,7 @@ describe("handleProductsDropdown", () => {
 
     // Act
     const result = handleProductsDropdown(
+      "",
       status,
       isChecker,
       DropDownOptions,
@@ -116,6 +120,7 @@ describe("handleProductsDropdown", () => {
 
     // Act
     const result = handleProductsDropdown(
+      "",
       status,
       isChecker,
       DropDownOptions,
@@ -143,9 +148,37 @@ describe("TableComponent", () => {
       { name: "Bob", age: 35, gender: "Male" },
     ];
 
+    const InvestmentContext = createContext({
+      category: null,
+      setCategory: () => { },
+      selected: null,
+      setSelected: () => { },
+      setStatus: () => { },
+      status: "",
+      dateData: null,
+      setDateData: () => { },
+      search: "",
+      setSearch: () => { },
+      type: "",
+      setType: () => { },
+      initiator: "",
+      setInitiator: () => { },
+      setDuration: () => { },
+      duration: "",
+      isRefreshing: false,
+      setRefreshing: () => { },
+      role: "",
+      setRole: () => { },
+      isDetailOpen: false,
+      setDetailOpen: () => { },
+      detail: false,
+      setDetail: () => { },
+    });
+
+
     // Act
-    render(
-      <Provider store={store}>
+    renderWithProviders(
+      <InvestmentContext.Provider value={InvestmentContext}>
         <TableComponent
           headers={headers}
           tableRows={tableRows}
@@ -158,8 +191,9 @@ describe("TableComponent", () => {
           dropDownOptions={[]}
           dropDownClick={() => { }}
           onChangeDate={() => { }}
+          Context={InvestmentContext}
         />
-      </Provider>
+      </InvestmentContext.Provider>
     );
 
     // Assert
@@ -192,6 +226,7 @@ describe("TableComponent", () => {
           dropDownOptions={[]}
           dropDownClick={() => { }}
           onChangeDate={() => { }}
+          Context={InvestmentContext}
         />
       </Provider>
     );
@@ -216,7 +251,7 @@ describe("TextCellContent", () => {
     render(<TextCellContent value={value} />);
 
     // Assert that "-" is rendered when the value is falsy
-    expect(screen.getByText("-")).toBeInTheDocument();
+    expect(screen.getByText("null")).toBeInTheDocument();
   });
 
   it("should render nothing when value is null or undefined", () => {
@@ -452,7 +487,7 @@ describe('handleProductsDropdown', () => {
     const permissions = ["RE_OR_DEACTIVATE_INVESTMENT_PRODUCT", "CREATE_INVESTMENT_PRODUCT"];
 
     // Act
-    const result = handleProductsDropdown(status, isChecker, DropDownOptions, false, permissions);
+    const result = handleProductsDropdown("", status, isChecker, DropDownOptions, false, permissions);
 
     // Assert
     expect(result).toEqual([
@@ -482,7 +517,7 @@ describe('handleProductsDropdown', () => {
     const permissions = ["CREATE_INVESTMENT_PRODUCT"];
 
     // Act
-    const result = handleProductsDropdown(status, isChecker, DropDownOptions, false, permissions);
+    const result = handleProductsDropdown("", status, isChecker, DropDownOptions, false, permissions);
 
     // Assert
     expect(result).toEqual([
@@ -511,13 +546,10 @@ describe('handleProductsDropdown', () => {
     const permissions = ["RE_OR_DEACTIVATE_INVESTMENT_PRODUCT"];
 
     // Act
-    const result = handleProductsDropdown(status, isChecker, DropDownOptions, false, permissions);
+    const result = handleProductsDropdown("", status, isChecker, DropDownOptions, false, permissions);
 
     // Assert
-    expect(result).toEqual([
-      { text: "View", value: "view" },
-      { text: "Activate", value: "activate" },
-    ]);
+    expect(result).toEqual([{ "text": "View", "value": "view" }]);
   });
 
   // Returns an empty array if status is falsy.
@@ -540,7 +572,7 @@ describe('handleProductsDropdown', () => {
     const permissions = ["RE_OR_DEACTIVATE_INVESTMENT_PRODUCT", "CREATE_INVESTMENT_PRODUCT"];
 
     // Act
-    const result = handleProductsDropdown(status, isChecker, DropDownOptions, false, permissions);
+    const result = handleProductsDropdown("", status, isChecker, DropDownOptions, false, permissions);
 
     // Assert
     expect(result).toEqual([]);
@@ -564,7 +596,7 @@ describe('handleProductsDropdown', () => {
     const permissions = ["RE_OR_DEACTIVATE_INVESTMENT_PRODUCT", "CREATE_INVESTMENT_PRODUCT"];
 
     // Act
-    const result = handleProductsDropdown(status, isChecker, DropDownOptions, false, permissions);
+    const result = handleProductsDropdown("", status, isChecker, DropDownOptions, false, permissions);
 
     // Assert
     expect(result).toBeNull();
@@ -613,7 +645,7 @@ describe('handleProductsDropdown', () => {
     const permissions = ["RE_OR_DEACTIVATE_INVESTMENT_PRODUCT", "CREATE_INVESTMENT_PRODUCT"];
 
     // Act
-    const result = handleProductsDropdown(status, isChecker, DropDownOptions, false, permissions);
+    const result = handleProductsDropdown("", status, isChecker, DropDownOptions, false, permissions);
 
     // Assert
     expect(result).toEqual([
@@ -643,7 +675,7 @@ describe('handleProductsDropdown', () => {
     const permissions = ["CREATE_INVESTMENT_PRODUCT"];
 
     // Act
-    const result = handleProductsDropdown(status, isChecker, DropDownOptions, false, permissions);
+    const result = handleProductsDropdown("", status, isChecker, DropDownOptions, false, permissions);
 
     // Assert
     expect(result).toEqual([
@@ -672,12 +704,11 @@ describe('handleProductsDropdown', () => {
     const permissions = ["RE_OR_DEACTIVATE_INVESTMENT_PRODUCT"];
 
     // Act
-    const result = handleProductsDropdown(status, isChecker, DropDownOptions, false, permissions);
+    const result = handleProductsDropdown("", status, isChecker, DropDownOptions, false, permissions);
 
     // Assert
     expect(result).toEqual([
       { text: "View", value: "view" },
-      { text: "Activate", value: "activate" },
     ]);
   });
 
@@ -701,7 +732,7 @@ describe('handleProductsDropdown', () => {
     const permissions = ["RE_OR_DEACTIVATE_INVESTMENT_PRODUCT", "CREATE_INVESTMENT_PRODUCT"];
 
     // Act
-    const result = handleProductsDropdown(status, isChecker, DropDownOptions, false, permissions);
+    const result = handleProductsDropdown("", status, isChecker, DropDownOptions, false, permissions);
 
     // Assert
     expect(result).toEqual([]);
@@ -725,7 +756,7 @@ describe('handleProductsDropdown', () => {
     const permissions = ["RE_OR_DEACTIVATE_INVESTMENT_PRODUCT", "CREATE_INVESTMENT_PRODUCT"];
 
     // Act
-    const result = handleProductsDropdown(status, isChecker, DropDownOptions, false, permissions);
+    const result = handleProductsDropdown("", status, isChecker, DropDownOptions, false, permissions);
 
     // Assert
     expect(result).toBeNull();

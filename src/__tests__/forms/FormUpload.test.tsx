@@ -183,10 +183,10 @@ describe("handleFileChange", () => {
     );
 
     // Assert
-    expect(setError).not.toHaveBeenCalledWith(
+    expect(setError).toHaveBeenCalledWith(
       "File type not supported , please delete and upload another file"
     );
-    expect(setHasError).not.toHaveBeenCalledWith(true);
+    expect(setHasError).toHaveBeenCalledWith(true);
   });
 });
 

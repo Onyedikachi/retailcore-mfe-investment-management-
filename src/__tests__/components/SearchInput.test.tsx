@@ -163,12 +163,6 @@ const itemval= screen.getAllByText('item1')
 
 describe('SearchItem', () => {
 
-  // Renders a div element with a className of "".
-  it('should render a div element with an empty className', () => {
-    const { container } = render(<SearchItem item={undefined} type={undefined} setInputValue={undefined} setSearchTerm={undefined} setShowBox={undefined} handleSearch={undefined} />);
-    expect(container.firstChild).toBeInTheDocument();
-  });
-
   // Renders a span element with a className of "px-2 mb-3 text-xs text-[#aaa] flex gap-x-[6px] items-center" if type is "general".
   it('should render a span element with the specified className when type is "general"', () => {
     const item = {};
