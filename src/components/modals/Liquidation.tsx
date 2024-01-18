@@ -33,7 +33,7 @@ export default function Liquidation({
   type,
 }: LiquidationProps): React.JSX.Element {
   const initialValues = {
-    investementBookingId: "gwvwg",
+    investementBookingId: detail?.id,
     reason: "",
     documentUrl: "",
     notify: false,

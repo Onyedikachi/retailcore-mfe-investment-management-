@@ -321,6 +321,7 @@ export default function TableComponent<TableProps>({
   }: any = useContext(Context);
 
   const [action, setAction] = useState("");
+  const [bookingId, setBookingId] = useState("");
   const navigate = useNavigate();
   const previousData = useRef({});
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -341,6 +342,8 @@ export default function TableComponent<TableProps>({
     // console.log(JSON.stringify({ action, items }));
     // return;
     actionHandler({
+      bookingId,
+      setBookingId,
       specificCategory,
       action,
       items,
@@ -689,6 +692,7 @@ export default function TableComponent<TableProps>({
       </div>
       {/* @ts-ignore */}
       <MessagesComponent
+      
         specificCategory={specificCategory}
         isConfirmOpen={isConfirmOpen}
         isSuccessOpen={isSuccessOpen}
