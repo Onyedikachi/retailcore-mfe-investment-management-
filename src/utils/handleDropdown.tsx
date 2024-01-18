@@ -8,8 +8,7 @@ export function handleDropdown(
   userId?: string
 ) {
   if (!status || !type) return [];
-  console.log("🚀 ~ type:", type)
-  console.log("🚀 ~ status:", status)
+  
   //returns table options depending on whether its creation or activation
   const firstLevel =
     DropDownOptions[

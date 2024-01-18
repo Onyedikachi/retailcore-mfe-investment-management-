@@ -11,7 +11,7 @@ import {
 import { Breadcrumbs, Loader, Button } from "@app/components";
 import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import {
-  useGetProductActivityLogQuery,
+  useGetInvestmentDetailQuery,
   useGetProductDetailQuery,
   useGetInvestmentActivityLogQuery,
   useGetInvestmentRequestDetailQuery,
@@ -33,28 +33,42 @@ export default function Summary() {
   const { tab, type, id, process } = useParams();
   const [productId, setProductId] = useState(id);
   const category = searchParams.get("category");
+  const [detail, setDetail] = useState(null);
 
   const [state, setState] = useState();
+
+  const {
+    data: productDetail,
+    isSuccess: detailIsSuccess,
+    isError: detailIsError,
+    error: detailError,
+    isLoading: detailLoading,
+  } = useGetProductDetailQuery(
+    { id: detail?.facilityDetailsModel?.investmentProductId },
+    {
+      skip: !detail?.facilityDetailsModel?.investmentProductId,
+    }
+  );
   // Fetch product data
   const {
-    data: productData,
+    data: investmentData,
     isLoading,
     isError,
-  } = useGetProductDetailQuery({
+  } = useGetInvestmentDetailQuery({
     id: productId,
   });
 
   // Fetch activity data based on the category
   const { data: activityData, isLoading: activityIsLoading } =
     useGetInvestmentActivityLogQuery(
-      { productid: id },
+      { bookingId: id },
       { skip: category === "request" }
     );
 
   // Fetch activity request data based on the category
   const { data: activityRequestData, isLoading: activityRequestIsLoading } =
     useGetInvestmentRequestActivityLogQuery(
-      { productrequestId: id },
+      { bookingrequestId: id },
       { skip: !id }
     );
   const {
@@ -72,6 +86,7 @@ export default function Summary() {
       setProductId(requestDetail?.data?.investementBookingId);
     if (requestDetail?.data?.metaInfo) {
       const data = JSON.parse(requestDetail?.data?.metaInfo);
+      setDetail(data);
       console.log("🚀 ~ data:", data);
       if (process === "withdraw_modify") {
       }
@@ -127,7 +142,12 @@ export default function Summary() {
               />
             )}
             <Container>
-              <BookingDetail detail={productData?.data} oldData={null} />
+              <BookingDetail
+                detail={detail || investmentData?.data}
+                oldData={null}
+                type={type}
+                productDetail={productDetail?.data}
+              />
             </Container>
           </div>
 
@@ -137,7 +157,11 @@ export default function Summary() {
         <ActivityLog
           isFetching={false}
           isLoading={activityIsLoading || activityRequestIsLoading}
-          activities={activityData?.results || activityRequestData?.results}
+          activities={
+            activityData?.results.length
+              ? activityData?.results
+              : activityRequestData?.results
+          }
         />
       </div>
     </div>
