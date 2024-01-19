@@ -202,7 +202,7 @@ export const BookingDetailLayout = ({
                       <button
                         data-testid="modify"
                         onClick={() =>
-                          handleClick("liquidate", productInfo?.data)
+                          handleClick("early liquidate", productInfo?.data)
                         }
                         className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3`}
                       >
@@ -213,7 +213,7 @@ export const BookingDetailLayout = ({
                       <button
                         data-testid="deactivate-btn"
                         onClick={() =>
-                          handleClick("liquidate", productInfo?.data)
+                          handleClick("part liquidate", productInfo?.data)
                         }
                         className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
                       >
