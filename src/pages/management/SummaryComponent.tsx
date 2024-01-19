@@ -36,28 +36,39 @@ export default function Summary() {
   const [detail, setDetail] = useState(null);
   const process_type = searchParams.get("process_type");
   const booking_id = searchParams.get("booking_id");
+  const product_id = searchParams.get("product_id");
+  const request_id = searchParams.get("request_id");
   const [state, setState] = useState();
 
-  const {
-    data: productDetail,
-    isSuccess: detailIsSuccess,
-    isError: detailIsError,
-    error: detailError,
-    isLoading: detailLoading,
-  } = useGetProductDetailQuery(
-    { id: detail?.facilityDetailsModel?.investmentProductId },
-    {
-      skip: !detail?.facilityDetailsModel?.investmentProductId,
-    }
-  );
   // Fetch product data
   const {
     data: investmentData,
-    isLoading,
+    isSuccess,
     isError,
   } = useGetInvestmentDetailQuery({
-    id: process_type === "booking" ? productId : booking_id,
+    id: process_type === "booking" ? productId : booking_id || id,
   });
+
+  const {
+    data: productDetail,
+    // isSuccess: detailIsSuccess,
+    // isError: detailIsError,
+    // error: detailError,
+    // isLoading: detailLoading,
+  } = useGetProductDetailQuery(
+    {
+      id:
+        investmentData?.data?.facilityDetailsModel?.investmentProductId ||
+        detail?.facilityDetailsModel?.investmentProductId ||
+        product_id,
+    },
+    {
+      skip:
+        !investmentData?.data?.facilityDetailsModel?.investmentProductId &&
+        detail?.facilityDetailsModel?.investmentProductId &&
+        !product_id,
+    }
+  );
 
   // Fetch activity data based on the category
   const { data: activityData, isLoading: activityIsLoading } =
@@ -72,25 +83,22 @@ export default function Summary() {
       { bookingrequestId: id },
       { skip: !id }
     );
+
   const {
     data: requestDetail,
     isLoading: requestDetailIsLoading,
     isSuccess: requestDetailIsSuccess,
-  } = useGetInvestmentRequestDetailQuery(
-    {
-      id,
-    },
-    { skip: category === "product" }
-  );
+  } = useGetInvestmentRequestDetailQuery({
+    id: request_id || id,
+  });
+    console.log("🚀 ~ Summary ~ requestDetail:", requestDetail)
+
   useEffect(() => {
     if (isError && requestDetailIsSuccess)
       setProductId(requestDetail?.data?.investementBookingId);
     if (requestDetail?.data?.metaInfo) {
       const data = JSON.parse(requestDetail?.data?.metaInfo);
       setDetail(data);
-    
-      if (process === "withdraw_modify") {
-      }
     }
   }, [requestDetailIsSuccess, isError]);
 
@@ -145,7 +153,7 @@ export default function Summary() {
             <Container>
               <BookingDetail
                 detail={
-                  process_type === "liquidation"
+                  process_type?.includes("liquidation")
                     ? investmentData?.data
                     : detail || investmentData?.data
                 }
