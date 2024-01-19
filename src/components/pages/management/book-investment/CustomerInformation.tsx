@@ -224,7 +224,25 @@ export default function CustomerInformation({
   }, [isValid, validKyc]);
 
   useEffect(() => {
-    handleKYCStatus({ profileIsSuccess, profileData, setValidKyc, accountNumber, setKycFailed });
+    if (profileIsSuccess) {
+      const status =
+        profileData?.data?.risk_assessments
+
+          ?.find(
+            (i) =>
+              i.parameter?.toLowerCase() ===
+              "status of customer identity verification"
+          )
+          ?.parameterOption?.toLowerCase() === "passed";
+
+      setValidKyc(status);
+
+      if (status === false && accountNumber && profileData) {
+        setKycFailed(true);
+      } else {
+        setKycFailed(false);
+      }
+    }
   }, [profileData, profileIsSuccess]);
 
   useEffect(() => {
@@ -248,7 +266,7 @@ export default function CustomerInformation({
       )}
     >
       {" "}
-      <div data-testid="customerInformation" className="flex flex-col gap-4 px-[30px] py-5">
+      <div className="flex flex-col gap-4 px-[30px] py-5">
         <div className="flex flex-col items-start gap-y-8">
           <InputDivs
             label={"Customer account"}
@@ -262,7 +280,7 @@ export default function CustomerInformation({
                     setQuery(e);
                   }}
                   searchResults={customersData}
-                  setSearchResults={() => { }}
+                  setSearchResults={() => {}}
                   searchLoading={searchLoading}
                   handleSearch={(value) =>
                     handleSearch(value, setAccountNumber)

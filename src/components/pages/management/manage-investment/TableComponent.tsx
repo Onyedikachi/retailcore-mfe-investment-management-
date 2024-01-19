@@ -23,7 +23,6 @@ import {
 } from "@app/constants";
 import { useProductList } from "@app/hooks";
 import optionsDataHandler from "@app/utils/optionsDataHandler";
-import { handleProductDownloadSuccess } from "@app/utils/handleProductDownloadSuccess";
 
 interface RequestDataProps {
   request: string;
@@ -51,14 +50,10 @@ export const handleDropdown = (
   locked = false,
   permissions: string[] = []
 ) => {
-  if (locked)
-    return IndividualDropDownOptions[setOptionsByStatus(status)].filter(
-      (i: any) => i.text?.toLowerCase() === "view"
-    );
   if (!status) return [];
   if (isChecker) {
     return IndividualDropDownOptions[setOptionsByStatus(status)].filter(
-      (i: any) => i.text?.toLowerCase() === "view"
+      (i: any) => i.text.toLowerCase() === "view"
     );
   } else {
     let options = IndividualDropDownOptions[setOptionsByStatus(status)];
@@ -327,7 +322,38 @@ export default function TableComponent({
   }, [data, request, isSuccess, isRequestSuccess]);
 
   useEffect(() => {
-    handleProductDownloadSuccess({productDownloadIsSuccess, category, productDownloadData, isChecker, csvExporter, requestsDownloadIsSuccess, requestsDownloadData, handleDownload})
+    if (
+      productDownloadIsSuccess &&
+      category === StatusCategoryType?.Investments
+    ) {
+      handleDownload(
+        productDownloadData?.results.map((i) => ({
+          ...i,
+          status: IndividualStatusTypes.find(
+            (n) => n.id === i.investmentBookingStatus
+          )?.type,
+        })),
+        isChecker,
+        csvExporter,
+        category
+      );
+    }
+    if (requestsDownloadIsSuccess && category === StatusCategoryType.Requests) {
+      handleDownload(
+        requestsDownloadData?.results.map((i) => ({
+          ...i,
+          requestStatus: StatusFilterOptions.find(
+            (n) => n.value === i.requestStatus
+          )?.name,
+          requestType: IndividualTypeFilterOptions.find(
+            (n) => n.value === i.requestType
+          )?.name,
+        })),
+        isChecker,
+        csvExporter,
+        category
+      );
+    }
   }, [productDownloadIsSuccess, requestsDownloadIsSuccess]);
 
   React.useEffect(() => {

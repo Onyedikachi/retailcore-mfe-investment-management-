@@ -33,99 +33,6 @@ export const onProceed = (data, proceed, formData, setFormData) => {
   proceed();
 };
 
-export const handleInterestRateValues = ({productDetail, values, setValue, trigger}) => {
-  if (productDetail?.pricingConfiguration?.interestRateRangeType === 0) {
-    productDetail?.pricingConfiguration?.interestRateConfigModels?.forEach(
-      (i) => {
-        if (
-          values.principal >= i.principalMin &&
-          values.principal <= i.principalMax
-        ) {
-          setValue("intMin", i.min);
-          setValue("intMax", i.max);
-        }
-      }
-    );
-  }
-  if (productDetail?.pricingConfiguration?.interestRateRangeType === 1) {
-    productDetail?.pricingConfiguration?.interestRateConfigModels?.forEach(
-      (i) => {
-        if (values.tenor >= i.tenorMin && values.tenor <= i.tenorMax) {
-          setValue("intMin", i.min);
-          setValue("intMax", i.max);
-        }
-      }
-    );
-  }
-  if (productDetail?.pricingConfiguration?.interestRateRangeType === 2) {
-    setValue("intMin", productDetail?.pricingConfiguration?.interestRateMin);
-    setValue("intMax", productDetail?.pricingConfiguration?.interestRateMax);
-  }
-  if (
-    (values.tenor || values.principal) &&
-    values.interestRate &&
-    values.investmentProductId
-  ) {
-    trigger();
-  }
-}
-
-export const handleProductDetails = ({productDetail, values, setValue, setProductDetail}) => {
-  if (productDetail) {
-    setValue(
-      "tenorMin",
-      productDetail?.pricingConfiguration?.applicableTenorMin
-    );
-    setValue(
-      "tenorMax",
-      productDetail?.pricingConfiguration?.applicableTenorMax
-    );
-    setValue(
-      "prinMin",
-      productDetail?.pricingConfiguration?.applicablePrincipalMin
-    );
-    setValue(
-      "prinMax",
-      productDetail?.pricingConfiguration?.applicablePrincipalMax
-    );
-
-    const rangeArr =
-      productDetail?.pricingConfiguration?.interestRateConfigModels[0];
-    if (rangeArr) {
-      if (productDetail?.pricingConfiguration?.interestRateRangeType === 0) {
-        if (
-          values.principal >= rangeArr.principalMin &&
-          values.principal <= rangeArr.principalMax
-        ) {
-          setValue("intMin", rangeArr.min);
-          setValue("intMax", rangeArr.max);
-        }
-      }
-
-      if (productDetail?.pricingConfiguration?.interestRateRangeType === 1) {
-        if (
-          values.tenor >= rangeArr.tenorMin &&
-          values.tenor <= rangeArr.tenorMax
-        ) {
-          setValue("intMin", rangeArr.min);
-          setValue("intMax", rangeArr.max);
-        }
-      }
-    }
-
-    if (productDetail?.pricingConfiguration?.interestRateRangeType === 2) {
-      setValue(
-        "intMin",
-        productDetail?.pricingConfiguration?.interestRateMin
-      );
-      setValue(
-        "intMax",
-        productDetail?.pricingConfiguration?.interestRateMax
-      );
-    }
-  }
-}
-
 type FacilityDetailsProps = {
   formData?: any;
   setFormData?: (e) => void;
@@ -234,8 +141,59 @@ export default function FacilityDetails({
 
   // Set product detail
   useEffect(() => {
-    // setProductDetail
-    handleProductDetails({productDetail, values, setValue, setProductDetail})
+    if (productDetail) {
+      setValue(
+        "tenorMin",
+        productDetail?.pricingConfiguration?.applicableTenorMin
+      );
+      setValue(
+        "tenorMax",
+        productDetail?.pricingConfiguration?.applicableTenorMax
+      );
+      setValue(
+        "prinMin",
+        productDetail?.pricingConfiguration?.applicablePrincipalMin
+      );
+      setValue(
+        "prinMax",
+        productDetail?.pricingConfiguration?.applicablePrincipalMax
+      );
+
+      const rangeArr =
+        productDetail?.pricingConfiguration?.interestRateConfigModels[0];
+      if (rangeArr.length) {
+        if (productDetail?.pricingConfiguration?.interestRateRangeType === 0) {
+          if (
+            values.principal >= rangeArr.principalMin &&
+            values.principal <= rangeArr.principalMax
+          ) {
+            setValue("intMin", rangeArr.min);
+            setValue("intMax", rangeArr.max);
+          }
+        }
+
+        if (productDetail?.pricingConfiguration?.interestRateRangeType === 1) {
+          if (
+            values.tenor >= rangeArr.tenorMin &&
+            values.tenor <= rangeArr.tenorMax
+          ) {
+            setValue("intMin", rangeArr.min);
+            setValue("intMax", rangeArr.max);
+          }
+        }
+      }
+
+      if (productDetail?.pricingConfiguration?.interestRateRangeType === 2) {
+        setValue(
+          "intMin",
+          productDetail?.pricingConfiguration?.interestRateMin
+        );
+        setValue(
+          "intMax",
+          productDetail?.pricingConfiguration?.interestRateMax
+        );
+      }
+    }
   }, [productDetail]);
 
   useEffect(() => {
@@ -339,7 +297,7 @@ export default function FacilityDetails({
                     setQuery(e);
                   }}
                   searchResults={productsData}
-                  setSearchResults={() => { }}
+                  setSearchResults={() => {}}
                   searchLoading={searchLoading}
                   handleSearch={(value, data) =>
                     handleSearch(
@@ -475,10 +433,10 @@ export default function FacilityDetails({
                             Interval[
                               productDetail?.pricingConfiguration
                                 ?.applicableTenorMaxUnit
-                              ]
-                            }
-                          </span>
-                        )}
+                            ]
+                          }
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>

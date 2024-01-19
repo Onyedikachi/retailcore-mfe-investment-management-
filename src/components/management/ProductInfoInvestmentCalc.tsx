@@ -13,17 +13,6 @@ import { useParams } from "react-router-dom";
 //   activities: Array<any>;
 // }
 
-
-export const toggleTab = (val, setActive) => {
-  setActive((prevActive) => {
-    if (prevActive.includes(val)) {
-      return prevActive.filter((i) => i !== val);
-    } else {
-      return [...prevActive, val];
-    }
-  });
-};
-
 export default function ProductInfoInvestmentCalc({
   productDetail,
   formData,
@@ -32,7 +21,17 @@ export default function ProductInfoInvestmentCalc({
   const { currencies } = useContext(AppContext);
   const [productDetailMap, setProductDetailMap] = useState(null);
   const [active, setActive] = useState([]);
-  
+
+  const toggleTab = (val) => {
+    setActive((prevActive) => {
+      if (prevActive.includes(val)) {
+        return prevActive.filter((i) => i !== val);
+      } else {
+        return [...prevActive, val];
+      }
+    });
+  };
+
   useEffect(() => {
     setProductDetailMap([
       {
@@ -421,7 +420,7 @@ export default function ProductInfoInvestmentCalc({
                   )}
 
                   <span
-                    onClick={() => toggleTab(item?.name, setActive)}
+                    onClick={() => toggleTab(item?.name)}
                     className="text-[#636363] text-base font-medium"
                   >
                     {item?.name}
@@ -456,7 +455,7 @@ export default function ProductInfoInvestmentCalc({
         </div>
       </div>{" "}
       <div
-        data-testid="investment-calculation"
+        data-testid="product-info"
         className="border border-[#E5E9EB]  w-full rounded-lg bg-[#ffffff]"
       >
         <div className="pt-[30px] pb-[19px] border-b border-[#cccccc] px-6 ">

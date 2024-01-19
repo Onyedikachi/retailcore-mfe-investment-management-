@@ -16,33 +16,6 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export const handleAccountForLiquidation = ({profileIsSuccess, profileData, formData, setFormData, setValue, setCustomerData}) => {
-  if (profileIsSuccess) {
-    const accountData = profileData.data.customer_products?.map((i: any) => {
-      return {
-        id: i?.customerProductId,
-        text: i?.accountNumber,
-        value: i?.accountNumber,
-      };
-    });
-    if (
-      accountData?.length &&
-      !formData?.transactionSettingModel?.accountForLiquidation
-    ) {
-      setFormData({
-        ...formData,
-        transactionSettingModel: {
-          ...formData?.transactionSettingModel,
-          accountForLiquidation: accountData[0].value,
-        },
-      });
-      setValue("accountForLiquidation", accountData[0].value);
-    }
-
-    setCustomerData(accountData);
-  }
-}
-
 export const onProceed = (data, proceed, formData, setFormData) => {
   console.log("🚀 ~ onProceed ~ data:", data);
   setFormData({
@@ -125,7 +98,30 @@ export default function TransactionSettings({
   );
 
   useEffect(() => {
-    handleAccountForLiquidation({profileIsSuccess, profileData, formData, setFormData, setValue, setCustomerData});
+    if (profileIsSuccess) {
+      const accountData = profileData.data.customer_products?.map((i: any) => {
+        return {
+          id: i?.customerProductId,
+          text: i?.accountNumber,
+          value: i?.accountNumber,
+        };
+      });
+      if (
+        accountData?.length &&
+        !formData?.transactionSettingModel?.accountForLiquidation
+      ) {
+        setFormData({
+          ...formData,
+          transactionSettingModel: {
+            ...formData?.transactionSettingModel,
+            accountForLiquidation: accountData[0].value,
+          },
+        });
+        setValue("accountForLiquidation", accountData[0].value);
+      }
+
+      setCustomerData(accountData);
+    }
   }, [profileIsError, profileIsSuccess, profileLoading, profileData]);
 
   // useEffect(() => {
@@ -286,7 +282,7 @@ export default function TransactionSettings({
                         {productDetail?.liquidation?.early_NoticePeriod}{" "}
                         {
                           Interval[
-                          productDetail?.liquidation?.early_NoticePeriodUnit
+                            productDetail?.liquidation?.early_NoticePeriodUnit
                           ]
                         }
                       </span>{" "}
@@ -306,7 +302,7 @@ export default function TransactionSettings({
                         {productDetail?.liquidation?.part_NoticePeriod}{" "}
                         {
                           Interval[
-                          productDetail?.liquidation?.part_NoticePeriodUnit
+                            productDetail?.liquidation?.part_NoticePeriodUnit
                           ]
                         }
                       </span>{" "}
