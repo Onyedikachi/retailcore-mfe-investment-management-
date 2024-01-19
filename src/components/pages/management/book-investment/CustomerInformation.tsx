@@ -43,6 +43,7 @@ export default function CustomerInformation({
   setDisabled,
   isSavingDraft,
 }: CustomerInformationProps) {
+  console.log("🚀 ~ formData:", formData)
   const {
     register,
     handleSubmit,

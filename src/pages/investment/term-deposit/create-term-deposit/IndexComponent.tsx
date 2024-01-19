@@ -155,6 +155,7 @@ export const handleRequestIsSuccess = ({
           interestComputationMethod: 2,
         },
       });
+     
     }
     if (type === "individual_booking") {
       setFormData(data);
@@ -404,6 +405,7 @@ export default function CreateTermDeposit() {
       requestData,
       requestIsSuccess,
       setProductData,
+      type: "investment"
     });
   }, [requestIsSuccess]);
 

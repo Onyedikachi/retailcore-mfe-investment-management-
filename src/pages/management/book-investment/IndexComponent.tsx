@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { BookInvestmentFormSteps } from "@app/constants";
 import { ProductInfoInvestmentCalc } from "@app/components/management";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import handleFormRef from "./handleFormRef";
+import handleFormRef from "./HandleFormRef";
 import { Preview } from "@app/components/pages/management/book-investment";
 import {
   Breadcrumbs,
@@ -33,12 +33,19 @@ export function handleNext(step, setStep, BookInvestmentFormSteps) {
   step < BookInvestmentFormSteps.length && setStep(step + 1);
 }
 
-export function handleNav({step, setStep, navigate, investmentType}) {
+export function handleNav({
+  step,
+  setStep,
+  navigate,
+  investmentType,
+  process,
+  id
+}) {
   step < BookInvestmentFormSteps.length
     ? handleNext(step, setStep, BookInvestmentFormSteps)
     : navigate(
-      `/product-factory/investment/management/${process}/${investmentType}?stage=summary`
-    );
+        `/product-factory/investment/management/${process}/${investmentType}?stage=summary&id=${id}`
+      );
 }
 
 export function handleLinks(links, process) {
@@ -134,7 +141,7 @@ export default function IndexComponent() {
       accountStatus: "",
       customerProfileid: "",
       balance: "",
-      currencyId:"",
+      currencyId: "",
     },
     facilityDetailsModel: {
       capitalizationMethod: 2,
@@ -180,10 +187,6 @@ export default function IndexComponent() {
       url: `/product-factory/investment/management/${investmentType}`,
     },
   ];
-
-
-
-
 
   const {
     data: detail,
@@ -368,7 +371,16 @@ export default function IndexComponent() {
                       formData={formData}
                       setFormData={setFormData}
                       step={step}
-                      handleNav={() => handleNav({ step, setStep, navigate, investmentType })}
+                      handleNav={() =>
+                        handleNav({
+                          step,
+                          setStep,
+                          navigate,
+                          investmentType,
+                          process,
+                          id
+                        })
+                      }
                       setDisabled={setDisabled}
                       isSavingDraft={isSavingDraft}
                       setProductDetail={setProductDetail}
