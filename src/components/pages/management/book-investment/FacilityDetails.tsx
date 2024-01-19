@@ -44,31 +44,6 @@ type FacilityDetailsProps = {
   detailLoading?: boolean;
 };
 
-export const handleSearch = (
-  value,
-  data,
-  setValue,
-  setProductName,
-  trigger,
-  formData,
-  setFormData
-) => {
-  if (data) {
-    setValue("investmentProductId", data?.value);
-    setValue("investmentProductName", data?.name);
-    trigger("investmentProductId");
-    setFormData({
-      ...formData,
-      facilityDetailsModel: {
-        ...formData.facilityDetailsModel,
-        investmentProductId: data.value,
-      },
-    });
-  }
-
-  setProductName(value);
-};
-
 export const handleInterestRateValues = ({productDetail, values, setValue, trigger}) => {
   if (productDetail?.pricingConfiguration?.interestRateRangeType === 0) {
     productDetail?.pricingConfiguration?.interestRateConfigModels?.forEach(
@@ -161,17 +136,6 @@ export const handleProductDetails = ({productDetail, values, setValue, setProduc
     }
   }
 }
-
-type FacilityDetailsProps = {
-  formData?: any;
-  setFormData?: (e) => void;
-  proceed?: () => void;
-  setDisabled?: any;
-  isSavingDraft?: boolean;
-  productDetail?: any;
-  setProductDetail?: (e) => void;
-  detailLoading?: boolean;
-};
 
 export const handleSearch = (
   value,
