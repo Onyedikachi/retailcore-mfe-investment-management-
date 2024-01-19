@@ -14,6 +14,7 @@ import { Interval, LiquidationSchema } from "@app/constants";
 import { liquiditiesPenaltyStrings } from "@app/constants";
 import { currencyFormatter } from "@app/utils/formatCurrency";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
+import {useLiquidationCalculationMutation} from '@app/api'
 // import {useEarlyLiquidateMutation} from '@app/api'
 
 interface LiquidationProps {
@@ -73,6 +74,16 @@ export default function Liquidation({
   const [text, setText] = useState("");
   const [percentValue, setPercentValue] = useState(0);
   const [amountValue, setAmountValue] = useState(0);
+
+  const [
+    liquidationCalculation,
+    {
+      isSuccess: isLiquidationCalculationSuccess,
+      isError: isLiquidationCalculationError,
+      error: liquidationCalculationError,
+      isLoading: isLiquidationCalculationLoading,
+    },
+  ] = useLiquidationCalculationMutation();
 
   useEffect(() => {}, [values]);
 
