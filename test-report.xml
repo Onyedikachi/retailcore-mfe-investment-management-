@@ -1,5 +1,159 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
   <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Pages/management/overview/index.test.tsx">
+    <testCase name="updateInvestmentTabs should return an array of objects with updated amount and totalValue properties" duration="13"/>
+    <testCase name="updateInvestmentTabs should update amount property with the total value of investments for each tab" duration="3"/>
+    <testCase name="updateInvestmentTabs should update totalValue property with the total count of investments for each tab" duration="3"/>
+    <testCase name="updateInvestmentTabs should return an empty array when the input tabs array is empty" duration="3"/>
+    <testCase name="updateInvestmentTabs should return an array of objects with amount property set to 0.00 and totalValue property set to 0 total investments when the input tabs array is empty" duration="2"/>
+    <testCase name="updateInvestmentTabs should return an array of objects with the same length as the input tabs array" duration="2"/>
+    <testCase name="Overview should render Overview component without crashing" duration="1132"/>
+    <testCase name="Overview should display investment tabs with correct titles and icons" duration="508">
+      <failure message="TestingLibraryElementError: Unable to find an element by: [data-testid=&quot;investment-svg&quot;]"><![CDATA[TestingLibraryElementError: Unable to find an element by: [data-testid="investment-svg"]
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div
+      class="flex gap-x-5 w-full flex-1"
+    >
+      <div
+        class="flex flex-col gap-[25px] flex-1"
+      >
+        <div
+          class="flex  gap-[25px]"
+        >
+          <div
+            class="grid w-full max-w-[350px]  gap-5"
+          >
+            <div
+              class="animate-pulse opacity-50  cursor-pointer flex gap-3 rounded-[5px] bg-[#FFFFFF] px-6 py-8 shadow-custom"
+            >
+              <div
+                class="flex items-center"
+              >
+                <div
+                  class="h-[45px] w-[45px] rounded-full bg-[#D4F7DC] flex items-center justify-center"
+                >
+                  <svg
+                    fill="none"
+                    height="27"
+                    viewBox="0 0 30 27"
+                    width="30"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M3.60059 19.0996L7.88459 16.0212L10.7466 18.1064L16.2066 13.6396L19.6446 15.9848L25.8006 11.3516"
+                      fill="#15692A"
+                    />
+                    <path
+                      d="M3.60059 19.0996L7.88459 16.0212L10.7466 18.1064L16.2066 13.6396L19.6446 15.9848L25.8006 11.3516"
+                      stroke="#15692A"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="3"
+                    />
+                    <path
+                      d="M24.6006 23.0213H4.80059C4.48233 23.0213 4.1771 22.9117 3.95206 22.7166C3.72701 22.5216 3.60059 22.2571 3.60059 21.9813V4.82125C3.60059 4.54542 3.72701 4.2809 3.95206 4.08586C4.1771 3.89082 4.48233 3.78125 4.80059 3.78125H24.6006C24.9188 3.78125 25.2241 3.89082 25.4491 4.08586C25.6742 4.2809 25.8006 4.54542 25.8006 4.82125V21.9813C25.8006 22.2571 25.6742 22.5216 25.4491 22.7166C25.2241 22.9117 24.9188 23.0213 24.6006 23.0213Z"
+                      stroke="#15692A"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="3"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <div
+                class="flex flex-col gap-[5px]"
+              >
+                <span
+                  class="mb-[7px] text-sm text-[#636363]"
+                >
+                  All Investments
+                </span>
+                <span
+                  class="text-[20px] font-semibold text-[#636363]"
+                >
+                  NGN 0.00
+                </span>
+                <span
+                  class="text-xs text-[#63636380]"
+                />
+              </div>
+            </div>
+            <div
+              class="animate-pulse opacity-50  cursor-pointer flex gap-3 rounded-[5px] bg-[#FFFFFF] px-6 py-8 shadow-custom"
+            >
+              <div
+                class="flex items-center"
+              >
+                <div
+                  class="h-[45px] w-[45px] rounded-full bg-[#D4F7DC] flex items-center justify-center"
+                >
+                  <svg
+                    fill="none"
+                    height="45"
+                    viewBox="0 0 45 45"
+                    width="45"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g
+                      mask="url(#mask0_49274_605861)"
+                    >
+                      <path
+                        d="M22.5 22.5C21.125 22.5 19.9479 22.0104 18.9687 21.0312C17.9896 20.0521 17.5 18.875 17.5 17.5C17.5 16.125 17.9896 14.9479 18.9687 13.9688C19.9479 12.9896 21.125 12.5 22.5 12.5C23.875 12.5 25.0521 12.9896 26.0312 13.9688C27.0104 14.9479 27.5 16.125 27.5 17.5C27.5 18.875 27.0104 20.0521 26.0312 21.0312C25.0521 22.0104 23.875 22.5 22.5 22.5ZM15 32.5C14.3125 32.5 13.7242 32.2554 13.235 31.7662C12.745 31.2762 12.5 30.6875 12.5 30V29C12.5 28.2917 12.6825 27.6404 13.0475 27.0462C13.4117 26.4529 13.8958 26 14.5 25.6875C15.7917 25.0417 17.1042 24.5571 18.4375 24.2337C19.7708 23.9112 21.125 23.75 22.5 23.75C23.875 23.75 25.2292 23.9112 26.5625 24.2337C27.8958 24.5571 29.2083 25.0417 30.5 25.6875C31.1042 26 31.5883 26.4529 31.9525 27.0462C32.3175 27.6404 32.5 28.2917 32.5 29V30C32.5 30.6875 32.2554 31.2762 31.7662 31.7662C31.2762 32.2554 30.6875 32.5 30 32.5H15Z"
+                        fill="#15692A"
+                      />
+                    </g>
+                  </svg>
+                </div>
+              </div>
+              <div
+                class="flex flex-col gap-[5px]"
+              >
+                <span
+                  class="mb-[7px] text-sm text-[#636363]"
+                >
+                  Active Investments
+                </span>
+                <span
+                  class="text-[20px] font-semibold text-[#636363]"
+                >
+                  NGN 0.00
+                </span>
+                <span
+                  class="text-xs text-[#63636380]"
+                />
+              </div>
+            </div>
+            <div
+              class="animate-pulse opacity-50  cursor-pointer flex gap-3 rounded-[5px] bg-[#FFFFFF] px-6 py-8 shadow-custom"
+            >
+              <div
+                class="flex items-center"
+              >
+                <div
+                  class="h-[45px] w-[45px] rounded-full b...
+    at Object.getElementError (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/@testing-library/dom/dist/config.js:37:19)
+    at /Users/work/Documents/retailcore-mfe-investment-management/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+    at /Users/work/Documents/retailcore-mfe-investment-management/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+    at getByTestId (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/@testing-library/dom/dist/query-helpers.js:95:19)
+    at Object.<anonymous> (/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Pages/management/overview/index.test.tsx:224:23)
+    at Promise.then.completed (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/utils.js:391:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/utils.js:316:10)
+    at _callCircusTest (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/run.js:218:40)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at _runTest (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/run.js:155:3)
+    at _runTestsForDescribeBlock (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/run.js:66:9)
+    at _runTestsForDescribeBlock (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/run.js:60:9)
+    at run (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/run.js:25:3)
+    at runAndTransformResultsToJestFormat (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:170:21)
+    at jestAdapter (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:82:19)
+    at runTestInternal (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-runner/build/runTest.js:389:16)
+    at runTest (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-runner/build/runTest.js:475:34)
+    at Object.worker (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-runner/build/testWorker.js:133:12)]]></failure>
+    </testCase>
+    <testCase name="Overview should display investment amounts and total values correctly formatted" duration="392"/>
   </file>
 </testExecutions>

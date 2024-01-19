@@ -68,6 +68,43 @@ export const handleSearch = (
 
   setProductName(value);
 };
+
+export const handleInterestRateValues = ({productDetail, values, setValue, trigger}) => {
+  if (productDetail?.pricingConfiguration?.interestRateRangeType === 0) {
+    productDetail?.pricingConfiguration?.interestRateConfigModels?.forEach(
+      (i) => {
+        if (
+          values.principal >= i.principalMin &&
+          values.principal <= i.principalMax
+        ) {
+          setValue("intMin", i.min);
+          setValue("intMax", i.max);
+        }
+      }
+    );
+  }
+  if (productDetail?.pricingConfiguration?.interestRateRangeType === 1) {
+    productDetail?.pricingConfiguration?.interestRateConfigModels?.forEach(
+      (i) => {
+        if (values.tenor >= i.tenorMin && values.tenor <= i.tenorMax) {
+          setValue("intMin", i.min);
+          setValue("intMax", i.max);
+        }
+      }
+    );
+  }
+  if (productDetail?.pricingConfiguration?.interestRateRangeType === 2) {
+    setValue("intMin", productDetail?.pricingConfiguration?.interestRateMin);
+    setValue("intMax", productDetail?.pricingConfiguration?.interestRateMax);
+  }
+  if (
+    (values.tenor || values.principal) &&
+    values.interestRate &&
+    values.investmentProductId
+  ) {
+    trigger();
+  }
+}
 export default function FacilityDetails({
   formData,
   setFormData,
