@@ -28,7 +28,7 @@ describe('Liquidation', () => {
         const setIsOpen = jest.fn();
         const onConfirm = jest.fn();
         const detail = {};
-        renderWithProviders(<Liquidation isOpen={isOpen} setIsOpen={setIsOpen} onConfirm={onConfirm} detail={detail} title={"part liquidation request"} type={"part"} />);
+        renderWithProviders(<Liquidation isOpen={isOpen} setIsOpen={setIsOpen} onConfirm={onConfirm} productDetails={detail} title={"part liquidation request"} type={"part"} />);
 
         // Act
         fireEvent.click(screen.getByTestId('cancel-btn'));
