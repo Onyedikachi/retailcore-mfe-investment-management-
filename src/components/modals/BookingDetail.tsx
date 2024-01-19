@@ -201,9 +201,7 @@ export const BookingDetailLayout = ({
                     <div className="flex gap-x-6 items-center">
                       <button
                         data-testid="modify"
-                        onClick={() =>
-                          handleClick("liquidate", productInfo?.data)
-                        }
+                        onClick={() => handleClick("early liquidate", detail)}
                         className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3`}
                       >
                         <FaRegTimesCircle className="text-[#444]" /> Early
@@ -212,9 +210,7 @@ export const BookingDetailLayout = ({
 
                       <button
                         data-testid="deactivate-btn"
-                        onClick={() =>
-                          handleClick("liquidate", productInfo?.data)
-                        }
+                        onClick={() => handleClick("part liquidate", detail)}
                         className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
                       >
                         <FaBan className="text-sterling-red-800" /> Part
