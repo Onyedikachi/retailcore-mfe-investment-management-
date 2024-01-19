@@ -61,9 +61,7 @@ export const handleConfirm = ({
   }
   if (action === "cancel") {
     if (type?.toLowerCase() === "individual") {
-      navigate(
-        `/product-factory/investment/management/individual`
-      );
+      navigate(`/product-factory/investment/management/individual`);
     } else {
       navigate(
         `/product-factory/investment?category=requests${
@@ -71,19 +69,18 @@ export const handleConfirm = ({
         }`
       );
     }
-   
   }
 };
 
-function handlePermissionType(type:string, process_type?: string){
- 
-  if(type=== "individual"){
-    process_type==="booking"? "BOOK_INVESTMENT":"LIQUIDATE_INVESTMENT"
+function handlePermissionType(type: string, process_type?: string) {
+  if (type === "individual") {
+    return process_type === "booking"
+      ? "BOOK_INVESTMENT"
+      : "LIQUIDATE_INVESTMENT";
   }
-  if(type=== "investment"){
-    return "CREATE_INVESTMENT_PRODUCT"
+  if (type === "investment") {
+    return "CREATE_INVESTMENT_PRODUCT";
   }
-  
 }
 
 export const handleMessages = ({
@@ -510,7 +507,7 @@ export default function Actions({
           setReason={setReason}
           reason={reason}
           setRouteTo={setRouteTo}
-          permissionType={handlePermissionType(type,process_type)}
+          permissionType={handlePermissionType(type, process_type)}
         />
       )}
       {(approveLoading ||

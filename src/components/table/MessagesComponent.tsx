@@ -66,6 +66,7 @@ export default function MessagesComponent({
           handleRefresh={handleRefresh}
           specificCategory={specificCategory}
           text={successText}
+          subtext={subText}
           isOpen={isSuccessOpen}
           setIsOpen={setIsSuccessOpen}
         />

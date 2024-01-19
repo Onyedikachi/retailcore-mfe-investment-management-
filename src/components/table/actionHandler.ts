@@ -64,6 +64,9 @@ export const actionHandler = ({
   }
   if (action.toLowerCase() === Actions.WITHDARW_MODIFY) {
     setConfirmText(Prompts.PRODUCT_WITHDRAW_MODIFY);
+    if (specificCategory === SpecificCategory.individual) {
+      setSubText(Prompts.BOOKING_WITHDRAW_MODIFY_SUB);
+    }
     setIsConfirmOpen(true);
     return;
   }
@@ -122,7 +125,12 @@ export const actionHandler = ({
       ? setIndividualDetailOpen(true)
       : specificCategory === SpecificCategory.individual
       ? navigate(
-          `/product-factory/investment/management/${specificCategory}/process-summary/preview/${items.id}`
+          `/product-factory/investment/management/${specificCategory}/process-summary/preview/${
+            items.id
+          }?process_type=${items.requestType}${
+            items.investmentBookingId &&
+            `&booking_id=${items.investmentBookingId}&request_id=${items?.id}`
+          }`
         )
       : navigate(
           `/product-factory/investment/${encodeURIComponent(
@@ -140,7 +148,12 @@ export const actionHandler = ({
       ? setIndividualDetailOpen(true)
       : specificCategory === SpecificCategory.individual
       ? navigate(
-          `/product-factory/investment/management/${specificCategory}/process-summary/verdict/${items.id}?process_type=${items.requestType}`
+          `/product-factory/investment/management/${specificCategory}/process-summary/verdict/${
+            items.id
+          }?process_type=${items.requestType}${
+            items.investmentBookingId &&
+            `&booking_id=${items.investmentBookingId}`
+          }`
         )
       : navigate(
           `/product-factory/investment/${encodeURIComponent(

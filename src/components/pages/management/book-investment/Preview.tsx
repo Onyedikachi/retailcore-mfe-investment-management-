@@ -113,7 +113,7 @@ export const submitForm = (
     modifyRequest({
       ...formData,
       isDraft: false,
-      id,
+      id: id || formData.id,
       recentlyUpdatedMeta: previousData ? JSON.stringify(previousData) : null,
     });
   }

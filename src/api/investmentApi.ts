@@ -528,6 +528,18 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    liquidationCalculation: builder.mutation<{ id: string }, { id: string }>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT}/liquidation-amount`,
+          method: "post",
+          body: data
+        };
+      },
+    }),
+  
+
+
   }),
 });
 
@@ -579,4 +591,5 @@ export const {
   useRejectInvestmentMutation,
   useEarlyLiquidateMutation,
   usePartLiquidateMutation,
+  useLiquidationCalculationMutation
 } = investmentApi;
