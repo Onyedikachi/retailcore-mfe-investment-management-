@@ -75,6 +75,10 @@ export default function Liquidation({
   const [percentValue, setPercentValue] = useState(0);
   const [amountValue, setAmountValue] = useState(0);
   const [liquidationValue, setLiquidationValue] = useState(0);
+  const liquidationUnitEnum = {
+    currency: 0,
+    percent: 1
+  }
 
   const [
     liquidationCalculation,
@@ -102,12 +106,12 @@ export default function Liquidation({
             : 0,
         liquidationUnit:
           type === "early"
-            ? productDetails?.liquidation?.early_NoticePeriodUnit
-            : productDetails?.liquidation?.part_NoticePeriodUnit,
+            ? liquidationUnitEnum[selection]
+            : liquidationUnitEnum[selection],
       };
       liquidationCalculation(payload);
     }
-  }, [detail, productDetails, values.amount]);
+  }, [detail, productDetails, values.amount, selection]);
   useEffect(() => {
     setLiquidationValue(liquidationCalculationData?.data);
  
@@ -223,6 +227,7 @@ export default function Liquidation({
                         type="number"
                         placeholder="Enter value"
                       />
+                    
                       <div className="overflow-hidden absolute right-0 text-[10px] text-[#8F8F8F] flex items-center   rounded-full shadow-[0px_0px_1px_0px_rgba(26,32,36,0.32),0px_1px_2px_0px_rgba(91,104,113,0.32)] border-[#E5E9EB]">
                         <span
                           onClick={() => {
@@ -234,7 +239,7 @@ export default function Liquidation({
                           }`}
                         >
                           {" "}
-                          NGN
+                          NGN  
                         </span>
 
                         <span
