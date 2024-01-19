@@ -65,7 +65,18 @@ describe('RequestDeactivation', () => {
       }
     })
     renderWithProviders(<RequestDeactivation isOpen={true} setIsOpen={jest.fn()} detail={{ id: "12345", name: "Product A" }} />);
-    screen.debug();
+    expect(screen).toMatchSnapshot();
+  });
+  
+  it('should display an error message when the deactivation request fails', async () => {
+    jest.mock("../../api", () => {
+      const reject = jest.fn()
+      return {
+        useDeactivateProductMutation: jest.fn().mockReturnValue({ handleReject: reject, isSuccess: true, isError: false, error: null, isLoading: false })
+      }
+    })
+    renderWithProviders(<RequestDeactivation isOpen={true} setIsOpen={jest.fn()} detail={{ id: "12345", name: "Product A" }} />);
+    expect(screen).toMatchSnapshot();
   });
 
 
