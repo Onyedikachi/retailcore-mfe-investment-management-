@@ -134,6 +134,12 @@ describe('ProductInfoInvestmentCalc', () => {
         expect(screen.getByText(productDetail.productInfo.description)).toBeInTheDocument();
         expect(screen).toMatchSnapshot();
     });
+
+    it('should mot display correct product name and description', async () => {
+        renderWithProviders(<ProductInfoInvestmentCalc productDetail={{}} formData={formData} />);
+        // assertion
+        expect(screen).toMatchSnapshot();
+    });
 });
 
 // describe("handleProductDetailMap", () => {
