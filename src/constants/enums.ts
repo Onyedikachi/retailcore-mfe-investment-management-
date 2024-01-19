@@ -87,6 +87,9 @@ export enum Messages {
   ADMIN_BOOKING_DEACTIVATE_FAILED = "Investment Booking deactivation request failed",
   BOOKING_WITHDRAW_DELETE_SUCCESS = "Request withdrawn and deleted successfully",
   BOOKING_WITHDRAW_DELETE_FAILED = "Unable to withdraw & delete",
+  BOOKING_WITHDRAW_SUCCESS = "Request withdrawn successfully",
+  BOOKING_WITHDRAW_SUCCESS_SUB = "Please find request in your draft table for modification",
+  BOOKING_WITHDRAW_FAILED = "Unable to withdraw request",
   BOOKING_DELETE_SUCCESS = "Request deleted successfully",
   BOOKING_DELETE_FAILED = "Unable to delete",
   BOOKING_APPROVE_FAILED = "Unable to approve investment Booking ",
@@ -94,6 +97,8 @@ export enum Messages {
   PART_LIQUIDATION_REQUEST = "Investment Partial Liquidation Request Submitted for Approval",
   EARLY_LIQUIDATION_REQUEST = "Investment Early Liquidation Request Submitted for Approval",
   REQUEST_FAILED = "Request Failed",
+
+
 }
 
 export enum Prompts {
@@ -138,6 +143,7 @@ export enum Prompts {
   BOOKING_MODIFY_CANCEL = "Do you want to cancel investment modification?",
   BOOKING_WITHDRAW_DELETE = "Do you want to withdraw and delete this request?",
   BOOKING_WITHDRAW_MODIFY = "Do you want to withdraw and modify this request?",
+  BOOKING_WITHDRAW_MODIFY_SUB = "The request will be withdrawn from the reviewer's requests queue and saved as draft for you to modify",
   BOOKING_WITHDRAW = "Do you want to withdraw request?",
   BOOKING_DELETE = "Do you want to delete this request?",
   BOOKING_DEACTIVATION_APPROVE = "Do you want to approve investment deactivation",

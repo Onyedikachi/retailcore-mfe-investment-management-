@@ -34,7 +34,8 @@ export default function Summary() {
   const [productId, setProductId] = useState(id);
   const category = searchParams.get("category");
   const [detail, setDetail] = useState(null);
-
+  const process_type = searchParams.get("process_type");
+  const booking_id = searchParams.get("booking_id");
   const [state, setState] = useState();
 
   const {
@@ -55,7 +56,7 @@ export default function Summary() {
     isLoading,
     isError,
   } = useGetInvestmentDetailQuery({
-    id: productId,
+    id: process_type === "booking" ? productId : booking_id,
   });
 
   // Fetch activity data based on the category
@@ -87,7 +88,7 @@ export default function Summary() {
     if (requestDetail?.data?.metaInfo) {
       const data = JSON.parse(requestDetail?.data?.metaInfo);
       setDetail(data);
-      console.log("🚀 ~ data:", data);
+    
       if (process === "withdraw_modify") {
       }
     }
@@ -143,7 +144,11 @@ export default function Summary() {
             )}
             <Container>
               <BookingDetail
-                detail={detail || investmentData?.data}
+                detail={
+                  process_type === "liquidation"
+                    ? investmentData?.data
+                    : detail || investmentData?.data
+                }
                 oldData={null}
                 type={type}
                 productDetail={productDetail?.data}
