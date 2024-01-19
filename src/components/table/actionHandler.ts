@@ -129,7 +129,7 @@ export const actionHandler = ({
             items.id
           }?process_type=${items.requestType}${
             items.investmentBookingId &&
-            `&booking_id=${items.investmentBookingId}`
+            `&booking_id=${items.investmentBookingId}&request_id=${items?.id}`
           }`
         )
       : navigate(

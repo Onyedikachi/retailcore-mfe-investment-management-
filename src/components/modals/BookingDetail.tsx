@@ -223,7 +223,7 @@ export const BookingDetailLayout = ({
                     </div>
                   )}
                   <Link
-                    to={`/product-factory/investment/management/individual/process-summary/preview/${detail?.id}`}
+                    to={`/product-factory/investment/management/individual/process-summary/preview/${detail?.id}?product_id=${detail?.investmentProductId}&request_id=${detail?.investmentBookingRequestId}`}
                   >
                     <button
                       className={`group flex items-center whitespace-nowrap py-[1px] text-base text-[#636363] gap-x-3 underline outline-none`}
@@ -233,7 +233,7 @@ export const BookingDetailLayout = ({
                   </Link>
                 </div>
               </div>
-              
+
               <div className="border border-[#E5E9EB] rounded-lg py-[25px] px-[30px] h-[593px]">
                 <div className="p-6 flex flex-col gap-y-[35px] max-h-[463px] overflow-y-auto">
                   {detail?.reason && (
