@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PartLiquidation should render the component with default props 1`] = `
+exports[`ProductPricingAndLiquidity should display the applicable principal 1`] = `
 Object {
   "debug": [Function],
   "findAllByAltText": [Function],

@@ -33,6 +33,54 @@ export function handleNext(step, setStep, BookInvestmentFormSteps) {
   step < BookInvestmentFormSteps.length && setStep(step + 1);
 }
 
+export function handleNav({
+  step,
+  setStep,
+  navigate,
+  investmentType,
+  process,
+  id
+}) {
+  step < BookInvestmentFormSteps.length
+    ? handleNext(step, setStep, BookInvestmentFormSteps)
+    : navigate(
+        `/product-factory/investment/management/${process}/${investmentType}?stage=summary&id=${id}`
+      );
+}
+
+export function handleLinks(links, process) {
+  // const extraLinks = [
+  //   {
+  //     id: 3,
+  //     title: "Te\rm Deposit",
+  //     url: "/product-factory/investment",
+  //   },
+  //   {
+  //     id: 4,
+  //     title: productData?.productInfo?.productName,
+  //     url: "#",
+  //   },
+  // ];
+  // if (
+  //   process === "continue" ||
+  //   process === "modify" ||
+  //   process === "withdraw_modify"
+  // ) {
+  //   let filteredLinks = links.filter((i) => i.id !== 3);
+  //   return [...filteredLinks, ...extraLinks];
+  // }
+  if (process === "restructure") {
+    const linkWithId2 = links.find((link) => link.id === 2);
+
+    // Update its title property
+    if (linkWithId2) {
+      linkWithId2.title = "Restructure Investment";
+    }
+  }
+
+  return links;
+}
+
 export function handlePrev(step, setStep, BookInvestmentFormSteps) {
   step > BookInvestmentFormSteps[0].index && setStep(step - 1);
 }
@@ -93,7 +141,7 @@ export default function IndexComponent() {
       accountStatus: "",
       customerProfileid: "",
       balance: "",
-      currencyId:"",
+      currencyId: "",
     },
     facilityDetailsModel: {
       capitalizationMethod: 2,
@@ -139,49 +187,6 @@ export default function IndexComponent() {
       url: `/product-factory/investment/management/${investmentType}`,
     },
   ];
-
-  function handleLinks(links, process) {
-    // const extraLinks = [
-    //   {
-    //     id: 3,
-    //     title: "Te\rm Deposit",
-    //     url: "/product-factory/investment",
-    //   },
-    //   {
-    //     id: 4,
-    //     title: productData?.productInfo?.productName,
-    //     url: "#",
-    //   },
-    // ];
-    // if (
-    //   process === "continue" ||
-    //   process === "modify" ||
-    //   process === "withdraw_modify"
-    // ) {
-    //   let filteredLinks = links.filter((i) => i.id !== 3);
-    //   return [...filteredLinks, ...extraLinks];
-    // }
-    if (process === "restructure") {
-      const linkWithId2 = links.find((link) => link.id === 2);
-
-      // Update its title property
-      if (linkWithId2) {
-        linkWithId2.title = "Restructure Investment";
-      }
-    }
-
-    return links;
-  }
-
-  function handleNav() {
-    step < BookInvestmentFormSteps.length
-      ? handleNext(step, setStep, BookInvestmentFormSteps)
-      : navigate(
-          `/product-factory/investment/management/${process}/${investmentType}?${
-            id ? `id=${id}&` : ""
-          }stage=summary`
-        );
-  }
 
   const {
     data: detail,
@@ -366,7 +371,16 @@ export default function IndexComponent() {
                       formData={formData}
                       setFormData={setFormData}
                       step={step}
-                      handleNav={handleNav}
+                      handleNav={() =>
+                        handleNav({
+                          step,
+                          setStep,
+                          navigate,
+                          investmentType,
+                          process,
+                          id
+                        })
+                      }
                       setDisabled={setDisabled}
                       isSavingDraft={isSavingDraft}
                       setProductDetail={setProductDetail}

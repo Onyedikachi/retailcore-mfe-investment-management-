@@ -14,6 +14,7 @@ export const confirmationHandler = ({
   setIsDeactivationOpen,
   activateProduct,
   navigate,
+  modifyRequest,
 }) => {
   if (action.toLowerCase().includes("delete")) {
     if (specificCategory === SpecificCategory.individual) {
@@ -51,9 +52,13 @@ export const confirmationHandler = ({
       errorToast("You do not have permission to make changes!");
     } else {
       if (specificCategory === SpecificCategory.individual) {
-        navigate(
-          `/product-factory/investment/management/withdraw_modify/individual?id=${detail.id}&filter=${selected.value}`
-        );
+        const data = JSON.parse(detail?.metaInfo);
+        modifyRequest({
+          ...data,
+          isDraft: true,
+          id:detail.id,
+          recentlyUpdatedMeta: null,
+        });
       } else {
         navigate(
           `/product-factory/investment/${encodeURIComponent(

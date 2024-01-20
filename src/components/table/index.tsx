@@ -35,6 +35,8 @@ import {
   useDeleteProductRequestMutation,
   useDeleteInvestmentRequestMutation,
   useGetProductDetailQuery,
+  useModifyInvestmentRequestMutation,
+  usePartLiquidateMutation,
 } from "@app/api";
 import Button from "../Button";
 import { ActiveFilterOptions } from "@app/constants";
@@ -63,6 +65,9 @@ interface TableProps {
 }
 
 export const statusHandler = ({
+  modifyRequestSuccess,
+  modifyRequestIsError,
+  modifyRequestError,
   partLiquidateSuccess,
   partLiquidateIsError,
   partLiquidateError,
@@ -74,6 +79,7 @@ export const statusHandler = ({
   deleteInvestmentRequestError,
   isSuccess,
   setSuccessText,
+  setSubText,
   setIsSuccessOpen,
   activateSuccess,
   isError,
@@ -85,6 +91,20 @@ export const statusHandler = ({
   error,
   role,
 }) => {
+  if (modifyRequestSuccess) {
+    setSuccessText(Messages.BOOKING_WITHDRAW_SUCCESS);
+    setSubText(Messages.BOOKING_WITHDRAW_SUCCESS_SUB)
+    setIsSuccessOpen(true);
+  }
+
+  if (modifyRequestIsError) {
+    setFailedText(Messages.BOOKING_MODIFY_FAILED);
+    setFailedSubtext(
+      modifyRequestError?.message?.message ||
+        modifyRequestError?.message?.Message
+    );
+    setFailed(true);
+  }
   if (earlyLiquidateSuccess) {
     setSuccessText(Messages.EARLY_LIQUIDATION_REQUEST);
     setIsSuccessOpen(true);
@@ -373,6 +393,7 @@ export default function TableComponent<TableProps>({
   // function getdata(item, key) {}
   // @ts-ignore
   const handleLiquidation = (data, type) => {
+    console.log("🚀 ~ handleLiquidation ~ type:", type)
     if (type.toLowerCase() === "part") {
       partLiquidateInvestment(data);
     }
@@ -421,7 +442,7 @@ export default function TableComponent<TableProps>({
       error: partLiquidateError,
       isLoading: partLiquidateIsLoading,
     },
-  ] = useEarlyLiquidateMutation();
+  ] = usePartLiquidateMutation();
 
   const [
     deleteRequest,
@@ -455,6 +476,16 @@ export default function TableComponent<TableProps>({
     id: detail?.investmentProductId,
   });
 
+  const [
+    modifyRequest,
+    {
+      isLoading: modifyRequestLoading,
+      isSuccess: modifyRequestSuccess,
+      isError: modifyRequestIsError,
+      error: modifyRequestError,
+    },
+  ] = useModifyInvestmentRequestMutation();
+
   const handleConfirm = () =>
     confirmationHandler({
       specificCategory,
@@ -468,10 +499,14 @@ export default function TableComponent<TableProps>({
       setIsDeactivationOpen,
       activateProduct,
       navigate,
+      modifyRequest,
     });
 
   useEffect(() => {
     statusHandler({
+      modifyRequestSuccess,
+      modifyRequestIsError,
+      modifyRequestError,
       partLiquidateSuccess,
       partLiquidateIsError,
       partLiquidateError,
@@ -483,6 +518,7 @@ export default function TableComponent<TableProps>({
       deleteInvestmentRequestError,
       isSuccess,
       setSuccessText,
+      setSubText,
       setIsSuccessOpen,
       activateSuccess,
       isError,
@@ -509,20 +545,16 @@ export default function TableComponent<TableProps>({
     partLiquidateSuccess,
     partLiquidateIsError,
     partLiquidateError,
+    modifyRequestSuccess,
+    modifyRequestIsError,
+    modifyRequestError,
   ]);
 
   useEffect(() => {
     if (productDetailSuccess) {
-      console.log(
-        "🚀 ~ useEffect ~ detail?.investmentProductId:",
-        detail?.investmentProductId
-      );
-      console.log("🚀 ~ useEffect ~ productData:", productData.data);
       setProductDetails(productData.data);
     }
   }, [productData, productDetailSuccess]);
-
- 
 
   return (
     <div>
@@ -794,7 +826,7 @@ export default function TableComponent<TableProps>({
         isDetailOpen={isDetailOpen}
         isIndividualDetailOpen={isIndividualDetailOpen}
         deleteLoading={deleteLoading || isDeleteInvestmentRequestLoading}
-        activateIsLoading={activateIsLoading}
+        activateIsLoading={activateIsLoading || modifyRequestLoading}
         confirmText={confirmText}
         detail={detail}
         subText={subText}

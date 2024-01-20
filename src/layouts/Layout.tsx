@@ -13,6 +13,25 @@ export function handleRole(setRole, value) {
     setRole("admin");
   }
 }
+
+export const checkPermissions = ({value, setRole, setPermissions, userId, handleRole}) => {
+  const userPermissions = value?.user?.user_permissions;
+  const canProceed =
+    userPermissions &&
+    userPermissions.length &&
+    RequiredInvestmentPermissions.some((item) =>
+      userPermissions.includes(item)
+    );
+
+  if (userPermissions && userPermissions.length && !canProceed) {
+    window.location.href = "https://seabaas.dev.bepeerless.co";
+  }
+  setPermissions(userPermissions || []);
+
+  userId.current = value?.user?.id;
+  handleRole(setRole, value);
+}
+
 const Layout = () => {
   const [permissions, setPermissions] = useState([]);
   const [role, setRole] = useState("default");
@@ -36,22 +55,9 @@ const Layout = () => {
       setIsChecker,]
   );
   useEffect(() => {
+    
     auth$?.subscribe((value) => {
-      const userPermissions = value?.user?.user_permissions;
-      const canProceed =
-        userPermissions &&
-        userPermissions.length &&
-        RequiredInvestmentPermissions.some((item) =>
-          userPermissions.includes(item)
-        );
-
-      if (userPermissions && userPermissions.length && !canProceed) {
-        window.location.href = "https://seabaas.dev.bepeerless.co";
-      }
-      setPermissions(userPermissions || []);
-
-      userId.current = value?.user?.id;
-      handleRole(setRole, value);
+      checkPermissions({value, setRole, setPermissions, userId, handleRole})
     });
   }, []);
   const {

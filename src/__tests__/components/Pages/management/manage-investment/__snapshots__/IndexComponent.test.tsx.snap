@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`IndexComponent Renders without error 1`] = `
+exports[`code snippet should render the Investment Management page with the correct title and breadcrumbs 1`] = `
 Object {
   "debug": [Function],
   "findAllByAltText": [Function],

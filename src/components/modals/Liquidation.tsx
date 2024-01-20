@@ -14,6 +14,7 @@ import { Interval, LiquidationSchema } from "@app/constants";
 import { liquiditiesPenaltyStrings } from "@app/constants";
 import { currencyFormatter } from "@app/utils/formatCurrency";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
+import { useLiquidationCalculationMutation } from "@app/api";
 // import {useEarlyLiquidateMutation} from '@app/api'
 
 interface LiquidationProps {
@@ -73,8 +74,48 @@ export default function Liquidation({
   const [text, setText] = useState("");
   const [percentValue, setPercentValue] = useState(0);
   const [amountValue, setAmountValue] = useState(0);
+  const [liquidationValue, setLiquidationValue] = useState(0);
+  const liquidationUnitEnum = {
+    currency: 0,
+    percent: 1
+  }
+
+  const [
+    liquidationCalculation,
+    {
+      data: liquidationCalculationData,
+      isSuccess: isLiquidationCalculationSuccess,
+      isError: isLiquidationCalculationError,
+      error: liquidationCalculationError,
+      isLoading: isLiquidationCalculationLoading,
+    },
+  ] = useLiquidationCalculationMutation();
 
   useEffect(() => {}, [values]);
+  useEffect(() => {
+    console.log("🚀 ~ useEffect ~ detailzz:", detail?.principal);
+    console.log("🚀 ~ useEffect ~ productDetailszz:", productDetails);
+    if (detail?.principal && productDetails) {
+      const payload = {
+        principal: detail?.principal,
+        amounttoLiquidate:
+          type === "early"
+            ? detail?.principal
+            : values?.amount
+            ? values?.amount
+            : 0,
+        liquidationUnit:
+          type === "early"
+            ? liquidationUnitEnum[selection]
+            : liquidationUnitEnum[selection],
+      };
+      liquidationCalculation(payload);
+    }
+  }, [detail, productDetails, values.amount, selection]);
+  useEffect(() => {
+    setLiquidationValue(liquidationCalculationData?.data);
+ 
+  }, [liquidationCalculationData]);
 
   // const { data, isSuccess, isError, isLoading } = useGetUserQuery(creatorId);
 
@@ -131,7 +172,7 @@ export default function Liquidation({
 
   useEffect(() => {
     setValue("maxAmount", selection === "percent" ? percentValue : amountValue);
-  }, [selection,percentValue,amountValue]);
+  }, [selection, percentValue, amountValue]);
 
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen} data-testid="Layout">
@@ -186,6 +227,7 @@ export default function Liquidation({
                         type="number"
                         placeholder="Enter value"
                       />
+                    
                       <div className="overflow-hidden absolute right-0 text-[10px] text-[#8F8F8F] flex items-center   rounded-full shadow-[0px_0px_1px_0px_rgba(26,32,36,0.32),0px_1px_2px_0px_rgba(91,104,113,0.32)] border-[#E5E9EB]">
                         <span
                           onClick={() => {
@@ -197,7 +239,7 @@ export default function Liquidation({
                           }`}
                         >
                           {" "}
-                          NGN
+                          NGN  
                         </span>
 
                         <span
@@ -389,7 +431,13 @@ export default function Liquidation({
                     Liquidation value:{" "}
                   </span>
                   <span className="text-sm text-[#747373] font-semibold">
-                    NGN 1,858,4959,999
+                    {currencyFormatter(
+                      liquidationValue,
+                      handleCurrencyName(
+                        productDetails?.productInfo?.currency,
+                        currencies
+                      )
+                    )}
                   </span>
                 </div>
 
