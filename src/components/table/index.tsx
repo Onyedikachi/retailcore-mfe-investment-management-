@@ -36,6 +36,7 @@ import {
   useDeleteInvestmentRequestMutation,
   useGetProductDetailQuery,
   useModifyInvestmentRequestMutation,
+  usePartLiquidateMutation,
 } from "@app/api";
 import Button from "../Button";
 import { ActiveFilterOptions } from "@app/constants";
@@ -392,6 +393,7 @@ export default function TableComponent<TableProps>({
   // function getdata(item, key) {}
   // @ts-ignore
   const handleLiquidation = (data, type) => {
+    console.log("🚀 ~ handleLiquidation ~ type:", type)
     if (type.toLowerCase() === "part") {
       partLiquidateInvestment(data);
     }
@@ -440,7 +442,7 @@ export default function TableComponent<TableProps>({
       error: partLiquidateError,
       isLoading: partLiquidateIsLoading,
     },
-  ] = useEarlyLiquidateMutation();
+  ] = usePartLiquidateMutation();
 
   const [
     deleteRequest,
