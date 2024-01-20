@@ -1,7 +1,10 @@
 
+import { useNavigate } from "react-router-dom";
 import BookInvestmentButton from "../../components/BookInvestmentButton"
 import { BookInvestmentOptions, IBookInvestmentOptions } from "../../constants";
 import { render, screen, fireEvent } from "@testing-library/react"
+import { userEvent } from "@testing-library/user-event"
+import * as router from "react-router-dom"
 
 jest.mock("react-router-dom", () => ({
     BrowserRouter: ({ children }) => <div>{children}</div>,
@@ -10,7 +13,12 @@ jest.mock("react-router-dom", () => ({
     useNavigate: jest.fn(),
     useParams: jest.fn(),
 }));
-const navigate = jest.fn();
+
+const navigate = jest.fn()
+
+beforeEach(() => {
+    jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate)
+})
 
 describe('code snippet', () => {
 
@@ -33,10 +41,10 @@ describe('code snippet', () => {
     });
 
     // Dropdown menu displays a list of investment options
-    it('should display a list of investment options in the dropdown menu', () => {
-        render(<BookInvestmentButton>Test Button</BookInvestmentButton>);
+    it('should display a list of investment options in the dropdown menu', async () => {
+        render(<BookInvestmentButton disabled={false}>Test Button</BookInvestmentButton>);
         const button = screen.getByText('Test Button');
-        fireEvent.click(button);
+        await userEvent.click(button)
         const investmentOptions = screen.getAllByRole('button');
         expect(investmentOptions.length).toBe(BookInvestmentOptions.length);
         investmentOptions.forEach((option, index) => {
@@ -44,21 +52,23 @@ describe('code snippet', () => {
         });
     });
 
-    // BookInvestmentOptions is undefined or empty
-    it('should not display any investment options if BookInvestmentOptions is undefined or empty', () => {
-        render(<BookInvestmentButton>Test Button</BookInvestmentButton>);
+    it('Should call goToUrl when user is permitted', async () => {
+        render(<BookInvestmentButton disabled={false}>Test Button</BookInvestmentButton>);
         const button = screen.getByText('Test Button');
-        fireEvent.click(button);
+        await userEvent.click(button)
         const investmentOptions = screen.queryAllByRole('button');
         expect(investmentOptions.length).toBe(2);
+        await userEvent.click(screen.getByText("Individual"));
+        expect(navigate).toBeCalled();
+        expect(screen.queryAllByRole('button').length).toBe(0);
     });
-
-    // Clicking on an investment option while the dropdown menu is closed does not navigate to any url
-    // it('should not navigate to any url when an investment option is clicked while the menu is closed', () => {
-    //     render(<BookInvestmentButton>Test Button</BookInvestmentButton>);
-    //     const button = screen.getByText('Test Button');
-    //     const investmentOption = screen.getByText(BookInvestmentOptions[0].title);
-    //     fireEvent.click(investmentOption);
-    //     expect(navigate).not.toHaveBeenCalled();
-    // });
+    it('Should not call goToUrl when user is not permitted', async () => {
+        render(<BookInvestmentButton disabled={true}>Test Button</BookInvestmentButton>);
+        const button = screen.getByText('Test Button');
+        await userEvent.click(button)
+        const investmentOptions = screen.queryAllByRole('button');
+        expect(investmentOptions.length).toBe(2);
+        await userEvent.click(screen.getByText("Individual"));
+        expect(screen.queryAllByRole('button').length).toBe(2);
+    });
 });
