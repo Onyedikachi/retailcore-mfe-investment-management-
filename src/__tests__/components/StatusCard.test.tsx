@@ -993,28 +993,79 @@ describe('handlePermission', () => {
     const investmentRequestOptions = [
       {
         id: 1,
-        text: "Option 1",
-        value: "option1",
+        text: "Initiated by me",
+        value: "created_by_me",
         disabled: false,
       },
       {
         id: 2,
-        text: "Option 2",
-        value: "option2",
+        text: "Initiated by my branch",
+        value: "created_by_my_branch",
+        disabled: false,
+      },
+      {
+        id: 3,
+        text: "Initiated system-wide",
+        value: "created_by_anyone",
+        disabled: false,
+      },
+    
+      {
+        id: 4,
+        text: "Sent to me",
+        value: "sent_to_me",
+        disabled: false,
+      },
+      {
+        id: 5,
+        text: "Sent to my branch",
+        value: "sent_to_my_branch",
+        disabled: false,
+      },
+      {
+        id: 6,
+        text: "Sent system-wide",
+        value: "sent_system_wide",
         disabled: false,
       },
     ];
+    
     const investmentProductOptions = [
       {
         id: 1,
-        text: "Option 1",
-        value: "option1",
+        text: "Created by me",
+        value: "created_by_me",
         disabled: false,
       },
       {
         id: 2,
-        text: "Option 2",
-        value: "option2",
+        text: "Created by my branch",
+        value: "created_by_my_branch",
+        disabled: false,
+      },
+      {
+        id: 3,
+        text: "Created system-wide",
+        value: "created_system_wide",
+        disabled: false,
+      },
+    
+      {
+        id: 4,
+        text: "Approved by me",
+        value: "approved_by_me",
+        disabled: false,
+      },
+      {
+        id: 5,
+        text: "Approved by my branch",
+        value: "approved_by_my_branch",
+        disabled: false,
+      },
+      {
+        id: 6,
+        text: "Approved system-wide",
+        value: "approved_system_wide",
         disabled: false,
       },
     ];

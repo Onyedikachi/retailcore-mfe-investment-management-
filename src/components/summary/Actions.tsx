@@ -72,7 +72,7 @@ export const handleConfirm = ({
   }
 };
 
-function handlePermissionType(type: string, process_type?: string) {
+export function handlePermissionType(type: string, process_type?: string) {
   if (type === "individual") {
     return process_type === "booking"
       ? "BOOK_INVESTMENT"

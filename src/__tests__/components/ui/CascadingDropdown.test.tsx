@@ -5,7 +5,19 @@ import CascadingDropdown from "../../../components/ui/CasadingDropdown";
 import { BrowserRouter } from "react-router-dom";
 import '@testing-library/jest-dom';
 
+jest.mock("react-router-dom", () => ({
+  BrowserRouter: ({ children }) => <div>{children}</div>,
+  Link: ({ to, children }) => <a href={to}>{children}</a>,
+  NavLink: ({ to, children }) => <a href={to}>{children}</a>,
+  useNavigate: jest.fn(),
+  useSearchParams: jest.fn(),
+  useParams: jest.fn(),
+}));
 describe("CascadingDropdown", () => {
+
+
+
+
   // Renders a dropdown button with a label and a list of items
   it("should render a dropdown button with a label and a list of items", () => {
     // Arrange
@@ -27,7 +39,7 @@ describe("CascadingDropdown", () => {
   });
 
   // Displays the list of items when the dropdown button is clicked
-  it("should display the list of items when the dropdown button is clicked", () => {
+  it("should display the list of items when the dropdown button is clicked", async () => {
     // Arrange
     const label = "Dropdown";
     const items = [
@@ -38,12 +50,13 @@ describe("CascadingDropdown", () => {
 
     // Act
     render(<CascadingDropdown label={label} items={items} />);
-    userEvent.click(screen.getByText(label));
+    await userEvent.click(screen.getByText(label));
 
     // Assert
-    // items.forEach((item) => {
-    //   expect(screen.getByText(item.label)).toBeInTheDocument();
-    // });
+
+    items.forEach((item) => {
+      expect(screen.getByText(item.label)).toBeInTheDocument();
+    });
   });
 
   // Allows the user to click on an item and navigate to its link
@@ -133,7 +146,7 @@ describe('CascadingDropdown', () => {
     // Check if the label is rendered
     expect(screen.getByText('Test Dropdown')).toBeInTheDocument();
 
-   
+
   });
 
 

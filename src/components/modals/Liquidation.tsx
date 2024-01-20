@@ -32,6 +32,28 @@ export const onProceed = (data, onConfirm, type) => {
   // console.log("🚀 ~ onProceed ~ data:", data);
   onConfirm(data, type);
 };
+
+export const handleLiquidationCalculationPayload = ({detail, productDetails, type, values, liquidationUnitEnum, liquidationCalculation, selection}) => {
+  console.log("🚀 ~ useEffect ~ detailzz:", detail?.principal);
+  console.log("🚀 ~ useEffect ~ productDetailszz:", productDetails);
+  if (detail?.principal && productDetails) {
+    const payload = {
+      principal: detail?.principal,
+      amounttoLiquidate:
+        type === "early"
+          ? detail?.principal
+          : values?.amount
+            ? values?.amount
+            : 0,
+      liquidationUnit:
+        type === "early"
+          ? liquidationUnitEnum[selection]
+          : liquidationUnitEnum[selection],
+    };
+    liquidationCalculation(payload);
+  }
+}
+
 export default function Liquidation({
   isOpen,
   setIsOpen,
@@ -91,30 +113,13 @@ export default function Liquidation({
     },
   ] = useLiquidationCalculationMutation();
 
-  useEffect(() => {}, [values]);
+  useEffect(() => { }, [values]);
   useEffect(() => {
-    console.log("🚀 ~ useEffect ~ detailzz:", detail?.principal);
-    console.log("🚀 ~ useEffect ~ productDetailszz:", productDetails);
-    if (detail?.principal && productDetails) {
-      const payload = {
-        principal: detail?.principal,
-        amounttoLiquidate:
-          type === "early"
-            ? detail?.principal
-            : values?.amount
-            ? values?.amount
-            : 0,
-        liquidationUnit:
-          type === "early"
-            ? liquidationUnitEnum[selection]
-            : liquidationUnitEnum[selection],
-      };
-      liquidationCalculation(payload);
-    }
+    handleLiquidationCalculationPayload({detail, productDetails, type, values, liquidationUnitEnum, liquidationCalculation, selection})
   }, [detail, productDetails, values.amount, selection]);
   useEffect(() => {
     setLiquidationValue(liquidationCalculationData?.data);
- 
+
   }, [liquidationCalculationData]);
 
   // const { data, isSuccess, isError, isLoading } = useGetUserQuery(creatorId);
@@ -150,23 +155,21 @@ export default function Liquidation({
 
   useEffect(() => {
     setText(
-      `The customer is required to provide a ${
-        type === "early"
-          ? productDetails?.liquidation?.early_NoticePeriod
-          : productDetails?.liquidation?.part_NoticePeriod
-      }-${
-        Interval[
-          type === "early"
-            ? productDetails?.liquidation?.early_NoticePeriodUnit
-            : productDetails?.liquidation?.part_NoticePeriodUnit
-        ]
+      `The customer is required to provide a ${type === "early"
+        ? productDetails?.liquidation?.early_NoticePeriod
+        : productDetails?.liquidation?.part_NoticePeriod
+      }-${Interval[
+      type === "early"
+        ? productDetails?.liquidation?.early_NoticePeriodUnit
+        : productDetails?.liquidation?.part_NoticePeriodUnit
+      ]
       } notice before requesting ${type} liquidation, proceeding with this request implies that the customer has given ample notice as specified.`
     );
 
     setPercentValue(productDetails?.liquidation?.part_MaxPartLiquidation);
     setAmountValue(
       (productDetails?.liquidation?.part_MaxPartLiquidation / 100) *
-        detail?.principal
+      detail?.principal
     );
   }, [productDetails, detail]);
 
@@ -227,19 +230,18 @@ export default function Liquidation({
                         type="number"
                         placeholder="Enter value"
                       />
-                    
+
                       <div className="overflow-hidden absolute right-0 text-[10px] text-[#8F8F8F] flex items-center   rounded-full shadow-[0px_0px_1px_0px_rgba(26,32,36,0.32),0px_1px_2px_0px_rgba(91,104,113,0.32)] border-[#E5E9EB]">
                         <span
                           onClick={() => {
                             setSelection("currency");
                             setValue("maxAmount", 10000000000000000000);
                           }}
-                          className={`w-[55px] border-r border-[#E5E9EB] py-1 px-2 ${
-                            selection === "currency" ? "bg-[#FFE9E9] " : ""
-                          }`}
+                          className={`w-[55px] border-r border-[#E5E9EB] py-1 px-2 ${selection === "currency" ? "bg-[#FFE9E9] " : ""
+                            }`}
                         >
                           {" "}
-                          NGN  
+                          NGN
                         </span>
 
                         <span
@@ -247,9 +249,8 @@ export default function Liquidation({
                             setSelection("percent");
                             setValue("maxAmount", 100);
                           }}
-                          className={`w-[55px] py-1 px-2 ${
-                            selection === "percent" ? "bg-[#FFE9E9] " : ""
-                          }`}
+                          className={`w-[55px] py-1 px-2 ${selection === "percent" ? "bg-[#FFE9E9] " : ""
+                            }`}
                         >
                           {" "}
                           Percent

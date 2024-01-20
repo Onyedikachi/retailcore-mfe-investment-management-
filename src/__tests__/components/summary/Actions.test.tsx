@@ -6,7 +6,7 @@ import userEvent from "@testing-library/user-event";
 import { InvestmentContext, AppContext } from "../../../utils/context"; // Update with the actual path
 import { MemoryRouter } from "react-router-dom";
 import { renderWithProviders } from "../../../utils/test-util";
-import { handleConfirm, handleMessages } from "../../../components/summary/Actions";
+import { handleConfirm, handleMessages, handlePermissionType } from "../../../components/summary/Actions";
 import { Messages } from "../../../constants/enums";
 
 const navigate = jest.fn();
@@ -22,7 +22,7 @@ jest.mock("react-router-dom", () => ({
   useNavigate: jest.fn(),
   useSearchParams: jest.fn(),
   useParams: jest.fn(),
-  useLocation: jest.fn().mockReturnValue({pathname: ""})
+  useLocation: jest.fn().mockReturnValue({ pathname: "" })
 }));
 jest
   .spyOn(require("react-router-dom"), "useNavigate")
@@ -345,6 +345,18 @@ describe("handleConfirm", () => {
     expect(navigate).not.toHaveBeenCalled();
   });
 
+  it("should approve investment for individual", () => {
+    const approveInvestment = jest.fn();
+    handleConfirm({ action: "approve", type: "individual", approveInvestment, id: "23456" });
+    expect(approveInvestment).toBeCalledWith({ id: "23456" });
+  })
+
+  it("should approve cancel for individual", () => {
+    const navigate = jest.fn();
+    handleConfirm({ action: "cancel", type: "individual", id: "23456", navigate });
+    expect(navigate).toBeCalledWith(`/product-factory/investment/management/individual`);
+  })
+
   // When action is 'reject', set 'setRejection' state to true
   it('should set setRejection to true when action is "reject"', () => {
     const id = '123';
@@ -392,6 +404,12 @@ describe("handleConfirm", () => {
 })
 
 describe("handleMessages", () => {
+
+  const setSuccessText = jest.fn();
+  const setIsSuccessOpen = jest.fn();
+  const setFailedText = jest.fn();
+  const setFailedSubtext = jest.fn();
+  const setFailed = jest.fn();
   // sets success text and opens success modal if rejectSuccess is true
   it('should set success text and open success modal when rejectSuccess is true', () => {
     const setSuccessText = jest.fn();
@@ -429,11 +447,7 @@ describe("handleMessages", () => {
 
   // sets success text and opens success modal if approveSuccess is true
   it('should set success text and open success modal when approveSuccess is true', () => {
-    const setSuccessText = jest.fn();
-    const setIsSuccessOpen = jest.fn();
-    const setFailedText = jest.fn();
-    const setFailedSubtext = jest.fn();
-    const setFailed = jest.fn();
+
     const rejectSuccess = false;
     const approveSuccess = true;
     const rejectIsError = false;
@@ -601,4 +615,57 @@ describe("handleMessages", () => {
     expect(setFailedSubtext).toHaveBeenCalledWith(rejectError.message.message);
     expect(setFailed).toHaveBeenCalledWith(true);
   });
+
+  it("Should handle investmentRejectSuccess", () => {
+    handleMessages({ investmentRejectSuccess: true, setSuccessText, setIsSuccessOpen})
+    expect(setSuccessText).toBeCalledWith(Messages.BOOKING_CREATE_REJECTED);
+    expect(setIsSuccessOpen).toBeCalledWith(true);
+  })
+
+  it("Should handle investmentApproveSuccess", () => {
+    handleMessages({ investmentApproveSuccess: true, setSuccessText, setIsSuccessOpen})
+    expect(setSuccessText).toBeCalledWith(Messages.BOOKING_CREATE_APPROVED);
+    expect(setIsSuccessOpen).toBeCalledWith(true);
+  })
+
+  it("Should handle investmentApproveIsError", () => {
+    handleMessages({investmentApproveIsError: true, investmentApproveError: {message: {message: "E sha fail"}}, setFailed, setFailedText, setFailedSubtext});
+    expect(setFailedText).toBeCalledWith(Messages.BOOKING_APPROVE_FAILED);
+    expect(setFailedSubtext).toBeCalledWith("E sha fail");
+    expect(setFailed).toBeCalledWith(true);
+  })
+
+  it("Should handle investmentRejectIsError", () => {
+    handleMessages({investmentRejectIsError: true, investmentRejectError: {message: {message: "E sha fail"}}, setFailed, setFailedText, setFailedSubtext});
+    expect(setFailedText).toBeCalledWith(Messages.BOOKING_REJECT_FAILED);
+    expect(setFailedSubtext).toBeCalledWith("E sha fail");
+    expect(setFailed).toBeCalledWith(true);
+  })
 })
+
+describe('handlePermissionType', () => {
+
+  // Returns "BOOK_INVESTMENT" if type is "individual" and process_type is "booking"
+  it('should return "BOOK_INVESTMENT" when type is "individual" and process_type is "booking"', () => {
+    const result = handlePermissionType("individual", "booking");
+    expect(result).toBe("BOOK_INVESTMENT");
+  });
+
+  // Returns "LIQUIDATE_INVESTMENT" if type is "individual" and process_type is not "booking"
+  it('should return "LIQUIDATE_INVESTMENT" when type is "individual" and process_type is not "booking"', () => {
+    const result = handlePermissionType("individual", "other");
+    expect(result).toBe("LIQUIDATE_INVESTMENT");
+  });
+
+  // Returns "CREATE_INVESTMENT_PRODUCT" if type is "investment"
+  it('should return "CREATE_INVESTMENT_PRODUCT" when type is "investment"', () => {
+    const result = handlePermissionType("investment");
+    expect(result).toBe("CREATE_INVESTMENT_PRODUCT");
+  });
+
+  // Returns undefined if type is not "individual" or "investment"
+  it('should return undefined when type is not "individual" or "investment"', () => {
+    const result = handlePermissionType("other");
+    expect(result).toBeUndefined();
+  });
+});
