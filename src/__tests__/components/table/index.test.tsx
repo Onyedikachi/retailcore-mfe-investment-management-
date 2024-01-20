@@ -818,9 +818,16 @@ describe("handleUpdated", () => {
 
 describe("statusHandler", () => {
   // Sets success text and opens success modal if isSuccess is true
+  const setSuccessText = jest.fn();
+  const setIsSuccessOpen = jest.fn();
+  const activateSuccess = true;
+  const setSubText = jest.fn()
+  const setFailedText = jest.fn();
+  const setFailedSubtext = jest.fn();
+  const setFailed = jest.fn();
+  const role = "superadmin";
+
   it('should set success text and open success modal when isSuccess is true', () => {
-    const setSuccessText = jest.fn();
-    const setIsSuccessOpen = jest.fn();
     const isSuccess = true;
 
     statusHandler({ isSuccess, setSuccessText, setIsSuccessOpen });
@@ -831,22 +838,76 @@ describe("statusHandler", () => {
 
   // Sets success text and opens success modal if activateSuccess is true and role is superadmin or admin
   it('should set success text and open success modal when activateSuccess is true and role is superadmin or admin', () => {
-    const setSuccessText = jest.fn();
-    const setIsSuccessOpen = jest.fn();
-    const activateSuccess = true;
-    const role = "superadmin";
 
-    statusHandler({ activateSuccess, setSuccessText, setIsSuccessOpen, role });
+    statusHandler({ modifyRequestSuccess: true, activateSuccess, setSuccessText, setIsSuccessOpen, setSubText, role });
 
-    expect(setSuccessText).toHaveBeenCalledWith(Messages.PRODUCT_ACTIVATE_SUCCESS);
+
+    expect(setSuccessText).toHaveBeenCalledWith(Messages.BOOKING_WITHDRAW_SUCCESS);
+    expect(setSubText).toHaveBeenCalledWith(Messages.BOOKING_WITHDRAW_SUCCESS_SUB);
     expect(setIsSuccessOpen).toHaveBeenCalledWith(true);
   });
 
+  it('should handle modifyRequestError', () => {
+
+    statusHandler({ modifyRequestIsError: true, modifyRequestError: { message: { message: "E sha fail" } }, setFailedText, setFailed, setFailedSubtext, role });
+
+
+    expect(setFailedText).toHaveBeenCalledWith(Messages.BOOKING_MODIFY_FAILED);
+    expect(setFailedSubtext).toHaveBeenCalledWith("E sha fail")
+    expect(setFailed).toHaveBeenCalledWith(true);
+  });
+
+  it('should handle deleteInvestmentRequestError', () => {
+
+    statusHandler({ isDeleteInvestmentRequestError: true, deleteInvestmentRequestError: { message: { message: "E sha fail" } }, setFailedText, setFailed, setFailedSubtext, role });
+
+
+    expect(setFailedText).toHaveBeenCalledWith(Messages.PRODUCT_DELETE_FAILED);
+    expect(setFailedSubtext).toHaveBeenCalledWith("E sha fail")
+    expect(setFailed).toHaveBeenCalledWith(true);
+  });
+
+  it("shluld handle earlyLiquidateSuccess", () => {
+    statusHandler({ earlyLiquidateSuccess: true, setSuccessText, setIsSuccessOpen });
+    expect(setSuccessText).toBeCalledWith(Messages.EARLY_LIQUIDATION_REQUEST)
+    expect(setIsSuccessOpen).toBeCalledWith(true);
+  })
+
+  it("should handle partLiquidateSuccess", () => {
+    statusHandler({ partLiquidateSuccess: true, setSuccessText, setIsSuccessOpen });
+    expect(setSuccessText).toBeCalledWith(Messages.PART_LIQUIDATION_REQUEST)
+    expect(setIsSuccessOpen).toBeCalledWith(true);
+  })
+
+  it('should handle earlyLiquidateIsError', () => {
+
+    statusHandler({ earlyLiquidateIsError: true, earlyLiquidateError: { message: { message: "E sha fail" } }, setFailedText, setFailed, setFailedSubtext, role });
+
+
+    expect(setFailedText).toHaveBeenCalledWith(Messages.REQUEST_FAILED);
+    expect(setFailedSubtext).toHaveBeenCalledWith("E sha fail")
+    expect(setFailed).toHaveBeenCalledWith(true);
+  });
+
+  it('should handle partLiquidateIsError', () => {
+
+    statusHandler({ partLiquidateIsError: true, partLiquidateError: { message: { message: "E sha fail" } }, setFailedText, setFailed, setFailedSubtext, role });
+
+
+    expect(setFailedText).toHaveBeenCalledWith(Messages.REQUEST_FAILED);
+    expect(setFailedSubtext).toHaveBeenCalledWith("E sha fail")
+    expect(setFailed).toHaveBeenCalledWith(true);
+  });
+
+
+  it("should handle deleteInvestmentRequestSuccess", () => {
+    statusHandler({ isDeleteInvestmentRequestSuccess: true, setSuccessText, setIsSuccessOpen });
+    expect(setSuccessText).toBeCalledWith(Messages.PRODUCT_DELETE_SUCCESS)
+    expect(setIsSuccessOpen).toBeCalledWith(true);
+  })
   // Sets failed text, subtext and opens failed modal if isError is true
   it('should set failed text, subtext and open failed modal when isError is true', () => {
-    const setFailedText = jest.fn();
-    const setFailedSubtext = jest.fn();
-    const setFailed = jest.fn();
+
     const isError = true;
     const error = { message: { message: "Error message" } };
 
