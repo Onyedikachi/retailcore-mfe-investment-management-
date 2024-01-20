@@ -389,7 +389,9 @@ export const creationMap = [
   "bulk_create",
   "change",
   "deactivation",
-  "booking"
+  "booking",
+  "part liquidation",
+  "early liquidation"
 ];
 export const colorState = {
   approved: "bg-[#D4F7DC] text-[#15692A]",
