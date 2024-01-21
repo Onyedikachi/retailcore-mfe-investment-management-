@@ -19,6 +19,7 @@ import {
   IndividualStatusTypes,
   IndividualTypeFilterOptions,
   individualHeader,
+  overviewDrillDownIndividualHeader,
   IndividualRequestHeader,
 } from "@app/constants";
 import { useProductList } from "@app/hooks";
@@ -36,8 +37,8 @@ interface RequestDataProps {
 interface ProductDataProps {
   "customer name": string;
   "customer id": string;
-  "principal": string;
-  'investment product' : string
+  principal: string;
+  "investment product": string;
   status: string;
   "updated on": string;
 }
@@ -50,7 +51,6 @@ export const handleDropdown = (
   locked = false,
   permissions: string[] = []
 ) => {
-
   if (!status) return [];
   if (isChecker) {
     return IndividualDropDownOptions[setOptionsByStatus(status)].filter(
@@ -66,7 +66,9 @@ export const handleDropdown = (
       );
     }
     if (!permissions?.includes("BOOK_INVESTMENT")) {
-      options = options?.filter((i: any) => i.text.toLowerCase() !== "restructure");
+      options = options?.filter(
+        (i: any) => i.text.toLowerCase() !== "restructure"
+      );
     }
     return options;
   }
@@ -127,8 +129,8 @@ export function handleDownload(downloadData, isChecker, csvExporter, category) {
       let obj: ProductDataProps = {
         "customer name": i?.customerName || "",
         "customer id": i?.investmentId || "",
-        "principal": i?.principal || "",
-        'investment product' : i?.investmentProduct || "",
+        principal: i?.principal || "",
+        "investment product": i?.investmentProduct || "",
         status: i?.status || "",
         "updated on": moment(i.updated_At).format("DD MMM YYYY, hh:mm A"),
       };
@@ -180,6 +182,7 @@ export const handleSearch = (value, setQuery, query) => {
   });
 };
 export default function TableComponent({
+  isOverviewDrillDown = false,
   productData,
   requestData,
   handleRefresh,
@@ -230,31 +233,40 @@ export default function TableComponent({
   });
 
   useEffect(() => {
-    const results = fetchedProductsList?.results;
-    if (results) {
-      const targetKey = "investmentProduct";
-      const mappedResults = results?.map((result) => {
-        return {
-          id: result.id,
-          name: result.productName,
-          value: result.id,
-        };
-      });
+    if(isOverviewDrillDown){
+      setIndividualListHeaders(overviewDrillDownIndividualHeader)
 
-      const updatedItems = individualHeader.map((item) => {
-        if (item.key === targetKey) {
-          // Update the options for the target item
+    }else{
+      const results = fetchedProductsList?.results;
+      if (results) {
+        const targetKey = "investmentProduct";
+        const mappedResults = results?.map((result) => {
           return {
-            ...item,
-            options: [...mappedResults],
+            id: result.id,
+            name: result.productName,
+            value: result.id,
           };
-        }
-        // Leave other items unchanged
-        return item;
-      });
-      setIndividualListHeaders(updatedItems);
+        });
+  
+        const updatedItems = individualHeader.map((item) => {
+          if (item.key === targetKey) {
+            // Update the options for the target item
+            return {
+              ...item,
+              options: [...mappedResults],
+            };
+          }
+          // Leave other items unchanged
+          return item;
+        });
+        setIndividualListHeaders(updatedItems);
+      }
     }
-  }, [fetchedProductsList]);
+
+    
+
+   
+  }, [fetchedProductsList, isOverviewDrillDown]);
 
   const [
     getRequests,
@@ -275,9 +287,7 @@ export default function TableComponent({
     useGetUsersPermissionsQuery({ permissions: ["BOOK_INVESTMENT"] });
   const { data: reviewData, isSuccess: reviewSuccess } =
     useGetUsersPermissionsQuery({
-      permissions: [
-        "AUTHORIZE_INVESTMENT_MANAGEMENT_REQUESTS",
-      ],
+      permissions: ["AUTHORIZE_INVESTMENT_MANAGEMENT_REQUESTS"],
     });
 
   useEffect(() => {
@@ -394,11 +404,12 @@ export default function TableComponent({
   };
 
   const handleDropClick = (value: any) => {};
-
+  // {console.log(productData)}
+  // console.log("🚀 ~ productData:", productData)
   return (
     <section className="w-full h-full">
       {/* Table Top bar  */}
-
+     
       <div className="flex justify-end gap-x-[25px] items-center mb-[27px] h-auto">
         <SearchInput
           setSearchTerm={(value) =>
@@ -455,7 +466,7 @@ export default function TableComponent({
       {/* { category === StatusCategoryType?.Investments ? 't' : 'f'} */}
       <Table
         headers={
-          category === StatusCategoryType?.Investments
+          category === StatusCategoryType?.Investments  || isOverviewDrillDown
             ? individualListHeaders
             : handleHeaders(
                 IndividualRequestHeader.map((i) => {
@@ -467,8 +478,9 @@ export default function TableComponent({
                 isChecker
               )
         }
+        
         tableRows={
-          category === StatusCategoryType?.Investments
+          category === StatusCategoryType?.Investments  || isOverviewDrillDown
             ? productData
             : requestData
         }

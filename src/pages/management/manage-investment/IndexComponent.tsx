@@ -1,13 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { BookInvestmentFormSteps } from "@app/constants";
 import { ProductInfoInvestmentCalc } from "@app/components/management";
 import { useNavigate, useParams } from "react-router-dom";
 import ProductSearch from "@app/components/ProductSearch";
 import { Breadcrumbs, Button } from "@app/components";
 import { TableComponent } from "@app/components/pages/management/manage-investment";
+import { useGetPostInvestmentMutation } from "@app/api";
+import { sortTabStatus } from "@app/utils/sortTabStatus";
+import { StatusCategoryType } from "@app/constants/enums";
+import { ucObjectKeys, IndividualContext, AppContext } from "@app/utils";
 
 export default function IndexComponent() {
+  const { category } = useContext(IndividualContext);
   const { process, investmentType } = useParams();
+  const [investmentsList, setInvestmentsList] = useState([]);
   const [individualListOpen, setIndividualListOpen] = useState(false);
   const [corporateListOpen, setCorporateListOpen] = useState(false);
   const [individualInvestments, setIndividualInvestments] = useState([
@@ -19,9 +25,29 @@ export default function IndexComponent() {
     "School Paper",
   ]);
   const [hasMore, setHasMore] = useState(true);
+  const setStatusFilter = (investmentType) => {
+    const status =
+      investmentType.toLowerCase() == "all investments"
+        ? "all"
+        : investmentType.toLowerCase() == "liquidated investments"
+        ? "liquidated"
+        : investmentType.toLowerCase() == "active investments"
+        ? "active"
+        : "all";
+    return status;
+  };
+
   const [query, setQuery] = useState({
     // filter_by: selected?.value,
-    status_In: null,
+    status_In:
+      setStatusFilter(investmentType) == "all"
+        ? null
+        : [
+            sortTabStatus(
+              setStatusFilter(investmentType),
+              StatusCategoryType?.Investments
+            ),
+          ],
     search: "",
     start_Date: null,
     end_Date: null,
@@ -52,6 +78,11 @@ export default function IndexComponent() {
       url: `/product-factory/investment/management/products/${investmentType}`,
     },
   ];
+
+  const [
+    getInvestmentProducts,
+    { data: investmentProducts, isSuccess, isError, error, isLoading },
+  ] = useGetPostInvestmentMutation();
   function handleLinks(links, process) {
     return links;
   }
@@ -63,10 +94,41 @@ export default function IndexComponent() {
     });
   };
 
+  function fetch() {
+    getInvestmentProducts({
+      ...query,
+      page: 1,
+      filter_by: "created_system_wide",
+    });
+  }
+
+  useEffect(() => {
+    if (isSuccess) {
+      setInvestmentsList(investmentProducts?.results);
+      // console.log("🚀 ~ useEffect ~ investmentProducts:", investmentProducts?.results)
+    }
+  }, [investmentProducts, isSuccess]);
+
+  useEffect(() => {
+    fetch();
+  }, [
+    query.search,
+    query.status_In,
+    // query.investmentProducts_In,
+    query.productType_In,
+    query.start_Date,
+    query.end_Date,
+    query.requestType_In,
+    query.initiator_In,
+    query.approvers_In,
+  ]);
+
   return (
     <div className="flex flex-col min-h-[100vh] ">
       <div className="px-[37px] py-[11px] bg-white">
-        <h1 className="text-[#747373] text-[24px] font-bold mb-7 uppercase">Investment Management</h1>
+        <h1 className="text-[#747373] text-[24px] font-bold mb-7 uppercase">
+          Investment Management
+        </h1>
         <Breadcrumbs links={handleLinks(links, process)} />
       </div>
       {/* {productData.productInfo.productName} */}
@@ -175,14 +237,17 @@ export default function IndexComponent() {
             </div>
             <div className="overflow-x-auto  flex-1 border border-[#E5E9EB] rounded-lg py-[13px] px-[31px] flex-col gap-[27px]">
               <div className=" max-w-full">
+                <span>{category}</span>
+
                 <TableComponent
+                  isOverviewDrillDown={true}
                   handleRefresh={() => {}}
                   handleSearch={(value) => {}}
-                  productData={[
-                    { id: 1, customerName: "Kaine", principalAmount: "5,000", tenor: '3 months', interestRate: '3%', status: 'Active'},
-                  ]}
+                  productData={investmentsList}
+                  // productData={useMemo(() => productData, [productData])}
+
                   requestData={[]}
-                  isLoading={false}
+                  isLoading={isLoading}
                   query={query}
                   setQuery={setQuery}
                   hasMore={hasMore}

@@ -93,7 +93,7 @@ export const statusHandler = ({
 }) => {
   if (modifyRequestSuccess) {
     setSuccessText(Messages.BOOKING_WITHDRAW_SUCCESS);
-    setSubText(Messages.BOOKING_WITHDRAW_SUCCESS_SUB)
+    setSubText(Messages.BOOKING_WITHDRAW_SUCCESS_SUB);
     setIsSuccessOpen(true);
   }
 
@@ -393,7 +393,7 @@ export default function TableComponent<TableProps>({
   // function getdata(item, key) {}
   // @ts-ignore
   const handleLiquidation = (data, type) => {
-    console.log("🚀 ~ handleLiquidation ~ type:", type)
+    console.log("🚀 ~ handleLiquidation ~ type:", type);
     if (type.toLowerCase() === "part") {
       partLiquidateInvestment(data);
     }
@@ -653,6 +653,7 @@ export default function TableComponent<TableProps>({
                               {typeof item[header.key] !== "object" &&
                                 header.key !== "state" &&
                                 header.key !== "principal" &&
+                               
                                 header.key !== "investmentBookingStatus" &&
                                 header.key !== "updated_At" &&
                                 header.key !== "requestStatus" && (
@@ -670,12 +671,17 @@ export default function TableComponent<TableProps>({
                                 />
                               )}
                               {header.key === "principal" && (
-                                <TextCellContent
+                                <div>
+                                 
+                                  <TextCellContent
                                   isCurrencyValue={true}
                                   value={item[header.key] || "-"}
                                   currency={item?.currency}
                                 />
+                                </div>
+                              
                               )}
+                             
                               {header.key === "requestStatus" && (
                                 <span
                                   onClick={() => handleAction("view", item)}
