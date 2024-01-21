@@ -85,8 +85,19 @@ export function initiateDownload(
   category,
   downloadProducts,
   downloadRequests,
-  selected
+  selected,
+  isOverviewDrillDown= false
 ) {
+  if(isOverviewDrillDown){
+    console.log('downloading')
+    downloadProducts({
+      ...query,
+      page_Size: 1000000,
+      filter_by: 'created_system_wide'
+     
+    });
+    return
+  }
   if (category === StatusCategoryType?.Investments) {
     downloadProducts({
       ...query,
@@ -153,10 +164,20 @@ export const getSearchResult = (
   getRequests,
   category,
   setSearchResults,
-  selected
+  selected,
+  isOverviewDrillDown
 ) => {
   if (!value.length) {
     setSearchResults([]);
+    return;
+  }
+  if (isOverviewDrillDown) {
+    getProducts({
+      search: value,
+      page: 1,
+      page_Size: 25,
+      filter_by: selected?.value,
+    });
     return;
   }
   if (category === StatusCategoryType?.Investments) {
@@ -207,11 +228,15 @@ export default function TableComponent({
     decimalSeparator: ".",
     showLabels: true,
     showTitle: false,
-    title: "Product management",
-    filename:
-      category === StatusCategoryType?.Investments
-        ? "dashboard_products_data"
-        : "dashboard_requests_data",
+    title:
+      isOverviewDrillDown || category === StatusCategoryType?.Investments
+        ? "Investment Management"
+        : "Product management",
+    filename: isOverviewDrillDown
+      ? "dashboard_investments_data"
+      : category === StatusCategoryType?.Investments
+      ? "dashboard_products_data"
+      : "dashboard_requests_data",
     useTextFile: false,
     useBom: true,
     useKeysAsHeaders: true,
@@ -329,6 +354,21 @@ export default function TableComponent({
 
   useEffect(() => {
     if (
+      isOverviewDrillDown
+    ) {
+      handleDownload(
+        productDownloadData?.results.map((i) => ({
+          ...i,
+          status: IndividualStatusTypes.find(
+            (n) => n.id === i.investmentBookingStatus
+          )?.type,
+        })),
+        isChecker,
+        csvExporter,
+        category
+      );
+    }
+    if (
       productDownloadIsSuccess &&
       category === StatusCategoryType?.Investments
     ) {
@@ -414,7 +454,8 @@ export default function TableComponent({
               getRequests,
               category,
               setSearchResults,
-              selected
+              selected,
+              isOverviewDrillDown
             )
           }
           placeholder={`Search by customer name${
@@ -446,7 +487,8 @@ export default function TableComponent({
                 category,
                 downloadProducts,
                 downloadRequests,
-                selected
+                selected,
+                isOverviewDrillDown
               )
             }
             data-testid="download-btn"
