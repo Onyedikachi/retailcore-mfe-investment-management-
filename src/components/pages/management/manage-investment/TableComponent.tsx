@@ -86,17 +86,15 @@ export function initiateDownload(
   downloadProducts,
   downloadRequests,
   selected,
-  isOverviewDrillDown= false
+  isOverviewDrillDown = false
 ) {
-  if(isOverviewDrillDown){
-    console.log('downloading')
+  if (isOverviewDrillDown) {
     downloadProducts({
       ...query,
       page_Size: 1000000,
-      filter_by: 'created_system_wide'
-     
+      filter_by: "created_system_wide",
     });
-    return
+    return;
   }
   if (category === StatusCategoryType?.Investments) {
     downloadProducts({
@@ -112,7 +110,13 @@ export function initiateDownload(
     });
   }
 }
-export function handleDownload(downloadData, isChecker, csvExporter, category) {
+export function handleDownload(
+  downloadData,
+  isChecker,
+  csvExporter,
+  category,
+  isOverviewDrillDown = false
+) {
   try {
     if (!downloadData?.length) return;
     const requestData = downloadData.map((i) => {
@@ -146,10 +150,24 @@ export function handleDownload(downloadData, isChecker, csvExporter, category) {
         "updated on": moment(i.updated_At).format("DD MMM YYYY, hh:mm A"),
       };
 
-      return obj;
+      let overviewDrillDownObj = {
+        "customer name": i?.customerName || "",
+        "customer id": i?.investmentId || "",
+        "principal amount": i?.principal || "",
+        tenor: i?.tenor,
+        "interest rate": i?.interestRate,
+        "value at maturity": i?.maturityValue || "",
+        status: i?.status || "",
+        "updated on": moment(i.updated_At).format("DD MMM YYYY, hh:mm A"),
+      };
+
+      return isOverviewDrillDown ? overviewDrillDownObj : obj;
     });
+    // alert(isOverviewDrillDown ? 'productData' : 'req')
     csvExporter.generateCsv(
-      category === StatusCategoryType.Requests
+      isOverviewDrillDown
+        ? ucObjectKeys(productData)
+        : category === StatusCategoryType.Requests
         ? ucObjectKeys(requestData)
         : ucObjectKeys(productData)
     );
@@ -353,9 +371,8 @@ export default function TableComponent({
   }, [data, request, isSuccess, isRequestSuccess]);
 
   useEffect(() => {
-    if (
-      isOverviewDrillDown
-    ) {
+    if (isOverviewDrillDown) {
+      // console.log("🚀 ~ useEffect ~ productDownloadData:", productDownloadData)
       handleDownload(
         productDownloadData?.results.map((i) => ({
           ...i,
@@ -365,7 +382,8 @@ export default function TableComponent({
         })),
         isChecker,
         csvExporter,
-        category
+        category,
+        isOverviewDrillDown
       );
     }
     if (
@@ -409,11 +427,15 @@ export default function TableComponent({
       decimalSeparator: ".",
       showLabels: true,
       showTitle: false,
-      title: "Product management",
-      filename:
-        category === StatusCategoryType?.Investments
-          ? "dashboard_products_data"
-          : "dashboard_requests_data",
+      title:
+        isOverviewDrillDown || category === StatusCategoryType?.Investments
+          ? "Investment Management"
+          : "Product management",
+      filename: isOverviewDrillDown
+        ? "dashboard_investments_data"
+        : category === StatusCategoryType?.Investments
+        ? "dashboard_products_data"
+        : "dashboard_requests_data",
       useTextFile: false,
       useBom: true,
       useKeysAsHeaders: true,

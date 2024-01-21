@@ -118,7 +118,6 @@ export default function IndexComponent() {
   }, [
     query.search,
     query.status_In,
-    // query.investmentProducts_In,
     query.productType_In,
     query.start_Date,
     query.end_Date,
