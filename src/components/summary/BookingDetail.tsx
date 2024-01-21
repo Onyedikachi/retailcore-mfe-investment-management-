@@ -21,7 +21,7 @@ export default function BookingDetail({
   type,
   productDetail,
 }: any) {
-  console.log("🚀 ~ detail:", detail)
+
   const { currencies } = useContext(AppContext);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [customerData, setCustomerData] = useState(null);

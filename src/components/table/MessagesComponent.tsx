@@ -40,7 +40,7 @@ export default function MessagesComponent({
   isLiquidation,
   setLiquidationOpen,
   liquidationType,
-  handleLiquidation = (data, type) => {},
+  handleLiquidation = (data, type, metaInfo) => {},
   liquidationLoading,
   handleRefresh = () => {},
 }) {
@@ -96,7 +96,9 @@ export default function MessagesComponent({
         <Liquidation
           isOpen={isLiquidation}
           setIsOpen={setLiquidationOpen}
-          onConfirm={(data, type) => handleLiquidation(data, type)}
+          onConfirm={(data, type, metaInfo) =>
+            handleLiquidation(data, type, metaInfo)
+          }
           detail={detail}
           type={liquidationType}
           title={
@@ -110,7 +112,6 @@ export default function MessagesComponent({
         />
       )}
 
-      
       {isDetailOpen && (
         <ProductDetail
           isOpen={isDetailOpen}

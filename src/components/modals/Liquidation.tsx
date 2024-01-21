@@ -5,7 +5,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ErrorMessage } from "@hookform/error-message";
 import { FaInfoCircle, FaTimes } from "react-icons/fa";
 import ModalLayout from "./Layout";
-import { useGetUserQuery, useGetUsersPermissionsQuery } from "../../api";
+import {
+  useGetInvestmentDetailQuery,
+  useGetUserQuery,
+  useGetUsersPermissionsQuery,
+} from "../../api";
 import { AppContext, removeNullEmptyKeys } from "@app/utils";
 import { Switch } from "@headlessui/react";
 import { ProductSearch, Button, FormToolTip } from "@app/components";
@@ -20,7 +24,7 @@ import { useLiquidationCalculationMutation } from "@app/api";
 interface LiquidationProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  onConfirm: (data: any, type: string) => void;
+  onConfirm: (data: any, type: string, metaInfo: any) => void;
   detail: any;
   title: string;
   type: string;
@@ -28,9 +32,10 @@ interface LiquidationProps {
   // handleLiquidation?: (e: any) => {};
 }
 
-export const onProceed = (data, onConfirm, type) => {
+export const onProceed = (data, onConfirm, type, metaInfo) => {
   // console.log("🚀 ~ onProceed ~ data:", data);
-  onConfirm(data, type);
+
+  onConfirm(data, type, metaInfo);
 };
 export default function Liquidation({
   isOpen,
@@ -41,13 +46,14 @@ export default function Liquidation({
   type,
   productDetails,
 }: LiquidationProps): React.JSX.Element {
-  console.log("🚀 ~ detail:", detail);
+  console.log("🚀 ~ detail:", detail)
+  const [metaInfo, setMetaInfo] = useState(null);
   const initialValues = {
     investementBookingId: detail?.id,
     reason: "",
     documentUrl: "",
     notify: false,
-    amount: null,
+    amounttoLiquidate: null,
     maxAmount: 100,
   };
   const {
@@ -66,20 +72,29 @@ export default function Liquidation({
   });
   const { currencies } = useContext(AppContext);
   const [defaultValue, setDefaultValue] = useState("");
-  const [selection, setSelection] = useState("percent");
+  const [selection, setSelection] = useState(1);
 
   const values = getValues();
   const [isTrue, setTrue] = useState(false);
-  console.log("🚀 ~ values:", values);
   const [text, setText] = useState("");
   const [percentValue, setPercentValue] = useState(0);
   const [amountValue, setAmountValue] = useState(0);
   const [liquidationValue, setLiquidationValue] = useState(0);
   const liquidationUnitEnum = {
     currency: 0,
-    percent: 1
-  }
+    percent: 1,
+  };
 
+  const {
+    data: bookingDetails,
+    isLoading: bookingDetailsIsLoading,
+    isSuccess: bookingDetailsIsSuccess,
+  } = useGetInvestmentDetailQuery(
+    {
+      id: detail?.metaInfo ? detail?.investmentBookingId : detail?.id,
+    },
+    { skip: !detail?.investmentBookingId && !detail?.id }
+  );
   const [
     liquidationCalculation,
     {
@@ -91,47 +106,70 @@ export default function Liquidation({
     },
   ] = useLiquidationCalculationMutation();
 
-  useEffect(() => {}, [values]);
   useEffect(() => {
-    console.log("🚀 ~ useEffect ~ detailzz:", detail?.principal);
-    console.log("🚀 ~ useEffect ~ productDetailszz:", productDetails);
-    if (detail?.principal && productDetails) {
+    if (detail?.metaInfo) {
+      setMetaInfo(JSON.parse(detail?.metaInfo)?.investmentProductId);
+      const data = JSON.parse(detail?.metaInfo);
+
+      setMetaInfo(data);
+      setTrue(data?.notify);
+      setSelection(data.liquidationUnit);
+      Object.keys(data).forEach((item) => {
+        // @ts-ignore
+        setValue(item, data[item]);
+      });
+     
+    }
+  }, [detail]);
+
+  useEffect(() => {
+    if (
+      bookingDetails?.data &&
+      productDetails &&
+      ((type === "early" &&
+        bookingDetails?.data?.facilityDetailsModel?.principal) ||
+        (type === "part" && values?.amounttoLiquidate))
+    ) {
       const payload = {
-        principal: detail?.principal,
+        principal: bookingDetails?.data?.facilityDetailsModel?.principal,
         amounttoLiquidate:
           type === "early"
-            ? detail?.principal
-            : values?.amount
-            ? values?.amount
-            : 0,
-        liquidationUnit:
-          type === "early"
-            ? liquidationUnitEnum[selection]
-            : liquidationUnitEnum[selection],
+            ? bookingDetails?.data?.facilityDetailsModel?.principal
+            : values?.amounttoLiquidate,
+        liquidationUnit: selection,
+        investmentBookingId: !detail?.metaInfo
+          ? detail?.id
+          : detail?.investmentBookingId,
       };
       liquidationCalculation(payload);
     }
-  }, [detail, productDetails, values.amount, selection]);
+  }, [
+    bookingDetailsIsSuccess,
+    detail,
+    productDetails,
+    values.amounttoLiquidate,
+    selection,
+    metaInfo,
+  ]);
+
   useEffect(() => {
-    setLiquidationValue(liquidationCalculationData?.data);
- 
-  }, [liquidationCalculationData]);
-
-  // const { data, isSuccess, isError, isLoading } = useGetUserQuery(creatorId);
-
-  // React.useEffect(() => {
-  //   if (isSuccess) {
-  //   }
-  //   if (isError) {
-  //   }
-  // }, [isSuccess, data, isError]);
-  // React.useEffect(() => {
-  //   handleSuccess(userIsSuccess, setUsers, branchMembersData);
-  // }, [userIsSuccess]);
+    if (isLiquidationCalculationSuccess) {
+      setLiquidationValue(liquidationCalculationData?.data);
+    }
+  }, [
+    bookingDetailsIsSuccess,
+    liquidationCalculationData,
+    isLiquidationCalculationSuccess,
+  ]);
 
   useEffect(() => {
     setValue("notify", isTrue);
   }, [isTrue]);
+
+  useEffect(() => {
+    console.log("🚀 ~ values:", values);
+    console.log("🚀 ~ errors:", errors);
+  }, [values]);
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -166,18 +204,27 @@ export default function Liquidation({
     setPercentValue(productDetails?.liquidation?.part_MaxPartLiquidation);
     setAmountValue(
       (productDetails?.liquidation?.part_MaxPartLiquidation / 100) *
-        detail?.principal
+        bookingDetails?.data?.facilityDetailsModel?.principal
     );
-  }, [productDetails, detail]);
+  }, [productDetails, detail, bookingDetailsIsSuccess,bookingDetails?.data]);
 
   useEffect(() => {
-    setValue("maxAmount", selection === "percent" ? percentValue : amountValue);
+    setValue("maxAmount", selection === 1 ? percentValue : amountValue);
   }, [selection, percentValue, amountValue]);
 
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen} data-testid="Layout">
       {productDetails && (
-        <form onSubmit={handleSubmit((d) => onProceed(d, onConfirm, type))}>
+        <form
+          onSubmit={handleSubmit((d: any) =>
+            onProceed(
+              { ...d, liquidationUnit: selection, id:detail?.id },
+              onConfirm,
+              type,
+              metaInfo
+            )
+          )}
+        >
           <div className="w-[700px] p-8 rounded-lg bg-white text-left shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]">
             <div className="flex justify-between items-center pb-4 mb-[42px] border-b border-[#CCCCCC]">
               <h3 className="text-[#747373] font-bold text-xl uppercase">
@@ -215,40 +262,40 @@ export default function Liquidation({
                     </label>
                     <div className="relative flex items-start max-w-[642px] mb-[2px] py-2">
                       <MinMaxInput
-                        inputName="amount"
+                        inputName="amounttoLiquidate"
                         register={register}
                         errors={errors}
                         setValue={setValue}
                         trigger={trigger}
                         clearErrors={clearErrors}
-                        isCurrency={selection === "currency"}
-                        isPercent={selection === "percent"}
-                        defaultValue={""}
+                        isCurrency={selection === 0}
+                        isPercent={selection === 1}
+                        defaultValue={metaInfo?.amounttoLiquidate}
                         type="number"
                         placeholder="Enter value"
                       />
-                    
+
                       <div className="overflow-hidden absolute right-0 text-[10px] text-[#8F8F8F] flex items-center   rounded-full shadow-[0px_0px_1px_0px_rgba(26,32,36,0.32),0px_1px_2px_0px_rgba(91,104,113,0.32)] border-[#E5E9EB]">
                         <span
                           onClick={() => {
-                            setSelection("currency");
-                            setValue("maxAmount", 10000000000000000000);
+                            setSelection(0);
+                           
                           }}
                           className={`w-[55px] border-r border-[#E5E9EB] py-1 px-2 ${
-                            selection === "currency" ? "bg-[#FFE9E9] " : ""
+                            selection === 0 ? "bg-[#FFE9E9] " : ""
                           }`}
                         >
                           {" "}
-                          NGN  
+                          NGN
                         </span>
 
                         <span
                           onClick={() => {
-                            setSelection("percent");
-                            setValue("maxAmount", 100);
+                            setSelection(1);
+                         
                           }}
                           className={`w-[55px] py-1 px-2 ${
-                            selection === "percent" ? "bg-[#FFE9E9] " : ""
+                            selection === 1 ? "bg-[#FFE9E9] " : ""
                           }`}
                         >
                           {" "}
@@ -290,6 +337,7 @@ export default function Liquidation({
                     className="outline-none border border-[#AAAAAA] rounded-lg px-3 py-[11px] w-full resize-none"
                     placeholder="Reason"
                     data-testid="reason-input"
+                    defaultValue={metaInfo?.reason}
                     {...register("reason")}
                   ></textarea>
                   <ErrorMessage

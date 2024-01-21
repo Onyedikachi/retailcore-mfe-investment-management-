@@ -30,13 +30,15 @@ import ProductDetail from "../modals/ProductDetail";
 import { StatusCategoryType } from "@app/types";
 import { useNavigate } from "react-router-dom";
 import {
-  useEarlyLiquidateMutation,
   useActivateProductMutation,
   useDeleteProductRequestMutation,
   useDeleteInvestmentRequestMutation,
   useGetProductDetailQuery,
   useModifyInvestmentRequestMutation,
   usePartLiquidateMutation,
+  useEarlyLiquidateMutation,
+  useEditPartLiquidateMutation,
+  useEditEarlyLiquidateMutation,
 } from "@app/api";
 import Button from "../Button";
 import { ActiveFilterOptions } from "@app/constants";
@@ -93,7 +95,7 @@ export const statusHandler = ({
 }) => {
   if (modifyRequestSuccess) {
     setSuccessText(Messages.BOOKING_WITHDRAW_SUCCESS);
-    setSubText(Messages.BOOKING_WITHDRAW_SUCCESS_SUB)
+    setSubText(Messages.BOOKING_WITHDRAW_SUCCESS_SUB);
     setIsSuccessOpen(true);
   }
 
@@ -392,14 +394,31 @@ export default function TableComponent<TableProps>({
 
   // function getdata(item, key) {}
   // @ts-ignore
-  const handleLiquidation = (data, type) => {
-    console.log("🚀 ~ handleLiquidation ~ type:", type)
-    if (type.toLowerCase() === "part") {
-      partLiquidateInvestment(data);
-    }
+  const handleLiquidation = (data, type, metaInfo) => {
+    console.log("🚀 ~ handleLiquidation ~ data:", data);
+    console.log("🚀 ~ handleLiquidation ~ metaInfo:", metaInfo);
+    console.log("🚀 ~ handleLiquidation ~ type:", type);
+    setFailed(false);
+    setIsSuccessOpen(false);
+    if (!metaInfo) {
+      if (type.toLowerCase() === "part") {
+        partLiquidateInvestment(data);
+      }
 
-    if (type.toLowerCase() === "early") {
-      earlyLiquidateInvestment(data);
+      if (type.toLowerCase() === "early") {
+        earlyLiquidateInvestment(data);
+      }
+    } else {
+      if (type.toLowerCase() === "part") {
+        partEditLiquidateInvestment({ ...data });
+      }
+
+      if (type.toLowerCase() === "early") {
+        earlyEditLiquidateInvestment({
+          ...data,
+      
+        });
+      }
     }
   };
   const handleAction = (action, items) => {
@@ -445,6 +464,26 @@ export default function TableComponent<TableProps>({
   ] = usePartLiquidateMutation();
 
   const [
+    earlyEditLiquidateInvestment,
+    {
+      isSuccess: earlyEditLiquidateSuccess,
+      isError: earlyEditLiquidateIsError,
+      error: earlyEditLiquidateError,
+      isLoading: earlyEditLiquidateIsLoading,
+    },
+  ] = useEditEarlyLiquidateMutation();
+
+  const [
+    partEditLiquidateInvestment,
+    {
+      isSuccess: partEditLiquidateSuccess,
+      isError: partEditLiquidateIsError,
+      error: partEditLiquidateError,
+      isLoading: partEditLiquidateIsLoading,
+    },
+  ] = useEditPartLiquidateMutation();
+
+  const [
     deleteRequest,
     { isSuccess, isError, error, isLoading: deleteLoading },
   ] = useDeleteProductRequestMutation();
@@ -473,7 +512,9 @@ export default function TableComponent<TableProps>({
     isLoading: productDetailLoading,
     isSuccess: productDetailSuccess,
   } = useGetProductDetailQuery({
-    id: detail?.investmentProductId,
+    id:
+      detail?.investmentProductId ||
+      (detail?.metaInfo && JSON.parse(detail?.metaInfo)?.investmentProductId),
   });
 
   const [
@@ -500,6 +541,8 @@ export default function TableComponent<TableProps>({
       activateProduct,
       navigate,
       modifyRequest,
+      setLiquidationOpen,
+      setLiquidationType,
     });
 
   useEffect(() => {
@@ -565,12 +608,6 @@ export default function TableComponent<TableProps>({
           next={fetchMoreData}
           hasMore={hasMore}
           loader={""}
-          // loader={
-          //   <div className="text-xs text-center py-6 text-gray-500 relative flex itemx-center justify-center gap-x-1">
-          //     Loading data...
-          //     <span className="spinner-border h-4 w-4 border-t border-gray-500 rounded-full animate-spin"></span>
-          //   </div>
-          // }
           endMessage={
             !isLoading && (
               <div className="text-xs text-center py-6 text-gray-500">

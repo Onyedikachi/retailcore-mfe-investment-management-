@@ -15,6 +15,8 @@ export const confirmationHandler = ({
   activateProduct,
   navigate,
   modifyRequest,
+  setLiquidationOpen,
+  setLiquidationType,
 }) => {
   if (action.toLowerCase().includes("delete")) {
     if (specificCategory === SpecificCategory.individual) {
@@ -51,14 +53,23 @@ export const confirmationHandler = ({
     if (!permissions?.includes("CREATE_INVESTMENT_PRODUCT")) {
       errorToast("You do not have permission to make changes!");
     } else {
+      const data = JSON.parse(detail?.metaInfo);
       if (specificCategory === SpecificCategory.individual) {
-        const data = JSON.parse(detail?.metaInfo);
-        modifyRequest({
-          ...data,
-          isDraft: true,
-          id:detail.id,
-          recentlyUpdatedMeta: null,
-        });
+        if (
+          detail?.requestType === "part liquidation" ||
+          detail?.requestType === "early liquidation"
+        ) {
+          setLiquidationType(detail?.requestType.split(" ")[0]);
+          setLiquidationOpen(true);
+        } else {
+        
+          modifyRequest({
+            ...data,
+            isDraft: true,
+            id: detail.id,
+            recentlyUpdatedMeta: null,
+          });
+        }
       } else {
         navigate(
           `/product-factory/investment/${encodeURIComponent(

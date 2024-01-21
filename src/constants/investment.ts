@@ -391,8 +391,7 @@ export const creationMap = [
   "deactivation",
   "booking",
   "part liquidation",
-  "early liquidation"
-];
+  "early liquidation"];
 export const colorState = {
   approved: "bg-[#D4F7DC] text-[#15692A]",
   active: "bg-[#D4F7DC] text-[#15692A]",
