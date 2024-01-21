@@ -46,7 +46,7 @@ export default function Liquidation({
   type,
   productDetails,
 }: LiquidationProps): React.JSX.Element {
-  console.log("🚀 ~ detail:", detail)
+  console.log("🚀 ~ detail:", detail);
   const [metaInfo, setMetaInfo] = useState(null);
   const initialValues = {
     investementBookingId: detail?.id,
@@ -118,7 +118,6 @@ export default function Liquidation({
         // @ts-ignore
         setValue(item, data[item]);
       });
-     
     }
   }, [detail]);
 
@@ -206,7 +205,7 @@ export default function Liquidation({
       (productDetails?.liquidation?.part_MaxPartLiquidation / 100) *
         bookingDetails?.data?.facilityDetailsModel?.principal
     );
-  }, [productDetails, detail, bookingDetailsIsSuccess,bookingDetails?.data]);
+  }, [productDetails, detail, bookingDetailsIsSuccess, bookingDetails?.data]);
 
   useEffect(() => {
     setValue("maxAmount", selection === 1 ? percentValue : amountValue);
@@ -218,7 +217,7 @@ export default function Liquidation({
         <form
           onSubmit={handleSubmit((d: any) =>
             onProceed(
-              { ...d, liquidationUnit: selection, id:detail?.id },
+              { ...d, liquidationUnit: selection, id: detail?.id },
               onConfirm,
               type,
               metaInfo
@@ -279,7 +278,6 @@ export default function Liquidation({
                         <span
                           onClick={() => {
                             setSelection(0);
-                           
                           }}
                           className={`w-[55px] border-r border-[#E5E9EB] py-1 px-2 ${
                             selection === 0 ? "bg-[#FFE9E9] " : ""
@@ -292,7 +290,6 @@ export default function Liquidation({
                         <span
                           onClick={() => {
                             setSelection(1);
-                         
                           }}
                           className={`w-[55px] py-1 px-2 ${
                             selection === 1 ? "bg-[#FFE9E9] " : ""
@@ -355,10 +352,7 @@ export default function Liquidation({
                       className="flex items-center text-[#333333] mb-2 gap-x-1"
                     >
                       Upload Supporting Documents{" "}
-                      <span className="flex">
-                        {" "}
-                        <RedDot />
-                      </span>
+                    
                     </label>
                   </div>
                   <FormUpload
@@ -378,6 +372,12 @@ export default function Liquidation({
                     )}
                   />
                 </div>
+                {(type === "part" &&
+                  productDetails?.liquidation
+                    ?.part_RequireNoticeBeforeLiquidation) ||
+                  (type === "early" &&
+                    productDetails?.liquidation
+                      ?.part_RequireNoticeBeforeLiquidation)}
                 <div className="mb-10">
                   <div className="flex items-center gap-2 w-[300px]">
                     <label

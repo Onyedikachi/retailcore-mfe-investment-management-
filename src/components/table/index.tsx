@@ -396,14 +396,16 @@ export default function TableComponent<TableProps>({
   const [failedText, setFailedText] = useState("");
   const [productDetails, setProductDetails] = useState(null);
 
+  const resetModals = () => {
+    setFailed(false);
+    setIsSuccessOpen(false);
+    setIsConfirmOpen(false);
+  };
+
   // function getdata(item, key) {}
   // @ts-ignore
   const handleLiquidation = (data, type, metaInfo) => {
-    console.log("🚀 ~ handleLiquidation ~ data:", data);
-    console.log("🚀 ~ handleLiquidation ~ metaInfo:", metaInfo);
-    console.log("🚀 ~ handleLiquidation ~ type:", type);
-    setFailed(false);
-    setIsSuccessOpen(false);
+    resetModals()
     if (!metaInfo) {
       if (type.toLowerCase() === "part") {
         partLiquidateInvestment(data);
@@ -420,7 +422,6 @@ export default function TableComponent<TableProps>({
       if (type.toLowerCase() === "early") {
         earlyEditLiquidateInvestment({
           ...data,
-      
         });
       }
     }
@@ -714,23 +715,23 @@ export default function TableComponent<TableProps>({
                                 />
                               )}
                               {header.key === "principal" && (
-                                  <div>
-                                    <TextCellContent
-                                      isCurrencyValue={true}
-                                      value={item[header.key] || "-"}
-                                      currency={item?.currency}
-                                    />
-                                  </div>
-                                )}
-                                {header.key === "maturityValue" && (
-                                  <div>
-                                    <TextCellContent
-                                      isCurrencyValue={true}
-                                      value={item[header.key] || "-"}
-                                      currency={item?.currency}
-                                    />
-                                  </div>
-                                )}
+                                <div>
+                                  <TextCellContent
+                                    isCurrencyValue={true}
+                                    value={item[header.key] || "-"}
+                                    currency={item?.currency}
+                                  />
+                                </div>
+                              )}
+                              {header.key === "maturityValue" && (
+                                <div>
+                                  <TextCellContent
+                                    isCurrencyValue={true}
+                                    value={item[header.key] || "-"}
+                                    currency={item?.currency}
+                                  />
+                                </div>
+                              )}
                               {header.key === "interestRate" && (
                                 <div>
                                   <TextCellContent

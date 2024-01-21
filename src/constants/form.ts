@@ -626,7 +626,7 @@ export const liquiditySetupSchema = yup
 export const LiquidationSchema = yup.object({
   investementBookingId: yup.string().required(),
   reason: yup.string().required("Provide a reason"),
-  documentUrl: yup.string().required("Upload supporting document"),
+  documentUrl: yup.string(),
   notify: yup.boolean().required(),
   amounttoLiquidate: yup
     .number()
