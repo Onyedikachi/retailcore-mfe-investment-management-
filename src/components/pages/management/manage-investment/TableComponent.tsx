@@ -194,7 +194,7 @@ export const getSearchResult = (
       search: value,
       page: 1,
       page_Size: 25,
-      filter_by: selected?.value,
+      filter_by: "created_system_wide",
     });
     return;
   }
@@ -251,7 +251,7 @@ export default function TableComponent({
         ? "Investment Management"
         : "Product management",
     filename: isOverviewDrillDown
-      ? "dashboard_investments_data"
+      ? "overview_investments_data"
       : category === StatusCategoryType?.Investments
       ? "dashboard_products_data"
       : "dashboard_requests_data",
@@ -354,6 +354,18 @@ export default function TableComponent({
           };
         })
       );
+
+    isSuccess &&
+      isOverviewDrillDown &&
+      setSearchResults(
+        data.results.map((i) => {
+          return {
+            ...i,
+            name: i?.productName,
+            code: i?.productCode,
+          };
+        })
+      );
     isRequestSuccess &&
       category === StatusCategoryType?.Requests &&
       setSearchResults(
@@ -432,7 +444,7 @@ export default function TableComponent({
           ? "Investment Management"
           : "Product management",
       filename: isOverviewDrillDown
-        ? "dashboard_investments_data"
+        ? "overview_investments_data"
         : category === StatusCategoryType?.Investments
         ? "dashboard_products_data"
         : "dashboard_requests_data",
@@ -477,7 +489,8 @@ export default function TableComponent({
               category,
               setSearchResults,
               selected,
-              isOverviewDrillDown
+              isOverviewDrillDown,
+              
             )
           }
           placeholder={`Search by customer name${
