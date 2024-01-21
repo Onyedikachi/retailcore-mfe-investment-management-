@@ -361,8 +361,8 @@ export default function TableComponent({
         data.results.map((i) => {
           return {
             ...i,
-            name: i?.productName,
-            code: i?.productCode,
+            name: i?.customerName,
+            code: i?.investmentId,
           };
         })
       );
@@ -489,8 +489,7 @@ export default function TableComponent({
               category,
               setSearchResults,
               selected,
-              isOverviewDrillDown,
-              
+              isOverviewDrillDown
             )
           }
           placeholder={`Search by customer name${
