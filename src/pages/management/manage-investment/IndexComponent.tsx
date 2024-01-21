@@ -10,6 +10,10 @@ import { sortTabStatus } from "@app/utils/sortTabStatus";
 import { StatusCategoryType } from "@app/constants/enums";
 import { ucObjectKeys, IndividualContext, AppContext } from "@app/utils";
 
+export const handleRefresh = (query, fetch, setIndividualInvestments) => {
+  setIndividualInvestments([]);
+  fetch();
+};
 export default function IndexComponent() {
   const { category } = useContext(IndividualContext);
   const { process, investmentType } = useParams();
@@ -237,11 +241,12 @@ export default function IndexComponent() {
             </div>
             <div className="overflow-x-auto  flex-1 border border-[#E5E9EB] rounded-lg py-[13px] px-[31px] flex-col gap-[27px]">
               <div className=" max-w-full">
-                <span>{category}</span>
-
                 <TableComponent
                   isOverviewDrillDown={true}
-                  handleRefresh={() => {}}
+                  handleRefresh={() => {
+                    handleRefresh(query, fetch, setIndividualInvestments);
+                    setQuery({ ...query, page: 1 });
+                  }}
                   handleSearch={(value) => {}}
                   productData={investmentsList}
                   // productData={useMemo(() => productData, [productData])}
