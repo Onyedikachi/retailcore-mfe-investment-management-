@@ -62,6 +62,7 @@ interface TableProps {
   type?: string;
   noData?: string;
   handleRefresh?: () => void;
+  isOverviewDrillDown?: boolean
 }
 
 export const statusHandler = ({
@@ -307,12 +308,15 @@ export const UpdatedOnCellContent = ({ value }) => (
 export const StateCellContent = ({
   value,
   statusType = "",
+  isOverviewDrillDown = false
 }: {
   value: any;
   statusType?: string;
+  isOverviewDrillDown?: boolean
 }) => (
   <div>
-    {statusType === StatusCategoryType.Investments ? (
+    
+    {statusType === StatusCategoryType.Investments || isOverviewDrillDown ? (
       <span
         className={`font-medium px-2 py-[4px] rounded capitalize max-h-[26px] relative leading-[24px] ${handleColorState(
           InvestmentBookingStatus[value].toLowerCase()
@@ -360,6 +364,7 @@ export default function TableComponent<TableProps>({
   noData = "No data available",
   Context,
   handleRefresh = () => {},
+  isOverviewDrillDown = false
 }) {
   const { role, permissions, userId, isChecker } = useContext(AppContext);
   const {
@@ -653,7 +658,8 @@ export default function TableComponent<TableProps>({
                               {typeof item[header.key] !== "object" &&
                                 header.key !== "state" &&
                                 header.key !== "principal" &&
-                               
+                                header.key !== "interestRate" &&
+                                header.key !== "maturityValue" &&
                                 header.key !== "investmentBookingStatus" &&
                                 header.key !== "updated_At" &&
                                 header.key !== "requestStatus" && (
@@ -668,20 +674,27 @@ export default function TableComponent<TableProps>({
                                 <StateCellContent
                                   value={item[header.key]}
                                   statusType={type}
+                                  isOverviewDrillDown={isOverviewDrillDown}
                                 />
                               )}
-                              {header.key === "principal" && (
+                              {header.key === "principal" ||
+                                (header.key === "maturityValue" && (
+                                  <div>
+                                    <TextCellContent
+                                      isCurrencyValue={true}
+                                      value={item[header.key] || "-"}
+                                      currency={item?.currency}
+                                    />
+                                  </div>
+                                ))}
+                              {header.key === "interestRate" && (
                                 <div>
-                                 
                                   <TextCellContent
-                                  isCurrencyValue={true}
-                                  value={item[header.key] || "-"}
-                                  currency={item?.currency}
-                                />
+                                    value={item[header.key] + "%" || "-"}
+                                  />
                                 </div>
-                              
                               )}
-                             
+
                               {header.key === "requestStatus" && (
                                 <span
                                   onClick={() => handleAction("view", item)}

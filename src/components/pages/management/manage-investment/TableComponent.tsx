@@ -233,10 +233,9 @@ export default function TableComponent({
   });
 
   useEffect(() => {
-    if(isOverviewDrillDown){
-      setIndividualListHeaders(overviewDrillDownIndividualHeader)
-
-    }else{
+    if (isOverviewDrillDown) {
+      setIndividualListHeaders(overviewDrillDownIndividualHeader);
+    } else {
       const results = fetchedProductsList?.results;
       if (results) {
         const targetKey = "investmentProduct";
@@ -247,7 +246,7 @@ export default function TableComponent({
             value: result.id,
           };
         });
-  
+
         const updatedItems = individualHeader.map((item) => {
           if (item.key === targetKey) {
             // Update the options for the target item
@@ -262,10 +261,6 @@ export default function TableComponent({
         setIndividualListHeaders(updatedItems);
       }
     }
-
-    
-
-   
   }, [fetchedProductsList, isOverviewDrillDown]);
 
   const [
@@ -409,7 +404,7 @@ export default function TableComponent({
   return (
     <section className="w-full h-full">
       {/* Table Top bar  */}
-     
+
       <div className="flex justify-end gap-x-[25px] items-center mb-[27px] h-auto">
         <SearchInput
           setSearchTerm={(value) =>
@@ -466,7 +461,7 @@ export default function TableComponent({
       {/* { category === StatusCategoryType?.Investments ? 't' : 'f'} */}
       <Table
         headers={
-          category === StatusCategoryType?.Investments  || isOverviewDrillDown
+          category === StatusCategoryType?.Investments || isOverviewDrillDown
             ? individualListHeaders
             : handleHeaders(
                 IndividualRequestHeader.map((i) => {
@@ -478,9 +473,8 @@ export default function TableComponent({
                 isChecker
               )
         }
-        
         tableRows={
-          category === StatusCategoryType?.Investments  || isOverviewDrillDown
+          category === StatusCategoryType?.Investments || isOverviewDrillDown
             ? productData
             : requestData
         }
@@ -501,6 +495,7 @@ export default function TableComponent({
         }
         Context={IndividualContext}
         handleRefresh={handleRefresh}
+        isOverviewDrillDown={isOverviewDrillDown}
       />
     </section>
   );
