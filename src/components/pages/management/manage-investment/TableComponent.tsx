@@ -19,6 +19,7 @@ import {
   IndividualStatusTypes,
   IndividualTypeFilterOptions,
   individualHeader,
+  overviewDrillDownIndividualHeader,
   IndividualRequestHeader,
 } from "@app/constants";
 import { useProductList } from "@app/hooks";
@@ -36,8 +37,8 @@ interface RequestDataProps {
 interface ProductDataProps {
   "customer name": string;
   "customer id": string;
-  "principal": string;
-  'investment product' : string
+  principal: string;
+  "investment product": string;
   status: string;
   "updated on": string;
 }
@@ -50,7 +51,6 @@ export const handleDropdown = (
   locked = false,
   permissions: string[] = []
 ) => {
-
   if (!status) return [];
   if (isChecker) {
     return IndividualDropDownOptions[setOptionsByStatus(status)].filter(
@@ -66,7 +66,9 @@ export const handleDropdown = (
       );
     }
     if (!permissions?.includes("BOOK_INVESTMENT")) {
-      options = options?.filter((i: any) => i.text.toLowerCase() !== "restructure");
+      options = options?.filter(
+        (i: any) => i.text.toLowerCase() !== "restructure"
+      );
     }
     return options;
   }
@@ -83,8 +85,17 @@ export function initiateDownload(
   category,
   downloadProducts,
   downloadRequests,
-  selected
+  selected,
+  isOverviewDrillDown = false
 ) {
+  if (isOverviewDrillDown) {
+    downloadProducts({
+      ...query,
+      page_Size: 1000000,
+      filter_by: "created_system_wide",
+    });
+    return;
+  }
   if (category === StatusCategoryType?.Investments) {
     downloadProducts({
       ...query,
@@ -99,7 +110,13 @@ export function initiateDownload(
     });
   }
 }
-export function handleDownload(downloadData, isChecker, csvExporter, category) {
+export function handleDownload(
+  downloadData,
+  isChecker,
+  csvExporter,
+  category,
+  isOverviewDrillDown = false
+) {
   try {
     if (!downloadData?.length) return;
     const requestData = downloadData.map((i) => {
@@ -127,16 +144,30 @@ export function handleDownload(downloadData, isChecker, csvExporter, category) {
       let obj: ProductDataProps = {
         "customer name": i?.customerName || "",
         "customer id": i?.investmentId || "",
-        "principal": i?.principal || "",
-        'investment product' : i?.investmentProduct || "",
+        principal: i?.principal || "",
+        "investment product": i?.investmentProduct || "",
         status: i?.status || "",
         "updated on": moment(i.updated_At).format("DD MMM YYYY, hh:mm A"),
       };
 
-      return obj;
+      let overviewDrillDownObj = {
+        "customer name": i?.customerName || "",
+        "customer id": i?.investmentId || "",
+        "principal amount": i?.principal || "",
+        tenor: i?.tenor,
+        "interest rate": i?.interestRate,
+        "value at maturity": i?.maturityValue || "",
+        status: i?.status || "",
+        "updated on": moment(i.updated_At).format("DD MMM YYYY, hh:mm A"),
+      };
+
+      return isOverviewDrillDown ? overviewDrillDownObj : obj;
     });
+    // alert(isOverviewDrillDown ? 'productData' : 'req')
     csvExporter.generateCsv(
-      category === StatusCategoryType.Requests
+      isOverviewDrillDown
+        ? ucObjectKeys(productData)
+        : category === StatusCategoryType.Requests
         ? ucObjectKeys(requestData)
         : ucObjectKeys(productData)
     );
@@ -151,10 +182,20 @@ export const getSearchResult = (
   getRequests,
   category,
   setSearchResults,
-  selected
+  selected,
+  isOverviewDrillDown
 ) => {
   if (!value.length) {
     setSearchResults([]);
+    return;
+  }
+  if (isOverviewDrillDown) {
+    getProducts({
+      search: value,
+      page: 1,
+      page_Size: 25,
+      filter_by: "created_system_wide",
+    });
     return;
   }
   if (category === StatusCategoryType?.Investments) {
@@ -180,6 +221,7 @@ export const handleSearch = (value, setQuery, query) => {
   });
 };
 export default function TableComponent({
+  isOverviewDrillDown = false,
   productData,
   requestData,
   handleRefresh,
@@ -204,11 +246,15 @@ export default function TableComponent({
     decimalSeparator: ".",
     showLabels: true,
     showTitle: false,
-    title: "Product management",
-    filename:
-      category === StatusCategoryType?.Investments
-        ? "dashboard_products_data"
-        : "dashboard_requests_data",
+    title:
+      isOverviewDrillDown || category === StatusCategoryType?.Investments
+        ? "Investment Management"
+        : "Product management",
+    filename: isOverviewDrillDown
+      ? "overview_investments_data"
+      : category === StatusCategoryType?.Investments
+      ? "dashboard_products_data"
+      : "dashboard_requests_data",
     useTextFile: false,
     useBom: true,
     useKeysAsHeaders: true,
@@ -230,31 +276,35 @@ export default function TableComponent({
   });
 
   useEffect(() => {
-    const results = fetchedProductsList?.results;
-    if (results) {
-      const targetKey = "investmentProduct";
-      const mappedResults = results?.map((result) => {
-        return {
-          id: result.id,
-          name: result.productName,
-          value: result.id,
-        };
-      });
-
-      const updatedItems = individualHeader.map((item) => {
-        if (item.key === targetKey) {
-          // Update the options for the target item
+    if (isOverviewDrillDown) {
+      setIndividualListHeaders(overviewDrillDownIndividualHeader);
+    } else {
+      const results = fetchedProductsList?.results;
+      if (results) {
+        const targetKey = "investmentProduct";
+        const mappedResults = results?.map((result) => {
           return {
-            ...item,
-            options: [...mappedResults],
+            id: result.id,
+            name: result.productName,
+            value: result.id,
           };
-        }
-        // Leave other items unchanged
-        return item;
-      });
-      setIndividualListHeaders(updatedItems);
+        });
+
+        const updatedItems = individualHeader.map((item) => {
+          if (item.key === targetKey) {
+            // Update the options for the target item
+            return {
+              ...item,
+              options: [...mappedResults],
+            };
+          }
+          // Leave other items unchanged
+          return item;
+        });
+        setIndividualListHeaders(updatedItems);
+      }
     }
-  }, [fetchedProductsList]);
+  }, [fetchedProductsList, isOverviewDrillDown]);
 
   const [
     getRequests,
@@ -275,9 +325,7 @@ export default function TableComponent({
     useGetUsersPermissionsQuery({ permissions: ["BOOK_INVESTMENT"] });
   const { data: reviewData, isSuccess: reviewSuccess } =
     useGetUsersPermissionsQuery({
-      permissions: [
-        "AUTHORIZE_INVESTMENT_MANAGEMENT_REQUESTS",
-      ],
+      permissions: ["AUTHORIZE_INVESTMENT_MANAGEMENT_REQUESTS"],
     });
 
   useEffect(() => {
@@ -306,6 +354,18 @@ export default function TableComponent({
           };
         })
       );
+
+    isSuccess &&
+      isOverviewDrillDown &&
+      setSearchResults(
+        data.results.map((i) => {
+          return {
+            ...i,
+            name: i?.customerName,
+            code: i?.investmentId,
+          };
+        })
+      );
     isRequestSuccess &&
       category === StatusCategoryType?.Requests &&
       setSearchResults(
@@ -323,6 +383,21 @@ export default function TableComponent({
   }, [data, request, isSuccess, isRequestSuccess]);
 
   useEffect(() => {
+    if (isOverviewDrillDown) {
+      // console.log("🚀 ~ useEffect ~ productDownloadData:", productDownloadData)
+      handleDownload(
+        productDownloadData?.results.map((i) => ({
+          ...i,
+          status: IndividualStatusTypes.find(
+            (n) => n.id === i.investmentBookingStatus
+          )?.type,
+        })),
+        isChecker,
+        csvExporter,
+        category,
+        isOverviewDrillDown
+      );
+    }
     if (
       productDownloadIsSuccess &&
       category === StatusCategoryType?.Investments
@@ -364,11 +439,15 @@ export default function TableComponent({
       decimalSeparator: ".",
       showLabels: true,
       showTitle: false,
-      title: "Product management",
-      filename:
-        category === StatusCategoryType?.Investments
-          ? "dashboard_products_data"
-          : "dashboard_requests_data",
+      title:
+        isOverviewDrillDown || category === StatusCategoryType?.Investments
+          ? "Investment Management"
+          : "Product management",
+      filename: isOverviewDrillDown
+        ? "overview_investments_data"
+        : category === StatusCategoryType?.Investments
+        ? "dashboard_products_data"
+        : "dashboard_requests_data",
       useTextFile: false,
       useBom: true,
       useKeysAsHeaders: true,
@@ -394,7 +473,8 @@ export default function TableComponent({
   };
 
   const handleDropClick = (value: any) => {};
-
+  // {console.log(productData)}
+  // console.log("🚀 ~ productData:", productData)
   return (
     <section className="w-full h-full">
       {/* Table Top bar  */}
@@ -408,7 +488,8 @@ export default function TableComponent({
               getRequests,
               category,
               setSearchResults,
-              selected
+              selected,
+              isOverviewDrillDown
             )
           }
           placeholder={`Search by customer name${
@@ -440,7 +521,8 @@ export default function TableComponent({
                 category,
                 downloadProducts,
                 downloadRequests,
-                selected
+                selected,
+                isOverviewDrillDown
               )
             }
             data-testid="download-btn"
@@ -455,7 +537,7 @@ export default function TableComponent({
       {/* { category === StatusCategoryType?.Investments ? 't' : 'f'} */}
       <Table
         headers={
-          category === StatusCategoryType?.Investments
+          category === StatusCategoryType?.Investments || isOverviewDrillDown
             ? individualListHeaders
             : handleHeaders(
                 IndividualRequestHeader.map((i) => {
@@ -468,7 +550,7 @@ export default function TableComponent({
               )
         }
         tableRows={
-          category === StatusCategoryType?.Investments
+          category === StatusCategoryType?.Investments || isOverviewDrillDown
             ? productData
             : requestData
         }
@@ -489,6 +571,7 @@ export default function TableComponent({
         }
         Context={IndividualContext}
         handleRefresh={handleRefresh}
+        isOverviewDrillDown={isOverviewDrillDown}
       />
     </section>
   );

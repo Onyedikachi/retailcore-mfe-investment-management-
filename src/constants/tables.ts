@@ -844,6 +844,64 @@ export const productHeader = [
     key: "actions",
   },
 ];
+export const overviewDrillDownIndividualHeader = [
+  {
+    label: "customer name/investment id",
+    key: "customerName",
+    options: [
+      {
+        id: 1,
+        name: "",
+        value: "",
+      },
+    ],
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "principal amount",
+    key: "principal",
+    options: [],
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "tenor",
+    key: "tenor",
+    options: productFilterOptions,
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "interest rate",
+    key: "interestRate",
+    options: productFilterOptions,
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "value at maturity",
+    key: "maturityValue",
+    options: productFilterOptions,
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "status",
+    key: "investmentBookingStatus",
+    options: IndividualFilterOptions,
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "updated on",
+    key: "updated_At",
+    options: [],
+    hasSelect: false,
+    hasDateSelect: true,
+  },
+
+];
 export const individualHeader = [
   {
     label: "customer name/id",
