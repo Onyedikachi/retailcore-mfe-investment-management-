@@ -223,7 +223,7 @@ export default function IndexComponent() {
                         Individual Investments
                       </span>
                       {individualListOpen && (
-                        <ul className="max-h-[500px] overflow-y-auto">
+                        <ul className="max-h-[400px] overflow-y-auto">
                           {individualInvestments?.map((item, index) => (
                             <li
                               className="hover:bg-[#F9E5E5] mb-[9px] text-xs text-[#636363] font-normal"
@@ -265,15 +265,19 @@ export default function IndexComponent() {
                         Corporate Investments
                       </span>
                       {corporateListOpen && (
-                        <ul className='max-h-[500px] overflow-y-auto'>
-                          {corporateInvestments?.map((item, index) => (
-                            <li
-                              className="hover:bg-[#F9E5E5] mb-[9px] text-xs text-[#636363] font-normal"
-                              key={index}
-                            >
-                              {item?.productName}
-                            </li>
-                          ))}
+                        <ul className='max-h-[400px] overflow-y-auto'>
+                          {corporateInvestments ? (
+                            corporateInvestments?.map((item, index) => (
+                              <li
+                                className="hover:bg-[#F9E5E5] mb-[9px] text-xs  font-normal"
+                                key={index}
+                              >
+                                {item?.productName}
+                              </li>
+                            ))
+                          ) : (
+                            <span className="text-xs text-[#636363]">No corporate investments</span>
+                          )}
                         </ul>
                       )}
                     </div>
