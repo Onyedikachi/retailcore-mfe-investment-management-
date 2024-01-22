@@ -43,7 +43,7 @@ export default function CustomerInformation({
   setDisabled,
   isSavingDraft,
 }: CustomerInformationProps) {
-  console.log("🚀 ~ formData:", formData)
+
   const {
     register,
     handleSubmit,
@@ -72,6 +72,7 @@ export default function CustomerInformation({
     formData?.customerBookingInfoModel?.investmentformUrl
   );
   const values = getValues();
+  console.log("🚀 ~ values:", values)
 
   const {
     data,
@@ -299,6 +300,7 @@ export default function CustomerInformation({
             label={"Customer’s investment request form"}
             errors={errors}
             name="investmentformUrl"
+            isCompulsory={false}
           >
             <div className="w-[360px]">
               <FormUpload
