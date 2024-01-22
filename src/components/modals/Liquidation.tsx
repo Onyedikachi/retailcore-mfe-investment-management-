@@ -46,7 +46,7 @@ export default function Liquidation({
   type,
   productDetails,
 }: LiquidationProps): React.JSX.Element {
-  console.log("🚀 ~ detail:", detail);
+
   const [metaInfo, setMetaInfo] = useState(null);
   const initialValues = {
     investementBookingId: detail?.id,
@@ -110,6 +110,7 @@ export default function Liquidation({
     if (detail?.metaInfo) {
       setMetaInfo(JSON.parse(detail?.metaInfo)?.investmentProductId);
       const data = JSON.parse(detail?.metaInfo);
+      console.log("🚀 ~ useEffect ~ data:", data)
 
       setMetaInfo(data);
       setTrue(data?.notify);
@@ -165,10 +166,10 @@ export default function Liquidation({
     setValue("notify", isTrue);
   }, [isTrue]);
 
-  useEffect(() => {
-    console.log("🚀 ~ values:", values);
-    console.log("🚀 ~ errors:", errors);
-  }, [values]);
+  // useEffect(() => {
+  //   console.log("🚀 ~ values:", values);
+  //   console.log("🚀 ~ errors:", errors);
+  // }, [values]);
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");

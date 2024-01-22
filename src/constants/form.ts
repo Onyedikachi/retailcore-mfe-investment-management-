@@ -33,6 +33,7 @@ export const BookingCustomerInfoSchema = yup.object().shape({
   customerName: yup.string().required("Select a customer account"),
   customerAccount: yup.string().required("Select a customer account"),
   investmentformUrl: yup.string(),
+  customerAccountLedgerId: yup.string(),
   balance: yup
     .number()
     .typeError("Invalid value")
