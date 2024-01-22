@@ -120,7 +120,7 @@ export default function IndexComponent() {
     setCorporateInvestments(investmentProductsList?.results)
   }, [investmentProductsList])
 
-  useEffect;
+
   const fetchMoreData = () => {
     setQuery((prevQuery) => {
       return {

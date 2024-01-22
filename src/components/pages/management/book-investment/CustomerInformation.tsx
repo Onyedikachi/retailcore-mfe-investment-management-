@@ -144,7 +144,8 @@ export default function CustomerInformation({
     setValue("accountStatus", accountData?.data?.status);
     setValue("balance", parseFloat(accountData?.data?.balance));
     setValue("currencyId", accountData?.data?.currencyId);
-    // setValue("customerAccountLedgerId")
+    setValue("customerAccountLedgerId",  accountData?.data?.ledgerId)
+   
     trigger("balance");
   }, [accountIsError, accountIsSuccess, isLoading, accountData]);
 
@@ -175,6 +176,7 @@ export default function CustomerInformation({
         )} ${capitalizeFirstLetter(foundObject?.customer_profiles[0]?.surname)}`
       );
       setValue("customerAccount", accountNumber);
+      setValue("customerAccountLedgerId", foundObject?.customer_products[0]?.ledgerId)
       trigger("customerAccount");
     }
   }, [accountNumber, data]);
