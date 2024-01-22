@@ -50,7 +50,7 @@ export const handleConfirm = ({
   filter,
 }) => {
   if (action === "approve") {
-    if (type.toLowerCase() === "individual") {
+    if (type?.toLowerCase() === "individual") {
       approveInvestment({ id });
     } else {
       approveProduct({ id });
@@ -60,7 +60,7 @@ export const handleConfirm = ({
     setRejection(true);
   }
   if (action === "cancel") {
-    if (type.toLowerCase() === "individual") {
+    if (type?.toLowerCase() === "individual") {
       navigate(`/product-factory/investment/management/individual`);
     } else {
       navigate(
@@ -72,7 +72,7 @@ export const handleConfirm = ({
   }
 };
 
-function handlePermissionType(type: string, process_type?: string) {
+export function handlePermissionType(type: string, process_type?: string) {
   if (type === "individual") {
     return process_type === "booking"
       ? "BOOK_INVESTMENT"

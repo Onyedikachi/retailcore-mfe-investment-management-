@@ -5,6 +5,7 @@ export function checkDocuments(keys, obj) {
   if (!keys) return;
   const documents = keys.map((key) => {
     const words = key.split(" ");
+    console.log("words = ", words)
     const camelCaseWords = words.map((word, index) => {
       if (index === 0) {
         return word.replace(/[^a-zA-Z0-9 ]/g, "").toLowerCase();
@@ -18,26 +19,32 @@ export function checkDocuments(keys, obj) {
       }
     });
 
+
+
     return {
       camelCaseName: camelCaseWords.join(""),
       originalName: key,
     };
   });
+  console.log("documents = ", documents)
+  console.log(documents)
   console.log("🚀 ~ documents ~ documents:", documents);
 
   let missingDocuments = [];
+  obj = JSON.parse(obj)
 
   for (const doc of documents) {
     if (
       !(doc.camelCaseName in obj) ||
       obj[doc.camelCaseName] === undefined ||
       obj[doc.camelCaseName] === null ||
-      (obj[doc?.camelCaseName] &&
-        JSON.parse(obj[doc?.camelCaseName])?.length === 0)
+      (obj[doc?.camelCaseName] && obj[doc?.camelCaseName]?.length === 0)
     ) {
       missingDocuments.push(doc.originalName);
     }
   }
+
+  console.log("missing = ", missingDocuments)
 
   return {
     hasAllDocuments: missingDocuments.length === 0,

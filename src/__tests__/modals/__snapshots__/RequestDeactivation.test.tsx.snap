@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DebitCreditable should render product details correctly 1`] = `
+exports[`RequestDeactivation should display an error message when the deactivation request fails 1`] = `
 Object {
   "debug": [Function],
   "findAllByAltText": [Function],
@@ -55,7 +55,7 @@ Object {
 }
 `;
 
-exports[`ProductDetail Renders when values are different 1`] = `
+exports[`RequestDeactivation should display an error message when the deactivation request fails 2`] = `
 Object {
   "debug": [Function],
   "findAllByAltText": [Function],

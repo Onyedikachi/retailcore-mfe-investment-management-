@@ -53,7 +53,7 @@ describe("ProductInformation", () => {
         proceed={jest.fn()}
         formData={fData}
         setDisabled={jest.fn()}
-        setFormData={undefined}
+        setFormData={jest.fn()}
         initiateDraft={undefined}
         activeId={undefined}
       />
@@ -72,7 +72,7 @@ describe("ProductInformation", () => {
         proceed={jest.fn()}
         formData={fData}
         setDisabled={jest.fn()}
-        setFormData={undefined}
+        setFormData={jest.fn()}
         initiateDraft={undefined}
       />
     );
@@ -101,7 +101,7 @@ describe("ProductInformation", () => {
         proceed={jest.fn()}
         formData={fData}
         setDisabled={jest.fn()}
-        setFormData={undefined}
+        setFormData={jest.fn()}
         initiateDraft={undefined}
       />
     );
@@ -168,7 +168,7 @@ describe("ProductInformation", () => {
         proceed={jest.fn()}
         formData={fData}
         setDisabled={jest.fn()}
-        setFormData={undefined}
+        setFormData={jest.fn()}
         initiateDraft={undefined}
       />
     );

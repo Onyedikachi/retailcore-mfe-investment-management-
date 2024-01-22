@@ -8,6 +8,7 @@ jest.mock("react-router-dom", () => ({
     useNavigate: jest.fn(),
     useSearchParams: jest.fn(),
     useParams: jest.fn(),
+    useLocation: jest.fn().mockReturnValue({pathname: ""})
 }));
 
 const links = [

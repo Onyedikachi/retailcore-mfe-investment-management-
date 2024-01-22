@@ -232,11 +232,13 @@ describe('handleNav', () => {
       const setStep = jest.fn();
       const navigate = jest.fn();
       const investmentType = "type";
+      const process = "continue"
+      const id = "1234"
 
-      handleNav({ step, setStep, navigate, investmentType });
+      handleNav({ step, setStep, navigate, investmentType, process, id });
 
       expect(setStep).not.toHaveBeenCalled();
-      expect(navigate).toHaveBeenCalledWith(`/product-factory/investment/management/${process}/${investmentType}?stage=summary`);
+      expect(navigate).toHaveBeenCalledWith(`/product-factory/investment/management/${process}/${investmentType}?stage=summary&id=${id}`);
     });
 
     // When the setStep parameter is not a function, the function should throw an error.
@@ -245,8 +247,9 @@ describe('handleNav', () => {
       const setStep = "invalid";
       const navigate = jest.fn();
       const investmentType = "type";
+      const process = "continue"
 
-      expect(() => handleNav({ step, setStep, navigate, investmentType })).toThrowError();
+      expect(() => handleNav({ step, setStep, navigate, investmentType, process })).toThrowError();
       expect(navigate).not.toHaveBeenCalled();
     });
 });

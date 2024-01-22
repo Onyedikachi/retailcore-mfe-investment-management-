@@ -93,7 +93,9 @@ Object {
                   <div
                     class="w-[200px]"
                   >
-                    <div>
+                    <div
+                      class="w-full"
+                    >
                       <div
                         class="undefined flex items-center gap-4"
                       >
@@ -186,7 +188,9 @@ Object {
                   <div
                     class="w-[180px]"
                   >
-                    <div>
+                    <div
+                      class="w-full"
+                    >
                       <div
                         class="undefined flex items-center gap-4"
                       >
@@ -354,7 +358,9 @@ Object {
                 <div
                   class="flex gap-[25px]"
                 >
-                  <div>
+                  <div
+                    class="w-full"
+                  >
                     <div
                       class="w-[300px] flex items-center gap-4"
                     >
@@ -389,7 +395,9 @@ Object {
                 <div
                   class="flex gap-[25px]"
                 >
-                  <div>
+                  <div
+                    class="w-full"
+                  >
                     <div
                       class="w-[300px] flex items-center gap-4"
                     >
@@ -775,7 +783,9 @@ Object {
                 <div
                   class="w-[200px]"
                 >
-                  <div>
+                  <div
+                    class="w-full"
+                  >
                     <div
                       class="undefined flex items-center gap-4"
                     >
@@ -868,7 +878,9 @@ Object {
                 <div
                   class="w-[180px]"
                 >
-                  <div>
+                  <div
+                    class="w-full"
+                  >
                     <div
                       class="undefined flex items-center gap-4"
                     >
@@ -1036,7 +1048,9 @@ Object {
               <div
                 class="flex gap-[25px]"
               >
-                <div>
+                <div
+                  class="w-full"
+                >
                   <div
                     class="w-[300px] flex items-center gap-4"
                   >
@@ -1071,7 +1085,9 @@ Object {
               <div
                 class="flex gap-[25px]"
               >
-                <div>
+                <div
+                  class="w-full"
+                >
                   <div
                     class="w-[300px] flex items-center gap-4"
                   >

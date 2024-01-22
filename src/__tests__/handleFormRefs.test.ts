@@ -24,6 +24,18 @@ describe('handleFormRef', () => {
       expect(setFormRef).toHaveBeenCalledWith("pricingconfig");
     });
 
+    it('should set the formRef to "pricingconfig" when step is 3', () => {
+      const setFormRef = jest.fn();
+      handleFormRef({ step: 4, setFormRef });
+      expect(setFormRef).toHaveBeenCalledWith("liquiditysetup");
+    });
+
+    it('should set the formRef to "pricingconfig" when step is 3', () => {
+      const setFormRef = jest.fn();
+      handleFormRef({ step: 5, setFormRef });
+      expect(setFormRef).toHaveBeenCalledWith("entriesandevents");
+    });
+
     // step is null
     it('should set the formRef to "productform" when step is null', () => {
       const setFormRef = jest.fn();

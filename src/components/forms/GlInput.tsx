@@ -107,7 +107,7 @@ export default function EntriesAndEventsSearchResults({
             <div className="flex flex-col shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]  p-4 rounded-b-lg top-[35px] bg-white z-[400] absolute w-full min-w-[360px]">
               <div data-testid="glclasses" className="flex justify-between mb-3">
                 {glClass.map((item) => (
-                  <div
+                  <div test-id="class-id-item"
                     key={item.id}
                     onClick={() => setClassId(item.id)}
                     className="flex flex-col cursor-pointer"
