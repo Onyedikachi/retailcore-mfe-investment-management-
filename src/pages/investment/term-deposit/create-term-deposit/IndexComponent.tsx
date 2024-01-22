@@ -275,7 +275,7 @@ export default function CreateTermDeposit() {
       part_AllowPartLiquidation: false,
       part_MaxPartLiquidation: 0,
       part_RequireNoticeBeforeLiquidation: false,
-      part_NoticePeriod: 0,
+      part_NoticePeriod: 1,
       part_NoticePeriodUnit: 1,
       part_LiquidationPenalty: 0,
       part_LiquidationPenaltyPercentage: 0,
