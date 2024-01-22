@@ -109,14 +109,14 @@ export const BookingDetailLayout = ({
                       ) || "-"}
                     </span>
                   </div>
-                  {detail?.investmentBookingStatus === 1 && (
+                  {/* {detail?.investmentBookingStatus === 1 && (
                     <div>
                       <span className="font-bold block mb-[15px]">
                         Current Value of Investment
                       </span>
                       <span className="font-normal block">{"?? " || "-"} </span>
                     </div>
-                  )}
+                  )} */}
 
                   {detail?.investmentBookingStatus === 2 && (
                     <div>

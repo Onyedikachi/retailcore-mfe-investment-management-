@@ -1,27 +1,60 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { BookInvestmentFormSteps } from "@app/constants";
 import { ProductInfoInvestmentCalc } from "@app/components/management";
 import { useNavigate, useParams } from "react-router-dom";
 import ProductSearch from "@app/components/ProductSearch";
 import { Breadcrumbs, Button } from "@app/components";
 import { TableComponent } from "@app/components/pages/management/manage-investment";
+import {
+  useGetPostInvestmentMutation,
+  useGetPostProductsMutation,
+} from "@app/api";
+import { sortTabStatus } from "@app/utils/sortTabStatus";
+import { StatusCategoryType } from "@app/constants/enums";
+import { ucObjectKeys, IndividualContext, AppContext } from "@app/utils";
+import { FaSearch } from "react-icons/fa";
 
+export const handleRefresh = (query, fetch, setInvestmentsList) => {
+  setInvestmentsList([]);
+  fetch();
+};
 export default function IndexComponent() {
+  const { category } = useContext(IndividualContext);
   const { process, investmentType } = useParams();
+  const [investmentsList, setInvestmentsList] = useState([]);
   const [individualListOpen, setIndividualListOpen] = useState(false);
   const [corporateListOpen, setCorporateListOpen] = useState(false);
   const [individualInvestments, setIndividualInvestments] = useState([
-    "Stem-Life Investments",
-    "Federal Grant Investments",
+   
   ]);
   const [corporateInvestments, setCorporateInvestments] = useState([
-    "A Commercial Paper",
-    "School Paper",
   ]);
+  const [productsQueryString, setProductsQueryString] = useState("");
+
   const [hasMore, setHasMore] = useState(true);
+  const setStatusFilter = (investmentType) => {
+    const status =
+      investmentType.toLowerCase() == "all investments"
+        ? "all"
+        : investmentType.toLowerCase() == "liquidated investments"
+        ? "liquidated"
+        : investmentType.toLowerCase() == "active investments"
+        ? "active"
+        : "all";
+    return status;
+  };
+
   const [query, setQuery] = useState({
     // filter_by: selected?.value,
-    status_In: null,
+    status_In:
+      setStatusFilter(investmentType) == "all"
+        ? null
+        : [
+            sortTabStatus(
+              setStatusFilter(investmentType),
+              StatusCategoryType?.Investments
+            ),
+          ],
     search: "",
     start_Date: null,
     end_Date: null,
@@ -52,9 +85,42 @@ export default function IndexComponent() {
       url: `/product-factory/investment/management/products/${investmentType}`,
     },
   ];
+
+  const [
+    getInvestmentProducts,
+    { data: investmentProducts, isSuccess, isError, error, isLoading },
+  ] = useGetPostInvestmentMutation();
   function handleLinks(links, process) {
     return links;
   }
+
+  const [
+    getInvestmentProductsList,
+    {
+      data: investmentProductsList,
+      isSuccess: investmentProductsListIsSuccess,
+      isError: investmentProductsListIsError,
+      error: investmentProductsListError,
+      isLoading: investmentProductsListIsLoading,
+    },
+  ] = useGetPostProductsMutation();
+
+  useEffect(() => {
+    getInvestmentProductsList({
+     
+      page: 1,
+      page_Size: 1000000000,
+      filter_by: "created_system_wide",
+      search: productsQueryString,
+    });
+  }, [productsQueryString]);
+
+  useEffect(() => {
+    setIndividualInvestments(investmentProductsList?.results)
+    setCorporateInvestments(investmentProductsList?.results)
+  }, [investmentProductsList])
+
+  useEffect;
   const fetchMoreData = () => {
     setQuery((prevQuery) => {
       return {
@@ -63,10 +129,40 @@ export default function IndexComponent() {
     });
   };
 
+  function fetch() {
+    getInvestmentProducts({
+      ...query,
+      page: 1,
+      filter_by: "created_system_wide",
+    });
+  }
+
+  useEffect(() => {
+    if (isSuccess) {
+      setInvestmentsList(investmentProducts?.results);
+      // console.log("🚀 ~ useEffect ~ investmentProducts:", investmentProducts?.results)
+    }
+  }, [investmentProducts, isSuccess]);
+
+  useEffect(() => {
+    fetch();
+  }, [
+    query.search,
+    query.status_In,
+    query.productType_In,
+    query.start_Date,
+    query.end_Date,
+    query.requestType_In,
+    query.initiator_In,
+    query.approvers_In,
+  ]);
+
   return (
     <div className="flex flex-col min-h-[100vh] ">
       <div className="px-[37px] py-[11px] bg-white">
-        <h1 className="text-[#747373] text-[24px] font-bold mb-7 uppercase">Investment Management</h1>
+        <h1 className="text-[#747373] text-[24px] font-bold mb-7 uppercase">
+          Investment Management
+        </h1>
         <Breadcrumbs links={handleLinks(links, process)} />
       </div>
       {/* {productData.productInfo.productName} */}
@@ -80,7 +176,19 @@ export default function IndexComponent() {
 
               <div>
                 {" "}
-                <ProductSearch placeholder="Search" options={[]} />
+                <div className="flex items-center  border-b border-[#8F8F8F]">
+                  <span className="w-8 h-8 flex items-center justify-center">
+                    <FaSearch className="text-[#48535B]" />
+                  </span>{" "}
+                  <input
+                    placeholder={"Search"}
+                    data-testid="input"
+                    className="w-full  ring-0 outline-none bg-transparent"
+                    onChange={(event) =>
+                      setProductsQueryString(event.target.value)
+                    }
+                  />
+                </div>
               </div>
 
               <div>
@@ -115,13 +223,13 @@ export default function IndexComponent() {
                         Individual Investments
                       </span>
                       {individualListOpen && (
-                        <ul>
-                          {individualInvestments.map((item, index) => (
+                        <ul className="max-h-[400px] overflow-y-auto">
+                          {individualInvestments?.map((item, index) => (
                             <li
-                              className="mb-[9px] text-xs text-[#636363] font-normal"
+                              className="hover:bg-[#F9E5E5] mb-[9px] text-xs text-[#636363] font-normal"
                               key={index}
                             >
-                              {item}
+                              {item?.productName}
                             </li>
                           ))}
                         </ul>
@@ -157,15 +265,19 @@ export default function IndexComponent() {
                         Corporate Investments
                       </span>
                       {corporateListOpen && (
-                        <ul>
-                          {corporateInvestments.map((item, index) => (
-                            <li
-                              className="mb-[9px] text-xs text-[#636363] font-normal"
-                              key={index}
-                            >
-                              {item}
-                            </li>
-                          ))}
+                        <ul className='max-h-[400px] overflow-y-auto'>
+                          {corporateInvestments ? (
+                            corporateInvestments?.map((item, index) => (
+                              <li
+                                className="hover:bg-[#F9E5E5] mb-[9px] text-xs  font-normal"
+                                key={index}
+                              >
+                                {item?.productName}
+                              </li>
+                            ))
+                          ) : (
+                            <span className="text-xs text-[#636363]">No corporate investments</span>
+                          )}
                         </ul>
                       )}
                     </div>
@@ -176,13 +288,17 @@ export default function IndexComponent() {
             <div className="overflow-x-auto  flex-1 border border-[#E5E9EB] rounded-lg py-[13px] px-[31px] flex-col gap-[27px]">
               <div className=" max-w-full">
                 <TableComponent
-                  handleRefresh={() => {}}
+                  isOverviewDrillDown={true}
+                  handleRefresh={() => {
+                    handleRefresh(query, fetch, setInvestmentsList);
+                    setQuery({ ...query, page: 1 });
+                  }}
                   handleSearch={(value) => {}}
-                  productData={[
-                    { id: 1, customerName: "Kaine", principalAmount: "5,000", tenor: '3 months', interestRate: '3%', status: 'Active'},
-                  ]}
+                  productData={investmentsList}
+                  // productData={useMemo(() => productData, [productData])}
+
                   requestData={[]}
-                  isLoading={false}
+                  isLoading={isLoading}
                   query={query}
                   setQuery={setQuery}
                   hasMore={hasMore}

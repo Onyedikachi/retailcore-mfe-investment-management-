@@ -32,7 +32,8 @@ export const BookingCustomerInfoSchema = yup.object().shape({
   customerId: yup.string().uuid().required("Select a customer account"),
   customerName: yup.string().required("Select a customer account"),
   customerAccount: yup.string().required("Select a customer account"),
-  investmentformUrl: yup.string().required("Request form is required"),
+  investmentformUrl: yup.string(),
+  customerAccountLedgerId: yup.string(),
   balance: yup
     .number()
     .typeError("Invalid value")
@@ -626,9 +627,9 @@ export const liquiditySetupSchema = yup
 export const LiquidationSchema = yup.object({
   investementBookingId: yup.string().required(),
   reason: yup.string().required("Provide a reason"),
-  documentUrl: yup.string().required("Upload supporting document"),
+  documentUrl: yup.string(),
   notify: yup.boolean().required(),
-  amount: yup
+  amounttoLiquidate: yup
     .number()
     .typeError("Invalid value")
     .integer()

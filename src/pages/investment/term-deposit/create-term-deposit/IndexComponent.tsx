@@ -127,7 +127,7 @@ export const handleRequestIsSuccess = ({
 }) => {
   if (requestIsSuccess && requestData?.data?.metaInfo) {
     const data = JSON.parse(requestData?.data?.metaInfo);
-    console.log("🚀 ~ data:", data)
+   
     if (process === "continue" && data?.id) {
       activeId.current = data?.id;
     }

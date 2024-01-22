@@ -30,13 +30,15 @@ import ProductDetail from "../modals/ProductDetail";
 import { StatusCategoryType } from "@app/types";
 import { useNavigate } from "react-router-dom";
 import {
-  useEarlyLiquidateMutation,
   useActivateProductMutation,
   useDeleteProductRequestMutation,
   useDeleteInvestmentRequestMutation,
   useGetProductDetailQuery,
   useModifyInvestmentRequestMutation,
   usePartLiquidateMutation,
+  useEarlyLiquidateMutation,
+  useEditPartLiquidateMutation,
+  useEditEarlyLiquidateMutation,
 } from "@app/api";
 import Button from "../Button";
 import { ActiveFilterOptions } from "@app/constants";
@@ -62,6 +64,7 @@ interface TableProps {
   type?: string;
   noData?: string;
   handleRefresh?: () => void;
+  isOverviewDrillDown?: boolean;
 }
 
 export const statusHandler = ({
@@ -93,7 +96,7 @@ export const statusHandler = ({
 }) => {
   if (modifyRequestSuccess) {
     setSuccessText(Messages.BOOKING_WITHDRAW_SUCCESS);
-    setSubText(Messages.BOOKING_WITHDRAW_SUCCESS_SUB)
+    setSubText(Messages.BOOKING_WITHDRAW_SUCCESS_SUB);
     setIsSuccessOpen(true);
   }
 
@@ -307,12 +310,14 @@ export const UpdatedOnCellContent = ({ value }) => (
 export const StateCellContent = ({
   value,
   statusType = "",
+  isOverviewDrillDown = false,
 }: {
   value: any;
   statusType?: string;
+  isOverviewDrillDown?: boolean;
 }) => (
   <div>
-    {statusType === StatusCategoryType.Investments ? (
+    {statusType === StatusCategoryType.Investments || isOverviewDrillDown ? (
       <span
         className={`font-medium px-2 py-[4px] rounded capitalize max-h-[26px] relative leading-[24px] ${handleColorState(
           InvestmentBookingStatus[value].toLowerCase()
@@ -360,6 +365,7 @@ export default function TableComponent<TableProps>({
   noData = "No data available",
   Context,
   handleRefresh = () => {},
+  isOverviewDrillDown = false,
 }) {
   const { role, permissions, userId, isChecker } = useContext(AppContext);
   const {
@@ -390,16 +396,34 @@ export default function TableComponent<TableProps>({
   const [failedText, setFailedText] = useState("");
   const [productDetails, setProductDetails] = useState(null);
 
+  const resetModals = () => {
+    setFailed(false);
+    setIsSuccessOpen(false);
+    setIsConfirmOpen(false);
+  };
+
   // function getdata(item, key) {}
   // @ts-ignore
-  const handleLiquidation = (data, type) => {
-    console.log("🚀 ~ handleLiquidation ~ type:", type)
-    if (type.toLowerCase() === "part") {
-      partLiquidateInvestment(data);
-    }
+  const handleLiquidation = (data, type, metaInfo) => {
+    resetModals()
+    if (!metaInfo) {
+      if (type.toLowerCase() === "part") {
+        partLiquidateInvestment(data);
+      }
 
-    if (type.toLowerCase() === "early") {
-      earlyLiquidateInvestment(data);
+      if (type.toLowerCase() === "early") {
+        earlyLiquidateInvestment(data);
+      }
+    } else {
+      if (type.toLowerCase() === "part") {
+        partEditLiquidateInvestment({ ...data });
+      }
+
+      if (type.toLowerCase() === "early") {
+        earlyEditLiquidateInvestment({
+          ...data,
+        });
+      }
     }
   };
   const handleAction = (action, items) => {
@@ -445,6 +469,26 @@ export default function TableComponent<TableProps>({
   ] = usePartLiquidateMutation();
 
   const [
+    earlyEditLiquidateInvestment,
+    {
+      isSuccess: earlyEditLiquidateSuccess,
+      isError: earlyEditLiquidateIsError,
+      error: earlyEditLiquidateError,
+      isLoading: earlyEditLiquidateIsLoading,
+    },
+  ] = useEditEarlyLiquidateMutation();
+
+  const [
+    partEditLiquidateInvestment,
+    {
+      isSuccess: partEditLiquidateSuccess,
+      isError: partEditLiquidateIsError,
+      error: partEditLiquidateError,
+      isLoading: partEditLiquidateIsLoading,
+    },
+  ] = useEditPartLiquidateMutation();
+
+  const [
     deleteRequest,
     { isSuccess, isError, error, isLoading: deleteLoading },
   ] = useDeleteProductRequestMutation();
@@ -473,7 +517,9 @@ export default function TableComponent<TableProps>({
     isLoading: productDetailLoading,
     isSuccess: productDetailSuccess,
   } = useGetProductDetailQuery({
-    id: detail?.investmentProductId,
+    id:
+      detail?.investmentProductId ||
+      (detail?.metaInfo && JSON.parse(detail?.metaInfo)?.investmentProductId),
   });
 
   const [
@@ -500,6 +546,8 @@ export default function TableComponent<TableProps>({
       activateProduct,
       navigate,
       modifyRequest,
+      setLiquidationOpen,
+      setLiquidationType,
     });
 
   useEffect(() => {
@@ -565,12 +613,6 @@ export default function TableComponent<TableProps>({
           next={fetchMoreData}
           hasMore={hasMore}
           loader={""}
-          // loader={
-          //   <div className="text-xs text-center py-6 text-gray-500 relative flex itemx-center justify-center gap-x-1">
-          //     Loading data...
-          //     <span className="spinner-border h-4 w-4 border-t border-gray-500 rounded-full animate-spin"></span>
-          //   </div>
-          // }
           endMessage={
             !isLoading && (
               <div className="text-xs text-center py-6 text-gray-500">
@@ -653,6 +695,8 @@ export default function TableComponent<TableProps>({
                               {typeof item[header.key] !== "object" &&
                                 header.key !== "state" &&
                                 header.key !== "principal" &&
+                                header.key !== "interestRate" &&
+                                header.key !== "maturityValue" &&
                                 header.key !== "investmentBookingStatus" &&
                                 header.key !== "updated_At" &&
                                 header.key !== "requestStatus" && (
@@ -667,15 +711,35 @@ export default function TableComponent<TableProps>({
                                 <StateCellContent
                                   value={item[header.key]}
                                   statusType={type}
+                                  isOverviewDrillDown={isOverviewDrillDown}
                                 />
                               )}
                               {header.key === "principal" && (
-                                <TextCellContent
-                                  isCurrencyValue={true}
-                                  value={item[header.key] || "-"}
-                                  currency={item?.currency}
-                                />
+                                <div>
+                                  <TextCellContent
+                                    isCurrencyValue={true}
+                                    value={item[header.key] || "-"}
+                                    currency={item?.currency}
+                                  />
+                                </div>
                               )}
+                              {header.key === "maturityValue" && (
+                                <div>
+                                  <TextCellContent
+                                    isCurrencyValue={true}
+                                    value={item[header.key] || "-"}
+                                    currency={item?.currency}
+                                  />
+                                </div>
+                              )}
+                              {header.key === "interestRate" && (
+                                <div>
+                                  <TextCellContent
+                                    value={item[header.key] + "%" || "-"}
+                                  />
+                                </div>
+                              )}
+
                               {header.key === "requestStatus" && (
                                 <span
                                   onClick={() => handleAction("view", item)}

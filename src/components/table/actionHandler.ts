@@ -64,7 +64,9 @@ export const actionHandler = ({
   }
   if (action.toLowerCase() === Actions.WITHDARW_MODIFY) {
     setConfirmText(Prompts.PRODUCT_WITHDRAW_MODIFY);
-    if (specificCategory === SpecificCategory.individual) {
+    
+    if (specificCategory === SpecificCategory.individual && items.requestType === "booking") {
+   
       setSubText(Prompts.BOOKING_WITHDRAW_MODIFY_SUB);
     }
     setIsConfirmOpen(true);
