@@ -11,6 +11,28 @@ import { useGetInvestmentDashboardStatsQuery } from "@app/api";
 import { WithdrawSvg, UserSvg, InvestmentSvg } from "@app/assets/images";
 import { currencyFormatter } from "@app/utils/formatCurrency"
 
+
+export const updateInvestmentTabs = (data, tabs) => {
+  return tabs.map((tab) => {
+    let key;
+    if (tab.title === "All Investments") {
+      key = "All";
+    } else if (tab.title === "Active Investments") {
+      key = "A";
+    } else if (tab.title === "Liquidated Investments") {
+      key = "L";
+    }
+
+    const tabData = data[key] || { count: 0, totalValue: 0 };
+
+    return {
+      ...tab,
+      amount: ` ${tabData.totalValue}`,
+      totalValue: `${tabData.count} total investments`,
+    };
+  });
+};
+
 // import { createOverviewState } from '../../../utils'
 export default function Overview() {
   const [overviewTabStats, setOverviewTabStats] = useState(null);
@@ -63,26 +85,7 @@ export default function Overview() {
     // state?.setData('name', tab.title)
   };
 
-  const updateInvestmentTabs = (data, tabs) => {
-    return tabs.map((tab) => {
-      let key;
-      if (tab.title === "All Investments") {
-        key = "All";
-      } else if (tab.title === "Active Investments") {
-        key = "A";
-      } else if (tab.title === "Liquidated Investments") {
-        key = "L";
-      }
 
-      const tabData = data[key] || { count: 0, totalValue: 0 };
-
-      return {
-        ...tab,
-        amount: ` ${tabData.totalValue}`,
-        totalValue: `${tabData.count} total investments`,
-      };
-    });
-  };
 
   useEffect(() => {
     if (dashboardStats) {
@@ -94,7 +97,7 @@ export default function Overview() {
 
   useEffect(() => {
     if (overviewTabStats) {
-      setTabs( updateInvestmentTabs(overviewTabStats, tabs));
+      setTabs(updateInvestmentTabs(overviewTabStats, tabs));
     }
   }, [overviewTabStats]);
 

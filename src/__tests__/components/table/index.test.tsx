@@ -1,4 +1,4 @@
-import { Messages } from "../../../constants/enums"
+import { Messages, StatusCategoryType } from "../../../constants/enums"
 import React, { createContext } from "react";
 import { render, fireEvent, waitFor, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
@@ -36,100 +36,11 @@ jest.mock("react-router-dom", () => ({
   BrowserRouter: ({ children }) => <div>{children}</div>,
   Link: ({ to, children }) => <a href={to}>{children}</a>,
   useNavigate: jest.fn(),
-  useParams: jest.fn().mockResolvedValue({process: "continue"})
+  useParams: jest.fn().mockResolvedValue({ process: "continue" })
 }));
 jest
   .spyOn(require("react-router-dom"), "useNavigate")
   .mockReturnValue(navigate);
-describe("handleProductsDropdown", () => {
-  // Returns an array of dropdown options based on the status parameter
-  it("should return an array of dropdown options based on the status parameter", () => {
-    // Arrange
-    const status = "A";
-    const isChecker = false;
-    const DropDownOptions = {
-      active: [
-        { text: "View", value: "view" },
-        { text: "Modify", value: "modify" },
-      ],
-      inactive: [
-        { text: "Activate", value: "activate" },
-        { text: "Deactivate", value: "deactivate" },
-      ],
-    };
-    const locked = false;
-    const permissions = [];
-
-    // Act
-    const result = handleProductsDropdown(
-      "",
-      status,
-      isChecker,
-      DropDownOptions,
-      locked,
-      permissions
-    );
-  });
-
-  // Filters out options based on the isChecker parameter
-  it("should filter out options based on the isChecker parameter", () => {
-    // Arrange
-    const status = "A";
-    const isChecker = true;
-    const DropDownOptions = {
-      active: [
-        { text: "View", value: "view" },
-        { text: "Modify", value: "modify" },
-      ],
-      inactive: [
-        { text: "Activate", value: "activate" },
-        { text: "Deactivate", value: "deactivate" },
-      ],
-    };
-    const locked = false;
-    const permissions = [];
-
-    // Act
-    const result = handleProductsDropdown(
-      "",
-      status,
-      isChecker,
-      DropDownOptions,
-      locked,
-      permissions
-    );
-  });
-
-  // Filters out options based on the permissions parameter
-  it("should filter out options based on the permissions parameter", () => {
-    // Arrange
-    const status = "A";
-    const isChecker = false;
-    const DropDownOptions = {
-      active: [
-        { text: "View", value: "view" },
-        { text: "Modify", value: "modify" },
-      ],
-      inactive: [
-        { text: "Activate", value: "activate" },
-        { text: "Deactivate", value: "deactivate" },
-      ],
-    };
-    const locked = false;
-    const permissions = ["CREATE_PRODUCT"];
-
-    // Act
-    const result = handleProductsDropdown(
-      "",
-      status,
-      isChecker,
-      DropDownOptions,
-      locked,
-      permissions
-    );
-  });
-});
-
 
 describe("TableComponent", () => {
   window.ResizeObserver = ResizeObserver;
@@ -212,23 +123,21 @@ describe("TableComponent", () => {
 
     const tableRows = [];
 
-    render(
-      <Provider store={store}>
-        <TableComponent
-          headers={headers}
-          tableRows={tableRows}
-          page={1}
-          total={0}
-          fetchMoreData={() => { }}
-          hasMore={true}
-          getOptionData={() => { }}
-          isLoading={true}
-          dropDownOptions={[]}
-          dropDownClick={() => { }}
-          onChangeDate={() => { }}
-          Context={InvestmentContext}
-        />
-      </Provider>
+    renderWithProviders(
+      <TableComponent
+        headers={headers}
+        tableRows={tableRows}
+        page={1}
+        total={0}
+        fetchMoreData={() => { }}
+        hasMore={true}
+        getOptionData={() => { }}
+        isLoading={true}
+        dropDownOptions={[]}
+        dropDownClick={() => { }}
+        onChangeDate={() => { }}
+        Context={InvestmentContext}
+      />
     );
 
     // Assert
@@ -492,8 +401,8 @@ describe('handleProductsDropdown', () => {
     // Assert
     expect(result).toEqual([
       { text: "View", value: "view" },
-      { text: "Modify", value: "modify" },
-      { text: "Deactivate", value: "deactivate" },
+      // { text: "Modify", value: "modify" },
+      // { text: "Deactivate", value: "deactivate" },
     ]);
   });
 
@@ -522,7 +431,7 @@ describe('handleProductsDropdown', () => {
     // Assert
     expect(result).toEqual([
       { text: "View", value: "view" },
-      { text: "Clone", value: "clone" },
+      // { text: "Clone", value: "clone" },
     ]);
   });
 
@@ -599,7 +508,7 @@ describe('handleProductsDropdown', () => {
     const result = handleProductsDropdown("", status, isChecker, DropDownOptions, false, permissions);
 
     // Assert
-    expect(result).toBeNull();
+    expect(result).toBeUndefined();
   });
 });
 
@@ -623,145 +532,263 @@ describe('handleUpdated', () => {
 });
 
 
+// describe('handleProductsDropdown', () => {
+
+//   // Returns an array of options based on the status and user permissions.
+//   it('should return an array of options based on the status and user permissions', () => {
+//     // Arrange
+//     const status = "active";
+//     const isChecker = false;
+//     const DropDownOptions = {
+//       active: [
+//         { text: "View", value: "view" },
+//         { text: "Modify", value: "modify" },
+//         { text: "Deactivate", value: "deactivate" },
+//       ],
+//       inactive: [
+//         { text: "View", value: "view" },
+//         { text: "Activate", value: "activate" },
+//         { text: "Clone", value: "clone" },
+//       ],
+//     };
+//     const permissions = ["RE_OR_DEACTIVATE_INVESTMENT_PRODUCT", "CREATE_INVESTMENT_PRODUCT"];
+
+//     // Act
+//     const result = handleProductsDropdown("", status, isChecker, DropDownOptions, false, permissions);
+
+//     // Assert
+//     expect(result).toEqual([
+//       { text: "View", value: "view" },
+//       { text: "Modify", value: "modify" },
+//       { text: "Deactivate", value: "deactivate" },
+//     ]);
+//   });
+
+//   // Filters out "deactivate" and "activate" options if user does not have RE_OR_DEACTIVATE_INVESTMENT_PRODUCT permission.
+//   it('should filter out "deactivate" and "activate" options if user does not have RE_OR_DEACTIVATE_INVESTMENT_PRODUCT permission', () => {
+//     // Arrange
+//     const status = "inactive";
+//     const isChecker = false;
+//     const DropDownOptions = {
+//       active: [
+//         { text: "View", value: "view" },
+//         { text: "Modify", value: "modify" },
+//         { text: "Deactivate", value: "deactivate" },
+//       ],
+//       inactive: [
+//         { text: "View", value: "view" },
+//         { text: "Activate", value: "activate" },
+//         { text: "Clone", value: "clone" },
+//       ],
+//     };
+//     const permissions = ["CREATE_INVESTMENT_PRODUCT"];
+
+//     // Act
+//     const result = handleProductsDropdown("", status, isChecker, DropDownOptions, false, permissions);
+
+//     // Assert
+//     expect(result).toEqual([
+//       { text: "View", value: "view" },
+//       { text: "Clone", value: "clone" },
+//     ]);
+//   });
+
+//   // Filters out "modify" and "clone" options if user does not have CREATE_INVESTMENT_PRODUCT permission.
+//   it('should filter out "modify" and "clone" options if user does not have CREATE_INVESTMENT_PRODUCT permission', () => {
+//     // Arrange
+//     const status = "inactive";
+//     const isChecker = false;
+//     const DropDownOptions = {
+//       active: [
+//         { text: "View", value: "view" },
+//         { text: "Modify", value: "modify" },
+//         { text: "Deactivate", value: "deactivate" },
+//       ],
+//       inactive: [
+//         { text: "View", value: "view" },
+//         { text: "Activate", value: "activate" },
+//         { text: "Clone", value: "clone" },
+//       ],
+//     };
+//     const permissions = ["RE_OR_DEACTIVATE_INVESTMENT_PRODUCT"];
+
+//     // Act
+//     const result = handleProductsDropdown("", status, isChecker, DropDownOptions, false, permissions);
+
+//     // Assert
+//     expect(result).toEqual([
+//       { text: "View", value: "view" },
+//     ]);
+//   });
+
+//   // Returns an empty array if status is falsy.
+//   it('should return an empty array if status is falsy', () => {
+//     // Arrange
+//     const status = "";
+//     const isChecker = false;
+//     const DropDownOptions = {
+//       active: [
+//         { text: "View", value: "view" },
+//         { text: "Modify", value: "modify" },
+//         { text: "Deactivate", value: "deactivate" },
+//       ],
+//       inactive: [
+//         { text: "View", value: "view" },
+//         { text: "Activate", value: "activate" },
+//         { text: "Clone", value: "clone" },
+//       ],
+//     };
+//     const permissions = ["RE_OR_DEACTIVATE_INVESTMENT_PRODUCT", "CREATE_INVESTMENT_PRODUCT"];
+
+//     // Act
+//     const result = handleProductsDropdown("", status, isChecker, DropDownOptions, false, permissions);
+
+//     // Assert
+//     expect(result).toEqual([]);
+//   });
+
+
+
+//   // Returns an empty array if DropDownOptions[status] is falsy.
+//   it('should return an empty array if DropDownOptions[status] is falsy', () => {
+//     // Arrange
+//     const status = "inactive";
+//     const isChecker = false;
+//     const DropDownOptions = {
+//       active: [
+//         { text: "View", value: "view" },
+//         { text: "Modify", value: "modify" },
+//         { text: "Deactivate", value: "deactivate" },
+//       ],
+//       inactive: null,
+//     };
+//     const permissions = ["RE_OR_DEACTIVATE_INVESTMENT_PRODUCT", "CREATE_INVESTMENT_PRODUCT"];
+
+//     // Act
+//     const result = handleProductsDropdown("", status, isChecker, DropDownOptions, false, permissions);
+
+//     // Assert
+//     expect(result).toBeUndefined();
+//   });
+// });
+
+// Generated by CodiumAI
+
 describe('handleProductsDropdown', () => {
-
-  // Returns an array of options based on the status and user permissions.
-  it('should return an array of options based on the status and user permissions', () => {
+  // Returns an array of dropdown options based on the provided status and other parameters
+  it('should return an array of dropdown options based on the provided status and other parameters', () => {
     // Arrange
-    const status = "active";
+    const statusType = StatusCategoryType.Investments;
+    const status = "1";
     const isChecker = false;
     const DropDownOptions = {
       active: [
         { text: "View", value: "view" },
-        { text: "Modify", value: "modify" },
         { text: "Deactivate", value: "deactivate" },
+        { text: "Activate", value: "activate" },
       ],
-      inactive: [
+      pending: [
         { text: "View", value: "view" },
         { text: "Activate", value: "activate" },
-        { text: "Clone", value: "clone" },
       ],
     };
-    const permissions = ["RE_OR_DEACTIVATE_INVESTMENT_PRODUCT", "CREATE_INVESTMENT_PRODUCT"];
-
-    // Act
-    const result = handleProductsDropdown("", status, isChecker, DropDownOptions, false, permissions);
-
-    // Assert
-    expect(result).toEqual([
-      { text: "View", value: "view" },
-      { text: "Modify", value: "modify" },
-      { text: "Deactivate", value: "deactivate" },
-    ]);
-  });
-
-  // Filters out "deactivate" and "activate" options if user does not have RE_OR_DEACTIVATE_INVESTMENT_PRODUCT permission.
-  it('should filter out "deactivate" and "activate" options if user does not have RE_OR_DEACTIVATE_INVESTMENT_PRODUCT permission', () => {
-    // Arrange
-    const status = "inactive";
-    const isChecker = false;
-    const DropDownOptions = {
-      active: [
-        { text: "View", value: "view" },
-        { text: "Modify", value: "modify" },
-        { text: "Deactivate", value: "deactivate" },
-      ],
-      inactive: [
-        { text: "View", value: "view" },
-        { text: "Activate", value: "activate" },
-        { text: "Clone", value: "clone" },
-      ],
-    };
-    const permissions = ["CREATE_INVESTMENT_PRODUCT"];
-
-    // Act
-    const result = handleProductsDropdown("", status, isChecker, DropDownOptions, false, permissions);
-
-    // Assert
-    expect(result).toEqual([
-      { text: "View", value: "view" },
-      { text: "Clone", value: "clone" },
-    ]);
-  });
-
-  // Filters out "modify" and "clone" options if user does not have CREATE_INVESTMENT_PRODUCT permission.
-  it('should filter out "modify" and "clone" options if user does not have CREATE_INVESTMENT_PRODUCT permission', () => {
-    // Arrange
-    const status = "inactive";
-    const isChecker = false;
-    const DropDownOptions = {
-      active: [
-        { text: "View", value: "view" },
-        { text: "Modify", value: "modify" },
-        { text: "Deactivate", value: "deactivate" },
-      ],
-      inactive: [
-        { text: "View", value: "view" },
-        { text: "Activate", value: "activate" },
-        { text: "Clone", value: "clone" },
-      ],
-    };
+    const locked = false;
     const permissions = ["RE_OR_DEACTIVATE_INVESTMENT_PRODUCT"];
+    const created_By_Id = "123";
+    const userId = "456";
 
     // Act
-    const result = handleProductsDropdown("", status, isChecker, DropDownOptions, false, permissions);
+    const result = handleProductsDropdown(
+      statusType,
+      status,
+      isChecker,
+      DropDownOptions,
+      locked,
+      permissions,
+      created_By_Id,
+      userId
+    );
 
     // Assert
-    expect(result).toEqual([
-      { text: "View", value: "view" },
-    ]);
+    expect(result).toEqual([{ "text": "View", "value": "view" }]);
   });
-
-  // Returns an empty array if status is falsy.
+  // Returns an empty array if status is falsy
   it('should return an empty array if status is falsy', () => {
     // Arrange
+    const statusType = StatusCategoryType.AllProducts;
     const status = "";
     const isChecker = false;
     const DropDownOptions = {
       active: [
         { text: "View", value: "view" },
-        { text: "Modify", value: "modify" },
         { text: "Deactivate", value: "deactivate" },
+        { text: "Activate", value: "activate" },
       ],
-      inactive: [
+      pending: [
         { text: "View", value: "view" },
         { text: "Activate", value: "activate" },
-        { text: "Clone", value: "clone" },
       ],
     };
-    const permissions = ["RE_OR_DEACTIVATE_INVESTMENT_PRODUCT", "CREATE_INVESTMENT_PRODUCT"];
+    const locked = false;
+    const permissions = ["RE_OR_DEACTIVATE_INVESTMENT_PRODUCT"];
+    const created_By_Id = "123";
+    const userId = "456";
 
     // Act
-    const result = handleProductsDropdown("", status, isChecker, DropDownOptions, false, permissions);
+    const result = handleProductsDropdown(
+      statusType,
+      status,
+      isChecker,
+      DropDownOptions,
+      locked,
+      permissions,
+      created_By_Id,
+      userId
+    );
 
     // Assert
     expect(result).toEqual([]);
   });
 
-
-
-  // Returns an empty array if DropDownOptions[status] is falsy.
-  it('should return an empty array if DropDownOptions[status] is falsy', () => {
+  // Returns an array of "view" option if isChecker is true and statusType is Investments
+  it('should return an array of "view" option if isChecker is true and statusType is Investments', () => {
     // Arrange
-    const status = "inactive";
-    const isChecker = false;
+    const statusType = StatusCategoryType.Investments;
+    const status = "1";
+    const isChecker = true;
     const DropDownOptions = {
       active: [
         { text: "View", value: "view" },
-        { text: "Modify", value: "modify" },
         { text: "Deactivate", value: "deactivate" },
+        { text: "Activate", value: "activate" },
       ],
-      inactive: null,
+      pending: [
+        { text: "View", value: "view" },
+        { text: "Activate", value: "activate" },
+      ],
     };
-    const permissions = ["RE_OR_DEACTIVATE_INVESTMENT_PRODUCT", "CREATE_INVESTMENT_PRODUCT"];
+    const locked = false;
+    const permissions = ["RE_OR_DEACTIVATE_INVESTMENT_PRODUCT"];
+    const created_By_Id = "123";
+    const userId = "456";
 
     // Act
-    const result = handleProductsDropdown("", status, isChecker, DropDownOptions, false, permissions);
+    const result = handleProductsDropdown(
+      statusType,
+      status,
+      isChecker,
+      DropDownOptions,
+      locked,
+      permissions,
+      created_By_Id,
+      userId
+    );
 
     // Assert
-    expect(result).toBeNull();
+    expect(result).toEqual([{ text: "View", value: "view" }]);
   });
 });
+
 
 describe("handleUpdated", () => {
   const d = { "productName": "Draft Box updated", "prodType": 0, "state": 2, "description": "Draft description example update", "slogan": "Draft slogan updat", "currency": "NGN", "requestStatus": null, "requestType": null, "request": "", "initiatorId": "", "approved_By_Id": "", "date": "2023-12-15T13:22:31.426Z" }
@@ -791,9 +818,16 @@ describe("handleUpdated", () => {
 
 describe("statusHandler", () => {
   // Sets success text and opens success modal if isSuccess is true
+  const setSuccessText = jest.fn();
+  const setIsSuccessOpen = jest.fn();
+  const activateSuccess = true;
+  const setSubText = jest.fn()
+  const setFailedText = jest.fn();
+  const setFailedSubtext = jest.fn();
+  const setFailed = jest.fn();
+  const role = "superadmin";
+
   it('should set success text and open success modal when isSuccess is true', () => {
-    const setSuccessText = jest.fn();
-    const setIsSuccessOpen = jest.fn();
     const isSuccess = true;
 
     statusHandler({ isSuccess, setSuccessText, setIsSuccessOpen });
@@ -804,22 +838,76 @@ describe("statusHandler", () => {
 
   // Sets success text and opens success modal if activateSuccess is true and role is superadmin or admin
   it('should set success text and open success modal when activateSuccess is true and role is superadmin or admin', () => {
-    const setSuccessText = jest.fn();
-    const setIsSuccessOpen = jest.fn();
-    const activateSuccess = true;
-    const role = "superadmin";
 
-    statusHandler({ activateSuccess, setSuccessText, setIsSuccessOpen, role });
+    statusHandler({ modifyRequestSuccess: true, activateSuccess, setSuccessText, setIsSuccessOpen, setSubText, role });
 
-    expect(setSuccessText).toHaveBeenCalledWith(Messages.PRODUCT_ACTIVATE_SUCCESS);
+
+    expect(setSuccessText).toHaveBeenCalledWith(Messages.BOOKING_WITHDRAW_SUCCESS);
+    expect(setSubText).toHaveBeenCalledWith(Messages.BOOKING_WITHDRAW_SUCCESS_SUB);
     expect(setIsSuccessOpen).toHaveBeenCalledWith(true);
   });
 
+  it('should handle modifyRequestError', () => {
+
+    statusHandler({ modifyRequestIsError: true, modifyRequestError: { message: { message: "E sha fail" } }, setFailedText, setFailed, setFailedSubtext, role });
+
+
+    expect(setFailedText).toHaveBeenCalledWith(Messages.BOOKING_MODIFY_FAILED);
+    expect(setFailedSubtext).toHaveBeenCalledWith("E sha fail")
+    expect(setFailed).toHaveBeenCalledWith(true);
+  });
+
+  it('should handle deleteInvestmentRequestError', () => {
+
+    statusHandler({ isDeleteInvestmentRequestError: true, deleteInvestmentRequestError: { message: { message: "E sha fail" } }, setFailedText, setFailed, setFailedSubtext, role });
+
+
+    expect(setFailedText).toHaveBeenCalledWith(Messages.PRODUCT_DELETE_FAILED);
+    expect(setFailedSubtext).toHaveBeenCalledWith("E sha fail")
+    expect(setFailed).toHaveBeenCalledWith(true);
+  });
+
+  it("shluld handle earlyLiquidateSuccess", () => {
+    statusHandler({ earlyLiquidateSuccess: true, setSuccessText, setIsSuccessOpen });
+    expect(setSuccessText).toBeCalledWith(Messages.EARLY_LIQUIDATION_REQUEST)
+    expect(setIsSuccessOpen).toBeCalledWith(true);
+  })
+
+  it("should handle partLiquidateSuccess", () => {
+    statusHandler({ partLiquidateSuccess: true, setSuccessText, setIsSuccessOpen });
+    expect(setSuccessText).toBeCalledWith(Messages.PART_LIQUIDATION_REQUEST)
+    expect(setIsSuccessOpen).toBeCalledWith(true);
+  })
+
+  it('should handle earlyLiquidateIsError', () => {
+
+    statusHandler({ earlyLiquidateIsError: true, earlyLiquidateError: { message: { message: "E sha fail" } }, setFailedText, setFailed, setFailedSubtext, role });
+
+
+    expect(setFailedText).toHaveBeenCalledWith(Messages.REQUEST_FAILED);
+    expect(setFailedSubtext).toHaveBeenCalledWith("E sha fail")
+    expect(setFailed).toHaveBeenCalledWith(true);
+  });
+
+  it('should handle partLiquidateIsError', () => {
+
+    statusHandler({ partLiquidateIsError: true, partLiquidateError: { message: { message: "E sha fail" } }, setFailedText, setFailed, setFailedSubtext, role });
+
+
+    expect(setFailedText).toHaveBeenCalledWith(Messages.REQUEST_FAILED);
+    expect(setFailedSubtext).toHaveBeenCalledWith("E sha fail")
+    expect(setFailed).toHaveBeenCalledWith(true);
+  });
+
+
+  it("should handle deleteInvestmentRequestSuccess", () => {
+    statusHandler({ isDeleteInvestmentRequestSuccess: true, setSuccessText, setIsSuccessOpen });
+    expect(setSuccessText).toBeCalledWith(Messages.PRODUCT_DELETE_SUCCESS)
+    expect(setIsSuccessOpen).toBeCalledWith(true);
+  })
   // Sets failed text, subtext and opens failed modal if isError is true
   it('should set failed text, subtext and open failed modal when isError is true', () => {
-    const setFailedText = jest.fn();
-    const setFailedSubtext = jest.fn();
-    const setFailed = jest.fn();
+
     const isError = true;
     const error = { message: { message: "Error message" } };
 

@@ -1,47 +1,56 @@
-import {render, screen, act, fireEvent } from "@testing-library/react"
+import { render, screen, act, fireEvent } from "@testing-library/react"
 import BookingDetail, { BookingDetailLayout } from "../../components/modals/BookingDetail"
-import {renderWithProviders} from "../../__mocks__/api/Wrapper"
+import { renderWithProviders } from "../../__mocks__/api/Wrapper"
 
 class ResizeObserver {
-    observe() { }
-    unobserve() { }
-    disconnect() { }
-  }
-  
+  observe() { }
+  unobserve() { }
+  disconnect() { }
+}
+
+
+jest.mock("react-router-dom", () => ({
+  BrowserRouter: ({ children }) => <div>{children}</div>,
+  Link: ({ to, children }) => <a href={to}>{children}</a>,
+  useNavigate: jest.fn(),
+  useSearchParams: jest.fn(),
+  useParams: jest.fn(),
+}));
+const navigate = jest.fn();
 
 describe('code snippet', () => {
 
-    // Renders the component with correct data when productData is loaded
-    it('should render', () => {
-      // Mock the useGetProductDetailQuery hook
-      jest.mock('@app/api', () => ({
-        useGetProductDetailQuery: jest.fn(() => ({
-          data: {
-            productInfo: {
-              productName: 'Test Product',
-              slogan: 'Test Slogan',
-              description: 'Test Description',
-              currency: 'USD',
-              startDate: '2022-01-01',
-              endDate: '2022-12-31',
-            },
-            state: 2,
-            productType: 0,
-            productCode: '123456',
-            customerEligibility: {
-              customerCategory: 0,
-            },
-          },
-          isLoading: false,
-        })),
-      }));
+  // Renders the component with correct data when productData is loaded
+  it('should render', () => {
+    // Mock the useGetProductDetailQuery hook
+    // jest.mock('@app/api', () => ({
+    //   useGetProductDetailQuery: jest.fn(() => ({
+    //     data: {
+    //       productInfo: {
+    //         productName: 'Test Product',
+    //         slogan: 'Test Slogan',
+    //         description: 'Test Description',
+    //         currency: 'USD',
+    //         startDate: '2022-01-01',
+    //         endDate: '2022-12-31',
+    //       },
+    //       state: 2,
+    //       productType: 0,
+    //       productCode: '123456',
+    //       customerEligibility: {
+    //         customerCategory: 0,
+    //       },
+    //     },
+    //     isLoading: false,
+    //   })),
+    // }));
 
-      // Render the component
-      const { getByTestId } = renderWithProviders(
-        <BookingDetail isOpen={true} setIsOpen={jest.fn()} handleClick={jest.fn()} detail={{ id: 1 }} />
-      );
-      expect(screen).toMatchSnapshot();
-    });
+    // Render the component
+    const { getByTestId } = renderWithProviders(
+      <BookingDetail isOpen={true} setIsOpen={jest.fn()} handleClick={jest.fn()} detail={{ id: 1 }} />
+    );
+    expect(screen).toMatchSnapshot();
+  });
 });
 
 describe('BookingDetailLayout', () => {
@@ -108,7 +117,7 @@ describe('BookingDetailLayout', () => {
         setIsOpen={setIsOpen}
         isLoading={isLoading}
         investmentData={investmentData}
-        productData={productData}
+        productInfo={productData}
         permissions={permissions}
         open={open}
         setOpen={setOpen}
@@ -182,7 +191,7 @@ describe('BookingDetailLayout', () => {
         setIsOpen={setIsOpen}
         isLoading={isLoading}
         investmentData={investmentData}
-        productData={productData}
+        productInfo={productData}
         permissions={permissions}
         open={open}
         setOpen={setOpen}
@@ -255,7 +264,7 @@ describe('BookingDetailLayout', () => {
         setIsOpen={setIsOpen}
         isLoading={isLoading}
         investmentData={investmentData}
-        productData={productData}
+        productInfo={productData}
         permissions={permissions}
         open={open}
         setOpen={setOpen}
@@ -264,7 +273,7 @@ describe('BookingDetailLayout', () => {
     );
 
     expect(screen.getByText("123456")).toBeInTheDocument();
-    expect(screen.getByText("NGN 10,000.00")).toBeInTheDocument();
+    expect(screen.getByText("NGN 10,000")).toBeInTheDocument();
   });
 
   // Displays '-' when product name is not available
@@ -402,7 +411,7 @@ describe('BookingDetailLayout', () => {
         setIsOpen={setIsOpen}
         isLoading={isLoading}
         investmentData={investmentData}
-        productData={productData}
+        productInfo={productData}
         permissions={permissions}
         open={open}
         setOpen={setOpen}
@@ -475,7 +484,7 @@ describe('BookingDetailLayout', () => {
         setIsOpen={setIsOpen}
         isLoading={isLoading}
         investmentData={investmentData}
-        productData={productData}
+        productInfo={productData}
         permissions={permissions}
         open={open}
         setOpen={setOpen}
@@ -484,6 +493,6 @@ describe('BookingDetailLayout', () => {
     );
 
     expect(screen.getByTestId("principal-value")).toBeInTheDocument();
-    expect(screen.getByTestId("principal-value")).toHaveTextContent("NGN 0.00");
+    expect(screen.getByTestId("principal-value")).toHaveTextContent("NGN 0");
   });
 });

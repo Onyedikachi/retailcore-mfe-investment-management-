@@ -44,6 +44,99 @@ type FacilityDetailsProps = {
   detailLoading?: boolean;
 };
 
+export const handleInterestRateValues = ({productDetail, values, setValue, trigger}) => {
+  if (productDetail?.pricingConfiguration?.interestRateRangeType === 0) {
+    productDetail?.pricingConfiguration?.interestRateConfigModels?.forEach(
+      (i) => {
+        if (
+          values.principal >= i.principalMin &&
+          values.principal <= i.principalMax
+        ) {
+          setValue("intMin", i.min);
+          setValue("intMax", i.max);
+        }
+      }
+    );
+  }
+  if (productDetail?.pricingConfiguration?.interestRateRangeType === 1) {
+    productDetail?.pricingConfiguration?.interestRateConfigModels?.forEach(
+      (i) => {
+        if (values.tenor >= i.tenorMin && values.tenor <= i.tenorMax) {
+          setValue("intMin", i.min);
+          setValue("intMax", i.max);
+        }
+      }
+    );
+  }
+  if (productDetail?.pricingConfiguration?.interestRateRangeType === 2) {
+    setValue("intMin", productDetail?.pricingConfiguration?.interestRateMin);
+    setValue("intMax", productDetail?.pricingConfiguration?.interestRateMax);
+  }
+  if (
+    (values.tenor || values.principal) &&
+    values.interestRate &&
+    values.investmentProductId
+  ) {
+    trigger();
+  }
+}
+
+export const handleProductDetails = ({productDetail, values, setValue, setProductDetail}) => {
+  if (productDetail) {
+    setValue(
+      "tenorMin",
+      productDetail?.pricingConfiguration?.applicableTenorMin
+    );
+    setValue(
+      "tenorMax",
+      productDetail?.pricingConfiguration?.applicableTenorMax
+    );
+    setValue(
+      "prinMin",
+      productDetail?.pricingConfiguration?.applicablePrincipalMin
+    );
+    setValue(
+      "prinMax",
+      productDetail?.pricingConfiguration?.applicablePrincipalMax
+    );
+
+    const rangeArr =
+      productDetail?.pricingConfiguration?.interestRateConfigModels[0];
+    if (rangeArr) {
+      if (productDetail?.pricingConfiguration?.interestRateRangeType === 0) {
+        if (
+          values.principal >= rangeArr.principalMin &&
+          values.principal <= rangeArr.principalMax
+        ) {
+          setValue("intMin", rangeArr.min);
+          setValue("intMax", rangeArr.max);
+        }
+      }
+
+      if (productDetail?.pricingConfiguration?.interestRateRangeType === 1) {
+        if (
+          values.tenor >= rangeArr.tenorMin &&
+          values.tenor <= rangeArr.tenorMax
+        ) {
+          setValue("intMin", rangeArr.min);
+          setValue("intMax", rangeArr.max);
+        }
+      }
+    }
+
+    if (productDetail?.pricingConfiguration?.interestRateRangeType === 2) {
+      setValue(
+        "intMin",
+        productDetail?.pricingConfiguration?.interestRateMin
+      );
+      setValue(
+        "intMax",
+        productDetail?.pricingConfiguration?.interestRateMax
+      );
+    }
+  }
+}
+
 export const handleSearch = (
   value,
   data,
@@ -141,59 +234,8 @@ export default function FacilityDetails({
 
   // Set product detail
   useEffect(() => {
-    if (productDetail) {
-      setValue(
-        "tenorMin",
-        productDetail?.pricingConfiguration?.applicableTenorMin
-      );
-      setValue(
-        "tenorMax",
-        productDetail?.pricingConfiguration?.applicableTenorMax
-      );
-      setValue(
-        "prinMin",
-        productDetail?.pricingConfiguration?.applicablePrincipalMin
-      );
-      setValue(
-        "prinMax",
-        productDetail?.pricingConfiguration?.applicablePrincipalMax
-      );
-
-      const rangeArr =
-        productDetail?.pricingConfiguration?.interestRateConfigModels[0];
-      if (rangeArr.length) {
-        if (productDetail?.pricingConfiguration?.interestRateRangeType === 0) {
-          if (
-            values.principal >= rangeArr.principalMin &&
-            values.principal <= rangeArr.principalMax
-          ) {
-            setValue("intMin", rangeArr.min);
-            setValue("intMax", rangeArr.max);
-          }
-        }
-
-        if (productDetail?.pricingConfiguration?.interestRateRangeType === 1) {
-          if (
-            values.tenor >= rangeArr.tenorMin &&
-            values.tenor <= rangeArr.tenorMax
-          ) {
-            setValue("intMin", rangeArr.min);
-            setValue("intMax", rangeArr.max);
-          }
-        }
-      }
-
-      if (productDetail?.pricingConfiguration?.interestRateRangeType === 2) {
-        setValue(
-          "intMin",
-          productDetail?.pricingConfiguration?.interestRateMin
-        );
-        setValue(
-          "intMax",
-          productDetail?.pricingConfiguration?.interestRateMax
-        );
-      }
-    }
+    // setProductDetail
+    handleProductDetails({productDetail, values, setValue, setProductDetail})
   }, [productDetail]);
 
   useEffect(() => {
@@ -205,48 +247,9 @@ export default function FacilityDetails({
   }, [isValid, values, validDoc, balanceError]);
 
   useEffect(() => {
-    if (productDetail?.pricingConfiguration?.interestRateRangeType === 0) {
-      productDetail?.pricingConfiguration?.interestRateConfigModels?.forEach(
-        (i) => {
-          if (
-            values.principal >= i.principalMin &&
-            values.principal <= i.principalMax
-          ) {
-            setValue("intMin", i.min);
-            setValue("intMax", i.max);
-          }
-        }
-      );
-    }
-    if (productDetail?.pricingConfiguration?.interestRateRangeType === 1) {
-      productDetail?.pricingConfiguration?.interestRateConfigModels?.forEach(
-        (i) => {
-          if (values.tenor >= i.tenorMin && values.tenor <= i.tenorMax) {
-            setValue("intMin", i.min);
-            setValue("intMax", i.max);
-          }
-        }
-      );
-    }
-    if (productDetail?.pricingConfiguration?.interestRateRangeType === 2) {
-      setValue("intMin", productDetail?.pricingConfiguration?.interestRateMin);
-      setValue("intMax", productDetail?.pricingConfiguration?.interestRateMax);
-    }
-    if (
-      (values.tenor || values.principal) &&
-      values.interestRate &&
-      values.investmentProductId
-    ) {
-      trigger();
-    }
-  }, [
-    values.tenor,
-    values.principal,
-    values.interestRate,
-    values.investmentProductId,
-    productDetail,
-    formData.facilityDetailsModel,
-  ]);
+    handleInterestRateValues({productDetail, values, setValue, trigger});
+  }, [values.tenor, values.principal, values.interestRate, productDetail, values.investmentProductId ]);
+    
 
   useEffect(() => {
     setFormData({

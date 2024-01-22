@@ -163,12 +163,9 @@ export default function IndexComponent() {
     query.approvers_In,
   ]);
   const handleSelection = (item) => {
-    console.log("🚀 ~ handleSelection ~ item:", item);
     setQuery({
       ...query,
-      investmentProducts_In: query?.investmentProducts_In
-        ? [item.id]
-        : [item.id],
+      investmentProducts_In: [item.id],
     });
   };
   return (

@@ -259,12 +259,12 @@ export const handleProductsDropdown = (
       statusType === StatusCategoryType.Investments
         ? InvestmentBookingStatus[status].toLowerCase()
         : status
-    ]?.filter((i: any) => i.text.toLowerCase() === "view");
+    ]?.filter((i: any) => i.text?.toLowerCase() === "view");
   } else {
     let options =
       DropDownOptions[
         statusType === StatusCategoryType.Investments
-          ? InvestmentBookingStatus[status].toLowerCase()
+          ? InvestmentBookingStatus[status]?.toLowerCase()
           : status
       ];
     if (!permissions?.includes("RE_OR_DEACTIVATE_INVESTMENT_PRODUCT")) {
