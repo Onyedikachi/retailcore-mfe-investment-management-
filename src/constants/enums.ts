@@ -97,6 +97,9 @@ export enum Messages {
   PART_LIQUIDATION_REQUEST = "Investment Partial Liquidation Request Submitted for Approval",
   EARLY_LIQUIDATION_REQUEST = "Investment Early Liquidation Request Submitted for Approval",
   REQUEST_FAILED = "Request Failed",
+  LIQUIDATION_MODIFICATION_REQUEST_FAILED = "Liquidation modifcationn requests failed",
+  LIQUIDATION_MODIFICATION_REQUEST_SUCCESS = "Liquidation modifcation requests submitted for approval",
+
 
 
 }

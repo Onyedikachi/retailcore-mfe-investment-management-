@@ -119,25 +119,6 @@ export function handleDownload(
 ) {
   try {
     if (!downloadData?.length) return;
-    const requestData = downloadData.map((i) => {
-      // @ts-ignore
-      let obj: RequestDataProps = {
-        request: i?.request || "",
-        type: i?.requestType || "",
-      };
-
-      if (!isChecker) {
-        obj.initiator = i?.created_By || "";
-        obj.status = i?.requestStatus;
-      } else {
-        obj.reviewer = i?.approved_By || "";
-        obj.status = i?.requestStatus;
-      }
-
-      obj["updated on"] = moment(i.updated_At).format("DD MMM YYYY, hh:mm A");
-
-      return obj;
-    });
 
     const productData = downloadData.map((i) => {
       // @ts-ignore
@@ -164,13 +145,7 @@ export function handleDownload(
       return isOverviewDrillDown ? overviewDrillDownObj : obj;
     });
     // alert(isOverviewDrillDown ? 'productData' : 'req')
-    csvExporter.generateCsv(
-      isOverviewDrillDown
-        ? ucObjectKeys(productData)
-        : category === StatusCategoryType.Requests
-        ? ucObjectKeys(requestData)
-        : ucObjectKeys(productData)
-    );
+    csvExporter.generateCsv(ucObjectKeys(productData));
   } catch (err) {
     throw "Input must be an array of objects";
   }
@@ -366,16 +341,7 @@ export default function TableComponent({
           };
         })
       );
-    isRequestSuccess &&
-      category === StatusCategoryType?.Requests &&
-      setSearchResults(
-        request.results.map((i) => {
-          return {
-            ...i,
-            name: i.request,
-          };
-        })
-      );
+ 
 
     return () => {
       setSearchResults([]);
@@ -414,23 +380,7 @@ export default function TableComponent({
         category
       );
     }
-    if (requestsDownloadIsSuccess && category === StatusCategoryType.Requests) {
-      handleDownload(
-        requestsDownloadData?.results.map((i) => ({
-          ...i,
-          requestStatus: StatusFilterOptions.find(
-            (n) => n.value === i.requestStatus
-          )?.name,
-          requestType: IndividualTypeFilterOptions.find(
-            (n) => n.value === i.requestType
-          )?.name,
-        })),
-        isChecker,
-        csvExporter,
-        category
-      );
-    }
-  }, [productDownloadIsSuccess, requestsDownloadIsSuccess]);
+  }, [productDownloadIsSuccess]);
 
   React.useEffect(() => {
     setOptions({

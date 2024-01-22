@@ -46,7 +46,6 @@ export default function Liquidation({
   type,
   productDetails,
 }: LiquidationProps): React.JSX.Element {
-
   const [metaInfo, setMetaInfo] = useState(null);
   const initialValues = {
     investementBookingId: detail?.id,
@@ -110,7 +109,6 @@ export default function Liquidation({
     if (detail?.metaInfo) {
       setMetaInfo(JSON.parse(detail?.metaInfo)?.investmentProductId);
       const data = JSON.parse(detail?.metaInfo);
-      console.log("🚀 ~ useEffect ~ data:", data)
 
       setMetaInfo(data);
       setTrue(data?.notify);
@@ -120,7 +118,7 @@ export default function Liquidation({
         setValue(item, data[item]);
       });
     }
-  }, [detail]);
+  }, [detail, bookingDetailsIsSuccess]);
 
   useEffect(() => {
     if (
@@ -260,6 +258,7 @@ export default function Liquidation({
                         <RedDot />
                       </span>
                     </label>
+               
                     <div className="relative flex items-start max-w-[642px] mb-[2px] py-2">
                       <MinMaxInput
                         inputName="amounttoLiquidate"
@@ -270,7 +269,7 @@ export default function Liquidation({
                         clearErrors={clearErrors}
                         isCurrency={selection === 0}
                         isPercent={selection === 1}
-                        defaultValue={metaInfo?.amounttoLiquidate}
+                        defaultValue={values?.amounttoLiquidate}
                         type="number"
                         placeholder="Enter value"
                       />
@@ -353,7 +352,6 @@ export default function Liquidation({
                       className="flex items-center text-[#333333] mb-2 gap-x-1"
                     >
                       Upload Supporting Documents{" "}
-                    
                     </label>
                   </div>
                   <FormUpload
