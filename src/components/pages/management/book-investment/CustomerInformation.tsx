@@ -43,7 +43,7 @@ export default function CustomerInformation({
   setDisabled,
   isSavingDraft,
 }: CustomerInformationProps) {
-  console.log("🚀 ~ formData:", formData)
+
   const {
     register,
     handleSubmit,
@@ -72,6 +72,7 @@ export default function CustomerInformation({
     formData?.customerBookingInfoModel?.investmentformUrl
   );
   const values = getValues();
+  console.log("🚀 ~ values:", values)
 
   const {
     data,
@@ -144,7 +145,8 @@ export default function CustomerInformation({
     setValue("accountStatus", accountData?.data?.status);
     setValue("balance", parseFloat(accountData?.data?.balance));
     setValue("currencyId", accountData?.data?.currencyId);
-    // setValue("customerAccountLedgerId")
+    setValue("customerAccountLedgerId",  accountData?.data?.ledgerId)
+   
     trigger("balance");
   }, [accountIsError, accountIsSuccess, isLoading, accountData]);
 
@@ -175,6 +177,7 @@ export default function CustomerInformation({
         )} ${capitalizeFirstLetter(foundObject?.customer_profiles[0]?.surname)}`
       );
       setValue("customerAccount", accountNumber);
+      setValue("customerAccountLedgerId", foundObject?.customer_products[0]?.ledgerId)
       trigger("customerAccount");
     }
   }, [accountNumber, data]);
@@ -297,6 +300,7 @@ export default function CustomerInformation({
             label={"Customer’s investment request form"}
             errors={errors}
             name="investmentformUrl"
+            isCompulsory={false}
           >
             <div className="w-[360px]">
               <FormUpload

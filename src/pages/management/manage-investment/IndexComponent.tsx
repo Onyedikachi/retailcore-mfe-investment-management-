@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { BookInvestmentFormSteps } from "@app/constants";
+import { BookInvestmentFormSteps, Interval } from "@app/constants";
 import { ProductInfoInvestmentCalc } from "@app/components/management";
 import { useNavigate, useParams } from "react-router-dom";
 import ProductSearch from "@app/components/ProductSearch";
@@ -13,22 +13,22 @@ import { sortTabStatus } from "@app/utils/sortTabStatus";
 import { StatusCategoryType } from "@app/constants/enums";
 import { ucObjectKeys, IndividualContext, AppContext } from "@app/utils";
 import { FaSearch } from "react-icons/fa";
+import { handleCurrencyName } from "@app/utils/handleCurrencyName";
+import { currencyFormatter } from "@app/utils/formatCurrency";
 
 export const handleRefresh = (query, fetch, setInvestmentsList) => {
   setInvestmentsList([]);
   fetch();
 };
 export default function IndexComponent() {
+  const { currencies } = useContext(AppContext);
   const { category } = useContext(IndividualContext);
   const { process, investmentType } = useParams();
   const [investmentsList, setInvestmentsList] = useState([]);
   const [individualListOpen, setIndividualListOpen] = useState(false);
   const [corporateListOpen, setCorporateListOpen] = useState(false);
-  const [individualInvestments, setIndividualInvestments] = useState([
-   
-  ]);
-  const [corporateInvestments, setCorporateInvestments] = useState([
-  ]);
+  const [individualInvestments, setIndividualInvestments] = useState([]);
+  const [corporateInvestments, setCorporateInvestments] = useState([]);
   const [productsQueryString, setProductsQueryString] = useState("");
 
   const [hasMore, setHasMore] = useState(true);
@@ -60,7 +60,7 @@ export default function IndexComponent() {
     end_Date: null,
     page: 1,
     page_Size: 15,
-    productType_In: null,
+    investmentProducts_In: null,
     requestType_In: null,
     initiator_In: null,
     approvers_In: null,
@@ -107,7 +107,6 @@ export default function IndexComponent() {
 
   useEffect(() => {
     getInvestmentProductsList({
-     
       page: 1,
       page_Size: 1000000000,
       filter_by: "created_system_wide",
@@ -116,11 +115,10 @@ export default function IndexComponent() {
   }, [productsQueryString]);
 
   useEffect(() => {
-    setIndividualInvestments(investmentProductsList?.results)
-    setCorporateInvestments(investmentProductsList?.results)
-  }, [investmentProductsList])
+    setIndividualInvestments(investmentProductsList?.results);
+    setCorporateInvestments(investmentProductsList?.results);
+  }, [investmentProductsList]);
 
-  useEffect;
   const fetchMoreData = () => {
     setQuery((prevQuery) => {
       return {
@@ -139,7 +137,15 @@ export default function IndexComponent() {
 
   useEffect(() => {
     if (isSuccess) {
-      setInvestmentsList(investmentProducts?.results);
+      setInvestmentsList(investmentProducts?.results.map(i=>{
+
+        return {
+          ...i,
+          tenor: `${i.tenor} ${Interval[1]}`,
+          principal: `${currencyFormatter(i?.principal, handleCurrencyName(i?.currency, currencies))}`,
+          maturityValue: `${currencyFormatter(i?.maturityValue, handleCurrencyName(i?.currency, currencies))}`,
+        }
+      }));
       // console.log("🚀 ~ useEffect ~ investmentProducts:", investmentProducts?.results)
     }
   }, [investmentProducts, isSuccess]);
@@ -149,14 +155,22 @@ export default function IndexComponent() {
   }, [
     query.search,
     query.status_In,
-    query.productType_In,
+    query.investmentProducts_In,
     query.start_Date,
     query.end_Date,
     query.requestType_In,
     query.initiator_In,
     query.approvers_In,
   ]);
-
+  const handleSelection = (item) => {
+    console.log("🚀 ~ handleSelection ~ item:", item);
+    setQuery({
+      ...query,
+      investmentProducts_In: query?.investmentProducts_In
+        ? [item.id]
+        : [item.id],
+    });
+  };
   return (
     <div className="flex flex-col min-h-[100vh] ">
       <div className="px-[37px] py-[11px] bg-white">
@@ -226,7 +240,8 @@ export default function IndexComponent() {
                         <ul className="max-h-[400px] overflow-y-auto">
                           {individualInvestments?.map((item, index) => (
                             <li
-                              className="hover:bg-[#F9E5E5] mb-[9px] text-xs text-[#636363] font-normal"
+                              onClick={() => handleSelection(item)}
+                              className={`hover:bg-[#F9E5E5] mb-[9px] text-xs text-[#636363] font-normal py-1 px-1 rounded ${query?.investmentProducts_In?.includes(item.id)?'bg-[#F9E5E5]':''}`}
                               key={index}
                             >
                               {item?.productName}
@@ -265,7 +280,7 @@ export default function IndexComponent() {
                         Corporate Investments
                       </span>
                       {corporateListOpen && (
-                        <ul className='max-h-[400px] overflow-y-auto'>
+                        <ul className="max-h-[400px] overflow-y-auto">
                           {corporateInvestments ? (
                             corporateInvestments?.map((item, index) => (
                               <li
@@ -276,7 +291,9 @@ export default function IndexComponent() {
                               </li>
                             ))
                           ) : (
-                            <span className="text-xs text-[#636363]">No corporate investments</span>
+                            <span className="text-xs text-[#636363]">
+                              No corporate investments
+                            </span>
                           )}
                         </ul>
                       )}

@@ -22,7 +22,7 @@ import {
 } from "@app/utils";
 import { FaBars, FaEye } from "react-icons/fa";
 import { Actions, Messages, Prompts } from "@app/constants/enums";
-import { InvestmentBookingStatus } from "@app/constants/investment";
+import { Interval, InvestmentBookingStatus } from "@app/constants/investment";
 import { Confirm, Failed, Success } from "../modals";
 import Loader from "../Loader";
 import RequestDeactivation from "../modals/RequestDeactivation";
@@ -67,6 +67,14 @@ interface TableProps {
   isOverviewDrillDown?: boolean;
 }
 
+const excludedKeys = [
+  "state",
+  "interestRate",
+  "investmentBookingStatus",
+  "updated_At",
+  "requestStatus",
+];
+
 export const statusHandler = ({
   modifyRequestSuccess,
   modifyRequestIsError,
@@ -77,6 +85,12 @@ export const statusHandler = ({
   earlyLiquidateSuccess,
   earlyLiquidateIsError,
   earlyLiquidateError,
+  partEditLiquidateSuccess,
+  partEditLiquidateIsError,
+  partEditLiquidateError,
+  earlyEditLiquidateSuccess,
+  earlyEditLiquidateIsError,
+  earlyEditLiquidateError,
   isDeleteInvestmentRequestSuccess,
   isDeleteInvestmentRequestError,
   deleteInvestmentRequestError,
@@ -116,6 +130,15 @@ export const statusHandler = ({
     setSuccessText(Messages.PART_LIQUIDATION_REQUEST);
     setIsSuccessOpen(true);
   }
+  if (earlyEditLiquidateSuccess) {
+    setSuccessText(Messages.LIQUIDATION_MODIFICATION_REQUEST_SUCCESS);
+    setIsSuccessOpen(true);
+  }
+  if (partEditLiquidateSuccess) {
+    setSuccessText(Messages.LIQUIDATION_MODIFICATION_REQUEST_SUCCESS);
+    setIsSuccessOpen(true);
+  }
+
   if (isDeleteInvestmentRequestSuccess) {
     setSuccessText(Messages.PRODUCT_DELETE_SUCCESS);
     setIsSuccessOpen(true);
@@ -171,6 +194,24 @@ export const statusHandler = ({
     );
     setFailed(true);
   }
+
+  if (earlyEditLiquidateIsError) {
+    setFailedText(Messages.LIQUIDATION_MODIFICATION_REQUEST_FAILED);
+    setFailedSubtext(
+      earlyEditLiquidateError?.message?.message ||
+        earlyEditLiquidateError?.message?.Message
+    );
+    setFailed(true);
+  }
+
+  if (partEditLiquidateIsError) {
+    setFailedText(Messages.LIQUIDATION_MODIFICATION_REQUEST_FAILED);
+    setFailedSubtext(
+      partEditLiquidateError?.message?.message ||
+        partEditLiquidateError?.message?.Message
+    );
+    setFailed(true);
+  }
 };
 
 export function handleUpdated(key, value, options) {
@@ -207,7 +248,7 @@ export const handleProductsDropdown = (
   status: string,
   isChecker,
   DropDownOptions,
-  locked = false,
+  liquidation,
   permissions: string[] = [],
   created_By_Id,
   userId
@@ -239,6 +280,21 @@ export const handleProductsDropdown = (
           i.text.toLowerCase() !== "part liquidate" &&
           i.text.toLowerCase() !== "early liquidate"
       );
+    } else {
+      if (!liquidation?.early) {
+        {
+          options = options?.filter(
+            (i: any) => i.text.toLowerCase() !== "early liquidate"
+          );
+        }
+      }
+      if (!liquidation?.part) {
+        {
+          options = options?.filter(
+            (i: any) => i.text.toLowerCase() !== "part liquidate"
+          );
+        }
+      }
     }
     if (!permissions?.includes("BOOK_INVESTMENT")) {
       options = options?.filter(
@@ -259,24 +315,12 @@ export const handleProductsDropdown = (
   }
 };
 
-export const TextCellContent = ({
-  value,
-  isCurrencyValue = false,
-  currency,
-}: {
-  value: any;
-  isCurrencyValue?: boolean;
-  currency?: string;
-}) => {
+export const TextCellContent = ({ value }: { value: any }) => {
   const { currencies } = useContext(AppContext);
   return (
     <span className="relative">
       <span className="relative max-w-[290px] whitespace-normal">
-        {`${
-          isCurrencyValue
-            ? currencyFormatter(value, handleCurrencyName(currency, currencies))
-            : value
-        }` || "-"}
+        {value || "-"}{" "}
       </span>
     </span>
   );
@@ -405,7 +449,7 @@ export default function TableComponent<TableProps>({
   // function getdata(item, key) {}
   // @ts-ignore
   const handleLiquidation = (data, type, metaInfo) => {
-    resetModals()
+    resetModals();
     if (!metaInfo) {
       if (type.toLowerCase() === "part") {
         partLiquidateInvestment(data);
@@ -561,6 +605,12 @@ export default function TableComponent<TableProps>({
       earlyLiquidateSuccess,
       earlyLiquidateIsError,
       earlyLiquidateError,
+      partEditLiquidateSuccess,
+      partEditLiquidateIsError,
+      partEditLiquidateError,
+      earlyEditLiquidateSuccess,
+      earlyEditLiquidateIsError,
+      earlyEditLiquidateError,
       isDeleteInvestmentRequestSuccess,
       isDeleteInvestmentRequestError,
       deleteInvestmentRequestError,
@@ -596,6 +646,12 @@ export default function TableComponent<TableProps>({
     modifyRequestSuccess,
     modifyRequestIsError,
     modifyRequestError,
+    partEditLiquidateSuccess,
+      partEditLiquidateIsError,
+      partEditLiquidateError,
+      earlyEditLiquidateSuccess,
+      earlyEditLiquidateIsError,
+      earlyEditLiquidateError,
   ]);
 
   useEffect(() => {
@@ -693,13 +749,7 @@ export default function TableComponent<TableProps>({
                           {header.key !== "actions" ? (
                             <>
                               {typeof item[header.key] !== "object" &&
-                                header.key !== "state" &&
-                                header.key !== "principal" &&
-                                header.key !== "interestRate" &&
-                                header.key !== "maturityValue" &&
-                                header.key !== "investmentBookingStatus" &&
-                                header.key !== "updated_At" &&
-                                header.key !== "requestStatus" && (
+                                !excludedKeys.includes(header.key) && (
                                   <TextCellContent
                                     value={item[header.key] || "-"}
                                   />
@@ -714,24 +764,7 @@ export default function TableComponent<TableProps>({
                                   isOverviewDrillDown={isOverviewDrillDown}
                                 />
                               )}
-                              {header.key === "principal" && (
-                                <div>
-                                  <TextCellContent
-                                    isCurrencyValue={true}
-                                    value={item[header.key] || "-"}
-                                    currency={item?.currency}
-                                  />
-                                </div>
-                              )}
-                              {header.key === "maturityValue" && (
-                                <div>
-                                  <TextCellContent
-                                    isCurrencyValue={true}
-                                    value={item[header.key] || "-"}
-                                    currency={item?.currency}
-                                  />
-                                </div>
-                              )}
+
                               {header.key === "interestRate" && (
                                 <div>
                                   <TextCellContent
@@ -778,7 +811,10 @@ export default function TableComponent<TableProps>({
                                             : null,
                                           isChecker,
                                           dropDownOptions,
-                                          item.islocked,
+                                          {
+                                            part: item.partLiquidation,
+                                            early: item.earlyLiquidation,
+                                          },
                                           permissions,
                                           item.created_By_Id,
                                           userId
