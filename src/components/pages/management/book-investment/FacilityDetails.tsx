@@ -283,7 +283,7 @@ export default function FacilityDetails({
     }
 
     const validateDocs = checkDocuments(
-      productDetail?.customerEligibility.requireDocument.map((i) => i.name),
+      productDetail?.customerEligibility?.requireDocument.map((i) => i.name),
       formData?.customerProfile
     );
 
