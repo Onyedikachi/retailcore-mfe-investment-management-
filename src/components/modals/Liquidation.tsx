@@ -39,8 +39,7 @@ export const onProceed = (data, onConfirm, type, metaInfo) => {
 };
 
 export const handleLiquidationCalculationPayload = ({detail, productDetails, type, values, liquidationUnitEnum, liquidationCalculation, selection}) => {
-  console.log("🚀 ~ useEffect ~ detailzz:", detail?.principal);
-  console.log("🚀 ~ useEffect ~ productDetailszz:", productDetails);
+
   if (detail?.principal && productDetails) {
     const payload = {
       principal: detail?.principal,
@@ -50,10 +49,7 @@ export const handleLiquidationCalculationPayload = ({detail, productDetails, typ
           : values?.amount
             ? values?.amount
             : 0,
-      liquidationUnit:
-        type === "early"
-          ? liquidationUnitEnum[selection]
-          : liquidationUnitEnum[selection],
+      liquidationUnit: liquidationUnitEnum[selection],
     };
     liquidationCalculation(payload);
   }
