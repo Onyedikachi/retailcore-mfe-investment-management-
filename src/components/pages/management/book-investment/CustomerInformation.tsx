@@ -144,6 +144,7 @@ export default function CustomerInformation({
     setValue("accountStatus", accountData?.data?.status);
     setValue("balance", parseFloat(accountData?.data?.balance));
     setValue("currencyId", accountData?.data?.currencyId);
+    // setValue("customerAccountLedgerId")
     trigger("balance");
   }, [accountIsError, accountIsSuccess, isLoading, accountData]);
 
