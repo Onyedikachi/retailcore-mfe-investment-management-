@@ -114,104 +114,82 @@ const details = {
   "productType": 0
 }
 const detailTwo = {
-  "id": "0192e82c-3784-4dee-a113-6d113d33eb01",
-  "productCode": "d021",
+  "id": "60861eda-7786-48e7-bd22-fd7efcd9ed1a",
+  "productCode": "b075",
   "state": 2,
   "recentUpdated": false,
   "recentlyUpdatedMeta": null,
   "productInfo": {
-    "productName": "Draft Box updated",
-    "slogan": "Draft slogan updat",
-    "description": "Draft description example update",
-    "startDate": "2023-12-15T00:00:00Z",
-    "endDate": "2023-12-31T00:00:00Z",
-    "currency": "NGN"
+    "productName": "Book test prod 3",
+    "slogan": "Book test prod 3",
+    "description": "Book test prod 3",
+    "startDate": "2024-01-18T00:00:00Z",
+    "endDate": null,
+    "currency": "57005ca4-ddf0-4d45-ba73-7317987a5c70"
   },
   "customerEligibility": {
     "customerCategory": 0,
-    "customerType": null,
-    "ageGroupMin": 1,
-    "ageGroupMax": 10,
-    "requireDocument": [
-      {
-        "id": "dd215083-b9e3-bc60-8e4a-db51fca88b98",
-        "name": "Customer Photo"
-      },
-      {
-        "id": "25553641-faef-89f2-2c2f-e570e10a0d9b",
-        "name": "Proof of residential address"
-      },
-      {
-        "id": "241f56f9-f0f5-74df-32a0-6358138700d6",
-        "name": "Valid Identification document"
-      }
-    ]
+    "customerType": [],
+    "ageGroupMin": 0,
+    "ageGroupMax": null,
+    "requireDocument": []
   },
   "pricingConfiguration": {
-    "applicableTenorMin": 1,
+    "applicableTenorMin": 30,
     "applicableTenorMinUnit": 1,
-    "applicableTenorMax": 100,
+    "applicableTenorMax": 60,
     "applicableTenorMaxUnit": 1,
-    "applicablePrincipalMin": 1000,
-    "applicablePrincipalMax": 1200000,
-    "interestRateRangeType": 1,
+    "applicablePrincipalMin": 100000,
+    "applicablePrincipalMax": 1000000,
+    "interestRateRangeType": 2,
     "interestRateConfigModels": [
       {
-        "min": 1,
-        "max": 4,
-        "principalMin": 1000,
-        "principalMax": 12000,
+        "index": 0,
+        "min": 0,
+        "max": 0,
+        "principalMin": 0,
+        "principalMax": 0,
         "tenorMin": 0,
         "tenorMinUnit": 1,
         "tenorMax": 0,
         "tenorMaxUnit": 1
-      },
-      {
-        "min": 5,
-        "max": 20,
-        "principalMin": 13000,
-        "principalMax": 30000,
-        "tenorMin": 0,
-        "tenorMinUnit": 1,
-        "tenorMax": null,
-        "tenorMaxUnit": 1
       }
     ],
-    "interestRateMin": 0,
-    "interestRateMax": 4,
+    "interestRateMin": 3,
+    "interestRateMax": 10,
     "interestComputationMethod": 2
   },
   "liquidation": {
     "part_AllowPartLiquidation": true,
-    "part_MaxPartLiquidation": 1,
+    "part_MaxPartLiquidation": 40,
     "part_RequireNoticeBeforeLiquidation": true,
     "part_NoticePeriod": 10,
     "part_NoticePeriodUnit": 1,
-    "part_LiquidationPenalty": 4,
-    "part_LiquidationPenaltyPercentage": 0,
+    "part_LiquidationPenalty": 2,
+    "part_LiquidationPenaltyPercentage": 40,
     "part_SpecificCharges": [],
     "early_AllowEarlyLiquidation": true,
     "early_RequireNoticeBeforeLiquidation": true,
-    "early_NoticePeriod": 3,
+    "early_NoticePeriod": 7,
     "early_NoticePeriodUnit": 1,
-    "early_LiquidationPenalty": 4,
-    "early_LiquidationPenaltyPercentage": 20,
+    "early_LiquidationPenalty": 3,
+    "early_LiquidationPenaltyPercentage": 8,
     "early_SpecificCharges": []
   },
   "productGlMappings": [
     {
-      "accountName": "Current Account balances [ASTCAS23421]",
-      "accountId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "accountName": "Asset txt 212",
+      "accountId": "2fb2f018-a3af-442d-9a0e-d4f6e94bc2c2",
       "glAccountType": 0
     },
     {
-      "accountName": "subMenu name2",
-      "accountId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "accountName": "Asset txt 212",
+      "accountId": "2fb2f018-a3af-442d-9a0e-d4f6e94bc2c2",
       "glAccountType": 1
     },
     {
-      "accountName": "Current Account balances [ASTCAS23424]",
-      "accountId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "accountName": "Asset txt 212",
+      "accountId": "2fb2f018-a3af-442d-9a0e-d4f6e94bc2c2",
       "glAccountType": 2
     }
   ],
@@ -220,17 +198,18 @@ const detailTwo = {
 }
 describe("ProductDetail", () => {
 
-  it("Renders without crashing", () => {
+  it("Renders without crashing when values prev details and detail are the same", () => {
     // renderWithProviders(<ProductDetail detail={{id: "continue"}}/>)
-    const form = renderWithProviders(<ProductDetail isOpen={true} detail={details} />)
+    const form = renderWithProviders(<ProductDetail isOpen={true} detail={details} previousData={details} />)
     expect(screen.getByText("Term Deposit Product Details")).toBeInTheDocument();
     expect(screen.getByText("Slogan")).toBeInTheDocument();
   })
-  it("Renders without crashing", () => {
+  it("Renders when values are different", () => {
     // renderWithProviders(<ProductDetail detail={{id: "continue"}}/>)
-    const form = renderWithProviders(<ProductDetail isOpen={true} detail={detailTwo} />)
+    const form = renderWithProviders(<ProductDetail isOpen={true} detail={details} previousData = {detailTwo} />)
     expect(screen.getByText("Term Deposit Product Details")).toBeInTheDocument();
     expect(screen.getByText("Slogan")).toBeInTheDocument();
+    expect(screen).toMatchSnapshot();
   })
 
   it('should render data rows correctly', () => {

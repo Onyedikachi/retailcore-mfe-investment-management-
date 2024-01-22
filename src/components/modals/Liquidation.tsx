@@ -37,6 +37,28 @@ export const onProceed = (data, onConfirm, type, metaInfo) => {
 
   onConfirm(data, type, metaInfo);
 };
+
+export const handleLiquidationCalculationPayload = ({detail, productDetails, type, values, liquidationUnitEnum, liquidationCalculation, selection}) => {
+  console.log("🚀 ~ useEffect ~ detailzz:", detail?.principal);
+  console.log("🚀 ~ useEffect ~ productDetailszz:", productDetails);
+  if (detail?.principal && productDetails) {
+    const payload = {
+      principal: detail?.principal,
+      amounttoLiquidate:
+        type === "early"
+          ? detail?.principal
+          : values?.amount
+            ? values?.amount
+            : 0,
+      liquidationUnit:
+        type === "early"
+          ? liquidationUnitEnum[selection]
+          : liquidationUnitEnum[selection],
+    };
+    liquidationCalculation(payload);
+  }
+}
+
 export default function Liquidation({
   isOpen,
   setIsOpen,
@@ -186,16 +208,14 @@ export default function Liquidation({
 
   useEffect(() => {
     setText(
-      `The customer is required to provide a ${
-        type === "early"
-          ? productDetails?.liquidation?.early_NoticePeriod
-          : productDetails?.liquidation?.part_NoticePeriod
-      }-${
-        Interval[
-          type === "early"
-            ? productDetails?.liquidation?.early_NoticePeriodUnit
-            : productDetails?.liquidation?.part_NoticePeriodUnit
-        ]
+      `The customer is required to provide a ${type === "early"
+        ? productDetails?.liquidation?.early_NoticePeriod
+        : productDetails?.liquidation?.part_NoticePeriod
+      }-${Interval[
+      type === "early"
+        ? productDetails?.liquidation?.early_NoticePeriodUnit
+        : productDetails?.liquidation?.part_NoticePeriodUnit
+      ]
       } notice before requesting ${type} liquidation, proceeding with this request implies that the customer has given ample notice as specified.`
     );
 

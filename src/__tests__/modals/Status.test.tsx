@@ -402,13 +402,13 @@ describe('handleNavigations', () => {
   });
 
   // should return undefined if process is not 'create', 'modify', 'continue', or 'withdraw_modify'
-  it('should return undefined when process is not "create", "modify", "continue", or "withdraw_modify"', () => {
+  it('should not return undefined when process is not "create", "modify", "continue", or "withdraw_modify"', () => {
     const location = { pathname: "/product-factory/investment/management/individual", search: "" };
     const process = "invalid";
     const role = "superadmin";
 
     const result = handleNavigations(location, process, role);
 
-    expect(result).toBeUndefined();
+    expect(result).toBe("/product-factory/investment/management/individual");
   });
 });

@@ -14,6 +14,7 @@ jest.mock("react-router-dom", () => ({
     useNavigate: jest.fn(),
     useSearchParams: jest.fn(),
     useParams: jest.fn(),
+    useLocation: jest.fn().mockReturnValue({pathname: ""})
   }));
 describe("Container", () => {
   // Renders a div element with a class of 'rounded-[10px] border border-[#EEE] px-12 py-10'
