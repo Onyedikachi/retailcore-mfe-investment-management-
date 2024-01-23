@@ -79,7 +79,7 @@ export default function Overview() {
   ];
 
   const dataChange = (tab) => {
-    navigate(`/product-factory/investment/management/products/${tab.title}`);
+    navigate(`/investment-management/products/${tab.title}`);
 
     // setOverviewState({ name: tab.title });
     // state?.setData('name', tab.title)

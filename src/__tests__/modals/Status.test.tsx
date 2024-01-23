@@ -358,7 +358,7 @@ describe('handleNavigations', () => {
 
   // should return individualDashboard if process is 'create' and pathname includes 'management' and 'individual'
   it('should return individualDashboard when specific category is individual"', () => {
-    const location = { pathname: "/product-factory/investment/management/individual", search: "" };
+    const location = { pathname: "/investment-management/individual", search: "" };
     const process = "create";
     const role = "superadmin";
     const closeModal = jest.fn()
@@ -371,12 +371,12 @@ describe('handleNavigations', () => {
 
   // should return individualDashboard if process is 'create' and pathname includes 'management' and 'individual'
   it('should return individualDashboard when process is "create" and pathname includes "management" and "individual"', () => {
-    const location = { pathname: "/product-factory/investment/management/individual", search: "" };
+    const location = { pathname: "/investment-management/individual", search: "" };
     const process = "create";
     const role = "superadmin";
 
     const result = handleNavigations(location, process, role, "", jest.fn(), "");
-    expect(result).toBe("/product-factory/investment/management/individual");
+    expect(result).toBe("/investment-management/individual");
   });
 
   // should return factoryDashboard if process is 'create' and pathname does not include 'management' and 'individual'
@@ -392,23 +392,23 @@ describe('handleNavigations', () => {
 
   // should return individualDashboard if process is 'modify' and pathname includes 'management' and 'individual'
   it('should return individualDashboard when process is "modify" and pathname includes "management" and "individual"', () => {
-    const location = { pathname: "/product-factory/investment/management/individual", search: "" };
+    const location = { pathname: "/investment-management/individual", search: "" };
     const process = "modify";
     const role = "superadmin";
 
     const result = handleNavigations(location, process, role);
 
-    expect(result).toBe("/product-factory/investment/management/individual");
+    expect(result).toBe("/investment-management/individual");
   });
 
   // should return undefined if process is not 'create', 'modify', 'continue', or 'withdraw_modify'
   it('should not return undefined when process is not "create", "modify", "continue", or "withdraw_modify"', () => {
-    const location = { pathname: "/product-factory/investment/management/individual", search: "" };
+    const location = { pathname: "/investment-management/individual", search: "" };
     const process = "invalid";
     const role = "superadmin";
 
     const result = handleNavigations(location, process, role);
 
-    expect(result).toBe("/product-factory/investment/management/individual");
+    expect(result).toBe("/investment-management/individual");
   });
 });

@@ -245,17 +245,17 @@ export default function Preview({
     {
       id: 1,
       title: "Investment Management",
-      url: "/product-factory/investment/management/overview",
+      url: "/investment-management/overview",
     },
     {
       id: 2,
       title: "book new Investment",
-      url: "/product-factory/investment/management/individual",
+      url: "/investment-management/individual",
     },
     {
       id: 3,
       title: investmentType,
-      url: `/product-factory/investment/management/${investmentType}`,
+      url: `/investment-management/${investmentType}`,
     },
     {
       id: 4,
@@ -334,7 +334,7 @@ export default function Preview({
           setIsOpen={setIsConfirmOpen}
           onConfirm={() => {
             setIsConfirmOpen(false);
-            navigate(`/product-factory/investment/management/${investmentType}?category=requests`);
+            navigate(`/investment-management/${investmentType}?category=requests`);
           }}
           onCancel={() => {
             setIsConfirmOpen(false);

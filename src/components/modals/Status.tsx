@@ -23,10 +23,10 @@ interface SuccessProps {
 }
 
 const factoryDashboard = "/product-factory/investment";
-const individualDashboard = "/product-factory/investment/management/individual";
+const individualDashboard = "/investment-management/individual";
 const factoryRequests = "/product-factory/investment?category=requests";
 const individualRequests =
-  "/product-factory/investment/management/individual?category=requests";
+  "/investment-management/individual?category=requests";
 
 export function handleNavigations(
   { pathname, search },
@@ -67,7 +67,7 @@ export function handleNewCreate({ pathname }) {
   }
   if (pathname.includes("management")) {
     window.location.href =
-      "/product-factory/investment/management/create/individual";
+      "/investment-management/create/individual";
     return;
   }
 }

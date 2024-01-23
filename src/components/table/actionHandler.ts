@@ -101,7 +101,7 @@ export const actionHandler = ({
   if (action.toLowerCase() === Actions.CONTINUE_REQUEST) {
     if (specificCategory === SpecificCategory.individual) {
       navigate(
-        `/product-factory/investment/management/continue/individual?id=${items.id}`
+        `/investment-management/continue/individual?id=${items.id}`
       );
       return;
     } else {
@@ -115,7 +115,7 @@ export const actionHandler = ({
   }
   if (action.toLowerCase() === Actions.RESTRUCTURE) {
     navigate(
-      `/product-factory/investment/management/${Actions.RESTRUCTURE}/individual?id=${items.id}`
+      `/investment-management/${Actions.RESTRUCTURE}/individual?id=${items.id}`
     );
     return;
   }
@@ -127,7 +127,7 @@ export const actionHandler = ({
       ? setIndividualDetailOpen(true)
       : specificCategory === SpecificCategory.individual
       ? navigate(
-          `/product-factory/investment/management/${specificCategory}/process-summary/preview/${
+          `/investment-management/${specificCategory}/process-summary/preview/${
             items.id
           }?process_type=${items.requestType}${
             items.investmentBookingId &&
@@ -150,7 +150,7 @@ export const actionHandler = ({
       ? setIndividualDetailOpen(true)
       : specificCategory === SpecificCategory.individual
       ? navigate(
-          `/product-factory/investment/management/${specificCategory}/process-summary/verdict/${
+          `/investment-management/${specificCategory}/process-summary/verdict/${
             items.id
           }?process_type=${items.requestType}${
             items.investmentBookingId &&

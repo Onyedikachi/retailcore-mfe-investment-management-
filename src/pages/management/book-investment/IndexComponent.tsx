@@ -44,7 +44,7 @@ export function handleNav({
   step < BookInvestmentFormSteps.length
     ? handleNext(step, setStep, BookInvestmentFormSteps)
     : navigate(
-        `/product-factory/investment/management/${process}/${investmentType}?stage=summary&id=${id}`
+        `/investment-management/${process}/${investmentType}?stage=summary&id=${id}`
       );
 }
 
@@ -174,17 +174,17 @@ export default function IndexComponent() {
     {
       id: 1,
       title: "Investment Management",
-      url: "/product-factory/investment/management/overview",
+      url: "/investment-management/overview",
     },
     {
       id: 2,
       title: "book new Investment",
-      url: "/product-factory/investment/management/individual",
+      url: "/investment-management/individual",
     },
     {
       id: 3,
       title: investmentType,
-      url: `/product-factory/investment/management/${investmentType}`,
+      url: `/investment-management/${investmentType}`,
     },
   ];
 
