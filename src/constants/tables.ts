@@ -1153,11 +1153,11 @@ export const IndividualProductsHeader = [
 export const BookInvestmentOptions = [
   {
     title: "Individual",
-    url: "/product-factory/investment/management/create/individual",
+    url: "/investment-management/create/individual",
   },
   {
     title: "corporate",
-    url: "/product-factory/investment/management/create/corporate",
+    url: "/investment-management/create/corporate",
   },
 ];
 export interface IBookInvestmentOptions {
