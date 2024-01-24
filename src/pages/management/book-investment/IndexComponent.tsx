@@ -164,6 +164,7 @@ export default function IndexComponent() {
       notifyCustomerOnMaturity: false,
       rollOverAtMaturity: false,
       rollOverOption: 0,
+      AccountForLiquidationLedgerId:""
     },
     isDraft: false,
     recentUpdated: false,
