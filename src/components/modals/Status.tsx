@@ -38,7 +38,8 @@ export function handleNavigations(
 ) {
   const isIndividual =
     pathname.includes("management") && pathname.includes("individual");
-  const isModifyOrContinue =
+  const isModifyOrContinueOrCreate =
+    process === "create" ||
     process === "modify" ||
     process === "continue" ||
     process === "withdraw_modify";
@@ -48,7 +49,7 @@ export function handleNavigations(
     return;
   }
 
-  if (isIndividual || isModifyOrContinue) {
+  if (isIndividual && isModifyOrContinueOrCreate) {
     return role === "superadmin" && action !== "draft"
       ? individualDashboard
       : individualRequests;
@@ -66,8 +67,7 @@ export function handleNewCreate({ pathname }) {
     return;
   }
   if (pathname.includes("management")) {
-    window.location.href =
-      "/investment-management/create/individual";
+    window.location.href = "/investment-management/create/individual";
     return;
   }
 }
@@ -197,7 +197,10 @@ export function Failed({
 
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
-      <div data-testid="failed-msg" className="relative h-[400px] w-[556px] overflow-y-auto flex flex-col justify-between px-10 py-8 rounded-lg bg-white text-center items-center">
+      <div
+        data-testid="failed-msg"
+        className="relative h-[400px] w-[556px] overflow-y-auto flex flex-col justify-between px-10 py-8 rounded-lg bg-white text-center items-center"
+      >
         <div className="flex justify-center items-center mb-6">
           <RiErrorWarningFill className="text-[80px] text-danger-500" />{" "}
         </div>
