@@ -16,13 +16,21 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export const handleAccountForLiquidation = ({profileIsSuccess, profileData, formData, setFormData, setValue, setCustomerData}) => {
+export const handleAccountForLiquidation = ({
+  profileIsSuccess,
+  profileData,
+  formData,
+  setFormData,
+  setValue,
+  setCustomerData,
+}) => {
   if (profileIsSuccess) {
     const accountData = profileData.data.customer_products?.map((i: any) => {
       return {
         id: i?.customerProductId,
         text: i?.accountNumber,
         value: i?.accountNumber,
+        ledgerId: i?.ledgerId,
       };
     });
     if (
@@ -34,22 +42,24 @@ export const handleAccountForLiquidation = ({profileIsSuccess, profileData, form
         transactionSettingModel: {
           ...formData?.transactionSettingModel,
           accountForLiquidation: accountData[0].value,
+          AccountForLiquidationLedgerId: accountData[0]?.ledgerId,
         },
       });
       setValue("accountForLiquidation", accountData[0].value);
+      setValue("AccountForLiquidationLedgerId", accountData[0].ledgerId);
     }
 
     setCustomerData(accountData);
   }
-}
+};
 
 export const onProceed = (data, proceed, formData, setFormData) => {
-  console.log("🚀 ~ onProceed ~ data:", data);
+
   setFormData({
     ...formData,
-    transactionSettingModel: {...data},
+    transactionSettingModel: { ...data },
   });
-  proceed();
+  // proceed();
 };
 
 type TransactionSettingsProps = {
@@ -91,7 +101,7 @@ export default function TransactionSettings({
   isSavingDraft,
   productDetail,
 }: TransactionSettingsProps) {
-  console.log("🚀 ~ formData:", formData);
+
   const {
     register,
     handleSubmit,
@@ -125,7 +135,14 @@ export default function TransactionSettings({
   );
 
   useEffect(() => {
-    handleAccountForLiquidation({profileIsSuccess, profileData, formData, setFormData, setValue, setCustomerData});
+    handleAccountForLiquidation({
+      profileIsSuccess,
+      profileData,
+      formData,
+      setFormData,
+      setValue,
+      setCustomerData,
+    });
   }, [profileIsError, profileIsSuccess, profileLoading, profileData]);
 
   // useEffect(() => {
@@ -135,6 +152,13 @@ export default function TransactionSettings({
   useEffect(() => {
     setDisabled(!isValid);
   }, [isValid]);
+  
+  useEffect(() => {
+   if(values?.accountForLiquidation){
+   const data = customerData?.find(i=> i.value === values?.accountForLiquidation)
+   setValue("AccountForLiquidationLedgerId", data?.ledgerId);
+   }
+  }, [values?.accountForLiquidation]);
   return (
     <form
       id="transactionSettings"

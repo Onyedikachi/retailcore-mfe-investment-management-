@@ -354,7 +354,7 @@ describe("handleConfirm", () => {
   it("should approve cancel for individual", () => {
     const navigate = jest.fn();
     handleConfirm({ action: "cancel", type: "individual", id: "23456", navigate });
-    expect(navigate).toBeCalledWith(`/product-factory/investment/management/individual`);
+    expect(navigate).toBeCalledWith(`/investment-management/individual`);
   })
 
   // When action is 'reject', set 'setRejection' state to true

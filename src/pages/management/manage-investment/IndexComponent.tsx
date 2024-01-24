@@ -72,17 +72,17 @@ export default function IndexComponent() {
     {
       id: 1,
       title: "Investment Management",
-      url: "/product-factory/investment/management/overview",
+      url: "/investment-management/overview",
     },
     {
       id: 2,
       title: "Overview",
-      url: "/product-factory/investment/management/overview",
+      url: "/investment-management/overview",
     },
     {
       id: 3,
       title: investmentType,
-      url: `/product-factory/investment/management/products/${investmentType}`,
+      url: `/investment-management/products/${investmentType}`,
     },
   ];
 
