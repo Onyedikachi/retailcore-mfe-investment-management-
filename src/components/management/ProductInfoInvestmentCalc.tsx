@@ -412,7 +412,7 @@ export default function ProductInfoInvestmentCalc({
           <div className="flex flex-col gap-4 max-h-[300px] overflow-y-auto">
             {productDetailMap?.map((item, index) => (
               <div key={index} className="">
-                <div className="flex items-center gap-x-1 mb-1">
+                <div  onClick={() => toggleTab(item?.name)} className="flex items-center gap-x-1 mb-1">
                   {active.includes(item?.name) ? (
                     <FaCaretDown className="text-[#555555]" />
                   ) : (
@@ -420,7 +420,7 @@ export default function ProductInfoInvestmentCalc({
                   )}
 
                   <span
-                    onClick={() => toggleTab(item?.name)}
+                   
                     className="text-[#636363] text-base font-medium"
                   >
                     {item?.name}
