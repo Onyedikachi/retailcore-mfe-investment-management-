@@ -59,7 +59,7 @@ export const onProceed = (data, proceed, formData, setFormData) => {
     ...formData,
     transactionSettingModel: { ...data },
   });
-  // proceed();
+  proceed();
 };
 
 type TransactionSettingsProps = {
