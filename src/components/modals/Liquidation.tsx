@@ -38,8 +38,15 @@ export const onProceed = (data, onConfirm, type, metaInfo) => {
   onConfirm(data, type, metaInfo);
 };
 
-export const handleLiquidationCalculationPayload = ({detail, productDetails, type, values, liquidationUnitEnum, liquidationCalculation, selection}) => {
-
+export const handleLiquidationCalculationPayload = ({
+  detail,
+  productDetails,
+  type,
+  values,
+  liquidationUnitEnum,
+  liquidationCalculation,
+  selection,
+}) => {
   if (detail?.principal && productDetails) {
     const payload = {
       principal: detail?.principal,
@@ -47,13 +54,13 @@ export const handleLiquidationCalculationPayload = ({detail, productDetails, typ
         type === "early"
           ? detail?.principal
           : values?.amount
-            ? values?.amount
-            : 0,
+          ? values?.amount
+          : 0,
       liquidationUnit: liquidationUnitEnum[selection],
     };
     liquidationCalculation(payload);
   }
-}
+};
 
 export default function Liquidation({
   isOpen,
@@ -204,14 +211,16 @@ export default function Liquidation({
 
   useEffect(() => {
     setText(
-      `The customer is required to provide a ${type === "early"
-        ? productDetails?.liquidation?.early_NoticePeriod
-        : productDetails?.liquidation?.part_NoticePeriod
-      }-${Interval[
-      type === "early"
-        ? productDetails?.liquidation?.early_NoticePeriodUnit
-        : productDetails?.liquidation?.part_NoticePeriodUnit
-      ]
+      `The customer is required to provide a ${
+        type === "early"
+          ? productDetails?.liquidation?.early_NoticePeriod
+          : productDetails?.liquidation?.part_NoticePeriod
+      }-${
+        Interval[
+          type === "early"
+            ? productDetails?.liquidation?.early_NoticePeriodUnit
+            : productDetails?.liquidation?.part_NoticePeriodUnit
+        ]
       } notice before requesting ${type} liquidation, proceeding with this request implies that the customer has given ample notice as specified.`
     );
 
@@ -232,7 +241,11 @@ export default function Liquidation({
         <form
           onSubmit={handleSubmit((d: any) =>
             onProceed(
-              { ...d, liquidationUnit: selection, id: detail?.id },
+              {
+                ...d,
+                liquidationUnit: type === "early" ? 0 : selection,
+                id: detail?.id,
+              },
               onConfirm,
               type,
               metaInfo
@@ -274,7 +287,7 @@ export default function Liquidation({
                         <RedDot />
                       </span>
                     </label>
-               
+
                     <div className="relative flex items-start max-w-[642px] mb-[2px] py-2">
                       <MinMaxInput
                         inputName="amounttoLiquidate"
