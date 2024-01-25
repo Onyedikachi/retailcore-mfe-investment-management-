@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route,Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import routes, { routes2 } from "./routes";
 import Layout from "./layouts/Layout";
 import ProductFactory from "./pages/investment/IndexComponent";
@@ -8,7 +8,6 @@ import PreLoader from "./components/PreLoader";
 import AppWrapper from "./components/AppWrapper";
 
 function App() {
-  
   return (
     <AppWrapper>
       <BrowserRouter>
@@ -53,10 +52,7 @@ function App() {
               />
             ))}
           </Route>
-          <Route
-                        path="*"
-                        element={<Navigate to="/investment-management" />}
-                    />
+          <Route path="*" element={<Navigate to="/investment-management" />} />
         </Routes>
       </BrowserRouter>
     </AppWrapper>

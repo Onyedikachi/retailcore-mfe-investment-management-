@@ -27,6 +27,8 @@ import { sortTabStatus } from "@app/utils/sortTabStatus";
 import { useSearchParams } from "react-router-dom";
 import { errorToast } from "@app/components/Toast";
 import { handleRequestStatus } from "@app/pages/investment/IndexComponent";
+import { currencyFormatter } from "@app/utils/formatCurrency";
+import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 
 export function handleToggle(selected, setIsChecker, setHideCreate) {
   if (
@@ -64,6 +66,7 @@ export const handleProductStatus = ({
   isSuccess,
   data,
   setHasMore,
+  currencies,
 }) => {
   if (query.page === 1) {
     setProductData([]);
@@ -74,6 +77,10 @@ export const handleProductStatus = ({
       ...prevData.concat(
         data.results.map((i) => ({
           ...i,
+          principal: `${currencyFormatter(
+            i?.principal,
+            handleCurrencyName(i?.currency, currencies)
+          )}`,
           state: IndividualStatusTypes.find((n) => n.id === i.state)?.type,
           productType: ProductTypes.find((n) => n.id === i.productType)?.name,
         }))
@@ -114,7 +121,7 @@ export const handleSearch = (value, query, setQuery) => {
   });
 };
 export default function Individual() {
-  const { isChecker, setIsChecker } = useContext(AppContext);
+  const { isChecker, setIsChecker, currencies } = useContext(AppContext);
   const [category, setCategory] = useState<string>(
     StatusCategoryType?.Investments
   );
@@ -301,6 +308,7 @@ export default function Individual() {
         isSuccess,
         data,
         setHasMore,
+        currencies,
       }),
     [data, isSuccess, isError, query]
   );

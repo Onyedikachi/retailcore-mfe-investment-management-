@@ -39,7 +39,7 @@ export function handleNav({
   navigate,
   investmentType,
   process,
-  id
+  id,
 }) {
   step < BookInvestmentFormSteps.length
     ? handleNext(step, setStep, BookInvestmentFormSteps)
@@ -157,6 +157,7 @@ export default function IndexComponent() {
       prinMax: null,
       intMin: null,
       intMax: null,
+      tenorUnit: null,
     },
     transactionSettingModel: {
       accountName: "",
@@ -164,7 +165,7 @@ export default function IndexComponent() {
       notifyCustomerOnMaturity: false,
       rollOverAtMaturity: false,
       rollOverOption: 0,
-      AccountForLiquidationLedgerId:""
+      AccountForLiquidationLedgerId: "",
     },
     isDraft: false,
     recentUpdated: false,
@@ -379,7 +380,7 @@ export default function IndexComponent() {
                           navigate,
                           investmentType,
                           process,
-                          id
+                          id,
                         })
                       }
                       setDisabled={setDisabled}
