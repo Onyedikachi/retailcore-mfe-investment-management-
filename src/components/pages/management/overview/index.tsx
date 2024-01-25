@@ -113,7 +113,7 @@ export default function Overview() {
   return (
     <OverviewContext.Provider value={value}>
       <div className="flex gap-x-5 w-full flex-1">
-        <div className="flex flex-col gap-[25px] flex-1">
+        <div className="flex flex-col gap-[25px] flex-1 overflow-x-auto no-scrollbar">
           <div className="flex  gap-[25px]">
             <div className="grid w-full max-w-[350px]  gap-5">
               {tabs.map((tab) => (
@@ -135,7 +135,7 @@ export default function Overview() {
                       {tab.title}
                     </span>
                     <span className="text-[20px] font-semibold text-[#636363]">
-                      {currencyFormatter(tab.amount, 'NGN', true, 2)}
+                      {currencyFormatter(tab.amount, 'NGN')}
                     </span>
                     <span className="text-xs text-[#63636380]">
                       {tab.totalValue}
