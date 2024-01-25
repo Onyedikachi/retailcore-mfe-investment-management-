@@ -93,20 +93,20 @@ export const BookingDetailLayout = ({
                     <span className="font-bold block mb-[15px]">
                       Investment ID
                     </span>
-                    <span data-testid="id-value" className="font-normal block uppercase">
+                    <span
+                      data-testid="id-value"
+                      className="font-normal block uppercase"
+                    >
                       {detail?.investmentId || "-"}
                     </span>
                   </div>
                   <div>
                     <span className="font-bold block mb-[15px]">Principal</span>
-                    <span data-testid="principal-value" className="font-normal block">
-                      {currencyFormatter(
-                        detail?.principal,
-                        handleCurrencyName(
-                          productInfo?.data?.productInfo?.currency,
-                          currencies
-                        )
-                      ) || "-"}
+                    <span
+                      data-testid="principal-value"
+                      className="font-normal block"
+                    >
+                      {detail?.principal}{" "}
                     </span>
                   </div>
                   {/* {detail?.investmentBookingStatus === 1 && (
@@ -172,19 +172,16 @@ export const BookingDetailLayout = ({
                       Investment Timeline
                     </span>
                     <span className="font-normal block">
-                      {moment(detail?.maturityDate).format("dd MM YY")}{" "}
+                      {moment(detail?.approvedOn).format("DD MMM YYYY")} -{" "}
+                      {moment(detail?.approvedOn)
+                        .add(detail.tenor, Interval[detail.tenorUnit])
+                        .format("DD MMM YYYY")}
                     </span>
                   </div>
                   <div>
                     <span className="font-bold block mb-[15px]">Tenor</span>
                     <span className="font-normal block">
-                      {detail?.tenor}
-                      {
-                        Interval[
-                          productInfo?.data?.pricingConfiguration
-                            ?.applicableTenorMaxUnit
-                        ]
-                      }{" "}
+                      {detail?.tenor} {Interval[  detail?.tenorUnit]}{" "}
                     </span>
                   </div>
                   <div>
