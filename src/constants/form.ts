@@ -56,7 +56,6 @@ export const FacilityDetailsModelSchema = yup.object().shape({
   principal: yup
     .number()
     .typeError("Invalid value")
-    .integer()
     .positive()
     .min(yup.ref("prinMin"), "Principal is too small")
     .max(yup.ref("prinMax"), "Principal is too large")

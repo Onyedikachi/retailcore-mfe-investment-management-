@@ -349,9 +349,6 @@ export function handlePermission(
     }
     if (
       permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS")
-      // ||permissions?.includes(
-      //   "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
-      // )
     ) {
       setFilteredRequestOptions(ApproveRequestOptions);
     } else {

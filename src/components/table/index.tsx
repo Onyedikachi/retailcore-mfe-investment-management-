@@ -307,6 +307,7 @@ export const handleProductsDropdown = (
       ((permissions?.includes("CREATE_INVESTMENT_PRODUCT") ||
         !permissions?.includes("BOOK_INVESTMENT")) &&
         !permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS") &&
+        !permissions?.includes("VIEW_ALL_INVESTMENT_RECORDS") &&
         created_By_Id !== userId)
     ) {
       options = options?.filter((i: any) => i.text.toLowerCase() === "view");
