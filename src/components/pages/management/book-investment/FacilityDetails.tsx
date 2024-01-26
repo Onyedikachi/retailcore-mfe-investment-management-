@@ -26,6 +26,7 @@ import { Failed } from "@app/components/modals";
 import { Messages } from "@app/constants/enums";
 import { checkDocuments } from "@app/utils/checkDocunent";
 import { convertToDays, convertDuration } from "@app/utils/convertToDays";
+import debounce from "lodash.debounce";
 export const onProceed = (data, proceed, formData, setFormData) => {
   setFormData({
     ...formData,
@@ -239,8 +240,6 @@ export default function FacilityDetails({
     CapitalizationOptions
   );
   const values = getValues();
-  console.log("🚀 ~ values:", values);
-  console.log("🚀 ~ errors:", errors)
   const [
     getProduct,
     { data, isSuccess, isError, error, isLoading: searchLoading },
@@ -387,9 +386,7 @@ export default function FacilityDetails({
             <div className="flex gap-[15px]">
               <div className=" w-[360px]">
                 <SearchInput
-                  setSearchTerm={(e) => {
-                    setQuery(e);
-                  }}
+                   setSearchTerm={debounce((e) => setQuery(e), 800)}
                   searchResults={productsData}
                   setSearchResults={() => {}}
                   searchLoading={searchLoading}

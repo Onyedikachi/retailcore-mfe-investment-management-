@@ -553,10 +553,11 @@ export default function LiquiditySetup({
                         setValue={setValue}
                         trigger={trigger}
                         clearErrors={clearErrors}
-                        defaultValue={formData?.early_LiquidationPenalty}
+                        defaultValue={values?.early_LiquidationPenalty}
                         options={LiquidityOptions.filter((i) => i.value !== 5)}
                       />
                     </div>
+                  
                     {watchEarlyLiquidationPenalty === 2 && (
                       <div className="w-[100px]">
                         <MinMaxInput

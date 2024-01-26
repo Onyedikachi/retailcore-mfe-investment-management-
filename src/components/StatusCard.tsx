@@ -100,7 +100,7 @@ export const count = (item, analyticsData) => {
     case "inactive":
       return analyticsData?.data?.I || 0;
     case "liquidated":
-      return analyticsData?.data?.I || 0;
+      return analyticsData?.data?.L || 0;
     case "approved":
       return analyticsData?.data?.A || 0;
     case "pending":
@@ -189,7 +189,7 @@ export function handleActiveType(activeType, setStatus) {
       setStatus("I");
       break;
     case "liquidated":
-      setStatus("I");
+      setStatus("L");
       break;
     case "approved":
       setStatus("A");

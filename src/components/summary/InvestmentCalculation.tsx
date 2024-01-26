@@ -12,7 +12,7 @@ import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 import { AppContext } from "@app/utils";
 
 export default function InvestmentCalculation({ detail, productDetail }: any) {
-  console.log("🚀 ~ InvestmentCalculation ~ detail:", detail)
+
   const { currencies } = useContext(AppContext);
 
 
@@ -65,7 +65,7 @@ export default function InvestmentCalculation({ detail, productDetail }: any) {
                 {detail?.calcDetail?.maturityDate}{" "}
                 {
                   Interval[
-                    productDetail?.pricingConfiguration?.applicableTenorMaxUnit
+                    detail?.facilityDetailsModel?.tenorUnit
                   ]
                 }
                 , effective after approval

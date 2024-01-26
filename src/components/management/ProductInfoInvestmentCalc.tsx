@@ -512,7 +512,7 @@ export default function ProductInfoInvestmentCalc({
             )}
           </>
         ) : (
-          <div className="text-xs text-center py-6 text-gray-500 relative flex itemx-center justify-center gap-x-1">
+          <div className="text-xs text-center py-10 text-gray-500 relative flex itemx-center justify-center gap-x-1">
             Calculating data...
             <span className="spinner-border h-4 w-4 border-t border-gray-500 rounded-full animate-spin"></span>
           </div>
