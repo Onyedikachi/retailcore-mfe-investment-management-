@@ -56,14 +56,14 @@ export default function Dashboard() {
           <BookInvestmentButton
             disabled={!permissions.includes("BOOK_INVESTMENT")}
           >
-            <button className="flex h-[32px] items-center gap-[8px] rounded-[6px] bg-sterling-red-800 px-3 py-[4px] text-white ">
+            <div className="flex h-[32px] items-center gap-[8px] rounded-[6px] bg-sterling-red-800 px-3 py-[4px] text-white ">
               <span className="p-[5px]">
                 <Icon icon="eva:plus-fill" />
               </span>
               <span className="text-sm font-semibold text-[#F6F8F9]">
                 Book Investment
               </span>
-            </button>
+            </div>
           </BookInvestmentButton>
         </div>
         <div className="flex justify-between items-end">
