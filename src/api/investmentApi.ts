@@ -5,9 +5,9 @@ import { IGetProducts, ICreateProduct } from "./types/investmentApi.types";
 import urls from "../helpers/url_helpers";
 import { cleanObject } from "@app/utils/cleanObject";
 
-const formApi ="https://customer-management-forms-api.dev.bepeerless.co/v1"
-const customerApi = "https://customer-management-api.dev.bepeerless.co/v1"
-const productApi = "https://product-mgt-api.dev.bepeerless.co/v1"
+const formApi ="https://dev2-customer-management-forms-api.dev.bepeerless.co/v1"
+const customerApi = "https://dev2-customer-management-api.dev.bepeerless.co/v1"
+const productApi = "https://dev2-product-mgt-api.dev.bepeerless.co/v1"
 export const investmentApi: any = createApi({
   reducerPath: "investmentApi",
   baseQuery: axiosBaseQuery({ serviceKey: "investment" }),

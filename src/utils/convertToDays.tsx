@@ -15,9 +15,7 @@ export function convertDuration(duration, inputType, outputUnit) {
     case 4:
       return days / 365;
     default:
-      throw new Error(
-        "Invalid output unit. Supported units: days, weeks, months, years."
-      );
+      return days;
   }
 }
 

@@ -17,7 +17,9 @@ export default function ProductInfoInvestmentCalc({
   productDetail,
   formData,
   calcDetail,
+  loading,
 }) {
+  console.log("🚀 ~ formData:", formData);
   const { currencies } = useContext(AppContext);
   const [productDetailMap, setProductDetailMap] = useState(null);
   const [active, setActive] = useState([]);
@@ -412,17 +414,17 @@ export default function ProductInfoInvestmentCalc({
           <div className="flex flex-col gap-4 max-h-[300px] overflow-y-auto">
             {productDetailMap?.map((item, index) => (
               <div key={index} className="">
-                <div  onClick={() => toggleTab(item?.name)} className="flex items-center gap-x-1 mb-1">
+                <div
+                  onClick={() => toggleTab(item?.name)}
+                  className="flex items-center gap-x-1 mb-1"
+                >
                   {active.includes(item?.name) ? (
                     <FaCaretDown className="text-[#555555]" />
                   ) : (
                     <FaCaretRight className="text-[#555555]" />
                   )}
 
-                  <span
-                   
-                    className="text-[#636363] text-base font-medium"
-                  >
+                  <span className="text-[#636363] text-base font-medium">
                     {item?.name}
                   </span>
                 </div>
@@ -464,50 +466,55 @@ export default function ProductInfoInvestmentCalc({
           </span>
         </div>
 
-        {calcDetail && (
-          <div className="flex flex-col gap-6 px-6 py-[36px]">
-            <div className="flex flex-col ">
-              <span className="text-[#636363] font-medium text-base">
-                Value at Maturity
-              </span>
-              <span className="">
-                {currencyFormatter(
-                  calcDetail?.maturityValue || 0,
-                  handleCurrencyName(
-                    productDetail?.productInfo?.currency,
-                    currencies
-                  )
-                )}
-              </span>
-            </div>
-            <div className="flex flex-col ">
-              <span className="text-[#636363] font-medium text-base">
-                Principal
-              </span>
-              <span className="">
-                {currencyFormatter(
-                  calcDetail?.principal || 0,
-                  handleCurrencyName(
-                    productDetail?.productInfo?.currency,
-                    currencies
-                  )
-                )}
-              </span>
-            </div>
-            <div className="flex flex-col ">
-              <span className="text-[#636363] font-medium text-base">
-                Maturity Date
-              </span>
-              <span className="">
-                {calcDetail?.maturityDate}{" "}
-                {
-                  Interval[
-                    productDetail?.pricingConfiguration?.applicableTenorMaxUnit
-                  ]
-                }
-                , effective after approval
-              </span>
-            </div>
+        {!loading ? (
+          <>
+            {calcDetail && (
+              <div className="flex flex-col gap-6 px-6 py-[36px]">
+                <div className="flex flex-col ">
+                  <span className="text-[#636363] font-medium text-base">
+                    Value at Maturity
+                  </span>
+                  <span className="">
+                    {currencyFormatter(
+                      calcDetail?.maturityValue || 0,
+                      handleCurrencyName(
+                        productDetail?.productInfo?.currency,
+                        currencies
+                      )
+                    )}
+                  </span>
+                </div>
+                <div className="flex flex-col ">
+                  <span className="text-[#636363] font-medium text-base">
+                    Principal
+                  </span>
+                  <span className="">
+                    {currencyFormatter(
+                      calcDetail?.principal || 0,
+                      handleCurrencyName(
+                        productDetail?.productInfo?.currency,
+                        currencies
+                      )
+                    )}
+                  </span>
+                </div>
+                <div className="flex flex-col ">
+                  <span className="text-[#636363] font-medium text-base">
+                    Maturity Date
+                  </span>
+                  <span className="">
+                    {calcDetail?.maturityDate}{" "}
+                    {Interval[formData?.facilityDetailsModel?.tenorUnit]},
+                    effective after approval
+                  </span>
+                </div>
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="text-xs text-center py-6 text-gray-500 relative flex itemx-center justify-center gap-x-1">
+            Calculating data...
+            <span className="spinner-border h-4 w-4 border-t border-gray-500 rounded-full animate-spin"></span>
           </div>
         )}
       </div>

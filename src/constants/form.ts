@@ -70,7 +70,7 @@ export const FacilityDetailsModelSchema = yup.object().shape({
     .nullable()
     .required("Interest is required"),
   capitalizationMethod: yup.number().integer().min(0).max(4).required(),
-  tenorMin: yup.number().typeError("Invalid value").integer().nullable(),
+  tenorMin: yup.number().typeError("Invalid value").nullable(),
   tenorMax: yup.number().typeError("Invalid value").integer().nullable(),
   prinMin: yup.number().typeError("Invalid value").integer().nullable(),
   prinMax: yup.number().typeError("Invalid value").integer().nullable(),

@@ -68,26 +68,15 @@ export const handleInterestRateValues = ({
   if (productDetail?.pricingConfiguration?.interestRateRangeType === 1) {
     productDetail?.pricingConfiguration?.interestRateConfigModels?.forEach(
       (i) => {
-       
         if (
           values.tenor >=
-            convertDuration(
-              i.tenorMin,
-              i.tenorMinUnit,
-              values.tenorUnit
-            ) &&
+            convertDuration(i.tenorMin, i.tenorMinUnit, values.tenorUnit) &&
           values.tenor <=
-            convertDuration(
-              i.tenorMax,
-              i.tenorMaxUnit,
-              values.tenorUnit
-            )
+            convertDuration(i.tenorMax, i.tenorMaxUnit, values.tenorUnit)
         ) {
           setValue("intMin", i.min);
           setValue("intMax", i.max);
-        
         }
-        
       }
     );
   }
@@ -251,7 +240,7 @@ export default function FacilityDetails({
   );
   const values = getValues();
   console.log("🚀 ~ values:", values);
-
+  console.log("🚀 ~ errors:", errors)
   const [
     getProduct,
     { data, isSuccess, isError, error, isLoading: searchLoading },
@@ -304,7 +293,7 @@ export default function FacilityDetails({
     values.interestRate,
     productDetail,
     values.investmentProductId,
-    values.tenorUnit
+    values.tenorUnit,
   ]);
 
   useEffect(() => {
@@ -325,6 +314,13 @@ export default function FacilityDetails({
       facilityDetailsModel: values,
     });
   }, [isSavingDraft]);
+
+  useEffect(() => {
+    setFormData({
+      ...formData,
+      facilityDetailsModel: { ...formData.facilityDetailsModel, ...values },
+    });
+  }, [values.tenorUnit]);
 
   useEffect(() => {
     if (
