@@ -181,7 +181,7 @@ export const BookingDetailLayout = ({
                   <div>
                     <span className="font-bold block mb-[15px]">Tenor</span>
                     <span className="font-normal block">
-                      {detail?.tenor} {Interval[  detail?.tenorUnit]}{" "}
+                      {detail?.tenor} {Interval[detail?.tenorUnit]}{" "}
                     </span>
                   </div>
                   <div>
@@ -196,15 +196,17 @@ export const BookingDetailLayout = ({
                 <div className="border border-[#E5E9EB] rounded-lg py-[35px] px-[30px] flex justify-between items-center">
                   {permissions?.includes("LIQUIDATE_INVESTMENT") && (
                     <div className="flex gap-x-6 items-center">
-                      <button
-                        data-testid="modify"
-                        onClick={() => handleClick("early liquidate", detail)}
-                        className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3`}
-                      >
-                        <FaRegTimesCircle className="text-[#444]" /> Early
-                        Liquidate
-                      </button>
-
+                      {detail?.earlyLiquidation && (
+                        <button
+                          data-testid="modify"
+                          onClick={() => handleClick("early liquidate", detail)}
+                          className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3`}
+                        >
+                          <FaRegTimesCircle className="text-[#444]" /> Early
+                          Liquidate
+                        </button>
+                      )}
+                      {detail?.partLiquidation && (
                       <button
                         data-testid="deactivate-btn"
                         onClick={() => handleClick("part liquidate", detail)}
@@ -212,7 +214,7 @@ export const BookingDetailLayout = ({
                       >
                         <FaBan className="text-sterling-red-800" /> Part
                         Liquidate
-                      </button>
+                      </button>)}
                     </div>
                   )}
                   <Link

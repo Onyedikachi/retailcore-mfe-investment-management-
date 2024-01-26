@@ -42,11 +42,11 @@ export const handleAccountForLiquidation = ({
         transactionSettingModel: {
           ...formData?.transactionSettingModel,
           accountForLiquidation: accountData[0].value,
-          AccountForLiquidationLedgerId: accountData[0]?.ledgerId,
+          accountForLiquidationLedgerId: accountData[0]?.ledgerId,
         },
       });
       setValue("accountForLiquidation", accountData[0].value);
-      setValue("AccountForLiquidationLedgerId", accountData[0].ledgerId);
+      setValue("accountForLiquidationLedgerId", accountData[0].ledgerId);
     }
 
     setCustomerData(accountData);
@@ -156,7 +156,7 @@ export default function TransactionSettings({
   useEffect(() => {
    if(values?.accountForLiquidation){
    const data = customerData?.find(i=> i.value === values?.accountForLiquidation)
-   setValue("AccountForLiquidationLedgerId", data?.ledgerId);
+   setValue("accountForLiquidationLedgerId", data?.ledgerId);
    }
   }, [values?.accountForLiquidation]);
   return (
