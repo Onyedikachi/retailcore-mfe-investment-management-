@@ -96,7 +96,7 @@ export default function Liquidation({
   });
   const { currencies } = useContext(AppContext);
   const [defaultValue, setDefaultValue] = useState("");
-  const [selection, setSelection] = useState(1);
+  const [selection, setSelection] = useState(0);
 
   const values = getValues();
   const [isTrue, setTrue] = useState(false);
@@ -243,7 +243,7 @@ export default function Liquidation({
             onProceed(
               {
                 ...d,
-                liquidationUnit: type === "early" ? 0 : selection,
+                liquidationUnit: selection,
                 id: detail?.id,
               },
               onConfirm,
