@@ -12,7 +12,7 @@ export default function ChartInfo({labels, title}) {
           All Investments {title}
         </span>
 
-        <button className="flex h-[32px] items-center gap-[8px] rounded-[6px] bg-transparent px-3 py-[4px] text-[#8F8F8F] ">
+        <div className="flex h-[32px] items-center gap-[8px] rounded-[6px] bg-transparent px-3 py-[4px] text-[#8F8F8F] ">
           <span className="text-sm  text-[#8F8F8F] whitespace-nowrap">Filter by Date</span>
 
           <DateSelect
@@ -25,7 +25,7 @@ export default function ChartInfo({labels, title}) {
               <Icon icon="ep:filter" />
             </span>
           </DateSelect>
-        </button>
+        </div>
       </div>
 
       <div className="mt-[15px] flex items-center justify-between gap-x-6">

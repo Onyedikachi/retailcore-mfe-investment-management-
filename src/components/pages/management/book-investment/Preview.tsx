@@ -149,7 +149,7 @@ export default function Preview({
   const { data: activityData, isLoading: activityIsLoading } =
     useGetInvestmentActivityLogQuery(
       { bookingId: id },
-      { skip: process === "create" }
+      { skip: !id}
     );
     const { data: activityRequestData, isLoading: activityRequestIsLoading } =
     useGetInvestmentRequestActivityLogQuery(
