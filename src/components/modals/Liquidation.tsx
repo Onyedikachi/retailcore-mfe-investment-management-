@@ -160,6 +160,7 @@ export default function Liquidation({
             ? bookingDetails?.data?.facilityDetailsModel?.principal
             : values?.amounttoLiquidate,
         liquidationUnit: selection,
+        liquidationType: type === "early" ? 0 : 1,
         investmentBookingId: !detail?.metaInfo
           ? detail?.id
           : detail?.investmentBookingId,
@@ -245,6 +246,7 @@ export default function Liquidation({
                 ...d,
                 liquidationUnit: selection,
                 id: detail?.id,
+               
               },
               onConfirm,
               type,
