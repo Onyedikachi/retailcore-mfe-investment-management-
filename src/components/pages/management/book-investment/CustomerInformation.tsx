@@ -18,6 +18,7 @@ import { CustomerDetail } from "@app/components/modals/CustomerDetail";
 import { Failed } from "@app/components/modals";
 import { Messages } from "@app/constants/enums";
 import BottomBarLoader from "@app/components/BottomBarLoader";
+import debounce from "lodash.debounce";
 export const onProceed = (data, proceed, formData, setFormData) => {
   setFormData({
     ...formData,
@@ -43,7 +44,6 @@ export default function CustomerInformation({
   setDisabled,
   isSavingDraft,
 }: CustomerInformationProps) {
-
   const {
     register,
     handleSubmit,
@@ -72,7 +72,7 @@ export default function CustomerInformation({
     formData?.customerBookingInfoModel?.investmentformUrl
   );
   const values = getValues();
-  console.log("🚀 ~ values:", values)
+  console.log("🚀 ~ values:", values);
 
   const {
     data,
@@ -145,8 +145,8 @@ export default function CustomerInformation({
     setValue("accountStatus", accountData?.data?.status);
     setValue("balance", parseFloat(accountData?.data?.balance));
     setValue("currencyId", accountData?.data?.currencyId);
-    setValue("customerAccountLedgerId",  accountData?.data?.ledgerId)
-   
+    setValue("customerAccountLedgerId", accountData?.data?.ledgerId);
+
     trigger("balance");
   }, [accountIsError, accountIsSuccess, isLoading, accountData]);
 
@@ -177,7 +177,10 @@ export default function CustomerInformation({
         )} ${capitalizeFirstLetter(foundObject?.customer_profiles[0]?.surname)}`
       );
       setValue("customerAccount", accountNumber);
-      setValue("customerAccountLedgerId", foundObject?.customer_products[0]?.ledgerId)
+      setValue(
+        "customerAccountLedgerId",
+        foundObject?.customer_products[0]?.ledgerId
+      );
       trigger("customerAccount");
     }
   }, [accountNumber, data]);
@@ -247,9 +250,7 @@ export default function CustomerInformation({
             <div className="flex gap-[15px] items-end">
               <div className="w-[360px]">
                 <SearchInput
-                  setSearchTerm={(e) => {
-                    setQuery(e);
-                  }}
+                  setSearchTerm={debounce((e) => setQuery(e), 800)}
                   searchResults={customersData}
                   setSearchResults={() => {}}
                   searchLoading={searchLoading}

@@ -165,7 +165,7 @@ export default function IndexComponent() {
       notifyCustomerOnMaturity: false,
       rollOverAtMaturity: false,
       rollOverOption: 0,
-      AccountForLiquidationLedgerId: "",
+      accountForLiquidationLedgerId: "",
     },
     isDraft: false,
     recentUpdated: false,
@@ -263,7 +263,7 @@ export default function IndexComponent() {
       principal: formData?.facilityDetailsModel?.principal,
       rate: formData?.facilityDetailsModel?.interestRate,
       tenor: formData?.facilityDetailsModel?.tenor,
-      tenorUnit: productDetail?.pricingConfiguration?.applicableTenorMaxUnit,
+      tenorUnit: formData?.facilityDetailsModel?.tenorUnit,
       method: productDetail?.pricingConfiguration?.interestComputationMethod,
     });
   };
@@ -282,6 +282,7 @@ export default function IndexComponent() {
     formData?.facilityDetailsModel?.principal,
     formData?.facilityDetailsModel?.interestRate,
     formData?.facilityDetailsModel?.capitalizationMethod,
+    formData?.facilityDetailsModel?.tenorUnit,
     productDetail,
   ]);
 
@@ -439,6 +440,7 @@ export default function IndexComponent() {
                     productDetail={productDetail}
                     formData={formData}
                     calcDetail={calcDetail}
+                    loading={calcLoading}
                   />
                 </div>
               )}
