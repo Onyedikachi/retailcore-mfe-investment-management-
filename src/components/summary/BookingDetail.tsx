@@ -140,7 +140,7 @@ export default function BookingDetail({
                 {detail?.facilityDetailsModel?.tenor}{" "}
                 {
                   Interval[
-                    productDetail?.pricingConfiguration?.applicableTenorMaxUnit
+                    detail?.facilityDetailsModel?.tenorUnit
                   ]
                 }
               </div>
