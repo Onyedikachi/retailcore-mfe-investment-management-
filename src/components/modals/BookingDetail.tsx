@@ -123,7 +123,15 @@ export const BookingDetailLayout = ({
                       <span className="font-bold block mb-[15px]">
                         Value at Liquidation
                       </span>
-                      <span className="font-normal block">{"?? " || "-"} </span>
+                      <span className="font-normal block">
+                        {currencyFormatter(
+                          detail?.maturityValue,
+                          handleCurrencyName(
+                            productInfo?.data?.productInfo?.currency,
+                            currencies
+                          )
+                        ) || "-"}{" "}
+                      </span>
                     </div>
                   )}
 
@@ -194,29 +202,35 @@ export const BookingDetailLayout = ({
                   </div>
                 </div>
                 <div className="border border-[#E5E9EB] rounded-lg py-[35px] px-[30px] flex justify-between items-center">
-                  {permissions?.includes("LIQUIDATE_INVESTMENT") && (
-                    <div className="flex gap-x-6 items-center">
-                      {detail?.earlyLiquidation && (
-                        <button
-                          data-testid="modify"
-                          onClick={() => handleClick("early liquidate", detail)}
-                          className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3`}
-                        >
-                          <FaRegTimesCircle className="text-[#444]" /> Early
-                          Liquidate
-                        </button>
-                      )}
-                      {detail?.partLiquidation && (
-                      <button
-                        data-testid="deactivate-btn"
-                        onClick={() => handleClick("part liquidate", detail)}
-                        className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
-                      >
-                        <FaBan className="text-sterling-red-800" /> Part
-                        Liquidate
-                      </button>)}
-                    </div>
-                  )}
+                  {permissions?.includes("LIQUIDATE_INVESTMENT") &&
+                    detail?.investmentBookingStatus === 1 && (
+                      <div className="flex gap-x-6 items-center">
+                        {detail?.earlyLiquidation && (
+                          <button
+                            data-testid="modify"
+                            onClick={() =>
+                              handleClick("early liquidate", detail)
+                            }
+                            className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3`}
+                          >
+                            <FaRegTimesCircle className="text-[#444]" /> Early
+                            Liquidate
+                          </button>
+                        )}
+                        {detail?.partLiquidation && (
+                          <button
+                            data-testid="deactivate-btn"
+                            onClick={() =>
+                              handleClick("part liquidate", detail)
+                            }
+                            className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
+                          >
+                            <FaBan className="text-sterling-red-800" /> Part
+                            Liquidate
+                          </button>
+                        )}
+                      </div>
+                    )}
                   <Link
                     to={`/investment-management/individual/process-summary/preview/${detail?.id}?product_id=${detail?.investmentProductId}&request_id=${detail?.investmentBookingRequestId}`}
                   >

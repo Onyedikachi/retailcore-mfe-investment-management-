@@ -107,7 +107,12 @@ export const statusHandler = ({
   setFailedSubtext,
   error,
   role,
+  detail,
 }) => {
+  console.log("🚀 ~ detail:", detail);
+  setSuccessText("");
+  setIsSuccessOpen(false);
+  setSubText("");
   if (modifyRequestSuccess) {
     setSuccessText(Messages.BOOKING_WITHDRAW_SUCCESS);
     setSubText(Messages.BOOKING_WITHDRAW_SUCCESS_SUB);
@@ -123,19 +128,41 @@ export const statusHandler = ({
     setFailed(true);
   }
   if (earlyLiquidateSuccess) {
-    setSuccessText(Messages.EARLY_LIQUIDATION_REQUEST);
+    setSuccessText(
+      role === "superadmin"
+        ? Messages.EARLY_LIQUIDATION_SUCCESS
+        : Messages.EARLY_LIQUIDATION_REQUEST
+    );
+    setSubText(
+      `${detail?.customerName}[${detail?.customerAccount}] will be credited, once approval is granted`
+    );
     setIsSuccessOpen(true);
   }
   if (partLiquidateSuccess) {
-    setSuccessText(Messages.PART_LIQUIDATION_REQUEST);
+    setSuccessText(
+      role === "superadmin"
+        ? Messages.PART_LIQUIDATION_SUCCESS
+        : Messages.PART_LIQUIDATION_REQUEST
+    );
+    setSubText(
+      `${detail?.customerName}[${detail?.customerAccount}] will be credited, once approval is granted`
+    );
     setIsSuccessOpen(true);
   }
   if (earlyEditLiquidateSuccess) {
-    setSuccessText(Messages.LIQUIDATION_MODIFICATION_REQUEST_SUCCESS);
+    setSuccessText(
+      role === "superadmin"
+        ? Messages.LIQUIDATION_MODIFICATION__SUCCESS
+        : Messages.LIQUIDATION_MODIFICATION_REQUEST_SUCCESS
+    );
     setIsSuccessOpen(true);
   }
   if (partEditLiquidateSuccess) {
-    setSuccessText(Messages.LIQUIDATION_MODIFICATION_REQUEST_SUCCESS);
+    setSuccessText(
+      role === "superadmin"
+        ? Messages.LIQUIDATION_MODIFICATION__SUCCESS
+        : Messages.LIQUIDATION_MODIFICATION_REQUEST_SUCCESS
+    );
     setIsSuccessOpen(true);
   }
 
@@ -628,6 +655,7 @@ export default function TableComponent<TableProps>({
       setFailedSubtext,
       error,
       role,
+      detail,
     });
   }, [
     isSuccess,
@@ -648,11 +676,11 @@ export default function TableComponent<TableProps>({
     modifyRequestIsError,
     modifyRequestError,
     partEditLiquidateSuccess,
-      partEditLiquidateIsError,
-      partEditLiquidateError,
-      earlyEditLiquidateSuccess,
-      earlyEditLiquidateIsError,
-      earlyEditLiquidateError,
+    partEditLiquidateIsError,
+    partEditLiquidateError,
+    earlyEditLiquidateSuccess,
+    earlyEditLiquidateIsError,
+    earlyEditLiquidateError,
   ]);
 
   useEffect(() => {
