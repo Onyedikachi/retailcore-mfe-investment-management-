@@ -294,6 +294,7 @@ export const handleProductsDropdown = (
           ? InvestmentBookingStatus[status]?.toLowerCase()
           : status
       ];
+
     if (!permissions?.includes("RE_OR_DEACTIVATE_INVESTMENT_PRODUCT")) {
       options = options?.filter(
         (i: any) =>
@@ -301,6 +302,7 @@ export const handleProductsDropdown = (
           i.text.toLowerCase() !== "activate"
       );
     }
+    console.log("🚀 ~ options:", options);
     if (!permissions?.includes("LIQUIDATE_INVESTMENT")) {
       options = options?.filter(
         (i: any) =>
@@ -329,12 +331,12 @@ export const handleProductsDropdown = (
       );
     }
     if (
-      !permissions?.includes("CREATE_INVESTMENT_PRODUCT") ||
-      !permissions?.includes("BOOK_INVESTMENT") ||
-      ((permissions?.includes("CREATE_INVESTMENT_PRODUCT") ||
-        !permissions?.includes("BOOK_INVESTMENT")) &&
-        !permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS") &&
-        !permissions?.includes("VIEW_ALL_INVESTMENT_RECORDS") &&
+      (!permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&
+        !permissions?.includes("BOOK_INVESTMENT")) ||
+      (((permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&
+        !permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS")) ||
+        (permissions?.includes("BOOK_INVESTMENT") &&
+          !permissions?.includes("VIEW_ALL_INVESTMENT_RECORDS"))) &&
         created_By_Id !== userId)
     ) {
       options = options?.filter((i: any) => i.text.toLowerCase() === "view");
