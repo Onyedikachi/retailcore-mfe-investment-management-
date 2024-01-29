@@ -142,7 +142,7 @@ export default function IndexComponent() {
         return {
           ...i,
           tenor: `${i.tenor} ${Interval[1]}`,
-          principal: `${currencyFormatter(i?.principal, handleCurrencyName(i?.currency, currencies))}`,
+          principal: `${currencyFormatter(i?.initialPrincipal, handleCurrencyName(i?.currency, currencies))}`,
           maturityValue: `${currencyFormatter(i?.maturityValue, handleCurrencyName(i?.currency, currencies))}`,
         }
       }));

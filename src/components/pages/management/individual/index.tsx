@@ -78,7 +78,7 @@ export const handleProductStatus = ({
         data.results.map((i) => ({
           ...i,
           principal: `${currencyFormatter(
-            i?.principal,
+            i?.initialPrincipal,
             handleCurrencyName(i?.currency, currencies)
           )}`,
           state: IndividualStatusTypes.find((n) => n.id === i.state)?.type,
