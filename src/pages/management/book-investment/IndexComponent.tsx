@@ -155,9 +155,9 @@ export default function IndexComponent() {
       tenorMax: null,
       prinMin: null,
       prinMax: null,
-      intMin: null,
-      intMax: null,
-      tenorUnit: null,
+      intMin: 0,
+      intMax: 100,
+      tenorUnit: 1,
     },
     transactionSettingModel: {
       accountName: "",
