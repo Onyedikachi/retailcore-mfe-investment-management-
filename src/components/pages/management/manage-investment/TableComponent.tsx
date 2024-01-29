@@ -125,7 +125,7 @@ export function handleDownload(
       let obj: ProductDataProps = {
         "customer name": i?.customerName || "",
         "customer id": i?.investmentId || "",
-        principal: i?.principal || "",
+        principal: i?.initialPrincipal || "",
         "investment product": i?.investmentProduct || "",
         status: i?.status || "",
         "updated on": moment(i.updated_At).format("DD MMM YYYY, hh:mm A"),
@@ -134,7 +134,7 @@ export function handleDownload(
       let overviewDrillDownObj = {
         "customer name": i?.customerName || "",
         "customer id": i?.investmentId || "",
-        "principal amount": i?.principal || "",
+        "principal amount": i?.initialPrincipal || "",
         tenor: i?.tenor,
         "interest rate": i?.interestRate,
         "value at maturity": i?.maturityValue || "",
