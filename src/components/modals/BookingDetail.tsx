@@ -92,7 +92,7 @@ export const BookingDetailLayout = ({
                   <div>
                     <span className="font-bold block mb-[15px]">
                       Investment ID
-                    </span>
+                    </span>8
                     <span
                       data-testid="id-value"
                       className="font-normal block uppercase"
