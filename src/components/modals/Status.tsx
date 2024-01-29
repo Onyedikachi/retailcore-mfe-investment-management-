@@ -49,7 +49,7 @@ export function handleNavigations(
     return;
   }
 
-  if (isIndividual && isModifyOrContinueOrCreate) {
+  if (isIndividual) {
     return role === "superadmin" && action !== "draft"
       ? individualDashboard
       : individualRequests;
