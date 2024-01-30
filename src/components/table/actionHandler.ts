@@ -64,9 +64,11 @@ export const actionHandler = ({
   }
   if (action.toLowerCase() === Actions.WITHDARW_MODIFY) {
     setConfirmText(Prompts.PRODUCT_WITHDRAW_MODIFY);
-    
-    if (specificCategory === SpecificCategory.individual && items.requestType === "booking") {
-   
+
+    if (
+      specificCategory === SpecificCategory.individual &&
+      items.requestType === "booking"
+    ) {
       setSubText(Prompts.BOOKING_WITHDRAW_MODIFY_SUB);
     }
     setIsConfirmOpen(true);
@@ -100,9 +102,7 @@ export const actionHandler = ({
   }
   if (action.toLowerCase() === Actions.CONTINUE_REQUEST) {
     if (specificCategory === SpecificCategory.individual) {
-      navigate(
-        `/investment-management/continue/individual?id=${items.id}`
-      );
+      navigate(`/investment-management/continue/individual?id=${items.id}`);
       return;
     } else {
       navigate(
