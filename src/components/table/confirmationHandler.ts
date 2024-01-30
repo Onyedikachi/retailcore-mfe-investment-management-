@@ -50,7 +50,7 @@ export const confirmationHandler = ({
   }
 
   if (action.toLowerCase() === Actions.WITHDARW_MODIFY) {
-    if (!permissions?.includes("CREATE_INVESTMENT_PRODUCT")) {
+    if ((!permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&  specificCategory !== SpecificCategory.individual) || (!permissions?.includes("BOOK_INVESTMENT")  && specificCategory === SpecificCategory.individual)) {
       errorToast("You do not have permission to make changes!");
     } else {
       const data = JSON.parse(detail?.metaInfo);
