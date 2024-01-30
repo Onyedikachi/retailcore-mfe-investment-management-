@@ -345,10 +345,6 @@ export default function BookingDetail({
 
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    console.log("InvestmentData Effect: " + JSON.stringify(investmentData));
-    console.log("productInfo Effect: " + JSON.stringify(productInfo));
-  }, [productInfo, investmentData]);
 
   useEffect(() => {
     if (!isInvestmentLoading && !isProductLoading) {

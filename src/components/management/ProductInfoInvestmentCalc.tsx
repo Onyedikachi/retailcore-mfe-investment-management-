@@ -19,7 +19,7 @@ export default function ProductInfoInvestmentCalc({
   calcDetail,
   loading,
 }) {
-  console.log("🚀 ~ formData:", formData);
+
   const { currencies } = useContext(AppContext);
   const [productDetailMap, setProductDetailMap] = useState(null);
   const [active, setActive] = useState([]);

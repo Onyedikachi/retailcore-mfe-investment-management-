@@ -406,7 +406,6 @@ export default function TableComponent({
   }, [category]);
 
   const getOptionData = (value: any, label: string) => {
-    console.log(`${JSON.stringify(value)}, ${label}`);
 
     optionsDataHandler({ query, value, label, setQuery });
   };

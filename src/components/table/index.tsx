@@ -303,7 +303,7 @@ export const handleProductsDropdown = (
           i.text.toLowerCase() !== "activate"
       );
     }
-    console.log("🚀 ~ options:", options);
+  
     if (!permissions?.includes("LIQUIDATE_INVESTMENT")) {
       options = options?.filter(
         (i: any) =>
