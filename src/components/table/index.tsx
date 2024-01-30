@@ -109,10 +109,11 @@ export const statusHandler = ({
   role,
   detail,
 }) => {
-  console.log("🚀 ~ detail:", detail);
+  
   setSuccessText("");
   setIsSuccessOpen(false);
   setSubText("");
+  setFailed(false)
   if (modifyRequestSuccess) {
     setSuccessText(Messages.BOOKING_WITHDRAW_SUCCESS);
     setSubText(Messages.BOOKING_WITHDRAW_SUCCESS_SUB);
