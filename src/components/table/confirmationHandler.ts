@@ -50,9 +50,9 @@ export const confirmationHandler = ({
   }
 
   if (action.toLowerCase() === Actions.WITHDARW_MODIFY) {
-    // if (!permissions?.includes("CREATE_INVESTMENT_PRODUCT") || !permissions?.includes("CREATE_INVESTMENT_PRODUCT")) {
-    //   errorToast("You do not have permission to make changes!");
-    // } else {
+    if ((!permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&  specificCategory !== SpecificCategory.individual) || (!permissions?.includes("BOOK_INVESTMENT")  && specificCategory === SpecificCategory.individual)) {
+      errorToast("You do not have permission to make changes!");
+    } else {
       const data = JSON.parse(detail?.metaInfo);
       if (specificCategory === SpecificCategory.individual) {
         if (
@@ -77,6 +77,6 @@ export const confirmationHandler = ({
           )}/withdraw_modify/?id=${detail.id}&filter=${selected.value}`
         );
       }
-    // }
+    }
   }
 };
