@@ -673,3 +673,4 @@ export default function ProductDetail({ detail, previousData }: any) {
     </div>
   );
 }
+

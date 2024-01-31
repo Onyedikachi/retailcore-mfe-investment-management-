@@ -282,7 +282,23 @@ export default function FacilityDetails({
     }
 
     setDisabled(!isValid || balanceError || !validDoc || !validCurrency);
-  }, [isValid, values, validDoc, balanceError]);
+    if (isValid) {
+      setFormData({
+        ...formData,
+        facilityDetailsModel: values,
+      });
+    }
+  }, [
+    isValid,
+    values.tenor,
+    values.principal,
+    values.interestRate,
+    productDetail,
+    values.investmentProductId,
+    values.tenorUnit,
+    validDoc,
+    balanceError,
+  ]);
 
   useEffect(() => {
     handleInterestRateValues({ productDetail, values, setValue, trigger });
@@ -386,7 +402,7 @@ export default function FacilityDetails({
             <div className="flex gap-[15px]">
               <div className=" w-[360px]">
                 <SearchInput
-                   setSearchTerm={debounce((e) => setQuery(e), 800)}
+                  setSearchTerm={debounce((e) => setQuery(e), 800)}
                   searchResults={productsData}
                   setSearchResults={() => {}}
                   searchLoading={searchLoading}
