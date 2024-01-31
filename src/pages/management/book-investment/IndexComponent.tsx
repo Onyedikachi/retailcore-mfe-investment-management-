@@ -29,7 +29,6 @@ import {
 import BottomBarLoader from "@app/components/BottomBarLoader";
 
 export function handleNext(step, setStep, BookInvestmentFormSteps) {
-
   step < BookInvestmentFormSteps.length && setStep(step + 1);
 }
 
@@ -40,35 +39,24 @@ export function handleNav({
   investmentType,
   process,
   id,
+  formData,
+  preModifyRequest,
+  preCreateInvestment,
 }) {
+  if (!formData?.customerBookingInfoModel?.customerId) return;
+  if (formData?.id) {
+    preModifyRequest({ ...formData, isDraft: true });
+  } else {
+    preCreateInvestment({ ...formData, isDraft: true });
+  }
   step < BookInvestmentFormSteps.length
     ? handleNext(step, setStep, BookInvestmentFormSteps)
     : navigate(
-        `/investment-management/${process}/${investmentType}?stage=summary&id=${id}`
+        `/investment-management/${process}/${investmentType}?stage=summary&id=${formData?.id || id}`
       );
 }
 
 export function handleLinks(links, process) {
-  // const extraLinks = [
-  //   {
-  //     id: 3,
-  //     title: "Te\rm Deposit",
-  //     url: "/product-factory/investment",
-  //   },
-  //   {
-  //     id: 4,
-  //     title: productData?.productInfo?.productName,
-  //     url: "#",
-  //   },
-  // ];
-  // if (
-  //   process === "continue" ||
-  //   process === "modify" ||
-  //   process === "withdraw_modify"
-  // ) {
-  //   let filteredLinks = links.filter((i) => i.id !== 3);
-  //   return [...filteredLinks, ...extraLinks];
-  // }
   if (process === "restructure") {
     const linkWithId2 = links.find((link) => link.id === 2);
 
@@ -205,6 +193,8 @@ export default function IndexComponent() {
 
   const [createInvestment, { data, isLoading, isSuccess, isError, error }] =
     useCreateInvestmentMutation();
+  const [preCreateInvestment, { data: preData, isSuccess: preSuccess }] =
+    useCreateInvestmentMutation();
 
   const [
     modifyProduct,
@@ -225,6 +215,8 @@ export default function IndexComponent() {
       error: modifyRequestError,
     },
   ] = useModifyInvestmentRequestMutation();
+
+  const [preModifyRequest] = useModifyInvestmentRequestMutation();
 
   const {
     data: requestData,
@@ -308,6 +300,12 @@ export default function IndexComponent() {
   }, [step]);
 
   useEffect(() => {
+    if (preSuccess) {
+      setFormData({
+        ...formData,
+        id: preData?.data,
+      });
+    }
     handleMessage({
       error,
       isError,
@@ -326,6 +324,7 @@ export default function IndexComponent() {
       type: "booking",
     });
   }, [
+    data,
     isSuccess,
     isError,
     error,
@@ -334,6 +333,7 @@ export default function IndexComponent() {
     modifyError,
     modifyRequestSuccess,
     modifyRequestIsError,
+    preSuccess,
   ]);
 
   useEffect(() => {
@@ -347,6 +347,7 @@ export default function IndexComponent() {
       type: "individual_booking",
     });
   }, [requestIsSuccess]);
+
   return (
     <div>
       {!stage && (
@@ -382,6 +383,9 @@ export default function IndexComponent() {
                           investmentType,
                           process,
                           id,
+                          formData,
+                          preModifyRequest,
+                          preCreateInvestment,
                         })
                       }
                       setDisabled={setDisabled}

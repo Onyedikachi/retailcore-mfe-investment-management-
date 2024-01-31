@@ -24,6 +24,7 @@ export const onProceed = (data, proceed, formData, setFormData) => {
     ...formData,
     customerBookingInfoModel: { ...formData.customerBookingInfoModel, ...data },
   });
+
   proceed();
 };
 
@@ -97,7 +98,7 @@ export default function CustomerInformation({
     isError: accountIsError,
     error: accountError,
     isLoading,
-  } = useGetAccountBalanceQuery(query, { skip: !accountNumber });
+  } = useGetAccountBalanceQuery(accountNumber, { skip: !accountNumber });
 
   useEffect(() => {
     if (formData?.customerBookingInfoModel?.investmentformUrl) {
@@ -137,6 +138,8 @@ export default function CustomerInformation({
           ...formData.customerBookingInfoModel,
           accountStatus: accountData?.data?.status,
           currencyId: accountData?.data?.currencyId,
+          customerAccountLedgerId: accountData?.data?.ledgerId,
+          balance: accountData?.data?.status,
         },
       });
     }
@@ -185,15 +188,13 @@ export default function CustomerInformation({
   }, [accountNumber, data]);
 
   useEffect(() => {
-    if (searchLoading) {
-      // setCustomersData([]);
-      // setCustomerData(null);
-      // setAccountBalance(null);
-    }
-  }, [searchLoading]);
-
-  useEffect(() => {
     setDisabled(!isValid || !validKyc);
+    if (isValid) {
+      setFormData({
+        ...formData,
+        customerBookingInfoModel: values,
+      });
+    }
   }, [isValid, validKyc]);
 
   useEffect(() => {
@@ -253,13 +254,14 @@ export default function CustomerInformation({
                   searchResults={customersData}
                   setSearchResults={() => {}}
                   searchLoading={searchLoading}
-                  handleSearch={(value) =>
-                    handleSearch(value, setAccountNumber)
-                  }
+                  handleSearch={(value) => {
+                    handleSearch(value, setAccountNumber);
+                  }}
                   placeholder={"Search by account number"}
                   customClass="shadow-none"
                   hideBorder
                   defaultValue={accountNumber}
+                  inputType="search"
                 />
               </div>
               {accountBalance && (
@@ -308,6 +310,13 @@ export default function CustomerInformation({
                 accept={["pdf", "jpg", "png", "jpeg"]}
                 onUploadComplete={(value) => {
                   setValue("investmentformUrl", value);
+                  setFormData({
+                    ...formData,
+                    customerBookingInfoModel: {
+                      ...formData?.customerBookingInfoModel,
+                      investmentformUrl: value,
+                    },
+                  });
                   trigger("investmentformUrl");
                 }}
                 defaultValue={defaultValue}

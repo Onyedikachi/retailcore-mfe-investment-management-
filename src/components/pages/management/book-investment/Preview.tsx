@@ -96,7 +96,7 @@ export const submitForm = (
   formData,
   modifyProduct,
   modifyRequest,
-  createProduct,
+  createRequest,
   process,
   id,
   previousData
@@ -109,17 +109,17 @@ export const submitForm = (
       recentlyUpdatedMeta: previousData ? JSON.stringify(previousData) : null,
     });
   }
-  if (process === "withdraw_modify" || process === "continue") {
+  if (process === "withdraw_modify" || process === "continue" || (process === "create" && formData?.id)) {
     modifyRequest({
       ...formData,
       isDraft: false,
-      id: id || formData.id,
+      id: formData.id || id,
       recentlyUpdatedMeta: previousData ? JSON.stringify(previousData) : null,
     });
   }
 
-  if (process === "create" || process === "clone") {
-    createProduct({ ...formData, isDraft: false });
+  if ((process === "create" || process === "clone") && !formData?.id) {
+    createRequest({ ...formData, isDraft: false });
   }
 
   // navigate(paths.INVESTMENT_DASHBOARD);
@@ -147,20 +147,17 @@ export default function Preview({
   const [state, setState] = useState();
 
   const { data: activityData, isLoading: activityIsLoading } =
-    useGetInvestmentActivityLogQuery(
-      { bookingId: id },
-      { skip: !id}
-    );
-    const { data: activityRequestData, isLoading: activityRequestIsLoading } =
+    useGetInvestmentActivityLogQuery({ bookingId: id }, { skip: !id });
+  const { data: activityRequestData, isLoading: activityRequestIsLoading } =
     useGetInvestmentRequestActivityLogQuery(
       { bookingrequestId: id },
       { skip: !id }
     );
   const [
-    createProduct,
-    { isLoading: createProductLoading, isSuccess, isError, reset, error },
+    createRequest,
+    { isLoading: createRequestLoading, isSuccess, isError, reset, error },
   ] = useCreateInvestmentMutation();
-  
+
   const [
     modifyProduct,
     {
@@ -191,7 +188,7 @@ export default function Preview({
       formData,
       modifyProduct,
       modifyRequest,
-      createProduct,
+      createRequest,
       process,
       id,
       previousData
@@ -334,7 +331,9 @@ export default function Preview({
           setIsOpen={setIsConfirmOpen}
           onConfirm={() => {
             setIsConfirmOpen(false);
-            navigate(`/investment-management/${investmentType}?category=requests`);
+            navigate(
+              `/investment-management/${investmentType}?category=requests`
+            );
           }}
           onCancel={() => {
             setIsConfirmOpen(false);
@@ -351,7 +350,7 @@ export default function Preview({
         />
       )}
       <Loader
-        isOpen={createProductLoading || modifyLoading || modifyRequestLoading}
+        isOpen={createRequestLoading || modifyLoading || modifyRequestLoading}
         text={"Submitting"}
       />
     </div>
