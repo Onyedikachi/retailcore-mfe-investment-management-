@@ -29,7 +29,7 @@ import {
 import BottomBarLoader from "@app/components/BottomBarLoader";
 
 export function handleNext(step, setStep, BookInvestmentFormSteps) {
-  console.log(step);
+
   step < BookInvestmentFormSteps.length && setStep(step + 1);
 }
 

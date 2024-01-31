@@ -146,7 +146,7 @@ export default function IndexComponent() {
           maturityValue: `${currencyFormatter(i?.maturityValue, handleCurrencyName(i?.currency, currencies))}`,
         }
       }));
-      // console.log("🚀 ~ useEffect ~ investmentProducts:", investmentProducts?.results)
+    
     }
   }, [investmentProducts, isSuccess]);
 

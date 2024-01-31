@@ -118,7 +118,6 @@ export default function TransactionSettings({
     mode: "all",
   });
   const values = getValues();
-  console.log("🚀 ~ values:", values);
 
   const [customerData, setCustomerData] = useState<any>([]);
   const {

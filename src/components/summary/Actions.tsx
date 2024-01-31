@@ -231,8 +231,6 @@ export default function Actions({
 
   const handleRejection = () => {
     setRejection(false);
-    // console.log(reason, id, routeTo);
-    // return;
     if (type.toLowerCase() === "individual") {
       rejectInvestment({ reason, id, routeTo });
     } else {

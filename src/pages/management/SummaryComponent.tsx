@@ -91,7 +91,6 @@ export default function Summary() {
   } = useGetInvestmentRequestDetailQuery({
     id: request_id || id,
   });
-    console.log("🚀 ~ Summary ~ requestDetail:", requestDetail)
 
   useEffect(() => {
     if (isError && requestDetailIsSuccess)

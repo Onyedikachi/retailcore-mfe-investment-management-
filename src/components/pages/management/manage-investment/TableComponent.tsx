@@ -213,8 +213,7 @@ export default function TableComponent({
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [individualListHeaders, setIndividualListHeaders] =
     useState(individualHeader);
-  // console.log("category: " + JSON.stringify(category))
-  // console.log("selected: " + JSON.stringify(selected))
+
   const [options, setOptions] = React.useState({
     fieldSeparator: ",",
     quoteStrings: '"',
@@ -350,7 +349,7 @@ export default function TableComponent({
 
   useEffect(() => {
     if (isOverviewDrillDown) {
-      // console.log("🚀 ~ useEffect ~ productDownloadData:", productDownloadData)
+   
       handleDownload(
         productDownloadData?.results.map((i) => ({
           ...i,
@@ -406,7 +405,6 @@ export default function TableComponent({
   }, [category]);
 
   const getOptionData = (value: any, label: string) => {
-    console.log(`${JSON.stringify(value)}, ${label}`);
 
     optionsDataHandler({ query, value, label, setQuery });
   };
@@ -423,8 +421,7 @@ export default function TableComponent({
   };
 
   const handleDropClick = (value: any) => {};
-  // {console.log(productData)}
-  // console.log("🚀 ~ productData:", productData)
+
   return (
     <section className="w-full h-full">
       {/* Table Top bar  */}

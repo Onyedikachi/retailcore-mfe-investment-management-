@@ -6,7 +6,7 @@ import {
 import { StatusCategoryType } from "@app/constants/enums";
 
 export const sortTabStatus = (value: string, category: string) => {
-  console.log("categoryyy:" + category);
+ 
   // IndividualStatusTypes
   return (
     category === StatusCategoryType.Requests
