@@ -33,7 +33,6 @@ interface LiquidationProps {
 }
 
 export const onProceed = (data, onConfirm, type, metaInfo) => {
-
   onConfirm(data, type, metaInfo);
 };
 
@@ -189,7 +188,6 @@ export default function Liquidation({
     setValue("notify", isTrue);
   }, [isTrue]);
 
-
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
@@ -241,7 +239,6 @@ export default function Liquidation({
                 ...d,
                 liquidationUnit: selection,
                 id: detail?.id,
-               
               },
               onConfirm,
               type,
@@ -479,7 +476,7 @@ export default function Liquidation({
                     <div className="flex items-center mb-2  gap-x-1">
                       <span className="text-sm text-[#747373]">Charge: </span>
                       <span className="text-sm text-[#747373] font-semibold">
-                        Term Deposition Liquidation Charge [NGN 1,859]
+                        Term Deposition Liquidation Charge
                       </span>
                     </div>
                   ) : (
@@ -488,13 +485,21 @@ export default function Liquidation({
                         handleLiquidationPenalty(
                           productDetails?.liquidation?.early_LiquidationPenalty,
                           productDetails?.liquidation
-                            ?.early_LiquidationPenaltyPercentage
+                            ?.early_LiquidationPenalty === 3
+                            ? productDetails?.liquidation
+                                ?.eary_SpecialInterestRate
+                            : productDetails?.liquidation
+                                ?.early_LiquidationPenaltyPercentage
                         )}
                       {type.toLowerCase() == "part" &&
                         handleLiquidationPenalty(
                           productDetails?.liquidation?.part_LiquidationPenalty,
                           productDetails?.liquidation
-                            ?.part_LiquidationPenaltyPercentage
+                            ?.part_LiquidationPenalty === 3
+                            ? productDetails?.liquidation
+                                ?.part_SpecialInterestRate
+                            : productDetails?.liquidation
+                                ?.part_LiquidationPenaltyPercentage
                         )}
                     </span>
                   )}
