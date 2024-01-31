@@ -287,7 +287,7 @@ export default function CreateTermDeposit() {
       early_NoticePeriodUnit: 1,
       early_LiquidationPenalty: 0,
       early_LiquidationPenaltyPercentage: 0,
-      eary_specialInterestRate: 0,
+      eary_SpecialInterestRate: 0,
       early_SpecificCharges: [],
     },
     productGlMappings: [],

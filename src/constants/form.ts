@@ -588,6 +588,10 @@ export const liquiditySetupSchema = yup
         then: (schema) => schema.required("Provide value"),
         otherwise: (schema) => schema.nullable(),
       }),
+      part_SpecialInterestRate: yup
+      .number()
+      .typeError("Invalid value")
+      .max(100, "Value exceeded"),
 
     early_AllowEarlyLiquidation: yup.boolean().typeError("Invalid value"),
     early_RequireNoticeBeforeLiquidation: yup
@@ -602,6 +606,10 @@ export const liquiditySetupSchema = yup
         then: (schema) => schema.required("Provide a notice period"),
         otherwise: (schema) => schema.nullable(),
       }),
+      eary_SpecialInterestRate: yup
+      .number()
+      .typeError("Invalid value")
+      .max(100, "Value exceeded"),
     early_NoticePeriodUnit: yup
       .number()
       .typeError("Invalid value")
