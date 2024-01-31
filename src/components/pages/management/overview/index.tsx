@@ -89,8 +89,7 @@ export default function Overview() {
 
   useEffect(() => {
     if (dashboardStats) {
-      console.log("🚀 ~ useEffect ~ dashboardStats:", dashboardStats.data);
-
+ 
       setOverviewTabStats(dashboardStats.data);
     }
   }, [dashboardStats, isDashboardStatsSuccess]);

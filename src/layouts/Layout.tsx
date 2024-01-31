@@ -25,7 +25,7 @@ export const checkPermissions = ({
   handleRole,
 }) => {
   const userPermissions = value?.user?.user_permissions;
-  console.log("🚀 ~ userPermissions:", userPermissions)
+
   const canProceed =
     userPermissions &&
     userPermissions.length &&
@@ -35,6 +35,7 @@ export const checkPermissions = ({
   const canProceedInvestment =
     userPermissions &&
     userPermissions.length &&
+
     RequiredInvestmentPermissions.some((item) =>
       userPermissions.includes(item)
     );

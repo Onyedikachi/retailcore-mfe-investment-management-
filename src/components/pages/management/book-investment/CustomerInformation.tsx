@@ -72,7 +72,6 @@ export default function CustomerInformation({
     formData?.customerBookingInfoModel?.investmentformUrl
   );
   const values = getValues();
-  console.log("🚀 ~ values:", values);
 
   const {
     data,

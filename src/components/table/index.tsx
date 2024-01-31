@@ -303,7 +303,7 @@ export const handleProductsDropdown = (
           i.text.toLowerCase() !== "activate"
       );
     }
-    console.log("🚀 ~ options:", options);
+  
     if (!permissions?.includes("LIQUIDATE_INVESTMENT")) {
       options = options?.filter(
         (i: any) =>
@@ -742,7 +742,7 @@ export default function TableComponent<TableProps>({
                               }
                               options={options}
                               getOptions={(e: any) => {
-                                // console.log('e:' + JSON.stringify(e))
+                       
                                 getOptionData(e, label);
                               }}
                             >

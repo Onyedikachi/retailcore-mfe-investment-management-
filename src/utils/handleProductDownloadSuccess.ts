@@ -2,7 +2,7 @@ import { ProductTypes, StatusFilterOptions, StatusTypes, TypeFilterOptions } fro
 import { StatusCategoryType } from "@app/types";
 
 export const handleProductDownloadSuccess = ({productDownloadIsSuccess, category, productDownloadData, isChecker, csvExporter, requestsDownloadIsSuccess, requestsDownloadData, handleDownload}) => {
-  console.log("checking", productDownloadIsSuccess, category === StatusCategoryType.AllProducts)
+
   if (
     productDownloadIsSuccess &&
     category === StatusCategoryType.AllProducts
