@@ -336,7 +336,7 @@ export default function ProductInfoInvestmentCalc({
                                 productDetail?.liquidation
                                   ?.early_LiquidationPenalty
                               ] == "RecalculateInterest" &&
-                                `Recalculate accrued interest of ${productDetail?.liquidation?.eary_specialInterestRate}%.`}
+                                `Recalculate accrued interest of ${productDetail?.liquidation?.eary_SpecialInterestRate}%.`}
                             </span>
                             <span className="flex flex-wrap gap-x-1 my-1">
                               {liquidities[

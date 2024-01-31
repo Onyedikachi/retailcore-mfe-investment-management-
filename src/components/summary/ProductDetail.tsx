@@ -555,7 +555,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                           {liquidities[
                             detail?.liquidation?.early_LiquidationPenalty
                           ] == "RecalculateInterest" &&
-                            `Recalculate accrued interest of ${detail?.liquidation?.eary_specialInterestRate}%`}
+                            `Recalculate accrued interest of ${detail?.liquidation?.eary_SpecialInterestRate}%`}
                         </span>
                         <span className="flex flex-wrap gap-x-1 my-1">
                           {liquidities[
