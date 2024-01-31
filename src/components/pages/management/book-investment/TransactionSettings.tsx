@@ -28,7 +28,7 @@ export const handleAccountForLiquidation = ({
     const accountData = profileData.data.customer_products?.map((i: any) => {
       return {
         id: i?.customerProductId,
-        text: i?.accountNumber,
+        text: `${i?.accountNumber} - ${i?.productType} Account`,
         value: i?.accountNumber,
         ledgerId: i?.ledgerId,
       };
@@ -54,7 +54,6 @@ export const handleAccountForLiquidation = ({
 };
 
 export const onProceed = (data, proceed, formData, setFormData) => {
-
   setFormData({
     ...formData,
     transactionSettingModel: { ...data },
@@ -101,7 +100,7 @@ export default function TransactionSettings({
   isSavingDraft,
   productDetail,
 }: TransactionSettingsProps) {
-
+  console.log("🚀 ~ productDetail:", productDetail);
   const {
     register,
     handleSubmit,
@@ -150,13 +149,18 @@ export default function TransactionSettings({
 
   useEffect(() => {
     setDisabled(!isValid);
+    if (isValid) {
+      setFormData({ ...formData, transactionSettingModel: values });
+    }
   }, [isValid]);
-  
+
   useEffect(() => {
-   if(values?.accountForLiquidation){
-   const data = customerData?.find(i=> i.value === values?.accountForLiquidation)
-   setValue("accountForLiquidationLedgerId", data?.ledgerId);
-   }
+    if (values?.accountForLiquidation) {
+      const data = customerData?.find(
+        (i) => i.value === values?.accountForLiquidation
+      );
+      setValue("accountForLiquidationLedgerId", data?.ledgerId);
+    }
   }, [values?.accountForLiquidation]);
   return (
     <form
@@ -237,64 +241,66 @@ export default function TransactionSettings({
             </div>
           </InputDivs>
 
-          {formData?.facilityDetailsModel?.capitalizationMethod == 2 && (
-            <InputDivs
-              label={"Rollover after maturity"}
-              isCompulsory={false}
-              subLabel={
-                "This is applicable if the investment is not liquidated before maturity"
-              }
-            >
-              <div className="flex gap-[15px]">
-                <div className="w-[360px] flex items-center gap-x-3">
-                  <div>
-                    <Checkbox
-                      label={""}
-                      onChange={(value) => {
-                        setValue("rollOverAtMaturity", value);
-                        setFormData({
-                          ...formData,
-                          transactionSettingModel: {
-                            ...formData?.transactionSettingModel,
-                            rollOverAtMaturity: value,
-                          },
-                        });
-                      }}
-                      checked={
-                        formData?.transactionSettingModel?.rollOverAtMaturity
-                      }
-                    />
-                  </div>
-                  <div
-                    className={
-                      !formData?.transactionSettingModel?.rollOverAtMaturity
-                        ? "opacity-60"
-                        : ""
-                    }
-                  >
-                    <BorderlessSelect
-                      inputName={"rollOverOption"}
-                      disabled={
+          {formData?.facilityDetailsModel?.capitalizationMethod == 2 &&
+            productDetail?.liquidation?.early_AllowEarlyLiquidation !==
+              true && (
+              <InputDivs
+                label={"Rollover after maturity"}
+                isCompulsory={false}
+                subLabel={
+                  "This is applicable if the investment is not liquidated before maturity"
+                }
+              >
+                <div className="flex gap-[15px]">
+                  <div className="w-[360px] flex items-center gap-x-3">
+                    <div>
+                      <Checkbox
+                        label={""}
+                        onChange={(value) => {
+                          setValue("rollOverAtMaturity", value);
+                          setFormData({
+                            ...formData,
+                            transactionSettingModel: {
+                              ...formData?.transactionSettingModel,
+                              rollOverAtMaturity: value,
+                            },
+                          });
+                        }}
+                        checked={
+                          formData?.transactionSettingModel?.rollOverAtMaturity
+                        }
+                      />
+                    </div>
+                    <div
+                      className={
                         !formData?.transactionSettingModel?.rollOverAtMaturity
+                          ? "opacity-60"
+                          : ""
                       }
-                      inputError={errors?.rollOverOption}
-                      register={register}
-                      defaultValue={
-                        formData?.transactionSettingModel?.rollOverOption
-                      }
-                      options={RollOverOptions}
-                      errors={errors}
-                      setValue={setValue}
-                      trigger={trigger}
-                      clearErrors={clearErrors}
-                      placeholder="Select"
-                    />
+                    >
+                      <BorderlessSelect
+                        inputName={"rollOverOption"}
+                        disabled={
+                          !formData?.transactionSettingModel?.rollOverAtMaturity
+                        }
+                        inputError={errors?.rollOverOption}
+                        register={register}
+                        defaultValue={
+                          formData?.transactionSettingModel?.rollOverOption
+                        }
+                        options={RollOverOptions}
+                        errors={errors}
+                        setValue={setValue}
+                        trigger={trigger}
+                        clearErrors={clearErrors}
+                        placeholder="Select"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </InputDivs>
-          )}
-          {productDetail?.liquidation?.early_AllowPartLiquidation ||
+              </InputDivs>
+            )}
+          {productDetail?.liquidation?.early_AllowEarlyLiquidation ||
             (productDetail?.liquidation?.part_AllowPartLiquidation && (
               <div className="mt-10 flex flex-col w-full gap-y-2 py-6 px-5 rounded-lg border border-[#EBEBEB] bg-[#AAAAAA12]">
                 {productDetail?.liquidation?.early_AllowEarlyLiquidation && (
