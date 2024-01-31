@@ -346,7 +346,7 @@ export default function LiquiditySetup({
                             trigger={trigger}
                             clearErrors={clearErrors}
                             defaultValue={
-                              formData?.part_LiquidationPenaltyPercentage
+                              formData?.part_SpecialInterestRate
                             }
                             isCurrency
                             disablegroupseparators
@@ -590,7 +590,7 @@ export default function LiquiditySetup({
                           trigger={trigger}
                           clearErrors={clearErrors}
                           defaultValue={
-                            formData?.early_LiquidationPenaltyPercentage
+                            formData?.eary_SpecialInterestRate
                           }
                           isCurrency
                           disablegroupseparators
