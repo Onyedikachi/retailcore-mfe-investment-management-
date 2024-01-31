@@ -742,7 +742,7 @@ export default function TableComponent<TableProps>({
                               }
                               options={options}
                               getOptions={(e: any) => {
-                                // console.log('e:' + JSON.stringify(e))
+                       
                                 getOptionData(e, label);
                               }}
                             >

@@ -194,7 +194,7 @@ export default ({ productData, setOpen }) => {
                                                         productData?.data?.liquidation
                                                             ?.part_LiquidationPenalty
                                                     ] == "RecalculateInterest" &&
-                                                        `Recalculate accrued interest of ${productData?.data?.liquidation?.part_LiquidationPenaltyPercentage}%`}
+                                                        `Recalculate accrued interest of ${productData?.data?.liquidation?.part_SpecialInterestRate}%`}
                                                 </span>
                                                 <span>
                                                     {liquidities[
@@ -275,7 +275,7 @@ export default ({ productData, setOpen }) => {
                                                         productData?.data?.liquidation
                                                             ?.early_LiquidationPenalty
                                                     ] == "RecalculateInterest" &&
-                                                        `Recalculate accrued interest of ${productData?.data?.liquidation?.early_LiquidationPenaltyPercentage}%`}
+                                                        `Recalculate accrued interest of ${productData?.data?.liquidation?.eary_specialInterestRate}%`}
                                                 </span>
                                                 <span>
                                                     {liquidities[

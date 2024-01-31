@@ -33,7 +33,6 @@ interface LiquidationProps {
 }
 
 export const onProceed = (data, onConfirm, type, metaInfo) => {
-  // console.log("🚀 ~ onProceed ~ data:", data);
 
   onConfirm(data, type, metaInfo);
 };
@@ -190,10 +189,6 @@ export default function Liquidation({
     setValue("notify", isTrue);
   }, [isTrue]);
 
-  // useEffect(() => {
-  //   console.log("🚀 ~ values:", values);
-  //   console.log("🚀 ~ errors:", errors);
-  // }, [values]);
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");

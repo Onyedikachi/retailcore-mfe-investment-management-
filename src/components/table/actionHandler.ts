@@ -20,7 +20,7 @@ export const actionHandler = ({
   setLiquidationType,
   navigate,
 }) => {
-  // console.log("Show action", JSON.stringify({action, items, selected, category}));
+
   setAction(action);
   setDetail(items);
   dropDownClick(action, items);

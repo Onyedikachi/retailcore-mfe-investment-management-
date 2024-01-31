@@ -245,7 +245,7 @@ export default function ProductInfoInvestmentCalc({
                                 productDetail?.liquidation
                                   ?.part_LiquidationPenalty
                               ] == "RecalculateInterest" &&
-                                `Recalculate accrued interest of ${productDetail?.liquidation?.part_LiquidationPenaltyPercentage}%.`}
+                                `Recalculate accrued interest of ${productDetail?.liquidation?.part_SpecialInterestRate}%.`}
                             </span>
                             <span className="flex flex-wrap gap-x-1 my-1">
                               {liquidities[
@@ -336,7 +336,7 @@ export default function ProductInfoInvestmentCalc({
                                 productDetail?.liquidation
                                   ?.early_LiquidationPenalty
                               ] == "RecalculateInterest" &&
-                                `Recalculate accrued interest of ${productDetail?.liquidation?.early_LiquidationPenaltyPercentage}%.`}
+                                `Recalculate accrued interest of ${productDetail?.liquidation?.eary_specialInterestRate}%.`}
                             </span>
                             <span className="flex flex-wrap gap-x-1 my-1">
                               {liquidities[

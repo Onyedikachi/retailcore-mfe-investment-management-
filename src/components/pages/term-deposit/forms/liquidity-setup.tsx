@@ -340,7 +340,7 @@ export default function LiquiditySetup({
                         <div className="w-[300px]">
                           <MinMaxInput
                             register={register}
-                            inputName={"part_LiquidationPenaltyPercentage"}
+                            inputName={"part_SpecialInterestRate"}
                             errors={errors}
                             setValue={setValue}
                             trigger={trigger}
@@ -584,7 +584,7 @@ export default function LiquiditySetup({
                       <div className="w-[300px]">
                         <MinMaxInput
                           register={register}
-                          inputName={"early_LiquidationPenaltyPercentage"}
+                          inputName={"eary_specialInterestRate"}
                           errors={errors}
                           setValue={setValue}
                           trigger={trigger}
@@ -706,12 +706,12 @@ export default function LiquiditySetup({
                         <div className="w-[300px]">
                           <MinMaxInput
                             register={register}
-                            inputName={"early_SpecialInterestRate"}
+                            inputName={"eary_specialInterestRate"}
                             errors={errors}
                             setValue={setValue}
                             trigger={trigger}
                             clearErrors={clearErrors}
-                            defaultValue={formData?.early_SpecialInterestRate}
+                            defaultValue={formData?.eary_specialInterestRate}
                             isCurrency
                             disablegroupseparators
                             isPercent
