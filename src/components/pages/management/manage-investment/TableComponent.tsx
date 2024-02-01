@@ -97,17 +97,22 @@ export function initiateDownload(
   //   });
   //   return;
   // }
-  if (category === StatusCategoryType?.Investments) {
+ 
+  if (category === StatusCategoryType.Investments) {
     downloadProducts({
-      ...query,
-      page_Size: 1000000,
-      filter_by: selected?.value,
+      // ...query,
+      page:1,
+      page_Size: 10000000,
+      // filter_by: selected?.value,
+      filter_by: "created_by_anyone",
     });
   } else {
     downloadRequests({
-      ...query,
-      page_Size: 1000000,
-      filter_by: selected?.value,
+      // ...query,
+      page: 1,
+      page_Size: 10000000,
+      // filter_by: selected?.value,
+      filter_by: "created_by_anyone",
     });
   }
 }
