@@ -1,7 +1,7 @@
-import { ProductTypes, StatusFilterOptions, StatusTypes, TypeFilterOptions } from "@app/constants";
+import { IndividualStatusTypes, IndividualTypeFilterOptions, ProductTypes, StatusFilterOptions, StatusTypes, TypeFilterOptions } from "@app/constants";
 import { StatusCategoryType } from "@app/types";
 
-export const handleProductDownloadSuccess = ({productDownloadIsSuccess, category, productDownloadData, isChecker, csvExporter, requestsDownloadIsSuccess, requestsDownloadData, handleDownload}) => {
+export const handleProductDownloadSuccess = ({productDownloadIsSuccess, category, productDownloadData, isChecker, csvExporter, requestsDownloadIsSuccess, requestsDownloadData, handleDownload, type="product"}) => {
 
   if (
     productDownloadIsSuccess &&
@@ -18,6 +18,23 @@ export const handleProductDownloadSuccess = ({productDownloadIsSuccess, category
       category
     );
   }
+  if (
+    productDownloadIsSuccess &&
+    category === StatusCategoryType?.Investments
+  ) {
+    handleDownload(
+      productDownloadData?.results.map((i) => ({
+        ...i,
+        status: IndividualStatusTypes.find(
+          (n) => n.id === i.investmentBookingStatus
+        )?.type,
+      })),
+      isChecker,
+      csvExporter,
+      category
+    );
+  }
+
   if (requestsDownloadIsSuccess && category === StatusCategoryType.Requests) {
     handleDownload(
       requestsDownloadData?.results.map((i) => ({
@@ -25,7 +42,7 @@ export const handleProductDownloadSuccess = ({productDownloadIsSuccess, category
         requestStatus: StatusFilterOptions.find(
           (n) => n.value === i.requestStatus
         )?.name,
-        requestType: TypeFilterOptions.find((n) => n.value === i.requestType)
+        requestType: (type==="management"?IndividualTypeFilterOptions: TypeFilterOptions).find((n) => n.value === i.requestType)
           ?.name,
       })),
       isChecker,
