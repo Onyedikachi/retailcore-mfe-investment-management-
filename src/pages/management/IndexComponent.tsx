@@ -97,7 +97,6 @@ export default function Dashboard() {
                 getSearchResult(
                   value,
                   getProducts,
-
                   setSearchResults
                 )
               }

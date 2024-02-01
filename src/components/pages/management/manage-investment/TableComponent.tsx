@@ -24,6 +24,7 @@ import {
 } from "@app/constants";
 import { useProductList } from "@app/hooks";
 import optionsDataHandler from "@app/utils/optionsDataHandler";
+import { handleProductDownloadSuccess } from "@app/utils/handleProductDownloadSuccess";
 
 interface RequestDataProps {
   request: string;
@@ -88,14 +89,14 @@ export function initiateDownload(
   selected,
   isOverviewDrillDown = false
 ) {
-  if (isOverviewDrillDown) {
-    downloadProducts({
-      ...query,
-      page_Size: 1000000,
-      filter_by: "created_system_wide",
-    });
-    return;
-  }
+  // if (isOverviewDrillDown) {
+  //   downloadProducts({
+  //     ...query,
+  //     page_Size: 1000000,
+  //     filter_by: selected?.value,
+  //   });
+  //   return;
+  // }
   if (category === StatusCategoryType?.Investments) {
     downloadProducts({
       ...query,
@@ -144,8 +145,31 @@ export function handleDownload(
 
       return isOverviewDrillDown ? overviewDrillDownObj : obj;
     });
+    const requestData = downloadData.map((i) => {
+      // @ts-ignore
+      let obj: RequestDataProps = {
+        request: i?.request || "",
+        type: i?.requestType || "",
+      };
+
+      if (!isChecker) {
+        obj.initiator = i?.created_By || "";
+        obj.status = i?.requestStatus;
+      } else {
+        obj.reviewer = i?.approved_By || "";
+        obj.status = i?.requestStatus;
+      }
+
+      obj["updated on"] = moment(i.updated_At).format("DD MMM YYYY, hh:mm A");
+
+      return obj;
+    });
     // alert(isOverviewDrillDown ? 'productData' : 'req')
-    csvExporter.generateCsv(ucObjectKeys(productData));
+    csvExporter.generateCsv(
+      category === StatusCategoryType.Requests
+        ? ucObjectKeys(requestData)
+        : ucObjectKeys(productData)
+    );
   } catch (err) {
     throw "Input must be an array of objects";
   }
@@ -329,6 +353,17 @@ export default function TableComponent({
         })
       );
 
+    isRequestSuccess &&
+      category === StatusCategoryType?.Requests &&
+      setSearchResults(
+        request.results.map((i) => {
+          return {
+            ...i,
+            name: i.request,
+          };
+        })
+      );
+
     isSuccess &&
       isOverviewDrillDown &&
       setSearchResults(
@@ -340,7 +375,6 @@ export default function TableComponent({
           };
         })
       );
- 
 
     return () => {
       setSearchResults([]);
@@ -348,38 +382,18 @@ export default function TableComponent({
   }, [data, request, isSuccess, isRequestSuccess]);
 
   useEffect(() => {
-    if (isOverviewDrillDown) {
-   
-      handleDownload(
-        productDownloadData?.results.map((i) => ({
-          ...i,
-          status: IndividualStatusTypes.find(
-            (n) => n.id === i.investmentBookingStatus
-          )?.type,
-        })),
-        isChecker,
-        csvExporter,
-        category,
-        isOverviewDrillDown
-      );
-    }
-    if (
-      productDownloadIsSuccess &&
-      category === StatusCategoryType?.Investments
-    ) {
-      handleDownload(
-        productDownloadData?.results.map((i) => ({
-          ...i,
-          status: IndividualStatusTypes.find(
-            (n) => n.id === i.investmentBookingStatus
-          )?.type,
-        })),
-        isChecker,
-        csvExporter,
-        category
-      );
-    }
-  }, [productDownloadIsSuccess]);
+    handleProductDownloadSuccess({
+      productDownloadIsSuccess,
+      category,
+      productDownloadData,
+      isChecker,
+      csvExporter,
+      requestsDownloadIsSuccess,
+      requestsDownloadData,
+      handleDownload,
+      type: "management",
+    });
+  }, [productDownloadIsSuccess, requestsDownloadIsSuccess]);
 
   React.useEffect(() => {
     setOptions({
@@ -405,7 +419,6 @@ export default function TableComponent({
   }, [category]);
 
   const getOptionData = (value: any, label: string) => {
-
     optionsDataHandler({ query, value, label, setQuery });
   };
   const onChangeDate = (value: any) => {

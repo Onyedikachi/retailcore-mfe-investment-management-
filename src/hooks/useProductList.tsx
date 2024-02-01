@@ -19,7 +19,7 @@ const useProductList = ({ query }: useProductListProps) => {
 
   useEffect(() => {
     if (query) {
-      fetchProductsList(query);
+      fetchProductsList({...query, filter_by: "created_system_wide",});
     }
   }, [query?.filter_by]);
 
