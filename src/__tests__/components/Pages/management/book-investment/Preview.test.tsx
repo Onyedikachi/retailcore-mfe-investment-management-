@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import Preview, { cancelProcess, handleErrorMessage, handleSuccessMessage, submitForm } from "../../../../../components/pages/management/book-investment/Preview";
 import { renderWithProviders } from "../../../../../__mocks__/api/Wrapper";
+import React from "react";
 jest.mock("react-router-dom", () => ({
   BrowserRouter: ({ children }) => <div>{children}</div>,
   Link: ({ to, children }) => <a href={to}>{children}</a>,
@@ -120,17 +121,17 @@ describe("handleSuccess", () => {
   const setIsSuccessOpen = jest.fn();
 
   it("Sets success message if isSuccess and role === superadmin", () => {
-    handleSuccessMessage(true, setSuccessText, setIsSuccessOpen, "superadmin");
+    handleSuccessMessage(true, setSuccessText, setIsSuccessOpen, "superadmin", "");
     expect(setSuccessText).toBeCalledWith("Investment Booking creation request submitted for approval")
     expect(setIsSuccessOpen).toBeCalledWith(true)
   })
   it("Sets success message if isSuccess is false and role === superadmin", () => {
-    handleSuccessMessage(false, setSuccessText, setIsSuccessOpen, "superadmin");
+    handleSuccessMessage(false, setSuccessText, setIsSuccessOpen, "superadmin","");
     expect(setSuccessText).toBeCalledWith( "Investment Booking creation request submitted for approval")
     expect(setIsSuccessOpen).toBeCalledWith(true)
   })
   it("Sets success message if role !== superadmin", () => {
-    handleSuccessMessage(true, setSuccessText, setIsSuccessOpen, "admin");
+    handleSuccessMessage(true, setSuccessText, setIsSuccessOpen, "admin","");
     expect(setSuccessText).toBeCalledWith("Investment Booking creation request submitted for approval")
     expect(setIsSuccessOpen).toBeCalledWith(true)
   })
