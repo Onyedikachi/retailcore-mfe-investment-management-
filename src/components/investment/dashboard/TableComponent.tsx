@@ -88,14 +88,16 @@ export function initiateDownload(
   if (category === StatusCategoryType.AllProducts) {
     downloadProducts({
       ...query,
-      page_Size: 1000000,
-      filter_by: selected?.value,
+      page_Size: 10000000,
+      // filter_by: selected?.value,
+      filter_by: "created_by_anyone",
     });
   } else {
     downloadRequests({
       ...query,
-      page_Size: 1000000,
-      filter_by: selected?.value,
+      page_Size: 10000000,
+      // filter_by: selected?.value,
+      filter_by: "created_by_anyone",
     });
   }
 }
