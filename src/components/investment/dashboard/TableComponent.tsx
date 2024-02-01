@@ -286,10 +286,17 @@ export default function TableComponent({
     };
   }, [data, request, isSuccess, isRequestSuccess]);
 
-  
-
   useEffect(() => {
-    handleProductDownloadSuccess({productDownloadIsSuccess, category, productDownloadData, isChecker, csvExporter, requestsDownloadIsSuccess, requestsDownloadData, handleDownload})
+    handleProductDownloadSuccess({
+      productDownloadIsSuccess,
+      category,
+      productDownloadData,
+      isChecker,
+      csvExporter,
+      requestsDownloadIsSuccess,
+      requestsDownloadData,
+      handleDownload,
+    });
   }, [productDownloadIsSuccess, requestsDownloadIsSuccess]);
 
   React.useEffect(() => {
