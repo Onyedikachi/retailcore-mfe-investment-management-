@@ -12,7 +12,7 @@ export default ({ productData }) => {
         <div className="flex flex-col">
           {productData?.data?.pricingConfiguration.interestRateConfigModels?.map(
             (configModel, index) => (
-              <span key={index} data-testid="principal" className="block  mb-2 text-[#636363]">
+              <p key={index} data-testid="principal" className="block  mb-2 text-[#636363]">
                 {" "}
                 {`${configModel.min} - ${configModel.max}%`} for principal
                 between{" "}
@@ -29,7 +29,7 @@ export default ({ productData }) => {
                     currencies
                   )
                 )}`}{" "}
-              </span>
+              </p>
             )
           )}
         </div>
@@ -39,7 +39,7 @@ export default ({ productData }) => {
         <div className="flex flex-col">
           {productData?.data?.pricingConfiguration.interestRateConfigModels?.map(
             (configModel, index) => (
-              <span key={index} className="block  mb-2 text-[#636363]">
+              <p key={index} className="block  mb-2 text-[#636363]">
                 {" "}
                 {`${configModel.min} - ${configModel.max}%`} for tenor between{" "}
                 {`${configModel.tenorMin} ${
@@ -47,17 +47,17 @@ export default ({ productData }) => {
                 } - ${configModel.tenorMax} ${
                   Interval[configModel.tenorMaxUnit]
                 }`}{" "}
-              </span>
+              </p>
             )
           )}
         </div>
       )}
       {productData?.data?.pricingConfiguration.interestRateRangeType == 2 && (
         <div className="flex flex-col">
-          <span className="block  mb-2 text-[#636363]">
+          <p className="block  mb-2 text-[#636363]">
             {" "}
             {`${productData?.data?.pricingConfiguration.interestRateMin} - ${productData?.data?.pricingConfiguration.interestRateMax}%`}
-          </span>
+          </p>
         </div>
       )}
     </Fragment>

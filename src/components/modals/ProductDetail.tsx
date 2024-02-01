@@ -222,7 +222,7 @@ export default function ProductDetail({
               </div>
               <ProductPricingAndLiquidity
                 productData={productData}
-                setOpen={setIsOpen}
+                setOpen={setOpen}
               />
             </div>
           </div>
@@ -236,16 +236,16 @@ export default function ProductDetail({
           </div>
         )}
         <ModalLayout isOpen={open} setIsOpen={setOpen}>
-          <div className="px-[30px] pt-[64px] pb-[20px] bg-white w-[400px] rounded-lg relative">
+          <div className="px-5 pt-10 pb-[20px] bg-white w-[400px] rounded-lg relative">
             <ul className="max-h-[345px] overflow-y-auto flex flex-col gap-y-5">
-              <PricingConfigurationComponent {...productData} />
+              <PricingConfigurationComponent productData={productData} />
             </ul>
             <button
               onClick={() => setOpen(false)}
-              className="p-2 outline-none bg-transparent absolute right-6 top-6"
+              className="p-2 outline-none bg-transparent absolute right-1 top-1"
               data-testid="close-btn"
             >
-              <FaTimes className="text-[#002266] opacity-60 hover:opacity-50 text-xl" />
+              <FaTimes className="text-[#002266] opacity-60 hover:opacity-50 text-lg" />
             </button>
           </div>
         </ModalLayout>
