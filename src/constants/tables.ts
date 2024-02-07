@@ -88,7 +88,66 @@ export const DropDownOptions: any = {
         },
       ],
     },
+    { 
+      draft: [
+        {
+          id: "",
+          text: "Continue Request",
+          icon: "FaEdit",
+        },
+        {
+          id: "",
+          text: "Delete Draft",
+          icon: "FaTrash",
+        },
+      ],
+    },
+  ],
+  booking: [
     {
+      approved: [
+        {
+          id: "",
+          text: "View",
+          icon: "FaEye",
+        },
+      ],
+    },
+    {
+      "in-issue": [
+        {
+          id: "",
+          text: "View",
+          icon: "FaEye",
+        },
+
+        {
+          id: "",
+          text: "Delete Request",
+          icon: "FaTrash",
+        },
+      ],
+    },
+    {
+      "in-review": [
+        {
+          id: "View",
+          text: "View",
+          icon: "FaEye",
+        },
+        {
+          id: "",
+          text: "Withdraw & Modify",
+          icon: "FaEdit",
+        },
+        {
+          id: "",
+          text: "Withdraw & Delete Request",
+          icon: "FaTrash",
+        },
+      ],
+    },
+    { 
       draft: [
         {
           id: "",
@@ -184,6 +243,28 @@ export const DropDownOptions: any = {
       icon: "FaBan",
     },
   ],
+  individualActive: [
+    {
+      id: "",
+      text: "View",
+      icon: "FaEye",
+    },
+    {
+      id: "",
+      text: "Part Liquidate",
+      icon: "FaBan",
+    },
+    {
+      id: "",
+      text: "Early Liquidate",
+      icon: "FaRegTimesCircle",
+    },
+    {
+      id: "",
+      text: "Restructure",
+      icon: "BiSolidReceipt",
+    },
+  ],
   inactive: [
     {
       id: "",
@@ -201,6 +282,226 @@ export const DropDownOptions: any = {
       icon: "FaPlayCircle",
     },
   ],
+  individualInactive: [
+    {
+      id: "",
+      text: "View",
+      icon: "FaEye",
+    },
+  ],
+};
+export const IndividualDropDownOptions: any = {
+  creation: [
+    {
+      approved: [
+        {
+          id: "",
+          text: "View",
+          icon: "FaEye",
+        },
+      ],
+    },
+    {
+      "in-issue": [
+        {
+          id: "",
+          text: "View",
+          icon: "FaEye",
+        },
+
+        {
+          id: "",
+          text: "Delete Request",
+          icon: "FaTrash",
+        },
+      ],
+    },
+    {
+      "in-review": [
+        {
+          id: "View",
+          text: "View",
+          icon: "FaEye",
+        },
+        {
+          id: "",
+          text: "Withdraw & Modify",
+          icon: "FaEdit",
+        },
+        {
+          id: "",
+          text: "Withdraw & Delete Request",
+          icon: "FaTrash",
+        },
+      ],
+    },
+    {
+      draft: [
+        {
+          id: "",
+          text: "Continue Request",
+          icon: "FaEdit",
+        },
+        {
+          id: "",
+          text: "Delete Draft",
+          icon: "FaTrash",
+        },
+      ],
+    },
+  ],
+  activation: [
+    {
+      approved: [
+        {
+          id: "",
+          text: "View",
+          icon: "FaEye",
+        },
+      ],
+    },
+    {
+      "in-issue": [
+        {
+          id: "",
+          text: "View",
+          icon: "FaEye",
+        },
+        {
+          id: "",
+          text: "Modify",
+          icon: "FaEdit",
+        },
+        {
+          id: "",
+          text: "Delete Request",
+          icon: "FaTrash",
+        },
+      ],
+    },
+    {
+      "in-review": [
+        {
+          id: "View",
+          text: "View",
+          icon: "FaEye",
+        },
+
+        {
+          id: "",
+          text: "Withdraw & Delete Request",
+          icon: "FaTrash",
+        },
+      ],
+    },
+    {
+      draft: [
+        {
+          id: "",
+          text: "Continue Request",
+          icon: "FaEdit",
+        },
+        {
+          id: "",
+          text: "Delete Request",
+          icon: "FaTrash",
+        },
+      ],
+    },
+  ],
+  active: [
+    {
+      id: "",
+      text: "View",
+      icon: "FaEye",
+      key: "view"
+    },
+    {
+      id: "",
+      text: "Part Liquidate",
+      icon: "FaBan",
+      key: "part_liquidate"
+    },
+    {
+      id: "",
+      text: "Early Liquidate",
+      icon: "FaRegTimesCircle",
+      key: "early_liquidate"
+    },
+    {
+      id: "",
+      text: "Restructure",
+      icon: "BiSolidReceipt",
+      key: "restructure"
+    },
+  ],
+  liquidated: [
+    {
+      id: "",
+      text: "View",
+      icon: "FaEye",
+      key: "view"
+    },
+  ],
+  booking: [
+    {
+      approved: [
+        {
+          id: "",
+          text: "View",
+          icon: "FaEye",
+        },
+      ],
+    },
+    {
+      "in-issue": [
+        {
+          id: "",
+          text: "View",
+          icon: "FaEye",
+        },
+
+        {
+          id: "",
+          text: "Delete Request",
+          icon: "FaTrash",
+        },
+      ],
+    },
+    {
+      "in-review": [
+        {
+          id: "View",
+          text: "View",
+          icon: "FaEye",
+        },
+        {
+          id: "",
+          text: "Withdraw & Modify",
+          icon: "FaEdit",
+        },
+        {
+          id: "",
+          text: "Withdraw & Delete Request",
+          icon: "FaTrash",
+        },
+      ],
+    },
+    { 
+      draft: [
+        {
+          id: "",
+          text: "Continue Request",
+          icon: "FaEdit",
+        },
+        {
+          id: "",
+          text: "Delete Draft",
+          icon: "FaTrash",
+        },
+      ],
+    },
+  ],
 };
 
 export const ActiveFilterOptions: any[] = [
@@ -213,6 +514,18 @@ export const ActiveFilterOptions: any[] = [
     id: 2,
     name: "inactive",
     value: 1,
+  },
+];
+export const IndividualFilterOptions: any[] = [
+  {
+    id: 1,
+    name: "active",
+    value: 1,
+  },
+  {
+    id: 2,
+    name: "liquidated",
+    value: 2,
   },
 ];
 export const ProductTypes: any[] = [
@@ -294,6 +607,29 @@ export const TypeFilterOptions: any[] = [
   {
     id: 3,
     name: "reactivation",
+    value: 3,
+  },
+];
+
+export const IndividualTypeFilterOptions: any[] = [
+  {
+    id: 0,
+    name: "booking",
+    value: 0,
+  },
+  {
+    id: 1,
+    name: "early liquidation",
+    value: 1,
+  },
+  {
+    id: 2,
+    name: "part liquidation",
+    value: 2,
+  },
+  {
+    id: 3,
+    name: "restructuring",
     value: 3,
   },
 ];
@@ -508,6 +844,114 @@ export const productHeader = [
     key: "actions",
   },
 ];
+export const overviewDrillDownIndividualHeader = [
+  {
+    label: "customer name/investment id",
+    key: "customerName",
+    options: [
+      {
+        id: 1,
+        name: "",
+        value: "",
+      },
+    ],
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "principal amount",
+    key: "principal",
+    options: [],
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "tenor",
+    key: "tenor",
+    options: productFilterOptions,
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "interest rate",
+    key: "interestRate",
+    options: productFilterOptions,
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "value at maturity",
+    key: "maturityValue",
+    options: productFilterOptions,
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "status",
+    key: "investmentBookingStatus",
+    options: IndividualFilterOptions,
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "updated on",
+    key: "updated_At",
+    options: [],
+    hasSelect: false,
+    hasDateSelect: true,
+  },
+
+];
+export const individualHeader = [
+  {
+    label: "customer name/id",
+    key: "customerName",
+    options: [
+      {
+        id: 1,
+        name: "",
+        value: "",
+      },
+    ],
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "principal",
+    key: "principal",
+    options: [],
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "investment product",
+    key: "investmentProduct",
+    options: productFilterOptions,
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "status",
+    key: "investmentBookingStatus",
+    options: IndividualFilterOptions,
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "updated on",
+    key: "updated_At",
+    options: [],
+    hasSelect: false,
+    hasDateSelect: true,
+  },
+  {
+    label: "",
+    options: [],
+    hasSelect: false,
+    hasDateSelect: false,
+    key: "actions",
+  },
+];
 export const requestHeader = [
   {
     label: "request",
@@ -571,16 +1015,155 @@ export const requestHeader = [
     key: "actions",
   },
 ];
+export const IndividualRequestHeader = [
+  {
+    label: "request",
+    key: "request",
+    options: [
+      {
+        id: 1,
+        name: "",
+        value: "",
+      },
+    ],
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "type",
+    key: "requestType",
+    options: IndividualTypeFilterOptions,
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "initiator",
+    key: "created_By",
+    options: [],
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "reviewer",
+    key: "approved_By",
+    options: [],
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "status",
+    key: "requestStatus",
+    options: StatusFilterOptions,
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "updated on",
+    key: "updated_At",
+    options: [
+      {
+        id: 1,
+        name: "",
+        value: "",
+      },
+    ],
+    hasSelect: false,
+    hasDateSelect: true,
+  },
+  {
+    label: "",
+    options: [],
+    hasSelect: false,
+    hasDateSelect: false,
+    key: "actions",
+  },
+];
+
+export const IndividualProductsHeader = [
+  {
+    label: "CUSTOMER NAME/Investment ID",
+    key: "customerName",
+    options: [
+      {
+        id: 1,
+        name: "",
+        value: "",
+      },
+    ],
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "Principal Amount",
+    key: "principalAmount",
+    options: IndividualTypeFilterOptions,
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "Tenor",
+    key: "tenor",
+    options: [],
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "Interest Rate",
+    key: "interestRate",
+    options: [],
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "Value At Maturity",
+    key: "approved_By",
+    options: [],
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "status",
+    key: "status",
+    options: StatusFilterOptions,
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "updated on",
+    key: "updated_At",
+    options: [
+      {
+        id: 1,
+        name: "",
+        value: "",
+      },
+    ],
+    hasSelect: false,
+    hasDateSelect: true,
+  },
+  // {
+  //   label: "",
+  //   options: [],
+  //   hasSelect: false,
+  //   hasDateSelect: false,
+  //   key: "actions",
+  // },
+];
 
 export const BookInvestmentOptions = [
-  { title: "Individual", url: "/product-factory/investment/management/individual" },
-  { title: "corporate", url: "/product-factory/investment/management/corporate" },
+  {
+    title: "Individual",
+    url: "/investment-management/create/individual",
+  },
+  {
+    title: "corporate",
+    url: "/investment-management/create/corporate",
+  },
 ];
 export interface IBookInvestmentOptions {
   title: string;
   url: string;
 }
-;
 export const ButtonOptions = [
   {
     title: "Deposit",
@@ -718,3 +1301,6 @@ export const ButtonOptions = [
     ],
   },
 ];
+export const SpecificCategory = {
+  individual: 'individual'
+}

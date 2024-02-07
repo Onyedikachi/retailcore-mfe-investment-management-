@@ -7,6 +7,7 @@ jest.mock("react-router-dom", () => ({
   useNavigate: jest.fn(),
   useSearchParams: jest.fn(),
   useParams: jest.fn(),
+  useLocation: jest.fn().mockReturnValue({pathname: ""})
 }));
 jest
   .spyOn(require("react-router-dom"), "useNavigate")
@@ -61,14 +62,14 @@ const fData = {
     part_LiquidationPenalty: 0,
     part_LiquidationPenaltyPercentage: 0,
     part_SpecificCharges: [],
-    part_specialInterestRate: 0,
+    part_SpecialInterestRate: 0,
     early_AllowEarlyLiquidation: false,
     early_RequireNoticeBeforeLiquidation: false,
     early_NoticePeriod: 0,
     early_NoticePeriodUnit: 1,
     early_LiquidationPenalty: 0,
     early_LiquidationPenaltyPercentage: 0,
-    early_specialInterestRate: 0,
+    eary_SpecialInterestRate: 0,
     early_SpecificCharges: [],
   },
   productGlMappings: [],

@@ -340,13 +340,13 @@ export default function LiquiditySetup({
                         <div className="w-[300px]">
                           <MinMaxInput
                             register={register}
-                            inputName={"part_LiquidationPenaltyPercentage"}
+                            inputName={"part_SpecialInterestRate"}
                             errors={errors}
                             setValue={setValue}
                             trigger={trigger}
                             clearErrors={clearErrors}
                             defaultValue={
-                              formData?.part_LiquidationPenaltyPercentage
+                              formData?.part_SpecialInterestRate
                             }
                             isCurrency
                             disablegroupseparators
@@ -359,20 +359,18 @@ export default function LiquiditySetup({
                   )}
                   {watchPartLiquidationPenalty === 4 && (
                     <InputDivs required label={"Specify charge"}>
-                      <div className="">
+                      <>
                         <div className="w-[300px] flex items-center mb-4">
                           <MultiSelectForm2
                             isCharge={true}
-                            labelName=""
                             placeholder="Search and select"
-                            register={register}
-                            inputName={"part_SpecificCharges"}
-                            errors={errors}
                             setValue={setValue}
                             options={chargeOptions}
                             allLabel="All"
+                            labelName=""
                             clearErrors={clearErrors}
                             trigger={trigger}
+                            register={register}
                             handleSelected={({ inputName, selectedOptions }) =>
                               handleSelected(
                                 inputName,
@@ -382,6 +380,8 @@ export default function LiquiditySetup({
                                 setValue
                               )
                             }
+                            inputName={"part_SpecificCharges"}
+                            errors={errors}
                           />
                         </div>
                         {watchPartLiquidationPenalty === 4 && (
@@ -406,7 +406,7 @@ export default function LiquiditySetup({
                             ))}
                           </div>
                         )}
-                      </div>
+                      </>
                     </InputDivs>
                   )}
                   {watchPartLiquidationPenalty === 5 && (
@@ -513,7 +513,6 @@ export default function LiquiditySetup({
                         max={7}
                       />
                     </div>
-
                     <div className="flex gap-4">
                       <div
                         className={`w-[150px] ${
@@ -554,10 +553,11 @@ export default function LiquiditySetup({
                         setValue={setValue}
                         trigger={trigger}
                         clearErrors={clearErrors}
-                        defaultValue={formData?.early_LiquidationPenalty}
+                        defaultValue={values?.early_LiquidationPenalty}
                         options={LiquidityOptions.filter((i) => i.value !== 5)}
                       />
                     </div>
+                  
                     {watchEarlyLiquidationPenalty === 2 && (
                       <div className="w-[100px]">
                         <MinMaxInput
@@ -584,13 +584,13 @@ export default function LiquiditySetup({
                       <div className="w-[300px]">
                         <MinMaxInput
                           register={register}
-                          inputName={"early_LiquidationPenaltyPercentage"}
+                          inputName={"eary_SpecialInterestRate"}
                           errors={errors}
                           setValue={setValue}
                           trigger={trigger}
                           clearErrors={clearErrors}
                           defaultValue={
-                            formData?.early_LiquidationPenaltyPercentage
+                            formData?.eary_SpecialInterestRate
                           }
                           isCurrency
                           disablegroupseparators
@@ -706,12 +706,12 @@ export default function LiquiditySetup({
                         <div className="w-[300px]">
                           <MinMaxInput
                             register={register}
-                            inputName={"early_SpecialInterestRate"}
+                            inputName={"eary_SpecialInterestRate"}
                             errors={errors}
                             setValue={setValue}
                             trigger={trigger}
                             clearErrors={clearErrors}
-                            defaultValue={formData?.early_SpecialInterestRate}
+                            defaultValue={formData?.eary_SpecialInterestRate}
                             isCurrency
                             disablegroupseparators
                             isPercent

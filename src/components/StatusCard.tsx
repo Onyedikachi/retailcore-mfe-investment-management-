@@ -4,20 +4,27 @@ import { InvestmentContext, AppContext } from "../utils/context";
 import { StatusCategoryType } from "../constants/enums";
 import { Select } from "./forms";
 import {
+  SpecificCategory,
   StatusTypes,
   CheckerStatusRequests,
   StatusRequests,
-  StatusCategories,
+  InvestmentRequestOptions,
+  InvestmentProductOptions,
   ProductOptions,
   RequestOptions,
   ApproveProductOptions,
   CreateProductOptions,
   CreateRequestOptions,
   ApproveRequestOptions,
+  FactoryCategories,
+  IndividualStatusTypes,
 } from "@app/constants";
 
 export function filterAllProductsOptions(): any[] {
   return StatusTypes;
+}
+export function filterAllInvestmentsOptions(): any[] {
+  return IndividualStatusTypes;
 }
 
 export function filterCheckerOptions(): any[] {
@@ -34,6 +41,9 @@ export function filterDefaultOptions(): any[] {
 export function sortOptions(category: string, isChecker: boolean): any[] {
   if (category === StatusCategoryType.AllProducts) {
     return filterAllProductsOptions();
+  }
+  if (category === StatusCategoryType?.Investments) {
+    return filterAllInvestmentsOptions();
   }
 
   if (isChecker) {
@@ -89,6 +99,8 @@ export const count = (item, analyticsData) => {
       return analyticsData?.data?.A || 0;
     case "inactive":
       return analyticsData?.data?.I || 0;
+    case "liquidated":
+      return analyticsData?.data?.L || 0;
     case "approved":
       return analyticsData?.data?.A || 0;
     case "pending":
@@ -112,11 +124,12 @@ export const handleClick = (
   setSelected,
   category,
   filteredProductOptions,
-  filteredRequestOptions
+  filteredRequestOptions,
+  categoryType1
 ) => {
   setCategory(item?.type);
   setSelected(
-    category === StatusCategoryType?.AllProducts
+    category === categoryType1
       ? filteredProductOptions[0]
       : filteredRequestOptions[0]
   );
@@ -129,6 +142,7 @@ export const StatusCategoryButton = ({
   setSelected,
   filteredProductOptions,
   filteredRequestOptions,
+  categoryType1,
 }: any) => {
   return (
     <button
@@ -142,7 +156,8 @@ export const StatusCategoryButton = ({
           setSelected,
           category,
           filteredProductOptions,
-          filteredRequestOptions
+          filteredRequestOptions,
+          categoryType1
         )
       }
       className={`${
@@ -173,6 +188,9 @@ export function handleActiveType(activeType, setStatus) {
     case "inactive":
       setStatus("I");
       break;
+    case "liquidated":
+      setStatus("L");
+      break;
     case "approved":
       setStatus("A");
       break;
@@ -195,71 +213,102 @@ export function handleActiveType(activeType, setStatus) {
 }
 
 export function handlePermission(
+  specificCategory,
+  InvestmentRequestOptions,
+  InvestmentProductOptions,
   setFilteredRequestOptions,
   permissions,
   ProductOptions,
   RequestOptions,
   setFilteredProductOptions
 ) {
+  let mutableProductOptions =
+    specificCategory === SpecificCategory?.individual
+      ? InvestmentProductOptions
+      : ProductOptions;
+  let mutableRequestOptions =
+    specificCategory === SpecificCategory?.individual
+      ? InvestmentRequestOptions
+      : RequestOptions;
   if (!permissions?.length) return;
   if (
-    permissions?.includes(
+    (permissions?.includes(
       "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
     ) &&
-    permissions?.includes("CREATE_INVESTMENT_PRODUCT")
+      permissions?.includes("CREATE_INVESTMENT_PRODUCT")) ||
+    (permissions?.includes("AUTHORIZE_INVESTMENT_MANAGEMENT_REQUESTS") &&
+      permissions?.includes("BOOK_INVESTMENT"))
   ) {
     if (
-      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS") ||
-      permissions?.includes("CREATE_INVESTMENT_PRODUCT")
+      (permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS") &&
+        specificCategory !== SpecificCategory?.individual) ||
+      (permissions?.includes("VIEW_ALL_INVESTMENT_RECORDS") &&
+        specificCategory === SpecificCategory?.individual)
     ) {
-      setFilteredProductOptions(ProductOptions);
+      setFilteredProductOptions(mutableProductOptions);
     } else {
       setFilteredProductOptions(
-        ProductOptions.map((i: any) => {
-          if (i.value === "created_by_anyone") {
-            i.disabled = true;
+        mutableProductOptions.map((i: any) => {
+          if (
+            i.value === "created_by_anyone" ||
+            i.value === "created_system_wide"
+          ) {
+            i.disabled = false;
           }
           if (i.value === "approved_system_wide") {
-            i.disabled = true;
+            i.disabled = false;
           }
           return i;
         })
       );
     }
     if (
-      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS") ||
-      permissions?.includes("CREATE_INVESTMENT_PRODUCT")
+      (permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS") &&
+        specificCategory !== SpecificCategory?.individual) ||
+      (permissions?.includes("VIEW_ALL_INVESTMENT_REQUESTS") &&
+        "  specificCategory === SpecificCategory?.individual")
+      // || permissions?.includes("CREATE_INVESTMENT_PRODUCT")
     ) {
-      setFilteredRequestOptions(RequestOptions);
+      setFilteredRequestOptions(mutableRequestOptions);
     } else {
       setFilteredRequestOptions(
-        RequestOptions.map((i: any) => {
-          if (i.value === "created_by_anyone") {
-            i.disabled = true;
+        mutableRequestOptions.map((i: any) => {
+          if (
+            i.value === "created_by_anyone" ||
+            i.value === "created_system_wide"
+          ) {
+            i.disabled = false;
           }
-          if (i.value === "sent_to_anyone") {
-            i.disabled = true;
+          if (i.value === "sent_to_anyone" || i.value === "sent_system_wide") {
+            i.disabled = false;
           }
           return i;
         })
       );
     }
   } else if (
-    permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&
-    !permissions?.includes(
-      "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
-    )
+    (permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&
+      !permissions?.includes(
+        "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
+      )) ||
+    (permissions?.includes("BOOK_INVESTMENT") &&
+      !permissions?.includes("AUTHORIZE_INVESTMENT_MANAGEMENT_REQUESTS"))
   ) {
     if (
-      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS") ||
-      permissions?.includes("CREATE_INVESTMENT_PRODUCT")
+      (permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS") &&
+        specificCategory !== SpecificCategory?.individual) ||
+      (permissions?.includes("VIEW_ALL_INVESTMENT_RECORDS") &&
+        specificCategory === SpecificCategory?.individual)
     ) {
       setFilteredProductOptions(CreateProductOptions);
     } else {
       setFilteredProductOptions(
         CreateProductOptions.map((i: any) => {
-          if (i.value === "created_by_anyone") {
-            i.disabled = true;
+          if (
+            i.value === "created_by_anyone" ||
+            i.value === "created_system_wide"
+          ) {
+            i.disabled = false;
           }
 
           return i;
@@ -267,15 +316,20 @@ export function handlePermission(
       );
     }
     if (
-      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS") ||
-      permissions?.includes("CREATE_INVESTMENT_PRODUCT")
+      (permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS") &&
+        specificCategory !== SpecificCategory?.individual) ||
+      (permissions?.includes("VIEW_ALL_INVESTMENT_REQUESTS") &&
+        specificCategory === SpecificCategory?.individual)
     ) {
       setFilteredRequestOptions(CreateRequestOptions);
     } else {
       setFilteredRequestOptions(
         CreateRequestOptions.map((i: any) => {
-          if (i.value === "created_by_anyone") {
-            i.disabled = true;
+          if (
+            i.value === "created_by_anyone" ||
+            i.value === "created_system_wide"
+          ) {
+            i.disabled = false;
           }
 
           return i;
@@ -283,40 +337,42 @@ export function handlePermission(
       );
     }
   } else if (
-    !permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&
-    permissions?.includes(
-      "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
-    )
-  ) {
-    if (
-      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS") ||
+    (!permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&
       permissions?.includes(
         "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
-      )
+      )) ||
+    (!permissions?.includes("BOOK_INVESTMENT") &&
+      permissions?.includes("AUTHORIZE_INVESTMENT_MANAGEMENT_REQUESTS"))
+  ) {
+    if (
+      (permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS") &&
+        specificCategory !== SpecificCategory?.individual) ||
+      (permissions?.includes("VIEW_ALL_INVESTMENT_RECORDS") &&
+        specificCategory === SpecificCategory?.individual)
     ) {
       setFilteredProductOptions(ApproveProductOptions);
     } else {
       setFilteredProductOptions(
         ApproveProductOptions.map((i: any) => {
           if (i.value === "approved_system_wide") {
-            i.disabled = true;
+            i.disabled = false;
           }
           return i;
         })
       );
     }
     if (
-      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS") ||
-      permissions?.includes(
-        "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
-      )
+      (permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS") &&
+        specificCategory !== SpecificCategory?.individual) ||
+      (permissions?.includes("VIEW_ALL_INVESTMENT_REQUESTS") &&
+        specificCategory === SpecificCategory?.individual)
     ) {
       setFilteredRequestOptions(ApproveRequestOptions);
     } else {
       setFilteredRequestOptions(
         ApproveRequestOptions.map((i: any) => {
-          if (i.value === "sent_to_anyone") {
-            i.disabled = true;
+          if (i.value === "sent_to_anyone" || i.value === "sent_system_wide") {
+            i.disabled = false;
           }
           return i;
         })
@@ -332,15 +388,25 @@ export default function StatusCard({
   requests,
   isLoading,
   handleChange,
+  StatusCategories = FactoryCategories,
+  categoryType1 = "all products",
+  categoryType2 = "requests",
+  Context,
 }: any): React.JSX.Element {
   // const { permissions } = useContext(AppContext);
 
   const [activeType, setActiveType] = useState<string | undefined>("all");
   const [filteredProductOptions, setFilteredProductOptions] = useState([]);
   const [filteredRequestOptions, setFilteredRequestOptions] = useState([]);
-  const { isChecker, selected, setSelected, category, setCategory, status } =
-    useContext(InvestmentContext);
-  const { permissions } = useContext(AppContext);
+  const {
+    specificCategory,
+    selected,
+    setSelected,
+    category,
+    setCategory,
+    status,
+  }: any = useContext(Context);
+  const { permissions, isChecker } = useContext(AppContext);
 
   // Get select value
   function handleSelected(value: any) {
@@ -368,6 +434,9 @@ export default function StatusCard({
 
   useEffect(() => {
     handlePermission(
+      specificCategory,
+      InvestmentRequestOptions,
+      InvestmentProductOptions,
       setFilteredRequestOptions,
       permissions,
       ProductOptions,
@@ -378,7 +447,7 @@ export default function StatusCard({
 
   useEffect(() => {
     setSelected(
-      category === StatusCategoryType.Requests
+      category === categoryType2
         ? filteredRequestOptions[0]
         : filteredProductOptions[0]
     );
@@ -388,6 +457,7 @@ export default function StatusCard({
     <div className="flex border border-[#E5E9EB] rounded-lg">
       <div className=" w-[208px] rounded-l-lg border-r border-[#D0D5DD] overflow-hidden">
         {StatusCategories.map((item, idx) => (
+          //use specificCategory context here
           <StatusCategoryButton
             key={item.id}
             item={item}
@@ -396,6 +466,7 @@ export default function StatusCard({
             setSelected={setSelected}
             filteredRequestOptions={filteredRequestOptions}
             filteredProductOptions={filteredProductOptions}
+            categoryType1={categoryType1}
           />
         ))}
       </div>
@@ -408,9 +479,7 @@ export default function StatusCard({
               isActive={activeType === item.type}
               setActiveType={setActiveType}
               isLoading={isLoading}
-              analyticsData={
-                category === StatusCategoryType.AllProducts ? data : requests
-              }
+              analyticsData={category === categoryType1 ? data : requests}
             />
           ))}
         </div>
@@ -418,7 +487,7 @@ export default function StatusCard({
         <div>
           <Select
             options={
-              category === StatusCategoryType?.AllProducts
+              category === categoryType1
                 ? filteredProductOptions
                 : filteredRequestOptions
             }

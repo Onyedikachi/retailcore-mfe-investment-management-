@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useContext } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { InvestmentContext } from "../../utils/context";
+import { AppContext, InvestmentContext } from "../../utils/context";
 import { StatusCategoryType } from "../../constants/enums";
 import {
   TopBar,
   StatusCard,
   TableComponent,
   QuickLinks,
-} from "../../components";
+} from "@app/components";
 import {
   useGetPostProductsMutation,
   useGetPostRequestsMutation,
@@ -17,6 +17,7 @@ import {
   useGetSystemAlertQuery,
 } from "@app/api";
 import {
+  FactoryCategories,
   ProductTypes,
   StatusFilterOptions,
   StatusTypes,
@@ -54,7 +55,36 @@ export const handleChange = (
       activeType === "all" ? null : [sortTabStatus(activeType, category)],
   });
 };
+export const handleRequestStatus = ({
+  query,
+  setRequestData,
+  setHasMore,
+  request,
+  isRequestSuccess,
+  typeOptions
 
+}: any) => {
+  if (query.page === 1) {
+    setRequestData([]);
+  }
+
+  if (isRequestSuccess && request.results.length) {
+    setRequestData((prevData) => [
+      ...prevData.concat(
+        ...request.results.map((i) => ({
+          ...i,
+          requestStatus: StatusFilterOptions.find(
+            (n) => n.value === i.requestStatus
+          )?.name,
+          requestType: typeOptions?.find((n) => n.value === i.requestType)
+            ?.name,
+        }))
+      ),
+    ]);
+
+    setHasMore(!!request?.next);
+  }
+};
 export const handleProductStatus = ({
   query,
   setProductData,
@@ -80,34 +110,7 @@ export const handleProductStatus = ({
     setHasMore(!!data?.next);
   }
 };
-export const handleRequestStatus = ({
-  query,
-  setRequestData,
-  setHasMore,
-  isRequestSuccess,
-  request,
-}) => {
-  if (query.page === 1) {
-    setRequestData([]);
-  }
 
-  if (isRequestSuccess && request.results.length) {
-    setRequestData((prevData) => [
-      ...prevData.concat(
-        ...request.results.map((i) => ({
-          ...i,
-          requestStatus: StatusFilterOptions.find(
-            (n) => n.value === i.requestStatus
-          )?.name,
-          requestType: TypeFilterOptions.find((n) => n.value === i.requestType)
-            ?.name,
-        }))
-      ),
-    ]);
-
-    setHasMore(!!request?.next);
-  }
-};
 
 export const handleRefresh = (
   category,
@@ -139,6 +142,7 @@ export const handleSearch = (value, query, setQuery) => {
   });
 };
 export default function IndexComponent() {
+  const { isChecker, setIsChecker } = useContext(AppContext);
   const [category, setCategory] = useState<string>(
     StatusCategoryType?.AllProducts
   );
@@ -147,7 +151,7 @@ export default function IndexComponent() {
   const productId = searchParams.get("productId");
   const preview = searchParams.get("preview");
   const [selected, setSelected] = useState<any>(null);
-  const [isChecker, setIsChecker] = useState(false);
+
   const [, setHideCreate] = useState(false);
   const [status, setStatus] = useState("");
   const [dateData, setDateData] = useState({ to: null, from: null });
@@ -179,8 +183,7 @@ export default function IndexComponent() {
     () => ({
       selected,
       setSelected,
-      isChecker,
-      setIsChecker,
+
       category,
       setCategory,
       setStatus,
@@ -205,8 +208,7 @@ export default function IndexComponent() {
     [
       selected,
       setSelected,
-      isChecker,
-      setIsChecker,
+
       category,
       setCategory,
       setStatus,
@@ -319,6 +321,7 @@ export default function IndexComponent() {
         setHasMore,
         isRequestSuccess,
         request,
+        typeOptions:TypeFilterOptions
       }),
     [request, isRequestSuccess, isRequestError, query]
   );
@@ -369,12 +372,16 @@ export default function IndexComponent() {
         <div className="px-8 flex gap-x-5 w-full flex-1 py-7">
           <div className="flex flex-col gap-y-7 w-calc overflow-auto">
             <StatusCard
+              StatusCategories={FactoryCategories}
+              categoryType1={StatusCategoryType.AllProducts}
+              categoryType2={StatusCategoryType.Requests}
               data={prodStatData}
               requests={requestStatData}
               handleChange={({ selected, activeType }) =>
                 handleChange(selected, activeType, setQuery, query, category)
               }
               isLoading={requestStatLoading || prodStatLoading}
+              Context={InvestmentContext}
             />
 
             <div className="bg-white px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16">

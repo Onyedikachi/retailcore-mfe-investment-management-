@@ -7,19 +7,149 @@ import { IoArrowUndo } from "react-icons/io5";
 import ShareButton from "../ShareButton";
 import {
   Link,
+  useLocation,
   useNavigate,
   useParams,
   useSearchParams,
 } from "react-router-dom";
 import { Confirm, Failed, Prompt, Success } from "../modals";
 import { AppContext } from "@app/utils";
-import { useApproveProductMutation, useRejectProductMutation } from "@app/api";
-import { Messages} from "@app/constants/enums";
+import {
+  useApproveProductMutation,
+  useRejectProductMutation,
+  useApproveInvestmentMutation,
+  useRejectInvestmentMutation,
+} from "@app/api";
+import { Messages } from "@app/constants/enums";
 import Rejection from "../modals/Rejection";
 import handleVerdict from "./handleVerdict";
 
 export const handlePrint = () => {
   window.print();
+};
+
+const createProcesses = [
+  "create",
+  "modify",
+  "continue",
+  "withdraw_modify",
+  "clone",
+];
+const validPermissions = [
+  "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS",
+  "AUTHORIZE_INVESTMENT_MANAGEMENT_REQUESTS",
+];
+export const handleConfirm = ({
+  action,
+  id,
+  type,
+  approveInvestment,
+  approveProduct,
+  setRejection,
+  navigate,
+  filter,
+}) => {
+  if (action === "approve") {
+    if (type?.toLowerCase() === "individual") {
+      approveInvestment({ id });
+    } else {
+      approveProduct({ id });
+    }
+  }
+  if (action === "reject") {
+    setRejection(true);
+  }
+  if (action === "cancel") {
+    if (type?.toLowerCase() === "individual") {
+      navigate(`/investment-management/individual`);
+    } else {
+      navigate(
+        `/product-factory/investment?category=requests${
+          filter ? "&filter=" + filter : ""
+        }`
+      );
+    }
+  }
+};
+
+export function handlePermissionType(type: string, process_type?: string) {
+  if (type === "individual") {
+    // return process_type === "booking"
+    //   ? "BOOK_INVESTMENT"
+    //   : "LIQUIDATE_INVESTMENT";
+    return ["BOOK_INVESTMENT", "LIQUIDATE_INVESTMENT"];
+  }
+  if (type === "investment") {
+    return "CREATE_INVESTMENT_PRODUCT";
+  }
+}
+
+export const handleMessages = ({
+  rejectSuccess,
+  approveSuccess,
+  rejectIsError,
+  approveIsError,
+  setSuccessText,
+  setIsSuccessOpen,
+  setFailedText,
+  setFailedSubtext,
+  setFailed,
+  approveError,
+  rejectError,
+  investmentApproveSuccess,
+  investmentApproveIsError,
+  investmentApproveError,
+  investmentRejectSuccess,
+  investmentRejectIsError,
+  investmentRejectError,
+}) => {
+  if (rejectSuccess) {
+    setSuccessText(Messages.PRODUCT_CREATE_REJECTED);
+    setIsSuccessOpen(true);
+  }
+  if (investmentRejectSuccess) {
+    setSuccessText(Messages.BOOKING_CREATE_REJECTED);
+    setIsSuccessOpen(true);
+  }
+  if (approveSuccess) {
+    setSuccessText(Messages.PRODUCT_CREATE_APPROVED);
+    setIsSuccessOpen(true);
+  }
+  if (investmentApproveSuccess) {
+    setSuccessText(Messages.BOOKING_CREATE_APPROVED);
+    setIsSuccessOpen(true);
+  }
+  if (rejectIsError) {
+    setFailedText(Messages.PRODUCT_REJECT_FAILED);
+    setFailedSubtext(
+      rejectError?.message?.message || rejectError?.message?.Message
+    );
+    setFailed(true);
+  }
+
+  if (approveIsError) {
+    setFailedText(Messages.PRODUCT_APPROVE_FAILED);
+    setFailedSubtext(
+      approveError?.message?.message || approveError?.message?.Message
+    );
+    setFailed(true);
+  }
+  if (investmentApproveIsError) {
+    setFailedText(Messages.BOOKING_APPROVE_FAILED);
+    setFailedSubtext(
+      investmentApproveError?.message?.message ||
+        investmentApproveError?.message?.Message
+    );
+    setFailed(true);
+  }
+  if (investmentRejectIsError) {
+    setFailedText(Messages.BOOKING_REJECT_FAILED);
+    setFailedSubtext(
+      investmentRejectError?.message?.message ||
+        investmentRejectError?.message?.Message
+    );
+    setFailed(true);
+  }
 };
 
 export default function Actions({
@@ -31,10 +161,11 @@ export default function Actions({
   const { role, permissions } = useContext(AppContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-
+  const location = useLocation();
   const sub_type = searchParams.get("sub_type");
+  const process_type = searchParams.get("process_type");
   const filter = searchParams.get("filter");
-  const {id, process } = useParams() || {};
+  const { id, process, type } = useParams() || {};
   const [action, setAction] = useState("");
   const [confirmText, setConfirmText] = useState("");
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -58,6 +189,16 @@ export default function Actions({
   ] = useApproveProductMutation();
 
   const [
+    approveInvestment,
+    {
+      isSuccess: investmentApproveSuccess,
+      isError: investmentApproveIsError,
+      error: investmentApproveError,
+      isLoading: investmentApproveLoading,
+    },
+  ] = useApproveInvestmentMutation();
+
+  const [
     rejectProduct,
     {
       isSuccess: rejectSuccess,
@@ -67,60 +208,135 @@ export default function Actions({
     },
   ] = useRejectProductMutation();
 
+  const [
+    rejectInvestment,
+    {
+      isSuccess: investmentRejectSuccess,
+      isError: investmentRejectIsError,
+      error: investmentRejectError,
+      isLoading: investmentRejectLoading,
+    },
+  ] = useRejectInvestmentMutation();
+
   const initiateVerdict = (value) => {
-    handleVerdict({value, sub_type, process, setConfirmText, setAction, setIsConfirmOpen})
-  };
-  const handleConfirm = () => {
-    if (action === "approve") {
-      approveProduct({ id });
-    }
-    if (action === "reject") {
-      setRejection(true);
-    }
-    if (action === "cancel") {
-      navigate(
-        `/product-factory/investment?category=requests${
-          filter ? "&filter=" + filter : ""
-        }`
-      );
-    }
+    handleVerdict({
+      value,
+      type,
+      sub_type,
+      process,
+      setConfirmText,
+      setAction,
+      setIsConfirmOpen,
+    });
   };
 
   const handleRejection = () => {
     setRejection(false);
-    rejectProduct({ reason, id, routeTo });
+    if (type.toLowerCase() === "individual") {
+      rejectInvestment({ reason, id, routeTo });
+    } else {
+      rejectProduct({ reason, id, routeTo });
+    }
   };
   useEffect(() => {
-    if (rejectSuccess) {
-      setSuccessText(Messages.PRODUCT_CREATE_REJECTED);
-      setIsSuccessOpen(true);
-    }
-    if (approveSuccess) {
-      setSuccessText(Messages.PRODUCT_CREATE_APPROVED);
-      setIsSuccessOpen(true);
-    }
-    if (rejectIsError) {
-      setFailedText(Messages.PRODUCT_REJECT_FAILED);
-      setFailedSubtext(rejectError?.message?.message || rejectError?.message?.Message);
-      setFailed(true);
-    }
-
-    if (approveIsError) {
-      setFailedText(Messages.PRODUCT_APPROVE_FAILED);
-      setFailedSubtext(approveError?.message?.message || approveError?.message?.Message);
-      setFailed(true);
-    }
+    handleMessages({
+      rejectSuccess,
+      approveSuccess,
+      rejectIsError,
+      approveIsError,
+      setSuccessText,
+      setIsSuccessOpen,
+      setFailedText,
+      setFailedSubtext,
+      setFailed,
+      approveError,
+      rejectError,
+      investmentApproveSuccess,
+      investmentApproveIsError,
+      investmentApproveError,
+      investmentRejectSuccess,
+      investmentRejectIsError,
+      investmentRejectError,
+    });
   }, [
     rejectSuccess,
     rejectIsError,
     rejectError,
     approveSuccess,
     approveIsError,
+    investmentApproveSuccess,
+    investmentApproveIsError,
+    investmentRejectSuccess,
+    investmentRejectIsError,
   ]);
+  const factoryDashboard = `/product-factory/investment?category=requests${
+    filter ? "&filter=" + filter : ""
+  }`;
+  const individualDashboard = `/investment-management/individual?category=requests${
+    filter ? "&filter=" + filter : ""
+  }`;
+
+  const handleNavigation = () => {
+    if (location.pathname.includes("management")) return individualDashboard;
+    if (!location.pathname.includes("management")) return factoryDashboard;
+  };
   return (
-    <div data-testid="actions-div" className=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-[60px] py-[40px]  ">
-      {/* Submission  */}
-      {(process === "create" || process === "modify" || process === "continue" ||  process === "withdraw_modify" ||  process === "clone") && (
+    <div
+      data-testid="actions-div"
+      className=" bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-[60px] py-[40px]  "
+    >
+      {/* Preview  */}
+      {((process !== "verdict" && !createProcesses.includes(process)) ||
+        (process == "verdict" &&
+          !permissions.some((permission) =>
+            validPermissions.includes(permission)
+          ))) && (
+        <div className=" flex  gap-x-6 justify-end">
+          <Button
+            data-testid="print"
+            onClick={() => handlePrint()}
+            className="cursor-pointer max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"
+          >
+            <svg
+              width="21"
+              height="18"
+              viewBox="0 0 21 18"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M4.55313 2.4001C4.55313 1.92271 4.74277 1.46487 5.08033 1.12731C5.4179 0.78974 5.87574 0.600098 6.35313 0.600098H14.7531C15.2305 0.600098 15.6884 0.78974 16.0259 1.12731C16.3635 1.46487 16.5531 1.92271 16.5531 2.4001V3.0001H17.1531C17.9488 3.0001 18.7118 3.31617 19.2744 3.87878C19.8371 4.44139 20.1531 5.20445 20.1531 6.0001V12.0001C20.1531 12.4775 19.9635 12.9353 19.6259 13.2729C19.2884 13.6105 18.8305 13.8001 18.3531 13.8001H16.5531V15.6001C16.5531 16.0775 16.3635 16.5353 16.0259 16.8729C15.6884 17.2105 15.2305 17.4001 14.7531 17.4001H6.35313C5.87574 17.4001 5.4179 17.2105 5.08033 16.8729C4.74277 16.5353 4.55313 16.0775 4.55313 15.6001V13.8001H2.75313C2.27574 13.8001 1.8179 13.6105 1.48033 13.2729C1.14277 12.9353 0.953125 12.4775 0.953125 12.0001V6.0001C0.953125 5.20445 1.2692 4.44139 1.8318 3.87878C2.39441 3.31617 3.15748 3.0001 3.95312 3.0001H4.55313V2.4001ZM15.3531 2.4001C15.3531 2.24097 15.2899 2.08836 15.1774 1.97583C15.0649 1.86331 14.9123 1.8001 14.7531 1.8001H6.35313C6.194 1.8001 6.04138 1.86331 5.92886 1.97583C5.81634 2.08836 5.75313 2.24097 5.75313 2.4001V3.0001H15.3531V2.4001ZM5.75313 10.8001V15.6001C5.75313 15.7592 5.81634 15.9118 5.92886 16.0244C6.04138 16.1369 6.194 16.2001 6.35313 16.2001H14.7531C14.9123 16.2001 15.0649 16.1369 15.1774 16.0244C15.2899 15.9118 15.3531 15.7592 15.3531 15.6001V10.8001C15.3531 10.641 15.2899 10.4884 15.1774 10.3758C15.0649 10.2633 14.9123 10.2001 14.7531 10.2001H6.35313C6.194 10.2001 6.04138 10.2633 5.92886 10.3758C5.81634 10.4884 5.75313 10.641 5.75313 10.8001Z"
+                fill="#636363"
+              />
+            </svg>
+
+            <div className=" text-gray-500 text-base font-medium leading-normal">
+              Print
+            </div>
+          </Button>
+
+          <ShareButton
+            title="Branch Management"
+            text="Branch Process summary"
+            url={window.location.href}
+          />
+
+          <Link to={handleNavigation()}>
+            <Button
+              data-testid="gotodashboard"
+              className="cursor-pointer max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"
+            >
+              <IoArrowUndo className="text-[#636363] w-[24px] h-[24px]" />
+
+              <div className=" text-gray-500 text-base font-medium leading-normal">
+                Return to dashboard
+              </div>
+            </Button>
+          </Link>
+        </div>
+      )}
+      {/* Submission/creation  */}
+      {createProcesses.includes(process) && (
         <div className=" flex  gap-6">
           <button
             onClick={handleCancel}
@@ -155,83 +371,11 @@ export default function Actions({
           </button>
         </div>
       )}
-      {/* Preview  */}
-      {process == "preview" && (
-        <div className=" flex  gap-x-6 justify-end">
-          <Button
-            data-testid="print"
-            onClick={() => handlePrint()}
-            className="cursor-pointer max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"
-          >
-            <svg
-              width="21"
-              height="18"
-              viewBox="0 0 21 18"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M4.55313 2.4001C4.55313 1.92271 4.74277 1.46487 5.08033 1.12731C5.4179 0.78974 5.87574 0.600098 6.35313 0.600098H14.7531C15.2305 0.600098 15.6884 0.78974 16.0259 1.12731C16.3635 1.46487 16.5531 1.92271 16.5531 2.4001V3.0001H17.1531C17.9488 3.0001 18.7118 3.31617 19.2744 3.87878C19.8371 4.44139 20.1531 5.20445 20.1531 6.0001V12.0001C20.1531 12.4775 19.9635 12.9353 19.6259 13.2729C19.2884 13.6105 18.8305 13.8001 18.3531 13.8001H16.5531V15.6001C16.5531 16.0775 16.3635 16.5353 16.0259 16.8729C15.6884 17.2105 15.2305 17.4001 14.7531 17.4001H6.35313C5.87574 17.4001 5.4179 17.2105 5.08033 16.8729C4.74277 16.5353 4.55313 16.0775 4.55313 15.6001V13.8001H2.75313C2.27574 13.8001 1.8179 13.6105 1.48033 13.2729C1.14277 12.9353 0.953125 12.4775 0.953125 12.0001V6.0001C0.953125 5.20445 1.2692 4.44139 1.8318 3.87878C2.39441 3.31617 3.15748 3.0001 3.95312 3.0001H4.55313V2.4001ZM15.3531 2.4001C15.3531 2.24097 15.2899 2.08836 15.1774 1.97583C15.0649 1.86331 14.9123 1.8001 14.7531 1.8001H6.35313C6.194 1.8001 6.04138 1.86331 5.92886 1.97583C5.81634 2.08836 5.75313 2.24097 5.75313 2.4001V3.0001H15.3531V2.4001ZM5.75313 10.8001V15.6001C5.75313 15.7592 5.81634 15.9118 5.92886 16.0244C6.04138 16.1369 6.194 16.2001 6.35313 16.2001H14.7531C14.9123 16.2001 15.0649 16.1369 15.1774 16.0244C15.2899 15.9118 15.3531 15.7592 15.3531 15.6001V10.8001C15.3531 10.641 15.2899 10.4884 15.1774 10.3758C15.0649 10.2633 14.9123 10.2001 14.7531 10.2001H6.35313C6.194 10.2001 6.04138 10.2633 5.92886 10.3758C5.81634 10.4884 5.75313 10.641 5.75313 10.8001Z"
-                fill="#636363"
-              />
-            </svg>
 
-            <div className=" text-gray-500 text-base font-medium leading-normal">
-              Print
-            </div>
-          </Button>
-
-          <ShareButton
-            title="Branch Management"
-            text="Branch Process summary"
-            url={window.location.href}
-          />
-
-          <Link
-            to={`/product-factory/investment?category=requests${
-              filter ? "&filter=" + filter : ""
-            }`}
-          >
-            <Button
-              data-testid="gotodashboard"
-              className="cursor-pointer max-w-max  px-10 py-[5px] bg-white rounded-lg border border-gray-300 justify-center items-center gap-2.5 inline-flex"
-            >
-              <IoArrowUndo className="text-[#636363] w-[24px] h-[24px]" />
-
-              <div className=" text-gray-500 text-base font-medium leading-normal">
-                Return to dashboard
-              </div>
-            </Button>
-          </Link>
-
-          {/* <Button
-            data-testid="request_modify"
-            className="max-w-max  px-10 py-[5px] text-white rounded-lg border border-sterling-red-800 bg-sterling-red-800 justify-center items-center gap-2.5 inline-flex"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="25"
-              height="24"
-              viewBox="0 0 25 24"
-              fill="none"
-            >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M10.3546 1.09184C10.3548 0.864339 10.284 0.642467 10.1521 0.457273C10.0202 0.272079 9.83384 0.132831 9.61905 0.0590163C9.40427 -0.0147986 9.17182 -0.0194868 8.95425 0.045608C8.73667 0.110703 8.54486 0.242323 8.40564 0.422049L0.78409 10.2398C0.63541 10.4313 0.554688 10.667 0.554688 10.9096C0.554687 11.1522 0.63541 11.3879 0.78409 11.5794L8.40564 21.3972C8.54486 21.5769 8.73667 21.7085 8.95425 21.7736C9.17182 21.8387 9.40427 21.8341 9.61905 21.7602C9.83384 21.6864 10.0202 21.5472 10.1521 21.362C10.284 21.1768 10.3548 20.9549 10.3546 20.7274V16.3749C16.2112 16.497 19.0246 17.6108 20.4379 18.8217C21.7815 19.9725 22.0275 21.3263 22.2834 22.7444L22.3498 23.1099C22.3987 23.3714 22.5412 23.6059 22.7506 23.7695C22.9601 23.933 23.2219 24.0143 23.4869 23.9979C23.752 23.9816 24.0019 23.8688 24.1897 23.6807C24.3775 23.4926 24.4902 23.2423 24.5067 22.9768C24.6929 19.9791 24.4131 15.6353 22.2997 12.0016C20.2484 8.47482 16.5542 5.76292 10.3546 5.4793V1.09184Z"
-                fill="#fff"
-              />
-            </svg>
-            <span className="text-white text-base font-medium leading-normal">
-              Modify
-            </span>
-          </Button> */}
-        </div>
-      )}
       {/* Approval/ Rejection  */}
       {process === "verdict" &&
-        permissions.includes(
-          "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
+        permissions.some((permission) =>
+          validPermissions.includes(permission)
         ) && (
           <div className="flex  gap-6">
             <Button
@@ -322,7 +466,16 @@ export default function Actions({
         setIsOpen={setIsConfirmOpen}
         onConfirm={() => {
           setIsConfirmOpen(false);
-          handleConfirm();
+          handleConfirm({
+            action,
+            id,
+            type,
+            approveInvestment,
+            approveProduct,
+            setRejection,
+            navigate,
+            filter,
+          });
         }}
         onCancel={() => {
           setIsConfirmOpen(false);
@@ -353,10 +506,22 @@ export default function Actions({
           setReason={setReason}
           reason={reason}
           setRouteTo={setRouteTo}
+          permissionType={handlePermissionType(type, process_type)}
         />
       )}
-      {(approveLoading || rejectLoading) && (
-        <Loader isOpen={approveLoading || rejectLoading} text={"Submitting"} />
+      {(approveLoading ||
+        rejectLoading ||
+        investmentApproveLoading ||
+        investmentRejectLoading) && (
+        <Loader
+          isOpen={
+            approveLoading ||
+            rejectLoading ||
+            investmentApproveLoading ||
+            investmentRejectLoading
+          }
+          text={"Submitting"}
+        />
       )}
     </div>
   );

@@ -20,7 +20,7 @@ export default function FormStepComponent({
     <div className="flex bg-white justify-center ">
       {/* //item */}
       {formStepItems.map((item) => (
-        <div key={item.id} data-testid="form-step" className="flex flex-col items-center w-[172px]">
+        <div key={item.id} data-testid="form-step" className="flex flex-col items-center w-[200px]">
           {item.index == step ||
             (step < item.index && item.index == formStepItems[0].index) ||
             (step > item.index &&

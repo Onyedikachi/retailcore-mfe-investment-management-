@@ -62,6 +62,7 @@ const CascadingDropdown = ({
                 <Menu.Item key={index}>
                   {({ active }) => (
                     <div
+                      data-testid={item.label}
                       className={`${
                         active ? "bg-[#F9E5E5]" : " "
                       } block   text-[#636363]  ${

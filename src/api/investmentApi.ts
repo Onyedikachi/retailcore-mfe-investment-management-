@@ -5,6 +5,9 @@ import { IGetProducts, ICreateProduct } from "./types/investmentApi.types";
 import urls from "../helpers/url_helpers";
 import { cleanObject } from "@app/utils/cleanObject";
 
+const formApi ="https://customer-management-forms-api.qa.bepeerless.co/v1"
+const customerApi = "https://customer-management-api.qa.bepeerless.co/v1"
+const productApi = "https://product-mgt-api.qa.bepeerless.co/v1"
 export const investmentApi: any = createApi({
   reducerPath: "investmentApi",
   baseQuery: axiosBaseQuery({ serviceKey: "investment" }),
@@ -39,11 +42,52 @@ export const investmentApi: any = createApi({
     getCharges: builder.query<any, any>({
       query: () => {
         return {
-          url: `https://product-mgt-api.qa.bepeerless.co/v1/charges/state?state=active`,
+          url: `${productApi}/charges/state?state=active`,
           method: "get",
         };
       },
     }),
+    getCustomerSearch: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `${customerApi}/customer/search?search=${params}`,
+          method: "get",
+        };
+      },
+    }),
+    getAccountBalance: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `${customerApi}/accounts/${params}`,
+          method: "get",
+        };
+      },
+    }),
+    getCustomerProfile: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `${customerApi}/customer/profile/${params}`,
+          method: "get",
+        };
+      },
+    }),
+    getFormType: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `${formApi}/form/customer/published/type/${params}`,
+          method: "get",
+        };
+      },
+    }),
+    getFormDocuments: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `${customerApi}/column-map/form-documents/${params}`,
+          method: "get",
+        };
+      },
+    }),
+
     getSystemAlert: builder.query<any, any>({
       query: () => {
         return {
@@ -109,6 +153,15 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    createInvestment: builder.mutation<any, any>({
+      query: (data) => {
+        return {
+          url: urls.INVESTMENT_CREATE,
+          method: "post",
+          body: data,
+        };
+      },
+    }),
 
     modifyProduct: builder.mutation<any, any>({
       query: (data) => {
@@ -119,11 +172,38 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    modifyInvestment: builder.mutation<any, any>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT}/edit`,
+          method: "put",
+          body: data,
+        };
+      },
+    }),
     modifyRequest: builder.mutation<any, any>({
       query: (data) => {
         return {
           url: `${urls.REQUESTS}/edit/${data.id}`,
           method: "put",
+          body: data,
+        };
+      },
+    }),
+    modifyInvestmentRequest: builder.mutation<any, any>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT_REQUEST}/edit/${data.id}`,
+          method: "put",
+          body: data,
+        };
+      },
+    }),
+    bookingCalc: builder.mutation<any, any>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT_CALC}`,
+          method: "post",
           body: data,
         };
       },
@@ -285,6 +365,200 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    getPostInvestment: builder.mutation<
+      any,
+      {
+        filter_by: string;
+        status_In: number[];
+        search: string;
+        start_Date: string;
+        end_Date: string;
+        page: number;
+        page_Size: number;
+      }
+    >({
+      query: (params) => {
+        if (!params?.filter_by) return;
+        return {
+          url: urls.INVESTMENT,
+          method: "post",
+          body: cleanObject(params),
+        };
+      },
+    }),
+    getPostInvestmentRequests: builder.mutation<
+      any,
+      {
+        filter_by: string;
+        status_In: number[];
+        search: string;
+        start_Date: string;
+        end_Date: string;
+        page: number;
+        page_Size: number;
+      }
+    >({
+      query: (params) => {
+        if (!params?.filter_by) return;
+        return {
+          url: urls.INVESTMENT_REQUEST,
+          method: "post",
+          body: cleanObject(params),
+        };
+      },
+    }),
+    getInvestmentActivityLog: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `${urls.INVESTMENT_ACTIVITY_LOG}?${new URLSearchParams(
+            cleanObject(params)
+          )}`,
+          method: "get",
+          params: cleanObject(params),
+        };
+      },
+    }),
+    getInvestmentRequestActivityLog: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `${urls.INVESTMENT_REQUEST_ACTIVITY_LOG}?${new URLSearchParams(
+            cleanObject(params)
+          )}`,
+          method: "get",
+          params: cleanObject(params),
+        };
+      },
+    }),
+    
+    getInvestmentStats: builder.query<any, any>({
+      query: (data) => {
+        if (!data.filter_by) return;
+        return {
+          url: `${urls.INVESTMENT_STATS}?${new URLSearchParams(
+            cleanObject({
+              ...data,
+              filterBy: data.filter_by,
+            })
+          )}`,
+          method: "get",
+        };
+      },
+    }),
+    getInvestmentRequestStats: builder.query<any, any>({
+      query: (data) => {
+        if (!data.filter_by) return;
+        return {
+          url: `${urls.INVESTMENT_REQUEST_STATS}?${new URLSearchParams(
+            cleanObject({
+              ...data,
+              filterBy: data.filter_by,
+            })
+          )}`,
+          method: "get",
+        };
+      },
+    }),
+    getInvestmentDetail: builder.query<any, any>({
+      query: (data) => {
+        if (!data.id) return;
+        return {
+          url: `${urls.INVESTMENT}/${data.id}`,
+          method: "get",
+        };
+      },
+    }),
+
+    getInvestmentRequestDetail: builder.query<any, any>({
+      query: (data) => {
+        if (!data.id) return;
+        return {
+          url: `${urls.INVESTMENT_REQUEST}/${data.id}`,
+          method: "get",
+        };
+      },
+    }),
+    deleteInvestmentRequest: builder.mutation<any, any>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT_REQUEST}/delete/${data}`,
+          method: "delete",
+        };
+      },
+    }),
+    getInvestmentDashboardStats: builder.query<any, any>({
+      query: () => {
+        return {
+          url: `${urls.INVESTMENT_DASHBOARD_STATS}`,
+          method: "get",
+        };
+      },
+    }),
+    approveInvestment: builder.mutation<{ id: string }, { id: string }>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT_REQUEST}/approve/${data.id}`,
+          method: "put",
+        };
+      },
+    }),
+    rejectInvestment: builder.mutation<{ id: string }, { id: string }>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT_REQUEST}/reject/${data.id}`,
+          method: "put",
+          body: data,
+        };
+      },
+    }),
+    earlyLiquidate: builder.mutation<{ id: string }, { id: string }>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT}/early-liquidate`,
+          method: "put",
+          body: data
+        };
+      },
+    }),
+    partLiquidate: builder.mutation<{ id: string }, { id: string }>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT}/part-liquidate`,
+          method: "put",
+          body: data
+        };
+      },
+    }),
+    liquidationCalculation: builder.mutation<{ id: string }, { id: string }>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT}/liquidation-amount`,
+          method: "post",
+          body: data
+        };
+      },
+    }),
+  
+
+    editEarlyLiquidate: builder.mutation<{ id: string }, { id: string }>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT_REQUEST}/edit-earlyliquidation/${data?.id}`,
+          method: "put",
+          body: data
+        };
+      },
+    }),
+    editPartLiquidate: builder.mutation<{ id: string }, { id: string }>({
+      query: (data) => {
+        return {
+          url: `${urls.INVESTMENT_REQUEST}/edit-partliquidation/${data.id}`,
+          method: "put",
+          body: data
+        };
+      },
+    }),
+
+
   }),
 });
 
@@ -313,4 +587,30 @@ export const {
   useApproveProductMutation,
   useRejectProductMutation,
   useGetSystemAlertQuery,
+  useGetCustomerSearchQuery,
+  useGetAccountBalanceQuery,
+  useGetCustomerProfileQuery,
+  useCreateInvestmentMutation,
+  useGetInvestmentActivityLogQuery,
+  useGetInvestmentRequestActivityLogQuery,
+  useGetPostInvestmentRequestsMutation,
+  useGetPostInvestmentMutation,
+  useGetInvestmentRequestStatsQuery,
+  useGetInvestmentStatsQuery,
+  useGetInvestmentDetailQuery,
+  useDeleteInvestmentRequestMutation,
+  useGetInvestmentRequestDetailQuery,
+  useBookingCalcMutation,
+  useModifyInvestmentMutation,
+  useModifyInvestmentRequestMutation,
+  useGetInvestmentDashboardStatsQuery,
+  useGetFormDocumentsQuery,
+  useGetFormTypeQuery,
+  useApproveInvestmentMutation,
+  useRejectInvestmentMutation,
+  useEarlyLiquidateMutation,
+  usePartLiquidateMutation,
+  useLiquidationCalculationMutation,
+  useEditEarlyLiquidateMutation,
+  useEditPartLiquidateMutation,
 } = investmentApi;

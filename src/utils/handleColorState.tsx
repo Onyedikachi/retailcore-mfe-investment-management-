@@ -9,12 +9,15 @@ export function handleColorState(value: string) {
 
     case "in-review":
     case "P":
+    case "pending":
       return colorState["in-review"];
 
     case "in-issue":
     case "R":
       return colorState["in-issue"];
 
+    case "liquidated":
+      return colorState["liquidated"];
     case "draft":
     case "D":
     case "inactive":

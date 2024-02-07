@@ -24,7 +24,7 @@ export default function Select({
   error,
   disabled = false,
 }: BorderlessSelectProps): React.JSX.Element {
-  const [selected, setSelected] = useState<any>(null);
+  const [selected, setSelected] = useState<any>("");
 
   // useEffect(() => {
   //   handleSelected(selected);
@@ -39,9 +39,9 @@ export default function Select({
   };
   // Change selected when changing status category
   useEffect(() => {
-  
     setSelected(options?.find((i) => i.value === defaultValue));
-  }, [defaultValue]);
+  }, [defaultValue, options]);
+
   return (
     <div role="combobox" className={` min-w-full`}>
       <div className="flex  gap-2 min-w-[300px]">
@@ -93,7 +93,7 @@ export default function Select({
             leaveTo="opacity-0"
           >
             <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto z-[400] bg-white  focus:outline-none text-sm shadow-[0px_0px_4px_0px_#00000040] right-0 rounded-b-lg">
-              <OptionsList options={options}/>
+              <OptionsList options={!disabled ? options : []} />
             </Listbox.Options>
           </Transition>
         </div>

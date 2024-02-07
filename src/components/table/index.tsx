@@ -8,6 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 import DropDown from "@app/components/DropDown";
 import { MultiSelect, DateSelect } from "@app/components/forms";
 import moment from "moment";
+import { currencyFormatter } from "@app/utils/formatCurrency";
+
 import { BsFunnel } from "react-icons/bs";
 import BottomBarLoader from "../BottomBarLoader";
 // import Tooltip from "@app/components/ui/Tooltip";
@@ -20,6 +22,7 @@ import {
 } from "@app/utils";
 import { FaBars, FaEye } from "react-icons/fa";
 import { Actions, Messages, Prompts } from "@app/constants/enums";
+import { Interval, InvestmentBookingStatus } from "@app/constants/investment";
 import { Confirm, Failed, Success } from "../modals";
 import Loader from "../Loader";
 import RequestDeactivation from "../modals/RequestDeactivation";
@@ -29,12 +32,20 @@ import { useNavigate } from "react-router-dom";
 import {
   useActivateProductMutation,
   useDeleteProductRequestMutation,
+  useDeleteInvestmentRequestMutation,
+  useGetProductDetailQuery,
+  useModifyInvestmentRequestMutation,
+  usePartLiquidateMutation,
+  useEarlyLiquidateMutation,
+  useEditPartLiquidateMutation,
+  useEditEarlyLiquidateMutation,
 } from "@app/api";
 import Button from "../Button";
 import { ActiveFilterOptions } from "@app/constants";
 import MessagesComponent from "./MessagesComponent";
 import { actionHandler } from "./actionHandler";
 import { confirmationHandler } from "./confirmationHandler";
+import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 
 interface TableProps {
   headers: any[];
@@ -52,11 +63,40 @@ interface TableProps {
   onChangeDate?: any;
   type?: string;
   noData?: string;
+  handleRefresh?: () => void;
+  isOverviewDrillDown?: boolean;
 }
 
+const excludedKeys = [
+  "state",
+  "interestRate",
+  "investmentBookingStatus",
+  "updated_At",
+  "requestStatus",
+];
+
 export const statusHandler = ({
+  modifyRequestSuccess,
+  modifyRequestIsError,
+  modifyRequestError,
+  partLiquidateSuccess,
+  partLiquidateIsError,
+  partLiquidateError,
+  earlyLiquidateSuccess,
+  earlyLiquidateIsError,
+  earlyLiquidateError,
+  partEditLiquidateSuccess,
+  partEditLiquidateIsError,
+  partEditLiquidateError,
+  earlyEditLiquidateSuccess,
+  earlyEditLiquidateIsError,
+  earlyEditLiquidateError,
+  isDeleteInvestmentRequestSuccess,
+  isDeleteInvestmentRequestError,
+  deleteInvestmentRequestError,
   isSuccess,
   setSuccessText,
+  setSubText,
   setIsSuccessOpen,
   activateSuccess,
   isError,
@@ -67,7 +107,70 @@ export const statusHandler = ({
   setFailedSubtext,
   error,
   role,
+  detail,
 }) => {
+  
+  setSuccessText("");
+  setIsSuccessOpen(false);
+  setSubText("");
+  setFailed(false)
+  if (modifyRequestSuccess) {
+    setSuccessText(Messages.BOOKING_WITHDRAW_SUCCESS);
+    setSubText(Messages.BOOKING_WITHDRAW_SUCCESS_SUB);
+    setIsSuccessOpen(true);
+  }
+
+  if (modifyRequestIsError) {
+    setFailedText(Messages.BOOKING_MODIFY_FAILED);
+    setFailedSubtext(
+      modifyRequestError?.message?.message ||
+        modifyRequestError?.message?.Message
+    );
+    setFailed(true);
+  }
+  if (earlyLiquidateSuccess) {
+    setSuccessText(
+      role === "superadmin"
+        ? Messages.EARLY_LIQUIDATION_SUCCESS
+        : Messages.EARLY_LIQUIDATION_REQUEST
+    );
+    setSubText(
+      `${detail?.customerName}[${detail?.customerAccount}] will be credited, once approval is granted`
+    );
+    setIsSuccessOpen(true);
+  }
+  if (partLiquidateSuccess) {
+    setSuccessText(
+      role === "superadmin"
+        ? Messages.PART_LIQUIDATION_SUCCESS
+        : Messages.PART_LIQUIDATION_REQUEST
+    );
+    setSubText(
+      `${detail?.customerName}[${detail?.customerAccount}] will be credited, once approval is granted`
+    );
+    setIsSuccessOpen(true);
+  }
+  if (earlyEditLiquidateSuccess) {
+    setSuccessText(
+      role === "superadmin"
+        ? Messages.LIQUIDATION_MODIFICATION__SUCCESS
+        : Messages.LIQUIDATION_MODIFICATION_REQUEST_SUCCESS
+    );
+    setIsSuccessOpen(true);
+  }
+  if (partEditLiquidateSuccess) {
+    setSuccessText(
+      role === "superadmin"
+        ? Messages.LIQUIDATION_MODIFICATION__SUCCESS
+        : Messages.LIQUIDATION_MODIFICATION_REQUEST_SUCCESS
+    );
+    setIsSuccessOpen(true);
+  }
+
+  if (isDeleteInvestmentRequestSuccess) {
+    setSuccessText(Messages.PRODUCT_DELETE_SUCCESS);
+    setIsSuccessOpen(true);
+  }
   if (isSuccess) {
     setSuccessText(Messages.PRODUCT_DELETE_SUCCESS);
     setIsSuccessOpen(true);
@@ -85,11 +188,55 @@ export const statusHandler = ({
     setFailedSubtext(error?.message?.message || error?.message?.Message);
     setFailed(true);
   }
+  if (isDeleteInvestmentRequestError) {
+    setFailedText(Messages.PRODUCT_DELETE_FAILED);
+    setFailedSubtext(
+      deleteInvestmentRequestError?.message?.message ||
+        deleteInvestmentRequestError?.message?.Message
+    );
+    setFailed(true);
+  }
 
   if (activateIsError) {
     setFailedText(Messages.PRODUCT_ACTIVATE_FAILED);
     setFailedSubtext(
       activateError?.message?.message || activateError?.message?.Message
+    );
+    setFailed(true);
+  }
+
+  if (earlyLiquidateIsError) {
+    setFailedText(Messages.REQUEST_FAILED);
+    setFailedSubtext(
+      earlyLiquidateError?.message?.message ||
+        earlyLiquidateError?.message?.Message
+    );
+    setFailed(true);
+  }
+
+  if (partLiquidateIsError) {
+    setFailedText(Messages.REQUEST_FAILED);
+    setFailedSubtext(
+      partLiquidateError?.message?.message ||
+        partLiquidateError?.message?.Message
+    );
+    setFailed(true);
+  }
+
+  if (earlyEditLiquidateIsError) {
+    setFailedText(Messages.LIQUIDATION_MODIFICATION_REQUEST_FAILED);
+    setFailedSubtext(
+      earlyEditLiquidateError?.message?.message ||
+        earlyEditLiquidateError?.message?.Message
+    );
+    setFailed(true);
+  }
+
+  if (partEditLiquidateIsError) {
+    setFailedText(Messages.LIQUIDATION_MODIFICATION_REQUEST_FAILED);
+    setFailedSubtext(
+      partEditLiquidateError?.message?.message ||
+        partEditLiquidateError?.message?.Message
     );
     setFailed(true);
   }
@@ -99,7 +246,7 @@ export function handleUpdated(key, value, options) {
   if (!options || !value) return;
 
   const parseOptions = JSON.parse(options);
-  if (!parseOptions[key]) return;
+  if (!parseOptions || !parseOptions[key]) return;
 
   if (key === "state") {
     // const newState = ActiveFilterOptions.find(
@@ -125,21 +272,30 @@ export const DropdownButton = ({ options, handleClick }: any) => {
 };
 
 export const handleProductsDropdown = (
+  statusType = "",
   status: string,
   isChecker,
   DropDownOptions,
-  locked = false,
+  liquidation,
   permissions: string[] = [],
   created_By_Id,
   userId
 ): any => {
   if (!status) return [];
   if (isChecker) {
-    return DropDownOptions[status]?.filter(
-      (i: any) => i.text.toLowerCase() === "view"
-    );
+    return DropDownOptions[
+      statusType === StatusCategoryType.Investments
+        ? InvestmentBookingStatus[status].toLowerCase()
+        : status
+    ]?.filter((i: any) => i.text?.toLowerCase() === "view");
   } else {
-    let options = DropDownOptions[status];
+    let options =
+      DropDownOptions[
+        statusType === StatusCategoryType.Investments
+          ? InvestmentBookingStatus[status]?.toLowerCase()
+          : status
+      ];
+
     if (!permissions?.includes("RE_OR_DEACTIVATE_INVESTMENT_PRODUCT")) {
       options = options?.filter(
         (i: any) =>
@@ -147,32 +303,73 @@ export const handleProductsDropdown = (
           i.text.toLowerCase() !== "activate"
       );
     }
-    if (
-      !permissions?.includes("CREATE_INVESTMENT_PRODUCT") ||
-      (permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&
-        !permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS") &&
-        created_By_Id !== userId)
-    ) {
+  
+    if (!permissions?.includes("LIQUIDATE_INVESTMENT")) {
       options = options?.filter(
         (i: any) =>
-          i.text.toLowerCase() === "view" 
+          i.text.toLowerCase() !== "part liquidate" &&
+          i.text.toLowerCase() !== "early liquidate"
       );
+    } else {
+      if (!liquidation?.early) {
+        {
+          options = options?.filter(
+            (i: any) => i.text.toLowerCase() !== "early liquidate"
+          );
+        }
+      }
+      if (!liquidation?.part) {
+        {
+          options = options?.filter(
+            (i: any) => i.text.toLowerCase() !== "part liquidate"
+          );
+        }
+      }
+    }
+    if (!permissions?.includes("BOOK_INVESTMENT")) {
+      options = options?.filter(
+        (i: any) => i.text.toLowerCase() !== "restructure"
+      );
+    }
+    if (
+      (!permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&
+        !permissions?.includes("BOOK_INVESTMENT")) ||
+      (((permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&
+        !permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS")) ||
+        (permissions?.includes("BOOK_INVESTMENT") &&
+          !permissions?.includes("VIEW_ALL_INVESTMENT_RECORDS"))) &&
+        created_By_Id !== userId)
+    ) {
+      options = options?.filter((i: any) => i.text.toLowerCase() === "view");
     }
     return options;
   }
 };
 
-export const TextCellContent = ({ value }) => (
-  <span className="relative">
-    <span className="relative">{value || "-"}</span>
-  </span>
-);
+export const TextCellContent = ({ value }: { value: any }) => {
+  const { currencies } = useContext(AppContext);
+  return (
+    <span className="relative">
+      <span className="relative max-w-[290px] whitespace-normal">
+        {value || "-"}{" "}
+      </span>
+    </span>
+  );
+};
 
 export const ProductNameCellContent = ({ value }) => (
   <>
     <br />
     <span className="relative font-medium text-sm text-[#aaaaaa] uppercase">
       {value?.productCode || "-"}
+    </span>
+  </>
+);
+export const CustomerNameCellContent = ({ value }) => (
+  <>
+    <br />
+    <span className="relative font-medium text-sm text-[#aaaaaa] uppercase">
+      {value?.investmentId || "-"}
     </span>
   </>
 );
@@ -185,14 +382,34 @@ export const UpdatedOnCellContent = ({ value }) => (
   </span>
 );
 
-export const StateCellContent = ({ value }) => (
-  <span
-    className={`font-medium px-2 py-[4px] rounded capitalize max-h-[26px] relative leading-[24px] ${handleColorState(
-      value
-    )}`}
-  >
-    {value}
-  </span>
+export const StateCellContent = ({
+  value,
+  statusType = "",
+  isOverviewDrillDown = false,
+}: {
+  value: any;
+  statusType?: string;
+  isOverviewDrillDown?: boolean;
+}) => (
+  <div>
+    {statusType === StatusCategoryType.Investments || isOverviewDrillDown ? (
+      <span
+        className={`font-medium px-2 py-[4px] rounded capitalize max-h-[26px] relative leading-[24px] ${handleColorState(
+          InvestmentBookingStatus[value].toLowerCase()
+        )}`}
+      >
+        {InvestmentBookingStatus[value]}
+      </span>
+    ) : (
+      <span
+        className={`font-medium px-2 py-[4px] rounded capitalize max-h-[26px] relative leading-[24px] ${handleColorState(
+          value
+        )}`}
+      >
+        {value}
+      </span>
+    )}
+  </div>
 );
 export const StatusCellContent = ({ value, isChecker }) => (
   <span
@@ -221,22 +438,30 @@ export default function TableComponent<TableProps>({
   onChangeDate,
   type = "",
   noData = "No data available",
+  Context,
+  handleRefresh = () => {},
+  isOverviewDrillDown = false,
 }) {
-  const { role, permissions, userId } = useContext(AppContext);
+  const { role, permissions, userId, isChecker } = useContext(AppContext);
   const {
-    isChecker,
+    specificCategory,
     category,
     selected,
     isDetailOpen,
     setDetailOpen,
+    isIndividualDetailOpen,
+    setIndividualDetailOpen,
     detail,
     setDetail,
-  } = useContext(InvestmentContext);
+  }: any = useContext(Context);
+
   const [action, setAction] = useState("");
   const navigate = useNavigate();
   const previousData = useRef({});
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
+  const [liquidationType, setLiquidationType] = useState(null);
+  const [isLiquidation, setLiquidationOpen] = useState(false);
   const [isDeactivationOpen, setIsDeactivationOpen] = useState(false);
   const [confirmText, setConfirmText] = useState("");
   const [subText, setSubText] = useState("");
@@ -244,11 +469,41 @@ export default function TableComponent<TableProps>({
   const [isFailed, setFailed] = useState(false);
   const [failedSubText, setFailedSubtext] = useState("");
   const [failedText, setFailedText] = useState("");
+  const [productDetails, setProductDetails] = useState(null);
+
+  const resetModals = () => {
+    setFailed(false);
+    setIsSuccessOpen(false);
+    setIsConfirmOpen(false);
+  };
 
   // function getdata(item, key) {}
   // @ts-ignore
+  const handleLiquidation = (data, type, metaInfo) => {
+    resetModals();
+    if (!metaInfo) {
+      if (type.toLowerCase() === "part") {
+        partLiquidateInvestment(data);
+      }
+
+      if (type.toLowerCase() === "early") {
+        earlyLiquidateInvestment(data);
+      }
+    } else {
+      if (type.toLowerCase() === "part") {
+        partEditLiquidateInvestment({ ...data });
+      }
+
+      if (type.toLowerCase() === "early") {
+        earlyEditLiquidateInvestment({
+          ...data,
+        });
+      }
+    }
+  };
   const handleAction = (action, items) => {
     actionHandler({
+      specificCategory,
       action,
       items,
       category,
@@ -259,16 +514,69 @@ export default function TableComponent<TableProps>({
       previousData,
       setConfirmText,
       setIsConfirmOpen,
+      setLiquidationOpen,
+      setLiquidationType,
       setDetailOpen,
+      setIndividualDetailOpen,
       navigate,
       selected,
     });
   };
 
   const [
+    earlyLiquidateInvestment,
+    {
+      isSuccess: earlyLiquidateSuccess,
+      isError: earlyLiquidateIsError,
+      error: earlyLiquidateError,
+      isLoading: earlyLiquidateIsLoading,
+    },
+  ] = useEarlyLiquidateMutation();
+
+  const [
+    partLiquidateInvestment,
+    {
+      isSuccess: partLiquidateSuccess,
+      isError: partLiquidateIsError,
+      error: partLiquidateError,
+      isLoading: partLiquidateIsLoading,
+    },
+  ] = usePartLiquidateMutation();
+
+  const [
+    earlyEditLiquidateInvestment,
+    {
+      isSuccess: earlyEditLiquidateSuccess,
+      isError: earlyEditLiquidateIsError,
+      error: earlyEditLiquidateError,
+      isLoading: earlyEditLiquidateIsLoading,
+    },
+  ] = useEditEarlyLiquidateMutation();
+
+  const [
+    partEditLiquidateInvestment,
+    {
+      isSuccess: partEditLiquidateSuccess,
+      isError: partEditLiquidateIsError,
+      error: partEditLiquidateError,
+      isLoading: partEditLiquidateIsLoading,
+    },
+  ] = useEditPartLiquidateMutation();
+
+  const [
     deleteRequest,
     { isSuccess, isError, error, isLoading: deleteLoading },
   ] = useDeleteProductRequestMutation();
+
+  const [
+    deleteInvestmentRequest,
+    {
+      isSuccess: isDeleteInvestmentRequestSuccess,
+      isError: isDeleteInvestmentRequestError,
+      error: deleteInvestmentRequestError,
+      isLoading: isDeleteInvestmentRequestLoading,
+    },
+  ] = useDeleteInvestmentRequestMutation();
   const [
     activateProduct,
     {
@@ -279,23 +587,67 @@ export default function TableComponent<TableProps>({
     },
   ] = useActivateProductMutation();
 
+  const {
+    data: productData,
+    isLoading: productDetailLoading,
+    isSuccess: productDetailSuccess,
+  } = useGetProductDetailQuery({
+    id:
+      detail?.investmentProductId ||
+      (detail?.metaInfo && JSON.parse(detail?.metaInfo)?.investmentProductId),
+  });
+
+  const [
+    modifyRequest,
+    {
+      isLoading: modifyRequestLoading,
+      isSuccess: modifyRequestSuccess,
+      isError: modifyRequestIsError,
+      error: modifyRequestError,
+    },
+  ] = useModifyInvestmentRequestMutation();
+
   const handleConfirm = () =>
     confirmationHandler({
+      specificCategory,
       action,
       detail,
       permissions,
       selected,
       previousData,
       deleteRequest,
+      deleteInvestmentRequest,
       setIsDeactivationOpen,
       activateProduct,
       navigate,
+      modifyRequest,
+      setLiquidationOpen,
+      setLiquidationType,
     });
 
   useEffect(() => {
     statusHandler({
+      modifyRequestSuccess,
+      modifyRequestIsError,
+      modifyRequestError,
+      partLiquidateSuccess,
+      partLiquidateIsError,
+      partLiquidateError,
+      earlyLiquidateSuccess,
+      earlyLiquidateIsError,
+      earlyLiquidateError,
+      partEditLiquidateSuccess,
+      partEditLiquidateIsError,
+      partEditLiquidateError,
+      earlyEditLiquidateSuccess,
+      earlyEditLiquidateIsError,
+      earlyEditLiquidateError,
+      isDeleteInvestmentRequestSuccess,
+      isDeleteInvestmentRequestError,
+      deleteInvestmentRequestError,
       isSuccess,
       setSuccessText,
+      setSubText,
       setIsSuccessOpen,
       activateSuccess,
       isError,
@@ -306,8 +658,39 @@ export default function TableComponent<TableProps>({
       setFailedSubtext,
       error,
       role,
+      detail,
     });
-  }, [isSuccess, isError, error, activateSuccess, activateIsError]);
+  }, [
+    isSuccess,
+    isError,
+    error,
+    activateSuccess,
+    activateIsError,
+    isDeleteInvestmentRequestSuccess,
+    isDeleteInvestmentRequestError,
+    deleteInvestmentRequestError,
+    earlyLiquidateSuccess,
+    earlyLiquidateIsError,
+    earlyLiquidateError,
+    partLiquidateSuccess,
+    partLiquidateIsError,
+    partLiquidateError,
+    modifyRequestSuccess,
+    modifyRequestIsError,
+    modifyRequestError,
+    partEditLiquidateSuccess,
+    partEditLiquidateIsError,
+    partEditLiquidateError,
+    earlyEditLiquidateSuccess,
+    earlyEditLiquidateIsError,
+    earlyEditLiquidateError,
+  ]);
+
+  useEffect(() => {
+    if (productDetailSuccess) {
+      setProductDetails(productData.data);
+    }
+  }, [productData, productDetailSuccess]);
 
   return (
     <div>
@@ -318,12 +701,6 @@ export default function TableComponent<TableProps>({
           next={fetchMoreData}
           hasMore={hasMore}
           loader={""}
-          // loader={
-          //   <div className="text-xs text-center py-6 text-gray-500 relative flex itemx-center justify-center gap-x-1">
-          //     Loading data...
-          //     <span className="spinner-border h-4 w-4 border-t border-gray-500 rounded-full animate-spin"></span>
-          //   </div>
-          // }
           endMessage={
             !isLoading && (
               <div className="text-xs text-center py-6 text-gray-500">
@@ -358,8 +735,16 @@ export default function TableComponent<TableProps>({
                         <span>
                           {hasSelect && (
                             <MultiSelect
+                              showMe={
+                                (key.toLowerCase() === "created_by" ||
+                                  key.toLowerCase() === "approved_by") &&
+                                userId
+                              }
                               options={options}
-                              getOptions={(e: any) => getOptionData(e, label)}
+                              getOptions={(e: any) => {
+                       
+                                getOptionData(e, label);
+                              }}
                             >
                               <span className="w-4 h-4 flex items-center justify-center">
                                 <BsFunnel />
@@ -392,13 +777,11 @@ export default function TableComponent<TableProps>({
                         className="text-base font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative"
                         key={idx.toString() + header.key}
                       >
-                        <div className="relative max-w-max">
+                        <div className="relative">
                           {header.key !== "actions" ? (
                             <>
                               {typeof item[header.key] !== "object" &&
-                                header.key !== "state" &&
-                                header.key !== "updated_At" &&
-                                header.key !== "requestStatus" && (
+                                !excludedKeys.includes(header.key) && (
                                   <TextCellContent
                                     value={item[header.key] || "-"}
                                   />
@@ -406,6 +789,22 @@ export default function TableComponent<TableProps>({
                               {header.key === "state" && (
                                 <StateCellContent value={item[header.key]} />
                               )}
+                              {header.key === "investmentBookingStatus" && (
+                                <StateCellContent
+                                  value={item[header.key]}
+                                  statusType={type}
+                                  isOverviewDrillDown={isOverviewDrillDown}
+                                />
+                              )}
+
+                              {header.key === "interestRate" && (
+                                <div>
+                                  <TextCellContent
+                                    value={item[header.key] + "%" || "-"}
+                                  />
+                                </div>
+                              )}
+
                               {header.key === "requestStatus" && (
                                 <span
                                   onClick={() => handleAction("view", item)}
@@ -424,18 +823,30 @@ export default function TableComponent<TableProps>({
                               {header.key === "productName" && (
                                 <ProductNameCellContent value={item} />
                               )}
+                              {header.key === "customerName" && (
+                                <CustomerNameCellContent value={item} />
+                              )}
                             </>
                           ) : (
                             <div>
                               {!isChecker ? (
                                 <ActionsCellContent
                                   dropDownOptions={
-                                    type === StatusCategoryType.AllProducts
+                                    type === StatusCategoryType.AllProducts ||
+                                    type === StatusCategoryType.Investments
                                       ? handleProductsDropdown(
-                                          item.state,
+                                          type,
+                                          item.state
+                                            ? item.state
+                                            : item.investmentBookingStatus
+                                            ? item.investmentBookingStatus
+                                            : null,
                                           isChecker,
                                           dropDownOptions,
-                                          item.islocked,
+                                          {
+                                            part: item.partLiquidation,
+                                            early: item.earlyLiquidation,
+                                          },
                                           permissions,
                                           item.created_By_Id,
                                           userId
@@ -464,7 +875,7 @@ export default function TableComponent<TableProps>({
                                   ) : (
                                     <Button
                                       onClick={() => handleAction("view", item)}
-                                      className="px-[7px] py-[6px] text-sm font-normal bg-white shadow-[0px_2px_8px_0px_rgba(0,0,0,0.25)] text-[#636363]"
+                                      className="px-[7px] py-[6px] text-sm font-normal roounded bg-white shadow-[0px_2px_8px_0px_rgba(0,0,0,0.25)] text-[#636363]"
                                     >
                                       View
                                     </Button>
@@ -537,14 +948,17 @@ export default function TableComponent<TableProps>({
       </div>
       {/* @ts-ignore */}
       <MessagesComponent
+        productDetails={productDetails}
+        specificCategory={specificCategory}
         isConfirmOpen={isConfirmOpen}
         isSuccessOpen={isSuccessOpen}
         setIsConfirmOpen={setIsConfirmOpen}
         isFailed={isFailed}
         isDeactivationOpen={isDeactivationOpen}
         isDetailOpen={isDetailOpen}
-        deleteLoading={deleteLoading}
-        activateIsLoading={activateIsLoading}
+        isIndividualDetailOpen={isIndividualDetailOpen}
+        deleteLoading={deleteLoading || isDeleteInvestmentRequestLoading}
+        activateIsLoading={activateIsLoading || modifyRequestLoading}
         confirmText={confirmText}
         detail={detail}
         subText={subText}
@@ -556,7 +970,14 @@ export default function TableComponent<TableProps>({
         setFailed={setFailed}
         setIsDeactivationOpen={setIsDeactivationOpen}
         setDetailOpen={setDetailOpen}
+        setIndividualDetailOpen={setIndividualDetailOpen}
         handleAction={handleAction}
+        isLiquidation={isLiquidation}
+        setLiquidationOpen={setLiquidationOpen}
+        liquidationType={liquidationType}
+        handleLiquidation={handleLiquidation}
+        liquidationLoading={earlyLiquidateIsLoading || partLiquidateIsLoading}
+        handleRefresh={handleRefresh}
       />
     </div>
   );

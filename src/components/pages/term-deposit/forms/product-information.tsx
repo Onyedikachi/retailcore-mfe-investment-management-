@@ -11,7 +11,6 @@ import { RedDot } from "@app/components/forms";
 
 import {
   ProductInformationFormSchema,
-  currencyOptions,
   toolTips,
 } from "@app/constants";
 import { debounce } from "lodash";
@@ -184,7 +183,10 @@ export default function ProductInformation({
     const currency = currencies.find(
       (i) => i.text.toLowerCase() === "ngn"
     )?.value;
-    formData.currency = currency;
+    setFormData({
+      ...formData,
+      currency
+    });
     setValue("productName", currency);
   }, [currencies]);
 

@@ -1,12 +1,13 @@
 import { createContext, useContext } from "react";
 
 interface ContextProps {
+  specificCategory?: string;
+  setSpecificCategory?: (e: any) => void;
   category?: any;
   setCategory?: (e: any) => void;
   selected?: { id: number; text: string; value?: string } | null;
   setSelected?: (e: any) => void;
-  isChecker?: boolean;
-  setIsChecker?: (e: any) => void;
+
   setStatus?: (e: any) => void;
   status?: string;
   dateData?: any;
@@ -25,6 +26,8 @@ interface ContextProps {
   setRole?: (e: string) => void;
   isDetailOpen?: boolean;
   setDetailOpen?: (e: any) => void;
+  isIndividualDetailOpen?: boolean;
+  setIndividualDetailOpen?: (e: any) => void;
   detail?: any;
   setDetail?: (e: any) => void;
 }
@@ -51,23 +54,27 @@ export const AppContext = createContext<{
   permissions: string[];
   currencies?: any;
   setCurrencies?: (e: any) => void;
-  userId?: string
+  userId?: string;
+  isChecker?: boolean;
+  setIsChecker?: (e: any) => void;
 }>({
   role: "",
   setRole: () => {},
   permissions: [],
   currencies: [],
   setCurrencies: () => {},
-  userId: ""
+  userId: "",
+  isChecker: true,
+  setIsChecker: () => {},
 });
 
-export const InvestmentContext = createContext<ContextProps>({
+export const CommonContext = createContext<ContextProps>({
+  specificCategory: null,
+  setSpecificCategory: () => {},
   category: null,
   setCategory: () => {},
   selected: null,
   setSelected: () => {},
-  isChecker: true,
-  setIsChecker: () => {},
   setStatus: () => {},
   status: "",
   dateData: null,
@@ -90,6 +97,23 @@ export const InvestmentContext = createContext<ContextProps>({
   setDetail: () => {},
 });
 
+export const InvestmentContext = CommonContext;
+
+export const IndividualContext = CommonContext;
+interface IOverviewContext {
+  overviewTabStats: any;
+  setOverviewTabStats: (e: any) => void;
+  getStats: () => void;
+}
+
+export const OverviewContext = createContext<IOverviewContext>({
+  overviewTabStats: null,
+  setOverviewTabStats: () => {},
+  getStats: () => {},
+});
+
+
+
 export const ProductDeactivationContext =
   createContext<branchDeactivationContextProps>({
     stage: null,
@@ -106,22 +130,15 @@ export const SummaryContextProps = createContext<ISummaryContextProps>({
   uploadData: [],
 });
 
-interface IOverviewContext {
-  name: string
-}
-export const defaultOverviewContext = {
-  name: 'All Investments'
-}
-
-export const OverviewContext = createContext<undefined | IOverviewContext>(
-  undefined
-)
+// export const defaultOverviewContext = {
+//   name: "All Investments",
+// };
 
 export function useOverviewContext() {
-  const overviewState = useContext(OverviewContext)
+  const overviewState = useContext(OverviewContext);
   if (overviewState === undefined) {
-    throw new Error('useOverviewContext must be used with a dashbord context')
+    throw new Error("useOverviewContext must be used with a dashbord context");
   }
 
-  return overviewState
+  return overviewState;
 }

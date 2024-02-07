@@ -45,6 +45,35 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
   step > termDepositFormSteps[0].index && setStep(step - 1);
 }
 
+export const handlePreviousData = ({ prevProductData, productDetails }) => {
+  const pricingConfigurationCopy = JSON.parse(
+    JSON.stringify(productDetails?.data?.pricingConfiguration)
+  );
+
+  if (pricingConfigurationCopy) {
+    pricingConfigurationCopy.interestRateConfigModels =
+      pricingConfigurationCopy.interestRateConfigModels?.sort(
+        (a, b) => a.min - b.min
+      );
+  }
+
+  return {
+    ...prevProductData,
+    productInfo: productDetails?.data?.productInfo,
+    customerEligibility: productDetails?.data?.customerEligibility,
+    pricingConfiguration: pricingConfigurationCopy,
+    liquidation: productDetails?.data?.liquidation,
+    productGlMappings: productDetails?.data?.productGlMappings,
+    interestComputationMethod: productDetails?.data?.interestComputationMethod,
+    TermDepositLiabilityAccount:
+      productDetails?.data?.TermDepositLiabilityAccount,
+    InterestAccrualAccount: productDetails?.data?.InterestAccrualAccount,
+    InterestExpenseAccount: productDetails?.data?.InterestExpenseAccount,
+    isDraft: productDetails?.data?.isDraft,
+    productType: productDetails?.data?.productType,
+  };
+};
+
 export const handleDetailsSuccess = (
   activeId,
   productDetails,
@@ -72,36 +101,117 @@ export const handleDetailsSuccess = (
     };
   }
 
-  setProductData((prevProductData) => {
-    const pricingConfigurationCopy = JSON.parse(
-      JSON.stringify(productDetails?.data?.pricingConfiguration)
-    );
-
-    if (pricingConfigurationCopy) {
-      pricingConfigurationCopy.interestRateConfigModels =
-        pricingConfigurationCopy.interestRateConfigModels?.sort(
-          (a, b) => a.min - b.min
-        );
-    }
-
-    return {
-      ...prevProductData,
-      productInfo: productDetails?.data?.productInfo,
-      customerEligibility: productDetails?.data?.customerEligibility,
-      pricingConfiguration: pricingConfigurationCopy,
-      liquidation: productDetails?.data?.liquidation,
-      productGlMappings: productDetails?.data?.productGlMappings,
-      interestComputationMethod:
-        productDetails?.data?.interestComputationMethod,
-      TermDepositLiabilityAccount:
-        productDetails?.data?.TermDepositLiabilityAccount,
-      InterestAccrualAccount: productDetails?.data?.InterestAccrualAccount,
-      InterestExpenseAccount: productDetails?.data?.InterestExpenseAccount,
-      isDraft: productDetails?.data?.isDraft,
-      productType: productDetails?.data?.productType,
-    };
-  });
+  setProductData((prevProductData) =>
+    handlePreviousData({ prevProductData, productDetails })
+  );
 };
+
+export const handleRequestIsSuccess = ({
+  requestIsSuccess,
+  requestData,
+  process,
+  activeId,
+  previousData,
+  setProductData,
+  setFormData,
+  type = "investment",
+}: {
+  requestIsSuccess: any;
+  requestData: any;
+  process: any;
+  activeId: any;
+  previousData: any;
+  setProductData?: any;
+  setFormData?: any;
+  type?: any;
+}) => {
+  if (requestIsSuccess && requestData?.data?.metaInfo) {
+    const data = JSON.parse(requestData?.data?.metaInfo);
+   
+    if (process === "continue" && data?.id) {
+      activeId.current = data?.id;
+    }
+    if (process === "withdraw_modify") {
+      previousData.current = {
+        ...previousData.current,
+        productName: data?.productInfo?.productName,
+        description: data?.productInfo?.description,
+        slogan: data?.productInfo?.slogan,
+        currency: data?.productInfo?.currency,
+        prodType: data?.productType,
+        state: data?.state,
+        requestStatus: requestData?.data?.requestStatus,
+        requestType: requestData?.data?.requestType,
+        request: requestData?.data?.request,
+        initiatorId: requestData?.data?.initiatorId,
+        approved_By_Id: requestData?.data?.approved_By_Id,
+      };
+    }
+    if (type === "investment") {
+      setProductData({
+        ...data,
+        pricingConfiguration: {
+          ...data?.pricingConfiguration,
+          interestComputationMethod: 2,
+        },
+      });
+     
+    }
+    if (type === "individual_booking") {
+      setFormData(data);
+    }
+  }
+};
+
+export const handleMessage = ({
+  isSuccess,
+  modifySuccess,
+  modifyRequestSuccess,
+  isError,
+  modifyError,
+  modifyIsError,
+  error,
+  modifyRequestError,
+  setFailed,
+  setFailedText,
+  setFailedSubtext,
+  setSuccessText,
+  setIsSuccessOpen,
+  modifyRequestIsError,
+  type,
+}) => {
+  if (isSuccess || modifySuccess || modifyRequestSuccess) {
+    setSuccessText(
+      type === "investment"
+        ? Messages.PRODUCT_DRAFT_SUCCESS
+        : Messages.BOOKING_DRAFT_SUCCESS
+    );
+    setIsSuccessOpen(true);
+  }
+
+  if (isError || modifyIsError || modifyRequestIsError) {
+    setFailedText(Messages.PRODUCT_DRAFT_FAILED);
+    setFailedSubtext(
+      error?.message?.message ||
+        modifyError?.message?.message ||
+        modifyRequestError?.message?.message ||
+        error?.message?.Message ||
+        modifyError?.message?.Message ||
+        modifyRequestError?.message?.Message
+    );
+    setFailed(true);
+  }
+};
+
+export function handleNav({ process, step, setStep, navigate, id }) {
+  step < termDepositFormSteps.length
+    ? handleNext(step, setStep, termDepositFormSteps)
+    : navigate(
+        `/product-factory/investment/term-deposit/${process}?${
+          id ? `id=${id}&` : ""
+        }stage=summary`
+      );
+}
 
 export default function CreateTermDeposit() {
   const { process } = useParams();
@@ -165,19 +275,19 @@ export default function CreateTermDeposit() {
       part_AllowPartLiquidation: false,
       part_MaxPartLiquidation: 0,
       part_RequireNoticeBeforeLiquidation: false,
-      part_NoticePeriod: 0,
+      part_NoticePeriod: 1,
       part_NoticePeriodUnit: 1,
       part_LiquidationPenalty: 0,
       part_LiquidationPenaltyPercentage: 0,
       part_SpecificCharges: [],
-      part_specialInterestRate: 0,
+      part_SpecialInterestRate: 0,
       early_AllowEarlyLiquidation: false,
       early_RequireNoticeBeforeLiquidation: false,
       early_NoticePeriod: 0,
       early_NoticePeriodUnit: 1,
       early_LiquidationPenalty: 0,
       early_LiquidationPenaltyPercentage: 0,
-      early_specialInterestRate: 0,
+      eary_SpecialInterestRate: 0,
       early_SpecificCharges: [],
     },
     productGlMappings: [],
@@ -273,16 +383,6 @@ export default function CreateTermDeposit() {
     }
   }, [productDetails]);
 
-  function handleNav() {
-    step < termDepositFormSteps.length
-      ? handleNext(step, setStep, termDepositFormSteps)
-      : navigate(
-          `/product-factory/investment/term-deposit/${process}?${
-            id ? `id=${id}&` : ""
-          }stage=summary`
-        );
-  }
-
   const [formRef, setFormRef] = useState(null);
 
   useEffect(() => {
@@ -298,55 +398,35 @@ export default function CreateTermDeposit() {
   }, [step]);
 
   useEffect(() => {
-    if (requestIsSuccess && requestData?.data?.metaInfo) {
-      const data = JSON.parse(requestData?.data?.metaInfo);
-      if (process === "continue" && data?.id) {
-        activeId.current = data?.id;
-      }
-      if (process === "withdraw_modify") {
-        previousData.current = {
-          ...previousData.current,
-          productName: data?.productInfo.productName,
-          description: data?.productInfo.description,
-          slogan: data?.productInfo.slogan,
-          currency: data?.productInfo.currency,
-          prodType: data?.productType,
-          state: data?.state,
-          requestStatus: requestData?.data?.requestStatus,
-          requestType: requestData?.data?.requestType,
-          request: requestData?.data?.request,
-          initiatorId: requestData?.data?.initiatorId,
-          approved_By_Id: requestData?.data?.approved_By_Id,
-        };
-      }
-      setProductData({
-        ...data,
-        pricingConfiguration: {
-          ...data?.pricingConfiguration,
-          interestComputationMethod: 2,
-        },
-      });
-    }
+    handleRequestIsSuccess({
+      activeId,
+      previousData,
+      process,
+      requestData,
+      requestIsSuccess,
+      setProductData,
+      type: "investment"
+    });
   }, [requestIsSuccess]);
 
   useEffect(() => {
-    if (isSuccess || modifySuccess || modifyRequestSuccess) {
-      setSuccessText(Messages.PRODUCT_DRAFT_SUCCESS);
-      setIsSuccessOpen(true);
-    }
-
-    if (isError || modifyIsError || modifyRequestIsError) {
-      setFailedText(Messages.PRODUCT_DRAFT_FAILED);
-      setFailedSubtext(
-        error?.message?.message ||
-          modifyError?.message?.message ||
-          modifyRequestError?.message?.message ||
-          error?.message?.Message ||
-          modifyError?.message?.Message ||
-          modifyRequestError?.message?.Message
-      );
-      setFailed(true);
-    }
+    handleMessage({
+      error,
+      isError,
+      isSuccess,
+      modifyError,
+      modifyIsError,
+      modifyRequestError,
+      modifyRequestIsError,
+      modifyRequestSuccess,
+      modifySuccess,
+      setFailed,
+      setFailedSubtext,
+      setFailedText,
+      setIsSuccessOpen,
+      setSuccessText,
+      type: "investment",
+    });
   }, [
     isSuccess,
     isError,
@@ -413,7 +493,9 @@ export default function CreateTermDeposit() {
                   step={step}
                   productData={productData}
                   activeId={activeId}
-                  handleNav={handleNav}
+                  handleNav={() =>
+                    handleNav({ process, id, navigate, setStep, step })
+                  }
                   setProductData={setProductData}
                   setDisabled={setDisabled}
                   initiateDraft={initiateDraft}

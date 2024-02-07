@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { FaEye } from "react-icons/fa";
 import moment from "moment";
 import {
@@ -9,6 +9,7 @@ import {
 } from "@app/constants";
 import { currencyFormatter } from "@app/utils/formatCurrency";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
+import { AppContext } from "@app/utils";
 
 export function DebitCreditTable({ dataTab }) {
   const headers = [
@@ -81,6 +82,7 @@ export function DebitCreditTable({ dataTab }) {
   );
 }
 export default function ProductDetail({ detail, previousData }: any) {
+  const { currencies } = useContext(AppContext);
   const chargeArray = [
     {
       id: "79e00876-2244-4e21-9bbf-ccbd5cf62233",
@@ -195,12 +197,12 @@ export default function ProductDetail({ detail, previousData }: any) {
                   previousData?.currency !== detail?.productInfo?.currency && (
                     <span className="block  line-through mb-2 text-[#aaa]">
                       {" "}
-                      {handleCurrencyName(previousData?.currency)}
+                      {handleCurrencyName(previousData?.currency,currencies)}
                     </span>
                   )}
                 <span className="flex itmes-center">
                   {" "}
-                  {handleCurrencyName(detail?.productInfo?.currency)}{" "}
+                  {handleCurrencyName(detail?.productInfo?.currency,currencies)}{" "}
                   {previousData &&
                     previousData?.currency &&
                     previousData?.currency !==
@@ -345,12 +347,12 @@ export default function ProductDetail({ detail, previousData }: any) {
                 <span className="block  mb-2 text-[#636363]">
                   {currencyFormatter(
                     detail?.pricingConfiguration?.applicablePrincipalMin,
-                    handleCurrencyName(detail?.productInfo?.currency)
+                    handleCurrencyName(detail?.productInfo?.currency,currencies)
                   )}{" "}
                   {detail?.pricingConfiguration?.applicablePrincipalMax
                     ? `- ${currencyFormatter(
                         detail?.pricingConfiguration?.applicablePrincipalMax,
-                        handleCurrencyName(detail?.productInfo?.currency)
+                        handleCurrencyName(detail?.productInfo?.currency,currencies)
                       )}`
                     : "and above"}
                 </span>
@@ -374,10 +376,10 @@ export default function ProductDetail({ detail, previousData }: any) {
                           principal between{" "}
                           {`${currencyFormatter(
                             configModel?.principalMin,
-                            handleCurrencyName(detail?.productInfo?.currency)
+                            handleCurrencyName(detail?.productInfo?.currency,currencies)
                           )} - ${currencyFormatter(
                             configModel?.principalMax,
-                            handleCurrencyName(detail?.productInfo?.currency)
+                            handleCurrencyName(detail?.productInfo?.currency,currencies)
                           )}`}{" "}
                           {/* {detail?.productInfo?.currency} */}
                         </span>
@@ -469,7 +471,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                             {liquidities[
                               detail?.liquidation?.part_LiquidationPenalty
                             ] == "RecalculateInterest" &&
-                              `Recalculate accrued interest of ${detail?.liquidation?.part_LiquidationPenaltyPercentage}%`}
+                              `Recalculate accrued interest of ${detail?.liquidation?.part_SpecialInterestRate}%`}
                           </span>
                           <span className="flex flex-wrap gap-x-1 my-1">
                             {liquidities[
@@ -553,7 +555,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                           {liquidities[
                             detail?.liquidation?.early_LiquidationPenalty
                           ] == "RecalculateInterest" &&
-                            `Recalculate accrued interest of ${detail?.liquidation?.early_LiquidationPenaltyPercentage}%`}
+                            `Recalculate accrued interest of ${detail?.liquidation?.eary_SpecialInterestRate}%`}
                         </span>
                         <span className="flex flex-wrap gap-x-1 my-1">
                           {liquidities[
@@ -671,3 +673,4 @@ export default function ProductDetail({ detail, previousData }: any) {
     </div>
   );
 }
+

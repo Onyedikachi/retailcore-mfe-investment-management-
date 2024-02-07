@@ -1,9 +1,17 @@
-export const RequiredInvestmentPermissions = [
+export const RequiredInvestmentProductPermissions = [
   "CREATE_INVESTMENT_PRODUCT",
   "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS",
   "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS",
   "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS",
   "RE_OR_DEACTIVATE_INVESTMENT_PRODUCT",
+];
+export const RequiredInvestmentPermissions = [
+ 
+  "VIEW_ALL_INVESTMENT_RECORDS",
+  "VIEW_ALL_INVESTMENT_REQUESTS",
+  "BOOK_INVESTMENT",
+  "LIQUIDATE_INVESTMENT",
+  "AUTHORIZE_INVESTMENT_MANAGEMENT_REQUESTS",
 ];
 export const RequiredCreditPermissions = ["CREATE_CREDIT_PRODUCT"];
 export const RequiredDepositPermissions = ["CREATE_DEPOSIT_PRODUCT"];
@@ -14,6 +22,26 @@ export const StatusCategories = [
   {
     id: 1,
     type: "all products",
+  },
+  {
+    id: 2,
+    type: "requests",
+  },
+];
+export const FactoryCategories = [
+  {
+    id: 1,
+    type: "all products",
+  },
+  {
+    id: 2,
+    type: "requests",
+  },
+];
+export const ManagementCategories = [
+  {
+    id: 1,
+    type: "investments",
   },
   {
     id: 2,
@@ -35,6 +63,23 @@ export const StatusTypes = [
   {
     id: 1,
     type: "inactive",
+    color: "#AAAAAA",
+  },
+];
+export const IndividualStatusTypes = [
+  {
+    id: 0,
+    type: "all",
+    color: "#252C32",
+  },
+  {
+    id: 1,
+    type: "active",
+    color: "#2FB755",
+  },
+  {
+    id: 2,
+    type: "liquidated",
     color: "#AAAAAA",
   },
 ];
@@ -101,6 +146,86 @@ export const CheckerStatusRequests = [
     id: 0,
     type: "draft",
     color: "#AAAAAA",
+  },
+];
+
+export const InvestmentRequestOptions = [
+  {
+    id: 1,
+    text: "Initiated by me",
+    value: "created_by_me",
+    disabled: false,
+  },
+  {
+    id: 2,
+    text: "Initiated by my branch",
+    value: "created_by_my_branch",
+    disabled: false,
+  },
+  {
+    id: 3,
+    text: "Initiated system-wide",
+    value: "created_by_anyone",
+    disabled: false,
+  },
+
+  {
+    id: 4,
+    text: "Sent to me",
+    value: "sent_to_me",
+    disabled: false,
+  },
+  {
+    id: 5,
+    text: "Sent to my branch",
+    value: "sent_to_my_branch",
+    disabled: false,
+  },
+  {
+    id: 6,
+    text: "Sent system-wide",
+    value: "sent_system_wide",
+    disabled: false,
+  },
+];
+
+export const InvestmentProductOptions = [
+  {
+    id: 1,
+    text: "Created by me",
+    value: "created_by_me",
+    disabled: false,
+  },
+  {
+    id: 2,
+    text: "Created by my branch",
+    value: "created_by_my_branch",
+    disabled: false,
+  },
+  {
+    id: 3,
+    text: "Created system-wide",
+    value: "created_system_wide",
+    disabled: false,
+  },
+
+  {
+    id: 4,
+    text: "Approved by me",
+    value: "approved_by_me",
+    disabled: false,
+  },
+  {
+    id: 5,
+    text: "Approved by my branch",
+    value: "approved_by_my_branch",
+    disabled: false,
+  },
+  {
+    id: 6,
+    text: "Approved system-wide",
+    value: "approved_system_wide",
+    disabled: false,
   },
 ];
 
@@ -272,6 +397,9 @@ export const creationMap = [
   "bulk_create",
   "change",
   "deactivation",
+  "booking",
+  "part liquidation",
+  "early liquidation",
 ];
 export const colorState = {
   approved: "bg-[#D4F7DC] text-[#15692A]",
@@ -281,6 +409,7 @@ export const colorState = {
   "in-issue": "bg-[#FFD4D2] text-[#9F1F17]",
   rejected: "bg-[#FFD4D2] text-[#9F1F17]",
   draft: "bg-[#E5E5EA] text-[#1E0A3C]",
+  liquidated: "bg-[#FFEBCC] text-[#804C00]",
 };
 export const productNameRegex = /^[A-Za-z0-9\s]+$/;
 export const BookInvestmentFormSteps = [
@@ -299,7 +428,6 @@ export const BookInvestmentFormSteps = [
     label: "Transaction Settings",
     index: 3,
   },
-
 ];
 export const termDepositFormSteps = [
   {
@@ -450,6 +578,7 @@ export const InvestmentBookingRequestType = {
   0: "Booking",
   1: "Early Liquidation",
   2: "Part Liquidation",
+  3: "Restructure",
 };
 
 export const RequestStatus = {
@@ -470,25 +599,25 @@ export const Interval = {
 export const IntervalOptions = [
   {
     id: "1",
-    text: "Day(s)",
+    text: "Days",
     value: 1,
     subvalue: "day",
   },
   {
     id: "2",
-    text: "Week(s)",
+    text: "Weeks",
     value: 2,
     subvalue: "week",
   },
   {
     id: "3",
-    text: "Month(s)",
+    text: "Months",
     value: 3,
     subvalue: "month",
   },
   {
     id: "4",
-    text: "Year(s)",
+    text: "Years",
     value: 4,
     subvalue: "year",
   },
@@ -518,6 +647,15 @@ export const liquidities = {
   3: "RecalculateInterest",
   4: "TakeCharge",
 };
+
+export const liquiditiesPenaltyStrings = {
+  0: "None",
+  1: "Forfeit all accrued interest",
+  2: "Forfeiture of % of accrued interests",
+  3: "Recalculate accrued interest of %",
+  4: "Charge",
+};
+
 export const LiquidityOptions = [
   {
     id: "none",
@@ -720,5 +858,351 @@ export const summaryLinks = [
     id: 4,
     title: "Process summary",
     url: "#",
+  },
+];
+
+export const biodataField = [
+  {
+    label: "Title",
+    key: "title",
+    type: "",
+  },
+  {
+    label: "Surname",
+    key: "surname",
+    type: "",
+  },
+  {
+    label: "First name",
+    key: "firstName",
+    type: "",
+  },
+  {
+    label: "Other names",
+    key: "otherNames",
+    type: "",
+  },
+  {
+    label: "Mother's maiden name",
+    key: "maidenName",
+    type: "",
+  },
+  {
+    label: "Gender",
+    key: "gender",
+    type: "",
+  },
+  {
+    label: "Marital status",
+    key: "maritalStatus",
+    type: "",
+  },
+  {
+    label: "Date of birth",
+    key: "dateOfBirth",
+    type: "date",
+  },
+  {
+    label: "Country",
+    key: "country",
+    type: "",
+  },
+  {
+    label: "State of origin",
+    key: "stateOfOrigin",
+    type: "",
+  },
+  {
+    label: "Lga",
+    key: "lga",
+    type: "",
+  },
+  {
+    label: "Dual citizenship",
+    key: "citizenship",
+    type: "",
+  },
+  {
+    label: "If yes, specify",
+    key: "specify",
+    type: "",
+  },
+];
+
+export const identity = [
+  {
+    label: "BVN",
+    key: "bvn",
+    type: "",
+  },
+  {
+    label: "Choose an Id",
+    key: "choose id",
+    type: "",
+  },
+  {
+    label: "ID Number",
+    key: "idNumber",
+    type: "",
+  },
+  {
+    label: "Issue date",
+    key: "issueDate",
+    type: "date",
+  },
+  {
+    label: "Expiry date",
+    key: "expiryDate",
+    type: "date",
+  },
+];
+
+export const contact = [
+  {
+    label: "Residential address",
+    key: "residentialAddress",
+    type: "",
+  },
+  {
+    label: "Detailed description of address",
+    key: "detailedDescriptionOfAddress",
+    type: "",
+  },
+  {
+    label: "country",
+    key: "country",
+    type: "",
+  },
+  {
+    label: "state",
+    key: "ci_stateOfOrigin",
+    type: "",
+  },
+  {
+    label: "city/town",
+    key: "city",
+    type: "",
+  },
+  {
+    label: "LGA",
+    key: "ci_lga",
+    type: "",
+  },
+  {
+    label: "Mobile number",
+    key: "mobileNumber",
+    type: "",
+  },
+  {
+    label: "Alternate phone number",
+    key: "alternateMobileNumber",
+    type: "",
+  },
+  {
+    label: "Email address",
+    key: "emailAddress",
+    type: "",
+  },
+  {
+    label: "Mailing address is same as residential address",
+    key: "mailingAddressSameAsResidentialAddress",
+    type: "",
+  },
+];
+
+export const kinDetail = [
+  {
+    label: "Title",
+    key: "title",
+    type: "",
+  },
+  {
+    label: "surname",
+    key: "surname",
+    type: "",
+  },
+  {
+    label: "first name",
+    key: "firstName",
+    type: "",
+  },
+  {
+    label: "other name",
+    key: "otherNames",
+    type: "",
+  },
+  {
+    label: "relationship",
+    key: "relationship",
+    type: "",
+  },
+  {
+    label: "gender",
+    key: "gender",
+    type: "",
+  },
+  {
+    label: "date of birth",
+    key: "dateOfBirth",
+    type: "date",
+  },
+  {
+    label: "residential address",
+    key: "residentialAddress",
+    type: "",
+  },
+  {
+    label: "detailed description of address",
+    key: "detailedDescriptionOfResidentialAddress",
+    type: "",
+  },
+  {
+    label: "country",
+    key: "country",
+    type: "",
+  },
+  {
+    label: "state",
+    key: "state",
+    type: "",
+  },
+  {
+    label: "city/town",
+    key: "city",
+    type: "",
+  },
+  {
+    label: "LGA",
+    key: "titlgale",
+    type: "",
+  },
+  {
+    label: "mobile number",
+    key: "mobileNumber",
+    type: "",
+  },
+  {
+    label: "alternate phone number",
+    key: "alternateMobileNumber",
+    type: "",
+  },
+];
+
+export const documentation = [
+  {
+    label: "customer's photo",
+    key: "customerPhoto",
+    type: "array",
+    subkey: "signedUrl",
+  },
+  {
+    label: "customer's signature",
+    key: "customerSignature",
+    type: "array",
+    subkey: "",
+  },
+  {
+    label: "proof of identity",
+    key: "validId",
+    type: "array",
+    subkey: "signedUrl",
+  },
+  {
+    label: "proof of address",
+    key: "proofOfResidenceAddress",
+    type: "array",
+    subkey: "signedUrl",
+  },
+  {
+    label: "residential permit",
+    key: "residentialPermit",
+    type: "array",
+    subkey: "signedUrl",
+  },
+  {
+    label: "marriage certificate",
+    key: "marriageCertificate",
+    type: "array",
+    subkey: "signedUrl",
+  },
+
+  {
+    label: "letter from employer/school/NYSC",
+    key: "letterFromEmployerSchoolNusc",
+    type: "array",
+    subkey: "signedUrl",
+  },
+  {
+    label: "independent satisfactory references",
+    key: "independentSatisfactoryRefrence",
+    type: "array",
+    subkey: "signedUrl",
+  },
+  {
+    label: "other documents provided",
+    key: "otherUncategorisedDocuments",
+    type: "array",
+    subkey: "signedUrl",
+  },
+];
+
+export const detailData = [
+  {
+    title: "Biodata",
+    data: biodataField,
+  },
+  {
+    title: "Identity Verification",
+    data: identity,
+  },
+  {
+    title: "Contact Information",
+    data: contact,
+  },
+  {
+    title: "Details of Next of Kin",
+    data: kinDetail,
+  },
+
+  {
+    title: "Documentation",
+    data: documentation,
+  },
+];
+
+export const CapitalizationOptions = [
+  {
+    id: 3,
+    text: "At Maturity",
+    value: 2,
+  },
+
+  {
+    id: 2,
+    text: "At Interval",
+    value: 1,
+  },
+  {
+    id: 1,
+    text: "Upon booking",
+    value: 0,
+  },
+];
+
+export const GlAccountTypes = [
+  "Term deposit account",
+  "Interest accural account",
+  "Interest expense account",
+];
+export const RollOverOptions = [
+  {
+    id: 1,
+    text: "Using principal",
+    value: 0,
+  },
+  {
+    id: 1,
+    text: "Using principal + Interest",
+    value: 1,
   },
 ];

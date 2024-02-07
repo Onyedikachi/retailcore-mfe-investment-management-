@@ -1,4 +1,5 @@
 export default ({query, value, label, setQuery}) => {
+
     if (label === "product type") {
       setQuery({
         ...query,
@@ -25,9 +26,17 @@ export default ({query, value, label, setQuery}) => {
       });
     }
     if (label === "state" || label === "status") {
+    
       setQuery({
         ...query,
         status_In: value.length ? value.map((i) => i.value) : null,
+      });
+    }
+    if (label === "investment product") {
+ 
+      setQuery({
+        ...query,
+        investmentProducts_In: value.length ? value.map((i) => i.value) : null,
       });
     }
   };

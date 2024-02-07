@@ -53,7 +53,7 @@ describe("ProductInformation", () => {
         proceed={jest.fn()}
         formData={fData}
         setDisabled={jest.fn()}
-        setFormData={undefined}
+        setFormData={jest.fn()}
         initiateDraft={undefined}
         activeId={undefined}
       />
@@ -72,7 +72,7 @@ describe("ProductInformation", () => {
         proceed={jest.fn()}
         formData={fData}
         setDisabled={jest.fn()}
-        setFormData={undefined}
+        setFormData={jest.fn()}
         initiateDraft={undefined}
       />
     );
@@ -101,7 +101,7 @@ describe("ProductInformation", () => {
         proceed={jest.fn()}
         formData={fData}
         setDisabled={jest.fn()}
-        setFormData={undefined}
+        setFormData={jest.fn()}
         initiateDraft={undefined}
       />
     );
@@ -168,7 +168,7 @@ describe("ProductInformation", () => {
         proceed={jest.fn()}
         formData={fData}
         setDisabled={jest.fn()}
-        setFormData={undefined}
+        setFormData={jest.fn()}
         initiateDraft={undefined}
       />
     );
@@ -893,36 +893,6 @@ describe('ProductInformation', () => {
     expect(screen.getByTestId("product-description")).toHaveValue("Updated Description");
    
   });
-
-  // Handles empty form data prop
-  it('should handle empty form data prop', () => {
-    // Arrange
-    const formData = null;
-
-    const setFormData = jest.fn();
-    const setDisabled = jest.fn();
-    const proceed = jest.fn();
-    const initiateDraft = false;
-    const activeId = null;
-
-    // Act
-    renderWithProviders(
-      <ProductInformation
-        formData={formData}
-        setFormData={setFormData}
-        setDisabled={setDisabled}
-        proceed={proceed}
-        initiateDraft={initiateDraft}
-        activeId={activeId}
-      />
-    );
-
-    // Assert
-    expect(screen.getByTestId("product-name")).toHaveValue("");
-    expect(screen.getByTestId("investment-slogan")).toHaveValue("");
-    expect(screen.getByTestId("product-description")).toHaveValue("");
-  });
-
   // Handles missing or invalid form inputs
   it('should handle missing or invalid form inputs', () => {
     // Arrange

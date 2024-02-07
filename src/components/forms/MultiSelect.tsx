@@ -22,11 +22,13 @@ export default function MultiSelect({
   children,
   getOptions,
   label = "[Select all]",
+  showMe,
 }: {
   options: any;
   children: ReactNode;
   getOptions: any;
   label?: string;
+  showMe?: string;
 }): React.JSX.Element {
   const [isSelectAll] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -52,7 +54,7 @@ export default function MultiSelect({
           {children}
         </button>
         {isOpen && (
-          <div className="z-40 transition-all duration-300 top-12 absolute -right-2 shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] bg-white p-4 min-w-[175px] rounded-b-lg">
+          <div className="max-h-[400px] overflow-y-auto z-40 transition-all duration-300 top-12 absolute -right-2 shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] bg-white p-4 min-w-[175px] rounded-b-lg">
             <div>
               <ul className="grid gap-y-3">
                 <li className="cursor-pointer">
@@ -63,7 +65,10 @@ export default function MultiSelect({
                   />
                 </li>
                 {options?.map((item) => (
-                  <li key={item.id} className="cursor-pointer">
+                  <li
+                    key={item.id}
+                    className="cursor-pointer flex items-center gap-x-1"
+                  >
                     <Checkbox
                       data-testid="select-item"
                       label={item.name}
@@ -79,6 +84,9 @@ export default function MultiSelect({
                         )
                       }
                     />
+                    {showMe && showMe === item.value && (
+                      <span className="text-[13px] text-[#636363] font-normal">[ME]</span>
+                    )}
                   </li>
                 ))}
               </ul>

@@ -6,6 +6,8 @@ import userEvent from "@testing-library/user-event";
 import { InvestmentContext, AppContext } from "../../../utils/context"; // Update with the actual path
 import { MemoryRouter } from "react-router-dom";
 import { renderWithProviders } from "../../../utils/test-util";
+import { handleConfirm, handleMessages, handlePermissionType } from "../../../components/summary/Actions";
+import { Messages } from "../../../constants/enums";
 
 const navigate = jest.fn();
 const useParams = jest.fn();
@@ -20,6 +22,7 @@ jest.mock("react-router-dom", () => ({
   useNavigate: jest.fn(),
   useSearchParams: jest.fn(),
   useParams: jest.fn(),
+  useLocation: jest.fn().mockReturnValue({ pathname: "" })
 }));
 jest
   .spyOn(require("react-router-dom"), "useNavigate")
@@ -327,3 +330,342 @@ describe("Actions", () => {
 
 });
 
+describe("handleConfirm", () => {
+  it('should call approveProduct when action is "approve"', () => {
+    const id = '123';
+    const approveProduct = jest.fn();
+    const setRejection = jest.fn();
+    const navigate = jest.fn();
+    const filter = 'filter';
+
+    handleConfirm({ action: 'approve', id, approveProduct, setRejection, navigate, filter });
+
+    expect(approveProduct).toHaveBeenCalledWith({ id });
+    expect(setRejection).not.toHaveBeenCalled();
+    expect(navigate).not.toHaveBeenCalled();
+  });
+
+  it("should approve investment for individual", () => {
+    const approveInvestment = jest.fn();
+    handleConfirm({ action: "approve", type: "individual", approveInvestment, id: "23456" });
+    expect(approveInvestment).toBeCalledWith({ id: "23456" });
+  })
+
+  it("should approve cancel for individual", () => {
+    const navigate = jest.fn();
+    handleConfirm({ action: "cancel", type: "individual", id: "23456", navigate });
+    expect(navigate).toBeCalledWith(`/investment-management/individual`);
+  })
+
+  // When action is 'reject', set 'setRejection' state to true
+  it('should set setRejection to true when action is "reject"', () => {
+    const id = '123';
+    const approveProduct = jest.fn();
+    const setRejection = jest.fn();
+    const navigate = jest.fn();
+    const filter = 'filter';
+
+    handleConfirm({ action: 'reject', id, approveProduct, setRejection, navigate, filter });
+
+    expect(approveProduct).not.toHaveBeenCalled();
+    expect(setRejection).toHaveBeenCalledWith(true);
+    expect(navigate).not.toHaveBeenCalled();
+  });
+
+  // When action is 'cancel', navigate to '/product-factory/investment?category=requests' with 'filter' parameter if provided
+  it('should navigate to "/product-factory/investment?category=requests" when action is "cancel"', () => {
+    const id = '123';
+    const approveProduct = jest.fn();
+    const setRejection = jest.fn();
+    const navigate = jest.fn();
+    const filter = 'filter';
+
+    handleConfirm({ action: 'cancel', id, approveProduct, setRejection, navigate, filter });
+
+    expect(approveProduct).not.toHaveBeenCalled();
+    expect(setRejection).not.toHaveBeenCalled();
+    expect(navigate).toHaveBeenCalledWith('/product-factory/investment?category=requests&filter=filter');
+  });
+
+  // When 'action' parameter is not provided, do nothing
+  it('should do nothing when "action" parameter is not provided', () => {
+    const id = '123';
+    const approveProduct = jest.fn();
+    const setRejection = jest.fn();
+    const navigate = jest.fn();
+    const filter = 'filter';
+
+    handleConfirm({ id, approveProduct, setRejection, navigate, filter });
+
+    expect(approveProduct).not.toHaveBeenCalled();
+    expect(setRejection).not.toHaveBeenCalled();
+    expect(navigate).not.toHaveBeenCalled();
+  });
+})
+
+describe("handleMessages", () => {
+
+  const setSuccessText = jest.fn();
+  const setIsSuccessOpen = jest.fn();
+  const setFailedText = jest.fn();
+  const setFailedSubtext = jest.fn();
+  const setFailed = jest.fn();
+  // sets success text and opens success modal if rejectSuccess is true
+  it('should set success text and open success modal when rejectSuccess is true', () => {
+    const setSuccessText = jest.fn();
+    const setIsSuccessOpen = jest.fn();
+    const setFailedText = jest.fn();
+    const setFailedSubtext = jest.fn();
+    const setFailed = jest.fn();
+    const rejectSuccess = true;
+    const approveSuccess = false;
+    const rejectIsError = false;
+    const approveIsError = false;
+    const approveError = null;
+    const rejectError = null;
+
+    handleMessages({
+      rejectSuccess,
+      approveSuccess,
+      rejectIsError,
+      approveIsError,
+      setSuccessText,
+      setIsSuccessOpen,
+      setFailedText,
+      setFailedSubtext,
+      setFailed,
+      approveError,
+      rejectError
+    });
+
+    expect(setSuccessText).toHaveBeenCalledWith(Messages.PRODUCT_CREATE_REJECTED);
+    expect(setIsSuccessOpen).toHaveBeenCalledWith(true);
+    expect(setFailedText).not.toHaveBeenCalled();
+    expect(setFailedSubtext).not.toHaveBeenCalled();
+    expect(setFailed).not.toHaveBeenCalled();
+  });
+
+  // sets success text and opens success modal if approveSuccess is true
+  it('should set success text and open success modal when approveSuccess is true', () => {
+
+    const rejectSuccess = false;
+    const approveSuccess = true;
+    const rejectIsError = false;
+    const approveIsError = false;
+    const approveError = null;
+    const rejectError = null;
+
+    handleMessages({
+      rejectSuccess,
+      approveSuccess,
+      rejectIsError,
+      approveIsError,
+      setSuccessText,
+      setIsSuccessOpen,
+      setFailedText,
+      setFailedSubtext,
+      setFailed,
+      approveError,
+      rejectError
+    });
+
+    expect(setSuccessText).toHaveBeenCalledWith(Messages.PRODUCT_CREATE_APPROVED);
+    expect(setIsSuccessOpen).toHaveBeenCalledWith(true);
+    expect(setFailedText).not.toHaveBeenCalled();
+    expect(setFailedSubtext).not.toHaveBeenCalled();
+    expect(setFailed).not.toHaveBeenCalled();
+  });
+
+  // does not set any text or open any modal if rejectSuccess and approveSuccess are both false
+  it('should not set any text or open any modal when rejectSuccess and approveSuccess are both false', () => {
+    const setSuccessText = jest.fn();
+    const setIsSuccessOpen = jest.fn();
+    const setFailedText = jest.fn();
+    const setFailedSubtext = jest.fn();
+    const setFailed = jest.fn();
+    const rejectSuccess = false;
+    const approveSuccess = false;
+    const rejectIsError = false;
+    const approveIsError = false;
+    const approveError = null;
+    const rejectError = null;
+
+    handleMessages({
+      rejectSuccess,
+      approveSuccess,
+      rejectIsError,
+      approveIsError,
+      setSuccessText,
+      setIsSuccessOpen,
+      setFailedText,
+      setFailedSubtext,
+      setFailed,
+      approveError,
+      rejectError
+    });
+
+    expect(setSuccessText).not.toHaveBeenCalled();
+    expect(setIsSuccessOpen).not.toHaveBeenCalled();
+    expect(setFailedText).not.toHaveBeenCalled();
+    expect(setFailedSubtext).not.toHaveBeenCalled();
+    expect(setFailed).not.toHaveBeenCalled();
+  });
+
+  // rejectError and approveError are both null
+  it('should not set any text or open any modal when rejectError and approveError are both null', () => {
+    const setSuccessText = jest.fn();
+    const setIsSuccessOpen = jest.fn();
+    const setFailedText = jest.fn();
+    const setFailedSubtext = jest.fn();
+    const setFailed = jest.fn();
+    const rejectSuccess = false;
+    const approveSuccess = false;
+    const rejectIsError = false;
+    const approveIsError = false;
+    const approveError = null;
+    const rejectError = null;
+
+    handleMessages({
+      rejectSuccess,
+      approveSuccess,
+      rejectIsError,
+      approveIsError,
+      setSuccessText,
+      setIsSuccessOpen,
+      setFailedText,
+      setFailedSubtext,
+      setFailed,
+      approveError,
+      rejectError
+    });
+
+    expect(setSuccessText).not.toHaveBeenCalled();
+    expect(setIsSuccessOpen).not.toHaveBeenCalled();
+    expect(setFailedText).not.toHaveBeenCalled();
+    expect(setFailedSubtext).not.toHaveBeenCalled();
+    expect(setFailed).not.toHaveBeenCalled();
+  });
+
+  // rejectError and approveError are both defined
+  it('should set failed text and subtext when rejectError and approveError are both defined', () => {
+    const setSuccessText = jest.fn();
+    const setIsSuccessOpen = jest.fn();
+    const setFailedText = jest.fn();
+    const setFailedSubtext = jest.fn();
+    const setFailed = jest.fn();
+    const rejectSuccess = false;
+    const approveSuccess = false;
+    const rejectIsError = true;
+    const approveIsError = true;
+    const approveError = { message: { message: 'approve error message' } };
+    const rejectError = { message: { message: 'reject error message' } };
+
+    handleMessages({
+      rejectSuccess,
+      approveSuccess,
+      rejectIsError,
+      approveIsError,
+      setSuccessText,
+      setIsSuccessOpen,
+      setFailedText,
+      setFailedSubtext,
+      setFailed,
+      approveError,
+      rejectError
+    });
+
+    expect(setSuccessText).not.toHaveBeenCalled();
+    expect(setIsSuccessOpen).not.toHaveBeenCalled();
+    expect(setFailedText).toHaveBeenCalledWith(Messages.PRODUCT_REJECT_FAILED);
+    expect(setFailedSubtext).toHaveBeenCalledWith(rejectError.message.message);
+    expect(setFailed).toHaveBeenCalledWith(true);
+  });
+
+  // rejectError is defined and approveError is null
+  it('should set failed text and subtext when rejectError is defined and approveError is null', () => {
+    const setSuccessText = jest.fn();
+    const setIsSuccessOpen = jest.fn();
+    const setFailedText = jest.fn();
+    const setFailedSubtext = jest.fn();
+    const setFailed = jest.fn();
+    const rejectSuccess = false;
+    const approveSuccess = false;
+    const rejectIsError = true;
+    const approveIsError = false;
+    const approveError = null;
+    const rejectError = { message: { message: 'reject error message' } };
+
+    handleMessages({
+      rejectSuccess,
+      approveSuccess,
+      rejectIsError,
+      approveIsError,
+      setSuccessText,
+      setIsSuccessOpen,
+      setFailedText,
+      setFailedSubtext,
+      setFailed,
+      approveError,
+      rejectError
+    });
+
+    expect(setSuccessText).not.toHaveBeenCalled();
+    expect(setIsSuccessOpen).not.toHaveBeenCalled();
+    expect(setFailedText).toHaveBeenCalledWith(Messages.PRODUCT_REJECT_FAILED);
+    expect(setFailedSubtext).toHaveBeenCalledWith(rejectError.message.message);
+    expect(setFailed).toHaveBeenCalledWith(true);
+  });
+
+  it("Should handle investmentRejectSuccess", () => {
+    handleMessages({ investmentRejectSuccess: true, setSuccessText, setIsSuccessOpen})
+    expect(setSuccessText).toBeCalledWith(Messages.BOOKING_CREATE_REJECTED);
+    expect(setIsSuccessOpen).toBeCalledWith(true);
+  })
+
+  it("Should handle investmentApproveSuccess", () => {
+    handleMessages({ investmentApproveSuccess: true, setSuccessText, setIsSuccessOpen})
+    expect(setSuccessText).toBeCalledWith(Messages.BOOKING_CREATE_APPROVED);
+    expect(setIsSuccessOpen).toBeCalledWith(true);
+  })
+
+  it("Should handle investmentApproveIsError", () => {
+    handleMessages({investmentApproveIsError: true, investmentApproveError: {message: {message: "E sha fail"}}, setFailed, setFailedText, setFailedSubtext});
+    expect(setFailedText).toBeCalledWith(Messages.BOOKING_APPROVE_FAILED);
+    expect(setFailedSubtext).toBeCalledWith("E sha fail");
+    expect(setFailed).toBeCalledWith(true);
+  })
+
+  it("Should handle investmentRejectIsError", () => {
+    handleMessages({investmentRejectIsError: true, investmentRejectError: {message: {message: "E sha fail"}}, setFailed, setFailedText, setFailedSubtext});
+    expect(setFailedText).toBeCalledWith(Messages.BOOKING_REJECT_FAILED);
+    expect(setFailedSubtext).toBeCalledWith("E sha fail");
+    expect(setFailed).toBeCalledWith(true);
+  })
+})
+
+describe('handlePermissionType', () => {
+
+  // Returns "BOOK_INVESTMENT" if type is "individual" and process_type is "booking"
+  it('should return "BOOK_INVESTMENT" when type is "individual" and process_type is "booking"', () => {
+    const result = handlePermissionType("individual", "booking");
+    expect(result).toBe("BOOK_INVESTMENT");
+  });
+
+  // Returns "LIQUIDATE_INVESTMENT" if type is "individual" and process_type is not "booking"
+  it('should return "LIQUIDATE_INVESTMENT" when type is "individual" and process_type is not "booking"', () => {
+    const result = handlePermissionType("individual", "other");
+    expect(result).toBe("LIQUIDATE_INVESTMENT");
+  });
+
+  // Returns "CREATE_INVESTMENT_PRODUCT" if type is "investment"
+  it('should return "CREATE_INVESTMENT_PRODUCT" when type is "investment"', () => {
+    const result = handlePermissionType("investment");
+    expect(result).toBe("CREATE_INVESTMENT_PRODUCT");
+  });
+
+  // Returns undefined if type is not "individual" or "investment"
+  it('should return undefined when type is not "individual" or "investment"', () => {
+    const result = handlePermissionType("other");
+    expect(result).toBeUndefined();
+  });
+});

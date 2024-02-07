@@ -20,8 +20,8 @@ import {
   productHeader,
   requestHeader,
 } from "@app/constants";
-import optionsDataHandler from "./optionsDataHandler";
-
+import optionsDataHandler from "@app/utils/optionsDataHandler";
+import { handleProductDownloadSuccess } from "@app/utils/handleProductDownloadSuccess";
 interface RequestDataProps {
   request: string;
   type: string;
@@ -85,12 +85,18 @@ export function initiateDownload(
   downloadRequests,
   selected
 ) {
- 
   if (category === StatusCategoryType.AllProducts) {
-    
-    downloadProducts({ ...query, page_Size: 1000000 , filter_by: selected?.value,});
+    downloadProducts({
+      ...query,
+      page_Size: 1000000,
+      filter_by: selected?.value,
+    });
   } else {
-    downloadRequests({ ...query, page_Size: 1000000, filter_by: selected?.value, });
+    downloadRequests({
+      ...query,
+      page_Size: 1000000,
+      filter_by: selected?.value,
+    });
   }
 }
 export function handleDownload(downloadData, isChecker, csvExporter, category) {
@@ -183,9 +189,8 @@ export default function TableComponent({
   hasMore,
   fetchMoreData,
 }: any) {
-  const { category, setStatus, isChecker, selected } =
-    useContext(InvestmentContext);
-  const { permissions } = useContext(AppContext);
+  const { category, setStatus, selected } = useContext(InvestmentContext);
+  const { isChecker } = useContext(AppContext);
   const [users, setUsers] = useState([]);
   const [searchResults, setSearchResults] = useState<any[]>([]);
 
@@ -282,36 +287,16 @@ export default function TableComponent({
   }, [data, request, isSuccess, isRequestSuccess]);
 
   useEffect(() => {
-    if (
-      productDownloadIsSuccess &&
-      category === StatusCategoryType.AllProducts
-    ) {
-      handleDownload(
-        productDownloadData?.results.map((i) => ({
-          ...i,
-          state: StatusTypes.find((n) => n.id === i.state)?.type,
-          productType: ProductTypes.find((n) => n.id === i.productType)?.name,
-        })),
-        isChecker,
-        csvExporter,
-        category
-      );
-    }
-    if (requestsDownloadIsSuccess && category === StatusCategoryType.Requests) {
-      handleDownload(
-        requestsDownloadData?.results.map((i) => ({
-          ...i,
-          requestStatus: StatusFilterOptions.find(
-            (n) => n.value === i.requestStatus
-          )?.name,
-          requestType: TypeFilterOptions.find((n) => n.value === i.requestType)
-            ?.name,
-        })),
-        isChecker,
-        csvExporter,
-        category
-      );
-    }
+    handleProductDownloadSuccess({
+      productDownloadIsSuccess,
+      category,
+      productDownloadData,
+      isChecker,
+      csvExporter,
+      requestsDownloadIsSuccess,
+      requestsDownloadData,
+      handleDownload,
+    });
   }, [productDownloadIsSuccess, requestsDownloadIsSuccess]);
 
   React.useEffect(() => {
@@ -433,12 +418,13 @@ export default function TableComponent({
         dropDownOptions={DropDownOptions}
         dropDownClick={handleDropClick}
         onChangeDate={onChangeDate}
-        type={category.toLowerCase()}
+        type={category?.toLowerCase()}
         noData={
           StatusCategoryType.Requests === category
             ? "No request available"
             : "No product available"
         }
+        Context={InvestmentContext}
       />
     </section>
   );

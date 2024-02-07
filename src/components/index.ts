@@ -12,3 +12,5 @@ export { default as FormStepComponent } from "./FormStepComponent";
 export { default as ProductSearch } from "./ProductSearch";
 export { default as SelectedRequirementsTable } from "./SelectedRequirementsTable";
 export { default as FormToolTip } from "./FormToolTip";
+export { default as OverviewDiv } from "./OverviewDiv";
+export { default as BookInvestmentButton } from "./BookInvestmentButton";

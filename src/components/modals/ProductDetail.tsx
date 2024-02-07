@@ -16,6 +16,7 @@ import { useGetProductDetailQuery } from "@app/api";
 import { AppContext } from "@app/utils";
 import PricingConfigurationComponent from "./PricingConfigurationComponent";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
+import ProductPricingAndLiquidity from "../ProductPricingAndLiquidity";
 
 interface Props {
   isOpen: boolean;
@@ -31,7 +32,6 @@ export default function ProductDetail({
   handleClick,
   detail,
 }: Props) {
-
   const {
     data: productData,
     isLoading,
@@ -41,11 +41,9 @@ export default function ProductDetail({
   });
 
   const [open, setOpen] = useState(false);
-  const { permissions } = useContext(AppContext);
+  const { permissions, currencies } = useContext(AppContext);
 
-  React.useEffect(() => {
-
-  }, [isSuccess]);
+  React.useEffect(() => {}, [isSuccess]);
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
       <div
@@ -80,7 +78,7 @@ export default function ProductDetail({
             <div className="grid grid-cols-2 gap-x-5 text-left px-10 py-11">
               <div className="flex flex-col justify-between gap-y-3">
                 <div className="p-6 flex flex-col gap-y-[35px] max-h-[463px] overflow-y-auto">
-                  {/* {detail?.status === "R" && (
+                  {/* {detail?.reason && (
                     <div>
                       <span className="font-bold block mb-[15px]">
                         Reason for Deactivation
@@ -145,7 +143,10 @@ export default function ProductDetail({
                   <div>
                     <span className="font-bold block mb-[15px]">Currency</span>
                     <span className="font-normal block">
-                      {handleCurrencyName(productData?.data?.productInfo?.currency)}{" "}
+                      {handleCurrencyName(
+                        productData?.data?.productInfo?.currency,
+                        currencies
+                      )}{" "}
                     </span>
                   </div>
                   <div>
@@ -181,7 +182,9 @@ export default function ProductDetail({
                           <button
                             type="button"
                             data-testid="activate-btn"
-                            onClick={() => handleClick("activate", productData?.data)}
+                            onClick={() =>
+                              handleClick("activate", productData?.data)
+                            }
                             className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
                           >
                             <FaPlayCircle className="text-[#2FB755]" /> Activate
@@ -189,7 +192,9 @@ export default function ProductDetail({
                         ) : (
                           <button
                             data-testid="deactivate-btn"
-                            onClick={() => handleClick("deactivate", productData?.data)}
+                            onClick={() =>
+                              handleClick("deactivate", productData?.data)
+                            }
                             className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
                           >
                             <FaBan className="text-sterling-red-800" />{" "}
@@ -203,7 +208,9 @@ export default function ProductDetail({
                   <a
                     href={`/product-factory/investment/${encodeURIComponent(
                       "term deposit"
-                    )}/process-summary/preview/${productData?.data.id}?category=product`}
+                    )}/process-summary/preview/${
+                      productData?.data.id
+                    }?category=product`}
                   >
                     <button
                       className={`group flex items-center whitespace-nowrap py-[1px] text-base text-[#636363] gap-x-3 underline outline-none`}
@@ -213,327 +220,32 @@ export default function ProductDetail({
                   </a>
                 </div>
               </div>
-              <div className="border border-[#E5E9EB] rounded-lg py-[25px] px-[30px] h-[593px]">
-                <div className="pr-[30px] h-full gap-y-[35px] overflow-y-auto flex flex-col">
-                  <div className="">
-                    <span className="font-bold block mb-[15px]">
-                      Applicable Tenor
-                    </span>
-                    <span className="font-normal block">
-                      {`${
-                        productData?.data?.pricingConfiguration
-                          ?.applicableTenorMin
-                      } ${
-                        Interval[
-                          productData?.data?.pricingConfiguration
-                            ?.applicableTenorMinUnit
-                        ]
-                      }`}{" "}
-                      -{" "}
-                      {`${
-                        productData?.data?.pricingConfiguration
-                          ?.applicableTenorMax
-                      } ${
-                        Interval[
-                          productData?.data?.pricingConfiguration
-                            ?.applicableTenorMaxUnit
-                        ]
-                      }`}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-bold block mb-[15px]">
-                      Applicable Principal
-                    </span>
-                    <span className="font-normal block">
-                      {currencyFormatter(
-                        productData?.data?.pricingConfiguration
-                          ?.applicablePrincipalMin,
-                          handleCurrencyName(productData?.data?.productInfo.currency)
-                      )}{" "}
-                      {productData?.data?.pricingConfiguration
-                        ?.applicablePrincipalMax
-                        ? `- ${currencyFormatter(
-                            productData?.data?.pricingConfiguration
-                              ?.applicablePrincipalMax,
-                              handleCurrencyName(productData?.data?.productInfo?.currency)
-                          )}`
-                        : "and above"}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-bold block mb-[15px]">
-                      Interest Rate
-                    </span>
-                    {/* <span className="font-normal block">{detail?.slogan}</span> */}
-                    <div className="w-full text-base font-normal text-[#636363]">
-                      {productData?.data?.pricingConfiguration
-                        .interestRateRangeType == 0 && (
-                        <div className="flex flex-col">
-                          {productData?.data?.pricingConfiguration.interestRateConfigModels?.map(
-                            (configModel, index) => (
-                              <span
-                                key={index}
-                                className={`${
-                                  index !== 0 && "hidden"
-                                } block  mb-2 text-[#636363]`}
-                              >
-                                {" "}
-                                {`${configModel.min} - ${configModel.max}%`} for
-                                principal between{" "}
-                                {`${currencyFormatter(
-                                  configModel.principalMin,
-                                  handleCurrencyName(productData?.data?.productInfo?.currency)
-                                )} - ${currencyFormatter(
-                                  configModel.principalMax,
-                                  handleCurrencyName(productData?.data?.productInfo?.currency)
-                                )}`}{" "}
-                              </span>
-                            )
-                          )}
-                        </div>
-                      )}
-
-                      {productData?.data?.pricingConfiguration
-                        .interestRateRangeType == 1 && (
-                        <div className="flex flex-col">
-                          {productData?.data?.pricingConfiguration.interestRateConfigModels?.map(
-                            (configModel, index) => (
-                              <span
-                                key={index}
-                                className={`${
-                                  index !== 0 && "hidden"
-                                } block  mb-2 text-[#636363]`}
-                              >
-                                {" "}
-                                {`${configModel.min} - ${configModel.max}%`} for
-                                tenor between{" "}
-                                {`${configModel.tenorMin} ${
-                                  Interval[configModel.tenorMinUnit]
-                                } - ${configModel.tenorMax} ${
-                                  Interval[configModel.tenorMaxUnit]
-                                }`}{" "}
-                              </span>
-                            )
-                          )}
-                        </div>
-                      )}
-                      {productData?.data?.pricingConfiguration
-                        .interestRateRangeType == 2 && (
-                        <div className="flex flex-col">
-                          <span className="block  mb-2 text-[#636363]">
-                            {" "}
-                            {`${productData?.data?.pricingConfiguration.interestRateMin} - ${productData?.data?.pricingConfiguration.interestRateMax}%`}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                    {productData?.data?.pricingConfiguration
-                      .interestRateRangeType !== 0 ||
-                      (productData?.data?.pricingConfiguration
-                        .interestRateRangeType !== 1 && (
-                        <button
-                          data-testid="more"
-                          className="text-[#636363]  underline"
-                          onClick={() => setOpen(true)}
-                        >
-                          View more
-                        </button>
-                      ))}
-                  </div>
-                  {productData?.data?.liquidation
-                    ?.part_AllowPartLiquidation && (
-                    <div>
-                      <span className="font-bold block mb-[15px]">
-                        Part Liquidation
-                      </span>
-                      <div className="w-full text-base font-normal text-[#636363]">
-                        {productData?.data?.liquidation
-                          ?.part_AllowPartLiquidation ? (
-                          <span className="font-normal block">
-                            {productData?.data?.liquidation
-                              ?.part_RequireNoticeBeforeLiquidation && (
-                              <span>
-                                <span>Require notice of</span>{" "}
-                                <span className="font-bold">
-                                  {
-                                    productData?.data?.liquidation
-                                      ?.part_NoticePeriod
-                                  }
-
-                                  {
-                                    Interval[
-                                      productData?.data?.liquidation
-                                        ?.part_NoticePeriodUnit
-                                    ]
-                                  }
-                                </span>{" "}
-                                <span>before liquidation</span>
-                              </span>
-                            )}
-                            {
-                              <p className="font-normal">
-                                <span className="font-bold">Penalty:</span>{" "}
-                                <span>
-                                  {liquidities[
-                                    productData?.data?.liquidation
-                                      ?.part_LiquidationPenalty
-                                  ] == "none" &&
-                                    liquidities[
-                                      productData?.data?.liquidation
-                                        ?.part_LiquidationPenalty
-                                    ]}
-                                </span>
-                                <span>
-                                  {liquidities[
-                                    productData?.data?.liquidation
-                                      ?.part_LiquidationPenalty
-                                  ] == "ForfietAll" &&
-                                    "Forfeit all accrued interest"}
-                                </span>
-                                <span>
-                                  {liquidities[
-                                    productData?.data?.liquidation
-                                      ?.part_LiquidationPenalty
-                                  ] == "ForfietPortion" &&
-                                    `Forfeit a portion of accrued interest - ${productData?.data?.liquidation?.part_LiquidationPenaltyPercentage}%`}
-                                </span>
-                                <span>
-                                  {liquidities[
-                                    productData?.data?.liquidation
-                                      ?.part_LiquidationPenalty
-                                  ] == "RecalculateInterest" &&
-                                    `Recalculate accrued interest of ${productData?.data?.liquidation?.part_LiquidationPenaltyPercentage}%`}
-                                </span>
-                                <span>
-                                  {liquidities[
-                                    productData?.data?.liquidation
-                                      ?.part_LiquidationPenalty
-                                  ] == "TakeCharge" && "Take a charge"}
-                                </span>
-                              </p>
-                            }
-                            Maximum of{" "}
-                            {
-                              productData?.data?.liquidation
-                                ?.part_MaxPartLiquidation
-                            }
-                            % of principal
-                          </span>
-                        ) : (
-                          "Not Applicable"
-                        )}
-                      </div>
-                    </div>
-                  )}
-                  {productData?.data?.liquidation
-                    ?.early_AllowEarlyLiquidation && (
-                    <div>
-                      <span className="font-bold block mb-[15px]">
-                        Early Liquidation
-                      </span>
-                      <div className="w-full text-base font-normal text-[#636363]">
-                        {productData?.data?.liquidation?.early_AllowEarlyLiquidation ? (
-                          <span className="font-normal block">
-                            {productData?.data?.liquidation
-                              ?.early_RequireNoticeBeforeLiquidation && (
-                              <span>
-                                <span>Require notice of</span>{" "}
-                                <span className="font-bold">
-                                  {productData?.data?.liquidation?.early_NoticePeriod}
-
-                                  {
-                                    Interval[
-                                      productData?.data?.liquidation
-                                        ?.early_NoticePeriodUnit
-                                    ]
-                                  }
-                                </span>{" "}
-                                <span>before liquidation</span>
-                              </span>
-                            )}
-                            {
-                              <p className="font-normal">
-                                <span className="font-bold">Penalty:</span>{" "}
-                                <span>
-                                  {liquidities[
-                                    productData?.data?.liquidation
-                                      ?.early_LiquidationPenalty
-                                  ] == "none" &&
-                                    liquidities[
-                                      productData?.data?.liquidation
-                                        ?.early_LiquidationPenalty
-                                    ]}
-                                </span>
-                                <span>
-                                  {liquidities[
-                                    productData?.data?.liquidation
-                                      ?.early_LiquidationPenalty
-                                  ] == "ForfietAll" &&
-                                    "Forfeit all accrued interest"}
-                                </span>
-                                <span>
-                                  {liquidities[
-                                    productData?.data?.liquidation
-                                      ?.early_LiquidationPenalty
-                                  ] == "ForfietPortion" &&
-                                    `Forfeit a portion of accrued interest - ${productData?.data?.liquidation?.early_LiquidationPenaltyPercentage}%`}
-                                </span>
-                                <span>
-                                  {liquidities[
-                                    productData?.data?.liquidation
-                                      ?.early_LiquidationPenalty
-                                  ] == "RecalculateInterest" &&
-                                    `Recalculate accrued interest of ${productData?.data?.liquidation?.early_LiquidationPenaltyPercentage}%`}
-                                </span>
-                                <span>
-                                  {liquidities[
-                                    productData?.data?.liquidation
-                                      ?.early_LiquidationPenalty
-                                  ] == "TakeCharge" && "Take a charge"}
-                                </span>
-                              </p>
-                            }
-                          </span>
-                        ) : (
-                          "Not Applicable"
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  <div>
-                    <span className="font-bold block mb-[15px]">
-                      Principal Deposit Charge & Tax
-                    </span>
-                    <div className="flex items-center flex-wrap gap-x-1">
-                      <span className="font-normal block">Charges :</span>
-                      <span className="font-normal block">
-                        Maintenance , Auction
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <ProductPricingAndLiquidity
+                productData={productData}
+                setOpen={setOpen}
+              />
             </div>
           </div>
         )}
         {isLoading && (
-          <div className="h-[500px] flex items-center justify-center" data-testid="loading-spinner">
+          <div
+            className="h-[500px] flex items-center justify-center"
+            data-testid="loading-spinner"
+          >
             <div className="spinner-border h-11 w-11 border-t border-danger-500 rounded-full animate-spin"></div>
           </div>
         )}
         <ModalLayout isOpen={open} setIsOpen={setOpen}>
-          <div className="px-[30px] pt-[64px] pb-[20px] bg-white w-[400px] rounded-lg relative">
+          <div className="px-5 pt-10 pb-[20px] bg-white w-[400px] rounded-lg relative">
             <ul className="max-h-[345px] overflow-y-auto flex flex-col gap-y-5">
-              <PricingConfigurationComponent {...productData}/>
+              <PricingConfigurationComponent productData={productData} />
             </ul>
             <button
               onClick={() => setOpen(false)}
-              className="p-2 outline-none bg-transparent absolute right-6 top-6"
+              className="p-2 outline-none bg-transparent absolute right-1 top-1"
               data-testid="close-btn"
             >
-              <FaTimes className="text-[#002266] opacity-60 hover:opacity-50 text-xl" />
+              <FaTimes className="text-[#002266] opacity-60 hover:opacity-50 text-lg" />
             </button>
           </div>
         </ModalLayout>

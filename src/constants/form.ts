@@ -28,6 +28,63 @@ export const ProductInformationFormSchema = yup.object({
   currency: yup.string().required("Select a currency"),
 });
 
+export const BookingCustomerInfoSchema = yup.object().shape({
+  customerId: yup.string().uuid().required("Select a customer account"),
+  customerName: yup.string().required("Select a customer account"),
+  customerAccount: yup.string().required("Select a customer account"),
+  investmentformUrl: yup.string(),
+  customerAccountLedgerId: yup.string(),
+  balance: yup
+    .number()
+    .typeError("Invalid value")
+    .nullable()
+    .min(1, "Insufficient balance")
+    .required(),
+});
+export const FacilityDetailsModelSchema = yup.object().shape({
+  investmentProductId: yup.string().uuid().required("Select an investment"),
+  investmentPurpose: yup.string(),
+  tenor: yup
+    .number()
+    .typeError("Invalid value")
+    .integer()
+    .positive()
+    .min(yup.ref("tenorMin"), "Tenor is too short")
+    .max(yup.ref("tenorMax"), "Tenor is too long")
+    .nullable()
+    .required("Tenor is required"),
+  principal: yup
+    .number()
+    .typeError("Invalid value")
+    .positive()
+    .min(yup.ref("prinMin"), "Principal is too small")
+    .max(yup.ref("prinMax"), "Principal is too large")
+    .nullable()
+    .required("Principal is required"),
+  interestRate: yup
+    .number()
+    .typeError("Invalid value")
+    .positive()
+    .min(yup.ref("intMin"), "Interest rate is too low")
+    .max(yup.ref("intMax"), "Interest rate is too high")
+    .nullable()
+    .required("Interest is required"),
+  capitalizationMethod: yup.number().integer().min(0).max(4).required(),
+  tenorMin: yup.number().typeError("Invalid value").nullable(),
+  tenorMax: yup.number().typeError("Invalid value").integer().nullable(),
+  prinMin: yup.number().typeError("Invalid value").integer().nullable(),
+  prinMax: yup.number().typeError("Invalid value").integer().nullable(),
+  intMin: yup.number().typeError("Invalid value").nullable(),
+  intMax: yup.number().typeError("Invalid value").nullable(),
+});
+
+export const TransactionSettingModelSchema = yup.object().shape({
+  accountForLiquidation: yup.mixed().required("Select an account"),
+  notifyCustomerOnMaturity: yup.boolean().required("Required"),
+  rollOverAtMaturity: yup.boolean().required("Required"),
+  rollOverOption: yup.number().integer().min(0).max(2).required("Required"),
+});
+
 export const CustomerEligibilityCriteriaSchema = yup
   .object({
     customerCategory: yup
@@ -352,7 +409,9 @@ export const pricingConfigSchema = yup.object({
             ) {
               errors.push(
                 new ValidationError(
-                  `Min principal must be less than ${currencyFormatter(appPrinMax)}`,
+                  `Min principal must be less than ${currencyFormatter(
+                    appPrinMax
+                  )}`,
                   last,
                   `interestRateConfigModels[${value.length - 1}].principalMin`
                 )
@@ -529,6 +588,14 @@ export const liquiditySetupSchema = yup
         then: (schema) => schema.required("Provide value"),
         otherwise: (schema) => schema.nullable(),
       }),
+      part_SpecialInterestRate: yup
+      .number()
+      .typeError("Invalid value")
+      .max(100, "Value exceeded") .when("part_LiquidationPenalty", {
+        is: (val) => parseInt(val, 10) === 3,
+        then: (schema) => schema.required("Provide value"),
+        otherwise: (schema) => schema.nullable(),
+      }),
 
     early_AllowEarlyLiquidation: yup.boolean().typeError("Invalid value"),
     early_RequireNoticeBeforeLiquidation: yup
@@ -541,6 +608,14 @@ export const liquiditySetupSchema = yup
       .when("early_RequireNoticeBeforeLiquidation", {
         is: (val) => val === true,
         then: (schema) => schema.required("Provide a notice period"),
+        otherwise: (schema) => schema.nullable(),
+      }),
+      eary_SpecialInterestRate: yup
+      .number()
+      .typeError("Invalid value")
+      .max(100, "Value exceeded") .when("early_LiquidationPenalty", {
+        is: (val) => parseInt(val, 10) === 3,
+        then: (schema) => schema.required("Provide value"),
         otherwise: (schema) => schema.nullable(),
       }),
     early_NoticePeriodUnit: yup
@@ -563,6 +638,21 @@ export const liquiditySetupSchema = yup
       }),
   })
   .required();
+
+export const LiquidationSchema = yup.object({
+  investementBookingId: yup.string().required(),
+  reason: yup.string().required("Provide a reason"),
+  documentUrl: yup.string(),
+  notify: yup.boolean().required(),
+  amounttoLiquidate: yup
+    .number()
+    .typeError("Invalid value")
+    .integer()
+    .positive()
+    .max(yup.ref("maxAmount"), "Exceeded max amount")
+    .nullable(),
+  maxAmount: yup.number(),
+});
 
 export const glMappingSchema = yup.object({
   TermDepositLiabilityAccount: yup

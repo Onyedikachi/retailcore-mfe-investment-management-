@@ -22,10 +22,13 @@ export function handleDropdown(
   if (!selectedType) return [];
 
   if (
-    (permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&
+    ((permissions?.includes("CREATE_INVESTMENT_PRODUCT") ||
+      permissions?.includes("BOOK_INVESTMENT")) &&
       created_By_Id === userId) ||
     (permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&
-      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS"))
+      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS")) ||
+    (permissions?.includes("BOOK_INVESTMENT") &&
+      permissions?.includes("VIEW_ALL_INVESTMENT_REQUESTS"))
   ) {
     return selectedType[status];
   } else {

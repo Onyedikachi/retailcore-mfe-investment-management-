@@ -5,7 +5,7 @@ import ModalLayout from "./Layout";
 import { useGetUserQuery, useGetUsersPermissionsQuery } from "../../api";
 import { removeNullEmptyKeys } from "@app/utils";
 import { ProductSearch, Button } from "@app/components";
-interface Rejection {
+interface RejectionProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   onConfirm: () => void;
@@ -13,6 +13,7 @@ interface Rejection {
   reason: string;
   setRouteTo?: any;
   creatorId: string;
+  permissionType?: string | string[];
 }
 
 export function handleSuccess(userIsSuccess, setUsers, branchMembersData) {
@@ -36,7 +37,8 @@ export default function Rejection({
   reason,
   setRouteTo,
   creatorId,
-}: Rejection): React.JSX.Element {
+  permissionType
+}: RejectionProps): React.JSX.Element {
   const [selected, setSelected] = React.useState<any>(null);
   const [users, setUsers] = React.useState([]);
   const [user, setUser] = React.useState(null);
@@ -61,7 +63,7 @@ export default function Rejection({
     isSuccess: userIsSuccess,
     isLoading: userLoading,
   } = useGetUsersPermissionsQuery({
-    permissions: ["CREATE_INVESTMENT_PRODUCT"],
+    permissions: [permissionType],
   });
 
   React.useEffect(() => {

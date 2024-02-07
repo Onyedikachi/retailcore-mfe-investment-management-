@@ -20,6 +20,7 @@ interface MinMaxProps {
   isCurrency?: boolean;
   placeholder?: string;
   max?: number;
+  min?: number;
   disablegroupseparators?: boolean;
 }
 export default function MinMaxInput({
@@ -42,10 +43,11 @@ export default function MinMaxInput({
   isCurrency,
   placeholder = "0",
   max,
+  min,
   disablegroupseparators,
 }: MinMaxProps) {
   return (
-    <div>
+    <div className="w-full">
       <div className={`${className} flex items-center gap-4`}>
         {label && <div>{label}</div>}
         {currency && <div className="text-[#636363]">{currency}</div>}
@@ -57,7 +59,7 @@ export default function MinMaxInput({
                 type={type}
                 disabled={disabled}
                 data-testid="min-max-input"
-                className={`placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] ${
+                className={`placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] ${
                   (errors && errors[inputName]) || error
                     ? "border-red-600"
                     : "border-[#8F8F8F]"
@@ -69,14 +71,14 @@ export default function MinMaxInput({
                 }}
                 placeholder={placeholder}
                 // maxLength={defaultLength}
-                max={max}
+                max={isPercent ? 100 : max}
+                min={min}
                 // {...register(inputName, { required: true })}
                 defaultValue={defaultValue}
               />
             )}
             {isCurrency && (
               <CurrencyInput
-              
                 id={inputName}
                 name={inputName}
                 placeholder={placeholder}
@@ -88,14 +90,18 @@ export default function MinMaxInput({
                   setValue(inputName, value);
                   trigger(inputName);
                 }}
-                className={`placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] ${
+                className={`placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] ${
                   (errors && errors[inputName]) || error
                     ? "border-red-600"
                     : "border-[#8F8F8F]"
                 }`}
               />
             )}
-            {isPercent && <span data-testid='percent' className="absolute right-1">%</span>}
+            {isPercent && (
+              <span data-testid="percent" className="absolute right-1">
+                %
+              </span>
+            )}
             <div className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]">
               {hasButton && (
                 <span>
