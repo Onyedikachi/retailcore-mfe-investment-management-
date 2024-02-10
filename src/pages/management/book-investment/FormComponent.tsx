@@ -14,7 +14,9 @@ export default ({
   isSavingDraft,
   setProductDetail,
   productDetail,
-  detailLoading
+  detailLoading,
+  preModifyRequest,
+  preCreateInvestment
 }) => {
   return (
     <Fragment>
@@ -27,6 +29,8 @@ export default ({
             setFormData={setFormData}
             setDisabled={setDisabled}
             isSavingDraft={isSavingDraft}
+            preModifyRequest={preModifyRequest}
+            preCreateInvestment={preCreateInvestment}
           />
         </span>
       )}
@@ -41,6 +45,7 @@ export default ({
             setProductDetail={setProductDetail}
             productDetail={productDetail}
             detailLoading={detailLoading}
+            preModifyRequest={preModifyRequest}
           />
         </span>
       )}
@@ -53,6 +58,7 @@ export default ({
             setDisabled={setDisabled}
             isSavingDraft={isSavingDraft}
             productDetail={productDetail}
+            preModifyRequest={preModifyRequest}
           />
         </span>
       )}

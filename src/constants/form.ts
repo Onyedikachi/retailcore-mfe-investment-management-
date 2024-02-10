@@ -80,6 +80,7 @@ export const FacilityDetailsModelSchema = yup.object().shape({
 
 export const TransactionSettingModelSchema = yup.object().shape({
   accountForLiquidation: yup.mixed().required("Select an account"),
+  accountForLiquidationLedgerId: yup.string().required("Ledger id is required"),
   notifyCustomerOnMaturity: yup.boolean().required("Required"),
   rollOverAtMaturity: yup.boolean().required("Required"),
   rollOverOption: yup.number().integer().min(0).max(2).required("Required"),

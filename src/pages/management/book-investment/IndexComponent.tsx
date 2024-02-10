@@ -40,19 +40,15 @@ export function handleNav({
   process,
   id,
   formData,
-  preModifyRequest,
-  preCreateInvestment,
 }) {
   if (!formData?.customerBookingInfoModel?.customerId) return;
-  if (formData?.id) {
-    preModifyRequest({ ...formData, isDraft: true });
-  } else {
-    preCreateInvestment({ ...formData, isDraft: true });
-  }
+
   step < BookInvestmentFormSteps.length
     ? handleNext(step, setStep, BookInvestmentFormSteps)
     : navigate(
-        `/investment-management/${process}/${investmentType}?stage=summary&id=${formData?.id || id}`
+        `/investment-management/${process}/${investmentType}?stage=summary&id=${
+          formData?.id || id
+        }`
       );
 }
 
@@ -300,7 +296,7 @@ export default function IndexComponent() {
   }, [step]);
 
   useEffect(() => {
-    if (preSuccess) {
+    if (preSuccess && !formData.id) {
       setFormData({
         ...formData,
         id: preData?.data,
@@ -345,6 +341,8 @@ export default function IndexComponent() {
       requestIsSuccess,
       setFormData,
       type: "individual_booking",
+      formData,
+      id
     });
   }, [requestIsSuccess]);
 
@@ -384,8 +382,6 @@ export default function IndexComponent() {
                           process,
                           id,
                           formData,
-                          preModifyRequest,
-                          preCreateInvestment,
                         })
                       }
                       setDisabled={setDisabled}
@@ -393,6 +389,8 @@ export default function IndexComponent() {
                       setProductDetail={setProductDetail}
                       productDetail={productDetail}
                       detailLoading={detailLoading}
+                      preModifyRequest={preModifyRequest}
+                      preCreateInvestment={preCreateInvestment}
                     />
                   ) : (
                     <BottomBarLoader />

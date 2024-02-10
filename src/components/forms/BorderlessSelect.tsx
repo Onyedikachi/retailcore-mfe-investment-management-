@@ -53,7 +53,7 @@ export default function Select({
         {tip && <FormToolTip tip={tip} />}
       </div>
       <Listbox
-        value={selected}
+        value={selected || ""}
         {...register(inputName, {
           required: true,
         })}

@@ -23,6 +23,7 @@ export const handleAccountForLiquidation = ({
   setFormData,
   setValue,
   setCustomerData,
+  trigger,
 }) => {
   if (profileIsSuccess) {
     const accountData = profileData.data.customer_products?.map((i: any) => {
@@ -33,9 +34,11 @@ export const handleAccountForLiquidation = ({
         ledgerId: i?.ledgerId,
       };
     });
+    setCustomerData(accountData);
     if (
       accountData?.length &&
-      !formData?.transactionSettingModel?.accountForLiquidation
+      !formData?.transactionSettingModel?.accountForLiquidation &&
+      !formData?.transactionSettingModel?.accountForLiquidationLedgerId
     ) {
       setFormData({
         ...formData,
@@ -47,16 +50,26 @@ export const handleAccountForLiquidation = ({
       });
       setValue("accountForLiquidation", accountData[0].value);
       setValue("accountForLiquidationLedgerId", accountData[0].ledgerId);
+      trigger();
     }
-
-    setCustomerData(accountData);
   }
 };
 
-export const onProceed = (data, proceed, formData, setFormData) => {
+export const onProceed = (
+  data,
+  proceed,
+  formData,
+  setFormData,
+  preModifyRequest
+) => {
+  preModifyRequest({
+    ...formData,
+    transactionSettingModel: { ...formData.transactionSettingModel, ...data },
+    isDraft: true,
+  });
   setFormData({
     ...formData,
-    transactionSettingModel: { ...data },
+    transactionSettingModel: { ...formData.transactionSettingModel, ...data },
   });
   proceed();
 };
@@ -68,6 +81,7 @@ type TransactionSettingsProps = {
   setDisabled?: any;
   isSavingDraft?: boolean;
   productDetail?: any;
+  preModifyRequest?: any;
 };
 const SvgInfo = () => (
   <svg
@@ -99,8 +113,8 @@ export default function TransactionSettings({
   setDisabled,
   isSavingDraft,
   productDetail,
+  preModifyRequest,
 }: TransactionSettingsProps) {
-  console.log("🚀 ~ productDetail:", productDetail);
   const {
     register,
     handleSubmit,
@@ -140,12 +154,9 @@ export default function TransactionSettings({
       setFormData,
       setValue,
       setCustomerData,
+      trigger,
     });
-  }, [profileIsError, profileIsSuccess, profileLoading, profileData]);
-
-  // useEffect(() => {
-  //   setFormData({ ...formData, transactionSettingModel: values });
-  // }, [isSavingDraft]);
+  }, [profileIsError, profileIsSuccess, profileData]);
 
   useEffect(() => {
     setDisabled(!isValid);
@@ -160,14 +171,32 @@ export default function TransactionSettings({
         (i) => i.value === values?.accountForLiquidation
       );
       setValue("accountForLiquidationLedgerId", data?.ledgerId);
+      trigger();
     }
   }, [values?.accountForLiquidation]);
+
+  useEffect(() => {
+    if (
+      formData?.transactionSettingModel?.accountForLiquidationLedgerId &&
+      !values?.accountForLiquidationLedgerId
+    ) {
+      setValue(
+        "accountForLiquidationLedgerId",
+        formData?.transactionSettingModel?.accountForLiquidationLedgerId
+      );
+      trigger(["accountForLiquidationLedgerId"]);
+    }
+  }, [
+    formData?.transactionSettingModel?.accountForLiquidationLedgerId,
+    values?.accountForLiquidationLedgerId,
+  ]);
+
   return (
     <form
       id="transactionSettings"
       data-testid="submit-button"
       onSubmit={handleSubmit((d) =>
-        onProceed(d, proceed, formData, setFormData)
+        onProceed(d, proceed, formData, setFormData, preModifyRequest)
       )}
     >
       {" "}
