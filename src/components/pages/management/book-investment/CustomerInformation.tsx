@@ -19,7 +19,34 @@ import { Failed } from "@app/components/modals";
 import { Messages } from "@app/constants/enums";
 import BottomBarLoader from "@app/components/BottomBarLoader";
 import debounce from "lodash.debounce";
-export const onProceed = (data, proceed, formData, setFormData) => {
+export const onProceed = (
+  data,
+  proceed,
+  formData,
+  setFormData,
+  preCreateInvestment,
+  preModifyRequest
+) => {
+  console.log("🚀 ~ formData:", formData)
+  if (formData?.id) {
+    preModifyRequest({
+      ...formData,
+      customerBookingInfoModel: {
+        ...formData.customerBookingInfoModel,
+        ...data,
+      },
+      isDraft: true,
+    });
+  } else {
+    preCreateInvestment({
+      ...formData,
+      customerBookingInfoModel: {
+        ...formData.customerBookingInfoModel,
+        ...data,
+      },
+      isDraft: true,
+    });
+  }
   setFormData({
     ...formData,
     customerBookingInfoModel: { ...formData.customerBookingInfoModel, ...data },
@@ -34,6 +61,8 @@ type CustomerInformationProps = {
   proceed?: () => void;
   setDisabled?: any;
   isSavingDraft?: boolean;
+  preModifyRequest?: any;
+  preCreateInvestment?: any;
 };
 export const handleSearch = (value, setAccountNumber) => {
   setAccountNumber(value);
@@ -44,6 +73,8 @@ export default function CustomerInformation({
   proceed,
   setDisabled,
   isSavingDraft,
+  preModifyRequest,
+  preCreateInvestment,
 }: CustomerInformationProps) {
   const {
     register,
@@ -236,7 +267,14 @@ export default function CustomerInformation({
       id="customerInformation"
       data-testid="submit-button"
       onSubmit={handleSubmit((d) =>
-        onProceed(d, proceed, formData, setFormData)
+        onProceed(
+          d,
+          proceed,
+          formData,
+          setFormData,
+          preCreateInvestment,
+          preModifyRequest
+        )
       )}
     >
       {" "}

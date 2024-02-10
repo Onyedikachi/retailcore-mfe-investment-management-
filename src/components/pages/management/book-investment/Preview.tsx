@@ -109,7 +109,11 @@ export const submitForm = (
       recentlyUpdatedMeta: previousData ? JSON.stringify(previousData) : null,
     });
   }
-  if (process === "withdraw_modify" || process === "continue" || (process === "create" && formData?.id)) {
+  if (
+    process === "withdraw_modify" ||
+    process === "continue" ||
+    (process === "create" && formData?.id)
+  ) {
     modifyRequest({
       ...formData,
       isDraft: false,
