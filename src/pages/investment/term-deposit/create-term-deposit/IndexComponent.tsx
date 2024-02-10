@@ -22,13 +22,7 @@ import {
   Button,
   FormStepComponent,
 } from "@app/components";
-import {
-  ProductInformation,
-  CustomerEligibilityCriteria,
-  AccountingEntriesAndEvents,
-  LiquiditySetup,
-  PricingConfig,
-} from "@app/components/pages/term-deposit/forms";
+
 import { ProductState, termDepositFormSteps } from "@app/constants";
 import Preview from "@app/components/pages/term-deposit/forms/preview";
 import { Messages } from "@app/constants/enums";
@@ -114,6 +108,8 @@ export const handleRequestIsSuccess = ({
   previousData,
   setProductData,
   setFormData,
+  formData,
+  id,
   type = "investment",
 }: {
   requestIsSuccess: any;
@@ -124,10 +120,12 @@ export const handleRequestIsSuccess = ({
   setProductData?: any;
   setFormData?: any;
   type?: any;
+  formData?: any;
+  id?: string | null;
 }) => {
   if (requestIsSuccess && requestData?.data?.metaInfo) {
     const data = JSON.parse(requestData?.data?.metaInfo);
-   
+
     if (process === "continue" && data?.id) {
       activeId.current = data?.id;
     }
@@ -135,8 +133,12 @@ export const handleRequestIsSuccess = ({
       previousData.current = {
         ...previousData.current,
         productName: data?.productInfo?.productName,
+        customerName: data?.customerBookingInfoModel?.customerName,
+        principal: data?.facilityDetailsModel?.principal,
+        investmentProduct:data?.facilityDetailsModel?.investmentProductName,
         description: data?.productInfo?.description,
         slogan: data?.productInfo?.slogan,
+        
         currency: data?.productInfo?.currency,
         prodType: data?.productType,
         state: data?.state,
@@ -155,10 +157,12 @@ export const handleRequestIsSuccess = ({
           interestComputationMethod: 2,
         },
       });
-     
     }
-    if (type === "individual_booking") {
-      setFormData(data);
+    if (
+      type === "individual_booking" &&
+      (!formData?.customerBookingInfoModel?.customerId || process !== "create")
+    ) {
+      setFormData({ ...data, id });
     }
   }
 };
@@ -405,7 +409,7 @@ export default function CreateTermDeposit() {
       requestData,
       requestIsSuccess,
       setProductData,
-      type: "investment"
+      type: "investment",
     });
   }, [requestIsSuccess]);
 

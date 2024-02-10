@@ -27,10 +27,20 @@ import { Messages } from "@app/constants/enums";
 import { checkDocuments } from "@app/utils/checkDocunent";
 import { convertToDays, convertDuration } from "@app/utils/convertToDays";
 import debounce from "lodash.debounce";
-export const onProceed = (data, proceed, formData, setFormData) => {
+export const onProceed = (
+  data,
+  proceed,
+  formData,
+  setFormData,
+  preModifyRequest
+) => {
+  preModifyRequest({
+    ...formData,
+    facilityDetailsModel: { ...formData.facilityDetailsModel, ...data },
+    isDraft: true,
+  });
   setFormData({
     ...formData,
-
     facilityDetailsModel: { ...formData.facilityDetailsModel, ...data },
   });
   proceed();
@@ -45,6 +55,7 @@ type FacilityDetailsProps = {
   productDetail?: any;
   setProductDetail?: (e) => void;
   detailLoading?: boolean;
+  preModifyRequest?: any;
 };
 
 export const handleInterestRateValues = ({
@@ -101,12 +112,6 @@ export const handleProductDetails = ({
   setProductDetail,
 }) => {
   if (productDetail) {
-    if (!values.tenorUnit) {
-      setValue(
-        "tenorUnit",
-        productDetail?.pricingConfiguration?.applicableTenorMinUnit
-      );
-    }
     if (
       productDetail?.pricingConfiguration?.applicableTenorMinUnit ===
       productDetail?.pricingConfiguration?.applicableTenorMaxUnit
@@ -211,6 +216,7 @@ export default function FacilityDetails({
   productDetail,
   setProductDetail,
   detailLoading,
+  preModifyRequest,
 }: FacilityDetailsProps) {
   const { currencies } = useContext(AppContext);
   const {
@@ -240,6 +246,7 @@ export default function FacilityDetails({
     CapitalizationOptions
   );
   const values = getValues();
+  console.log("🚀 ~ values:", values);
   const [
     getProduct,
     { data, isSuccess, isError, error, isLoading: searchLoading },
@@ -275,6 +282,13 @@ export default function FacilityDetails({
   useEffect(() => {
     handleProductDetails({ productDetail, values, setValue, setProductDetail });
   }, [productDetail, values.tenorUnit]);
+
+  useEffect(() => {
+    setValue(
+      "tenorUnit",
+      productDetail?.pricingConfiguration?.applicableTenorMinUnit
+    );
+  }, [productDetail]);
 
   useEffect(() => {
     if (!values.investmentProductId) {
@@ -359,7 +373,7 @@ export default function FacilityDetails({
     // Hanle booking options
     if (
       productDetail?.liquidation?.part_AllowPartLiquidation ||
-      productDetail?.liquidation?.early_AllowPartLiquidation
+      productDetail?.liquidation?.early_AllowEarlyLiquidation
     ) {
       setCapMethodOptions(CapitalizationOptions.filter((i) => i.value !== 0));
     } else {
@@ -385,7 +399,7 @@ export default function FacilityDetails({
       id="facilityDetails"
       data-testid="submit-button"
       onSubmit={handleSubmit((d) =>
-        onProceed(d, proceed, formData, setFormData)
+        onProceed(d, proceed, formData, setFormData, preModifyRequest)
       )}
     >
       {" "}
