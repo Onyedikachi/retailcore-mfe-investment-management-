@@ -52,7 +52,7 @@ export const investmentApi: any = createApi({
     getCustomerSearch: builder.query<any, any>({
       query: (params) => {
         return {
-          url: `${customerApi}/customer/search?search=${params}`,
+          url: `${customerApi}/customer/search?${new URLSearchParams(params)}`,
           method: "get",
         };
       },
