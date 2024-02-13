@@ -5,9 +5,11 @@ import { IGetProducts, ICreateProduct } from "./types/investmentApi.types";
 import urls from "../helpers/url_helpers";
 import { cleanObject } from "@app/utils/cleanObject";
 
-const formApi ="https://customer-management-forms-api.qa.bepeerless.co/v1"
-const customerApi = "https://customer-management-api.qa.bepeerless.co/v1"
-const productApi = "https://product-mgt-api.qa.bepeerless.co/v1"
+const formApi =
+  "https://customer-management-forms-api.qa.bepeerless.co/v1";
+const customerApi = "https://customer-management-api.qa.bepeerless.co/v1";
+const productApi = "https://product-mgt-api.qa.bepeerless.co/v1";
+
 export const investmentApi: any = createApi({
   reducerPath: "investmentApi",
   baseQuery: axiosBaseQuery({ serviceKey: "investment" }),
@@ -50,7 +52,7 @@ export const investmentApi: any = createApi({
     getCustomerSearch: builder.query<any, any>({
       query: (params) => {
         return {
-          url: `${customerApi}/customer/search?search=${params}`,
+          url: `${customerApi}/customer/search?${new URLSearchParams(params)}`,
           method: "get",
         };
       },
@@ -429,7 +431,7 @@ export const investmentApi: any = createApi({
         };
       },
     }),
-    
+
     getInvestmentStats: builder.query<any, any>({
       query: (data) => {
         if (!data.filter_by) return;
@@ -515,7 +517,7 @@ export const investmentApi: any = createApi({
         return {
           url: `${urls.INVESTMENT}/early-liquidate`,
           method: "put",
-          body: data
+          body: data,
         };
       },
     }),
@@ -524,7 +526,7 @@ export const investmentApi: any = createApi({
         return {
           url: `${urls.INVESTMENT}/part-liquidate`,
           method: "put",
-          body: data
+          body: data,
         };
       },
     }),
@@ -533,18 +535,17 @@ export const investmentApi: any = createApi({
         return {
           url: `${urls.INVESTMENT}/liquidation-amount`,
           method: "post",
-          body: data
+          body: data,
         };
       },
     }),
-  
 
     editEarlyLiquidate: builder.mutation<{ id: string }, { id: string }>({
       query: (data) => {
         return {
           url: `${urls.INVESTMENT_REQUEST}/edit-earlyliquidation/${data?.id}`,
           method: "put",
-          body: data
+          body: data,
         };
       },
     }),
@@ -553,12 +554,10 @@ export const investmentApi: any = createApi({
         return {
           url: `${urls.INVESTMENT_REQUEST}/edit-partliquidation/${data.id}`,
           method: "put",
-          body: data
+          body: data,
         };
       },
     }),
-
-
   }),
 });
 
