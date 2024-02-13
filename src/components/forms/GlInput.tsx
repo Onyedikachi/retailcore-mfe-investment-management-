@@ -3,6 +3,7 @@ import OutsideClickHandler from "react-outside-click-handler";
 import { FaSearch } from "react-icons/fa";
 import { tabLinks } from "@app/constants";
 import { useGetGlClassQuery, useGetLedgersQuery } from "@app/api";
+import { onChange } from "./DateSelect";
 
 export function closeDropdown(setIsOpen) {
   setIsOpen(false);
@@ -51,6 +52,10 @@ export default function EntriesAndEventsSearchResults({
       key: "InterestExpenseAccount",
     },
   ];
+
+  useEffect(() => {
+    console.log(query)
+  }, [query])
 
   useEffect(() => {
     if (isSuccess) {

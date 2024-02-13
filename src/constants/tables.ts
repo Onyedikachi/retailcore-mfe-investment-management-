@@ -1288,7 +1288,7 @@ export const ButtonOptions = [
         title: "Treasury Bill",
         key: "treasury-bill",
         isUrl: true,
-        url: "#",
+        url: "/product-factory/investment/treasury-bill/create",
         permission: "CREATE_INVESTMENT_PRODUCT",
       },
       {
