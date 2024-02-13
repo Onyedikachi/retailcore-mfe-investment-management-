@@ -27,7 +27,7 @@ export const onProceed = (
   preCreateInvestment,
   preModifyRequest
 ) => {
-  console.log("🚀 ~ formData:", formData)
+  console.log("🚀 ~ formData:", formData);
   if (formData?.id) {
     preModifyRequest({
       ...formData,
@@ -93,7 +93,7 @@ export default function CustomerInformation({
   });
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(null);
   const [customerData, setCustomerData] = useState(null);
   const [accountNumber, setAccountNumber] = useState(null);
   const [customersData, setCustomersData] = useState([]);
@@ -111,7 +111,7 @@ export default function CustomerInformation({
     isError,
     error,
     isLoading: searchLoading,
-  } = useGetCustomerSearchQuery(query, { skip: !query.length });
+  } = useGetCustomerSearchQuery(query, { skip: query?.search?.length < 10 || !query });
 
   const {
     data: profileData,
@@ -259,7 +259,10 @@ export default function CustomerInformation({
   useEffect(() => {
     if (formData?.customerBookingInfoModel.customerAccount) {
       setAccountNumber(formData?.customerBookingInfoModel.customerAccount);
-      setQuery(formData?.customerBookingInfoModel.customerAccount);
+      setQuery({
+        search: formData?.customerBookingInfoModel.customerAccount,
+        isAccountNumber: true,
+      });
     }
   }, [formData?.customerBookingInfoModel.customerAccount]);
   return (
@@ -288,7 +291,10 @@ export default function CustomerInformation({
             <div className="flex gap-[15px] items-end">
               <div className="w-[360px]">
                 <SearchInput
-                  setSearchTerm={debounce((e) => setQuery(e), 800)}
+                  setSearchTerm={debounce((e) =>  setQuery({
+                    search: e,
+                    isAccountNumber: true,
+                  }), 800)}
                   searchResults={customersData}
                   setSearchResults={() => {}}
                   searchLoading={searchLoading}
@@ -299,7 +305,7 @@ export default function CustomerInformation({
                   customClass="shadow-none"
                   hideBorder
                   defaultValue={accountNumber}
-                  inputType="search"
+                  inputType="number"
                 />
               </div>
               {accountBalance && (
