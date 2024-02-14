@@ -122,12 +122,12 @@ export const handleClick = (
     }
 };
 
-export function onProceed(proceed) {
-    // setFormData({ data: d, mapOptions });
-    proceed();
-}
 
 export default ({ proceed, formData, setFormData, setDisabled, initiateDraft }) => {
+    function onProceed(values, mapOptions) {
+        // setFormData(values);
+        proceed();
+    }
 
     const [mapOptions, setMapOptions] = useState([]);
     const [clearFields, setClearField] = useState(false);
@@ -146,29 +146,7 @@ export default ({ proceed, formData, setFormData, setDisabled, initiateDraft }) 
         formState: { errors, isValid },
     } = useForm({
         // resolver: yupResolver(treasuryBillglMappingSchema),
-        defaultValues: {
-            TermDepositLiabilityLedger: "",
-            InterestAccrualLedger: "",
-            InterestExpenseLedger: "",
-            events: {
-                principalDeposit: {
-                    charges: ["a", "b"],
-                    taxes: ["c", "f"]
-                },
-                partLiquidation: {
-                    charges: ["a", "d"],
-                    taxes: ["c", "a"]
-                },
-                earlyLiquidation: {
-                    charges: ["a", "b"],
-                    taxes: ["c", "f"]
-                },
-                maturityLiquidation: {
-                    charges: ["a", "b"],
-                    taxes: ["c", "f"]
-                },
-            }
-        },
+        defaultValues: formData,
         mode: "all",
         // values,
     });
@@ -205,7 +183,9 @@ export default ({ proceed, formData, setFormData, setDisabled, initiateDraft }) 
     }, [setValue, formData]);
 
     return (
-        <div>
+        <form id="productmapping"
+            data-testid="submit-button"
+            onSubmit={handleSubmit((d) => onProceed(proceed, values))}>
             <div className="mb-12">
                 <div
                     style={{
@@ -216,7 +196,7 @@ export default ({ proceed, formData, setFormData, setDisabled, initiateDraft }) 
                 >
                     <div onClick={() => setActiveTab(1)} className="border-b border-[#E6E9ED] flex justify-between items-center px-6 py-[14px]">
                         <span className="text-[18px] flex  gap-[1px] text-[#636363] font-semibold flex-row items-center">
-                            <Icon icon="ph:caret-right-fill" className={`text-danger-500 text-sm mr-4 ${activeTab === 1 && "rotate-90"}`}/>
+                            <Icon icon="ph:caret-right-fill" className={`text-danger-500 text-sm mr-4 ${activeTab === 1 && "rotate-90"}`} />
                             Product to GL Mapping <RedDot /> <span className="font-normal text-danger-500" >[Required Information Missing]</span>
                         </span>
                         <span
@@ -270,6 +250,6 @@ export default ({ proceed, formData, setFormData, setDisabled, initiateDraft }) 
             <ChargesAndTaxes {...{ activeTab, setActiveTab, values, setFormData, tab: 3, header: "Part Liquidation", event: "partLiquidation" }} />
             <ChargesAndTaxes {...{ activeTab, setActiveTab, values, setFormData, tab: 4, header: "Early Liquidation", event: "earlyLiquidation" }} />
             <ChargesAndTaxes {...{ activeTab, setActiveTab, values, setFormData, tab: 5, header: "Maturity Liquidation", event: "maturityLiquidation" }} />
-        </div>
+        </form>
     )
 }

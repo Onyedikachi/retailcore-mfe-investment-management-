@@ -7,5 +7,5 @@ export const paths = {
   CREATE_PRODUCT: "/product-factory/investment/:type/:process",
   TERM_DEPOSIT_SUMMARY: "/product-factory/investment/:type/process-summary/:process/:id",
   BOOKING_SUMMARY: "/product-factory/investment/management/:type/process-summary/:process/:id",
-  CREATE_TREASURY_BILL: "/product-factory/investment/treasury-bill/create"
+  CREATE_TREASURY_BILL: "/product-factory/investment/treasury-bill/:process"
 };

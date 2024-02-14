@@ -10,8 +10,11 @@ import {
 import { currencyFormatter } from "@app/utils/formatCurrency";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 import { AppContext } from "@app/utils";
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 export function DebitCreditTable({ dataTab }) {
+  useEffect(() => console.log(dataTab), [dataTab])
+  const location = useLocation();
   const headers = [
     {
       title: "S|N",
@@ -28,11 +31,17 @@ export function DebitCreditTable({ dataTab }) {
     },
   ];
 
-  const accountTypes = [
-    "Term deposit account",
-    "Interest accural account",
-    "Interest expense account",
-  ];
+  const accountTypes = location.pathname.split("/").includes("treasury-bill") ?
+    [
+      "Term deposit account",
+      "Interest income",
+      "Interest expense",
+    ] :
+    [
+      "Term deposit account",
+      "Interest accural account",
+      "Interest expense account",
+    ]
 
   return (
     <table className="w-full">
@@ -81,7 +90,7 @@ export function DebitCreditTable({ dataTab }) {
     </table>
   );
 }
-export default function ProductDetail({ detail, previousData }: any) {
+export default function ProductDetail({ detail, previousData, type }: any) {
   const { currencies } = useContext(AppContext);
   const chargeArray = [
     {
@@ -109,7 +118,7 @@ export default function ProductDetail({ detail, previousData }: any) {
               <div className="w-full text-base font-normal text-[#636363]">
                 {previousData &&
                   previousData?.productName !==
-                    detail?.productInfo?.productName && (
+                  detail?.productInfo?.productName && (
                     <span className="block  line-through mb-2 text-[#aaa]">
                       {" "}
                       {previousData?.productName}
@@ -121,7 +130,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                   {previousData &&
                     previousData?.productName &&
                     previousData?.productName !==
-                      detail?.productInfo?.productName && (
+                    detail?.productInfo?.productName && (
                       <span className="block text-success-500 pl-[2px]">
                         {" "}
                         New
@@ -166,7 +175,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                 {previousData &&
                   previousData?.description &&
                   previousData?.description !==
-                    detail?.productInfo?.description && (
+                  detail?.productInfo?.description && (
                     <span className="block  line-through mb-2 text-[#aaa]">
                       {" "}
                       {previousData?.description}
@@ -178,7 +187,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                   {previousData &&
                     previousData?.description &&
                     previousData?.description !==
-                      detail?.productInfo?.description && (
+                    detail?.productInfo?.description && (
                       <span className="block text-success-500 pl-[2px]">
                         {" "}
                         New
@@ -197,16 +206,16 @@ export default function ProductDetail({ detail, previousData }: any) {
                   previousData?.currency !== detail?.productInfo?.currency && (
                     <span className="block  line-through mb-2 text-[#aaa]">
                       {" "}
-                      {handleCurrencyName(previousData?.currency,currencies)}
+                      {handleCurrencyName(previousData?.currency, currencies)}
                     </span>
                   )}
                 <span className="flex itmes-center">
                   {" "}
-                  {handleCurrencyName(detail?.productInfo?.currency,currencies)}{" "}
+                  {handleCurrencyName(detail?.productInfo?.currency, currencies)}{" "}
                   {previousData &&
                     previousData?.currency &&
                     previousData?.currency !==
-                      detail?.productInfo?.currency && (
+                    detail?.productInfo?.currency && (
                       <span className="block text-success-500 pl-[2px]">
                         {" "}
                         New
@@ -230,8 +239,8 @@ export default function ProductDetail({ detail, previousData }: any) {
                     -{" "}
                     {detail?.productInfo?.endDate
                       ? moment(detail?.productInfo?.endDate).format(
-                          "DD MMM YYYY"
-                        )
+                        "DD MMM YYYY"
+                      )
                       : "Unspecified"}
                   </span>
                 </span>
@@ -252,7 +261,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                 {previousData &&
                   previousData?.customerCategory &&
                   previousData?.customerCategory !==
-                    detail.customerEligibility?.customerCategory && (
+                  detail.customerEligibility?.customerCategory && (
                     <span className="block  line-through mb-2 text-[#aaa]">
                       {" "}
                       {CustomerCategory[previousData?.customerCategory]}
@@ -262,13 +271,13 @@ export default function ProductDetail({ detail, previousData }: any) {
                   {" "}
                   {
                     CustomerCategory[
-                      detail?.customerEligibility?.customerCategory
+                    detail?.customerEligibility?.customerCategory
                     ]
                   }{" "}
                   {previousData &&
                     previousData?.customerCategory &&
                     previousData?.customerCategory !==
-                      detail?.customerEligibility?.customerCategory && (
+                    detail?.customerEligibility?.customerCategory && (
                       <span className="block text-success-500 pl-[2px]">
                         {" "}
                         New
@@ -324,17 +333,15 @@ export default function ProductDetail({ detail, previousData }: any) {
               <div className="w-full text-base font-normal text-[#636363]">
                 <span className="block  mb-2 text-[#636363]">
                   <span className="font-normal block">
-                    {`${detail?.pricingConfiguration?.applicableTenorMin} ${
-                      Interval[
-                        detail?.pricingConfiguration?.applicableTenorMinUnit
-                      ]
-                    }`}{" "}
+                    {`${detail?.pricingConfiguration?.applicableTenorMin} ${Interval[
+                      detail?.pricingConfiguration?.applicableTenorMinUnit
+                    ]
+                      }`}{" "}
                     -{" "}
-                    {`${detail?.pricingConfiguration?.applicableTenorMax} ${
-                      Interval[
-                        detail?.pricingConfiguration?.applicableTenorMaxUnit
-                      ]
-                    }`}
+                    {`${detail?.pricingConfiguration?.applicableTenorMax} ${Interval[
+                      detail?.pricingConfiguration?.applicableTenorMaxUnit
+                    ]
+                      }`}
                   </span>
                 </span>
               </div>
@@ -347,13 +354,13 @@ export default function ProductDetail({ detail, previousData }: any) {
                 <span className="block  mb-2 text-[#636363]">
                   {currencyFormatter(
                     detail?.pricingConfiguration?.applicablePrincipalMin,
-                    handleCurrencyName(detail?.productInfo?.currency,currencies)
+                    handleCurrencyName(detail?.productInfo?.currency, currencies)
                   )}{" "}
                   {detail?.pricingConfiguration?.applicablePrincipalMax
                     ? `- ${currencyFormatter(
-                        detail?.pricingConfiguration?.applicablePrincipalMax,
-                        handleCurrencyName(detail?.productInfo?.currency,currencies)
-                      )}`
+                      detail?.pricingConfiguration?.applicablePrincipalMax,
+                      handleCurrencyName(detail?.productInfo?.currency, currencies)
+                    )}`
                     : "and above"}
                 </span>
               </div>
@@ -376,10 +383,10 @@ export default function ProductDetail({ detail, previousData }: any) {
                           principal between{" "}
                           {`${currencyFormatter(
                             configModel?.principalMin,
-                            handleCurrencyName(detail?.productInfo?.currency,currencies)
+                            handleCurrencyName(detail?.productInfo?.currency, currencies)
                           )} - ${currencyFormatter(
                             configModel?.principalMax,
-                            handleCurrencyName(detail?.productInfo?.currency,currencies)
+                            handleCurrencyName(detail?.productInfo?.currency, currencies)
                           )}`}{" "}
                           {/* {detail?.productInfo?.currency} */}
                         </span>
@@ -399,11 +406,9 @@ export default function ProductDetail({ detail, previousData }: any) {
                           {" "}
                           {`${configModel?.min} - ${configModel?.max}%`} for
                           tenor between{" "}
-                          {`${configModel?.tenorMin} ${
-                            Interval[configModel?.tenorMinUnit]
-                          } - ${configModel?.tenorMax} ${
-                            Interval[configModel?.tenorMaxUnit]
-                          }`}{" "}
+                          {`${configModel?.tenorMin} ${Interval[configModel?.tenorMinUnit]
+                            } - ${configModel?.tenorMax} ${Interval[configModel?.tenorMaxUnit]
+                            }`}{" "}
                         </span>
                       )
                     )}
@@ -435,15 +440,15 @@ export default function ProductDetail({ detail, previousData }: any) {
                   <span className="font-normal block">
                     {detail?.liquidation
                       ?.part_RequireNoticeBeforeLiquidation && (
-                      <span>
-                        <span>Require notice of</span>{" "}
-                        <span className="font-bold">
-                          {detail?.liquidation?.part_NoticePeriod}{" "}
-                          {Interval[detail?.liquidation?.part_NoticePeriodUnit]}
-                        </span>{" "}
-                        <span>before liquidation</span>
-                      </span>
-                    )}
+                        <span>
+                          <span>Require notice of</span>{" "}
+                          <span className="font-bold">
+                            {detail?.liquidation?.part_NoticePeriod}{" "}
+                            {Interval[detail?.liquidation?.part_NoticePeriodUnit]}
+                          </span>{" "}
+                          <span>before liquidation</span>
+                        </span>
+                      )}
                     {
                       <div className="font-normal">
                         <div className="flex gap-x-1">
@@ -453,7 +458,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                               detail?.liquidation?.part_LiquidationPenalty
                             ] == "none" &&
                               liquidities[
-                                detail?.liquidation?.part_LiquidationPenalty
+                              detail?.liquidation?.part_LiquidationPenalty
                               ]}
                           </span>
                           <span>
@@ -477,24 +482,24 @@ export default function ProductDetail({ detail, previousData }: any) {
                             {liquidities[
                               detail?.liquidation?.part_LiquidationPenalty
                             ] == "TakeCharge" && (
-                              <span>
-                                {" "}
                                 <span>
                                   {" "}
-                                  Take a charge{" "}
-                                  <span className="flex flex-wrap">
-                                    {detail?.liquidation?.part_SpecificCharges?.map(
-                                      (charge) => (
-                                        <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
-                                          {" "}
-                                          {charge?.name} {charge?.amount}
-                                        </span>
-                                      )
-                                    )}
+                                  <span>
+                                    {" "}
+                                    Take a charge{" "}
+                                    <span className="flex flex-wrap">
+                                      {detail?.liquidation?.part_SpecificCharges?.map(
+                                        (charge) => (
+                                          <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
+                                            {" "}
+                                            {charge?.name} {charge?.amount}
+                                          </span>
+                                        )
+                                      )}
+                                    </span>
                                   </span>
                                 </span>
-                              </span>
-                            )}
+                              )}
                           </span>
                         </div>
                       </div>
@@ -516,19 +521,19 @@ export default function ProductDetail({ detail, previousData }: any) {
                   <span className="font-normal block">
                     {detail?.liquidation
                       ?.early_RequireNoticeBeforeLiquidation && (
-                      <span>
-                        <span>Require notice of</span>{" "}
-                        <span className="font-bold">
-                          {detail?.liquidation?.early_NoticePeriod}{" "}
-                          {
-                            Interval[
+                        <span>
+                          <span>Require notice of</span>{" "}
+                          <span className="font-bold">
+                            {detail?.liquidation?.early_NoticePeriod}{" "}
+                            {
+                              Interval[
                               detail?.liquidation?.early_NoticePeriodUnit
-                            ]
-                          }
-                        </span>{" "}
-                        <span>before liquidation</span>
-                      </span>
-                    )}
+                              ]
+                            }
+                          </span>{" "}
+                          <span>before liquidation</span>
+                        </span>
+                      )}
                     {
                       <div className="font-normal flex gap-x-1">
                         <span className="font-bold">Penalty:</span>{" "}
@@ -537,7 +542,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                             detail?.liquidation?.early_LiquidationPenalty
                           ] == "none" &&
                             liquidities[
-                              detail?.liquidation?.early_LiquidationPenalty
+                            detail?.liquidation?.early_LiquidationPenalty
                             ]}
                         </span>
                         <span>
@@ -561,24 +566,24 @@ export default function ProductDetail({ detail, previousData }: any) {
                           {liquidities[
                             detail?.liquidation?.early_LiquidationPenalty
                           ] == "TakeCharge" && (
-                            <span>
-                              {" "}
                               <span>
                                 {" "}
-                                Take a charge{" "}
-                                <span className="flex flex-wrap">
-                                  {detail?.liquidation?.part_SpecificCharges?.map(
-                                    (charge) => (
-                                      <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
-                                        {" "}
-                                        {charge?.name} {charge?.amount}
-                                      </span>
-                                    )
-                                  )}
+                                <span>
+                                  {" "}
+                                  Take a charge{" "}
+                                  <span className="flex flex-wrap">
+                                    {detail?.liquidation?.part_SpecificCharges?.map(
+                                      (charge) => (
+                                        <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
+                                          {" "}
+                                          {charge?.name} {charge?.amount}
+                                        </span>
+                                      )
+                                    )}
+                                  </span>
                                 </span>
                               </span>
-                            </span>
-                          )}
+                            )}
                         </span>
                       </div>
                     }
