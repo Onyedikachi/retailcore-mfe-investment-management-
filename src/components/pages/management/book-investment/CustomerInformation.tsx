@@ -294,7 +294,7 @@ export default function CustomerInformation({
                   setSearchTerm={debounce((e) =>  setQuery({
                     search: e,
                     isAccountNumber: true,
-                  }), 800)}
+                  }), 500)}
                   searchResults={customersData}
                   setSearchResults={() => {}}
                   searchLoading={searchLoading}
