@@ -315,7 +315,12 @@ export default function TransactionSettings({
                       defaultValue={
                         formData?.transactionSettingModel?.rollOverOption
                       }
-                      options={RollOverOptions}
+                      options={
+                        formData?.facilityDetailsModel?.capitalizationMethod ==
+                        2
+                          ? RollOverOptions
+                          : RollOverOptions.filter((i) => i.value === 0)
+                      }
                       errors={errors}
                       setValue={setValue}
                       trigger={trigger}

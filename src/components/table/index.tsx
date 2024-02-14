@@ -109,11 +109,10 @@ export const statusHandler = ({
   role,
   detail,
 }) => {
-  
   setSuccessText("");
   setIsSuccessOpen(false);
   setSubText("");
-  setFailed(false)
+  setFailed(false);
   if (modifyRequestSuccess) {
     setSuccessText(Messages.BOOKING_WITHDRAW_SUCCESS);
     setSubText(Messages.BOOKING_WITHDRAW_SUCCESS_SUB);
@@ -242,23 +241,38 @@ export const statusHandler = ({
   }
 };
 
-export function handleUpdated(key, value, options) {
+export function handleUpdated(key, value, options, item, currencies) {
+  let message = "";
   if (!options || !value) return;
 
   const parseOptions = JSON.parse(options);
   if (!parseOptions || !parseOptions[key]) return;
 
   if (key === "state") {
-    // const newState = ActiveFilterOptions.find(
-    //   (n) => parseOptions[key] === n.value
-    // )?.name;
-
     if (parseOptions[key] === value) return null;
   }
+  if (
+    key === "updated_At" &&
+    (parseOptions?.partLiquidation || parseOptions?.earlyLiquidation)
+  ) {
+  
+    if (parseOptions?.partLiquidation) {
+      message = `Part liquidation of ${currencyFormatter(
+        parseOptions?.partLiquidation,
+        handleCurrencyName(item.currency, currencies)
+      )}`;
+    }
+    if (parseOptions?.earlyLiquidation) {
+      message = `Early liquidation of ${currencyFormatter(
+        parseOptions?.earlyLiquidation,
+        handleCurrencyName(item.currency, currencies)
+      )}`;
+    }
+  }
   return value !== parseOptions[key]
-    ? `Updated on ${moment(parseOptions[key]?.date).format(
+    ? (message || `Updated on ${moment(parseOptions[key]?.date).format(
         "DD MMM YYYY, hh:mm A"
-      )}`
+      )}`)
     : null;
 }
 
@@ -303,7 +317,7 @@ export const handleProductsDropdown = (
           i.text.toLowerCase() !== "activate"
       );
     }
-  
+
     if (!permissions?.includes("LIQUIDATE_INVESTMENT")) {
       options = options?.filter(
         (i: any) =>
@@ -347,7 +361,6 @@ export const handleProductsDropdown = (
 };
 
 export const TextCellContent = ({ value }: { value: any }) => {
-  const { currencies } = useContext(AppContext);
   return (
     <span className="relative">
       <span className="relative max-w-[290px] whitespace-normal">
@@ -442,7 +455,9 @@ export default function TableComponent<TableProps>({
   handleRefresh = () => {},
   isOverviewDrillDown = false,
 }) {
-  const { role, permissions, userId, isChecker } = useContext(AppContext);
+  const { role, permissions, userId, isChecker, currencies } =
+    useContext(AppContext);
+
   const {
     specificCategory,
     category,
@@ -742,7 +757,6 @@ export default function TableComponent<TableProps>({
                               }
                               options={options}
                               getOptions={(e: any) => {
-                       
                                 getOptionData(e, label);
                               }}
                             >
@@ -777,7 +791,7 @@ export default function TableComponent<TableProps>({
                         className="text-base font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative"
                         key={idx.toString() + header.key}
                       >
-                        <div className="relative">
+                        <div className="relative max-w-max">
                           {header.key !== "actions" ? (
                             <>
                               {typeof item[header.key] !== "object" &&
@@ -887,7 +901,9 @@ export default function TableComponent<TableProps>({
                           {handleUpdated(
                             header.key,
                             item[header.key],
-                            item.recentlyUpdatedMeta
+                            item.recentlyUpdatedMeta,
+                            item,
+                            currencies
                           ) && (
                             <Tooltip
                               size="small"
@@ -900,14 +916,14 @@ export default function TableComponent<TableProps>({
                                   {handleUpdated(
                                     header.key,
                                     item[header.key],
-                                    item.recentlyUpdatedMeta
+                                    item.recentlyUpdatedMeta,
+                                    item,
+                                    currencies
                                   )}
                                 </div>
                               }
                             >
-                              <div className="h-[10px] w-[10px] flex items-center justify-center cursor-pointer">
-                                <span className="absolute h-[6px] w-[6px] -right-[6px] top-[1px] rounded-full bg-[#CF2A2A]"></span>
-                              </div>
+                              <span className="absolute h-[6px] w-[6px] -right-[6px] top-[1px] rounded-full bg-[#CF2A2A]"></span>
                             </Tooltip>
                           )}{" "}
                         </div>
