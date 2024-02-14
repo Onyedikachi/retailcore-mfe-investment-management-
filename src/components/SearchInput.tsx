@@ -224,7 +224,7 @@ export default function SearchInput({
             type={inputType}
             data-testid="search"
             placeholder={placeholder}
-            className={`bg-transparent peer placeholder:text-base h-8 py-2 pl-1 pr-4 placeholder:text-[#AAAAAA] outline-none  ${
+            className={`bg-transparent peer placeholder:text-base h-8 py-2 pl-1 pr-4 placeholder:text-[#AAAAAA] outline-none appearance-none ${
               isTruncated
                 ? "text-transparent group-hover:text-[#48535B] focus:text-[#48535B] hover:appearance-none"
                 : "text-[#48535B]"

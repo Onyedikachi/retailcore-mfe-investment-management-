@@ -111,7 +111,7 @@ export default function CustomerInformation({
     isError,
     error,
     isLoading: searchLoading,
-  } = useGetCustomerSearchQuery(query, { skip: query?.search?.length < 10 || !query });
+  } = useGetCustomerSearchQuery(query, { skip: query?.search?.length !== 10 || !query });
 
   const {
     data: profileData,
