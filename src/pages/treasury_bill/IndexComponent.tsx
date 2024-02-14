@@ -292,13 +292,15 @@ import { handleDraft } from "../investment/term-deposit/create-term-deposit/hand
       },
       productGlMappings: [],
       interestComputationMethod: 2,
-      TermDepositLiabilityAccount: "",
-      InterestAccrualAccount: "",
-      InterestExpenseAccount: "",
+      TermDepositLiabilityLedger: "",
+      InterestAccrualLedger: "",
+      InterestExpenseLedger: "",
       isDraft: false,
       productType: 0,
     });
-  
+ 
+    // useEffect(() => console.log(values), [FormData])
+
     const [isDisabled, setDisabled] = useState<boolean>(true);
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
     const [draftText] = useState({

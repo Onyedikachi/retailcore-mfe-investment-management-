@@ -1,14 +1,18 @@
 import { Checkbox, RedDot } from "@app/components/forms"
 import { GlInput } from "@app/components/forms";
-import { glMappingSchema } from "@app/constants";
+import { glMappingSchema, treasuryBillglMappingSchema } from "@app/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { useEffect, useState } from "react";
-import { FaSearch } from "react-icons/fa";
-import OutsideClickHandler from "react-outside-click-handler";
+import { FaArrowLeft, FaCaretLeft, FaCaretRight, FaRegCaretSquareRight, FaSearch } from "react-icons/fa";
 import MultiSelectForm from "@app/components/forms/MultiSelectForm";
 import MultiSelectForm2 from "@app/components/forms/MultiSelectForm2";
+import MultiSelect from "./MultiSelect";
+import AddedChargeList from "./AddedChargeList";
+import AddedTaxesList from "./AddedTaxesList";
+import ChargesAndTaxes from "./ChargesAndTaxes";
+import { Icon } from "@iconify/react";
 
 const GlMappingOptions = [
     {
@@ -27,7 +31,6 @@ const GlMappingOptions = [
         key: "InterestExpenseLedger",
     },
 ];
-
 
 export const handleClear = (
     setClearField,
@@ -128,7 +131,7 @@ export default ({ proceed, formData, setFormData, setDisabled, initiateDraft }) 
 
     const [mapOptions, setMapOptions] = useState([]);
     const [clearFields, setClearField] = useState(false);
-    const [listOpen, setListOpen] = useState(false);
+    const [activeTab, setActiveTab] = useState(1);
 
     const {
         register,
@@ -142,17 +145,37 @@ export default ({ proceed, formData, setFormData, setDisabled, initiateDraft }) 
         getValues,
         formState: { errors, isValid },
     } = useForm({
-        resolver: yupResolver(glMappingSchema),
+        // resolver: yupResolver(treasuryBillglMappingSchema),
         defaultValues: {
-            TermDepositLiabilityAccount: "",
-            InterestAccrualAccount: "",
-            InterestExpenseAccount: "",
+            TermDepositLiabilityLedger: "",
+            InterestAccrualLedger: "",
+            InterestExpenseLedger: "",
+            events: {
+                principalDeposit: {
+                    charges: ["a", "b"],
+                    taxes: ["c", "f"]
+                },
+                partLiquidation: {
+                    charges: ["a", "d"],
+                    taxes: ["c", "a"]
+                },
+                earlyLiquidation: {
+                    charges: ["a", "b"],
+                    taxes: ["c", "f"]
+                },
+                maturityLiquidation: {
+                    charges: ["a", "b"],
+                    taxes: ["c", "f"]
+                },
+            }
         },
         mode: "all",
         // values,
     });
 
     const values = getValues();
+
+    useEffect(() => console.log(values), [values]);
 
     useEffect(() => {
         setFormData({ data: formData, mapOptions });
@@ -191,8 +214,9 @@ export default ({ proceed, formData, setFormData, setDisabled, initiateDraft }) 
                     }}
                     className="bg-[#fff] border border-[#E6E9ED] rounded-[6px]"
                 >
-                    <div className="border-b border-[#E6E9ED] flex justify-between items-center px-6 py-[14px]">
-                        <span className="text-[18px] flex  gap-[1px] text-[#636363] font-semibold">
+                    <div onClick={() => setActiveTab(1)} className="border-b border-[#E6E9ED] flex justify-between items-center px-6 py-[14px]">
+                        <span className="text-[18px] flex  gap-[1px] text-[#636363] font-semibold flex-row items-center">
+                            <Icon icon="ph:caret-right-fill" className={`text-danger-500 text-sm mr-4 ${activeTab === 1 && "rotate-90"}`}/>
                             Product to GL Mapping <RedDot /> <span className="font-normal text-danger-500" >[Required Information Missing]</span>
                         </span>
                         <span
@@ -202,104 +226,50 @@ export default ({ proceed, formData, setFormData, setDisabled, initiateDraft }) 
                             Clear all entries
                         </span>
                     </div>
-                    <div className="flex flex-col gap-4 px-[30px] py-5">
-                        <div className="flex flex-col items-start gap-y-5">
-                            {GlMappingOptions.map((type) => (
-                                <InputDivs key={type.text} label={type.text}>
-                                    <div>
-                                        <div className="w-[360px] relative">
-                                            <div className=" ">
-                                                <GlInput
-                                                    handleClick={(key, submenu) =>
-                                                        handleClick(
-                                                            key,
-                                                            submenu,
-                                                            setValue,
-                                                            mapOptions,
-                                                            setMapOptions,
-                                                            GlMappingOptions
-                                                        )
-                                                    }
-                                                    inputName={type.key}
-                                                    defaultValue={
-                                                        mapOptions.find((i) => i?.glAccountType === type.id)?.accountName
-                                                    }
-                                                    register={register}
-                                                    trigger={trigger}
-                                                    errors={errors}
-                                                    clearFields={clearFields}
-                                                />
+                    {
+                        activeTab === 1 &&
+                        <div className="flex flex-col gap-4 px-[30px] py-5">
+                            <div className="flex flex-col items-start gap-y-5">
+                                {GlMappingOptions.map((type) => (
+                                    <InputDivs key={type.text} label={type.text}>
+                                        <div>
+                                            <div className="w-[360px] relative">
+                                                <div className=" ">
+                                                    <GlInput
+                                                        handleClick={(key, submenu) =>
+                                                            handleClick(
+                                                                key,
+                                                                submenu,
+                                                                setValue,
+                                                                mapOptions,
+                                                                setMapOptions,
+                                                                GlMappingOptions
+                                                            )
+                                                        }
+                                                        inputName={type.key}
+                                                        defaultValue={
+                                                            mapOptions.find((i) => i?.glAccountType === type.id)?.accountName
+                                                        }
+                                                        register={register}
+                                                        trigger={trigger}
+                                                        errors={errors}
+                                                        clearFields={clearFields}
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </InputDivs>
-                            ))}
+                                    </InputDivs>
+                                ))}
+                            </div>
                         </div>
-                    </div>
+                    }
                 </div>
             </div>
 
-            <div className=" ">
-                <div
-                    style={{
-                        boxShadow:
-                            "0px 0px 1px 0px rgba(26, 32, 36, 0.32), 0px 1px 2px 0px rgba(91, 104, 113, 0.32)",
-                    }}
-                    className="bg-[#fff] border border-[#E6E9ED] rounded-[6px]"
-                >
-                    <div className="border-b border-[#E6E9ED] flex justify-between items-center px-6 py-[14px]">
-                        <span className="text-[18px] flex  gap-[1px] text-[#636363] font-semibold">
-                            Principal Deposits Charges & Taxes
-                        </span>
-                    </div>
-                    <div className="flex flex-col gap-4 px-[30px] py-5">
-                        <div className="relative bg-[#fff] w-full">
-                            <div className="flex flex-row w-full items-center">
-                                <span className="w-[300px] relative">Applicable Charge(s)</span>
-                                <div className="relative w-[360px]">
-                                    <div
-                                        data-testid="open-button"
-                                        className="flex items-center border-b border-[#8F8F8F]"
-                                        onClick={() => setListOpen(true)}
-                                    >
-                                        <span className="w-8 h-8 flex items-center justify-center">
-                                            <FaSearch className="text-[#48535B] text-lg" />
-                                        </span>{" "}
-                                        <input
-                                            data-testid="gli-input"
-                                            className="w-full  ring-0 outline-none bg-transparent"
-                                            value={""}
-                                        />
-                                    </div>
-                                    {
-                                        listOpen &&
-                                        <OutsideClickHandler onOutsideClick={() => setListOpen(false)}>
-                                            <div className="flex flex-col shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] w-full min-w-[360px] overflow-hidden p-4 rounded-b-lg top-[35px] h-[300px] bg-white z-[400] absolute">
-                                                <div className="h-[90%] overflow-y-scroll mb-1" >
-                                                    <div className="flex flex-col">
-                                                        {
-                                                            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,1, 2, 3, 4, 5, 6, 7, 8, 9]
-                                                                .map((index) =>
-                                                                    <div key={index} className="flex flex-row items-center mb-2">
-                                                                        <Checkbox label={`${index}`} checked={true} />
-                                                                        <span className="text-blue-500 text-sm underline ml-4">[View/Modify]</span>
-                                                                    </div>)
-                                                        }
-                                                    </div>
-                                                </div>
-                                                <div className="flex flex-row-reverse">
-                                                    <span className="text-danger-500 text-sm underline">Add selected charge(s)</span>
-                                                </div>
-                                            </div>
-                                        </OutsideClickHandler>
-                                    }
-                                </div>
-                                <span className="ml-12 text-danger-500 underline">Create new charge</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <ChargesAndTaxes {...{ activeTab, setActiveTab, values, setFormData, tab: 2, header: "Principal Deposit", event: "principalDeposit" }} />
+            <ChargesAndTaxes {...{ activeTab, setActiveTab, values, setFormData, tab: 3, header: "Part Liquidation", event: "partLiquidation" }} />
+            <ChargesAndTaxes {...{ activeTab, setActiveTab, values, setFormData, tab: 4, header: "Early Liquidation", event: "earlyLiquidation" }} />
+            <ChargesAndTaxes {...{ activeTab, setActiveTab, values, setFormData, tab: 5, header: "Maturity Liquidation", event: "maturityLiquidation" }} />
         </div>
     )
 }
