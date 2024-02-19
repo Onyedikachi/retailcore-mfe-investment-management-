@@ -36,7 +36,7 @@ export default ({ selectedTaxes, setFormData, values, event }) => {
                             </div>
                             <div className="p-4 pl-0 w-[25%]">
                                 <span className="pl-4">
-                                    {Math.floor(Math.random()*15)}%
+                                    16%
                                 </span>
                             </div>
                             <div className="w-[15%] flex flex-row justify-between">
