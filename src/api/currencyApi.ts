@@ -3,9 +3,9 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { REHYDRATE } from "redux-persist";
 import { cleanObject } from "@app/utils/cleanObject";
 
-export const accountApi: any = createApi({
-  reducerPath: "accountApi",
-  baseQuery: axiosBaseQuery({ serviceKey: "accounting" }),
+export const currencyApi: any = createApi({
+  reducerPath: "currencyApi",
+  baseQuery: axiosBaseQuery({ serviceKey: "currency" }),
   keepUnusedDataFor: 0,
   extractRehydrationInfo(action, { reducerPath }) {
     if (action.type === REHYDRATE && action.payload) {
@@ -14,27 +14,24 @@ export const accountApi: any = createApi({
   },
   tagTypes: ["Get Ledgers"],
   endpoints: (builder) => ({
-    getGlClass: builder.query<any, any>({
+    getDefaultCurrency: builder.query<any, any>({
       query: () => {
         return {
-          url: "accounting/glclass",
+          url: "currency/default-currency",
           method: "get",
         };
       },
     }),
-    getLedgers: builder.query<any, any>({
+
+    getCurrencies: builder.query<any, any>({
       query: (data) => {
         return {
-          url: `accounting/gl/leaf-ledgers/?${new URLSearchParams(
-            cleanObject(data)
-          )}`,
+          url: `currency?${new URLSearchParams(cleanObject(data))}`,
           method: "get",
         };
       },
     }),
-
   }),
-
 });
 
-export const { useGetLedgersQuery, useGetGlClassQuery } = accountApi;
+export const { useGetCurrenciesQuery, useGetDefaultCurrencyQuery } = currencyApi;

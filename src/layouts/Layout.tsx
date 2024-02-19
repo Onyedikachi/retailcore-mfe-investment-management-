@@ -3,7 +3,7 @@ import { useState, useMemo, useEffect, useRef } from "react";
 import AuthGuard from "./AuthGuard";
 import { AppContext } from "@app/utils/context";
 import { auth$ } from "@Sterling/shared";
-import { useGetCurrenciesQuery } from "@app/api";
+import { useGetCurrenciesQuery, useGetDefaultCurrencyQuery } from "@app/api";
 import {
   RequiredInvestmentPermissions,
   RequiredInvestmentProductPermissions,
@@ -35,7 +35,6 @@ export const checkPermissions = ({
   const canProceedInvestment =
     userPermissions &&
     userPermissions.length &&
-
     RequiredInvestmentPermissions.some((item) =>
       userPermissions.includes(item)
     );
@@ -67,6 +66,7 @@ const Layout = () => {
   const [role, setRole] = useState("default");
   const [isChecker, setIsChecker] = useState(false);
   const [currencies, setCurrencies] = useState<any[]>([]);
+  const [defaultCurrency, setDefaultCurrency] = useState<any>("");
 
   const userId = useRef(null);
   const value = useMemo(
@@ -75,6 +75,7 @@ const Layout = () => {
       setRole,
       permissions,
       currencies,
+      defaultCurrency,
       setCurrencies,
       userId: userId.current,
       isChecker,
@@ -86,6 +87,7 @@ const Layout = () => {
       setRole,
       permissions,
       currencies,
+      defaultCurrency,
       setCurrencies,
       userId.current,
       isChecker,
@@ -97,11 +99,10 @@ const Layout = () => {
       checkPermissions({ value, setRole, setPermissions, userId, handleRole });
     });
   }, []);
-  const {
-    data: currencyData,
-    isLoading: currencyLoading,
-    isSuccess: currencyIsSuccess,
-  } = useGetCurrenciesQuery({ page_size: 1000 });
+  const { data: currencyData, isSuccess: currencyIsSuccess } =
+    useGetCurrenciesQuery({ page_size: 1000 });
+  const { data: defaultCurrencyData, isSuccess: defaultCurrencyIsSuccess } =
+    useGetDefaultCurrencyQuery();
 
   useEffect(() => {
     if (currencyIsSuccess) {
@@ -115,7 +116,11 @@ const Layout = () => {
         })
       );
     }
-  }, [currencyIsSuccess]);
+
+    if (defaultCurrencyIsSuccess) {
+      setDefaultCurrency(defaultCurrencyData?.data);
+    }
+  }, [currencyIsSuccess, defaultCurrencyIsSuccess]);
 
   return (
     <div data-testid="outlet">
