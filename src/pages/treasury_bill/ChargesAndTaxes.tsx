@@ -3,7 +3,7 @@ import AddedChargeList from "./AddedChargeList"
 import AddedTaxesList from "./AddedTaxesList"
 import MultiSelect from "./MultiSelect"
 
-export default ({setActiveTab, activeTab, tab, values, event, setFormData, header }) => {
+export default ({ setActiveTab, activeTab, tab, values, event, setFormData, header }) => {
     return (
         <div className="mb-6">
             <div
@@ -15,7 +15,7 @@ export default ({setActiveTab, activeTab, tab, values, event, setFormData, heade
             >
                 <div onClick={() => setActiveTab(tab)} className="border-b border-[#E6E9ED] flex justify-between items-center px-6 py-[14px]">
                     <span className="text-[18px] flex  gap-[1px] text-[#636363] font-semibold flex-row items-center">
-                        <Icon icon="ph:caret-right-fill" className={`text-danger-500 text-sm mr-4 ${activeTab === tab && "rotate-90"}`}/>
+                        <Icon icon="ph:caret-right-fill" className={`text-danger-500 text-sm mr-4 ${activeTab === tab && "rotate-90"}`} />
                         {header} Charges & Taxes
                     </span>
                 </div>
@@ -29,15 +29,15 @@ export default ({setActiveTab, activeTab, tab, values, event, setFormData, heade
                                 <div className="w-full flex flex-col">
                                     <div className="flex flex-row">
                                         <MultiSelect
-                                            addedOptions={values.events[event].charges}
+                                            addedOptions={values?.events[event].charges}
                                             setFormData={setFormData}
                                             values={values}
                                             event={event} type={"charges"} />
                                         <span className="ml-12 text-danger-500 underline">Create new charge</span>
                                     </div>
                                     {
-                                        values.events[event].charges.length > 0 &&
-                                        <AddedChargeList selectedCharges={values.events[event].charges} values={values} setFormData={setFormData} event={event} />
+                                        values?.events[event].charges.length > 0 &&
+                                        <AddedChargeList selectedCharges={values?.events[event].charges} values={values} setFormData={setFormData} event={event} />
                                     }
                                 </div>
                             </div>
@@ -50,15 +50,15 @@ export default ({setActiveTab, activeTab, tab, values, event, setFormData, heade
                                 <div className="w-full flex flex-col">
                                     <div className="flex flex-row">
                                         <MultiSelect
-                                            addedOptions={values.events[event].taxes}
+                                            addedOptions={values?.events[event].taxes}
                                             setFormData={setFormData}
                                             values={values}
                                             event={event} type={"taxes"} />
                                         <span className="ml-12 text-danger-500 underline">Create new tax</span>
                                     </div>
                                     {
-                                        values.events[event].taxes.length > 0 &&
-                                        <AddedTaxesList selectedTaxes={values.events[event].taxes} values={values} setFormData={setFormData} event={event} />
+                                        values?.events[event].taxes.length > 0 &&
+                                        <AddedTaxesList selectedTaxes={values?.events[event].taxes} values={values} setFormData={setFormData} event={event} />
                                     }
                                 </div>
                             </div>

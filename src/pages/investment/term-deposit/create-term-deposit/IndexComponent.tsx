@@ -250,6 +250,12 @@ export default function CreateTermDeposit() {
       customerType: [],
       customerCategory: null,
     },
+    events: {
+      principalDeposit: {charges: [], taxes: []},
+      partLiquidation: {charges: [], taxes: []},
+      earlyLiquidation: {charges: [], taxes: []},
+      maturityLiquidation: {charges: [], taxes: []}
+    },
     pricingConfiguration: {
       interestRateRangeType: 0,
       applicableTenorMin: 0,

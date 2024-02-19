@@ -479,7 +479,7 @@ export const termDepositFormSteps = [
   },
   {
     id: 5,
-    label: "Accounting entries and events",
+    label: "Product to GL mapping and events",
     index: 5,
   },
 ];
