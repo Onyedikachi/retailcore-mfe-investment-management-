@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { InputDivs } from "@app/components/pages/term-deposit/forms/accounting-entries-and-events";
 import MinMaxInput from "@app/components/forms/MinMaxInput";
 import {
   CapitalizationOptions,
@@ -27,6 +26,7 @@ import { Messages } from "@app/constants/enums";
 import { checkDocuments } from "@app/utils/checkDocunent";
 import { convertToDays, convertDuration } from "@app/utils/convertToDays";
 import debounce from "lodash.debounce";
+import { InputDivs } from "../../term-deposit/forms/gl_mapping_events/ProductToGLMapping";
 export const onProceed = (
   data,
   proceed,

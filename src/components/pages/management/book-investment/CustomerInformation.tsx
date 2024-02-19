@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ErrorMessage } from "@hookform/error-message";
-import { InputDivs } from "@app/components/pages/term-deposit/forms/accounting-entries-and-events";
 import { FormUpload } from "@app/components/forms";
 import CustomerInfoCard from "./CustomerInfoCard";
 import { BookingCustomerInfoSchema } from "@app/constants";
@@ -19,6 +18,7 @@ import { Failed } from "@app/components/modals";
 import { Messages } from "@app/constants/enums";
 import BottomBarLoader from "@app/components/BottomBarLoader";
 import debounce from "lodash.debounce";
+import { InputDivs } from "../../term-deposit/forms/gl_mapping_events/ProductToGLMapping";
 export const onProceed = (
   data,
   proceed,
@@ -27,7 +27,7 @@ export const onProceed = (
   preCreateInvestment,
   preModifyRequest
 ) => {
-  console.log("🚀 ~ formData:", formData);
+
   if (formData?.id) {
     preModifyRequest({
       ...formData,
