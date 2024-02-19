@@ -10,8 +10,8 @@ import AccountingEntriesAndEvents, {
   InputDivs,
   handleClear,
   handleClick,
-  onProceed,
-} from "../../../../../components/pages/term-deposit/forms/accounting-entries-and-events";
+
+} from "../../../../../components/pages/term-deposit/forms/gl_mapping_events/ProductToGLMapping";
 import { renderWithProviders } from "../../../../../utils/test-util";
 
 describe("AccountingEntriesAndEvents", () => {
@@ -128,40 +128,6 @@ describe("handleClear", () => {
   });
 });
 
-describe("onProceed", () => {
-  // calls the 'proceed' function passed as argument
-  it('should call the "proceed" function', () => {
-    const proceed = jest.fn();
-    onProceed(proceed);
-    expect(proceed).toHaveBeenCalled();
-  });
-
-  // 'proceed' function is not a function
-  it('should throw an error when "proceed" is not a function', () => {
-    expect(() => {
-      onProceed("not a function");
-    }).toThrow();
-  });
-
-  // 'proceed' function throws an error or exception
-  it('should throw an error when "proceed" function throws an error', () => {
-    const proceed = () => {
-      throw new Error("Error in proceed function");
-    };
-    expect(() => {
-      onProceed(proceed);
-    }).toThrow();
-  });
-
-  // 'onProceed' is called multiple times, 'proceed' function is called each time
-  it('should call the "proceed" function each time "onProceed" is called', () => {
-    const proceed = jest.fn();
-    onProceed(proceed);
-    onProceed(proceed);
-    onProceed(proceed);
-    expect(proceed).toHaveBeenCalledTimes(3);
-  });
-});
 
 describe("handleClick", () => {
   // Clicking on a valid submenu updates the corresponding GlInput value with the submenu name

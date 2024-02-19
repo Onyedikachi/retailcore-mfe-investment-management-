@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { InputDivs } from "@app/components/pages/term-deposit/forms/accounting-entries-and-events";
+// import { InputDivs } from "@app/components/pages/term-deposit/forms/accounting-entries-and-events";
 import { BorderlessSelect, Checkbox, MinMaxInput } from "@app/components/forms";
 import { Switch } from "@headlessui/react";
 import {
@@ -11,6 +11,7 @@ import {
 } from "@app/constants";
 import { useGetCustomerProfileQuery } from "@app/api";
 import { capitalizeFirstLetter } from "@app/utils";
+import { InputDivs } from "../../term-deposit/forms/gl_mapping_events/ProductToGLMapping";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
