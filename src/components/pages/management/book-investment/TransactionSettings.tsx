@@ -16,38 +16,60 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export const handleAccountForLiquidation = ({profileIsSuccess, profileData, formData, setFormData, setValue, setCustomerData}) => {
+export const handleAccountForLiquidation = ({
+  profileIsSuccess,
+  profileData,
+  formData,
+  setFormData,
+  setValue,
+  setCustomerData,
+  trigger,
+}) => {
   if (profileIsSuccess) {
     const accountData = profileData.data.customer_products?.map((i: any) => {
       return {
         id: i?.customerProductId,
-        text: i?.accountNumber,
+        text: `${i?.accountNumber} - ${i?.productType} Account`,
         value: i?.accountNumber,
+        ledgerId: i?.ledgerId,
       };
     });
+    setCustomerData(accountData);
     if (
       accountData?.length &&
-      !formData?.transactionSettingModel?.accountForLiquidation
+      !formData?.transactionSettingModel?.accountForLiquidation &&
+      !formData?.transactionSettingModel?.accountForLiquidationLedgerId
     ) {
       setFormData({
         ...formData,
         transactionSettingModel: {
           ...formData?.transactionSettingModel,
           accountForLiquidation: accountData[0].value,
+          accountForLiquidationLedgerId: accountData[0]?.ledgerId,
         },
       });
       setValue("accountForLiquidation", accountData[0].value);
+      setValue("accountForLiquidationLedgerId", accountData[0].ledgerId);
+      trigger();
     }
-
-    setCustomerData(accountData);
   }
-}
+};
 
-export const onProceed = (data, proceed, formData, setFormData) => {
-  console.log("🚀 ~ onProceed ~ data:", data);
+export const onProceed = (
+  data,
+  proceed,
+  formData,
+  setFormData,
+  preModifyRequest
+) => {
+  preModifyRequest({
+    ...formData,
+    transactionSettingModel: { ...formData.transactionSettingModel, ...data },
+    isDraft: true,
+  });
   setFormData({
     ...formData,
-    transactionSettingModel: {...data},
+    transactionSettingModel: { ...formData.transactionSettingModel, ...data },
   });
   proceed();
 };
@@ -59,6 +81,7 @@ type TransactionSettingsProps = {
   setDisabled?: any;
   isSavingDraft?: boolean;
   productDetail?: any;
+  preModifyRequest?: any;
 };
 const SvgInfo = () => (
   <svg
@@ -90,8 +113,8 @@ export default function TransactionSettings({
   setDisabled,
   isSavingDraft,
   productDetail,
+  preModifyRequest,
 }: TransactionSettingsProps) {
-  console.log("🚀 ~ formData:", formData);
   const {
     register,
     handleSubmit,
@@ -108,7 +131,6 @@ export default function TransactionSettings({
     mode: "all",
   });
   const values = getValues();
-  console.log("🚀 ~ values:", values);
 
   const [customerData, setCustomerData] = useState<any>([]);
   const {
@@ -125,22 +147,56 @@ export default function TransactionSettings({
   );
 
   useEffect(() => {
-    handleAccountForLiquidation({profileIsSuccess, profileData, formData, setFormData, setValue, setCustomerData});
-  }, [profileIsError, profileIsSuccess, profileLoading, profileData]);
-
-  // useEffect(() => {
-  //   setFormData({ ...formData, transactionSettingModel: values });
-  // }, [isSavingDraft]);
+    handleAccountForLiquidation({
+      profileIsSuccess,
+      profileData,
+      formData,
+      setFormData,
+      setValue,
+      setCustomerData,
+      trigger,
+    });
+  }, [profileIsError, profileIsSuccess, profileData]);
 
   useEffect(() => {
     setDisabled(!isValid);
+    if (isValid) {
+      setFormData({ ...formData, transactionSettingModel: values });
+    }
   }, [isValid]);
+
+  useEffect(() => {
+    if (values?.accountForLiquidation) {
+      const data = customerData?.find(
+        (i) => i.value === values?.accountForLiquidation
+      );
+      setValue("accountForLiquidationLedgerId", data?.ledgerId);
+      trigger();
+    }
+  }, [values?.accountForLiquidation]);
+
+  useEffect(() => {
+    if (
+      formData?.transactionSettingModel?.accountForLiquidationLedgerId &&
+      !values?.accountForLiquidationLedgerId
+    ) {
+      setValue(
+        "accountForLiquidationLedgerId",
+        formData?.transactionSettingModel?.accountForLiquidationLedgerId
+      );
+      trigger(["accountForLiquidationLedgerId"]);
+    }
+  }, [
+    formData?.transactionSettingModel?.accountForLiquidationLedgerId,
+    values?.accountForLiquidationLedgerId,
+  ]);
+
   return (
     <form
       id="transactionSettings"
       data-testid="submit-button"
       onSubmit={handleSubmit((d) =>
-        onProceed(d, proceed, formData, setFormData)
+        onProceed(d, proceed, formData, setFormData, preModifyRequest)
       )}
     >
       {" "}
@@ -214,7 +270,7 @@ export default function TransactionSettings({
             </div>
           </InputDivs>
 
-          {formData?.facilityDetailsModel?.capitalizationMethod == 2 && (
+          {!productDetail?.liquidation?.early_AllowEarlyLiquidation && (
             <InputDivs
               label={"Rollover after maturity"}
               isCompulsory={false}
@@ -259,7 +315,12 @@ export default function TransactionSettings({
                       defaultValue={
                         formData?.transactionSettingModel?.rollOverOption
                       }
-                      options={RollOverOptions}
+                      options={
+                        formData?.facilityDetailsModel?.capitalizationMethod ==
+                        2
+                          ? RollOverOptions
+                          : RollOverOptions.filter((i) => i.value === 0)
+                      }
                       errors={errors}
                       setValue={setValue}
                       trigger={trigger}
@@ -271,7 +332,7 @@ export default function TransactionSettings({
               </div>
             </InputDivs>
           )}
-          {productDetail?.liquidation?.early_AllowPartLiquidation ||
+          {productDetail?.liquidation?.early_AllowEarlyLiquidation ||
             (productDetail?.liquidation?.part_AllowPartLiquidation && (
               <div className="mt-10 flex flex-col w-full gap-y-2 py-6 px-5 rounded-lg border border-[#EBEBEB] bg-[#AAAAAA12]">
                 {productDetail?.liquidation?.early_AllowEarlyLiquidation && (

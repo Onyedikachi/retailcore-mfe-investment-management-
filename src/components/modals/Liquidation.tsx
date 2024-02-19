@@ -33,13 +33,18 @@ interface LiquidationProps {
 }
 
 export const onProceed = (data, onConfirm, type, metaInfo) => {
-  // console.log("🚀 ~ onProceed ~ data:", data);
-
   onConfirm(data, type, metaInfo);
 };
 
-export const handleLiquidationCalculationPayload = ({detail, productDetails, type, values, liquidationUnitEnum, liquidationCalculation, selection}) => {
-
+export const handleLiquidationCalculationPayload = ({
+  detail,
+  productDetails,
+  type,
+  values,
+  liquidationUnitEnum,
+  liquidationCalculation,
+  selection,
+}) => {
   if (detail?.principal && productDetails) {
     const payload = {
       principal: detail?.principal,
@@ -47,13 +52,13 @@ export const handleLiquidationCalculationPayload = ({detail, productDetails, typ
         type === "early"
           ? detail?.principal
           : values?.amount
-            ? values?.amount
-            : 0,
+          ? values?.amount
+          : 0,
       liquidationUnit: liquidationUnitEnum[selection],
     };
     liquidationCalculation(payload);
   }
-}
+};
 
 export default function Liquidation({
   isOpen,
@@ -89,7 +94,7 @@ export default function Liquidation({
   });
   const { currencies } = useContext(AppContext);
   const [defaultValue, setDefaultValue] = useState("");
-  const [selection, setSelection] = useState(1);
+  const [selection, setSelection] = useState(0);
 
   const values = getValues();
   const [isTrue, setTrue] = useState(false);
@@ -153,6 +158,7 @@ export default function Liquidation({
             ? bookingDetails?.data?.facilityDetailsModel?.principal
             : values?.amounttoLiquidate,
         liquidationUnit: selection,
+        liquidationType: type === "early" ? 0 : 1,
         investmentBookingId: !detail?.metaInfo
           ? detail?.id
           : detail?.investmentBookingId,
@@ -182,11 +188,6 @@ export default function Liquidation({
     setValue("notify", isTrue);
   }, [isTrue]);
 
-  // useEffect(() => {
-  //   console.log("🚀 ~ values:", values);
-  //   console.log("🚀 ~ errors:", errors);
-  // }, [values]);
-
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
@@ -204,14 +205,16 @@ export default function Liquidation({
 
   useEffect(() => {
     setText(
-      `The customer is required to provide a ${type === "early"
-        ? productDetails?.liquidation?.early_NoticePeriod
-        : productDetails?.liquidation?.part_NoticePeriod
-      }-${Interval[
-      type === "early"
-        ? productDetails?.liquidation?.early_NoticePeriodUnit
-        : productDetails?.liquidation?.part_NoticePeriodUnit
-      ]
+      `The customer is required to provide a ${
+        type === "early"
+          ? productDetails?.liquidation?.early_NoticePeriod
+          : productDetails?.liquidation?.part_NoticePeriod
+      }-${
+        Interval[
+          type === "early"
+            ? productDetails?.liquidation?.early_NoticePeriodUnit
+            : productDetails?.liquidation?.part_NoticePeriodUnit
+        ]
       } notice before requesting ${type} liquidation, proceeding with this request implies that the customer has given ample notice as specified.`
     );
 
@@ -232,7 +235,11 @@ export default function Liquidation({
         <form
           onSubmit={handleSubmit((d: any) =>
             onProceed(
-              { ...d, liquidationUnit: selection, id: detail?.id },
+              {
+                ...d,
+                liquidationUnit: selection,
+                id: detail?.id,
+              },
               onConfirm,
               type,
               metaInfo
@@ -274,7 +281,7 @@ export default function Liquidation({
                         <RedDot />
                       </span>
                     </label>
-               
+
                     <div className="relative flex items-start max-w-[642px] mb-[2px] py-2">
                       <MinMaxInput
                         inputName="amounttoLiquidate"
@@ -469,7 +476,7 @@ export default function Liquidation({
                     <div className="flex items-center mb-2  gap-x-1">
                       <span className="text-sm text-[#747373]">Charge: </span>
                       <span className="text-sm text-[#747373] font-semibold">
-                        Term Deposition Liquidation Charge [NGN 1,859]
+                        Term Deposition Liquidation Charge
                       </span>
                     </div>
                   ) : (
@@ -478,13 +485,21 @@ export default function Liquidation({
                         handleLiquidationPenalty(
                           productDetails?.liquidation?.early_LiquidationPenalty,
                           productDetails?.liquidation
-                            ?.early_LiquidationPenaltyPercentage
+                            ?.early_LiquidationPenalty === 3
+                            ? productDetails?.liquidation
+                                ?.eary_SpecialInterestRate
+                            : productDetails?.liquidation
+                                ?.early_LiquidationPenaltyPercentage
                         )}
                       {type.toLowerCase() == "part" &&
                         handleLiquidationPenalty(
                           productDetails?.liquidation?.part_LiquidationPenalty,
                           productDetails?.liquidation
-                            ?.part_LiquidationPenaltyPercentage
+                            ?.part_LiquidationPenalty === 3
+                            ? productDetails?.liquidation
+                                ?.part_SpecialInterestRate
+                            : productDetails?.liquidation
+                                ?.part_LiquidationPenaltyPercentage
                         )}
                     </span>
                   )}

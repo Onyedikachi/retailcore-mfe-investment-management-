@@ -13,7 +13,10 @@ import { currencyFormatter } from "@app/utils/formatCurrency";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 import { AppContext } from "@app/utils";
 import { CustomerDetail } from "../modals/CustomerDetail";
-import { useGetCustomerProfileQuery } from "@app/api";
+import {
+  useGetCustomerProfileQuery,
+  useGetAccountBalanceQuery,
+} from "@app/api";
 
 export default function BookingDetail({
   detail,
@@ -35,6 +38,18 @@ export default function BookingDetail({
   } = useGetCustomerProfileQuery(detail?.customerBookingInfoModel?.customerId, {
     skip: !detail?.customerBookingInfoModel?.customerId,
   });
+
+  const {
+    data: accountData,
+    isSuccess: accountIsSuccess,
+    isError: accountIsError,
+    error: accountError,
+    isLoading,
+  } = useGetAccountBalanceQuery(
+    detail?.customerBookingInfoModel?.customerAccount,
+    { skip: !detail?.customerBookingInfoModel?.customerAccount }
+  );
+
   return (
     <div>
       {isOpen && profileData && (
@@ -95,7 +110,7 @@ export default function BookingDetail({
                 Account status
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                {detail?.customerBookingInfoModel?.accountStatus || "-"}{" "}
+                {accountData?.data?.status || "-"}{" "}
               </div>
             </div>
           </div>
@@ -138,11 +153,7 @@ export default function BookingDetail({
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
                 {detail?.facilityDetailsModel?.tenor}{" "}
-                {
-                  Interval[
-                    productDetail?.pricingConfiguration?.applicableTenorMaxUnit
-                  ]
-                }
+                {Interval[detail?.facilityDetailsModel?.tenorUnit]}
               </div>
             </div>
             <div className=" flex gap-[54px]">

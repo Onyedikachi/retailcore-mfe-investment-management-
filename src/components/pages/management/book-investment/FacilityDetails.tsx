@@ -8,6 +8,7 @@ import {
   CustomerCategory,
   FacilityDetailsModelSchema,
   Interval,
+  IntervalOptions,
   ProductTypes,
 } from "@app/constants";
 import { currencyFormatter } from "@app/utils/formatCurrency";
@@ -24,10 +25,22 @@ import { AppContext } from "@app/utils";
 import { Failed } from "@app/components/modals";
 import { Messages } from "@app/constants/enums";
 import { checkDocuments } from "@app/utils/checkDocunent";
-export const onProceed = (data, proceed, formData, setFormData) => {
+import { convertToDays, convertDuration } from "@app/utils/convertToDays";
+import debounce from "lodash.debounce";
+export const onProceed = (
+  data,
+  proceed,
+  formData,
+  setFormData,
+  preModifyRequest
+) => {
+  preModifyRequest({
+    ...formData,
+    facilityDetailsModel: { ...formData.facilityDetailsModel, ...data },
+    isDraft: true,
+  });
   setFormData({
     ...formData,
-
     facilityDetailsModel: { ...formData.facilityDetailsModel, ...data },
   });
   proceed();
@@ -42,9 +55,15 @@ type FacilityDetailsProps = {
   productDetail?: any;
   setProductDetail?: (e) => void;
   detailLoading?: boolean;
+  preModifyRequest?: any;
 };
 
-export const handleInterestRateValues = ({productDetail, values, setValue, trigger}) => {
+export const handleInterestRateValues = ({
+  productDetail,
+  values,
+  setValue,
+  trigger,
+}) => {
   if (productDetail?.pricingConfiguration?.interestRateRangeType === 0) {
     productDetail?.pricingConfiguration?.interestRateConfigModels?.forEach(
       (i) => {
@@ -61,7 +80,12 @@ export const handleInterestRateValues = ({productDetail, values, setValue, trigg
   if (productDetail?.pricingConfiguration?.interestRateRangeType === 1) {
     productDetail?.pricingConfiguration?.interestRateConfigModels?.forEach(
       (i) => {
-        if (values.tenor >= i.tenorMin && values.tenor <= i.tenorMax) {
+        if (
+          values.tenor >=
+            convertDuration(i.tenorMin, i.tenorMinUnit, values.tenorUnit) &&
+          values.tenor <=
+            convertDuration(i.tenorMax, i.tenorMaxUnit, values.tenorUnit)
+        ) {
           setValue("intMin", i.min);
           setValue("intMax", i.max);
         }
@@ -79,18 +103,46 @@ export const handleInterestRateValues = ({productDetail, values, setValue, trigg
   ) {
     trigger();
   }
-}
+};
 
-export const handleProductDetails = ({productDetail, values, setValue, setProductDetail}) => {
+export const handleProductDetails = ({
+  productDetail,
+  values,
+  setValue,
+  setProductDetail,
+}) => {
   if (productDetail) {
-    setValue(
-      "tenorMin",
-      productDetail?.pricingConfiguration?.applicableTenorMin
-    );
-    setValue(
-      "tenorMax",
-      productDetail?.pricingConfiguration?.applicableTenorMax
-    );
+    if (
+      productDetail?.pricingConfiguration?.applicableTenorMinUnit ===
+      productDetail?.pricingConfiguration?.applicableTenorMaxUnit
+    ) {
+      setValue(
+        "tenorMin",
+        productDetail?.pricingConfiguration?.applicableTenorMin
+      );
+      setValue(
+        "tenorMax",
+        productDetail?.pricingConfiguration?.applicableTenorMax
+      );
+    } else {
+      setValue(
+        "tenorMin",
+        convertDuration(
+          productDetail?.pricingConfiguration?.applicableTenorMin,
+          productDetail?.pricingConfiguration?.applicableTenorMinUnit,
+          values.tenorUnit
+        )
+      );
+      setValue(
+        "tenorMax",
+        convertDuration(
+          productDetail?.pricingConfiguration?.applicableTenorMax,
+          productDetail?.pricingConfiguration?.applicableTenorMaxUnit,
+          values.tenorUnit
+        )
+      );
+    }
+
     setValue(
       "prinMin",
       productDetail?.pricingConfiguration?.applicablePrincipalMin
@@ -125,17 +177,11 @@ export const handleProductDetails = ({productDetail, values, setValue, setProduc
     }
 
     if (productDetail?.pricingConfiguration?.interestRateRangeType === 2) {
-      setValue(
-        "intMin",
-        productDetail?.pricingConfiguration?.interestRateMin
-      );
-      setValue(
-        "intMax",
-        productDetail?.pricingConfiguration?.interestRateMax
-      );
+      setValue("intMin", productDetail?.pricingConfiguration?.interestRateMin);
+      setValue("intMax", productDetail?.pricingConfiguration?.interestRateMax);
     }
   }
-}
+};
 
 export const handleSearch = (
   value,
@@ -170,8 +216,8 @@ export default function FacilityDetails({
   productDetail,
   setProductDetail,
   detailLoading,
+  preModifyRequest,
 }: FacilityDetailsProps) {
-  console.log("🚀 ~ formData:", formData);
   const { currencies } = useContext(AppContext);
   const {
     register,
@@ -200,7 +246,7 @@ export default function FacilityDetails({
     CapitalizationOptions
   );
   const values = getValues();
-
+  console.log("🚀 ~ values:", values);
   const [
     getProduct,
     { data, isSuccess, isError, error, isLoading: searchLoading },
@@ -234,8 +280,14 @@ export default function FacilityDetails({
 
   // Set product detail
   useEffect(() => {
-    // setProductDetail
-    handleProductDetails({productDetail, values, setValue, setProductDetail})
+    handleProductDetails({ productDetail, values, setValue, setProductDetail });
+  }, [productDetail, values.tenorUnit]);
+
+  useEffect(() => {
+    setValue(
+      "tenorUnit",
+      productDetail?.pricingConfiguration?.applicableTenorMinUnit
+    );
   }, [productDetail]);
 
   useEffect(() => {
@@ -244,12 +296,34 @@ export default function FacilityDetails({
     }
 
     setDisabled(!isValid || balanceError || !validDoc || !validCurrency);
-  }, [isValid, values, validDoc, balanceError]);
+    if (isValid) {
+      setFormData({
+        ...formData,
+        facilityDetailsModel: values,
+      });
+    }
+  }, [
+    isValid,
+    values.tenor,
+    values.principal,
+    values.interestRate,
+    productDetail,
+    values.investmentProductId,
+    values.tenorUnit,
+    validDoc,
+    balanceError,
+  ]);
 
   useEffect(() => {
-    handleInterestRateValues({productDetail, values, setValue, trigger});
-  }, [values.tenor, values.principal, values.interestRate, productDetail, values.investmentProductId ]);
-    
+    handleInterestRateValues({ productDetail, values, setValue, trigger });
+  }, [
+    values.tenor,
+    values.principal,
+    values.interestRate,
+    productDetail,
+    values.investmentProductId,
+    values.tenorUnit,
+  ]);
 
   useEffect(() => {
     setFormData({
@@ -269,6 +343,13 @@ export default function FacilityDetails({
       facilityDetailsModel: values,
     });
   }, [isSavingDraft]);
+
+  useEffect(() => {
+    setFormData({
+      ...formData,
+      facilityDetailsModel: { ...formData.facilityDetailsModel, ...values },
+    });
+  }, [values.tenorUnit]);
 
   useEffect(() => {
     if (
@@ -292,7 +373,7 @@ export default function FacilityDetails({
     // Hanle booking options
     if (
       productDetail?.liquidation?.part_AllowPartLiquidation ||
-      productDetail?.liquidation?.early_AllowPartLiquidation
+      productDetail?.liquidation?.early_AllowEarlyLiquidation
     ) {
       setCapMethodOptions(CapitalizationOptions.filter((i) => i.value !== 0));
     } else {
@@ -318,7 +399,7 @@ export default function FacilityDetails({
       id="facilityDetails"
       data-testid="submit-button"
       onSubmit={handleSubmit((d) =>
-        onProceed(d, proceed, formData, setFormData)
+        onProceed(d, proceed, formData, setFormData, preModifyRequest)
       )}
     >
       {" "}
@@ -335,9 +416,7 @@ export default function FacilityDetails({
             <div className="flex gap-[15px]">
               <div className=" w-[360px]">
                 <SearchInput
-                  setSearchTerm={(e) => {
-                    setQuery(e);
-                  }}
+                  setSearchTerm={debounce((e) => setQuery(e), 800)}
                   searchResults={productsData}
                   setSearchResults={() => {}}
                   searchLoading={searchLoading}
@@ -430,12 +509,37 @@ export default function FacilityDetails({
                         type="number"
                       />
                       <span className="text-base font-normal text-[#636363] capitalize">
-                        {
+                        {productDetail?.pricingConfiguration
+                          ?.applicableTenorMinUnit !==
+                        productDetail?.pricingConfiguration
+                          ?.applicableTenorMaxUnit ? (
+                          <div className="w-[100px]">
+                            <BorderlessSelect
+                              inputError={errors?.tenorUnit}
+                              register={register}
+                              inputName={"tenorUnit"}
+                              defaultValue={values?.tenorUnit}
+                              options={IntervalOptions.filter((i) =>
+                                [
+                                  productDetail?.pricingConfiguration
+                                    ?.applicableTenorMinUnit,
+                                  productDetail?.pricingConfiguration
+                                    ?.applicableTenorMaxUnit,
+                                ].includes(i.value)
+                              )}
+                              errors={errors}
+                              setValue={setValue}
+                              trigger={trigger}
+                              clearErrors={clearErrors}
+                              placeholder="Select duration"
+                            />
+                          </div>
+                        ) : (
                           Interval[
                             productDetail?.pricingConfiguration
                               ?.applicableTenorMaxUnit
                           ]
-                        }
+                        )}
                       </span>
                     </div>
                     <div className="text-sm text-[#AAAAAA] mt-1">
@@ -446,6 +550,12 @@ export default function FacilityDetails({
                             productDetail?.pricingConfiguration
                               ?.applicableTenorMin
                           }{" "}
+                          {
+                            Interval[
+                              productDetail?.pricingConfiguration
+                                ?.applicableTenorMinUnit
+                            ]
+                          }
                           -{" "}
                           {
                             productDetail?.pricingConfiguration
@@ -466,6 +576,12 @@ export default function FacilityDetails({
                             productDetail?.pricingConfiguration
                               ?.applicableTenorMin
                           }{" "}
+                          {
+                            Interval[
+                              productDetail?.pricingConfiguration
+                                ?.applicableTenorMinUnit
+                            ]
+                          }
                           -{" "}
                           {
                             productDetail?.pricingConfiguration
@@ -581,8 +697,8 @@ export default function FacilityDetails({
                                   <span>
                                     {" "}
                                     {i?.min} - {i?.max}% {"for tenor betweeen"}{" "}
-                                    {i?.tenorMin} - {i?.tenorMax}{" "}
-                                    {Interval[i?.tenorMaxUnit]}
+                                    {i?.tenorMin} {Interval[i?.tenorMinUnit]} -{" "}
+                                    {i?.tenorMax} {Interval[i?.tenorMaxUnit]}
                                   </span>
                                 )}
                               </div>

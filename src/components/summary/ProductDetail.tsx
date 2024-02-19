@@ -476,7 +476,7 @@ export default function ProductDetail({ detail, previousData, type }: any) {
                             {liquidities[
                               detail?.liquidation?.part_LiquidationPenalty
                             ] == "RecalculateInterest" &&
-                              `Recalculate accrued interest of ${detail?.liquidation?.part_LiquidationPenaltyPercentage}%`}
+                              `Recalculate accrued interest of ${detail?.liquidation?.part_SpecialInterestRate}%`}
                           </span>
                           <span className="flex flex-wrap gap-x-1 my-1">
                             {liquidities[
@@ -560,7 +560,7 @@ export default function ProductDetail({ detail, previousData, type }: any) {
                           {liquidities[
                             detail?.liquidation?.early_LiquidationPenalty
                           ] == "RecalculateInterest" &&
-                            `Recalculate accrued interest of ${detail?.liquidation?.early_LiquidationPenaltyPercentage}%`}
+                            `Recalculate accrued interest of ${detail?.liquidation?.eary_SpecialInterestRate}%`}
                         </span>
                         <span className="flex flex-wrap gap-x-1 my-1">
                           {liquidities[
@@ -678,3 +678,4 @@ export default function ProductDetail({ detail, previousData, type }: any) {
     </div>
   );
 }
+

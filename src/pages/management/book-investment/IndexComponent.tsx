@@ -29,7 +29,6 @@ import {
 import BottomBarLoader from "@app/components/BottomBarLoader";
 
 export function handleNext(step, setStep, BookInvestmentFormSteps) {
-  console.log(step);
   step < BookInvestmentFormSteps.length && setStep(step + 1);
 }
 
@@ -39,36 +38,21 @@ export function handleNav({
   navigate,
   investmentType,
   process,
-  id
+  id,
+  formData,
 }) {
+  if (!formData?.customerBookingInfoModel?.customerId) return;
+
   step < BookInvestmentFormSteps.length
     ? handleNext(step, setStep, BookInvestmentFormSteps)
     : navigate(
-        `/product-factory/investment/management/${process}/${investmentType}?stage=summary&id=${id}`
+        `/investment-management/${process}/${investmentType}?stage=summary&id=${
+          formData?.id || id
+        }`
       );
 }
 
 export function handleLinks(links, process) {
-  // const extraLinks = [
-  //   {
-  //     id: 3,
-  //     title: "Te\rm Deposit",
-  //     url: "/product-factory/investment",
-  //   },
-  //   {
-  //     id: 4,
-  //     title: productData?.productInfo?.productName,
-  //     url: "#",
-  //   },
-  // ];
-  // if (
-  //   process === "continue" ||
-  //   process === "modify" ||
-  //   process === "withdraw_modify"
-  // ) {
-  //   let filteredLinks = links.filter((i) => i.id !== 3);
-  //   return [...filteredLinks, ...extraLinks];
-  // }
   if (process === "restructure") {
     const linkWithId2 = links.find((link) => link.id === 2);
 
@@ -155,8 +139,9 @@ export default function IndexComponent() {
       tenorMax: null,
       prinMin: null,
       prinMax: null,
-      intMin: null,
-      intMax: null,
+      intMin: 0,
+      intMax: 100,
+      tenorUnit: 1,
     },
     transactionSettingModel: {
       accountName: "",
@@ -164,6 +149,7 @@ export default function IndexComponent() {
       notifyCustomerOnMaturity: false,
       rollOverAtMaturity: false,
       rollOverOption: 0,
+      accountForLiquidationLedgerId: "",
     },
     isDraft: false,
     recentUpdated: false,
@@ -174,17 +160,17 @@ export default function IndexComponent() {
     {
       id: 1,
       title: "Investment Management",
-      url: "/product-factory/investment/management/overview",
+      url: "/investment-management/overview",
     },
     {
       id: 2,
       title: "book new Investment",
-      url: "/product-factory/investment/management/individual",
+      url: "/investment-management/individual",
     },
     {
       id: 3,
       title: investmentType,
-      url: `/product-factory/investment/management/${investmentType}`,
+      url: `/investment-management/${investmentType}`,
     },
   ];
 
@@ -202,6 +188,8 @@ export default function IndexComponent() {
   );
 
   const [createInvestment, { data, isLoading, isSuccess, isError, error }] =
+    useCreateInvestmentMutation();
+  const [preCreateInvestment, { data: preData, isSuccess: preSuccess }] =
     useCreateInvestmentMutation();
 
   const [
@@ -223,6 +211,8 @@ export default function IndexComponent() {
       error: modifyRequestError,
     },
   ] = useModifyInvestmentRequestMutation();
+
+  const [preModifyRequest] = useModifyInvestmentRequestMutation();
 
   const {
     data: requestData,
@@ -261,7 +251,7 @@ export default function IndexComponent() {
       principal: formData?.facilityDetailsModel?.principal,
       rate: formData?.facilityDetailsModel?.interestRate,
       tenor: formData?.facilityDetailsModel?.tenor,
-      tenorUnit: productDetail?.pricingConfiguration?.applicableTenorMaxUnit,
+      tenorUnit: formData?.facilityDetailsModel?.tenorUnit,
       method: productDetail?.pricingConfiguration?.interestComputationMethod,
     });
   };
@@ -280,6 +270,7 @@ export default function IndexComponent() {
     formData?.facilityDetailsModel?.principal,
     formData?.facilityDetailsModel?.interestRate,
     formData?.facilityDetailsModel?.capitalizationMethod,
+    formData?.facilityDetailsModel?.tenorUnit,
     productDetail,
   ]);
 
@@ -305,6 +296,12 @@ export default function IndexComponent() {
   }, [step]);
 
   useEffect(() => {
+    if (preSuccess && !formData.id) {
+      setFormData({
+        ...formData,
+        id: preData?.data,
+      });
+    }
     handleMessage({
       error,
       isError,
@@ -323,6 +320,7 @@ export default function IndexComponent() {
       type: "booking",
     });
   }, [
+    data,
     isSuccess,
     isError,
     error,
@@ -331,6 +329,7 @@ export default function IndexComponent() {
     modifyError,
     modifyRequestSuccess,
     modifyRequestIsError,
+    preSuccess,
   ]);
 
   useEffect(() => {
@@ -342,8 +341,11 @@ export default function IndexComponent() {
       requestIsSuccess,
       setFormData,
       type: "individual_booking",
+      formData,
+      id
     });
   }, [requestIsSuccess]);
+
   return (
     <div>
       {!stage && (
@@ -378,7 +380,8 @@ export default function IndexComponent() {
                           navigate,
                           investmentType,
                           process,
-                          id
+                          id,
+                          formData,
                         })
                       }
                       setDisabled={setDisabled}
@@ -386,6 +389,8 @@ export default function IndexComponent() {
                       setProductDetail={setProductDetail}
                       productDetail={productDetail}
                       detailLoading={detailLoading}
+                      preModifyRequest={preModifyRequest}
+                      preCreateInvestment={preCreateInvestment}
                     />
                   ) : (
                     <BottomBarLoader />
@@ -437,6 +442,7 @@ export default function IndexComponent() {
                     productDetail={productDetail}
                     formData={formData}
                     calcDetail={calcDetail}
+                    loading={calcLoading}
                   />
                 </div>
               )}

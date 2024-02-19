@@ -1,9 +1,17 @@
-export const RequiredInvestmentPermissions = [
+export const RequiredInvestmentProductPermissions = [
   "CREATE_INVESTMENT_PRODUCT",
   "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS",
   "VIEW_ALL_INVESTMENT_PRODUCT_RECORDS",
   "VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS",
   "RE_OR_DEACTIVATE_INVESTMENT_PRODUCT",
+];
+export const RequiredInvestmentPermissions = [
+ 
+  "VIEW_ALL_INVESTMENT_RECORDS",
+  "VIEW_ALL_INVESTMENT_REQUESTS",
+  "BOOK_INVESTMENT",
+  "LIQUIDATE_INVESTMENT",
+  "AUTHORIZE_INVESTMENT_MANAGEMENT_REQUESTS",
 ];
 export const RequiredCreditPermissions = ["CREATE_CREDIT_PRODUCT"];
 export const RequiredDepositPermissions = ["CREATE_DEPOSIT_PRODUCT"];
@@ -391,7 +399,8 @@ export const creationMap = [
   "deactivation",
   "booking",
   "part liquidation",
-  "early liquidation"];
+  "early liquidation",
+];
 export const colorState = {
   approved: "bg-[#D4F7DC] text-[#15692A]",
   active: "bg-[#D4F7DC] text-[#15692A]",
@@ -400,6 +409,7 @@ export const colorState = {
   "in-issue": "bg-[#FFD4D2] text-[#9F1F17]",
   rejected: "bg-[#FFD4D2] text-[#9F1F17]",
   draft: "bg-[#E5E5EA] text-[#1E0A3C]",
+  liquidated: "bg-[#FFEBCC] text-[#804C00]",
 };
 export const productNameRegex = /^[A-Za-z0-9\s]+$/;
 export const BookInvestmentFormSteps = [
@@ -616,25 +626,25 @@ export const Interval = {
 export const IntervalOptions = [
   {
     id: "1",
-    text: "Day(s)",
+    text: "Days",
     value: 1,
     subvalue: "day",
   },
   {
     id: "2",
-    text: "Week(s)",
+    text: "Weeks",
     value: 2,
     subvalue: "week",
   },
   {
     id: "3",
-    text: "Month(s)",
+    text: "Months",
     value: 3,
     subvalue: "month",
   },
   {
     id: "4",
-    text: "Year(s)",
+    text: "Years",
     value: 4,
     subvalue: "year",
   },
@@ -672,8 +682,6 @@ export const liquiditiesPenaltyStrings = {
   3: "Recalculate accrued interest of %",
   4: "Charge",
 };
-
-
 
 export const LiquidityOptions = [
   {

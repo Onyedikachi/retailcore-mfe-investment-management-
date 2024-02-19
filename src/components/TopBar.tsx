@@ -131,9 +131,9 @@ export function Tabs() {
     <div className="flex justify-between">
       <ul className="flex gap-x-8 items-end">
         {filteredTabs.current.map((tab) => (
-          <li>
+          <li   key={tab.title}>
             <button
-              key={tab.title}
+            
               onClick={() => {
                 handleTabClick(tab);
               }}

@@ -16,10 +16,11 @@ export function handleColorState(value: string) {
     case "R":
       return colorState["in-issue"];
 
+    case "liquidated":
+      return colorState["liquidated"];
     case "draft":
     case "D":
     case "inactive":
-    case "liquidated":
     case "I":
       return colorState["draft"];
 

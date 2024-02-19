@@ -100,7 +100,7 @@ export const count = (item, analyticsData) => {
     case "inactive":
       return analyticsData?.data?.I || 0;
     case "liquidated":
-      return analyticsData?.data?.I || 0;
+      return analyticsData?.data?.L || 0;
     case "approved":
       return analyticsData?.data?.A || 0;
     case "pending":
@@ -189,7 +189,7 @@ export function handleActiveType(activeType, setStatus) {
       setStatus("I");
       break;
     case "liquidated":
-      setStatus("I");
+      setStatus("L");
       break;
     case "approved":
       setStatus("A");
@@ -232,14 +232,18 @@ export function handlePermission(
       : RequestOptions;
   if (!permissions?.length) return;
   if (
-    permissions?.includes(
+    (permissions?.includes(
       "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
     ) &&
-    permissions?.includes("CREATE_INVESTMENT_PRODUCT")
+      permissions?.includes("CREATE_INVESTMENT_PRODUCT")) ||
+    (permissions?.includes("AUTHORIZE_INVESTMENT_MANAGEMENT_REQUESTS") &&
+      permissions?.includes("BOOK_INVESTMENT"))
   ) {
     if (
-      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS")
-      // ||permissions?.includes("CREATE_INVESTMENT_PRODUCT")
+      (permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS") &&
+        specificCategory !== SpecificCategory?.individual) ||
+      (permissions?.includes("VIEW_ALL_INVESTMENT_RECORDS") &&
+        specificCategory === SpecificCategory?.individual)
     ) {
       setFilteredProductOptions(mutableProductOptions);
     } else {
@@ -259,7 +263,10 @@ export function handlePermission(
       );
     }
     if (
-      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS")
+      (permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS") &&
+        specificCategory !== SpecificCategory?.individual) ||
+      (permissions?.includes("VIEW_ALL_INVESTMENT_REQUESTS") &&
+        "  specificCategory === SpecificCategory?.individual")
       // || permissions?.includes("CREATE_INVESTMENT_PRODUCT")
     ) {
       setFilteredRequestOptions(mutableRequestOptions);
@@ -280,14 +287,18 @@ export function handlePermission(
       );
     }
   } else if (
-    permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&
-    !permissions?.includes(
-      "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
-    )
+    (permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&
+      !permissions?.includes(
+        "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
+      )) ||
+    (permissions?.includes("BOOK_INVESTMENT") &&
+      !permissions?.includes("AUTHORIZE_INVESTMENT_MANAGEMENT_REQUESTS"))
   ) {
     if (
-      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS")
-      // ||permissions?.includes("CREATE_INVESTMENT_PRODUCT")
+      (permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS") &&
+        specificCategory !== SpecificCategory?.individual) ||
+      (permissions?.includes("VIEW_ALL_INVESTMENT_RECORDS") &&
+        specificCategory === SpecificCategory?.individual)
     ) {
       setFilteredProductOptions(CreateProductOptions);
     } else {
@@ -305,8 +316,10 @@ export function handlePermission(
       );
     }
     if (
-      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS")
-      // ||permissions?.includes("CREATE_INVESTMENT_PRODUCT")
+      (permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS") &&
+        specificCategory !== SpecificCategory?.individual) ||
+      (permissions?.includes("VIEW_ALL_INVESTMENT_REQUESTS") &&
+        specificCategory === SpecificCategory?.individual)
     ) {
       setFilteredRequestOptions(CreateRequestOptions);
     } else {
@@ -324,17 +337,18 @@ export function handlePermission(
       );
     }
   } else if (
-    !permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&
-    permissions?.includes(
-      "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
-    )
+    (!permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&
+      permissions?.includes(
+        "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
+      )) ||
+    (!permissions?.includes("BOOK_INVESTMENT") &&
+      permissions?.includes("AUTHORIZE_INVESTMENT_MANAGEMENT_REQUESTS"))
   ) {
     if (
-      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS")
-      // ||
-      // permissions?.includes(
-      //   "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
-      // )
+      (permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_RECORDS") &&
+        specificCategory !== SpecificCategory?.individual) ||
+      (permissions?.includes("VIEW_ALL_INVESTMENT_RECORDS") &&
+        specificCategory === SpecificCategory?.individual)
     ) {
       setFilteredProductOptions(ApproveProductOptions);
     } else {
@@ -348,10 +362,10 @@ export function handlePermission(
       );
     }
     if (
-      permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS")
-      // ||permissions?.includes(
-      //   "AUTHORIZE_INVESTMENT_PRODUCT_CREATION_OR_MODIFICATION_REQUESTS"
-      // )
+      (permissions?.includes("VIEW_ALL_INVESTMENT_PRODUCT_REQUESTS") &&
+        specificCategory !== SpecificCategory?.individual) ||
+      (permissions?.includes("VIEW_ALL_INVESTMENT_REQUESTS") &&
+        specificCategory === SpecificCategory?.individual)
     ) {
       setFilteredRequestOptions(ApproveRequestOptions);
     } else {

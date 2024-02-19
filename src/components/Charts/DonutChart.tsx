@@ -31,6 +31,32 @@ export default function RadialChart({ labels }) {
 
     series: labels?.map((i) => i.data),
     labels: labels?.map((i) => i.text),
+    responsive: [
+      {
+        breakpoint: 1440,
+        options: {
+          chart: {
+            width: 350,
+          },
+        },
+      },
+      {
+        breakpoint: 1280,
+        options: {
+          chart: {
+            width: 300,
+          },
+        },
+      },
+      {
+        breakpoint: 780,
+        options: {
+          chart: {
+            width: 250,
+          },
+        },
+      },
+    ],
   };
   return (
     <div>
@@ -38,7 +64,7 @@ export default function RadialChart({ labels }) {
         options={state.options}
         series={state.series}
         type="donut"
-        width="355"
+       
       />
     </div>
   );

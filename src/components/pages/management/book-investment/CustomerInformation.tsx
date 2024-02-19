@@ -18,11 +18,40 @@ import { CustomerDetail } from "@app/components/modals/CustomerDetail";
 import { Failed } from "@app/components/modals";
 import { Messages } from "@app/constants/enums";
 import BottomBarLoader from "@app/components/BottomBarLoader";
-export const onProceed = (data, proceed, formData, setFormData) => {
+import debounce from "lodash.debounce";
+export const onProceed = (
+  data,
+  proceed,
+  formData,
+  setFormData,
+  preCreateInvestment,
+  preModifyRequest
+) => {
+  console.log("🚀 ~ formData:", formData);
+  if (formData?.id) {
+    preModifyRequest({
+      ...formData,
+      customerBookingInfoModel: {
+        ...formData.customerBookingInfoModel,
+        ...data,
+      },
+      isDraft: true,
+    });
+  } else {
+    preCreateInvestment({
+      ...formData,
+      customerBookingInfoModel: {
+        ...formData.customerBookingInfoModel,
+        ...data,
+      },
+      isDraft: true,
+    });
+  }
   setFormData({
     ...formData,
     customerBookingInfoModel: { ...formData.customerBookingInfoModel, ...data },
   });
+
   proceed();
 };
 
@@ -32,6 +61,8 @@ type CustomerInformationProps = {
   proceed?: () => void;
   setDisabled?: any;
   isSavingDraft?: boolean;
+  preModifyRequest?: any;
+  preCreateInvestment?: any;
 };
 export const handleSearch = (value, setAccountNumber) => {
   setAccountNumber(value);
@@ -42,8 +73,9 @@ export default function CustomerInformation({
   proceed,
   setDisabled,
   isSavingDraft,
+  preModifyRequest,
+  preCreateInvestment,
 }: CustomerInformationProps) {
-
   const {
     register,
     handleSubmit,
@@ -61,7 +93,7 @@ export default function CustomerInformation({
   });
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(null);
   const [customerData, setCustomerData] = useState(null);
   const [accountNumber, setAccountNumber] = useState(null);
   const [customersData, setCustomersData] = useState([]);
@@ -72,7 +104,6 @@ export default function CustomerInformation({
     formData?.customerBookingInfoModel?.investmentformUrl
   );
   const values = getValues();
-  console.log("🚀 ~ values:", values)
 
   const {
     data,
@@ -80,7 +111,7 @@ export default function CustomerInformation({
     isError,
     error,
     isLoading: searchLoading,
-  } = useGetCustomerSearchQuery(query, { skip: !query.length });
+  } = useGetCustomerSearchQuery(query, { skip: query?.search?.length !== 10 || !query });
 
   const {
     data: profileData,
@@ -98,7 +129,7 @@ export default function CustomerInformation({
     isError: accountIsError,
     error: accountError,
     isLoading,
-  } = useGetAccountBalanceQuery(query, { skip: !accountNumber });
+  } = useGetAccountBalanceQuery(accountNumber, { skip: !accountNumber });
 
   useEffect(() => {
     if (formData?.customerBookingInfoModel?.investmentformUrl) {
@@ -138,6 +169,8 @@ export default function CustomerInformation({
           ...formData.customerBookingInfoModel,
           accountStatus: accountData?.data?.status,
           currencyId: accountData?.data?.currencyId,
+          customerAccountLedgerId: accountData?.data?.ledgerId,
+          balance: accountData?.data?.status,
         },
       });
     }
@@ -145,8 +178,8 @@ export default function CustomerInformation({
     setValue("accountStatus", accountData?.data?.status);
     setValue("balance", parseFloat(accountData?.data?.balance));
     setValue("currencyId", accountData?.data?.currencyId);
-    setValue("customerAccountLedgerId",  accountData?.data?.ledgerId)
-   
+    setValue("customerAccountLedgerId", accountData?.data?.ledgerId);
+
     trigger("balance");
   }, [accountIsError, accountIsSuccess, isLoading, accountData]);
 
@@ -177,21 +210,22 @@ export default function CustomerInformation({
         )} ${capitalizeFirstLetter(foundObject?.customer_profiles[0]?.surname)}`
       );
       setValue("customerAccount", accountNumber);
-      setValue("customerAccountLedgerId", foundObject?.customer_products[0]?.ledgerId)
+      setValue(
+        "customerAccountLedgerId",
+        foundObject?.customer_products[0]?.ledgerId
+      );
       trigger("customerAccount");
     }
   }, [accountNumber, data]);
 
   useEffect(() => {
-    if (searchLoading) {
-      // setCustomersData([]);
-      // setCustomerData(null);
-      // setAccountBalance(null);
-    }
-  }, [searchLoading]);
-
-  useEffect(() => {
     setDisabled(!isValid || !validKyc);
+    if (isValid) {
+      setFormData({
+        ...formData,
+        customerBookingInfoModel: values,
+      });
+    }
   }, [isValid, validKyc]);
 
   useEffect(() => {
@@ -225,7 +259,10 @@ export default function CustomerInformation({
   useEffect(() => {
     if (formData?.customerBookingInfoModel.customerAccount) {
       setAccountNumber(formData?.customerBookingInfoModel.customerAccount);
-      setQuery(formData?.customerBookingInfoModel.customerAccount);
+      setQuery({
+        search: formData?.customerBookingInfoModel.customerAccount,
+        isAccountNumber: true,
+      });
     }
   }, [formData?.customerBookingInfoModel.customerAccount]);
   return (
@@ -233,7 +270,14 @@ export default function CustomerInformation({
       id="customerInformation"
       data-testid="submit-button"
       onSubmit={handleSubmit((d) =>
-        onProceed(d, proceed, formData, setFormData)
+        onProceed(
+          d,
+          proceed,
+          formData,
+          setFormData,
+          preCreateInvestment,
+          preModifyRequest
+        )
       )}
     >
       {" "}
@@ -247,19 +291,21 @@ export default function CustomerInformation({
             <div className="flex gap-[15px] items-end">
               <div className="w-[360px]">
                 <SearchInput
-                  setSearchTerm={(e) => {
-                    setQuery(e);
-                  }}
+                  setSearchTerm={debounce((e) =>  setQuery({
+                    search: e,
+                    isAccountNumber: true,
+                  }), 500)}
                   searchResults={customersData}
                   setSearchResults={() => {}}
                   searchLoading={searchLoading}
-                  handleSearch={(value) =>
-                    handleSearch(value, setAccountNumber)
-                  }
+                  handleSearch={(value) => {
+                    handleSearch(value, setAccountNumber);
+                  }}
                   placeholder={"Search by account number"}
                   customClass="shadow-none"
                   hideBorder
                   defaultValue={accountNumber}
+                  inputType="number"
                 />
               </div>
               {accountBalance && (
@@ -308,6 +354,13 @@ export default function CustomerInformation({
                 accept={["pdf", "jpg", "png", "jpeg"]}
                 onUploadComplete={(value) => {
                   setValue("investmentformUrl", value);
+                  setFormData({
+                    ...formData,
+                    customerBookingInfoModel: {
+                      ...formData?.customerBookingInfoModel,
+                      investmentformUrl: value,
+                    },
+                  });
                   trigger("investmentformUrl");
                 }}
                 defaultValue={defaultValue}

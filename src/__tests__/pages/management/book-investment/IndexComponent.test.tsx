@@ -238,7 +238,7 @@ describe('handleNav', () => {
       handleNav({ step, setStep, navigate, investmentType, process, id });
 
       expect(setStep).not.toHaveBeenCalled();
-      expect(navigate).toHaveBeenCalledWith(`/product-factory/investment/management/${process}/${investmentType}?stage=summary&id=${id}`);
+      expect(navigate).toHaveBeenCalledWith(`/investment-management/${process}/${investmentType}?stage=summary&id=${id}`);
     });
 
     // When the setStep parameter is not a function, the function should throw an error.

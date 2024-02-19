@@ -56,7 +56,6 @@ export const FacilityDetailsModelSchema = yup.object().shape({
   principal: yup
     .number()
     .typeError("Invalid value")
-    .integer()
     .positive()
     .min(yup.ref("prinMin"), "Principal is too small")
     .max(yup.ref("prinMax"), "Principal is too large")
@@ -71,7 +70,7 @@ export const FacilityDetailsModelSchema = yup.object().shape({
     .nullable()
     .required("Interest is required"),
   capitalizationMethod: yup.number().integer().min(0).max(4).required(),
-  tenorMin: yup.number().typeError("Invalid value").integer().nullable(),
+  tenorMin: yup.number().typeError("Invalid value").nullable(),
   tenorMax: yup.number().typeError("Invalid value").integer().nullable(),
   prinMin: yup.number().typeError("Invalid value").integer().nullable(),
   prinMax: yup.number().typeError("Invalid value").integer().nullable(),
@@ -81,6 +80,7 @@ export const FacilityDetailsModelSchema = yup.object().shape({
 
 export const TransactionSettingModelSchema = yup.object().shape({
   accountForLiquidation: yup.mixed().required("Select an account"),
+  accountForLiquidationLedgerId: yup.string().required("Ledger id is required"),
   notifyCustomerOnMaturity: yup.boolean().required("Required"),
   rollOverAtMaturity: yup.boolean().required("Required"),
   rollOverOption: yup.number().integer().min(0).max(2).required("Required"),
@@ -589,6 +589,14 @@ export const liquiditySetupSchema = yup
         then: (schema) => schema.required("Provide value"),
         otherwise: (schema) => schema.nullable(),
       }),
+      part_SpecialInterestRate: yup
+      .number()
+      .typeError("Invalid value")
+      .max(100, "Value exceeded") .when("part_LiquidationPenalty", {
+        is: (val) => parseInt(val, 10) === 3,
+        then: (schema) => schema.required("Provide value"),
+        otherwise: (schema) => schema.nullable(),
+      }),
 
     early_AllowEarlyLiquidation: yup.boolean().typeError("Invalid value"),
     early_RequireNoticeBeforeLiquidation: yup
@@ -601,6 +609,14 @@ export const liquiditySetupSchema = yup
       .when("early_RequireNoticeBeforeLiquidation", {
         is: (val) => val === true,
         then: (schema) => schema.required("Provide a notice period"),
+        otherwise: (schema) => schema.nullable(),
+      }),
+      eary_SpecialInterestRate: yup
+      .number()
+      .typeError("Invalid value")
+      .max(100, "Value exceeded") .when("early_LiquidationPenalty", {
+        is: (val) => parseInt(val, 10) === 3,
+        then: (schema) => schema.required("Provide value"),
         otherwise: (schema) => schema.nullable(),
       }),
     early_NoticePeriodUnit: yup

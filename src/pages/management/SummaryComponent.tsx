@@ -91,7 +91,6 @@ export default function Summary() {
   } = useGetInvestmentRequestDetailQuery({
     id: request_id || id,
   });
-    console.log("🚀 ~ Summary ~ requestDetail:", requestDetail)
 
   useEffect(() => {
     if (isError && requestDetailIsSuccess)
@@ -106,12 +105,12 @@ export default function Summary() {
     {
       id: 1,
       title: "Investment Management",
-      url: "/product-factory/investment/management/overview",
+      url: "/investment-management/overview",
     },
     {
       id: 2,
       title: "Booking",
-      url: `/product-factory/investment/management/${type}`,
+      url: `/investment-management/${type}`,
     },
 
     {

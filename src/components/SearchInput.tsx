@@ -54,7 +54,6 @@ export function SearchValues({
             <span className="flex flex-col gap-[1px]">
               <span>{item.customerName}</span>
               <span className="">
-               
                 <span className="relative font-medium text-sm text-[#aaaaaa] uppercase">
                   {item?.investmentId || "-"}
                 </span>
@@ -161,6 +160,7 @@ export default function SearchInput({
   searchLoading,
   handleSearch,
   type,
+  inputType = "search",
   customClass = "",
   defaultValue,
 }: {
@@ -177,6 +177,7 @@ export default function SearchInput({
   type?: string;
   customClass?: string;
   defaultValue?: string;
+  inputType?: string;
   // Context?:
 }) {
   const [inputValue, setInputValue] = useState("");
@@ -220,10 +221,10 @@ export default function SearchInput({
             }
             onKeyDown={() => setShowBox(true)}
             value={inputValue}
-            type="search"
+            type={inputType}
             data-testid="search"
             placeholder={placeholder}
-            className={`bg-transparent peer placeholder:text-base h-8 py-2 pl-1 pr-4 placeholder:text-[#AAAAAA] outline-none  ${
+            className={`bg-transparent peer placeholder:text-base h-8 py-2 pl-1 pr-4 placeholder:text-[#AAAAAA] outline-none appearance-none ${
               isTruncated
                 ? "text-transparent group-hover:text-[#48535B] focus:text-[#48535B] hover:appearance-none"
                 : "text-[#48535B]"

@@ -45,7 +45,7 @@ export const handleDrop = async function (
   setFileInfo(file);
   const type = file?.name?.split(".").pop();
   const fileName = file?.name;
-  console.log("🚀 ~ fileName:", fileName);
+  
   const lastDotIndex = fileName?.lastIndexOf(".");
   const fileType = lastDotIndex !== -1 ? fileName?.slice(lastDotIndex + 1) : "";
 
@@ -95,11 +95,10 @@ export const handleFileChange = (
 ) => {
   const file = event?.target?.files?.[0];
   const type = file?.name?.split(".").pop();
-  console.log("🚀 ~ type:", type);
+
   const fileName = file?.name;
   const lastDotIndex = fileName?.lastIndexOf(".");
   const fileType = lastDotIndex !== -1 ? fileName?.slice(lastDotIndex + 1) : "";
-  console.log("🚀 ~ fileType:", fileType);
 
   setFileType(fileType);
 

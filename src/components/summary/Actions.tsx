@@ -61,7 +61,7 @@ export const handleConfirm = ({
   }
   if (action === "cancel") {
     if (type?.toLowerCase() === "individual") {
-      navigate(`/product-factory/investment/management/individual`);
+      navigate(`/investment-management/individual`);
     } else {
       navigate(
         `/product-factory/investment?category=requests${
@@ -74,9 +74,10 @@ export const handleConfirm = ({
 
 export function handlePermissionType(type: string, process_type?: string) {
   if (type === "individual") {
-    return process_type === "booking"
-      ? "BOOK_INVESTMENT"
-      : "LIQUIDATE_INVESTMENT";
+    // return process_type === "booking"
+    //   ? "BOOK_INVESTMENT"
+    //   : "LIQUIDATE_INVESTMENT";
+    return ["BOOK_INVESTMENT", "LIQUIDATE_INVESTMENT"];
   }
   if (type === "investment") {
     return "CREATE_INVESTMENT_PRODUCT";
@@ -231,8 +232,6 @@ export default function Actions({
 
   const handleRejection = () => {
     setRejection(false);
-    // console.log(reason, id, routeTo);
-    // return;
     if (type.toLowerCase() === "individual") {
       rejectInvestment({ reason, id, routeTo });
     } else {
@@ -273,7 +272,7 @@ export default function Actions({
   const factoryDashboard = `/product-factory/investment?category=requests${
     filter ? "&filter=" + filter : ""
   }`;
-  const individualDashboard = `/product-factory/investment/management/individual?category=requests${
+  const individualDashboard = `/investment-management/individual?category=requests${
     filter ? "&filter=" + filter : ""
   }`;
 

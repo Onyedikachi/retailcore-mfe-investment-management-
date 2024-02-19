@@ -19,7 +19,7 @@ export default function OverviewDiv({
       <div className="flex items-center justify-between border-b border-[#636363] pb-2">
         <span className="text-base font-semibold text-[#636363]">{title}</span>
         {hasDateFilter && (
-          <button className="flex h-[32px] items-center gap-[8px] rounded-[6px] bg-transparent px-3 py-[4px] text-[#8F8F8F] ">
+          <div className="flex h-[32px] items-center gap-[8px] rounded-[6px] bg-transparent px-3 py-[4px] text-[#8F8F8F] ">
             <span className="text-sm  text-[#8F8F8F]">Filter by Date</span>
 
             <DateSelect
@@ -32,7 +32,7 @@ export default function OverviewDiv({
                 <Icon icon="ep:filter" />
               </span>
             </DateSelect>
-          </button>
+          </div>
         )}
       </div>
 

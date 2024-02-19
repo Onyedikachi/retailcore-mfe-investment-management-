@@ -2,7 +2,9 @@ import Icon from "@app/components/ui/Icon";
 import { useState } from "react";
 import {
   //  Corporate,
-   Overview, Individual } from "@app/components/pages";
+  Overview,
+  Individual,
+} from "@app/components/pages";
 
 export default function Dashboard() {
   //   useEffect(() => {
@@ -30,10 +32,10 @@ export default function Dashboard() {
     <div className="h-full w-full">
       <div className="bg-white ">
         <div className="flex gap-[32px] ">
-          {dashboardTabs.map((tab) => (
+          {dashboardTabs.map((tab, index) => (
             <div
               onClick={() => tabSelector(tab)}
-              key={tab}
+              key={`${index}+ ${tab}`}
               className={`${
                 selectedTab == tab
                   ? "text-[14px] font-medium text-[#636363]"
@@ -61,8 +63,9 @@ export default function Dashboard() {
                 <table className="min-w-full divide-y divide-gray-300">
                   <thead>
                     <tr>
-                      {headers.map((header) => (
+                      {headers.map((header,idx) => (
                         <th
+                        key={`${idx}+idtab`}
                           scope="col"
                           className="py-3.5 pl-0 pr-3 text-left text-sm font-medium text-[#636363] sm:pl-0"
                         >

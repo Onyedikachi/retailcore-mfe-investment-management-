@@ -21,7 +21,7 @@ describe('code snippet', () => {
         );
 
         const renderedOptions = screen.getAllByRole('option');
-        console.log(renderedOptions[0].value)
+     
         expect(renderedOptions[0]).toHaveTextContent('Option 1');
         expect(renderedOptions[1]).toHaveTextContent('Option 2');
         expect(renderedOptions[2]).toHaveTextContent('Option 3');

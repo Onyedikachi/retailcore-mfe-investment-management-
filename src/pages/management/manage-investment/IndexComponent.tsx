@@ -72,17 +72,17 @@ export default function IndexComponent() {
     {
       id: 1,
       title: "Investment Management",
-      url: "/product-factory/investment/management/overview",
+      url: "/investment-management/overview",
     },
     {
       id: 2,
       title: "Overview",
-      url: "/product-factory/investment/management/overview",
+      url: "/investment-management/overview",
     },
     {
       id: 3,
       title: investmentType,
-      url: `/product-factory/investment/management/products/${investmentType}`,
+      url: `/investment-management/products/${investmentType}`,
     },
   ];
 
@@ -142,11 +142,11 @@ export default function IndexComponent() {
         return {
           ...i,
           tenor: `${i.tenor} ${Interval[1]}`,
-          principal: `${currencyFormatter(i?.principal, handleCurrencyName(i?.currency, currencies))}`,
+          principal: `${currencyFormatter(i?.initialPrincipal, handleCurrencyName(i?.currency, currencies))}`,
           maturityValue: `${currencyFormatter(i?.maturityValue, handleCurrencyName(i?.currency, currencies))}`,
         }
       }));
-      // console.log("🚀 ~ useEffect ~ investmentProducts:", investmentProducts?.results)
+    
     }
   }, [investmentProducts, isSuccess]);
 

@@ -9,13 +9,6 @@ export const routes = [
     component: lazy(() => import("../pages/investment/IndexComponent")),
   },
 
-  // {
-  // path: paths.INVESTMENT_TEST,
-  //   name: "Investment Test",
-  //   exact: true,
-  //   component: lazy(() => import("../pages/investment/TestComponents")),
-  // },
-
   {
     path: paths.CREATE_PRODUCT,
     name: "Create Term Deposit",
@@ -27,6 +20,46 @@ export const routes = [
         )
     ),
   },
+  // {
+  //   path: paths.BOOK_INVESTMENT,
+  //   name: "Investment Booking",
+  //   exact: true,
+  //   component: lazy(
+  //     () => import("../pages/management/book-investment/IndexComponent")
+  //   ),
+  // },
+  // {
+  //   path: paths.MANAGE_INVESTMENT,
+  //   name: "Investment Booking",
+  //   exact: true,
+  //   component: lazy(
+  //     () => import("@app/pages/management/manage-investment/IndexComponent")
+  //   ),
+  // },
+
+  {
+    path: paths.TERM_DEPOSIT_SUMMARY,
+    name: "Term Deposit Summary",
+    exact: true,
+    component: lazy(() => import("../pages/investment/term-deposit/Summary")),
+  },
+  // {
+  //   path: paths.BOOKING_SUMMARY,
+  //   name: "Booking Summary",
+  //   exact: true,
+  //   component: lazy(() => import("../pages/management/SummaryComponent")),
+  // },
+  
+  // {
+  //   path: paths.INVESTMENT_MANAGEMENT,
+  //   name: "Investment Management",
+  //   exact: true,
+  //   component: lazy(() => import("../pages/management/IndexComponent")),
+  // },
+];
+
+export const routes2 = [
+
   {
     path: paths.BOOK_INVESTMENT,
     name: "Investment Booking",
@@ -44,12 +77,6 @@ export const routes = [
     ),
   },
 
-  {
-    path: paths.TERM_DEPOSIT_SUMMARY,
-    name: "Term Deposit Summary",
-    exact: true,
-    component: lazy(() => import("../pages/investment/term-deposit/Summary")),
-  },
   {
     path: paths.BOOKING_SUMMARY,
     name: "Booking Summary",
