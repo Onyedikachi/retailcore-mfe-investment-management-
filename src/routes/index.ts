@@ -90,11 +90,6 @@ export const routes2 = [
     exact: true,
     component: lazy(() => import("../pages/management/IndexComponent")),
   },
-  { 
-    path: paths.CREATE_TREASURY_BILL,
-    name: "Create Treasury Bill",
-    exact: true,
-    component: lazy(() => import("../pages/treasury_bill/IndexComponent")) }
 ];
 
 export default routes;

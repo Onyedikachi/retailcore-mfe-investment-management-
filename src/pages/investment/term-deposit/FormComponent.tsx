@@ -1,5 +1,5 @@
 import { AccountingEntriesAndEvents, CustomerEligibilityCriteria, LiquiditySetup, PricingConfig, ProductInformation } from "@app/components/pages/term-deposit/forms";
-import ProductToGLMapping from "@app/pages/treasury_bill/ProductToGLMapping";
+import ProductToGLMapping from "@app/components/pages/term-deposit/forms/gl_mapping_events/ProductToGLMapping";
 import { Fragment } from "react";
 
 export default ({ step, productData, activeId, handleNav, setProductData, setDisabled, initiateDraft }) => {

@@ -35,7 +35,7 @@ import { Messages } from "@app/constants/enums";
 import handleFormRef from "./handleFormRef";
 import FormComponent from "./FormComponent";
 import { AppContext } from "@app/utils";
-import { handleDraft } from "../investment/term-deposit/create-term-deposit/handleDraft";
+import { handleDraft } from "@app/pages/investment/term-deposit/create-term-deposit/handleDraft";
 
 export function handleNext(step, setStep, termDepositFormSteps) {
   step < termDepositFormSteps.length && setStep(step + 1);
@@ -569,6 +569,7 @@ export default function CreateTermDeposit() {
               }
             />
           )}
+          
           {isFailed && (
             <Failed
               text={failedText}
