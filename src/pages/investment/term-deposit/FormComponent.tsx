@@ -1,4 +1,4 @@
-import { AccountingEntriesAndEvents, CustomerEligibilityCriteria, LiquiditySetup, PricingConfig, ProductInformation } from "@app/components/pages/term-deposit/forms";
+import { CustomerEligibilityCriteria, LiquiditySetup, PricingConfig, ProductInformation } from "@app/components/pages/term-deposit/forms";
 import ProductToGLMapping from "@app/components/pages/term-deposit/forms/gl_mapping_events/ProductToGLMapping";
 import { Fragment } from "react";
 
