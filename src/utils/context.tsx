@@ -57,6 +57,7 @@ export const AppContext = createContext<{
   userId?: string;
   isChecker?: boolean;
   setIsChecker?: (e: any) => void;
+  defaultCurrency?: any;
 }>({
   role: "",
   setRole: () => {},
@@ -66,6 +67,7 @@ export const AppContext = createContext<{
   userId: "",
   isChecker: true,
   setIsChecker: () => {},
+  defaultCurrency: ""
 });
 
 export const CommonContext = createContext<ContextProps>({
