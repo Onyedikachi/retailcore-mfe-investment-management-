@@ -1284,9 +1284,16 @@ export const ButtonOptions = [
         permission: "CREATE_INVESTMENT_PRODUCT",
       },
       {
-        title: "Money market",
-        key: "money-market",
-        isUrl: false,
+        title: "Treasury Bill",
+        key: "treasury-bill",
+        isUrl: true,
+        url: "/product-factory/investment/treasury-bill/create",
+        permission: "CREATE_INVESTMENT_PRODUCT",
+      },
+      {
+        title: "Commercial paper",
+        key: "commercial-paper",
+        isUrl: true,
         url: "#",
         permission: "CREATE_INVESTMENT_PRODUCT",
         links: [

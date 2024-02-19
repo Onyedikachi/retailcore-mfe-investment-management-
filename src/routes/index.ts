@@ -83,7 +83,7 @@ export const routes2 = [
     exact: true,
     component: lazy(() => import("../pages/management/SummaryComponent")),
   },
-  
+
   {
     path: paths.INVESTMENT_MANAGEMENT,
     name: "Investment Management",

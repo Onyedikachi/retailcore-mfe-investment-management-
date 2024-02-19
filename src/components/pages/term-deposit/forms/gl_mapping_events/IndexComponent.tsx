@@ -22,14 +22,20 @@ import {
   Button,
   FormStepComponent,
 } from "@app/components";
-
-import { ProductState, termDepositFormSteps } from "@app/constants";
+import {
+  ProductInformation,
+  CustomerEligibilityCriteria,
+  AccountingEntriesAndEvents,
+  LiquiditySetup,
+  PricingConfig,
+} from "@app/components/pages/term-deposit/forms";
+import { ProductState, termDepositFormSteps, treasuryBillFormSteps } from "@app/constants";
 import Preview from "@app/components/pages/term-deposit/forms/preview";
 import { Messages } from "@app/constants/enums";
-import { handleDraft } from "./handleDraft";
 import handleFormRef from "./handleFormRef";
-import FormComponent from "../FormComponent";
+import FormComponent from "./FormComponent";
 import { AppContext } from "@app/utils";
+import { handleDraft } from "@app/pages/investment/term-deposit/create-term-deposit/handleDraft";
 
 export function handleNext(step, setStep, termDepositFormSteps) {
   step < termDepositFormSteps.length && setStep(step + 1);
@@ -108,8 +114,6 @@ export const handleRequestIsSuccess = ({
   previousData,
   setProductData,
   setFormData,
-  formData,
-  id,
   type = "investment",
 }: {
   requestIsSuccess: any;
@@ -120,8 +124,6 @@ export const handleRequestIsSuccess = ({
   setProductData?: any;
   setFormData?: any;
   type?: any;
-  formData?: any;
-  id?: string | null;
 }) => {
   if (requestIsSuccess && requestData?.data?.metaInfo) {
     const data = JSON.parse(requestData?.data?.metaInfo);
@@ -133,12 +135,8 @@ export const handleRequestIsSuccess = ({
       previousData.current = {
         ...previousData.current,
         productName: data?.productInfo?.productName,
-        customerName: data?.customerBookingInfoModel?.customerName,
-        principal: data?.facilityDetailsModel?.principal,
-        investmentProduct:data?.facilityDetailsModel?.investmentProductName,
         description: data?.productInfo?.description,
         slogan: data?.productInfo?.slogan,
-        
         currency: data?.productInfo?.currency,
         prodType: data?.productType,
         state: data?.state,
@@ -157,12 +155,10 @@ export const handleRequestIsSuccess = ({
           interestComputationMethod: 2,
         },
       });
+
     }
-    if (
-      type === "individual_booking" &&
-      (!formData?.customerBookingInfoModel?.customerId || process !== "create")
-    ) {
-      setFormData({ ...data, id });
+    if (type === "individual_booking") {
+      setFormData(data);
     }
   }
 };
@@ -197,11 +193,11 @@ export const handleMessage = ({
     setFailedText(Messages.PRODUCT_DRAFT_FAILED);
     setFailedSubtext(
       error?.message?.message ||
-        modifyError?.message?.message ||
-        modifyRequestError?.message?.message ||
-        error?.message?.Message ||
-        modifyError?.message?.Message ||
-        modifyRequestError?.message?.Message
+      modifyError?.message?.message ||
+      modifyRequestError?.message?.message ||
+      error?.message?.Message ||
+      modifyError?.message?.Message ||
+      modifyRequestError?.message?.Message
     );
     setFailed(true);
   }
@@ -211,10 +207,9 @@ export function handleNav({ process, step, setStep, navigate, id }) {
   step < termDepositFormSteps.length
     ? handleNext(step, setStep, termDepositFormSteps)
     : navigate(
-        `/product-factory/investment/term-deposit/${process}?${
-          id ? `id=${id}&` : ""
-        }stage=summary`
-      );
+      `/product-factory/investment/treasury-bill/${process}?${id ? `id=${id}&` : ""
+      }stage=summary`
+    );
 }
 
 export default function CreateTermDeposit() {
@@ -250,12 +245,6 @@ export default function CreateTermDeposit() {
       customerType: [],
       customerCategory: null,
     },
-    events: {
-      principalDeposit: {charges: [], taxes: []},
-      partLiquidation: {charges: [], taxes: []},
-      earlyLiquidation: {charges: [], taxes: []},
-      maturityLiquidation: {charges: [], taxes: []}
-    },
     pricingConfiguration: {
       interestRateRangeType: 0,
       applicableTenorMin: 0,
@@ -290,24 +279,26 @@ export default function CreateTermDeposit() {
       part_LiquidationPenalty: 0,
       part_LiquidationPenaltyPercentage: 0,
       part_SpecificCharges: [],
-      part_SpecialInterestRate: 0,
+      part_specialInterestRate: 0,
       early_AllowEarlyLiquidation: false,
       early_RequireNoticeBeforeLiquidation: false,
       early_NoticePeriod: 0,
       early_NoticePeriodUnit: 1,
       early_LiquidationPenalty: 0,
       early_LiquidationPenaltyPercentage: 0,
-      eary_SpecialInterestRate: 0,
+      early_specialInterestRate: 0,
       early_SpecificCharges: [],
     },
     productGlMappings: [],
     interestComputationMethod: 2,
-    TermDepositLiabilityAccount: "",
-    InterestAccrualAccount: "",
-    InterestExpenseAccount: "",
+    TermDepositLiabilityLedger: "",
+    InterestAccrualLedger: "",
+    InterestExpenseLedger: "",
     isDraft: false,
     productType: 0,
   });
+
+  useEffect(() => console.log("Product data = ", productData), [productData])
 
   const [isDisabled, setDisabled] = useState<boolean>(true);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -415,7 +406,7 @@ export default function CreateTermDeposit() {
       requestData,
       requestIsSuccess,
       setProductData,
-      type: "investment",
+      type: "investment"
     });
   }, [requestIsSuccess]);
 
@@ -493,7 +484,7 @@ export default function CreateTermDeposit() {
             <div className=" bg-[#ffffff] rounded-md px-[100px] pt-[54px] pb-[49px] ">
               <div className="pb-[49px] ">
                 <FormStepComponent
-                  formStepItems={termDepositFormSteps}
+                  formStepItems={treasuryBillFormSteps}
                   step={step}
                 />
               </div>
@@ -538,7 +529,6 @@ export default function CreateTermDeposit() {
                     >
                       Save As Draft
                     </Button>
-
                     <Button
                       type="submit"
                       form={formRef}
@@ -579,6 +569,7 @@ export default function CreateTermDeposit() {
               }
             />
           )}
+          
           {isFailed && (
             <Failed
               text={failedText}
