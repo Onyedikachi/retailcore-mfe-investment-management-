@@ -1,4 +1,10 @@
-import { investmentApi, linkApi, authApi, accountApi } from "../api";
+import {
+  investmentApi,
+  linkApi,
+  authApi,
+  accountApi,
+  currencyApi,
+} from "../api";
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import type { PreloadedState } from "@reduxjs/toolkit";
 
@@ -20,6 +26,7 @@ const reducers = combineReducers({
   [linkApi?.reducerPath]: linkApi?.reducer,
   [authApi?.reducerPath]: authApi?.reducer,
   [accountApi?.reducerPath]: accountApi?.reducer,
+  [currencyApi?.reducerPath]: currencyApi?.reducer,
 });
 
 const persistConfig = {
@@ -42,7 +49,8 @@ export const store = (preloadedState?: PreloadedState<RootState>) => {
         .concat(investmentApi?.middleware)
         .concat(linkApi?.middleware)
         .concat(authApi?.middleware)
-        .concat(accountApi?.middleware),
+        .concat(accountApi?.middleware)
+        .concat(currencyApi?.middleware),
 
     preloadedState,
   });

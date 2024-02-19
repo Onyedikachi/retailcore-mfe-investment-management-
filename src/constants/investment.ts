@@ -429,6 +429,33 @@ export const BookInvestmentFormSteps = [
     index: 3,
   },
 ];
+export const treasuryBillFormSteps = [
+  {
+    id: 1,
+    label: "Product Information",
+    index: 1,
+  },
+  {
+    id: 2,
+    label: "Customer Eligibility Criteria",
+    index: 2,
+  },
+  {
+    id: 3,
+    label: "Pricing Configuration",
+    index: 3,
+  },
+  {
+    id: 4,
+    label: "Early & part liquidity setup",
+    index: 4,
+  },
+  {
+    id: 5,
+    label: "Product to GL mapping and events",
+    index: 5,
+  },
+]
 export const termDepositFormSteps = [
   {
     id: 1,
@@ -452,7 +479,7 @@ export const termDepositFormSteps = [
   },
   {
     id: 5,
-    label: "Accounting entries and events",
+    label: "Product to GL mapping and events",
     index: 5,
   },
 ];
@@ -1187,6 +1214,7 @@ export const CapitalizationOptions = [
     text: "Upon booking",
     value: 0,
   },
+
 ];
 
 export const GlAccountTypes = [

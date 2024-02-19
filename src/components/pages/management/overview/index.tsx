@@ -1,16 +1,15 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useContext } from "react";
 import {
   OverviewDonutChartInfo,
   InvestmentVolume,
 } from "@app/components/Charts";
-import { OverviewContext } from "@app/utils";
+import { AppContext, OverviewContext } from "@app/utils";
 import { OverviewDiv, QuickLinks } from "@app/components";
 import { InvestmentsRanking } from "@app/components/management";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetInvestmentDashboardStatsQuery } from "@app/api";
 import { WithdrawSvg, UserSvg, InvestmentSvg } from "@app/assets/images";
-import { currencyFormatter } from "@app/utils/formatCurrency"
-
+import { currencyFormatter } from "@app/utils/formatCurrency";
 
 export const updateInvestmentTabs = (data, tabs) => {
   return tabs.map((tab) => {
@@ -35,6 +34,8 @@ export const updateInvestmentTabs = (data, tabs) => {
 
 // import { createOverviewState } from '../../../utils'
 export default function Overview() {
+  const { defaultCurrency } = useContext(AppContext);
+  console.log("🚀 ~ Overview ~ defaultCurrency:", defaultCurrency)
   const [overviewTabStats, setOverviewTabStats] = useState(null);
   const navigate = useNavigate();
   const {
@@ -46,19 +47,19 @@ export default function Overview() {
   const [tabs, setTabs] = useState([
     {
       title: "All Investments",
-      amount: 0.00,
+      amount: 0.0,
       totalValue: "",
       icon: <InvestmentSvg />,
     },
     {
       title: "Active Investments",
-      amount: 0.00,
+      amount: 0.0,
       totalValue: "",
       icon: <UserSvg />,
     },
     {
       title: "Liquidated Investments",
-      amount: 0.00,
+      amount: 0.0,
       totalValue: "",
       icon: <WithdrawSvg />,
     },
@@ -85,11 +86,8 @@ export default function Overview() {
     // state?.setData('name', tab.title)
   };
 
-
-
   useEffect(() => {
     if (dashboardStats) {
- 
       setOverviewTabStats(dashboardStats.data);
     }
   }, [dashboardStats, isDashboardStatsSuccess]);
@@ -99,7 +97,6 @@ export default function Overview() {
       setTabs(updateInvestmentTabs(overviewTabStats, tabs));
     }
   }, [overviewTabStats]);
-
 
   const value = useMemo(
     () => ({
@@ -117,12 +114,13 @@ export default function Overview() {
             <div className="grid w-full max-w-[350px]  gap-5">
               {tabs.map((tab) => (
                 <div
-
                   onClick={() => {
                     dataChange(tab);
                   }}
                   key={tab.title}
-                  className={`${isLoadingDashboardStats ? 'animate-pulse opacity-50' : ''}  cursor-pointer flex gap-3 rounded-[5px] bg-[#FFFFFF] px-6 py-8 shadow-custom`}
+                  className={`${
+                    isLoadingDashboardStats ? "animate-pulse opacity-50" : ""
+                  }  cursor-pointer flex gap-3 rounded-[5px] bg-[#FFFFFF] px-6 py-8 shadow-custom`}
                 >
                   <div className="flex items-center">
                     <div className="h-[45px] w-[45px] rounded-full bg-[#D4F7DC] flex items-center justify-center">
@@ -134,7 +132,10 @@ export default function Overview() {
                       {tab.title}
                     </span>
                     <span className="text-[20px] font-semibold text-[#636363]">
-                      {currencyFormatter(tab.amount, 'NGN')}
+                      {currencyFormatter(
+                        tab.amount,
+                        defaultCurrency?.abbreviation
+                      )}
                     </span>
                     <span className="text-xs text-[#63636380]">
                       {tab.totalValue}

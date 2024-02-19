@@ -18,6 +18,7 @@ const LinkItem = ({ children, buttonOptions, permissions, setActive, active, act
             disabled={!permissions.includes(item?.permission)}
             data-testid="btn-1"
             onClick={() => {
+              if (!permissions.includes(item?.permission)) return;
               if (item.isUrl) {
                 goToUrl(item.url, navigate)
               } else {

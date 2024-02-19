@@ -88,7 +88,7 @@ export const DropDownOptions: any = {
         },
       ],
     },
-    { 
+    {
       draft: [
         {
           id: "",
@@ -147,7 +147,7 @@ export const DropDownOptions: any = {
         },
       ],
     },
-    { 
+    {
       draft: [
         {
           id: "",
@@ -414,25 +414,25 @@ export const IndividualDropDownOptions: any = {
       id: "",
       text: "View",
       icon: "FaEye",
-      key: "view"
+      key: "view",
     },
     {
       id: "",
       text: "Part Liquidate",
       icon: "FaBan",
-      key: "part_liquidate"
+      key: "part_liquidate",
     },
     {
       id: "",
       text: "Early Liquidate",
       icon: "FaRegTimesCircle",
-      key: "early_liquidate"
+      key: "early_liquidate",
     },
     {
       id: "",
       text: "Restructure",
       icon: "BiSolidReceipt",
-      key: "restructure"
+      key: "restructure",
     },
   ],
   liquidated: [
@@ -440,7 +440,7 @@ export const IndividualDropDownOptions: any = {
       id: "",
       text: "View",
       icon: "FaEye",
-      key: "view"
+      key: "view",
     },
   ],
   booking: [
@@ -487,7 +487,7 @@ export const IndividualDropDownOptions: any = {
         },
       ],
     },
-    { 
+    {
       draft: [
         {
           id: "",
@@ -900,7 +900,6 @@ export const overviewDrillDownIndividualHeader = [
     hasSelect: false,
     hasDateSelect: true,
   },
-
 ];
 export const individualHeader = [
   {
@@ -1288,7 +1287,7 @@ export const ButtonOptions = [
         title: "Treasury Bill",
         key: "treasury-bill",
         isUrl: true,
-        url: "#",
+        url: "/product-factory/investment/treasury-bill/create",
         permission: "CREATE_INVESTMENT_PRODUCT",
       },
       {
@@ -1297,10 +1296,26 @@ export const ButtonOptions = [
         isUrl: true,
         url: "#",
         permission: "CREATE_INVESTMENT_PRODUCT",
+        links: [
+          {
+            title: "Bonds",
+            key: "bonds",
+            isUrl: true,
+            url: "bonds/create",
+            permission: "CREATE_INVESTMENT_PRODUCT",
+          },
+          {
+            title: "Commercial paper",
+            key: "commercial-paper",
+            isUrl: true,
+            url: "commercial-paper/create",
+            permission: "CREATE_INVESTMENT_PRODUCT",
+          },
+        ],
       },
     ],
   },
 ];
 export const SpecificCategory = {
-  individual: 'individual'
-}
+  individual: "individual",
+};
