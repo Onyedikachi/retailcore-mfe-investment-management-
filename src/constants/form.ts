@@ -655,6 +655,18 @@ export const LiquidationSchema = yup.object({
   maxAmount: yup.number(),
 });
 
+export const treasuryBillglMappingSchema = yup.object({
+  TermDepositLiabilityLedger: yup
+    .string()
+    .required("Term Deposit liability account is required"),
+  InterestAccrualLedger: yup
+    .string()
+    .required("Interest accrual account is required"),
+  InterestExpenseLedger: yup
+    .string()
+    .required("Interest expense account is required"),
+});
+
 export const glMappingSchema = yup.object({
   TermDepositLiabilityAccount: yup
     .string()
