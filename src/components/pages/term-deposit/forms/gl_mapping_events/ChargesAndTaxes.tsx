@@ -86,7 +86,7 @@ export default ({
             </div>
 
             {/* Taxes */}
-            <div className="relative bg-[#fff] w-full">
+            {/* <div className="relative bg-[#fff] w-full">
               <div className="flex flex-row w-full items-start">
                 <span className="w-[300px] relative">Applicable tax(es)</span>
                 <div className="w-full flex flex-col">
@@ -113,7 +113,7 @@ export default ({
                   )}
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         )}
       </div>
