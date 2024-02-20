@@ -15,6 +15,7 @@ import {
   useGetProductDetailQuery,
   useModifyProductMutation,
   useModifyRequestMutation,
+  useGetChargesQuery,
 } from "@app/api";
 import {
   Breadcrumbs,
@@ -30,6 +31,7 @@ import { handleDraft } from "./handleDraft";
 import handleFormRef from "./handleFormRef";
 import FormComponent from "../FormComponent";
 import { AppContext } from "@app/utils";
+import { useGetApplicableChargesQuery, useGetApplicableTaxesQuery } from "@app/api/productMgtApi";
 
 export function handleNext(step, setStep, termDepositFormSteps) {
   step < termDepositFormSteps.length && setStep(step + 1);
@@ -135,10 +137,10 @@ export const handleRequestIsSuccess = ({
         productName: data?.productInfo?.productName,
         customerName: data?.customerBookingInfoModel?.customerName,
         principal: data?.facilityDetailsModel?.principal,
-        investmentProduct:data?.facilityDetailsModel?.investmentProductName,
+        investmentProduct: data?.facilityDetailsModel?.investmentProductName,
         description: data?.productInfo?.description,
         slogan: data?.productInfo?.slogan,
-        
+
         currency: data?.productInfo?.currency,
         prodType: data?.productType,
         state: data?.state,
@@ -197,11 +199,11 @@ export const handleMessage = ({
     setFailedText(Messages.PRODUCT_DRAFT_FAILED);
     setFailedSubtext(
       error?.message?.message ||
-        modifyError?.message?.message ||
-        modifyRequestError?.message?.message ||
-        error?.message?.Message ||
-        modifyError?.message?.Message ||
-        modifyRequestError?.message?.Message
+      modifyError?.message?.message ||
+      modifyRequestError?.message?.message ||
+      error?.message?.Message ||
+      modifyError?.message?.Message ||
+      modifyRequestError?.message?.Message
     );
     setFailed(true);
   }
@@ -211,10 +213,9 @@ export function handleNav({ process, step, setStep, navigate, id }) {
   step < termDepositFormSteps.length
     ? handleNext(step, setStep, termDepositFormSteps)
     : navigate(
-        `/product-factory/investment/term-deposit/${process}?${
-          id ? `id=${id}&` : ""
-        }stage=summary`
-      );
+      `/product-factory/investment/term-deposit/${process}?${id ? `id=${id}&` : ""
+      }stage=summary`
+    );
 }
 
 export default function CreateTermDeposit() {
@@ -225,7 +226,7 @@ export default function CreateTermDeposit() {
   const refresh = searchParams.get("refresh");
   const activeId = useRef(null);
   const previousData = useRef({});
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(5);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [subText, setSubText] = useState("");
   const [successText, setSuccessText] = useState("");
@@ -251,10 +252,10 @@ export default function CreateTermDeposit() {
       customerCategory: null,
     },
     events: {
-      principalDeposit: {charges: [], taxes: []},
-      partLiquidation: {charges: [], taxes: []},
-      earlyLiquidation: {charges: [], taxes: []},
-      maturityLiquidation: {charges: [], taxes: []}
+      principalDeposit: { charges: [], taxes: [] },
+      partLiquidation: { charges: [], taxes: [] },
+      earlyLiquidation: { charges: [], taxes: [] },
+      maturityLiquidation: { charges: [], taxes: [] }
     },
     pricingConfiguration: {
       interestRateRangeType: 0,

@@ -24,6 +24,10 @@ export default ({
   event,
   setFormData,
   header,
+  charges,
+  chargesLoading,
+  taxes,
+  taxesLoading
 }) => {
     const type = useRef("")
   return (
@@ -63,6 +67,7 @@ export default ({
                       values={values}
                       event={event}
                       type={"charges"}
+                      availableOptions={charges}
                     />
                     <span className="ml-12 text-danger-500 underline" onClick={()=> handlePageSave("charge", type)}>
                       Create new charge
@@ -87,6 +92,7 @@ export default ({
                 <div className="w-full flex flex-col">
                   <div className="flex flex-row">
                     <MultiSelect
+                    availableOptions={taxes}
                       addedOptions={values?.events[event].taxes}
                       setFormData={setFormData}
                       values={values}

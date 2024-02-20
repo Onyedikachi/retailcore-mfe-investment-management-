@@ -13,6 +13,7 @@ import AddedChargeList from "./AddedChargeList";
 import AddedTaxesList from "./AddedTaxesList";
 import ChargesAndTaxes from "./ChargesAndTaxes";
 import { Icon } from "@iconify/react";
+import { useGetApplicableChargesQuery, useGetApplicableTaxesQuery } from "@app/api";
 
 const GlMappingOptions = [
     {
@@ -43,6 +44,7 @@ export const handleClear = (
     reset();
     setClearField(!clearFields);
 };
+
 export function InputDivs({
     children,
     label,
@@ -151,6 +153,18 @@ export default ({ proceed, formData, setFormData, setDisabled, initiateDraft }) 
         // values,
     });
 
+    const {
+        data: charges,
+        isLoading: chargesLoading,
+        isSuccess: chargesSuccess,
+    } = useGetApplicableChargesQuery();
+
+    const {
+        data: taxes,
+        isLoading: taxesLoading,
+        isSuccess: taxesSuccess,
+    } = useGetApplicableTaxesQuery();
+
     const values = getValues();
 
     useEffect(() => console.log(values), [values]);
@@ -246,10 +260,10 @@ export default ({ proceed, formData, setFormData, setDisabled, initiateDraft }) 
                 </div>
             </div>
 
-            <ChargesAndTaxes {...{ activeTab, setActiveTab, values, setFormData, tab: 2, header: "Principal Deposit", event: "principalDeposit" }} />
-            <ChargesAndTaxes {...{ activeTab, setActiveTab, values, setFormData, tab: 3, header: "Part Liquidation", event: "partLiquidation" }} />
-            <ChargesAndTaxes {...{ activeTab, setActiveTab, values, setFormData, tab: 4, header: "Early Liquidation", event: "earlyLiquidation" }} />
-            <ChargesAndTaxes {...{ activeTab, setActiveTab, values, setFormData, tab: 5, header: "Maturity Liquidation", event: "maturityLiquidation" }} />
+            <ChargesAndTaxes {...{ charges, chargesLoading, taxes, taxesLoading, activeTab, setActiveTab, values, setFormData, tab: 2, header: "Principal Deposit", event: "principalDeposit" }} />
+            <ChargesAndTaxes {...{ charges, chargesLoading, taxes, taxesLoading, activeTab, setActiveTab, values, setFormData, tab: 3, header: "Part Liquidation", event: "partLiquidation" }} />
+            <ChargesAndTaxes {...{ charges, chargesLoading, taxes, taxesLoading, activeTab, setActiveTab, values, setFormData, tab: 4, header: "Early Liquidation", event: "earlyLiquidation" }} />
+            <ChargesAndTaxes {...{ charges, chargesLoading, taxes, taxesLoading, activeTab, setActiveTab, values, setFormData, tab: 5, header: "Maturity Liquidation", event: "maturityLiquidation" }} />
         </form>
     )
 }

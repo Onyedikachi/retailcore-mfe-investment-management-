@@ -3,7 +3,7 @@ import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import OutsideClickHandler from "react-outside-click-handler";
 
-export default ({ addedOptions, values, setFormData, event, type }) => {
+export default ({ addedOptions, values, setFormData, event, type, availableOptions }) => {
     const [listOpen, setListOpen] = useState(false);
     const [selectedOptions, setSelectedOptions] = useState([]);
 
@@ -49,7 +49,7 @@ export default ({ addedOptions, values, setFormData, event, type }) => {
                         <div className="h-[90%] overflow-y-scroll mb-1" >
                             <div className="flex flex-col">
                                 {
-                                    ["a", "b", "c", "d", "e", "f"]
+                                    availableOptions
                                         .filter(e => !addedOptions.includes(e))
                                         .map((value, index) =>
                                             <div key={value} className="flex flex-row items-center mb-2">

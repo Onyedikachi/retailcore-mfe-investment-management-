@@ -32,7 +32,7 @@ const urls = {
 
   INVESTMENT_CALC: "/investment/calc",
   INVESTMENT_DASHBOARD_STATS: '/Dashboard/investmentstats',
-
+  CHARGES: "/charges/"
 
 };
 
