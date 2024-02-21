@@ -1,65 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
-  <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/App.test.tsx">
-    <testCase name="Test App Component If App is rendered wihout issues" duration="43">
-      <failure message="Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it&apos;s defined in, or you might have mixed up default and named imports."><![CDATA[Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
-
-Check the render method of `App`.
-    at createFiberFromTypeAndProps (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:25058:21)
-    at createFiberFromElement (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:25086:15)
-    at reconcileSingleElement (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:14052:23)
-    at reconcileChildFibers (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:14112:35)
-    at reconcileChildren (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:16990:28)
-    at mountIndeterminateComponent (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:17890:5)
-    at beginWork (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:19049:16)
-    at HTMLUnknownElement.callCallback (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:3945:14)
-    at HTMLUnknownElement.callTheUserObjectsOperation (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jsdom/lib/jsdom/living/generated/EventListener.js:26:30)
-    at innerInvokeEventListeners (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:338:25)
-    at invokeEventListeners (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:274:3)
-    at HTMLUnknownElementImpl._dispatch (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:221:9)
-    at HTMLUnknownElementImpl.dispatchEvent (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:94:17)
-    at HTMLUnknownElement.dispatchEvent (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jsdom/lib/jsdom/living/generated/EventTarget.js:231:34)
-    at Object.invokeGuardedCallbackDev (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:3994:16)
-    at invokeGuardedCallback (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:4056:31)
-    at beginWork$1 (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:23964:7)
-    at performUnitOfWork (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:22779:12)
-    at workLoopSync (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:22707:5)
-    at renderRootSync (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:22670:7)
-    at performSyncWorkOnRoot (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:22293:18)
-    at scheduleUpdateOnFiber (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:21881:7)
-    at updateContainer (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:25482:3)
-    at /Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:26021:7
-    at unbatchedUpdates (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:22431:12)
-    at legacyRenderSubtreeIntoContainer (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:26020:5)
-    at Object.render (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:26103:10)
-    at /Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/@testing-library/react/dist/pure.js:101:25
-    at batchedUpdates$1 (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:22380:12)
-    at act (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom-test-utils.development.js:1042:14)
-    at render (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/@testing-library/react/dist/pure.js:97:26)
-    at Object.<anonymous> (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/App.test.tsx:23:35)
-    at Promise.then.completed (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jest-circus/build/utils.js:391:28)
-    at new Promise (<anonymous>)
-    at callAsyncCircusFn (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jest-circus/build/utils.js:316:10)
-    at _callCircusTest (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jest-circus/build/run.js:218:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jest-circus/build/run.js:155:3)
-    at _runTestsForDescribeBlock (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jest-circus/build/run.js:66:9)
-    at _runTestsForDescribeBlock (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jest-circus/build/run.js:60:9)
-    at run (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jest-circus/build/run.js:25:3)
-    at runAndTransformResultsToJestFormat (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:170:21)
-    at jestAdapter (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:82:19)
-    at runTestInternal (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jest-runner/build/runTest.js:389:16)
-    at runTest (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jest-runner/build/runTest.js:475:34)
-    at Object.worker (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jest-runner/build/testWorker.js:135:12)]]></failure>
-    </testCase>
-  </file>
-  <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/Sterling-investment.tsx">
-    <testCase name="microfrontend bootstraps the app" duration="7"/>
-    <testCase name="microfrontend mounts and unmounts" duration="35"/>
-  </file>
-  <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/pages/management/IndexComponent.test.tsx">
-    <testCase name="Dashboard should render Investment Management dashboard with Overview tab selected by default" duration="508"/>
-    <testCase name="Dashboard should render Investment Management dashboard with Book Investment button" duration="149"/>
-    <testCase name="Dashboard should allow user to switch between Overview, Corporate and Individual tabs" duration="180"/>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Pages/term-deposit/forms/gl_mapping_events/AddedChargeList.test.tsx">
+    <testCase name="AddedChargeList should render a div with class &apos;flex flex-col w-full mt-6&apos;" duration="76"/>
+    <testCase name="AddedChargeList should update the applicableCharges value when removing a charge" duration="61"/>
   </file>
 </testExecutions>
