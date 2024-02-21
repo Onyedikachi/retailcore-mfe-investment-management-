@@ -123,7 +123,8 @@ export const handleClick = (
 
 export default ({ proceed, formData, setFormData, setDisabled, initiateDraft }) => {
     function onProceed(values, mapOptions) {
-        // setFormData(values);
+        console.log("heyyy")
+        setFormData(values);
         proceed();
     }
 
@@ -145,7 +146,7 @@ export default ({ proceed, formData, setFormData, setDisabled, initiateDraft }) 
         getValues,
         formState: { errors, isValid },
     } = useForm({
-        // resolver: yupResolver(treasuryBillglMappingSchema),
+        // resolver: yupResolver(glMappingSchema),
         defaultValues: formData,
         mode: "all",
         // values,
@@ -169,13 +170,13 @@ export default ({ proceed, formData, setFormData, setDisabled, initiateDraft }) 
         setFormData({ data: formData, mapOptions });
     }, [mapOptions, initiateDraft]);
 
+    // useEffect(() => {
+    //     if (mapOptions.length === 3) {
+    //         setDisabled(false);
+    //     }
+    // }, [values, mapOptions]);
     useEffect(() => {
-        if (mapOptions.length === 3) {
-            setDisabled(false);
-        }
-    }, [values, mapOptions]);
-    useEffect(() => {
-        setDisabled(true);
+        setDisabled(false);
     }, []);
 
     useEffect(() => {

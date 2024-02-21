@@ -126,7 +126,7 @@ export default ({
           )}
         </div>
       </div>
-      <ChargeModal id={searchParams.get("charge")}  closeModal={() => navigate(-1)}/>
+      <ChargeModal id={searchParams.get("charge")}  closeModal={() => setSearchParams()}/>
     </Fragment>
   );
 };
