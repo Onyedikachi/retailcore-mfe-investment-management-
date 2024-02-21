@@ -262,7 +262,7 @@ export const DropDownOptions: any = {
     {
       id: "",
       text: "Generate certificate",
-      icon: "BiSolidReceipt",
+      icon: "IoArrowUndo",
     },
     {
       id: "",
@@ -436,7 +436,7 @@ export const IndividualDropDownOptions: any = {
     {
       id: "",
       text: "Generate certificate",
-      icon: "BiSolidReceipt",
+      icon: "IoArrowUndo",
       key: "certificate",
     },
     {
