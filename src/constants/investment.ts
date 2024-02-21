@@ -451,7 +451,7 @@ export const treasuryBillFormSteps = [
   },
   {
     id: 5,
-    label: "Product to GL mapping and events",
+    label: "Product to GL mapping & events",
     index: 5,
   },
 ];
@@ -478,7 +478,7 @@ export const termDepositFormSteps = [
   },
   {
     id: 5,
-    label: "Product to GL mapping and events",
+    label: "Product to GL mapping & events",
     index: 5,
   },
 ];

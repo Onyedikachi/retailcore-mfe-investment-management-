@@ -49,7 +49,6 @@ export const handleClear = (
   setClearField(!clearFields);
   setMapOptions([]);
   reset();
- 
 };
 
 export function InputDivs({
@@ -146,8 +145,7 @@ export default ({
 
   const [mapOptions, setMapOptions] = useState([]);
   const [clearFields, setClearField] = useState(false);
-  const [activeTab, setActiveTab] = useState<number | null>(null);
-
+  const [activeTab, setActiveTab] = useState<any>([]);
   const [activeCharge, setActiveCharge] = useState(null);
 
   const {
@@ -184,7 +182,7 @@ export default ({
     data: tax,
     isLoading: taxLoading,
     isSuccess: taxSuccess,
-  } = useGetTaxQuery({id: "ac98e00f-c6d0-48ff-a201-9303ac75f5d5"});
+  } = useGetTaxQuery({ id: "ac98e00f-c6d0-48ff-a201-9303ac75f5d5" });
 
   const values = getValues();
 
@@ -193,8 +191,8 @@ export default ({
   }, [mapOptions, initiateDraft]);
 
   useEffect(() => {
-    console.log(tax)
-  }, [tax])
+    console.log(tax);
+  }, [tax]);
 
   useEffect(() => {
     if (mapOptions.length === 3) {
@@ -219,12 +217,42 @@ export default ({
     }
   }, [setValue, formData]);
   function handleTab() {
-    if (activeTab === 1) {
-      setActiveTab(null);
+    if (activeTab.includes(1)) {
+      setActiveTab(activeTab.filter((i) => i !== 1));
       return;
     }
-    setActiveTab(1);
+    setActiveTab([...activeTab, 1]);
   }
+
+  useEffect(() => {
+    if (
+      formData?.liquidation?.part_AllowPartLiquidation &&
+      formData?.liquidation.part_LiquidationPenalty == 4
+    ) {
+      setValue("partLiquidationChargesAndTaxes", {
+        applicableCharges: formData?.liquidation?.part_SpecificCharges?.map(
+          (i) => i.id
+        ),
+        applicableTaxes: [],
+      });
+    //   setActiveTab([...activeTab, 3]);
+    }
+    if (
+      formData?.liquidation?.early_AllowEarlyLiquidation &&
+      formData?.liquidation.early_LiquidationPenalty == 4
+    ) {
+      setValue("earlyLiquidationChargesAndTaxes", {
+        applicableCharges: formData?.liquidation?.early_SpecificCharges?.map(
+          (i) => i.id
+        ),
+        applicableTaxes: [],
+      });
+    //   setActiveTab([...activeTab, 4]);
+    }
+  }, [
+    formData?.liquidation?.part_AllowPartLiquidation,
+    formData?.liquidation?.early_AllowEarlyLiquidation,
+  ]);
 
   return (
     <Fragment>
@@ -235,36 +263,30 @@ export default ({
         onSubmit={handleSubmit((d) => onProceed(proceed, values))}
       >
         <div>
-          <div
-            style={{
-              boxShadow:
-                "0px 0px 1px 0px rgba(26, 32, 36, 0.32), 0px 1px 2px 0px rgba(91, 104, 113, 0.32)",
-            }}
-            className="bg-[#fff] border border-[#E6E9ED] rounded-[6px]"
-          >
-            <div
-             
-              className="border-b border-[#E6E9ED] flex justify-between items-center px-6 py-[14px]"
-            >
-              <span  onClick={() => handleTab()} className="text-[18px] flex  gap-[1px] text-[#636363] font-semibold flex-row items-center">
+          <div className="bg-[#fff] border border-[#EEEEEE] rounded-[6px]">
+            <div className="border-b border-[#EEEEEE] flex justify-between items-center px-6 py-[14px]">
+              <span
+                onClick={() => handleTab()}
+                className="text-[18px] flex  gap-[1px] text-[#636363] font-semibold flex-row items-center"
+              >
                 <Icon
                   icon="ph:caret-right-fill"
                   className={`text-danger-500 text-sm mr-4 ${
-                    activeTab === 1 && "rotate-90"
+                    activeTab.includes(1) && "rotate-90"
                   }`}
                 />
                 Product to GL Mapping <RedDot />
               </span>
-              <span
+              {/* <span
                 className="font-normal text-sm text-danger-500 italic underline"
                 onClick={() =>
                   handleClear(setClearField, clearFields, setMapOptions, reset)
                 }
               >
                 Clear all entries
-              </span>
+              </span> */}
             </div>
-            {activeTab === 1 && (
+            {activeTab.includes(1) && (
               <div className="flex flex-col gap-4 px-[30px] py-5">
                 <div className="flex flex-col items-start gap-y-5">
                   {GlMappingOptions.map((type) => (
@@ -293,6 +315,7 @@ export default ({
                               trigger={trigger}
                               errors={errors}
                               clearFields={clearFields}
+                              placeholder="Type to search and select"
                             />
                           </div>
                         </div>
@@ -318,7 +341,8 @@ export default ({
             header: "Principal Deposit",
             event: "principalDeposit",
             productData: formData,
-            disabled:false
+            disabled: false,
+            placeholder: "Type to search and select",
           }}
         />
         {formData?.liquidation?.part_AllowPartLiquidation && (
@@ -336,7 +360,8 @@ export default ({
               header: "Part Liquidation",
               event: "partLiquidation",
               productData: formData,
-              disabled:formData?.liquidation.part_LiquidationPenalty == 4
+              disabled: formData?.liquidation.part_LiquidationPenalty == 4 && formData?.liquidation?.part_SpecificCharges.length,
+              placeholder: "Type to search and select",
             }}
           />
         )}
@@ -355,7 +380,8 @@ export default ({
               header: "Early Liquidation",
               event: "earlyLiquidation",
               productData: formData,
-              disabled:formData?.liquidation.early_LiquidationPenalty == 4
+              disabled: formData?.liquidation.early_LiquidationPenalty == 4 && formData?.liquidation?.early_SpecificCharges.length,
+              placeholder: "Type to search and select",
             }}
           />
         )}
