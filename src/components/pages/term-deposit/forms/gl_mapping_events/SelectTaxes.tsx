@@ -11,6 +11,7 @@ export default ({
   type,
   availableOptions,
   disabled,
+  placeholder
 }) => {
   const [listOpen, setListOpen] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -35,7 +36,7 @@ export default ({
 }
 
   const hasOption = (option) => {
-    return selectedOptions.some((e) => e.tax_id === option.tax_id);
+    return selectedOptions.some((e) => e === option.tax_id);
   };
 
   useEffect(() => {
@@ -62,6 +63,7 @@ export default ({
             data-testid="gli-input"
             className="w-full  ring-0 outline-none bg-transparent disabled:opacity-50"
             value={searchQuery}
+            placeholder={placeholder}
           />
         </div>
         {listOpen && (

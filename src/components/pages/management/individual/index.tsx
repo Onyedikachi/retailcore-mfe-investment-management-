@@ -426,6 +426,7 @@ export default function Individual({ tab }: any) {
               setQuery={setQuery}
               hasMore={hasMore}
               fetchMoreData={fetchMoreData}
+              tab={tab}
             />
           </div>
         </div>

@@ -156,7 +156,7 @@ export const CustomerEligibilityCriteriaSchema = yup
         otherwise: yup.number().typeError("Invalid value").nullable(),
       }),
 
-    corporateCustomerType: yup.array().when("customerCategory", {
+    customerType: yup.array().when("customerCategory", {
       is: CustomerCategoryType.Corporate,
       then: yup
         .array()

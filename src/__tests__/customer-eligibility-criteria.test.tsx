@@ -9,7 +9,7 @@ const fData = {
   customerCategory: "",
   ageGroupMin: "",
   ageGroupMax: "",
-  corporateCustomerType: ""
+  customerType: ""
 }
 
 jest.mock("react-router-dom", () => ({

@@ -12,7 +12,9 @@ export default ({
   type,
   availableOptions,
   disabled,
+  placeholder
 }) => {
+ 
   const [listOpen, setListOpen] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -37,7 +39,7 @@ export default ({
   };
 
   const hasOption = (option) => {
-    return selectedOptions.some((e) => e.charge_id === option.charge_id);
+    return selectedOptions.some((e) => e === option.charge_id);
   };
 
   useEffect(() => {
@@ -65,6 +67,7 @@ export default ({
             className="w-full  ring-0 outline-none bg-transparent disabled:opacity-50"
             value={searchQuery}
             disabled={disabled}
+            placeholder={placeholder}
           />
         </div>
         {listOpen && (
