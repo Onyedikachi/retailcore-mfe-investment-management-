@@ -4,6 +4,7 @@ import { FaSearch } from "react-icons/fa";
 import { tabLinks } from "@app/constants";
 import { useGetGlClassQuery, useGetLedgersQuery } from "@app/api";
 import { onChange } from "./DateSelect";
+import BottomBarLoader from "../BottomBarLoader";
 
 export function closeDropdown(setIsOpen) {
   setIsOpen(false);
@@ -35,23 +36,6 @@ export default function EntriesAndEventsSearchResults({
     isFetching,
   } = useGetLedgersQuery({ gl_class: classId }, { skip: !classId });
 
-  const GlMappingOptions = [
-    {
-      id: 0,
-      text: "Term Deposit Liability account",
-      key: "TermDepositLiabilityAccount",
-    },
-    {
-      id: 1,
-      text: "Interest accural account",
-      key: "InterestAccrualAccount",
-    },
-    {
-      id: 2,
-      text: "Interest expense account",
-      key: "InterestExpenseAccount",
-    },
-  ];
 
   useEffect(() => {
     console.log(query)
@@ -110,7 +94,7 @@ export default function EntriesAndEventsSearchResults({
           </div>
           {isOpen && (
             <div className="flex flex-col shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]  p-4 rounded-b-lg top-[35px] bg-white z-[400] absolute w-full min-w-[360px]">
-              <div data-testid="glclasses" className="flex justify-between mb-3">
+              <div data-testid="glclasses" className="flex justify-between mb-3 gap-x-3 max-w-max overflow-x-auto no-scrollbar">
                 {glClass.map((item) => (
                   <div test-id="class-id-item"
                     key={item.id}
@@ -118,18 +102,16 @@ export default function EntriesAndEventsSearchResults({
                     className="flex flex-col cursor-pointer"
                   >
                     <div
-                      className={`${
-                        classId === item.id
-                      } ? 'text-[#252C32] text-[14px] font-semibold' : 'text-[#252C32] text-sm font-normal'`}
+                      className={`${classId === item.id
+                        } ? 'text-[#252C32] text-[14px] font-semibold' : 'text-[#252C32] text-sm font-normal'`}
                     >
                       {item.name}
                     </div>
                     <div
-                      className={`${
-                        classId === item.id
+                      className={`${classId === item.id
                           ? "bg-sterling-red-800"
                           : "bg-[#DDE2E4]"
-                      }   h-1  w-full rounded-lg`}
+                        }   h-1  w-full rounded-lg`}
                     ></div>
                   </div>
                 ))}
@@ -148,9 +130,8 @@ export default function EntriesAndEventsSearchResults({
                         }}
                       >
                         <span
-                          className={`${
-                            toggleMenu === menu.id ? "transform rotate-45" : ""
-                          }`}
+                          className={`${toggleMenu === menu.id ? "transform rotate-45" : ""
+                            }`}
                         >
                           <svg
                             width="15"
@@ -170,17 +151,15 @@ export default function EntriesAndEventsSearchResults({
 
                       {toggleMenu === menu.id && (
                         <div className="ml-[36px] flex flex-col gap-y-1 mt-1">
-                          {menu?.leaf_ledgers
-                            .filter((i) =>
+                          {menu?.leaf_ledgers?.filter((i) =>
                               i.name.toLowerCase().includes(query.toLowerCase())
                             )
                             .map((subMenu, id) => (
                               <p
-                                className={`text-xs cursor-pointer hover:bg-[#E8C8C85E] py-[3px] rounded px-1 ${
-                                  query === subMenu.name
+                                className={`text-xs cursor-pointer hover:bg-[#E8C8C85E] py-[3px] rounded px-1 ${query === subMenu.name
                                     ? "bg-[#E8C8C85E] "
                                     : ""
-                                }`}
+                                  }`}
                                 onClick={() => {
                                   register(inputName);
                                   handleClick(inputName, subMenu);
@@ -199,6 +178,7 @@ export default function EntriesAndEventsSearchResults({
                   ))}
                 </div>
               )}
+             {(ledgerIsLoading || isLoading) &&  <BottomBarLoader w="w-4" h="h-4" />}
             </div>
           )}
           {((errors && errors[inputName]) || error) && (

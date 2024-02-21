@@ -261,6 +261,11 @@ export const DropDownOptions: any = {
     },
     {
       id: "",
+      text: "Generate certificate",
+      icon: "IoArrowUndo",
+    },
+    {
+      id: "",
       text: "Restructure",
       icon: "BiSolidReceipt",
     },
@@ -427,6 +432,12 @@ export const IndividualDropDownOptions: any = {
       text: "Early Liquidate",
       icon: "FaRegTimesCircle",
       key: "early_liquidate",
+    },
+    {
+      id: "",
+      text: "Generate certificate",
+      icon: "IoArrowUndo",
+      key: "certificate",
     },
     {
       id: "",

@@ -22,6 +22,7 @@ import {
   SpecificCategory,
   InvestmentBookingRequestType,
   IndividualTypeFilterOptions,
+  CustomerCategoryType,
 } from "@app/constants";
 import { sortTabStatus } from "@app/utils/sortTabStatus";
 import { useSearchParams } from "react-router-dom";
@@ -100,15 +101,26 @@ export const handleRefresh = (
   requestRefetch,
   selected,
   setProductData,
-  setRequestData
+  setRequestData,
+  tab
 ) => {
   if (category === StatusCategoryType?.Investments) {
     setProductData([]);
-    getProducts({ ...query, page: 1, filter_by: selected?.value });
+    getProducts({
+      ...query,
+      page: 1,
+      filter_by: selected?.value,
+      bookingType: CustomerCategoryType[tab],
+    });
     prodStatRefetch(query);
   } else {
     setRequestData([]);
-    getRequests({ ...query, page: 1, filter_by: selected?.value });
+    getRequests({
+      ...query,
+      page: 1,
+      filter_by: selected?.value,
+      bookingType: CustomerCategoryType[tab],
+    });
     requestRefetch(query);
   }
 };
@@ -120,7 +132,7 @@ export const handleSearch = (value, query, setQuery) => {
     search: value,
   });
 };
-export default function Individual() {
+export default function Individual({ tab }: any) {
   const { isChecker, setIsChecker, currencies } = useContext(AppContext);
   const [category, setCategory] = useState<string>(
     StatusCategoryType?.Investments
@@ -160,6 +172,7 @@ export default function Individual() {
     initiator_In: null,
     approvers_In: null,
     total: 0,
+    bookingType: CustomerCategoryType[tab],
   });
   const value = useMemo(
     () => ({
@@ -240,7 +253,7 @@ export default function Individual() {
     refetch: prodStatRefetch,
     isFetching: prodStatLoading,
   } = useGetInvestmentStatsQuery(
-    { filter_by: selected?.value },
+    { filter_by: selected?.value, bookingType: CustomerCategoryType[tab] },
     {
       skip: category !== StatusCategoryType?.Investments,
     }
@@ -251,7 +264,7 @@ export default function Individual() {
     refetch: requestRefetch,
     isFetching: requestStatLoading,
   } = useGetInvestmentRequestStatsQuery(
-    { filter_by: selected?.value },
+    { filter_by: selected?.value, bookingType: CustomerCategoryType[tab] },
     {
       skip: category !== StatusCategoryType.Requests,
     }
@@ -259,9 +272,19 @@ export default function Individual() {
 
   function fetch() {
     if (category === StatusCategoryType?.Investments) {
-      getProducts({ ...query, page: 1, filter_by: selected?.value });
+      getProducts({
+        ...query,
+        page: 1,
+        filter_by: selected?.value,
+        bookingType: CustomerCategoryType[tab],
+      });
     } else {
-      getRequests({ ...query, page: 1, filter_by: selected?.value });
+      getRequests({
+        ...query,
+        page: 1,
+        filter_by: selected?.value,
+        bookingType: CustomerCategoryType[tab],
+      });
     }
   }
 
@@ -283,6 +306,8 @@ export default function Individual() {
     query.requestType_In,
     query.initiator_In,
     query.approvers_In,
+    query.bookingType,
+    tab,
   ]);
   useEffect(() => {
     setCategory(
@@ -291,6 +316,9 @@ export default function Individual() {
         : StatusCategoryType?.Investments
     );
   }, [queryCategory]);
+  useEffect(() => {
+    setCategory(StatusCategoryType?.Investments);
+  }, [tab]);
   const { data: systemAlertData, isSuccess: systemAlertDataSuccess } =
     useGetSystemAlertQuery();
 
@@ -385,7 +413,8 @@ export default function Individual() {
                   requestRefetch,
                   selected,
                   setProductData,
-                  setRequestData
+                  setRequestData,
+                  tab
                 );
                 setQuery({ ...query, page: 1 });
               }}
@@ -397,6 +426,7 @@ export default function Individual() {
               setQuery={setQuery}
               hasMore={hasMore}
               fetchMoreData={fetchMoreData}
+              tab={tab}
             />
           </div>
         </div>

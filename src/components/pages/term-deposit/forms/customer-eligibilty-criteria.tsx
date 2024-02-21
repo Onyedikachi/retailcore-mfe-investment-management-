@@ -102,7 +102,7 @@ export default function CustomerEligibilityCriteria({
   const watchCustomerCategory = watch("customerCategory");
   const watchageGroupMin = watch("ageGroupMin");
   const watchageGroupMax = watch("ageGroupMax");
-
+  console.log("🚀 ~ errors:", errors)
   const selectedCategory = watch("category");
 
   const [isAdd, setIsAdd] = useState(false);

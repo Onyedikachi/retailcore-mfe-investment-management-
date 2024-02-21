@@ -13,7 +13,6 @@ import { AppContext } from "@app/utils";
 import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 export function DebitCreditTable({ dataTab }) {
-  useEffect(() => console.log(dataTab), [dataTab])
   const location = useLocation();
   const headers = [
     {

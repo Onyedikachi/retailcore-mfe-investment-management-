@@ -156,7 +156,7 @@ export const CustomerEligibilityCriteriaSchema = yup
         otherwise: yup.number().typeError("Invalid value").nullable(),
       }),
 
-    corporateCustomerType: yup.array().when("customerCategory", {
+    customerType: yup.array().when("customerCategory", {
       is: CustomerCategoryType.Corporate,
       then: yup
         .array()
@@ -589,10 +589,11 @@ export const liquiditySetupSchema = yup
         then: (schema) => schema.required("Provide value"),
         otherwise: (schema) => schema.nullable(),
       }),
-      part_SpecialInterestRate: yup
+    part_SpecialInterestRate: yup
       .number()
       .typeError("Invalid value")
-      .max(100, "Value exceeded") .when("part_LiquidationPenalty", {
+      .max(100, "Value exceeded")
+      .when("part_LiquidationPenalty", {
         is: (val) => parseInt(val, 10) === 3,
         then: (schema) => schema.required("Provide value"),
         otherwise: (schema) => schema.nullable(),
@@ -611,10 +612,11 @@ export const liquiditySetupSchema = yup
         then: (schema) => schema.required("Provide a notice period"),
         otherwise: (schema) => schema.nullable(),
       }),
-      eary_SpecialInterestRate: yup
+    eary_SpecialInterestRate: yup
       .number()
       .typeError("Invalid value")
-      .max(100, "Value exceeded") .when("early_LiquidationPenalty", {
+      .max(100, "Value exceeded")
+      .when("early_LiquidationPenalty", {
         is: (val) => parseInt(val, 10) === 3,
         then: (schema) => schema.required("Provide value"),
         otherwise: (schema) => schema.nullable(),
@@ -667,6 +669,25 @@ export const treasuryBillglMappingSchema = yup.object({
     .required("Interest expense account is required"),
 });
 
+export const chargesAndTaxesSchema = {
+  principalDepositChargesAndTaxes: yup.object().shape({
+    applicableCharges: yup.array().of(yup.string()),
+    applicableTaxes: yup.array().of(yup.string()),
+  }),
+  partLiquidationChargesAndTaxes: yup.object().shape({
+    applicableCharges: yup.array().of(yup.string()),
+    applicableTaxes: yup.array().of(yup.string()),
+  }),
+  earlyLiquidationChargesAndTaxes: yup.object().shape({
+    applicableCharges: yup.array().of(yup.string()),
+    applicableTaxes: yup.array().of(yup.string()),
+  }),
+  maturityLiquidationChargesAndTaxes: yup.object().shape({
+    applicableCharges: yup.array().of(yup.string()),
+    applicableTaxes: yup.array().of(yup.string()),
+  }),
+};
+
 export const glMappingSchema = yup.object({
   TermDepositLiabilityAccount: yup
     .string()
@@ -677,6 +698,22 @@ export const glMappingSchema = yup.object({
   InterestExpenseAccount: yup
     .string()
     .required("Interest expense account is required"),
+  principalDepositChargesAndTaxes: yup.object().shape({
+    applicableCharges: yup.array().of(yup.string()),
+    applicableTaxes: yup.array().of(yup.string()),
+  }),
+  partLiquidationChargesAndTaxes: yup.object().shape({
+    applicableCharges: yup.array().of(yup.string()),
+    applicableTaxes: yup.array().of(yup.string()),
+  }),
+  earlyLiquidationChargesAndTaxes: yup.object().shape({
+    applicableCharges: yup.array().of(yup.string()),
+    applicableTaxes: yup.array().of(yup.string()),
+  }),
+  maturityLiquidationChargesAndTaxes: yup.object().shape({
+    applicableCharges: yup.array().of(yup.string()),
+    applicableTaxes: yup.array().of(yup.string()),
+  }),
 });
 
 export const currencyOptions = [
@@ -709,65 +746,23 @@ export const customerTypeOptions = [
   {
     id: 1,
     text: "Limited liability company",
-    value: {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      name: "string",
-      amount: 0,
-    },
+    value: "Limited liability company",
   },
   {
     id: 2,
     text: "Partnership",
-    value: {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      name: "string",
-      amount: 0,
-    },
+    value: "Partnership",
   },
   {
     id: 3,
     text: "Religous body",
-    value: {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      name: "string",
-      amount: 0,
-    },
+    value: "Religous body",
   },
+
   {
     id: 4,
-    text: "Club/Association",
-    value: {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      name: "string",
-      amount: 0,
-    },
-  },
-  {
-    id: 2,
-    text: "Trust",
-    value: {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      name: "string",
-      amount: 0,
-    },
-  },
-  {
-    id: 2,
-    text: "Public entry",
-    value: {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      name: "string",
-      amount: 0,
-    },
-  },
-  {
-    id: 2,
     text: "SME",
-    value: {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      name: "string",
-      amount: 0,
-    },
+    value: "SME",
   },
 ];
 

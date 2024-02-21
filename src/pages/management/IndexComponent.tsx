@@ -5,7 +5,6 @@ import { useContext, useState } from "react";
 import SearchInput from "@app/components/SearchInput";
 import { Overview, Individual } from "@app/components/pages";
 import { useGetPostProductsMutation } from "@app/api";
-import { StatusCategoryType } from "@app/types";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "@app/utils";
 
@@ -112,8 +111,8 @@ export default function Dashboard() {
       </div>
       <div className="bg-[#F7F7F7] px-4 sm:px-6 lg:px-8 py-[30px] max-h-[100vh] overflow-y-auto">
         {(tab?.toLowerCase() == "overview" || !tab) && <Overview />}
-        {/* {tab.toLowerCase() == "corporate" && <Corporate />} */}
-        {tab?.toLowerCase() == "individual" && <Individual />}
+        {/* {tab?.toLowerCase() == "corporate" && <Corporate />} */}
+        {(tab?.toLowerCase() == "individual" || tab?.toLowerCase() == "corporate") && <Individual tab={tab} />}
       </div>
     </div>
   );

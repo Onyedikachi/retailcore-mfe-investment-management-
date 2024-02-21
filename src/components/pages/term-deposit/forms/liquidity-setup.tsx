@@ -135,10 +135,11 @@ export default function LiquiditySetup({
   const values = getValues();
 
   useEffect(() => {
+
     setValue("part_SpecificCharges", partOptionCharges);
     setValue("early_SpecificCharges", earlyOptionCharges);
   }, [partOptionCharges, earlyOptionCharges]);
-
+ 
   useEffect(() => {
     setDisabled(!isValid);
   }, [values, errors]);
@@ -385,7 +386,7 @@ export default function LiquiditySetup({
                           />
                         </div>
                         {watchPartLiquidationPenalty === 4 && (
-                          <div className="flex flex-wrap gap-x-1 gapy-1">
+                          <div className="flex flex-wrap gap-x-1 gap-y-1">
                             {partOptionCharges.map((i) => (
                               <span
                                 key={i}
@@ -410,7 +411,7 @@ export default function LiquiditySetup({
                     </InputDivs>
                   )}
                   {watchPartLiquidationPenalty === 5 && (
-                    <div className="border border-[#EBEBEB] rounded-lg py-[10px] px-[15px]">
+                    <div className="border border-[#EEEEEE] rounded-lg py-[10px] px-[15px]">
                       <InputDivs
                         classLabel="rounded-lg py-[10px] px-[15px]"
                         required
@@ -629,7 +630,7 @@ export default function LiquiditySetup({
                         />
                       </div>
                       {watchEarlyLiquidationPenalty === 4 && (
-                        <div className="flex flex-wrap gap-x-1 gapy-1">
+                        <div className="flex flex-wrap gap-x-1 gap-y-1">
                           {earlyOptionCharges.map((i) => (
                             <span
                               key={i}
@@ -654,7 +655,7 @@ export default function LiquiditySetup({
                   </InputDivs>
                 )}
                 {watchEarlyLiquidationPenalty === 5 && (
-                  <div className="border border-[#EBEBEB] rounded-lg py-[10px] px-[15px]">
+                  <div className="border border-[#EEEEEE] rounded-lg py-[10px] px-[15px]">
                     <InputDivs
                       classLabel="rounded-lg py-[10px] px-[15px]"
                       required

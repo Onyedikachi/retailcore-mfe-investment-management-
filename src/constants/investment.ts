@@ -6,7 +6,6 @@ export const RequiredInvestmentProductPermissions = [
   "RE_OR_DEACTIVATE_INVESTMENT_PRODUCT",
 ];
 export const RequiredInvestmentPermissions = [
- 
   "VIEW_ALL_INVESTMENT_RECORDS",
   "VIEW_ALL_INVESTMENT_REQUESTS",
   "BOOK_INVESTMENT",
@@ -452,10 +451,10 @@ export const treasuryBillFormSteps = [
   },
   {
     id: 5,
-    label: "Product to GL mapping and events",
+    label: "Product to GL mapping & events",
     index: 5,
   },
-]
+];
 export const termDepositFormSteps = [
   {
     id: 1,
@@ -479,7 +478,7 @@ export const termDepositFormSteps = [
   },
   {
     id: 5,
-    label: "Product to GL mapping and events",
+    label: "Product to GL mapping & events",
     index: 5,
   },
 ];
@@ -538,6 +537,11 @@ export const daysOptions = [
 export const CustomerCategory = {
   0: "Individual",
   1: "Corporate",
+};
+export const CustomerCategoryType = {
+  individual: 0,
+  corporate: 1,
+  // Add other category types here
 };
 
 export const ProductType = {
@@ -605,6 +609,7 @@ export const InvestmentBookingRequestType = {
   0: "Booking",
   1: "Early Liquidation",
   2: "Part Liquidation",
+  4: "Generate certificate",
   3: "Restructure",
 };
 
@@ -1214,7 +1219,6 @@ export const CapitalizationOptions = [
     text: "Upon booking",
     value: 0,
   },
-
 ];
 
 export const GlAccountTypes = [

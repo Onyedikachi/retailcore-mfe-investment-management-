@@ -21,6 +21,7 @@ import {
   individualHeader,
   overviewDrillDownIndividualHeader,
   IndividualRequestHeader,
+  CustomerCategoryType,
 } from "@app/constants";
 import { useProductList } from "@app/hooks";
 import optionsDataHandler from "@app/utils/optionsDataHandler";
@@ -87,7 +88,8 @@ export function initiateDownload(
   downloadProducts,
   downloadRequests,
   selected,
-  isOverviewDrillDown = false
+  isOverviewDrillDown = false,
+  tab
 ) {
   // if (isOverviewDrillDown) {
   //   downloadProducts({
@@ -105,6 +107,7 @@ export function initiateDownload(
       page_Size: 10000000,
       // filter_by: selected?.value,
       filter_by: "created_by_anyone",
+      customerCategory: CustomerCategoryType[tab],
     });
   } else {
     downloadRequests({
@@ -113,6 +116,7 @@ export function initiateDownload(
       page_Size: 10000000,
       // filter_by: selected?.value,
       filter_by: "created_by_anyone",
+      customerCategory: CustomerCategoryType[tab],
     });
   }
 }
@@ -235,6 +239,7 @@ export default function TableComponent({
   setQuery,
   hasMore,
   fetchMoreData,
+  tab
 }: any) {
   const { category, setStatus, selected } = useContext(IndividualContext);
   const { isChecker } = useContext(AppContext);
@@ -487,7 +492,8 @@ export default function TableComponent({
                 downloadProducts,
                 downloadRequests,
                 selected,
-                isOverviewDrillDown
+                isOverviewDrillDown,
+                tab
               )
             }
             data-testid="download-btn"
