@@ -1,9 +1,7 @@
 import { Icon } from "@iconify/react";
 import AddedChargeList from "./AddedChargeList";
 import AddedTaxesList from "./AddedTaxesList";
-import ChargesSelector from "./ChargesSelector";
 import { Fragment, useEffect, useRef, useState } from "react";
-import SelectTaxes from "./SelectTaxes";
 import ChargeModal from "../../ChargeModal";
 import { useSearchParams, useNavigate, useParams } from "react-router-dom";
 import {
@@ -16,6 +14,7 @@ import { Messages } from "@app/constants/enums";
 import { Loader } from "@app/components";
 import { Failed } from "@app/components/modals";
 import TaxModal from "../../TaxModal";
+import ChargeAndTaxMultiselect from "./ChargeAndTaxMultiselect";
 
 export function handleRedirect(type, navigate) {
   if (type === "tax") {
@@ -106,11 +105,11 @@ export default ({
       setFailedText(Messages.PRODUCT_DRAFT_FAILED);
       setFailedSubtext(
         error?.message?.message ||
-          modifyError?.message?.message ||
-          modifyRequestError?.message?.message ||
-          error?.message?.Message ||
-          modifyError?.message?.Message ||
-          modifyRequestError?.message?.Message
+        modifyError?.message?.message ||
+        modifyRequestError?.message?.message ||
+        error?.message?.Message ||
+        modifyError?.message?.Message ||
+        modifyRequestError?.message?.Message
       );
       setFailed(true);
     }
@@ -147,9 +146,8 @@ export default ({
           <span className="text-[18px] flex  gap-[1px] text-[#636363] font-semibold flex-row items-center">
             <Icon
               icon="ph:caret-right-fill"
-              className={`text-danger-500 text-sm mr-4 ${
-                activeTab === tab && "rotate-90"
-              }`}
+              className={`text-danger-500 text-sm mr-4 ${activeTab === tab && "rotate-90"
+                }`}
             />
             {header} Charges & Taxes
           </span>
@@ -162,9 +160,9 @@ export default ({
                 <span className="w-[300px] relative">Applicable Charge(s)</span>
                 <div className="w-full flex flex-col">
                   <div className="flex flex-row">
-                    <ChargesSelector
+                    <ChargeAndTaxMultiselect
                       addedOptions={
-                        values?.[`${event}ChargesAndTaxes`]?.applicableCharges
+                        values?.[event]?.applicableCharges
                       }
                       setFormData={setFormData}
                       values={values}
@@ -192,15 +190,15 @@ export default ({
                       Create new charge
                     </span>
                   </div>
-                  {values?.[`${event}ChargesAndTaxes`].applicableCharges.length > 0 && (
-                      <AddedChargeList
-                        charges={charges}
-                        selectedCharges={values?.[`${event}ChargesAndTaxes`]?.applicableCharges}
-                        values={values}
-                        setFormData={setFormData}
-                        event={event}
-                      />
-                    )}
+                  {values?.[event].applicableCharges.length > 0 && (
+                    <AddedChargeList
+                      charges={charges}
+                      selectedCharges={values?.[event]?.applicableCharges}
+                      values={values}
+                      setFormData={setFormData}
+                      event={event}
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -211,13 +209,15 @@ export default ({
                 <span className="w-[300px] relative">Applicable tax(es)</span>
                 <div className="w-full flex flex-col">
                   <div className="flex flex-row">
-                    <SelectTaxes
-                      availableOptions={taxes}
-                      addedOptions={values?.[`${event}ChargesAndTaxes`]?.applicableTaxes}
+                    <ChargeAndTaxMultiselect
+                      addedOptions={
+                        values?.[event]?.applicableTaxes
+                      }
                       setFormData={setFormData}
                       values={values}
                       event={event}
                       type={"taxes"}
+                      availableOptions={taxes}
                       disabled={disabled}
                     />
                     <span
@@ -239,15 +239,15 @@ export default ({
                       Create new tax
                     </span>
                   </div>
-                  {values?.[`${event}ChargesAndTaxes`].applicableTaxes.length > 0 && (
-                      <AddedTaxesList
-                        taxes = {taxes}
-                        selectedTaxes={values?.[`${event}ChargesAndTaxes`].applicableTaxes}
-                        values={values}
-                        setFormData={setFormData}
-                        event={event}
-                      />
-                    )}
+                  {values?.[event].applicableTaxes.length > 0 && (
+                    <AddedTaxesList
+                      taxes={taxes}
+                      selectedTaxes={values?.[event].applicableTaxes}
+                      values={values}
+                      setFormData={setFormData}
+                      event={event}
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -256,11 +256,11 @@ export default ({
       </div>
       <ChargeModal
         id={searchParams.get("charge")}
-        closeModal={() => setSearchParams({charge: null})}
+        closeModal={() => setSearchParams({ charge: null })}
       />
       <TaxModal
         id={searchParams.get("tax")}
-        closeModal={() => setSearchParams({tax: null})}
+        closeModal={() => setSearchParams({ tax: null })}
       />
       <Loader
         isOpen={isLoading || modifyLoading || modifyRequestLoading}

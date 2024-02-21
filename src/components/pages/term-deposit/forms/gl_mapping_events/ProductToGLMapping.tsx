@@ -316,7 +316,7 @@ export default ({
             setFormData,
             tab: 2,
             header: "Principal Deposit",
-            event: "principalDeposit",
+            event: "principalDepositChargesAndTaxes",
             productData: formData,
             disabled:false
           }}
@@ -334,7 +334,7 @@ export default ({
               setFormData,
               tab: 3,
               header: "Part Liquidation",
-              event: "partLiquidation",
+              event: "partLiquidationChargesAndTaxes",
               productData: formData,
               disabled:formData?.liquidation.part_LiquidationPenalty == 4
             }}
@@ -353,7 +353,7 @@ export default ({
               setFormData,
               tab: 4,
               header: "Early Liquidation",
-              event: "earlyLiquidation",
+              event: "earlyLiquidationChargesAndTaxes",
               productData: formData,
               disabled:formData?.liquidation.early_LiquidationPenalty == 4
             }}
@@ -371,7 +371,7 @@ export default ({
             setFormData,
             tab: 5,
             header: "Maturity Liquidation",
-            event: "maturityLiquidation",
+            event: "maturityLiquidationChargesAndTaxes",
             productData: formData,
           }}
         />

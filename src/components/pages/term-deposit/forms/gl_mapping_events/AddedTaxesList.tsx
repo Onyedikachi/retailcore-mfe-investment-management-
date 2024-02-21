@@ -8,7 +8,7 @@ export default ({ selectedTaxes, setFormData, values, event, taxes }) => {
         const new_taxes = [...selectedTaxes];
         new_taxes.splice(new_taxes.indexOf(new_taxes.find(id => id === option)), 1);
         const new_values = { ...values };
-        new_values[`${event}ChargesAndTaxes`].applicableTaxes = new_taxes;
+        new_values[event].applicableTaxes = new_taxes;
         setFormData(new_values)
     }
 
@@ -38,12 +38,12 @@ export default ({ selectedTaxes, setFormData, values, event, taxes }) => {
                 taxes.data.records.filter(item => selectedTaxes.find(id => id === item.tax_id)).map((item) => {
                     return (
                         <div key={item.tax_id} className="flex flex-row w-[700px] justify-start p-4 bg-[#DB353905] bg-opacity-[02]">
-                            <div className="p-4 pl-0 w-[60%] flex-1">
+                            <div className="p-4 pl-0 w-[60%]">
                                 <span className="pl-4 capitalize">
                                     {item.name}
                                 </span>
                             </div>
-                            <div className="p-4 pl-0 w-[25%] flex-1">
+                            <div className="p-4 pl-0 flex-1">
                                 <span className="pl-4">
                                     {item?.tax_values?.[0]?.tax_amount}
                                 </span>

@@ -9,7 +9,7 @@ export default ({ selectedCharges, setFormData, values, event, charges }) => {
         new_charges.splice(new_charges.indexOf(new_charges.find(id => id === option)), 1);
         console.log(new_charges)
         const new_values = { ...values };
-        values[`${event}ChargesAndTaxes`].applicableCharges = new_charges;
+        values[event].applicableCharges = new_charges;
         setFormData(new_values)
     }
 
