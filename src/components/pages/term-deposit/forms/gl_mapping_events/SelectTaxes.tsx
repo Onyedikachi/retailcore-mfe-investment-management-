@@ -29,10 +29,10 @@ export default ({
   const addOptions = () => {
     const new_taxes = selectedOptions;
     const new_values = { ...values };
-    new_values.events[event][type] = new_taxes;
-    setFormData(new_values);
+    new_values[`${event}ChargesAndTaxes`].applicableTaxes = new_taxes;
+    setFormData(new_values)
     setListOpen(false);
-  };
+}
 
   const hasOption = (option) => {
     return selectedOptions.some((e) => e.tax_id === option.tax_id);
@@ -77,11 +77,7 @@ export default ({
                       key={item.tax_id}
                       className="flex flex-row items-center mb-2"
                     >
-                      <Checkbox
-                        label={`${item?.name}`}
-                        checked={hasOption(item)}
-                        onChange={() => selectOption(item)}
-                      />
+                        <Checkbox label={`${item?.name}`} checked={hasOption(item)} onChange={() => selectOption(item.tax_id)} />
                       {/* <span className="text-blue-500 text-sm underline ml-4">[View]</span> */}
                     </div>
                   ))}

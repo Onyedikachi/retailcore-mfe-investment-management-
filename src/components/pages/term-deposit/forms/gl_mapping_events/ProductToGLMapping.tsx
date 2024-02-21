@@ -1,6 +1,6 @@
 import { Checkbox, RedDot } from "@app/components/forms";
 import { GlInput } from "@app/components/forms";
-import { glMappingSchema, treasuryBillglMappingSchema } from "@app/constants";
+import { glMappingSchema, chargesAndTaxesSchema } from "@app/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";

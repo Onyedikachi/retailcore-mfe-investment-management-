@@ -67,7 +67,7 @@ export default ({ step, productData, activeId, handleNav, setProductData, setDis
         <ProductToGLMapping
             proceed={handleNav}
             formData={productData}
-            setFormData={({ data, mapOptions }) =>
+            setFormData={(data, mapOptions) =>
               setProductData({
                 ...productData,
                 ...data,

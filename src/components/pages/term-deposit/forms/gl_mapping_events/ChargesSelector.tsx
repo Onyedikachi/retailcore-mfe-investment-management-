@@ -31,7 +31,7 @@ export default ({
   const addOptions = () => {
     const new_charges = selectedOptions;
     const new_values = { ...values };
-    new_values.events[event][type] = new_charges;
+    new_values[`${event}ChargesAndTaxes`].applicableCharges = new_charges;
     setFormData(new_values);
     setListOpen(false);
   };
@@ -51,7 +51,9 @@ export default ({
       <div className="relative w-[360px]">
         <div
           data-testid="open-button"
-          className={`flex items-center border-b border-[#8F8F8F] ${disabled?'opacity-30':''}`}
+          className={`flex items-center border-b border-[#8F8F8F] ${
+            disabled ? "opacity-30" : ""
+          }`}
           onClick={() => setListOpen(true)}
         >
           <span className="w-8 h-8 flex items-center justify-center">
@@ -81,7 +83,7 @@ export default ({
                       <Checkbox
                         label={`${item?.name}`}
                         checked={hasOption(item)}
-                        onChange={() => selectOption(item)}
+                        onChange={() => selectOption(item.charge_id)}
                       />
                       <span
                         onClick={() =>

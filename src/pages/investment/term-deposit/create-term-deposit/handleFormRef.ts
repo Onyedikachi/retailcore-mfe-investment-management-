@@ -13,7 +13,7 @@ export default ({step, setFormRef}) => {
         setFormRef("liquiditysetup");
         break;
       case 5:
-        setFormRef("entriesandevents");
+        setFormRef("productmapping");
         break;
   
       default:

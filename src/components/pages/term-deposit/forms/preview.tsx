@@ -207,6 +207,10 @@ export default function Preview({ formData, previousData = null }: any) {
     modifyRequestSuccess,
   ]);
 
+  useEffect(() => {
+    console.log(formData)
+  }, [formData])
+
   return (
     <div data-testid="preview" className="flex flex-col min-h-[100vh] ">
       <div className="px-[37px] py-[11px] bg-white">
