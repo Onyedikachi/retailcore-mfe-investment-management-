@@ -6,7 +6,6 @@ export const RequiredInvestmentProductPermissions = [
   "RE_OR_DEACTIVATE_INVESTMENT_PRODUCT",
 ];
 export const RequiredInvestmentPermissions = [
- 
   "VIEW_ALL_INVESTMENT_RECORDS",
   "VIEW_ALL_INVESTMENT_REQUESTS",
   "BOOK_INVESTMENT",
@@ -455,7 +454,7 @@ export const treasuryBillFormSteps = [
     label: "Product to GL mapping and events",
     index: 5,
   },
-]
+];
 export const termDepositFormSteps = [
   {
     id: 1,
@@ -539,6 +538,11 @@ export const CustomerCategory = {
   0: "Individual",
   1: "Corporate",
 };
+export const CustomerCategoryType = {
+  individual: 0,
+  corporate: 1,
+  // Add other category types here
+};
 
 export const ProductType = {
   0: "Term Deposit",
@@ -607,7 +611,6 @@ export const InvestmentBookingRequestType = {
   2: "Part Liquidation",
   4: "Generate certificate",
   3: "Restructure",
-  
 };
 
 export const RequestStatus = {
@@ -1216,7 +1219,6 @@ export const CapitalizationOptions = [
     text: "Upon booking",
     value: 0,
   },
-
 ];
 
 export const GlAccountTypes = [

@@ -48,7 +48,7 @@ export const handleClear = (
   setClearField(!clearFields);
   setMapOptions([]);
   reset();
-  setClearField(!clearFields);
+ 
 };
 
 export function InputDivs({
@@ -232,10 +232,10 @@ export default ({
             className="bg-[#fff] border border-[#E6E9ED] rounded-[6px]"
           >
             <div
-              onClick={() => handleTab()}
+             
               className="border-b border-[#E6E9ED] flex justify-between items-center px-6 py-[14px]"
             >
-              <span className="text-[18px] flex  gap-[1px] text-[#636363] font-semibold flex-row items-center">
+              <span  onClick={() => handleTab()} className="text-[18px] flex  gap-[1px] text-[#636363] font-semibold flex-row items-center">
                 <Icon
                   icon="ph:caret-right-fill"
                   className={`text-danger-500 text-sm mr-4 ${

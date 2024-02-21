@@ -5,6 +5,7 @@ import MinMaxInput from "@app/components/forms/MinMaxInput";
 import {
   CapitalizationOptions,
   CustomerCategory,
+  CustomerCategoryType,
   FacilityDetailsModelSchema,
   Interval,
   IntervalOptions,
@@ -27,6 +28,7 @@ import { checkDocuments } from "@app/utils/checkDocunent";
 import { convertToDays, convertDuration } from "@app/utils/convertToDays";
 import debounce from "lodash.debounce";
 import { InputDivs } from "../../term-deposit/forms/gl_mapping_events/ProductToGLMapping";
+import { useParams } from "react-router-dom";
 export const onProceed = (
   data,
   proceed,
@@ -234,6 +236,7 @@ export default function FacilityDetails({
     defaultValues: formData.facilityDetailsModel,
     mode: "all",
   });
+  const {investmentType} = useParams();
   const [query, setQuery] = useState("");
   const [productData, setProductData] = useState(null);
   const [productName, setProductName] = useState(null);
@@ -260,6 +263,7 @@ export default function FacilityDetails({
         search: query,
         page_Size: 10000,
         status_In: [2],
+        customerCategory: CustomerCategoryType[investmentType]
       });
     }
   }, [query]);
