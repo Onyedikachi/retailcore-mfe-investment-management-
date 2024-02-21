@@ -249,7 +249,6 @@ export default function FacilityDetails({
     CapitalizationOptions
   );
   const values = getValues();
-  console.log("🚀 ~ values:", values);
   const [
     getProduct,
     { data, isSuccess, isError, error, isLoading: searchLoading },

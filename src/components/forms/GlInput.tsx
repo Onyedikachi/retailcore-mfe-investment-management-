@@ -182,7 +182,7 @@ export default function EntriesAndEventsSearchResults({
                   ))}
                 </div>
               )}
-             {ledgerIsLoading &&  <BottomBarLoader w="w-4" h="h-4" />}
+             {(ledgerIsLoading || isLoading) &&  <BottomBarLoader w="w-4" h="h-4" />}
             </div>
           )}
           {((errors && errors[inputName]) || error) && (
