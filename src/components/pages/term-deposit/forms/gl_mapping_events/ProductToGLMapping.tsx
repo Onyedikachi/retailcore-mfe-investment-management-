@@ -307,6 +307,7 @@ export default ({
             header: "Principal Deposit",
             event: "principalDeposit",
             productData: formData,
+            disabled:false
           }}
         />
         {formData?.liquidation?.part_AllowPartLiquidation && (
@@ -324,6 +325,7 @@ export default ({
               header: "Part Liquidation",
               event: "partLiquidation",
               productData: formData,
+              disabled:formData?.liquidation.part_LiquidationPenalty == 4
             }}
           />
         )}
@@ -342,6 +344,7 @@ export default ({
               header: "Early Liquidation",
               event: "earlyLiquidation",
               productData: formData,
+              disabled:formData?.liquidation.early_LiquidationPenalty == 4
             }}
           />
         )}

@@ -605,7 +605,9 @@ export const InvestmentBookingRequestType = {
   0: "Booking",
   1: "Early Liquidation",
   2: "Part Liquidation",
+  4: "Generate certificate",
   3: "Restructure",
+  
 };
 
 export const RequestStatus = {

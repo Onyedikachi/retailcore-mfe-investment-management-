@@ -60,6 +60,7 @@ export default ({
   taxes,
   taxesLoading,
   productData,
+  disabled
 }: any) => {
   console.log("🚀 ~ productData:", productData);
   const navigate = useNavigate();
@@ -167,6 +168,7 @@ export default ({
                       event={event}
                       type={"charges"}
                       availableOptions={charges}
+                      disabled={disabled}
                     />
                     <span
                       className="ml-12 text-danger-500 underline"
@@ -212,6 +214,7 @@ export default ({
                       values={values}
                       event={event}
                       type={"taxes"}
+                      disabled={disabled}
                     />
                     <span
                       className="ml-12 text-danger-500 underline"
