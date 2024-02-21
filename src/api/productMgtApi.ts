@@ -31,7 +31,17 @@ export const productMgtApi: any = createApi({
         getApplicableTaxes: builder.query<any, any>({
             query: () => {
                 return {
-                    url: `${productApi}/taxes`,
+                    url: `${productApi}/tax/state?state=Active`,
+                    method: "get",
+                };
+            },
+        }),
+        getCharge: builder.query<any, any>({
+            query: (data) => {
+                console.log("r", data)
+                if (!data.id) return;
+                return {
+                    url: `${productApi}/charges/${data.id}/entities`,
                     method: "get",
                 };
             },
@@ -41,5 +51,6 @@ export const productMgtApi: any = createApi({
 
 export const {
     useGetApplicableChargesQuery,
-    useGetApplicableTaxesQuery
+    useGetApplicableTaxesQuery,
+    useGetChargeQuery,
 } = productMgtApi;

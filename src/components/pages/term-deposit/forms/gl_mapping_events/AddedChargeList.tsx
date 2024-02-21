@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { FaEdit, FaTimes } from "react-icons/fa"
+import { FaEdit, FaEye, FaTimes } from "react-icons/fa"
+import { useSearchParams } from "react-router-dom";
 
 export default ({ selectedCharges, setFormData, values, event }) => {
 
@@ -11,9 +12,8 @@ export default ({ selectedCharges, setFormData, values, event }) => {
         setFormData(new_values)
     }
 
-    useEffect(() => {
-        console.log(selectedCharges)
-    }, [selectedCharges])
+    const [searchParams, setSearchParams] = useSearchParams();
+
 
     return (
         <div className="flex flex-col w-full mt-6">
@@ -28,8 +28,8 @@ export default ({ selectedCharges, setFormData, values, event }) => {
                         <div key={item.charge_id} className="flex flex-row w-[700px] justify-between p-4 bg-[#DB353905] bg-opacity-[02]">
                             {item.name}
                             <div className="w-16 flex flex-row justify-between">
-                                <div className="h-[30px] w-[30px] shadow-md bg-white flex justify-center items-center rounded-md">
-                                    <FaEdit className="text-danger-500" />
+                                <div onClick={() => setSearchParams({charge: item.charge_id})} className="h-[30px] w-[30px] shadow-md bg-white flex justify-center items-center rounded-md">
+                                    <FaEye className="text-danger-500" />
                                 </div>
                                 <div onClick={() => removeCharge(item)} className="h-[30px] w-[30px] shadow-md bg-white   flex justify-center items-center rounded-md">
                                     <FaTimes className="text-danger-500" />

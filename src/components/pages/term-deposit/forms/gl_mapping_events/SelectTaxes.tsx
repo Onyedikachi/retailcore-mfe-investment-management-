@@ -19,9 +19,9 @@ export default ({ addedOptions, values, setFormData, event, type, availableOptio
     }
 
     const addOptions = () => {
-        const new_charges = selectedOptions;
+        const new_taxes = selectedOptions;
         const new_values = { ...values };
-        new_values.events[event][type] = new_charges;
+        new_values.events[event][type] = new_taxes;
         setFormData(new_values)
         setListOpen(false);
     }
@@ -35,8 +35,8 @@ export default ({ addedOptions, values, setFormData, event, type, availableOptio
     }, [selectedOptions])
 
     const hasOption = (option) => {
-        console.log("check", selectedOptions.some(e => e.charge_id === option.charge_id))
-        return selectedOptions.some(e => e.charge_id === option.charge_id)
+        console.log("check", selectedOptions.some(e => e.tax_id === option.tax_id))
+        return selectedOptions.some(e => e.tax_id === option.tax_id)
     }
 
     useEffect(() => {
@@ -72,16 +72,16 @@ export default ({ addedOptions, values, setFormData, event, type, availableOptio
                                     availableOptions?.data?.records
                                         ?.filter(e => e.name?.toLowerCase().includes(searchQuery.toLowerCase()))
                                         .map((item) => (
-                                            <div key={item.charge_id} className="flex flex-row items-center mb-2">
+                                            <div key={item.tax_id} className="flex flex-row items-center mb-2">
                                                 <Checkbox label={`${item?.name}`} checked={hasOption(item)} onChange={() => selectOption(item)} />
-                                                <span className="text-blue-500 text-sm underline ml-4">[View/Modify]</span>
+                                                {/* <span className="text-blue-500 text-sm underline ml-4">[View]</span> */}
                                             </div>
                                         ))
                                 }
                             </div>
                         </div>
                         <div className="flex flex-row-reverse">
-                            <span onClick={() => addOptions()} className="text-danger-500 text-sm underline">Add selected charge(s)</span>
+                            <span onClick={() => addOptions()} className="text-danger-500 text-sm underline">Add selected tax(es)</span>
                         </div>
                     </div>
                 }

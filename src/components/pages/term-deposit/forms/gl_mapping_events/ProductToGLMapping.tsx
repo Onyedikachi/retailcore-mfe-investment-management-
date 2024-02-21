@@ -4,11 +4,12 @@ import { glMappingSchema, treasuryBillglMappingSchema } from "@app/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { FaArrowLeft, FaCaretLeft, FaCaretRight, FaRegCaretSquareRight, FaSearch } from "react-icons/fa";
 import ChargesAndTaxes from "./ChargesAndTaxes";
 import { Icon } from "@iconify/react";
 import { useGetApplicableChargesQuery, useGetApplicableTaxesQuery } from "@app/api";
+import ChargeModal from "../../ChargeModal";
 
 const GlMappingOptions = [
     {
@@ -130,6 +131,8 @@ export default ({ proceed, formData, setFormData, setDisabled, initiateDraft }) 
     const [clearFields, setClearField] = useState(false);
     const [activeTab, setActiveTab] = useState(1);
 
+    const [activeCharge, setActiveCharge] = useState(null);
+
     const {
         register,
         handleSubmit,
@@ -192,73 +195,76 @@ export default ({ proceed, formData, setFormData, setDisabled, initiateDraft }) 
     }, [setValue, formData]);
 
     return (
-        <form id="productmapping"
-            data-testid="submit-button"
-            onSubmit={handleSubmit((d) => onProceed(proceed, values))}>
-            <div className="mb-12">
-                <div
-                    style={{
-                        boxShadow:
-                            "0px 0px 1px 0px rgba(26, 32, 36, 0.32), 0px 1px 2px 0px rgba(91, 104, 113, 0.32)",
-                    }}
-                    className="bg-[#fff] border border-[#E6E9ED] rounded-[6px]"
-                >
-                    <div onClick={() => setActiveTab(1)} className="border-b border-[#E6E9ED] flex justify-between items-center px-6 py-[14px]">
-                        <span className="text-[18px] flex  gap-[1px] text-[#636363] font-semibold flex-row items-center">
-                            <Icon icon="ph:caret-right-fill" className={`text-danger-500 text-sm mr-4 ${activeTab === 1 && "rotate-90"}`} />
-                            Product to GL Mapping <RedDot /> <span className="font-normal text-danger-500" >[Required Information Missing]</span>
-                        </span>
-                        <span
-                            className="font-normal text-sm text-danger-500 italic underline"
-                            onClick={() => handleClear(setClearField, clearFields, setMapOptions, reset)}
-                        >
-                            Clear all entries
-                        </span>
-                    </div>
-                    {
-                        activeTab === 1 &&
-                        <div className="flex flex-col gap-4 px-[30px] py-5">
-                            <div className="flex flex-col items-start gap-y-5">
-                                {GlMappingOptions.map((type) => (
-                                    <InputDivs key={type.text} label={type.text}>
-                                        <div>
-                                            <div className="w-[360px] relative">
-                                                <div className=" ">
-                                                    <GlInput
-                                                        handleClick={(key, submenu) =>
-                                                            handleClick(
-                                                                key,
-                                                                submenu,
-                                                                setValue,
-                                                                mapOptions,
-                                                                setMapOptions,
-                                                                GlMappingOptions
-                                                            )
-                                                        }
-                                                        inputName={type.key}
-                                                        defaultValue={
-                                                            mapOptions.find((i) => i?.glAccountType === type.id)?.accountName
-                                                        }
-                                                        register={register}
-                                                        trigger={trigger}
-                                                        errors={errors}
-                                                        clearFields={clearFields}
-                                                    />
+        <Fragment>
+            <form id="productmapping"
+                data-testid="submit-button"
+                onSubmit={handleSubmit((d) => onProceed(proceed, values))}>
+                <div className="mb-12">
+                    <div
+                        style={{
+                            boxShadow:
+                                "0px 0px 1px 0px rgba(26, 32, 36, 0.32), 0px 1px 2px 0px rgba(91, 104, 113, 0.32)",
+                        }}
+                        className="bg-[#fff] border border-[#E6E9ED] rounded-[6px]"
+                    >
+                        <div onClick={() => setActiveTab(1)} className="border-b border-[#E6E9ED] flex justify-between items-center px-6 py-[14px]">
+                            <span className="text-[18px] flex  gap-[1px] text-[#636363] font-semibold flex-row items-center">
+                                <Icon icon="ph:caret-right-fill" className={`text-danger-500 text-sm mr-4 ${activeTab === 1 && "rotate-90"}`} />
+                                Product to GL Mapping <RedDot /> <span className="font-normal text-danger-500" >[Required Information Missing]</span>
+                            </span>
+                            <span
+                                className="font-normal text-sm text-danger-500 italic underline"
+                                onClick={() => handleClear(setClearField, clearFields, setMapOptions, reset)}
+                            >
+                                Clear all entries
+                            </span>
+                        </div>
+                        {
+                            activeTab === 1 &&
+                            <div className="flex flex-col gap-4 px-[30px] py-5">
+                                <div className="flex flex-col items-start gap-y-5">
+                                    {GlMappingOptions.map((type) => (
+                                        <InputDivs key={type.text} label={type.text}>
+                                            <div>
+                                                <div className="w-[360px] relative">
+                                                    <div className=" ">
+                                                        <GlInput
+                                                            handleClick={(key, submenu) =>
+                                                                handleClick(
+                                                                    key,
+                                                                    submenu,
+                                                                    setValue,
+                                                                    mapOptions,
+                                                                    setMapOptions,
+                                                                    GlMappingOptions
+                                                                )
+                                                            }
+                                                            inputName={type.key}
+                                                            defaultValue={
+                                                                mapOptions.find((i) => i?.glAccountType === type.id)?.accountName
+                                                            }
+                                                            register={register}
+                                                            trigger={trigger}
+                                                            errors={errors}
+                                                            clearFields={clearFields}
+                                                        />
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </InputDivs>
-                                ))}
+                                        </InputDivs>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                    }
+                        }
+                    </div>
                 </div>
-            </div>
 
-            <ChargesAndTaxes {...{ charges, chargesLoading, taxes, taxesLoading, activeTab, setActiveTab, values, setFormData, tab: 2, header: "Principal Deposit", event: "principalDeposit" }} />
-            <ChargesAndTaxes {...{ charges, chargesLoading, taxes, taxesLoading, activeTab, setActiveTab, values, setFormData, tab: 3, header: "Part Liquidation", event: "partLiquidation" }} />
-            <ChargesAndTaxes {...{ charges, chargesLoading, taxes, taxesLoading, activeTab, setActiveTab, values, setFormData, tab: 4, header: "Early Liquidation", event: "earlyLiquidation" }} />
-            <ChargesAndTaxes {...{ charges, chargesLoading, taxes, taxesLoading, activeTab, setActiveTab, values, setFormData, tab: 5, header: "Maturity Liquidation", event: "maturityLiquidation" }} />
-        </form>
+                <ChargesAndTaxes {...{ charges, chargesLoading, taxes, taxesLoading, activeTab, setActiveTab, values, setFormData, tab: 2, header: "Principal Deposit", event: "principalDeposit" }} />
+                <ChargesAndTaxes {...{ charges, chargesLoading, taxes, taxesLoading, activeTab, setActiveTab, values, setFormData, tab: 3, header: "Part Liquidation", event: "partLiquidation" }} />
+                <ChargesAndTaxes {...{ charges, chargesLoading, taxes, taxesLoading, activeTab, setActiveTab, values, setFormData, tab: 4, header: "Early Liquidation", event: "earlyLiquidation" }} />
+                <ChargesAndTaxes {...{ charges, chargesLoading, taxes, taxesLoading, activeTab, setActiveTab, values, setFormData, tab: 5, header: "Maturity Liquidation", event: "maturityLiquidation" }} />
+            </form>
+            
+        </Fragment>
     )
 }
