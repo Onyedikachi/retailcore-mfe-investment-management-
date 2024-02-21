@@ -70,7 +70,7 @@ export default ({
                   <div className="w-full flex flex-col">
                     <div className="flex flex-row">
                       <ChargesSelector
-                        addedOptions={values?.events[event].charges}
+                        addedOptions={values?.[`${event}ChargesAndTaxes`]?.applicableCharges}
                         setFormData={setFormData}
                         values={values}
                         event={event}
@@ -81,9 +81,10 @@ export default ({
                         Create new charge
                       </span>
                     </div>
-                    {values?.events[event].charges.length > 0 && (
+                    {values?.[`${event}ChargesAndTaxes`].applicableCharges.length > 0 && (
                       <AddedChargeList
-                        selectedCharges={values?.events[event].charges}
+                        charges={charges}
+                        selectedCharges={values?.[`${event}ChargesAndTaxes`]?.applicableCharges}
                         values={values}
                         setFormData={setFormData}
                         event={event}
@@ -94,7 +95,7 @@ export default ({
               </div>
 
               {/* Taxes */}
-              <div className="relative bg-[#fff] w-full">
+              {/* <div className="relative bg-[#fff] w-full">
                 <div className="flex flex-row w-full items-start">
                   <span className="w-[300px] relative">Applicable tax(es)</span>
                   <div className="w-full flex flex-col">
@@ -121,7 +122,7 @@ export default ({
                     )}
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           )}
         </div>

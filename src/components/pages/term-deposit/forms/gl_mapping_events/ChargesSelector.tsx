@@ -23,13 +23,13 @@ export default ({ addedOptions, values, setFormData, event, type, availableOptio
     const addOptions = () => {
         const new_charges = selectedOptions;
         const new_values = { ...values };
-        new_values.events[event][type] = new_charges;
+        new_values[`${event}ChargesAndTaxes`].applicableCharges = new_charges;
         setFormData(new_values)
         setListOpen(false);
     }
 
     const hasOption = (option) => {
-        return selectedOptions.some(e => e.charge_id === option.charge_id)
+        return selectedOptions.some(id => id === option.charge_id)
     }
 
     useEffect(() => {
@@ -66,7 +66,7 @@ export default ({ addedOptions, values, setFormData, event, type, availableOptio
                                         ?.filter(e => e.name?.toLowerCase().includes(searchQuery.toLowerCase()))
                                         .map((item) => (
                                             <div key={item.charge_id} className="flex flex-row items-center mb-2">
-                                                <Checkbox label={`${item?.name}`} checked={hasOption(item)} onChange={() => selectOption(item)} />
+                                                <Checkbox label={`${item?.name}`} checked={hasOption(item)} onChange={() => selectOption(item.charge_id)} />
                                                 <span onClick={() => setSearchParams({charge: item.charge_id})} className="text-blue-500 text-sm underline ml-4">[View]</span>
                                             </div>
                                         ))
