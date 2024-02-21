@@ -38,17 +38,17 @@ export default ({ selectedTaxes, setFormData, values, event, taxes }) => {
                 taxes.data.records.filter(item => selectedTaxes.find(id => id === item.tax_id)).map((item) => {
                     return (
                         <div key={item.tax_id} className="flex flex-row w-[700px] justify-start p-4 bg-[#DB353905] bg-opacity-[02]">
-                            <div className="p-4 pl-0 w-[60%]">
-                                <span className="pl-4">
+                            <div className="p-4 pl-0 w-[60%] flex-1">
+                                <span className="pl-4 capitalize">
                                     {item.name}
                                 </span>
                             </div>
-                            <div className="p-4 pl-0 w-[25%]">
+                            <div className="p-4 pl-0 w-[25%] flex-1">
                                 <span className="pl-4">
                                     {item?.tax_values?.[0]?.tax_amount}
                                 </span>
                             </div>
-                            <div className="w-[15%] flex flex-row justify-between">
+                            <div className="flex flex-row justify-between gap-x-4">
                                 <div className="h-[30px] w-[30px] shadow-md bg-white flex justify-center items-center rounded-md">
                                     <FaEye className="text-danger-500" />
                                 </div>

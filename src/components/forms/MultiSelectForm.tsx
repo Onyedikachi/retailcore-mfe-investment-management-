@@ -8,14 +8,12 @@ export function closeDropdown(setIsOpen) {
   setIsOpen(false);
 }
 
-export function handleChange(id, value, selectedOptions, setSelectedOptions) {
-  if (
-    selectedOptions?.length > 0 &&
-    !selectedOptions?.some((i) => i === value)
-  ) {
-    setSelectedOptions([...selectedOptions, value]);
+export function handleChange(id, data, selectedOptions, setSelectedOptions) {
+  if (!selectedOptions?.some((i) => i.value === data.value)) {
+    setSelectedOptions([...selectedOptions, data]);
+   
   } else {
-    const arrOptions = selectedOptions?.filter((i) => i !== value);
+    const arrOptions = selectedOptions?.filter((i) => i.value !== data.value);
     setSelectedOptions(arrOptions);
   }
 }
@@ -106,13 +104,13 @@ export default function MultiSelectForm({
                 </li>
                 {options?.map((item) => (
                   <li
-                    key={item.text}
+                    key={item.value}
                     className="cursor-pointer hover:bg-[#F9E5E5] py-[10px] px-6"
                   >
                     <Checkbox
                       label={item.text}
                       checked={() =>
-                        selectedOptions?.some((i) => i.text === item.text)
+                        selectedOptions?.some((i) => i.value === item.value)
                       }
                       onChange={() =>
                         handleChange(

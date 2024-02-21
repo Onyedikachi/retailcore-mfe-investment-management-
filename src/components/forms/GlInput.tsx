@@ -154,8 +154,7 @@ export default function EntriesAndEventsSearchResults({
 
                       {toggleMenu === menu.id && (
                         <div className="ml-[36px] flex flex-col gap-y-1 mt-1">
-                          {menu?.leaf_ledgers
-                            .filter((i) =>
+                          {menu?.leaf_ledgers?.filter((i) =>
                               i.name.toLowerCase().includes(query.toLowerCase())
                             )
                             .map((subMenu, id) => (
