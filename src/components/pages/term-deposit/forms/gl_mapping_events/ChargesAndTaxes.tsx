@@ -37,9 +37,6 @@ export default ({
   const navigate = useNavigate()
   const type = useRef("")
 
-  useEffect(() => {
-    console.log("sp = ",searchParams)
-  }, [searchParams])
   return (
     <Fragment>
 

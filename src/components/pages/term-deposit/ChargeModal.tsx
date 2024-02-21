@@ -13,8 +13,6 @@ export default ({ id, closeModal }) => {
         isSuccess
     } = useGetChargeQuery({ id: id })
 
-    useEffect(() => console.log("val", chargeData), [chargeData])
-
     return (
         <ModalLayout isOpen={id !== null} setIsOpen={() => closeModal()}>
             <div

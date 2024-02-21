@@ -1,7 +1,6 @@
 import { useEffect } from "react"
 
 export default ({data}) => {
-    useEffect(() => console.log("d = ",data), [data])
     return (
         <div className="w-[90%] flex-col items-start mb-12">
             <span>Charge Information</span>

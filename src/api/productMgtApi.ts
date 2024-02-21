@@ -38,7 +38,6 @@ export const productMgtApi: any = createApi({
         }),
         getCharge: builder.query<any, any>({
             query: (data) => {
-                console.log("r", data)
                 if (!data.id) return;
                 return {
                     url: `${productApi}/charges/${data.id}/entities`,

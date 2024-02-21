@@ -25,17 +25,8 @@ export default ({ addedOptions, values, setFormData, event, type, availableOptio
         setFormData(new_values)
         setListOpen(false);
     }
-
-    useEffect(() => {
-        console.log("AvailableOps = ", availableOptions)
-    }, [availableOptions])
-
-    useEffect(() => {
-        console.log("selectedOps = ", selectedOptions)
-    }, [selectedOptions])
-
+    
     const hasOption = (option) => {
-        console.log("check", selectedOptions.some(e => e.tax_id === option.tax_id))
         return selectedOptions.some(e => e.tax_id === option.tax_id)
     }
 

@@ -165,8 +165,6 @@ export default ({ proceed, formData, setFormData, setDisabled, initiateDraft }) 
 
     const values = getValues();
 
-    useEffect(() => console.log(values), [values]);
-
     useEffect(() => {
         setFormData({ data: formData, mapOptions });
     }, [mapOptions, initiateDraft]);

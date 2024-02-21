@@ -28,12 +28,7 @@ export default ({ addedOptions, values, setFormData, event, type, availableOptio
         setListOpen(false);
     }
 
-    useEffect(() => {
-        console.log("selectedOps = ", selectedOptions)
-    }, [selectedOptions])
-
     const hasOption = (option) => {
-        console.log("check", selectedOptions.some(e => e.charge_id === option.charge_id))
         return selectedOptions.some(e => e.charge_id === option.charge_id)
     }
 
