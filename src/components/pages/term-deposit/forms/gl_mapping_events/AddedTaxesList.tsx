@@ -1,15 +1,24 @@
 import { useEffect } from "react";
 import { FaEdit, FaEye, FaTimes } from "react-icons/fa"
+import { useSearchParams } from "react-router-dom";
 
-export default ({ selectedTaxes, setFormData, values, event }) => {
+export default ({ selectedTaxes, setFormData, values, event, taxes }) => {
 
     const removeTax = (option) => {
         const new_taxes = [...selectedTaxes];
-        new_taxes.splice(new_taxes.indexOf(new_taxes.find(i => i.tax_id === option.tax_id)), 1);
+        new_taxes.splice(new_taxes.indexOf(new_taxes.find(id => id === option)), 1);
         const new_values = { ...values };
-        new_values.events[event].taxes = new_taxes;
+        new_values[`${event}ChargesAndTaxes`].applicableCharges = new_taxes;
         setFormData(new_values)
     }
+
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    useEffect(() => {
+        console.log("taxes = ", taxes)
+        console.log(taxes.data.records.filter(item => selectedTaxes.find(id => id === item.tax_id)), selectedTaxes)
+
+    }, [taxes, selectedTaxes])
 
     return (
         <div className="flex flex-col w-[700px] mt-6">
@@ -26,7 +35,7 @@ export default ({ selectedTaxes, setFormData, values, event }) => {
                 </div>
             </div>
             {
-                selectedTaxes.map((item) => {
+                taxes.data.records.filter(item => selectedTaxes.find(id => id === item.tax_id)).map((item) => {
                     return (
                         <div key={item.tax_id} className="flex flex-row w-[700px] justify-start p-4 bg-[#DB353905] bg-opacity-[02]">
                             <div className="p-4 pl-0 w-[60%]">
@@ -43,7 +52,7 @@ export default ({ selectedTaxes, setFormData, values, event }) => {
                                 <div className="h-[30px] w-[30px] shadow-md bg-white flex justify-center items-center rounded-md">
                                     <FaEye className="text-danger-500" />
                                 </div>
-                                <div onClick={() => removeTax(item)} className="h-[30px] w-[30px] shadow-md bg-white   flex justify-center items-center rounded-md">
+                                <div onClick={() => removeTax(item.tax_id)} className="h-[30px] w-[30px] shadow-md bg-white   flex justify-center items-center rounded-md">
                                     <FaTimes className="text-danger-500" />
                                 </div>
                             </div>

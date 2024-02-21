@@ -1,6 +1,6 @@
 import { Checkbox, RedDot } from "@app/components/forms"
 import { GlInput } from "@app/components/forms";
-import { glMappingSchema, treasuryBillglMappingSchema } from "@app/constants";
+import { glMappingSchema, chargesAndTaxesSchema } from "@app/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
@@ -123,7 +123,8 @@ export const handleClick = (
 
 export default ({ proceed, formData, setFormData, setDisabled, initiateDraft }) => {
     function onProceed(values, mapOptions) {
-        // setFormData(values);
+        console.log(values);
+        setFormData(values);
         proceed();
     }
 
@@ -145,7 +146,7 @@ export default ({ proceed, formData, setFormData, setDisabled, initiateDraft }) 
         getValues,
         formState: { errors, isValid },
     } = useForm({
-        // resolver: yupResolver(treasuryBillglMappingSchema),
+        // resolver: yupResolver(glMappingSchema),
         defaultValues: formData,
         mode: "all",
         // values,
@@ -262,7 +263,6 @@ export default ({ proceed, formData, setFormData, setDisabled, initiateDraft }) 
                 <ChargesAndTaxes {...{ charges, chargesLoading, taxes, taxesLoading, activeTab, setActiveTab, values, setFormData, tab: 4, header: "Early Liquidation", event: "earlyLiquidation" }} />
                 <ChargesAndTaxes {...{ charges, chargesLoading, taxes, taxesLoading, activeTab, setActiveTab, values, setFormData, tab: 5, header: "Maturity Liquidation", event: "maturityLiquidation" }} />
             </form>
-            
         </Fragment>
     )
 }

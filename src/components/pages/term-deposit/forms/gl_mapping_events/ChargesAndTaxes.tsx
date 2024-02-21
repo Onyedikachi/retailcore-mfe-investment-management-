@@ -95,14 +95,14 @@ export default ({
               </div>
 
               {/* Taxes */}
-              {/* <div className="relative bg-[#fff] w-full">
+              <div className="relative bg-[#fff] w-full">
                 <div className="flex flex-row w-full items-start">
                   <span className="w-[300px] relative">Applicable tax(es)</span>
                   <div className="w-full flex flex-col">
                     <div className="flex flex-row">
                       <SelectTaxes
                         availableOptions={taxes}
-                        addedOptions={values?.events[event].taxes}
+                        addedOptions={values?.[`${event}ChargesAndTaxes`]?.applicableTaxes}
                         setFormData={setFormData}
                         values={values}
                         event={event}
@@ -112,9 +112,10 @@ export default ({
                         Create new tax
                       </span>
                     </div>
-                    {values?.events[event].taxes.length > 0 && (
+                    {values?.[`${event}ChargesAndTaxes`].applicableTaxes.length > 0 && (
                       <AddedTaxesList
-                        selectedTaxes={values?.events[event].taxes}
+                        taxes = {taxes}
+                        selectedTaxes={values?.[`${event}ChargesAndTaxes`].applicableTaxes}
                         values={values}
                         setFormData={setFormData}
                         event={event}
@@ -122,12 +123,12 @@ export default ({
                     )}
                   </div>
                 </div>
-              </div> */}
+              </div>
             </div>
           )}
         </div>
       </div>
-      <ChargeModal id={searchParams.get("charge")}  closeModal={() => navigate(-1)}/>
+      <ChargeModal id={searchParams.get("charge")}  closeModal={() => setSearchParams()}/>
     </Fragment>
   );
 };

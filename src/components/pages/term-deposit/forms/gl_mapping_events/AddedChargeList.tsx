@@ -6,9 +6,10 @@ export default ({ selectedCharges, setFormData, values, event, charges }) => {
 
     const removeCharge = (option) => {
         const new_charges = [...selectedCharges];
-        new_charges.splice(new_charges.indexOf(new_charges.find(id => id === option.charge_id)), 1);
+        new_charges.splice(new_charges.indexOf(new_charges.find(id => id === option)), 1);
+        console.log(new_charges)
         const new_values = { ...values };
-        values.events[event].charges = new_charges;
+        values[`${event}ChargesAndTaxes`].applicableCharges = new_charges;
         setFormData(new_values)
     }
 
@@ -30,7 +31,7 @@ export default ({ selectedCharges, setFormData, values, event, charges }) => {
                                 <div onClick={() => setSearchParams({ charge: item.charge_id })} className="h-[30px] w-[30px] shadow-md bg-white flex justify-center items-center rounded-md">
                                     <FaEye className="text-danger-500" />
                                 </div>
-                                <div onClick={() => removeCharge(item)} className="h-[30px] w-[30px] shadow-md bg-white   flex justify-center items-center rounded-md">
+                                <div onClick={() => removeCharge(item.charge_id)} className="h-[30px] w-[30px] shadow-md bg-white   flex justify-center items-center rounded-md">
                                     <FaTimes className="text-danger-500" />
                                 </div>
                             </div>
