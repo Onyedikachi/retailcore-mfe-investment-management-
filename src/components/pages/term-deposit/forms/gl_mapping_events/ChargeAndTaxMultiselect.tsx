@@ -111,7 +111,7 @@ export default ({
                                 onClick={() => addOptions()}
                                 className="text-danger-500 text-sm underline"
                             >
-                                Add selected charge(s)
+                                Add selected {type === "charges" ? "charge(s)" : "taxe(es)"}
                             </span>
                         </div>
                     </div>
