@@ -1,6 +1,6 @@
 import { FaCaretDown, FaCaretUp, FaTimes } from "react-icons/fa";
 import ModalLayout from "../../modals/Layout";
-import { useGetChargeQuery } from "@app/api";
+import { useGetChargeQuery, useGetTaxQuery } from "@app/api";
 import { Fragment, useEffect } from "react";
 import { date } from "yup";
 import ChargeInformationAndValue from "./ChargeInformationAndValue";
@@ -8,10 +8,14 @@ import ChargeInformationAndValue from "./ChargeInformationAndValue";
 export default ({ id, closeModal }) => {
 
     const {
-        data: chargeData,
+        data: taxData,
         loading,
         isSuccess
-    } = useGetChargeQuery({ id: id })
+    } = useGetTaxQuery({ id: id })
+
+    useEffect(() => {
+        console.log(taxData);
+    }, [taxData])
 
     return (
         <ModalLayout isOpen={id && id !== "null"} setIsOpen={() => closeModal()}>
@@ -32,7 +36,7 @@ export default ({ id, closeModal }) => {
                         <div>
                             <div className="flex justify-between items-center pb-6 pt-8 px-16 border-b border-[#CCCCCC] w-full">
                                 <div className="flex gap-x-5 items-center">
-                                    <h1 className="text-[#636363] font-bold text-2xl uppercase"> {chargeData?.data?.name || ' - '} </h1>
+                                    <h1 className="text-[#636363] font-bold text-2xl uppercase"> {taxData?.data?.name || ' - '} </h1>
                                 </div>
                                 <button
                                     onClick={() => closeModal()}
@@ -49,15 +53,15 @@ export default ({ id, closeModal }) => {
                                         <div className="w-[80%] h-[60px]  flex flex-row justify-between">
                                             <div className="flex flex-col justify-around items-start w-[33%]">
                                                 <span className="text-gray-500 text-[12px]">Description</span>
-                                                <span className="text-gray-500 text-[14px]">{chargeData?.data?.description || "-"}</span>
+                                                <span className="text-gray-500 text-[14px]">{taxData?.data?.description || "-"}</span>
                                             </div>
                                             <div className="flex flex-col justify-around items-start w-[33%]">
                                                 <span className="text-gray-500 text-[12px]">Currency</span>
-                                                <span className="text-gray-500 text-[14px]">{chargeData?.data?.currency || "-"}</span>
+                                                <span className="text-gray-500 text-[14px]">{taxData?.data?.currency || "-"}</span>
                                             </div>
                                             <div className="flex flex-col justify-around items-start w-[33%]">
                                                 <span className="text-gray-500 text-[12px]">Charge Effective Date</span>
-                                                <span className="text-gray-500 text-[14px]">{chargeData?.data?.created_at.toLocaleString() || "-"}</span>
+                                                <span className="text-gray-500 text-[14px]">{taxData?.data?.created_at.toLocaleString() || "-"}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -66,56 +70,15 @@ export default ({ id, closeModal }) => {
                                         <div className="w-[80%] h-[60px]  flex flex-row justify-between">
                                             <div className="flex flex-col justify-around items-start w-[33%]">
                                                 <span className="text-gray-500 text-[12px]">Fixed Charge</span>
-                                                <span className="text-gray-500 text-[14px]">{chargeData?.data?.currency} {chargeData?.data?.charge_value[0]?.charge_amount || "-"}</span>
+                                                <span className="text-gray-500 text-[14px]">{taxData?.data?.currency} {taxData?.data?.tax_values[0]?.tax_amount || "-"}</span>
                                             </div>
                                         </div>
                                     </div>
 
                                     {/*  */}
-                                    <span>Taxes & Accounting Entries</span>
+                                    <span>Accounting Entries</span>
                                     <div className="flex flex-col justify-start w-full items-center rounded-md mt-4 mb-8 border-2">
-                                        <div className="w-[80%] flex flex-col justify-start mt-6">
-                                            {
-                                                chargeData?.data?.charge_applicable_tax.length > 0 &&
-                                                <Fragment>
-                                                    <div className="flex flex-col justify-around items-start w-[33%]">
-                                                        <span className="text-gray-500 text-[12px]">Applicable Taxes</span>
-                                                    </div>
-                                                    <div className="flex flex-col w-full mt-2 mb-6">
-                                                        <div className="flex flex-row justify-start">
-                                                            <div className="p-4 pl-0 w-[50%]">
-                                                                <span className="border-l-2 font-bold pl-4">
-                                                                    Tax
-                                                                </span>
-                                                            </div>
-                                                            <div className="p-4 pl-0">
-                                                                <span className="border-l-2 font-bold pl-4">
-                                                                    Value
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        {
-                                                            chargeData?.data?.charge_applicable_tax?.map((item) => {
-                                                                return (
-                                                                    <div key={item.tax_id} className="flex flex-row w-full justify-start p-4 bg-[#DB353905] bg-opacity-[02]">
-                                                                        <div className="p-4 pl-0 w-[50%]">
-                                                                            <span className="pl-4">
-                                                                                {item.tax_name}
-                                                                            </span>
-                                                                        </div>
-                                                                        <div className="p-4 pl-0 w-[50%]">
-                                                                            <span className="pl-4">
-                                                                                {item?.tax_values?.[0]?.tax_amount}
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                )
-                                                            })
-                                                        }
-                                                    </div>
-                                                </Fragment>
-                                            }
-                                        </div>
+
 
                                         <div className="w-[80%] flex flex-col justify-start mt-6">
                                             <div className="flex flex-col justify-around items-start w-[33%]">
@@ -140,9 +103,9 @@ export default ({ id, closeModal }) => {
                                                     </div>
                                                 </div>
                                                 {
-                                                    chargeData?.data?.charge_impacted_ledgers?.map((item) => {
+                                                    taxData?.data?.tax_impacted_ledgers?.map((item) => {
                                                         return (
-                                                            <div key={item.tax_id} className="flex flex-row w-full justify-start h-[60px] bg-[#DB353905] bg-opacity-[02]">
+                                                            <div key={item.tax_id} className="flex flex-row w-full justify-start h-min-[60px] bg-[#DB353905] bg-opacity-[02]">
                                                                 <div className="pl-4 w-[36%] flex flex-col">
                                                                     <span className="text-black">
                                                                         {item.ledger_name}

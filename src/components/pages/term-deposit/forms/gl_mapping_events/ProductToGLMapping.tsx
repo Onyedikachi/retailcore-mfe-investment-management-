@@ -18,6 +18,7 @@ import { Icon } from "@iconify/react";
 import {
   useGetApplicableChargesQuery,
   useGetApplicableTaxesQuery,
+  useGetTaxQuery,
 } from "@app/api";
 import ChargeModal from "../../ChargeModal";
 
@@ -179,11 +180,21 @@ export default ({
     isSuccess: taxesSuccess,
   } = useGetApplicableTaxesQuery();
 
+  const {
+    data: tax,
+    isLoading: taxLoading,
+    isSuccess: taxSuccess,
+  } = useGetTaxQuery({id: "ac98e00f-c6d0-48ff-a201-9303ac75f5d5"});
+
   const values = getValues();
 
   useEffect(() => {
     setFormData({ data: formData, mapOptions });
   }, [mapOptions, initiateDraft]);
+
+  useEffect(() => {
+    console.log(tax)
+  }, [tax])
 
   useEffect(() => {
     if (mapOptions.length === 3) {
