@@ -6,7 +6,7 @@ import { cleanObject } from "@app/utils/cleanObject";
 export const accountApi: any = createApi({
   reducerPath: "accountApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `https://retailcore-account-and-jounalposting-api.dev.bepeerless.co/api/v1`,
+    baseUrl: `https://dev2-retailcore-account-and-jounalposting-api.dev.bepeerless.co/api/v1`,
     prepareHeaders: (headers) => {
       const token = getToken();
       if (token) {
