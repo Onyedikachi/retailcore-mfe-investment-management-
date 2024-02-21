@@ -122,8 +122,8 @@ export const handleClick = (
 
 
 export default ({ proceed, formData, setFormData, setDisabled, initiateDraft }) => {
-    function onProceed(values, mapOptions) {
-        setFormData(values);
+    function onProceed(values, mapOptions, proceed) {
+        setFormData(values, mapOptions);
         proceed();
     }
 
@@ -165,9 +165,9 @@ export default ({ proceed, formData, setFormData, setDisabled, initiateDraft }) 
 
     const values = getValues();
 
-    useEffect(() => {
-        setFormData({ data: formData, mapOptions });
-    }, [mapOptions, initiateDraft]);
+    // useEffect(() => {
+    //     setFormData({ data: formData, mapOptions });
+    // }, [mapOptions, initiateDraft]);
 
     // useEffect(() => {
     //     if (mapOptions.length === 3) {
@@ -177,6 +177,8 @@ export default ({ proceed, formData, setFormData, setDisabled, initiateDraft }) 
     useEffect(() => {
         setDisabled(false);
     }, []);
+
+    useEffect(() => console.log("v = ", values), [values])
 
     useEffect(() => {
         if (formData?.productGlMappings?.length) {
@@ -196,7 +198,7 @@ export default ({ proceed, formData, setFormData, setDisabled, initiateDraft }) 
         <Fragment>
             <form id="productmapping"
                 data-testid="submit-button"
-                onSubmit={handleSubmit((d) => onProceed(proceed, values))}>
+                onSubmit={handleSubmit((d) => onProceed(values, mapOptions, proceed))}>
                 <div className="mb-12">
                     <div
                         style={{
