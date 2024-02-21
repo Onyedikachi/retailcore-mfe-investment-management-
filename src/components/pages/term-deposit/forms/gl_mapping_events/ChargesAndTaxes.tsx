@@ -15,6 +15,7 @@ import { handleDraft } from "@app/pages/investment/term-deposit/create-term-depo
 import { Messages } from "@app/constants/enums";
 import { Loader } from "@app/components";
 import { Failed } from "@app/components/modals";
+import TaxModal from "../../TaxModal";
 
 export function handleRedirect(type, navigate) {
   if (type === "tax") {
@@ -66,7 +67,7 @@ export default ({
   const navigate = useNavigate();
   const [activeChargeId, setActiveChargeId] = useState(null);
   const { process } = useParams();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
   const type = useRef("");
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -255,7 +256,11 @@ export default ({
       </div>
       <ChargeModal
         id={searchParams.get("charge")}
-        closeModal={() => navigate(-1)}
+        closeModal={() => setSearchParams({charge: null})}
+      />
+      <TaxModal
+        id={searchParams.get("tax")}
+        closeModal={() => setSearchParams({tax: null})}
       />
       <Loader
         isOpen={isLoading || modifyLoading || modifyRequestLoading}

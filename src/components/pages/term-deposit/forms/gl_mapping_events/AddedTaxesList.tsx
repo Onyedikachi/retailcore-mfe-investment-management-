@@ -8,7 +8,7 @@ export default ({ selectedTaxes, setFormData, values, event, taxes }) => {
         const new_taxes = [...selectedTaxes];
         new_taxes.splice(new_taxes.indexOf(new_taxes.find(id => id === option)), 1);
         const new_values = { ...values };
-        new_values[`${event}ChargesAndTaxes`].applicableCharges = new_taxes;
+        new_values[`${event}ChargesAndTaxes`].applicableTaxes = new_taxes;
         setFormData(new_values)
     }
 
@@ -48,8 +48,8 @@ export default ({ selectedTaxes, setFormData, values, event, taxes }) => {
                                     {item?.tax_values?.[0]?.tax_amount}
                                 </span>
                             </div>
-                            <div className="flex flex-row justify-between gap-x-4">
-                                <div className="h-[30px] w-[30px] shadow-md bg-white flex justify-center items-center rounded-md">
+                            <div className="flex flex-row gap-x-4">
+                                <div onClick={() => setSearchParams({ tax: item.tax_id })} className="h-[30px] w-[30px] shadow-md bg-white flex justify-center items-center rounded-md">
                                     <FaEye className="text-danger-500" />
                                 </div>
                                 <div onClick={() => removeTax(item.tax_id)} className="h-[30px] w-[30px] shadow-md bg-white   flex justify-center items-center rounded-md">
