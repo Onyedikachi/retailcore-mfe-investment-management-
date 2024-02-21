@@ -15,7 +15,6 @@ import {
   useGetProductDetailQuery,
   useModifyProductMutation,
   useModifyRequestMutation,
-  useGetChargesQuery,
 } from "@app/api";
 import {
   Breadcrumbs,

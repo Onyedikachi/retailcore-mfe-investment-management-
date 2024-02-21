@@ -4,6 +4,7 @@ import { FaSearch } from "react-icons/fa";
 import { tabLinks } from "@app/constants";
 import { useGetGlClassQuery, useGetLedgersQuery } from "@app/api";
 import { onChange } from "./DateSelect";
+import BottomBarLoader from "../BottomBarLoader";
 
 export function closeDropdown(setIsOpen) {
   setIsOpen(false);
@@ -35,23 +36,6 @@ export default function EntriesAndEventsSearchResults({
     isFetching,
   } = useGetLedgersQuery({ gl_class: classId }, { skip: !classId });
 
-  const GlMappingOptions = [
-    {
-      id: 0,
-      text: "Term Deposit Liability account",
-      key: "TermDepositLiabilityAccount",
-    },
-    {
-      id: 1,
-      text: "Interest accural account",
-      key: "InterestAccrualAccount",
-    },
-    {
-      id: 2,
-      text: "Interest expense account",
-      key: "InterestExpenseAccount",
-    },
-  ];
 
   useEffect(() => {
     console.log(query)
@@ -110,7 +94,7 @@ export default function EntriesAndEventsSearchResults({
           </div>
           {isOpen && (
             <div className="flex flex-col shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]  p-4 rounded-b-lg top-[35px] bg-white z-[400] absolute w-full min-w-[360px]">
-              <div data-testid="glclasses" className="flex justify-between mb-3">
+              <div data-testid="glclasses" className="flex justify-between mb-3 gap-x-3 max-w-max overflow-x-auto no-scrollbar">
                 {glClass.map((item) => (
                   <div test-id="class-id-item"
                     key={item.id}
@@ -199,6 +183,7 @@ export default function EntriesAndEventsSearchResults({
                   ))}
                 </div>
               )}
+             {ledgerIsLoading &&  <BottomBarLoader w="w-4" h="h-4" />}
             </div>
           )}
           {((errors && errors[inputName]) || error) && (
