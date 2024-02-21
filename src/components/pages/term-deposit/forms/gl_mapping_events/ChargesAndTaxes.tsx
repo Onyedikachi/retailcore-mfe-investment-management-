@@ -70,7 +70,7 @@ export default ({
                   <div className="w-full flex flex-col">
                     <div className="flex flex-row">
                       <ChargesSelector
-                        addedOptions={values?.events[event].charges}
+                        addedOptions={values?.[`${event}ChargesAndTaxes`]?.applicableCharges}
                         setFormData={setFormData}
                         values={values}
                         event={event}
@@ -81,9 +81,10 @@ export default ({
                         Create new charge
                       </span>
                     </div>
-                    {values?.events[event].charges.length > 0 && (
+                    {values?.[`${event}ChargesAndTaxes`].applicableCharges.length > 0 && (
                       <AddedChargeList
-                        selectedCharges={values?.events[event].charges}
+                        charges={charges}
+                        selectedCharges={values?.[`${event}ChargesAndTaxes`]?.applicableCharges}
                         values={values}
                         setFormData={setFormData}
                         event={event}
@@ -101,7 +102,7 @@ export default ({
                     <div className="flex flex-row">
                       <SelectTaxes
                         availableOptions={taxes}
-                        addedOptions={values?.events[event].taxes}
+                        addedOptions={values?.[`${event}ChargesAndTaxes`]?.applicableTaxes}
                         setFormData={setFormData}
                         values={values}
                         event={event}
@@ -111,9 +112,10 @@ export default ({
                         Create new tax
                       </span>
                     </div>
-                    {values?.events[event].taxes.length > 0 && (
+                    {values?.[`${event}ChargesAndTaxes`].applicableTaxes.length > 0 && (
                       <AddedTaxesList
-                        selectedTaxes={values?.events[event].taxes}
+                        taxes = {taxes}
+                        selectedTaxes={values?.[`${event}ChargesAndTaxes`].applicableTaxes}
                         values={values}
                         setFormData={setFormData}
                         event={event}

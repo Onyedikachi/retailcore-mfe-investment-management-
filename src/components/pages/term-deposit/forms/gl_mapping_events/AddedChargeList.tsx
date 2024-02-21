@@ -2,18 +2,18 @@ import { useEffect } from "react";
 import { FaEdit, FaEye, FaTimes } from "react-icons/fa"
 import { useSearchParams } from "react-router-dom";
 
-export default ({ selectedCharges, setFormData, values, event }) => {
+export default ({ selectedCharges, setFormData, values, event, charges }) => {
 
     const removeCharge = (option) => {
         const new_charges = [...selectedCharges];
-        new_charges.splice(new_charges.indexOf(new_charges.find(i => i.charge_id === option.charge_id)), 1);
-        const new_values = {...values};
-        values.events[event].charges = new_charges;
+        new_charges.splice(new_charges.indexOf(new_charges.find(id => id === option)), 1);
+        console.log(new_charges)
+        const new_values = { ...values };
+        values[`${event}ChargesAndTaxes`].applicableCharges = new_charges;
         setFormData(new_values)
     }
 
     const [searchParams, setSearchParams] = useSearchParams();
-
 
     return (
         <div className="flex flex-col w-full mt-6">
@@ -23,15 +23,15 @@ export default ({ selectedCharges, setFormData, values, event }) => {
                 </span>
             </div>
             {
-                selectedCharges.map((item, index) => {
+                charges.data.records.filter(item => selectedCharges.find(id => id === item.charge_id)).map((item, index) => {
                     return (
                         <div key={item.charge_id} className="flex flex-row w-[700px] justify-between p-4 bg-[#DB353905] bg-opacity-[02]">
                             {item.name}
                             <div className="w-16 flex flex-row justify-between">
-                                <div onClick={() => setSearchParams({charge: item.charge_id})} className="h-[30px] w-[30px] shadow-md bg-white flex justify-center items-center rounded-md">
+                                <div onClick={() => setSearchParams({ charge: item.charge_id })} className="h-[30px] w-[30px] shadow-md bg-white flex justify-center items-center rounded-md">
                                     <FaEye className="text-danger-500" />
                                 </div>
-                                <div onClick={() => removeCharge(item)} className="h-[30px] w-[30px] shadow-md bg-white   flex justify-center items-center rounded-md">
+                                <div onClick={() => removeCharge(item.charge_id)} className="h-[30px] w-[30px] shadow-md bg-white   flex justify-center items-center rounded-md">
                                     <FaTimes className="text-danger-500" />
                                 </div>
                             </div>
