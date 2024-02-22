@@ -8,15 +8,15 @@ export function closeDropdown(setIsOpen) {
   setIsOpen(false);
 }
 
-export function handleChange(id, data, selectedOptions, setSelectedOptions) {
-  if (!selectedOptions?.some((i) => i.value === data.value)) {
+export function handleChange(data, selectedOptions, setSelectedOptions) {
+  if (!selectedOptions?.some((i) => i === data)) {
     setSelectedOptions([...selectedOptions, data]);
-   
   } else {
-    const arrOptions = selectedOptions?.filter((i) => i.value !== data.value);
+    const arrOptions = selectedOptions?.filter((i) => i !== data);
     setSelectedOptions(arrOptions);
   }
 }
+
 export default function MultiSelectForm({
   options,
   handleSelected,
@@ -49,7 +49,7 @@ export default function MultiSelectForm({
 
   const handleAll = (val) => {
     if (val) {
-      setSelectedOptions(options);
+      setSelectedOptions(options.map(i=>i.value));
     } else {
       setSelectedOptions([]);
     }
@@ -74,7 +74,7 @@ export default function MultiSelectForm({
           onClick={() => setIsOpen(!isOpen)}
         >
           <span className="block max-w-max truncate flex-1">
-            {selectedOptions?.map((i) => i.text).join(",") || (
+            {selectedOptions?.join(",") || (
               <span className="text-[#aaa]">{placeholder}</span>
             )}
           </span>
@@ -110,12 +110,11 @@ export default function MultiSelectForm({
                     <Checkbox
                       label={item.text}
                       checked={() =>
-                        selectedOptions?.some((i) => i.value === item.value)
+                        selectedOptions?.some((i) => i === item.value)
                       }
                       onChange={() =>
                         handleChange(
-                          item.id,
-                          item,
+                          item.value,
                           selectedOptions,
                           setSelectedOptions
                         )

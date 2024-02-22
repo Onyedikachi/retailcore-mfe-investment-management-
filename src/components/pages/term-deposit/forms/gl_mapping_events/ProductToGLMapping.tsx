@@ -137,16 +137,16 @@ export default ({
   setDisabled,
   initiateDraft,
 }) => {
-  console.log("🚀 ~ formData:", formData);
-  function onProceed(values, mapOptions) {
-    // setFormData(values);
-    proceed();
-  }
 
+ 
   const [mapOptions, setMapOptions] = useState([]);
   const [clearFields, setClearField] = useState(false);
-  const [activeTab, setActiveTab] = useState<any>([]);
+  const [activeTab, setActiveTab] = useState<any>([1]);
   const [activeCharge, setActiveCharge] = useState(null);
+  function onProceed(val) {
+    setFormData(val, mapOptions);
+    proceed();
+  }
 
   const {
     register,
@@ -235,7 +235,7 @@ export default ({
         ),
         applicableTaxes: [],
       });
-    //   setActiveTab([...activeTab, 3]);
+      //   setActiveTab([...activeTab, 3]);
     }
     if (
       formData?.liquidation?.early_AllowEarlyLiquidation &&
@@ -247,7 +247,7 @@ export default ({
         ),
         applicableTaxes: [],
       });
-    //   setActiveTab([...activeTab, 4]);
+      //   setActiveTab([...activeTab, 4]);
     }
   }, [
     formData?.liquidation?.part_AllowPartLiquidation,
@@ -260,7 +260,7 @@ export default ({
         id="productmapping"
         data-testid="submit-button"
         className="grid gap-y-8"
-        onSubmit={handleSubmit((d) => onProceed(proceed, values))}
+        onSubmit={handleSubmit((val) => onProceed(val))}
       >
         <div>
           <div className="bg-[#fff] border border-[#EEEEEE] rounded-[6px]">
@@ -339,7 +339,7 @@ export default ({
             setFormData,
             tab: 2,
             header: "Principal Deposit",
-            event: "principalDeposit",
+            event: "principalDepositChargesAndTaxes",
             productData: formData,
             disabled: false,
             placeholder: "Type to search and select",
@@ -358,9 +358,11 @@ export default ({
               setFormData,
               tab: 3,
               header: "Part Liquidation",
-              event: "partLiquidation",
+              event: "partLiquidationChargesAndTaxes",
               productData: formData,
-              disabled: formData?.liquidation.part_LiquidationPenalty == 4 && formData?.liquidation?.part_SpecificCharges.length,
+              disabled:
+                formData?.liquidation.part_LiquidationPenalty == 4 &&
+                formData?.liquidation?.part_SpecificCharges.length,
               placeholder: "Type to search and select",
             }}
           />
@@ -378,9 +380,11 @@ export default ({
               setFormData,
               tab: 4,
               header: "Early Liquidation",
-              event: "earlyLiquidation",
+              event: "earlyLiquidationChargesAndTaxes",
               productData: formData,
-              disabled: formData?.liquidation.early_LiquidationPenalty == 4 && formData?.liquidation?.early_SpecificCharges.length,
+              disabled:
+                formData?.liquidation.early_LiquidationPenalty == 4 &&
+                formData?.liquidation?.early_SpecificCharges.length,
               placeholder: "Type to search and select",
             }}
           />
@@ -397,7 +401,7 @@ export default ({
             setFormData,
             tab: 5,
             header: "Maturity Liquidation",
-            event: "maturityLiquidation",
+            event: "maturityLiquidationChargesAndTaxes",
             productData: formData,
           }}
         />

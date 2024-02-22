@@ -7,7 +7,7 @@ describe("confirmationHandler", () => {
   const activateProduct = jest.fn();
   const notify = jest.fn();
   const navigate = jest.fn();
-  const detail = { id: 1 };
+  const detail = { id: 1 , metaInfo: {}};
 
   const permissions = [];
   const selected = "";
