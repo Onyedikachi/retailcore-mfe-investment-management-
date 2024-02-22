@@ -264,7 +264,7 @@ export default function CustomerInformation({
       setQuery({
         search: formData?.customerBookingInfoModel.customerAccount,
         isAccountNumber: true,
-        type: investmentType,
+        // customerType: investmentType,
       });
     }
   }, [formData?.customerBookingInfoModel.customerAccount]);
@@ -299,7 +299,7 @@ export default function CustomerInformation({
                       setQuery({
                         search: e,
                         isAccountNumber: true,
-                        type: investmentType,
+                        // customerType: investmentType,
                       }),
                     500
                   )}

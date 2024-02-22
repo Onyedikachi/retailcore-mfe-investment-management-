@@ -11,7 +11,8 @@ export default ({
   type,
   availableOptions,
   disabled,
-  placeholder
+  placeholder,
+  setValue
 }) => {
   const [listOpen, setListOpen] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -30,13 +31,14 @@ export default ({
   const addOptions = () => {
     const new_taxes = selectedOptions;
     const new_values = { ...values };
-    new_values[`${event}ChargesAndTaxes`].applicableTaxes = new_taxes;
+    new_values[event].applicableTaxes = new_taxes;
+    setValue(event, new_values[event]);
     setFormData(new_values)
     setListOpen(false);
 }
 
   const hasOption = (option) => {
-    return selectedOptions.some((e) => e === option.tax_id);
+    return selectedOptions?.some((e) => e === option.tax_id);
   };
 
   useEffect(() => {
