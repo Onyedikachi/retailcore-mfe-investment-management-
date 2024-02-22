@@ -33,7 +33,7 @@ describe('handleFormRef', () => {
     it('should set the formRef to "pricingconfig" when step is 3', () => {
       const setFormRef = jest.fn();
       handleFormRef({ step: 5, setFormRef });
-      expect(setFormRef).toHaveBeenCalledWith("entriesandevents");
+      expect(setFormRef).toHaveBeenCalledWith("productmapping");
     });
 
     // step is null

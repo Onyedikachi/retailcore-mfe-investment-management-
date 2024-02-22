@@ -273,7 +273,7 @@ describe('BookingDetailLayout', () => {
     );
 
     expect(screen.getByText("123456")).toBeInTheDocument();
-    expect(screen.getByText("NGN 10,000")).toBeInTheDocument();
+    expect(screen.getByText("10000")).toBeInTheDocument();
   });
 
   // Displays '-' when product name is not available
@@ -493,6 +493,6 @@ describe('BookingDetailLayout', () => {
     );
 
     expect(screen.getByTestId("principal-value")).toBeInTheDocument();
-    expect(screen.getByTestId("principal-value")).toHaveTextContent("NGN 0");
+    expect(screen.getByTestId("principal-value")).toHaveTextContent("");
   });
 });

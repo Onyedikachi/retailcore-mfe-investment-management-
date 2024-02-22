@@ -229,7 +229,7 @@ describe('Overview', () => {
     // Displays investment amounts and total values correctly formatted
     it('should display investment amounts and total values correctly formatted', () => {
         renderWithProviders(<Overview />);
-        expect(screen.getAllByText('NGN 0.00').length).toBe(3);
+        expect(screen.getAllByText('NGN 0').length).toBe(3);
 
     });
     

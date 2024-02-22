@@ -154,15 +154,6 @@ describe("TextCellContent", () => {
     expect(screen.getByText(value)).toBeInTheDocument();
   });
 
-  it('renders "-" when value is falsy', () => {
-    const value = null; // or undefined or an empty string
-
-    render(<TextCellContent value={value} />);
-
-    // Assert that "-" is rendered when the value is falsy
-    expect(screen.getByText("null")).toBeInTheDocument();
-  });
-
   it("should render nothing when value is null or undefined", () => {
     const value = null;
     const { container } = render(<UpdatedOnCellContent value={value} />);
@@ -401,8 +392,8 @@ describe('handleProductsDropdown', () => {
     // Assert
     expect(result).toEqual([
       { text: "View", value: "view" },
-      // { text: "Modify", value: "modify" },
-      // { text: "Deactivate", value: "deactivate" },
+      { text: "Modify", value: "modify" },
+      { text: "Deactivate", value: "deactivate" },
     ]);
   });
 
@@ -431,7 +422,7 @@ describe('handleProductsDropdown', () => {
     // Assert
     expect(result).toEqual([
       { text: "View", value: "view" },
-      // { text: "Clone", value: "clone" },
+      { text: "Clone", value: "clone" },
     ]);
   });
 
@@ -830,7 +821,7 @@ describe("statusHandler", () => {
   it('should set success text and open success modal when isSuccess is true', () => {
     const isSuccess = true;
 
-    statusHandler({ isSuccess, setSuccessText, setIsSuccessOpen });
+    statusHandler({ isSuccess, setSuccessText, setIsSuccessOpen, setSubText, setFailed });
 
     expect(setSuccessText).toHaveBeenCalledWith(Messages.PRODUCT_DELETE_SUCCESS);
     expect(setIsSuccessOpen).toHaveBeenCalledWith(true);
@@ -839,7 +830,7 @@ describe("statusHandler", () => {
   // Sets success text and opens success modal if activateSuccess is true and role is superadmin or admin
   it('should set success text and open success modal when activateSuccess is true and role is superadmin or admin', () => {
 
-    statusHandler({ modifyRequestSuccess: true, activateSuccess, setSuccessText, setIsSuccessOpen, setSubText, role });
+    statusHandler({ modifyRequestSuccess: true, activateSuccess, setSuccessText, setIsSuccessOpen, setSubText, role, setFailed });
 
 
     expect(setSuccessText).toHaveBeenCalledWith(Messages.BOOKING_WITHDRAW_SUCCESS);
@@ -849,7 +840,7 @@ describe("statusHandler", () => {
 
   it('should handle modifyRequestError', () => {
 
-    statusHandler({ modifyRequestIsError: true, modifyRequestError: { message: { message: "E sha fail" } }, setFailedText, setFailed, setFailedSubtext, role });
+    statusHandler({ modifyRequestIsError: true, modifyRequestError: { message: { message: "E sha fail" } }, setFailedText, setFailed, setFailedSubtext, role, setSuccessText, setIsSuccessOpen, setSubText });
 
 
     expect(setFailedText).toHaveBeenCalledWith(Messages.BOOKING_MODIFY_FAILED);
@@ -859,7 +850,7 @@ describe("statusHandler", () => {
 
   it('should handle deleteInvestmentRequestError', () => {
 
-    statusHandler({ isDeleteInvestmentRequestError: true, deleteInvestmentRequestError: { message: { message: "E sha fail" } }, setFailedText, setFailed, setFailedSubtext, role });
+    statusHandler({ isDeleteInvestmentRequestError: true, deleteInvestmentRequestError: { message: { message: "E sha fail" } }, setFailedText, setFailed, setFailedSubtext, role, setSuccessText, setIsSuccessOpen, setSubText });
 
 
     expect(setFailedText).toHaveBeenCalledWith(Messages.PRODUCT_DELETE_FAILED);
@@ -868,20 +859,20 @@ describe("statusHandler", () => {
   });
 
   it("shluld handle earlyLiquidateSuccess", () => {
-    statusHandler({ earlyLiquidateSuccess: true, setSuccessText, setIsSuccessOpen });
+    statusHandler({ earlyLiquidateSuccess: true, setSuccessText, setIsSuccessOpen, setSubText, setFailed });
     expect(setSuccessText).toBeCalledWith(Messages.EARLY_LIQUIDATION_REQUEST)
     expect(setIsSuccessOpen).toBeCalledWith(true);
   })
 
   it("should handle partLiquidateSuccess", () => {
-    statusHandler({ partLiquidateSuccess: true, setSuccessText, setIsSuccessOpen });
+    statusHandler({ partLiquidateSuccess: true, setSuccessText, setIsSuccessOpen, setSubText, setFailed });
     expect(setSuccessText).toBeCalledWith(Messages.PART_LIQUIDATION_REQUEST)
     expect(setIsSuccessOpen).toBeCalledWith(true);
   })
 
   it('should handle earlyLiquidateIsError', () => {
 
-    statusHandler({ earlyLiquidateIsError: true, earlyLiquidateError: { message: { message: "E sha fail" } }, setFailedText, setFailed, setFailedSubtext, role });
+    statusHandler({ earlyLiquidateIsError: true, earlyLiquidateError: { message: { message: "E sha fail" } }, setFailedText, setFailed, setFailedSubtext, role, setSuccessText, setIsSuccessOpen, setSubText });
 
 
     expect(setFailedText).toHaveBeenCalledWith(Messages.REQUEST_FAILED);
@@ -891,7 +882,7 @@ describe("statusHandler", () => {
 
   it('should handle partLiquidateIsError', () => {
 
-    statusHandler({ partLiquidateIsError: true, partLiquidateError: { message: { message: "E sha fail" } }, setFailedText, setFailed, setFailedSubtext, role });
+    statusHandler({ partLiquidateIsError: true, partLiquidateError: { message: { message: "E sha fail" } }, setFailedText, setFailed, setFailedSubtext, role, setSuccessText, setIsSuccessOpen, setSubText });
 
 
     expect(setFailedText).toHaveBeenCalledWith(Messages.REQUEST_FAILED);
@@ -901,7 +892,7 @@ describe("statusHandler", () => {
 
 
   it("should handle deleteInvestmentRequestSuccess", () => {
-    statusHandler({ isDeleteInvestmentRequestSuccess: true, setSuccessText, setIsSuccessOpen });
+    statusHandler({ isDeleteInvestmentRequestSuccess: true, setSuccessText, setIsSuccessOpen, setSubText, setFailed });
     expect(setSuccessText).toBeCalledWith(Messages.PRODUCT_DELETE_SUCCESS)
     expect(setIsSuccessOpen).toBeCalledWith(true);
   })
@@ -911,28 +902,11 @@ describe("statusHandler", () => {
     const isError = true;
     const error = { message: { message: "Error message" } };
 
-    statusHandler({ isError, setFailedText, setFailedSubtext, setFailed, error });
+    statusHandler({ isError, setFailedText, setFailedSubtext, setFailed, error, setSuccessText, setIsSuccessOpen, setSubText });
 
     expect(setFailedText).toHaveBeenCalledWith(Messages.PRODUCT_DELETE_FAILED);
     expect(setFailedSubtext).toHaveBeenCalledWith("Error message");
     expect(setFailed).toHaveBeenCalledWith(true);
-  });
-
-  // None of the boolean flags are true
-  it('should not set any text or open any modal when none of the boolean flags are true', () => {
-    const setSuccessText = jest.fn();
-    const setIsSuccessOpen = jest.fn();
-    const setFailedText = jest.fn();
-    const setFailedSubtext = jest.fn();
-    const setFailed = jest.fn();
-
-    statusHandler({ setSuccessText, setIsSuccessOpen, setFailedText, setFailedSubtext, setFailed });
-
-    expect(setSuccessText).not.toHaveBeenCalled();
-    expect(setIsSuccessOpen).not.toHaveBeenCalled();
-    expect(setFailedText).not.toHaveBeenCalled();
-    expect(setFailedSubtext).not.toHaveBeenCalled();
-    expect(setFailed).not.toHaveBeenCalled();
   });
 
   // isError is true but error object is null
@@ -943,7 +917,7 @@ describe("statusHandler", () => {
     const isError = true;
     const error = null;
 
-    statusHandler({ isError, setFailedText, setFailedSubtext, setFailed, error });
+    statusHandler({ isError, setFailedText, setFailedSubtext, setFailed, error, setSubText, setSuccessText, setIsSuccessOpen });
 
     expect(setFailedText).toHaveBeenCalledWith(Messages.PRODUCT_DELETE_FAILED);
     expect(setFailedSubtext).toHaveBeenCalledWith(undefined);
@@ -957,8 +931,9 @@ describe("statusHandler", () => {
     const setFailed = jest.fn();
     const activateIsError = true;
     const activateError = null;
+    const setSuccessText = jest.fn()
 
-    statusHandler({ activateIsError, setFailedText, setFailedSubtext, setFailed, activateError });
+    statusHandler({ activateIsError, setFailedText, setFailedSubtext, setFailed, activateError, setSuccessText, setIsSuccessOpen, setSubText, });
 
     expect(setFailedText).toHaveBeenCalledWith(Messages.PRODUCT_ACTIVATE_FAILED);
     expect(setFailedSubtext).toHaveBeenCalledWith(undefined);

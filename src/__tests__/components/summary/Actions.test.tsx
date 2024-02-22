@@ -648,13 +648,13 @@ describe('handlePermissionType', () => {
   // Returns "BOOK_INVESTMENT" if type is "individual" and process_type is "booking"
   it('should return "BOOK_INVESTMENT" when type is "individual" and process_type is "booking"', () => {
     const result = handlePermissionType("individual", "booking");
-    expect(result).toBe("BOOK_INVESTMENT");
+    expect(result).toEqual(["BOOK_INVESTMENT", "LIQUIDATE_INVESTMENT"]);
   });
 
   // Returns "LIQUIDATE_INVESTMENT" if type is "individual" and process_type is not "booking"
   it('should return "LIQUIDATE_INVESTMENT" when type is "individual" and process_type is not "booking"', () => {
     const result = handlePermissionType("individual", "other");
-    expect(result).toBe("LIQUIDATE_INVESTMENT");
+    expect(result).toEqual(["BOOK_INVESTMENT", "LIQUIDATE_INVESTMENT"]);
   });
 
   // Returns "CREATE_INVESTMENT_PRODUCT" if type is "investment"

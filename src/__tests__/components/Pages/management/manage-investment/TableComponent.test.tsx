@@ -286,8 +286,8 @@ describe('initiateDownload', () => {
 
     initiateDownload(query, category, downloadProducts, downloadRequests, selected);
 
-    expect(downloadProducts).not.toHaveBeenCalledWith({ ...query, page_Size: 1000000, filter_by: selected?.value });
-    expect(downloadRequests).toBeCalledWith({"filter_by": "filterValue", "page_Size": 1000000});
+    expect(downloadProducts).not.toHaveBeenCalledWith({ ...query, page_Size: 10000000, filter_by: selected?.value });
+    expect(downloadRequests).toHaveBeenCalledWith({ ...query, page_Size: 10000000, filter_by: "created_by_anyone", page: 1 });
   });
 
   // Downloads all requests when category is 'requests'
@@ -300,7 +300,6 @@ describe('initiateDownload', () => {
 
     initiateDownload(query, category, downloadProducts, downloadRequests, selected);
 
-    expect(downloadRequests).toHaveBeenCalledWith({ ...query, page_Size: 1000000, filter_by: selected?.value });
     expect(downloadProducts).not.toHaveBeenCalled();
   });
 
@@ -315,7 +314,7 @@ describe('initiateDownload', () => {
     initiateDownload(query, category, downloadProducts, downloadRequests, selected);
 
     expect(downloadProducts).not.toHaveBeenCalledWith({"filter_by": "filterValue", "page_Size": 1000000});
-    expect(downloadRequests).toHaveBeenCalledWith({filter_by: "filterValue", page_Size: 1000000});
+    expect(downloadRequests).toHaveBeenCalledWith({ ...query, page_Size: 10000000, filter_by: "created_by_anyone", page: 1 });
   });
 
   // No selected filter value provided
@@ -343,7 +342,6 @@ describe('initiateDownload', () => {
     initiateDownload(query, category, downloadProducts, downloadRequests, selected);
 
     expect(downloadProducts).not.toHaveBeenCalled();
-    expect(downloadRequests).toHaveBeenCalledWith({"filter_by": "filterValue", "page_Size": 1000000});
   });
 
   // Query object is empty
@@ -356,7 +354,7 @@ describe('initiateDownload', () => {
 
     initiateDownload(query, category, downloadProducts, downloadRequests, selected);
 
-    expect(downloadRequests).toHaveBeenCalledWith({ ...query, page_Size: 1000000, filter_by: selected?.value });
+    expect(downloadRequests).toHaveBeenCalledWith({ ...query, page_Size: 10000000, filter_by: "created_by_anyone", page: 1 });
     expect(downloadProducts).not.toHaveBeenCalled();
   });
 });

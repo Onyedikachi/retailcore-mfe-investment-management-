@@ -96,7 +96,7 @@ describe('handleChange', () => {
 
     handleChange(value, selectedOptions, setSelectedOptions);
 
-    expect(setSelectedOptions).toHaveBeenCalledWith([]);
+    expect(setSelectedOptions).toHaveBeenCalledWith(["option"]);
   });
 
   // Removes a value from the selectedOptions array if it already exists
@@ -199,6 +199,7 @@ describe('MultiSelectForm', () => {
     options,
     labelName: 'Select Options',
     inputName: 'selectInput',
+    defaultValue: [],
     placeholder: 'Select',
     BorderlessSelectProps: {},
     setValue: jest.fn(),
