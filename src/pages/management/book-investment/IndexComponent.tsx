@@ -173,6 +173,7 @@ export default function IndexComponent() {
       title: investmentType,
       url: `/investment-management/${investmentType}`,
     },
+  
   ];
 
   const {
