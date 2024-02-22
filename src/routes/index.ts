@@ -56,14 +56,14 @@ export const routes2 = [
       () => import("../pages/management/book-investment/IndexComponent")
     ),
   },
-  {
-    path: paths.BOOK_INVESTMENT_PROCESS_SUMMARY,
-    name: "Investment process summary",
-    exact: true,
-    component: lazy(
-      () => import("../pages/management/book-investment/process-summary/IndexComponent")
-    ),
-  },
+  // {
+  //   path: paths.BOOK_INVESTMENT_PROCESS_SUMMARY,
+  //   name: "Investment process summary",
+  //   exact: true,
+  //   component: lazy(
+  //     () => import("../pages/management/book-investment/process-summary/IndexComponent")
+  //   ),
+  // },
   {
     path: paths.MANAGE_INVESTMENT,
     name: "Investment Booking",
