@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function CancelSvg() {
+export default function SterlingLogo() {
   return (
 <svg width="91" height="126" viewBox="0 0 91 126" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g filter="url(#filter0_d_20438_236807)">

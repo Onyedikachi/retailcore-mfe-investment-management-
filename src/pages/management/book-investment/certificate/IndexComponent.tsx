@@ -1,66 +1,50 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { HiShare, HiPrinter } from "react-icons/hi";
 import { PdfViewer } from "./PdfPreviewComponent";
 import { usePDF } from 'react-to-pdf';
+import { useParams } from 'react-router-dom';
 
-const tableDetials = [
-  {
-    label: "A/C Number",
-    value: "145*****3456",
-  },
-  {
-    label: "Account Name",
-    value: "Daniel Benson",
-  },
-  {
-    label: "Investment ID",
-    value: "011SBTDi232125038",
-  },
-  {
-    label: "Address",
-    value: "1 Joel Ogunnaike Street, Ikeja.",
-  },
-  {
-    label: "Booking Date",
-    value: "31-Jan-2024",
-  },
-  {
-    label: "Maturity Date",
-    value: "28-Feb-2024",
-  },
-  {
-    label: "Tenor",
-    value: "4 Weeks",
-  },
-  {
-    label: "Interest Rate",
-    value: "10",
-  },
-  {
-    label: "Interest Amount",
-    value: "11,219,178.08",
-  },
-  {
-    label: "Principal Amount",
-    value: "500,000,000.00",
-  },
-  {
-    label: "Amount at Maturity",
-    value: "511,219,178.08",
-  },
-  {
-    label: "Currency",
-    value: "NGN",
-  },
-  {
-    label: "Contract Status",
-    value: "Active",
-  },
-];
+import { useGetInvestmentCertificateQuery } from "@app/api";
+
+
 export default function IndexComponent() {
   const { toPDF, targetRef } = usePDF({filename: 'certificate.pdf'});
 
   const handlePrint = () => toPDF()
+
+  const {id} = useParams();
+
+
+
+
+  const {
+    data: investmentCertificateData,
+    isSuccess: investmentCertificateIsSuccess,
+    isError: investmentCertificateIsError,
+    error: investmentCertificateError,
+    isLoading,
+  } = useGetInvestmentCertificateQuery({ BookingId: id }, { skip: !id });
+
+
+  // const tableDetials =  
+
+
+ const investmentDetailsTableData = useMemo(() =>   investmentCertificateData ? Object.entries(investmentCertificateData).map(([key, value]) => ({
+  label: key,
+  value: value ?? "",
+})) : [], [investmentCertificateData])
+
+const customerDetails = useMemo(() => investmentCertificateData, [investmentCertificateData])
+
+const formattedDate = customerDetails?.bookingDate && new Date(customerDetails?.bookingDate);
+const formattedDateTime = formattedDate?.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+  hour: "numeric",
+  minute: "numeric",
+  second: "numeric",
+});
 
   return (
     <div className="flex gap-x-5 w-full flex-1 p-8">
@@ -81,8 +65,10 @@ export default function IndexComponent() {
         </div>
 
         <div className="h-[649px]	my-auto py-10	 overflow-auto w-full">
-          <PdfViewer ref={targetRef} investmentDetailTable={tableDetials} />
-        </div>
+{   investmentDetailsTableData?.length && customerDetails?.customerName ?       <PdfViewer ref={targetRef} customerName={customerDetails?.customerName} investmentDetailTable={investmentDetailsTableData} /> : null
+}     
+
+   </div>
         <div className="flex justify-end gap-5">
           <button
             data-testid="refresh-btn"
@@ -134,11 +120,12 @@ export default function IndexComponent() {
 
           <div className="gap-3 text-sm">
             <p>Initiator</p>
-            <p>Uzoma Okoro</p>
+            <p>{customerDetails?.customerName}</p>
           </div>
 
           <div className="gap-3 text-sm mt-6">
             <p>Initiation date and time</p>
+            <p>{formattedDateTime}</p>
           </div>
         </div>
       </div>
