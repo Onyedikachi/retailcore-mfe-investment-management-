@@ -1,25 +1,73 @@
 import React from "react";
 import { HiShare, HiPrinter } from "react-icons/hi";
 import { PdfViewer } from "./PdfPreviewComponent";
+import { usePDF } from 'react-to-pdf';
 
+const tableDetials = [
+  {
+    label: "A/C Number",
+    value: "145*****3456",
+  },
+  {
+    label: "Account Name",
+    value: "Daniel Benson",
+  },
+  {
+    label: "Investment ID",
+    value: "011SBTDi232125038",
+  },
+  {
+    label: "Address",
+    value: "1 Joel Ogunnaike Street, Ikeja.",
+  },
+  {
+    label: "Booking Date",
+    value: "31-Jan-2024",
+  },
+  {
+    label: "Maturity Date",
+    value: "28-Feb-2024",
+  },
+  {
+    label: "Tenor",
+    value: "4 Weeks",
+  },
+  {
+    label: "Interest Rate",
+    value: "10",
+  },
+  {
+    label: "Interest Amount",
+    value: "11,219,178.08",
+  },
+  {
+    label: "Principal Amount",
+    value: "500,000,000.00",
+  },
+  {
+    label: "Amount at Maturity",
+    value: "511,219,178.08",
+  },
+  {
+    label: "Currency",
+    value: "NGN",
+  },
+  {
+    label: "Contract Status",
+    value: "Active",
+  },
+];
 export default function IndexComponent() {
-  const handlePrint = (pdfUrl) => {
-    const iframe = document.createElement("iframe");
-    iframe.src = pdfUrl;
-    iframe.style.display = "none";
-    document.body.appendChild(iframe);
+  const { toPDF, targetRef } = usePDF({filename: 'certificate.pdf'});
 
-    iframe.contentWindow.onload = () => {
-      iframe.contentWindow.print();
-    };
-  };
+  const handlePrint = () => toPDF()
 
   return (
     <div className="flex gap-x-5 w-full flex-1 p-8">
       <div className="bg-white pt-6 px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16">
         <div className="flex justify-end gap-5">
           <button
-            onClick={() => handlePrint("https://pdfobject.com/pdf/sample.pdf")}
+            onClick={handlePrint}
             className="flex whitespace-nowrap gap-x-2 items-center bg-transparent border-none text-[#636363] text-base"
           >
             <HiPrinter className="text-lg" /> Print
@@ -32,8 +80,8 @@ export default function IndexComponent() {
           </button>
         </div>
 
-        <div className="h-[649px]	my-auto py-10	 overflow-hidden w-full">
-          <PdfViewer pdfUrl={"https://pdfobject.com/pdf/sample.pdf"} />
+        <div className="h-[649px]	my-auto py-10	 overflow-auto w-full">
+          <PdfViewer ref={targetRef} investmentDetailTable={tableDetials} />
         </div>
         <div className="flex justify-end gap-5">
           <button
