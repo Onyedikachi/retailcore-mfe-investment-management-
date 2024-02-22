@@ -403,6 +403,7 @@ export default ({
             header: "Maturity Liquidation",
             event: "maturityLiquidationChargesAndTaxes",
             productData: formData,
+            placeholder: "Type to search and select",
           }}
         />
       </form>
