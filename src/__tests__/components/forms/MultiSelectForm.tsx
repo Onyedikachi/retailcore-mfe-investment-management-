@@ -94,7 +94,7 @@ describe('handleChange', () => {
     const selectedOptions = [];
     const setSelectedOptions = jest.fn();
 
-    handleChange(id, value, selectedOptions, setSelectedOptions);
+    handleChange(value, selectedOptions, setSelectedOptions);
 
     expect(setSelectedOptions).toHaveBeenCalledWith([]);
   });
@@ -106,7 +106,7 @@ describe('handleChange', () => {
     const selectedOptions = [value];
     const setSelectedOptions = jest.fn();
 
-    handleChange(id, value, selectedOptions, setSelectedOptions);
+    handleChange( value, selectedOptions, setSelectedOptions);
 
     expect(setSelectedOptions).toHaveBeenCalledWith([]);
   });
@@ -119,7 +119,7 @@ describe('handleChange', () => {
     const selectedOptions = [];
     const setSelectedOptions = jest.fn();
 
-    handleChange(id, value, selectedOptions, setSelectedOptions);
+    handleChange(value, selectedOptions, setSelectedOptions);
 
     expect(setSelectedOptions).toHaveBeenCalled();
   });
@@ -132,7 +132,7 @@ describe('handleChange', () => {
     const setSelectedOptions = undefined;
 
     expect(() => {
-      handleChange(id, value, selectedOptions, setSelectedOptions);
+      handleChange(value, selectedOptions, setSelectedOptions);
     }).toThrow();
   });
 
@@ -143,7 +143,7 @@ describe('handleChange', () => {
     const selectedOptions = [];
     const setSelectedOptions = jest.fn();
 
-    handleChange(id, value, selectedOptions, setSelectedOptions);
+    handleChange(value, selectedOptions, setSelectedOptions);
 
     expect(setSelectedOptions).toHaveBeenCalled();
   });
