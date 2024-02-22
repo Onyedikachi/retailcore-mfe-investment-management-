@@ -172,6 +172,7 @@ export enum Actions {
   EARLY_LIQUIDATE = "early liquidate",
   PART_LIQUIDATE = "part liquidate",
   RESTRUCTURE = "restructure",
+  GENERATE_CERTIFICATE= "generate certificate"
 }
 
 export enum CustomerCategoryType {

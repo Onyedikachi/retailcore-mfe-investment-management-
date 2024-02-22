@@ -51,10 +51,6 @@ export default function Summary() {
 
   const {
     data: productDetail,
-    // isSuccess: detailIsSuccess,
-    // isError: detailIsError,
-    // error: detailError,
-    // isLoading: detailLoading,
   } = useGetProductDetailQuery(
     {
       id:
