@@ -43,19 +43,7 @@ export const routes = [
     exact: true,
     component: lazy(() => import("../pages/investment/term-deposit/Summary")),
   },
-  // {
-  //   path: paths.BOOKING_SUMMARY,
-  //   name: "Booking Summary",
-  //   exact: true,
-  //   component: lazy(() => import("../pages/management/SummaryComponent")),
-  // },
-  
-  // {
-  //   path: paths.INVESTMENT_MANAGEMENT,
-  //   name: "Investment Management",
-  //   exact: true,
-  //   component: lazy(() => import("../pages/management/IndexComponent")),
-  // },
+
 ];
 
 export const routes2 = [
@@ -66,6 +54,14 @@ export const routes2 = [
     exact: true,
     component: lazy(
       () => import("../pages/management/book-investment/IndexComponent")
+    ),
+  },
+  {
+    path: paths.BOOK_INVESTMENT_PROCESS_SUMMARY,
+    name: "Investment process summary",
+    exact: true,
+    component: lazy(
+      () => import("../pages/management/book-investment/process-summary/IndexComponent")
     ),
   },
   {
