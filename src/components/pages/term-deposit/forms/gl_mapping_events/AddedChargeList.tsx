@@ -31,7 +31,7 @@ export default ({ selectedCharges, setFormData, values, event, charges }) => {
                                 <div onClick={() => setSearchParams({ charge: item.charge_id })} className="h-[30px] w-[30px] shadow-md bg-white flex justify-center items-center rounded-md">
                                     <FaEye className="text-danger-500" />
                                 </div>
-                                <div onClick={() => removeCharge(item.charge_id)} className="h-[30px] w-[30px] shadow-md bg-white   flex justify-center items-center rounded-md">
+                                <div data-testid="remove" onClick={() => removeCharge(item.charge_id)} className="h-[30px] w-[30px] shadow-md bg-white   flex justify-center items-center rounded-md">
                                     <FaTimes className="text-danger-500" />
                                 </div>
                             </div>
