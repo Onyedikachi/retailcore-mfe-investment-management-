@@ -32,11 +32,14 @@ export const handleSuccessMessage = (
   isSuccess,
   setSuccessText,
   setIsSuccessOpen,
-  role
+  role,
+  process
 ) => {
   setSuccessText(
     role === "superadmin"
       ? isSuccess
+        ? Messages.PRODUCT_CREATE_SUCCESS
+        : process === "create"
         ? Messages.PRODUCT_CREATE_SUCCESS
         : Messages.PRODUCT_MODIFY_SUCCESS
       : Messages.ADMIN_PRODUCT_CREATE_SUCCESS
@@ -92,7 +95,7 @@ export const submitForm = (
   id,
   previousData
 ) => {
-  if (process === "modify") {
+  if (process === "modify" && id) {
     modifyProduct({
       ...formData,
       isDraft: false,
@@ -100,7 +103,10 @@ export const submitForm = (
       recentlyUpdatedMeta: previousData ? JSON.stringify(previousData) : null,
     });
   }
-  if (process === "withdraw_modify" || process === "continue") {
+  if (
+    process !== "modify" &&
+    (process === "withdraw_modify" || process === "continue" || id)
+  ) {
     modifyRequest({
       ...formData,
       isDraft: false,
@@ -109,7 +115,7 @@ export const submitForm = (
     });
   }
 
-  if (process === "create" || process === "clone") {
+  if ((process === "create" || process === "clone") && !id) {
     createProduct({ ...formData, isDraft: false });
   }
 
@@ -176,12 +182,18 @@ export default function Preview({ formData, previousData = null }: any) {
       modifyRequest,
       createProduct,
       process,
-      id,
+      id || formData.id,
       previousData
     );
   useEffect(() => {
     if (isSuccess || modifySuccess || modifyRequestSuccess) {
-      handleSuccessMessage(isSuccess, setSuccessText, setIsSuccessOpen, role);
+      handleSuccessMessage(
+        isSuccess,
+        setSuccessText,
+        setIsSuccessOpen,
+        role,
+        process
+      );
     }
 
     if (isError || modifyIsError || modifyRequestIsError) {
@@ -208,8 +220,8 @@ export default function Preview({ formData, previousData = null }: any) {
   ]);
 
   useEffect(() => {
-    console.log(formData)
-  }, [formData])
+    console.log(formData);
+  }, [formData]);
 
   return (
     <div data-testid="preview" className="flex flex-col min-h-[100vh] ">

@@ -48,6 +48,9 @@ export function handleNavigations(
     closeModal();
     return;
   }
+  if (specificCategory === SpecificCategory?.reload) {
+   window.location.reload()
+  }
 
   if (isIndividual) {
     return role === "superadmin" && action !== "draft"

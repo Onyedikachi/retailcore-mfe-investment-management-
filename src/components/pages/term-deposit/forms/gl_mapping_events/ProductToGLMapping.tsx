@@ -5,22 +5,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { Fragment, useEffect, useState } from "react";
-import {
-  FaArrowLeft,
-  FaCaretLeft,
-  FaCaretRight,
-  FaRegCaretSquareRight,
-  FaSearch,
-} from "react-icons/fa";
-
 import ChargesAndTaxes from "./ChargesAndTaxes";
 import { Icon } from "@iconify/react";
 import {
   useGetApplicableChargesQuery,
   useGetApplicableTaxesQuery,
-  useGetTaxQuery,
+
 } from "@app/api";
-import ChargeModal from "../../ChargeModal";
 
 const GlMappingOptions = [
   {
@@ -198,7 +189,7 @@ export default ({
     "principalDepositChargesAndTaxes",
     "partLiquidationChargesAndTaxes",
     "earlyLiquidationChargesAndTaxes",
-    "maturityLiquidationChargesAndTaxes",
+    "investmentLiquidationChargesAndTaxes",
   ];
   const taxChargeDataOptions = [
     {
@@ -222,7 +213,7 @@ export default ({
     },
     {
       header: "Maturity Liquidation",
-      key: "maturityLiquidationChargesAndTaxes",
+      key: "investmentLiquidationChargesAndTaxes",
       disabled: false,
     },
   ];

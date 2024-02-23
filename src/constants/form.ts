@@ -682,7 +682,7 @@ export const chargesAndTaxesSchema = {
     applicableCharges: yup.array().of(yup.string()),
     applicableTaxes: yup.array().of(yup.string()),
   }),
-  maturityLiquidationChargesAndTaxes: yup.object().shape({
+  investmentLiquidationChargesAndTaxes: yup.object().shape({
     applicableCharges: yup.array().of(yup.string()),
     applicableTaxes: yup.array().of(yup.string()),
   }),
@@ -710,7 +710,7 @@ export const glMappingSchema = yup.object({
     applicableCharges: yup.array().of(yup.string()),
     applicableTaxes: yup.array().of(yup.string()),
   }),
-  maturityLiquidationChargesAndTaxes: yup.object().shape({
+  investmentLiquidationChargesAndTaxes: yup.object().shape({
     applicableCharges: yup.array().of(yup.string()),
     applicableTaxes: yup.array().of(yup.string()),
   }),
