@@ -49,7 +49,6 @@ export const handleClear = (
   setClearField(!clearFields);
   setMapOptions([]);
   reset();
- 
 };
 
 export function InputDivs({
@@ -138,17 +137,14 @@ export default ({
   setDisabled,
   initiateDraft,
 }) => {
-  console.log("🚀 ~ formData:", formData);
-  function onProceed(values, mapOptions) {
-    // setFormData(values);
-    proceed();
-  }
-
   const [mapOptions, setMapOptions] = useState([]);
   const [clearFields, setClearField] = useState(false);
-  const [activeTab, setActiveTab] = useState<number | null>(null);
-
-  const [activeCharge, setActiveCharge] = useState(null);
+  const [activeTab, setActiveTab] = useState<any>([1, 2, 3, 4, 5]);
+  const [filteredTabs, setFilteredTabs] = useState([]);
+  function onProceed(val) {
+    setFormData(val, mapOptions);
+    proceed();
+  }
 
   const {
     register,
@@ -180,21 +176,15 @@ export default ({
     isSuccess: taxesSuccess,
   } = useGetApplicableTaxesQuery();
 
-  const {
-    data: tax,
-    isLoading: taxLoading,
-    isSuccess: taxSuccess,
-  } = useGetTaxQuery({id: "ac98e00f-c6d0-48ff-a201-9303ac75f5d5"});
-
   const values = getValues();
 
   useEffect(() => {
     setFormData({ data: formData, mapOptions });
   }, [mapOptions, initiateDraft]);
 
-  useEffect(() => {
-    console.log(tax)
-  }, [tax])
+  // useEffect(() => {
+  //   console.log(tax);
+  // }, [tax]);
 
   useEffect(() => {
     if (mapOptions.length === 3) {
@@ -204,7 +194,38 @@ export default ({
   useEffect(() => {
     setDisabled(true);
   }, []);
-
+  const taxChargeData = [
+    "principalDepositChargesAndTaxes",
+    "partLiquidationChargesAndTaxes",
+    "earlyLiquidationChargesAndTaxes",
+    "maturityLiquidationChargesAndTaxes",
+  ];
+  const taxChargeDataOptions = [
+    {
+      header: "Principal Deposit",
+      key: "principalDepositChargesAndTaxes",
+      disabled: false,
+    },
+    {
+      header: "Part Liquidation",
+      key: "partLiquidationChargesAndTaxes",
+      disabled:
+        formData?.liquidation.part_LiquidationPenalty == 4 &&
+        formData?.liquidation?.part_SpecificCharges.length,
+    },
+    {
+      header: "Early Liquidation",
+      key: "earlyLiquidationChargesAndTaxes",
+      disabled:
+        formData?.liquidation.early_LiquidationPenalty == 4 &&
+        formData?.liquidation?.early_SpecificCharges.length,
+    },
+    {
+      header: "Maturity Liquidation",
+      key: "maturityLiquidationChargesAndTaxes",
+      disabled: false,
+    },
+  ];
   useEffect(() => {
     if (formData?.productGlMappings?.length) {
       setMapOptions(formData?.productGlMappings);
@@ -217,13 +238,35 @@ export default ({
         setValue(key, item?.glAccountType);
       });
     }
+    taxChargeData.forEach((chargeKey) => {
+      setValue(chargeKey, formData[chargeKey]);
+    });
   }, [setValue, formData]);
+
+  useEffect(() => {
+    let tempOptions = taxChargeDataOptions;
+    if (!formData?.liquidation?.part_AllowPartLiquidation) {
+      tempOptions = tempOptions.filter(
+        (i) => i.key !== "partLiquidationChargesAndTaxes"
+      );
+    }
+    if (!formData?.liquidation?.early_AllowEarlyLiquidation) {
+      tempOptions = tempOptions.filter(
+        (i) => i.key !== "earlyLiquidationChargesAndTaxes"
+      );
+    }
+    setFilteredTabs(tempOptions);
+  }, [
+    formData?.liquidation?.part_AllowPartLiquidation,
+    formData?.liquidation?.early_AllowEarlyLiquidation,
+  ]);
+
   function handleTab() {
-    if (activeTab === 1) {
-      setActiveTab(null);
+    if (activeTab.includes(1)) {
+      setActiveTab(activeTab.filter((i) => i !== 1));
       return;
     }
-    setActiveTab(1);
+    setActiveTab([...activeTab, 1]);
   }
 
   return (
@@ -232,39 +275,33 @@ export default ({
         id="productmapping"
         data-testid="submit-button"
         className="grid gap-y-8"
-        onSubmit={handleSubmit((d) => onProceed(proceed, values))}
+        onSubmit={handleSubmit((val) => onProceed(val))}
       >
         <div>
-          <div
-            style={{
-              boxShadow:
-                "0px 0px 1px 0px rgba(26, 32, 36, 0.32), 0px 1px 2px 0px rgba(91, 104, 113, 0.32)",
-            }}
-            className="bg-[#fff] border border-[#E6E9ED] rounded-[6px]"
-          >
-            <div
-             
-              className="border-b border-[#E6E9ED] flex justify-between items-center px-6 py-[14px]"
-            >
-              <span  onClick={() => handleTab()} className="text-[18px] flex  gap-[1px] text-[#636363] font-semibold flex-row items-center">
+          <div className="bg-[#fff] border border-[#EEEEEE] rounded-[6px]">
+            <div className="border-b border-[#EEEEEE] flex justify-between items-center px-6 py-[14px]">
+              <span
+                onClick={() => handleTab()}
+                className="text-[18px] flex  gap-[1px] text-[#636363] font-semibold flex-row items-center"
+              >
                 <Icon
                   icon="ph:caret-right-fill"
                   className={`text-danger-500 text-sm mr-4 ${
-                    activeTab === 1 && "rotate-90"
+                    activeTab.includes(1) && "rotate-90"
                   }`}
                 />
                 Product to GL Mapping <RedDot />
               </span>
-              <span
+              {/* <span
                 className="font-normal text-sm text-danger-500 italic underline"
                 onClick={() =>
                   handleClear(setClearField, clearFields, setMapOptions, reset)
                 }
               >
                 Clear all entries
-              </span>
+              </span> */}
             </div>
-            {activeTab === 1 && (
+            {activeTab.includes(1) && (
               <div className="flex flex-col gap-4 px-[30px] py-5">
                 <div className="flex flex-col items-start gap-y-5">
                   {GlMappingOptions.map((type) => (
@@ -293,6 +330,7 @@ export default ({
                               trigger={trigger}
                               errors={errors}
                               clearFields={clearFields}
+                              placeholder="Type to search and select"
                             />
                           </div>
                         </div>
@@ -304,24 +342,7 @@ export default ({
             )}
           </div>
         </div>
-        <ChargesAndTaxes
-          {...{
-            charges,
-            chargesLoading,
-            taxes,
-            taxesLoading,
-            activeTab,
-            setActiveTab,
-            values,
-            setFormData,
-            tab: 2,
-            header: "Principal Deposit",
-            event: "principalDepositChargesAndTaxes",
-            productData: formData,
-            disabled:false
-          }}
-        />
-        {formData?.liquidation?.part_AllowPartLiquidation && (
+        {filteredTabs.map((item, index) => (
           <ChargesAndTaxes
             {...{
               charges,
@@ -332,49 +353,16 @@ export default ({
               setActiveTab,
               values,
               setFormData,
-              tab: 3,
-              header: "Part Liquidation",
-              event: "partLiquidationChargesAndTaxes",
+              tab: index + 2,
+              header: item.header,
+              event: item.key,
               productData: formData,
-              disabled:formData?.liquidation.part_LiquidationPenalty == 4
+              disabled: item.disabled,
+              placeholder: "Type to search and select",
+              setValue,
             }}
           />
-        )}
-        {formData?.liquidation?.early_AllowEarlyLiquidation && (
-          <ChargesAndTaxes
-            {...{
-              charges,
-              chargesLoading,
-              taxes,
-              taxesLoading,
-              activeTab,
-              setActiveTab,
-              values,
-              setFormData,
-              tab: 4,
-              header: "Early Liquidation",
-              event: "earlyLiquidationChargesAndTaxes",
-              productData: formData,
-              disabled:formData?.liquidation.early_LiquidationPenalty == 4
-            }}
-          />
-        )}
-        <ChargesAndTaxes
-          {...{
-            charges,
-            chargesLoading,
-            taxes,
-            taxesLoading,
-            activeTab,
-            setActiveTab,
-            values,
-            setFormData,
-            tab: 5,
-            header: "Maturity Liquidation",
-            event: "maturityLiquidationChargesAndTaxes",
-            productData: formData,
-          }}
-        />
+        ))}
       </form>
     </Fragment>
   );

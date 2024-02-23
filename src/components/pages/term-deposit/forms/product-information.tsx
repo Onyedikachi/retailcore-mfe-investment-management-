@@ -151,7 +151,7 @@ export default function ProductInformation({
   const [charLeft, setCharLeft] = useState<number>(50);
   const [sloganCharLeft, setSloganCharLeft] = useState<number>(160);
   const [currentName, setCurrentName] = useState("");
-  const [isNameOkay, setIsNameOkay] = useState<boolean>(false);
+  const [isNameOkay, setIsNameOkay] = useState<boolean>(true);
   const [isSloganOkay, setIsSloganOkay] = useState<boolean>(false);
   const { productId } = useParams();
   const [searchParams] = useSearchParams();
@@ -201,7 +201,9 @@ export default function ProductInformation({
     }
   }, [initiateDraft]);
   useEffect(() => {
-    setDisabled(!isValid);
+    console.log("🚀 ~ useEffect ~ isNameOkay:", isNameOkay)
+
+    setDisabled(!isValid || !isNameOkay);
   }, [values]);
 
   useEffect(() => {

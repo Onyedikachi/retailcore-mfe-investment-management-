@@ -5,10 +5,8 @@ import { useContext, useState } from "react";
 import SearchInput from "@app/components/SearchInput";
 import { Overview, Individual } from "@app/components/pages";
 import { useGetPostProductsMutation } from "@app/api";
-import { StatusCategoryType } from "@app/types";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "@app/utils";
-import Corporate from "@app/components/pages/management/corporate";
 
 export const handleSearch = (value, setQuery, query) => {
   setQuery({

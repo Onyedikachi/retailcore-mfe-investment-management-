@@ -119,6 +119,12 @@ export const actionHandler = ({
     );
     return;
   }
+  if (action.toLowerCase() === Actions.GENERATE_CERTIFICATE) {
+    navigate(
+      `/investment-management/certificate/process-summary/generate/${items.id}`
+    );
+    return;
+  }
 
   if (action.toLowerCase() === Actions.VIEW) {
     category === StatusCategoryType.AllProducts

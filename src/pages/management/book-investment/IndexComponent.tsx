@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { BookInvestmentFormSteps } from "@app/constants";
+import { BookInvestmentFormSteps, CustomerCategoryType } from "@app/constants";
 import { ProductInfoInvestmentCalc } from "@app/components/management";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import handleFormRef from "./handleFormRef";
@@ -154,8 +154,9 @@ export default function IndexComponent() {
     isDraft: false,
     recentUpdated: false,
     recentlyUpdatedMeta: "",
+    bookingType: CustomerCategoryType[investmentType]
   });
-
+ 
   const links = [
     {
       id: 1,
@@ -172,6 +173,7 @@ export default function IndexComponent() {
       title: investmentType,
       url: `/investment-management/${investmentType}`,
     },
+  
   ];
 
   const {

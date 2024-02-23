@@ -102,13 +102,11 @@ export default function CustomerEligibilityCriteria({
   const watchCustomerCategory = watch("customerCategory");
   const watchageGroupMin = watch("ageGroupMin");
   const watchageGroupMax = watch("ageGroupMax");
-
   const selectedCategory = watch("category");
 
   const [isAdd, setIsAdd] = useState(false);
   const [newDocument, setNewDocument] = useState("");
   const values = getValues();
-  console.log("🚀 ~ file: customer-eligibilty-criteria.tsx:58 ~ values:", values)
 
   const deleteRequirementItem = (itemToDelete) => {
     requirementDeleteHandler({

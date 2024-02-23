@@ -110,7 +110,7 @@ export const handleRefresh = (
       ...query,
       page: 1,
       filter_by: selected?.value,
-      customerCategory: CustomerCategoryType[tab],
+      bookingType: CustomerCategoryType[tab],
     });
     prodStatRefetch(query);
   } else {
@@ -119,7 +119,7 @@ export const handleRefresh = (
       ...query,
       page: 1,
       filter_by: selected?.value,
-      customerCategory: CustomerCategoryType[tab],
+      bookingType: CustomerCategoryType[tab],
     });
     requestRefetch(query);
   }
@@ -172,7 +172,7 @@ export default function Individual({ tab }: any) {
     initiator_In: null,
     approvers_In: null,
     total: 0,
-    customerCategory: CustomerCategoryType[tab],
+    bookingType: CustomerCategoryType[tab],
   });
   const value = useMemo(
     () => ({
@@ -253,7 +253,7 @@ export default function Individual({ tab }: any) {
     refetch: prodStatRefetch,
     isFetching: prodStatLoading,
   } = useGetInvestmentStatsQuery(
-    { filter_by: selected?.value, customerCategory: CustomerCategoryType[tab] },
+    { filter_by: selected?.value, bookingType: CustomerCategoryType[tab] },
     {
       skip: category !== StatusCategoryType?.Investments,
     }
@@ -264,7 +264,7 @@ export default function Individual({ tab }: any) {
     refetch: requestRefetch,
     isFetching: requestStatLoading,
   } = useGetInvestmentRequestStatsQuery(
-    { filter_by: selected?.value, customerCategory: CustomerCategoryType[tab] },
+    { filter_by: selected?.value, bookingType: CustomerCategoryType[tab] },
     {
       skip: category !== StatusCategoryType.Requests,
     }
@@ -276,14 +276,14 @@ export default function Individual({ tab }: any) {
         ...query,
         page: 1,
         filter_by: selected?.value,
-        customerCategory: CustomerCategoryType[tab],
+        bookingType: CustomerCategoryType[tab],
       });
     } else {
       getRequests({
         ...query,
         page: 1,
         filter_by: selected?.value,
-        customerCategory: CustomerCategoryType[tab],
+        bookingType: CustomerCategoryType[tab],
       });
     }
   }
@@ -306,7 +306,7 @@ export default function Individual({ tab }: any) {
     query.requestType_In,
     query.initiator_In,
     query.approvers_In,
-    query.customerCategory,
+    query.bookingType,
     tab,
   ]);
   useEffect(() => {
@@ -426,6 +426,7 @@ export default function Individual({ tab }: any) {
               setQuery={setQuery}
               hasMore={hasMore}
               fetchMoreData={fetchMoreData}
+              tab={tab}
             />
           </div>
         </div>

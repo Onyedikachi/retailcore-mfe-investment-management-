@@ -42,6 +42,7 @@ export function handlePrev(step, setStep, termDepositFormSteps) {
 }
 
 export const handlePreviousData = ({ prevProductData, productDetails }) => {
+
   const pricingConfigurationCopy = JSON.parse(
     JSON.stringify(productDetails?.data?.pricingConfiguration)
   );
@@ -55,6 +56,7 @@ export const handlePreviousData = ({ prevProductData, productDetails }) => {
 
   return {
     ...prevProductData,
+    ...productDetails?.data,
     productInfo: productDetails?.data?.productInfo,
     customerEligibility: productDetails?.data?.customerEligibility,
     pricingConfiguration: pricingConfigurationCopy,
@@ -336,9 +338,9 @@ export default function CreateTermDeposit() {
   ];
 
 
-  useEffect(() => {
-    console.log("d = ", productData)
-  }, [productData])
+  // useEffect(() => {
+  //   console.log("d = ", productData)
+  // }, [productData])
 
   const [createProduct, { isLoading, isSuccess, isError, reset, error }] =
     useCreateProductMutation();

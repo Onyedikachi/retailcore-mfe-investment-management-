@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { paths } from "@app/routes/paths";
 import {
   ProcessingStatusSlider,
   ActivityLog,
@@ -18,6 +17,7 @@ import {
   useGetInvestmentRequestActivityLogQuery,
 } from "@app/api";
 import { rangeLabels, summaryLinks } from "@app/constants";
+import Certificate from "./book-investment/certificate/IndexComponent";
 export function Container({ children }) {
   return (
     <div
@@ -49,13 +49,7 @@ export default function Summary() {
     id: process_type === "booking" ? productId : booking_id || id,
   });
 
-  const {
-    data: productDetail,
-    // isSuccess: detailIsSuccess,
-    // isError: detailIsError,
-    // error: detailError,
-    // isLoading: detailLoading,
-  } = useGetProductDetailQuery(
+  const { data: productDetail } = useGetProductDetailQuery(
     {
       id:
         investmentData?.data?.facilityDetailsModel?.investmentProductId ||
@@ -129,53 +123,57 @@ export default function Summary() {
           links={links.map((i) => (i.id === 2 ? { ...i, title: type } : i))}
         />
       </div>{" "}
-      <div className="w-full flex gap-6 h-full px-[37px] py-[30px] bg-[#F7F7F7]">
-        <div className="flex-1   bg-[#ffffff] rounded-md px-[100px] pt-[54px] pb-[49px] flex flex-col gap-5">
-          <div className="max-h-[600px] overflow-y-auto flex flex-col gap-5">
-            <ProcessingStatusSlider
-              rangeLabels={["Pending submission", "Approved"]}
-              leftClass={
-                rangeLabels[requestDetail?.data?.requestStatus]?.leftClass
-              }
-              rightClass={
-                rangeLabels[requestDetail?.data?.requestStatus]?.rightClass
-              }
-            />
-            {process === "preview" && (
-              <ReviewStatus
-                status={requestDetail?.data?.requestStatus}
-                reason={requestDetail?.data?.reason}
-                type={requestDetail?.data?.requestType}
-                text={requestDetail?.data?.lastComment}
-              />
-            )}
-            <Container>
-              <BookingDetail
-                detail={
-                  process_type?.includes("liquidation")
-                    ? investmentData?.data
-                    : detail || investmentData?.data
+      {type !== "certificate" ? (
+        <div className="w-full flex gap-6 h-full px-[37px] py-[30px] bg-[#F7F7F7]">
+          <div className="flex-1   bg-[#ffffff] rounded-md px-[100px] pt-[54px] pb-[49px] flex flex-col gap-5">
+            <div className="max-h-[600px] overflow-y-auto flex flex-col gap-5">
+              <ProcessingStatusSlider
+                rangeLabels={["Pending submission", "Approved"]}
+                leftClass={
+                  rangeLabels[requestDetail?.data?.requestStatus]?.leftClass
                 }
-                oldData={null}
-                type={type}
-                productDetail={productDetail?.data}
+                rightClass={
+                  rangeLabels[requestDetail?.data?.requestStatus]?.rightClass
+                }
               />
-            </Container>
+              {process === "preview" && (
+                <ReviewStatus
+                  status={requestDetail?.data?.requestStatus}
+                  reason={requestDetail?.data?.reason}
+                  type={requestDetail?.data?.requestType}
+                  text={requestDetail?.data?.lastComment}
+                />
+              )}
+              <Container>
+                <BookingDetail
+                  detail={
+                    process_type?.includes("liquidation")
+                      ? investmentData?.data
+                      : detail || investmentData?.data
+                  }
+                  oldData={null}
+                  type={type}
+                  productDetail={productDetail?.data}
+                />
+              </Container>
+            </div>
+
+            <Actions requestDetail={requestDetail?.data} />
           </div>
 
-          <Actions requestDetail={requestDetail?.data} />
+          <ActivityLog
+            isFetching={false}
+            isLoading={activityIsLoading || activityRequestIsLoading}
+            activities={
+              activityData?.results.length
+                ? activityData?.results
+                : activityRequestData?.results
+            }
+          />
         </div>
-
-        <ActivityLog
-          isFetching={false}
-          isLoading={activityIsLoading || activityRequestIsLoading}
-          activities={
-            activityData?.results.length
-              ? activityData?.results
-              : activityRequestData?.results
-          }
-        />
-      </div>
+      ) : (
+        <Certificate />
+      )}
     </div>
   );
 }
