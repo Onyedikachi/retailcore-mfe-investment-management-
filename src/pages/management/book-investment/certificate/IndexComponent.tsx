@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import { useGetInvestmentCertificateQuery } from "@app/api";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 import { AppContext } from "@app/utils";
+import { Interval } from "@app/constants";
 
 
 export default function IndexComponent() {
@@ -22,13 +23,13 @@ export default function IndexComponent() {
 
 
 
-//   const {
-//     data: investmentCertificateData,
-//     isSuccess: investmentCertificateIsSuccess,
-//     isError: investmentCertificateIsError,
-//     error: investmentCertificateError,
-//     isLoading,
-//   } = useGetInvestmentCertificateQuery({ BookingId: id }, { skip: !id });
+  const {
+    data: investmentCertificateData,
+    isSuccess: investmentCertificateIsSuccess,
+    isError: investmentCertificateIsError,
+    error: investmentCertificateError,
+    isLoading,
+  } = useGetInvestmentCertificateQuery({ BookingId: id }, { skip: !id });
 
 
 //   // const tableDetials =  
@@ -39,8 +40,8 @@ export default function IndexComponent() {
 //   value: value ?? "",
 // })) : [], [investmentCertificateData])
 
-// const customerDetails = useMemo(() => investmentCertificateData, [investmentCertificateData])
-
+const customerDetails = useMemo(() => investmentCertificateData, [investmentCertificateData])
+console.log(customerDetails)
 
 // const formattedDate = customerDetails?.bookingDate && new Date(customerDetails?.bookingDate);
 // const formattedDateTime = formattedDate?.toLocaleDateString("en-US", {
@@ -69,7 +70,7 @@ const  investDet = {
   investmentId: "INV-LE-AN-20-00021",
   maturityDate: new Date("2024-01-23T21:41:07.533647Z").toLocaleDateString("en-US"),
   principalAmount: Number(99980).toLocaleString(),
-  tenor: "1",
+  tenor: Interval[1],
   liquidation: false
 }
   return (

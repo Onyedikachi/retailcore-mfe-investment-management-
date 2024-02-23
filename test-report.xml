@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
   <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/App.test.tsx">
-    <testCase name="Test App Component If App is rendered wihout issues" duration="54"/>
+    <testCase name="Test App Component If App is rendered wihout issues" duration="21"/>
   </file>
   <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/Sterling-investment.tsx">
-    <testCase name="microfrontend bootstraps the app" duration="12"/>
-    <testCase name="microfrontend mounts and unmounts" duration="34"/>
+    <testCase name="microfrontend bootstraps the app" duration="13"/>
+    <testCase name="microfrontend mounts and unmounts" duration="16"/>
   </file>
   <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/components/Pages/management/SummaryComponent.test.tsx">
-    <testCase name="Summary should render the component without crashing" duration="288"/>
+    <testCase name="Summary should render the component without crashing" duration="233"/>
   </file>
 </testExecutions>
