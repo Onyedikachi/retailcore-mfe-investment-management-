@@ -25,52 +25,43 @@ export default function IndexComponent() {
 
   const {
     data: investmentCertificateData,
-    isSuccess: investmentCertificateIsSuccess,
-    isError: investmentCertificateIsError,
-    error: investmentCertificateError,
     isLoading,
   } = useGetInvestmentCertificateQuery({ BookingId: id }, { skip: !id });
 
 
-//   // const tableDetials =  
 
-
-//  const investmentDetailsTableData = useMemo(() =>   investmentCertificateData ? Object.entries(investmentCertificateData).map(([key, value]) => ({
-//   label: key,
-//   value: value ?? "",
-// })) : [], [investmentCertificateData])
 
 const customerDetails = useMemo(() => investmentCertificateData, [investmentCertificateData])
 console.log(customerDetails)
 
-// const formattedDate = customerDetails?.bookingDate && new Date(customerDetails?.bookingDate);
-// const formattedDateTime = formattedDate?.toLocaleDateString("en-US", {
-//   year: "numeric",
-//   month: "long",
-//   day: "numeric",
-//   hour: "numeric",
-//   minute: "numeric",
-//   second: "numeric",
-// });
+const formattedDate = customerDetails?.bookingDate && new Date(customerDetails?.bookingDate);
+const formattedDateTime = formattedDate?.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+  hour: "numeric",
+  minute: "numeric",
 
-const  investDet = {
-  accountName: "Annabel Thomas" ,
-  accountNumber: "2000000032" ,
+});
+
+const  investDet = customerDetails && {
+  accountName: customerDetails?.customerName ,
+  accountNumber: customerDetails?.accountNumber ,
   address: null,
-  amountAtMaturity: Number(99980.034).toLocaleString(),
-  bookingDate: new Date("2024-01-23T12:58:51.516012Z").toLocaleDateString("en-US"),
+  amountAtMaturity: Number( customerDetails?.amountAtMaturity).toLocaleString(),
+  bookingDate: new Date(customerDetails?.bookingDate).toLocaleDateString("en-US"),
   contractStatus: "Active",
   currency: handleCurrencyName(
-    "57005ca4-ddf0-4d45-ba73-7317987a5c70",
+    customerDetails?.currency,
     currencies
   ),
-  customerName: "Annabel Thomas",
-  interestAmount: Number(99980).toLocaleString(),
-  interestRate: Number(99980).toLocaleString(),
-  investmentId: "INV-LE-AN-20-00021",
-  maturityDate: new Date("2024-01-23T21:41:07.533647Z").toLocaleDateString("en-US"),
-  principalAmount: Number(99980).toLocaleString(),
-  tenor: Interval[1],
+  customerName: customerDetails?.customerName,
+  interestAmount: Number(customerDetails?.interestAmount).toLocaleString(),
+  interestRate: Number(customerDetails?.interestRate).toLocaleString(),
+  investmentId: customerDetails?.investmentId,
+  maturityDate: new Date(customerDetails?.maturityDate).toLocaleDateString("en-US"),
+  principalAmount: Number(customerDetails?.principalAmount).toLocaleString(),
+  tenor: Interval[customerDetails?.tenor],
   liquidation: false
 }
   return (
@@ -152,12 +143,12 @@ const  investDet = {
 
           <div className="gap-3 text-sm">
             <p>Initiator</p>
-            {/* <p>{customerDetails?.customerName}</p> */}
+            <p>{customerDetails?.customerName}</p>
           </div>
 
           <div className="gap-3 text-sm mt-6">
             <p>Initiation date and time</p>
-            {/* <p>{formattedDateTime}</p> */}
+            <p>{formattedDateTime}</p>
           </div>
         </div>
       </div>
@@ -165,7 +156,7 @@ const  investDet = {
       </>
       
       : 
-      <div className="text-xs text-center py-10 text-gray-500 relative flex items-center justify-center gap-x-1">
+      <div className="text-xs text-center py-10 text-gray-500 relative flex items-center justify-center gap-x-1 w-full">
       Generating certificate...
       <span className="spinner-border h-4 w-4 border-t border-gray-500 rounded-full animate-spin"></span>
     </div>
