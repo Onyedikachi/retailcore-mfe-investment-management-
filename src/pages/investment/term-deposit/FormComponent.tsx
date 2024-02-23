@@ -5,7 +5,17 @@ import {
   ProductInformation,
 } from "@app/components/pages/term-deposit/forms";
 import ProductToGLMapping from "@app/components/pages/term-deposit/forms/gl_mapping_events/ProductToGLMapping";
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
+import {
+  useCreateProductMutation,
+  useGetRequestDetailQuery,
+  useGetProductDetailQuery,
+  useModifyProductMutation,
+  useModifyRequestMutation,
+  useGetChargesQuery,
+} from "@app/api";
+import { handleDraft } from "./create-term-deposit/handleDraft";
+import { useParams } from "react-router-dom";
 
 export default ({
   step,
@@ -15,26 +25,72 @@ export default ({
   setProductData,
   setDisabled,
   initiateDraft,
-}) => {
+}: any) => {
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const { process, id } = useParams();
   useEffect(() => {
-    console.log("🚀 ~ useEffect ~ productData:", productData);
-    setProductData({
-      ...productData,
-      partLiquidationChargesAndTaxes: {
-        ...productData.partLiquidationChargesAndTaxes,
-        applicableCharges:
-          productData?.liquidation?.part_SpecificCharges?.map((i) => i.id) ||
-          [],
-      },
-      earlyLiquidationChargesAndTaxes: {
-        ...productData.earlyLiquidationChargesAndTaxes,
-        applicableCharges:
-          productData?.liquidation?.early_SpecificCharges?.map((i) => i.id) ||
-          [],
-      },
-    });
-    //   setActiveTab([...activeTab, 4]);
+    if (productData?.liquidation?.early_LiquidationPenalty === 4) {
+      setProductData({
+        ...productData,
+
+        earlyLiquidationChargesAndTaxes: {
+          ...productData.earlyLiquidationChargesAndTaxes,
+          applicableCharges:
+            productData?.liquidation?.early_SpecificCharges?.map((i) => i.id) ||
+            [],
+        },
+      });
+    }
+    if (productData?.liquidation?.part_LiquidationPenalty === 4) {
+      setProductData({
+        ...productData,
+        partLiquidationChargesAndTaxes: {
+          ...productData.partLiquidationChargesAndTaxes,
+          applicableCharges:
+            productData?.liquidation?.part_SpecificCharges?.map((i) => i.id) ||
+            [],
+        },
+      });
+    }
   }, [productData?.liquidation]);
+
+  const [createProduct, { data, isSuccess }] = useCreateProductMutation();
+  const [modifyProduct] = useModifyProductMutation();
+  const [modifyRequest] = useModifyRequestMutation();
+
+  useEffect(() => {
+    // const autosave = setInterval(() => {
+    if (
+      productData?.productInfo.currency &&
+      productData?.productInfo.productName &&
+      productData?.productInfo.description
+    ) {
+      handleDraft({
+        productData,
+        process,
+        id: id || productData?.id,
+        modifyRequest,
+        setIsConfirmOpen,
+        modifyProduct,
+        createProduct,
+      });
+    }
+
+    // }, 10 * 1000000);
+    // return () => {
+    //   clearInterval(autosave);
+    // };
+  }, [step]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      setProductData({
+        ...productData,
+        id: data.data,
+      });
+    }
+  }, [isSuccess]);
+
   return (
     <Fragment>
       {step === 1 && (
