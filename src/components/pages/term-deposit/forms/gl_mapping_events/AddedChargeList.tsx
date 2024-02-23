@@ -2,16 +2,17 @@ import { useEffect } from "react";
 import { FaEdit, FaEye, FaTimes } from "react-icons/fa";
 import { useSearchParams } from "react-router-dom";
 
-export default ({ selectedCharges, setFormData, values, event, charges }) => {
+export default ({ selectedCharges, setFormData, values, event, charges,setValue }) => {
   const removeCharge = (option) => {
     const new_charges = [...selectedCharges];
     new_charges.splice(
       new_charges.indexOf(new_charges.find((id) => id === option)),
       1
     );
-    console.log(new_charges);
+   
     const new_values = { ...values };
-    values[`${event}ChargesAndTaxes`].applicableCharges = new_charges;
+    new_values[event].applicableCharges = new_charges;
+     setValue(event, new_values[event]);
     setFormData(new_values);
   };
 
@@ -29,7 +30,7 @@ export default ({ selectedCharges, setFormData, values, event, charges }) => {
         </tr>
       </thead>
       <tbody>
-        {charges.data.records
+        {charges?.data?.records
           .filter((item) => selectedCharges.find((id) => id === item.charge_id))
           .map((item, index) => {
             return (

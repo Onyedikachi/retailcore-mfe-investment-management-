@@ -19,6 +19,7 @@ import { Messages } from "@app/constants/enums";
 import BottomBarLoader from "@app/components/BottomBarLoader";
 import debounce from "lodash.debounce";
 import { InputDivs } from "../../term-deposit/forms/gl_mapping_events/ProductToGLMapping";
+import { useParams } from "react-router-dom";
 export const onProceed = (
   data,
   proceed,
@@ -27,7 +28,6 @@ export const onProceed = (
   preCreateInvestment,
   preModifyRequest
 ) => {
-
   if (formData?.id) {
     preModifyRequest({
       ...formData,
@@ -91,7 +91,7 @@ export default function CustomerInformation({
     defaultValues: formData.customerBookingInfoModel,
     mode: "all",
   });
-
+  const { process, investmentType } = useParams();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [query, setQuery] = useState(null);
   const [customerData, setCustomerData] = useState(null);
@@ -111,7 +111,9 @@ export default function CustomerInformation({
     isError,
     error,
     isLoading: searchLoading,
-  } = useGetCustomerSearchQuery(query, { skip: query?.search?.length !== 10 || !query });
+  } = useGetCustomerSearchQuery(query, {
+    skip: query?.search?.length !== 10 || !query,
+  });
 
   const {
     data: profileData,
@@ -262,7 +264,7 @@ export default function CustomerInformation({
       setQuery({
         search: formData?.customerBookingInfoModel.customerAccount,
         isAccountNumber: true,
-        type:"sme"
+        // customerType: investmentType,
       });
     }
   }, [formData?.customerBookingInfoModel.customerAccount]);
@@ -292,11 +294,15 @@ export default function CustomerInformation({
             <div className="flex gap-[15px] items-end">
               <div className="w-[360px]">
                 <SearchInput
-                  setSearchTerm={debounce((e) =>  setQuery({
-                    search: e,
-                    isAccountNumber: true,
-                    type:"sme"
-                  }), 500)}
+                  setSearchTerm={debounce(
+                    (e) =>
+                      setQuery({
+                        search: e,
+                        isAccountNumber: true,
+                        // customerType: investmentType,
+                      }),
+                    500
+                  )}
                   searchResults={customersData}
                   setSearchResults={() => {}}
                   searchLoading={searchLoading}

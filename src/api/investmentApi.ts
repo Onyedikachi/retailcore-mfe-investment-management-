@@ -5,8 +5,7 @@ import { IGetProducts, ICreateProduct } from "./types/investmentApi.types";
 import urls from "../helpers/url_helpers";
 import { cleanObject } from "@app/utils/cleanObject";
 
-const formApi =
-  "https://customer-management-forms-api.dev.bepeerless.co/v1";
+const formApi = "https://customer-management-forms-api.dev.bepeerless.co/v1";
 const customerApi = "https://customer-management-api.dev.bepeerless.co/v1";
 const productApi = "https://product-mgt-api.dev.bepeerless.co/v1";
 
@@ -53,6 +52,14 @@ export const investmentApi: any = createApi({
       query: (params) => {
         return {
           url: `${customerApi}/customer/search?${new URLSearchParams(params)}`,
+          method: "get",
+        };
+      },
+    }),
+    getInvestmentCertificate: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `/investment/certificate?${new URLSearchParams(params)}`,
           method: "get",
         };
       },
@@ -612,4 +619,5 @@ export const {
   useLiquidationCalculationMutation,
   useEditEarlyLiquidateMutation,
   useEditPartLiquidateMutation,
+  useGetInvestmentCertificateQuery
 } = investmentApi;

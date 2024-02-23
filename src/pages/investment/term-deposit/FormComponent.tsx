@@ -1,8 +1,40 @@
-import { CustomerEligibilityCriteria, LiquiditySetup, PricingConfig, ProductInformation } from "@app/components/pages/term-deposit/forms";
+import {
+  CustomerEligibilityCriteria,
+  LiquiditySetup,
+  PricingConfig,
+  ProductInformation,
+} from "@app/components/pages/term-deposit/forms";
 import ProductToGLMapping from "@app/components/pages/term-deposit/forms/gl_mapping_events/ProductToGLMapping";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 
-export default ({ step, productData, activeId, handleNav, setProductData, setDisabled, initiateDraft }) => {
+export default ({
+  step,
+  productData,
+  activeId,
+  handleNav,
+  setProductData,
+  setDisabled,
+  initiateDraft,
+}) => {
+  useEffect(() => {
+    console.log("🚀 ~ useEffect ~ productData:", productData);
+    setProductData({
+      ...productData,
+      partLiquidationChargesAndTaxes: {
+        ...productData.partLiquidationChargesAndTaxes,
+        applicableCharges:
+          productData?.liquidation?.part_SpecificCharges?.map((i) => i.id) ||
+          [],
+      },
+      earlyLiquidationChargesAndTaxes: {
+        ...productData.earlyLiquidationChargesAndTaxes,
+        applicableCharges:
+          productData?.liquidation?.early_SpecificCharges?.map((i) => i.id) ||
+          [],
+      },
+    });
+    //   setActiveTab([...activeTab, 4]);
+  }, [productData?.liquidation]);
   return (
     <Fragment>
       {step === 1 && (
@@ -65,19 +97,19 @@ export default ({ step, productData, activeId, handleNav, setProductData, setDis
       )}
       {step === 5 && (
         <ProductToGLMapping
-            proceed={handleNav}
-            formData={productData}
-            setFormData={(data, mapOptions) =>
-              setProductData({
-                ...productData,
-                ...data,
-                productGlMappings: mapOptions,
-              })
-            }
-            setDisabled={setDisabled}
-            initiateDraft={initiateDraft}
-          />
+          proceed={handleNav}
+          formData={productData}
+          setFormData={(data, mapOptions) =>
+            setProductData({
+              ...productData,
+              ...data,
+              productGlMappings: mapOptions,
+            })
+          }
+          setDisabled={setDisabled}
+          initiateDraft={initiateDraft}
+        />
       )}
     </Fragment>
   );
-}
+};

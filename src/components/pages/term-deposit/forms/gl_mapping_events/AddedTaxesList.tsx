@@ -2,7 +2,8 @@ import { useEffect } from "react";
 import { FaEdit, FaEye, FaTimes } from "react-icons/fa";
 import { useSearchParams } from "react-router-dom";
 
-export default ({ selectedTaxes, setFormData, values, event, taxes }) => {
+export default ({ selectedTaxes, setFormData, values, event, taxes,setValue }) => {
+  console.log("🚀 ~ selectedTaxes:", selectedTaxes)
   const removeTax = (option) => {
     const new_taxes = [...selectedTaxes];
     new_taxes.splice(
@@ -10,21 +11,22 @@ export default ({ selectedTaxes, setFormData, values, event, taxes }) => {
       1
     );
     const new_values = { ...values };
-    new_values[`${event}ChargesAndTaxes`].applicableTaxes = new_taxes;
+    new_values[event].applicableTaxes = new_taxes;
+    setValue(event, new_values[event]);
     setFormData(new_values);
   };
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  useEffect(() => {
-    console.log("taxes = ", taxes);
-    console.log(
-      taxes.data.records.filter((item) =>
-        selectedTaxes.find((id) => id === item.tax_id)
-      ),
-      selectedTaxes
-    );
-  }, [taxes, selectedTaxes]);
+  // useEffect(() => {
+  //   console.log("taxes = ", taxes);
+  //   console.log(
+  //     taxes.data.records.filter((item) =>
+  //       selectedTaxes.find((id) => id === item.tax_id)
+  //     ),
+  //     selectedTaxes
+  //   );
+  // }, [taxes, selectedTaxes]);
 
   return (
     <table className="w-full max-w-[700px] mt-6 text-left">
@@ -40,7 +42,7 @@ export default ({ selectedTaxes, setFormData, values, event, taxes }) => {
         </tr>
       </thead>
       <tbody>
-        {taxes.data.records
+        {taxes?.data?.records
           .filter((item) => selectedTaxes.find((id) => id === item.tax_id))
           .map((item) => {
             return (

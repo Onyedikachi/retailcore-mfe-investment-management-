@@ -137,12 +137,10 @@ export default ({
   setDisabled,
   initiateDraft,
 }) => {
-
- 
   const [mapOptions, setMapOptions] = useState([]);
   const [clearFields, setClearField] = useState(false);
-  const [activeTab, setActiveTab] = useState<any>([1]);
-  const [activeCharge, setActiveCharge] = useState(null);
+  const [activeTab, setActiveTab] = useState<any>([1, 2, 3, 4, 5]);
+  const [filteredTabs, setFilteredTabs] = useState([]);
   function onProceed(val) {
     setFormData(val, mapOptions);
     proceed();
@@ -178,21 +176,15 @@ export default ({
     isSuccess: taxesSuccess,
   } = useGetApplicableTaxesQuery();
 
-  const {
-    data: tax,
-    isLoading: taxLoading,
-    isSuccess: taxSuccess,
-  } = useGetTaxQuery({ id: "ac98e00f-c6d0-48ff-a201-9303ac75f5d5" });
-
   const values = getValues();
 
   useEffect(() => {
     setFormData({ data: formData, mapOptions });
   }, [mapOptions, initiateDraft]);
 
-  useEffect(() => {
-    console.log(tax);
-  }, [tax]);
+  // useEffect(() => {
+  //   console.log(tax);
+  // }, [tax]);
 
   useEffect(() => {
     if (mapOptions.length === 3) {
@@ -202,7 +194,38 @@ export default ({
   useEffect(() => {
     setDisabled(true);
   }, []);
-
+  const taxChargeData = [
+    "principalDepositChargesAndTaxes",
+    "partLiquidationChargesAndTaxes",
+    "earlyLiquidationChargesAndTaxes",
+    "maturityLiquidationChargesAndTaxes",
+  ];
+  const taxChargeDataOptions = [
+    {
+      header: "Principal Deposit",
+      key: "principalDepositChargesAndTaxes",
+      disabled: false,
+    },
+    {
+      header: "Part Liquidation",
+      key: "partLiquidationChargesAndTaxes",
+      disabled:
+        formData?.liquidation.part_LiquidationPenalty == 4 &&
+        formData?.liquidation?.part_SpecificCharges.length,
+    },
+    {
+      header: "Early Liquidation",
+      key: "earlyLiquidationChargesAndTaxes",
+      disabled:
+        formData?.liquidation.early_LiquidationPenalty == 4 &&
+        formData?.liquidation?.early_SpecificCharges.length,
+    },
+    {
+      header: "Maturity Liquidation",
+      key: "maturityLiquidationChargesAndTaxes",
+      disabled: false,
+    },
+  ];
   useEffect(() => {
     if (formData?.productGlMappings?.length) {
       setMapOptions(formData?.productGlMappings);
@@ -215,7 +238,29 @@ export default ({
         setValue(key, item?.glAccountType);
       });
     }
+    taxChargeData.forEach((chargeKey) => {
+      setValue(chargeKey, formData[chargeKey]);
+    });
   }, [setValue, formData]);
+
+  useEffect(() => {
+    let tempOptions = taxChargeDataOptions;
+    if (!formData?.liquidation?.part_AllowPartLiquidation) {
+      tempOptions = tempOptions.filter(
+        (i) => i.key !== "partLiquidationChargesAndTaxes"
+      );
+    }
+    if (!formData?.liquidation?.early_AllowEarlyLiquidation) {
+      tempOptions = tempOptions.filter(
+        (i) => i.key !== "earlyLiquidationChargesAndTaxes"
+      );
+    }
+    setFilteredTabs(tempOptions);
+  }, [
+    formData?.liquidation?.part_AllowPartLiquidation,
+    formData?.liquidation?.early_AllowEarlyLiquidation,
+  ]);
+
   function handleTab() {
     if (activeTab.includes(1)) {
       setActiveTab(activeTab.filter((i) => i !== 1));
@@ -223,36 +268,6 @@ export default ({
     }
     setActiveTab([...activeTab, 1]);
   }
-
-  useEffect(() => {
-    if (
-      formData?.liquidation?.part_AllowPartLiquidation &&
-      formData?.liquidation.part_LiquidationPenalty == 4
-    ) {
-      setValue("partLiquidationChargesAndTaxes", {
-        applicableCharges: formData?.liquidation?.part_SpecificCharges?.map(
-          (i) => i.id
-        ),
-        applicableTaxes: [],
-      });
-      //   setActiveTab([...activeTab, 3]);
-    }
-    if (
-      formData?.liquidation?.early_AllowEarlyLiquidation &&
-      formData?.liquidation.early_LiquidationPenalty == 4
-    ) {
-      setValue("earlyLiquidationChargesAndTaxes", {
-        applicableCharges: formData?.liquidation?.early_SpecificCharges?.map(
-          (i) => i.id
-        ),
-        applicableTaxes: [],
-      });
-      //   setActiveTab([...activeTab, 4]);
-    }
-  }, [
-    formData?.liquidation?.part_AllowPartLiquidation,
-    formData?.liquidation?.early_AllowEarlyLiquidation,
-  ]);
 
   return (
     <Fragment>
@@ -327,25 +342,7 @@ export default ({
             )}
           </div>
         </div>
-        <ChargesAndTaxes
-          {...{
-            charges,
-            chargesLoading,
-            taxes,
-            taxesLoading,
-            activeTab,
-            setActiveTab,
-            values,
-            setFormData,
-            tab: 2,
-            header: "Principal Deposit",
-            event: "principalDepositChargesAndTaxes",
-            productData: formData,
-            disabled: false,
-            placeholder: "Type to search and select",
-          }}
-        />
-        {formData?.liquidation?.part_AllowPartLiquidation && (
+        {filteredTabs.map((item, index) => (
           <ChargesAndTaxes
             {...{
               charges,
@@ -356,56 +353,16 @@ export default ({
               setActiveTab,
               values,
               setFormData,
-              tab: 3,
-              header: "Part Liquidation",
-              event: "partLiquidationChargesAndTaxes",
+              tab: index + 2,
+              header: item.header,
+              event: item.key,
               productData: formData,
-              disabled:
-                formData?.liquidation.part_LiquidationPenalty == 4 &&
-                formData?.liquidation?.part_SpecificCharges.length,
+              disabled: item.disabled,
               placeholder: "Type to search and select",
+              setValue,
             }}
           />
-        )}
-        {formData?.liquidation?.early_AllowEarlyLiquidation && (
-          <ChargesAndTaxes
-            {...{
-              charges,
-              chargesLoading,
-              taxes,
-              taxesLoading,
-              activeTab,
-              setActiveTab,
-              values,
-              setFormData,
-              tab: 4,
-              header: "Early Liquidation",
-              event: "earlyLiquidationChargesAndTaxes",
-              productData: formData,
-              disabled:
-                formData?.liquidation.early_LiquidationPenalty == 4 &&
-                formData?.liquidation?.early_SpecificCharges.length,
-              placeholder: "Type to search and select",
-            }}
-          />
-        )}
-        <ChargesAndTaxes
-          {...{
-            charges,
-            chargesLoading,
-            taxes,
-            taxesLoading,
-            activeTab,
-            setActiveTab,
-            values,
-            setFormData,
-            tab: 5,
-            header: "Maturity Liquidation",
-            event: "maturityLiquidationChargesAndTaxes",
-            productData: formData,
-            placeholder: "Type to search and select",
-          }}
-        />
+        ))}
       </form>
     </Fragment>
   );
