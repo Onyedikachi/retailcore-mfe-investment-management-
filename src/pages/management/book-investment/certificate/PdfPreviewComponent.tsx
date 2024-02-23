@@ -2,17 +2,32 @@
 import { forwardRef } from 'react';
 
 
-type InvestmentDetailsType = {
-  label: string;
-  value: unknown;
+type PdfInvestType =  {  accountName: string,
+  accountNumber: string,
+  address: string,
+  amountAtMaturity: string,
+  bookingDate: string,
+  contractStatus: string,
+  currency: string,
+  customerName: string,
+  interestAmount: string,
+  interestRate: string,
+  investmentId: string,
+  maturityDate: string,
+  principalAmount: string,
+  tenor: string,
+  liquidation: boolean
+
 }
+
 
 type PdfViewerType = {
-  investmentDetailTable: InvestmentDetailsType[];
-  customerName: string
+  investmentDetailTable? : PdfInvestType
 }
 
-  export const PdfViewer = forwardRef<HTMLDivElement, PdfViewerType>(({customerName, investmentDetailTable }, ref) => {
+  export const PdfViewer = forwardRef<HTMLDivElement, PdfViewerType>(({ investmentDetailTable }, ref) => {
+
+
   return (
     <div ref={ref}>
       <div className="max-w-[800px] mx-auto">
@@ -52,7 +67,7 @@ type PdfViewerType = {
           Investment Certificate
         </h1>
         <div>
-          <h2>Dear {customerName}</h2>
+          <h2>Dear {investmentDetailTable?.customerName}</h2>
         </div>
 
         <div>
@@ -67,29 +82,130 @@ type PdfViewerType = {
           <div className="p-10">
             <table className="min-w-full border border-black ">
               <tbody>
-                {investmentDetailTable.map((item, index) => (
-                  <tr key={index}>
+                  <tr>
                     <td className="py-2 px-4 border border-black">
-                      {item.label}
+                    A/C Number
                     </td>
-                    <td className="py-2 px-4 border border-black">
-                      {item.value}
+                    <td className="py-2 px-4 text-left border border-black">
+                    {investmentDetailTable?.accountNumber}
                     </td>
                   </tr>
-                ))}
+                  <tr>
+                    <td className="py-2 px-4 border border-black">
+                    Account Name
+                    </td>
+                    <td className="py-2 px-4 text-left border border-black">
+                    {investmentDetailTable?.accountName}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 px-4 border border-black">
+                    Investment ID
+                    </td>
+                    <td className="py-2 px-4 text-left border border-black">
+                    {investmentDetailTable?.investmentId}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 px-4 border border-black">
+                    Address
+                    </td>
+                    <td className="py-2 px-4 text-left border border-black">
+                    {investmentDetailTable?.address}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 px-4 border border-black">
+                    Booking Date
+                    </td>
+                    <td className="py-2 px-4 text-left border border-black">
+                    {investmentDetailTable?.bookingDate}
+
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 px-4 border border-black">
+                    Maturity Date
+                    </td>
+                    <td className="py-2 px-4 text-left border border-black">
+                    {investmentDetailTable?.maturityDate}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 px-4 border border-black">
+                    Tenor
+                    </td>
+                    <td className="py-2 px-4 text-left border border-black">
+                    {investmentDetailTable?.tenor}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 px-4 border border-black">
+                    Interest Rate
+                    </td>
+                    <td className="py-2 px-4 text-left border border-black">
+                    {investmentDetailTable?.interestRate}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 px-4 border border-black">
+                    Interest Amount
+                    </td>
+                    <td className="py-2 px-4 text-left border border-black">
+                    {investmentDetailTable?.interestAmount}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 px-4 border border-black">
+                    Principal Amount
+                    </td>
+                    <td className="py-2 px-4 text-left border border-black">
+                    {investmentDetailTable?.principalAmount}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 px-4 border border-black">
+                    Amount at Maturity
+                    </td>
+                    <td className="py-2 px-4 text-left border border-black">
+                    {investmentDetailTable?.amountAtMaturity}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 px-4 border border-black">
+                    Currency
+                    </td>
+                    <td className="py-2 px-4 text-left border border-black">
+                    {investmentDetailTable?.currency}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 px-4 border border-black">
+                    Contract Status
+                    </td>
+                    <td className="py-2 px-4 text-left border border-black">
+                    {investmentDetailTable?.maturityDate}
+                    </td>
+                  </tr>
               </tbody>
             </table>
           </div>
         </div>
         <div>
           <p>
+           
             <br />
             <br /> Please note that 10% Withholding Tax is applicable on the
             interest amount upon maturity.
+         
+
+         {investmentDetailTable?.liquidation &&   <p>
             <br />
             <br /> Upon pre-liquidation of this investment, interest shall be
             calculated at a penal rate to be determined by the Bank from time to
             time.
+              </p> }
+
             <br />
             <br /> This is a computer generated slip and if issued without
             alteration, it does not require signature.
