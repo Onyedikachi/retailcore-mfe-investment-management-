@@ -64,7 +64,7 @@ const formattedDateTime = formattedDate?.toLocaleDateString("en-US", {
           </button>
         </div>
 
-        <div className="h-[649px]	my-auto py-10	 overflow-auto w-full">
+        <div className="h-[80vh]	my-auto py-10	 overflow-auto w-full">
 {   investmentDetailsTableData?.length && customerDetails?.customerName ?       <PdfViewer ref={targetRef} customerName={customerDetails?.customerName} investmentDetailTable={investmentDetailsTableData} /> : null
 }     
 
