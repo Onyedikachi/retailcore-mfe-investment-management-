@@ -53,8 +53,8 @@ export default function IndexComponent() {
 // });
 
 const  investDet = {
-  accountName: "2000000032",
-  accountNumber: "Annabel Thomas",
+  accountName: "Annabel Thomas" ,
+  accountNumber: "2000000032" ,
   address: null,
   amountAtMaturity: Number(99980.034).toLocaleString(),
   bookingDate: new Date("2024-01-23T12:58:51.516012Z").toLocaleDateString("en-US"),
