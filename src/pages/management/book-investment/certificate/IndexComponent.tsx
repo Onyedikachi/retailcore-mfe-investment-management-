@@ -1,21 +1,17 @@
 import React, { useMemo } from "react";
 import { HiShare, HiPrinter } from "react-icons/hi";
 import { PdfViewer } from "./PdfPreviewComponent";
-import { usePDF } from 'react-to-pdf';
-import { useParams } from 'react-router-dom';
+import { usePDF } from "react-to-pdf";
+import { useParams } from "react-router-dom";
 
 import { useGetInvestmentCertificateQuery } from "@app/api";
 
-
 export default function IndexComponent() {
-  const { toPDF, targetRef } = usePDF({filename: 'certificate.pdf'});
+  const { toPDF, targetRef } = usePDF({ filename: "certificate.pdf" });
 
-  const handlePrint = () => toPDF()
+  const handlePrint = () => toPDF();
 
-  const {id} = useParams();
-
-
-
+  const { id } = useParams();
 
   const {
     data: investmentCertificateData,
@@ -25,26 +21,34 @@ export default function IndexComponent() {
     isLoading,
   } = useGetInvestmentCertificateQuery({ BookingId: id }, { skip: !id });
 
+  // const tableDetials =
 
-  // const tableDetials =  
+  const investmentDetailsTableData = useMemo(
+    () =>
+      investmentCertificateData
+        ? Object.entries(investmentCertificateData).map(([key, value]) => ({
+            label: key,
+            value: value ?? "",
+          }))
+        : [],
+    [investmentCertificateData]
+  );
 
+  const customerDetails = useMemo(
+    () => investmentCertificateData,
+    [investmentCertificateData]
+  );
 
- const investmentDetailsTableData = useMemo(() =>   investmentCertificateData ? Object.entries(investmentCertificateData).map(([key, value]) => ({
-  label: key,
-  value: value ?? "",
-})) : [], [investmentCertificateData])
-
-const customerDetails = useMemo(() => investmentCertificateData, [investmentCertificateData])
-
-const formattedDate = customerDetails?.bookingDate && new Date(customerDetails?.bookingDate);
-const formattedDateTime = formattedDate?.toLocaleDateString("en-US", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-  hour: "numeric",
-  minute: "numeric",
-  second: "numeric",
-});
+  const formattedDate =
+    customerDetails?.bookingDate && new Date(customerDetails?.bookingDate);
+  const formattedDateTime = formattedDate?.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+  });
 
   return (
     <div className="flex gap-x-5 w-full flex-1 p-8">
@@ -65,10 +69,15 @@ const formattedDateTime = formattedDate?.toLocaleDateString("en-US", {
         </div>
 
         <div className="h-[80vh]	my-auto py-10	 overflow-auto w-full">
-{   investmentDetailsTableData?.length && customerDetails?.customerName ?       <PdfViewer ref={targetRef} customerName={customerDetails?.customerName} investmentDetailTable={investmentDetailsTableData} /> : null
-}     
-
-   </div>
+          {investmentDetailsTableData?.length &&
+          customerDetails?.customerName ? (
+            <PdfViewer
+              ref={targetRef}
+              customerName={customerDetails?.customerName}
+              investmentDetailTable={investmentDetailsTableData}
+            />
+          ) : null}
+        </div>
         <div className="flex justify-end gap-5">
           <button
             data-testid="refresh-btn"
