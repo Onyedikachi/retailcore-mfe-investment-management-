@@ -75,6 +75,9 @@ const  investDet = {
 }
   return (
     <div className="flex gap-x-5 w-full flex-1 p-8">
+   {  !isLoading ? <>
+ 
+   {investDet && <>
       <div className="bg-white pt-6 px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16">
         <div className="flex justify-end gap-5">
           <button
@@ -158,6 +161,15 @@ const  investDet = {
           </div>
         </div>
       </div>
+      </>}
+      </>
+      
+      : 
+      <div className="text-xs text-center py-10 text-gray-500 relative flex itemx-center justify-center gap-x-1">
+      Generating certificate...
+      <span className="spinner-border h-4 w-4 border-t border-gray-500 rounded-full animate-spin"></span>
+    </div>
+}
     </div>
   );
 }
