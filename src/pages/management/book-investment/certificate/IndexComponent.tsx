@@ -94,7 +94,7 @@ export default function IndexComponent() {
           {/* {investmentDetailsTableData?.length && customerDetails?.customerName ? <PdfViewer ref={targetRef} customerName={customerDetails?.customerName} investmentDetailTable={investmentDetailsTableData} /> : null
           } */}
 
-          {/* <PdfViewer ref={targetRef} investmentDetailTable={investDet} /> */}
+          <PdfViewer ref={targetRef} investmentDetailTable={investDet} />
 
         </div>
         <div className="flex justify-end gap-5">
