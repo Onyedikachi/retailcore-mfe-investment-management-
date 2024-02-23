@@ -1,25 +1,57 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { HiShare, HiPrinter } from "react-icons/hi";
 import { PdfViewer } from "./PdfPreviewComponent";
+import { usePDF } from 'react-to-pdf';
+import { useParams } from 'react-router-dom';
+
+import { useGetInvestmentCertificateQuery } from "@app/api";
+
 
 export default function IndexComponent() {
-  const handlePrint = (pdfUrl) => {
-    const iframe = document.createElement("iframe");
-    iframe.src = pdfUrl;
-    iframe.style.display = "none";
-    document.body.appendChild(iframe);
+  const { toPDF, targetRef } = usePDF({filename: 'certificate.pdf'});
 
-    iframe.contentWindow.onload = () => {
-      iframe.contentWindow.print();
-    };
-  };
+  const handlePrint = () => toPDF()
+
+  const {id} = useParams();
+
+
+
+
+  const {
+    data: investmentCertificateData,
+    isSuccess: investmentCertificateIsSuccess,
+    isError: investmentCertificateIsError,
+    error: investmentCertificateError,
+    isLoading,
+  } = useGetInvestmentCertificateQuery({ BookingId: id }, { skip: !id });
+
+
+  // const tableDetials =  
+
+
+ const investmentDetailsTableData = useMemo(() =>   investmentCertificateData ? Object.entries(investmentCertificateData).map(([key, value]) => ({
+  label: key,
+  value: value ?? "",
+})) : [], [investmentCertificateData])
+
+const customerDetails = useMemo(() => investmentCertificateData, [investmentCertificateData])
+
+const formattedDate = customerDetails?.bookingDate && new Date(customerDetails?.bookingDate);
+const formattedDateTime = formattedDate?.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+  hour: "numeric",
+  minute: "numeric",
+  second: "numeric",
+});
 
   return (
     <div className="flex gap-x-5 w-full flex-1 p-8">
       <div className="bg-white pt-6 px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16">
         <div className="flex justify-end gap-5">
           <button
-            onClick={() => handlePrint("https://pdfobject.com/pdf/sample.pdf")}
+            onClick={handlePrint}
             className="flex whitespace-nowrap gap-x-2 items-center bg-transparent border-none text-[#636363] text-base"
           >
             <HiPrinter className="text-lg" /> Print
@@ -32,9 +64,11 @@ export default function IndexComponent() {
           </button>
         </div>
 
-        <div className="h-[649px]	my-auto py-10	 overflow-hidden w-full">
-          <PdfViewer pdfUrl={"https://pdfobject.com/pdf/sample.pdf"} />
-        </div>
+        <div className="h-[80vh]	my-auto py-10	 overflow-auto w-full">
+{   investmentDetailsTableData?.length && customerDetails?.customerName ?       <PdfViewer ref={targetRef} customerName={customerDetails?.customerName} investmentDetailTable={investmentDetailsTableData} /> : null
+}     
+
+   </div>
         <div className="flex justify-end gap-5">
           <button
             data-testid="refresh-btn"
@@ -86,11 +120,12 @@ export default function IndexComponent() {
 
           <div className="gap-3 text-sm">
             <p>Initiator</p>
-            <p>Uzoma Okoro</p>
+            <p>{customerDetails?.customerName}</p>
           </div>
 
           <div className="gap-3 text-sm mt-6">
             <p>Initiation date and time</p>
+            <p>{formattedDateTime}</p>
           </div>
         </div>
       </div>
