@@ -1,5 +1,9 @@
 // import  SterlingLogo from "@app/assets/images/SterlingLogo";
-import { forwardRef, useEffect } from 'react';
+import { useGetCurrenciesQuery, useGetCustomerProfileQuery, useGetInvestmentDetailQuery, useGetPostInvestmentMutation, useGetUserQuery } from '@app/api';
+import { handleCurrencyName } from '@app/utils/handleCurrencyName';
+import { forwardRef, useContext, useEffect } from 'react';
+import { AppContext } from "@app/utils";
+import { useParams } from 'react-router-dom';
 
 
 type PdfInvestType = {
@@ -28,10 +32,19 @@ type PdfViewerType = {
 }
 
 export const PdfViewer = forwardRef<HTMLDivElement, PdfViewerType>(({ investmentDetailTable }, ref) => {
+  const { currencies } = useContext(AppContext);
+  const { id } = useParams()
 
-  useEffect(() => {
-    console.log("details = ", investmentDetailTable)
-  }, [investmentDetailTable])
+  const {
+    data: investmentData,
+  } = useGetInvestmentDetailQuery({ id: id })
+
+  // const {
+  //   data: customerData
+  // } = useGetCustomerProfileQuery(
+  //   investmentDetailTable?.accountNumber,
+  //   { skip: investmentDetailTable?.accountNumber }
+  // )
 
   return (
     <div ref={ref}>
@@ -124,8 +137,11 @@ export const PdfViewer = forwardRef<HTMLDivElement, PdfViewerType>(({ investment
                     Booking Date
                   </td>
                   <td className="py-2 px-4 text-left border border-black">
-                    {investmentDetailTable?.bookingDate}
-
+                    {`${new Date(investmentDetailTable?.bookingDate).toLocaleDateString(undefined, {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric',
+                    })}`}
                   </td>
                 </tr>
                 <tr>
@@ -133,7 +149,11 @@ export const PdfViewer = forwardRef<HTMLDivElement, PdfViewerType>(({ investment
                     Maturity Date
                   </td>
                   <td className="py-2 px-4 text-left border border-black">
-                    {investmentDetailTable?.maturityDate}
+                    {`${new Date(investmentDetailTable?.maturityDate).toLocaleDateString(undefined, {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric',
+                    })}`}
                   </td>
                 </tr>
                 <tr>
@@ -181,7 +201,7 @@ export const PdfViewer = forwardRef<HTMLDivElement, PdfViewerType>(({ investment
                     Currency
                   </td>
                   <td className="py-2 px-4 text-left border border-black">
-                    {investmentDetailTable?.currency}
+                    {handleCurrencyName(investmentDetailTable.currency, currencies) || investmentDetailTable.currency}
                   </td>
                 </tr>
                 <tr>
@@ -189,7 +209,7 @@ export const PdfViewer = forwardRef<HTMLDivElement, PdfViewerType>(({ investment
                     Contract Status
                   </td>
                   <td className="py-2 px-4 text-left border border-black">
-                    {investmentDetailTable?.maturityDate}
+                    {investmentDetailTable?.contractStatus}
                   </td>
                 </tr>
               </tbody>
