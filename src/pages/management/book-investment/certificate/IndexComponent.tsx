@@ -24,23 +24,14 @@ export default function IndexComponent() {
 
   const {
     data: investmentCertificateData,
-    isSuccess: investmentCertificateIsSuccess,
-    isError: investmentCertificateIsError,
-    error: investmentCertificateError,
     isLoading,
   } = useGetInvestmentCertificateQuery({ BookingId: id }, { skip: !id });
 
 
-  // const tableDetials =  
 
-
-  const investmentDetailsTableData = useMemo(() => investmentCertificateData ? Object.entries(investmentCertificateData).map(([key, value]) => ({
-    label: key,
-    value: value ?? "",
-  })) : [], [investmentCertificateData])
 
   const customerDetails = useMemo(() => investmentCertificateData, [investmentCertificateData])
-
+  console.log(customerDetails)
 
   const formattedDate = customerDetails?.bookingDate && new Date(customerDetails?.bookingDate);
   const formattedDateTime = formattedDate?.toLocaleDateString("en-US", {
@@ -49,29 +40,8 @@ export default function IndexComponent() {
     day: "numeric",
     hour: "numeric",
     minute: "numeric",
-    second: "numeric",
-  });
 
-  const investDet = {
-    accountName: "2000000032",
-    accountNumber: "Annabel Thomas",
-    address: null,
-    amountAtMaturity: Number(99980.034).toLocaleString(),
-    bookingDate: new Date("2024-01-23T12:58:51.516012Z").toLocaleDateString("en-US"),
-    contractStatus: "Active",
-    currency: handleCurrencyName(
-      "57005ca4-ddf0-4d45-ba73-7317987a5c70",
-      currencies
-    ),
-    customerName: "Annabel Thomas",
-    interestAmount: Number(99980).toLocaleString(),
-    interestRate: Number(99980).toLocaleString(),
-    investmentId: "INV-LE-AN-20-00021",
-    maturityDate: new Date("2024-01-23T21:41:07.533647Z").toLocaleDateString("en-US"),
-    principalAmount: Number(99980).toLocaleString(),
-    tenor: "1",
-    liquidation: false
-  }
+  });
   return (
     <div className="flex gap-x-5 w-full flex-1 p-8">
       <div className="bg-white pt-6 px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16">
@@ -94,7 +64,7 @@ export default function IndexComponent() {
           {/* {investmentDetailsTableData?.length && customerDetails?.customerName ? <PdfViewer ref={targetRef} customerName={customerDetails?.customerName} investmentDetailTable={investmentDetailsTableData} /> : null
           } */}
 
-          <PdfViewer ref={targetRef} investmentDetailTable={investDet} />
+          <PdfViewer ref={targetRef} investmentDetailTable={investmentCertificateData} />
 
         </div>
         <div className="flex justify-end gap-5">
@@ -148,12 +118,12 @@ export default function IndexComponent() {
 
           <div className="gap-3 text-sm">
             <p>Initiator</p>
-            {/* <p>{customerDetails?.customerName}</p> */}
+            <p>{customerDetails?.customerName}</p>
           </div>
 
           <div className="gap-3 text-sm mt-6">
             <p>Initiation date and time</p>
-            {/* <p>{formattedDateTime}</p> */}
+            <p>{formattedDateTime}</p>
           </div>
         </div>
       </div>

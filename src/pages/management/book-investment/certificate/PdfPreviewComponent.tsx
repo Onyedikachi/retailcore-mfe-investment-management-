@@ -100,7 +100,7 @@ export const PdfViewer = forwardRef<HTMLDivElement, PdfViewerType>(({ investment
                     Account Name
                   </td>
                   <td className="py-2 px-4 text-left border border-black">
-                    {investmentDetailTable?.accountName}
+                    {investmentDetailTable?.customerName}
                   </td>
                 </tr>
                 <tr>
