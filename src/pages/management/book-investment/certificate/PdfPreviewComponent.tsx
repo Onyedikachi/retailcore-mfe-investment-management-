@@ -4,6 +4,7 @@ import { handleCurrencyName } from '@app/utils/handleCurrencyName';
 import { forwardRef, useContext, useEffect } from 'react';
 import { AppContext } from "@app/utils";
 import { useParams } from 'react-router-dom';
+import { Interval } from '@app/constants';
 
 
 type PdfInvestType = {
@@ -27,24 +28,20 @@ type PdfInvestType = {
 
 
 
-type PdfViewerType = {
-  investmentDetailTable?: PdfInvestType
-}
 
-export const PdfViewer = forwardRef<HTMLDivElement, PdfViewerType>(({ investmentDetailTable }, ref) => {
+export const PdfViewer = forwardRef<any, any>(({ investmentDetailTable, ref }) => {
   const { currencies } = useContext(AppContext);
-  const { id } = useParams()
+  const {id} = useParams();
 
   const {
-    data: investmentData,
-  } = useGetInvestmentDetailQuery({ id: id })
+    data: investmentQueryData,
+    isLoading: investmentDetailLoading,
+  } = useGetInvestmentDetailQuery({ id: id });
 
-  // const {
-  //   data: customerData
-  // } = useGetCustomerProfileQuery(
-  //   investmentDetailTable?.accountNumber,
-  //   { skip: investmentDetailTable?.accountNumber }
-  // )
+  useEffect(() => {
+    console.log("q = ",investmentQueryData)
+  }, [investmentQueryData])
+
 
   return (
     <div ref={ref}>
@@ -161,7 +158,7 @@ export const PdfViewer = forwardRef<HTMLDivElement, PdfViewerType>(({ investment
                     Tenor
                   </td>
                   <td className="py-2 px-4 text-left border border-black">
-                    {investmentDetailTable?.tenor}
+                    {investmentDetailTable?.tenor} {Interval[investmentQueryData?.data?.facilityDetailsModel?.tenorUnit]}
                   </td>
                 </tr>
                 <tr>

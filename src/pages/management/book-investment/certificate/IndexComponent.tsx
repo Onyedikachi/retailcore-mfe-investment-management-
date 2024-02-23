@@ -4,7 +4,7 @@ import { PdfViewer } from "./PdfPreviewComponent";
 import { usePDF } from 'react-to-pdf';
 import { useParams } from 'react-router-dom';
 
-import { useGetInvestmentCertificateQuery } from "@app/api";
+import { useGetInvestmentCertificateQuery, useGetInvestmentDetailQuery } from "@app/api";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 import { AppContext } from "@app/utils";
 
@@ -26,9 +26,6 @@ export default function IndexComponent() {
     data: investmentCertificateData,
     isLoading,
   } = useGetInvestmentCertificateQuery({ BookingId: id }, { skip: !id });
-
-
-
 
   const customerDetails = useMemo(() => investmentCertificateData, [investmentCertificateData])
   console.log(customerDetails)
@@ -63,7 +60,7 @@ export default function IndexComponent() {
             </div>
 
             <div className="h-[649px]	my-auto py-10	 overflow-auto w-full">
-              <PdfViewer ref={targetRef} investmentDetailTable={investmentCertificateData} />
+              <PdfViewer ref={targetRef} investmentDetailTable={investmentCertificateData}/>
             </div>
             <div className="flex justify-end gap-5">
               <button
@@ -87,7 +84,7 @@ export default function IndexComponent() {
                 </svg>
                 Return to dashboard
               </button>
-              <button
+              {/* <button
                 data-testid="refresh-btn"
                 onClick={() => { }}
                 className="flex whitespace-nowrap gap-x-2 items-center bg-transparent border-none text-[#636363] text-base"
@@ -105,7 +102,7 @@ export default function IndexComponent() {
                   />
                 </svg>
                 Create new investment
-              </button>
+              </button> */}
             </div>
           </div> :
           <div
