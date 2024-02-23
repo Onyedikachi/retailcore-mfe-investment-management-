@@ -1,18 +1,23 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import { HiShare, HiPrinter } from "react-icons/hi";
 import { PdfViewer } from "./PdfPreviewComponent";
 import { usePDF } from 'react-to-pdf';
 import { useParams } from 'react-router-dom';
 
 import { useGetInvestmentCertificateQuery } from "@app/api";
+import { handleCurrencyName } from "@app/utils/handleCurrencyName";
+import { AppContext } from "@app/utils";
 
 
 export default function IndexComponent() {
-  const { toPDF, targetRef } = usePDF({filename: 'certificate.pdf'});
+  const { toPDF, targetRef } = usePDF({ filename: 'certificate.pdf' });
+  const { currencies } = useContext(AppContext);
 
   const handlePrint = () => toPDF()
 
-  const {id} = useParams();
+  const { id } = useParams();
+
+
 
 
 
@@ -29,23 +34,44 @@ export default function IndexComponent() {
   // const tableDetials =  
 
 
- const investmentDetailsTableData = useMemo(() =>   investmentCertificateData ? Object.entries(investmentCertificateData).map(([key, value]) => ({
-  label: key,
-  value: value ?? "",
-})) : [], [investmentCertificateData])
+  const investmentDetailsTableData = useMemo(() => investmentCertificateData ? Object.entries(investmentCertificateData).map(([key, value]) => ({
+    label: key,
+    value: value ?? "",
+  })) : [], [investmentCertificateData])
 
-const customerDetails = useMemo(() => investmentCertificateData, [investmentCertificateData])
+  const customerDetails = useMemo(() => investmentCertificateData, [investmentCertificateData])
 
-const formattedDate = customerDetails?.bookingDate && new Date(customerDetails?.bookingDate);
-const formattedDateTime = formattedDate?.toLocaleDateString("en-US", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-  hour: "numeric",
-  minute: "numeric",
-  second: "numeric",
-});
 
+  const formattedDate = customerDetails?.bookingDate && new Date(customerDetails?.bookingDate);
+  const formattedDateTime = formattedDate?.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+  });
+
+  const investDet = {
+    accountName: "2000000032",
+    accountNumber: "Annabel Thomas",
+    address: null,
+    amountAtMaturity: Number(99980.034).toLocaleString(),
+    bookingDate: new Date("2024-01-23T12:58:51.516012Z").toLocaleDateString("en-US"),
+    contractStatus: "Active",
+    currency: handleCurrencyName(
+      "57005ca4-ddf0-4d45-ba73-7317987a5c70",
+      currencies
+    ),
+    customerName: "Annabel Thomas",
+    interestAmount: Number(99980).toLocaleString(),
+    interestRate: Number(99980).toLocaleString(),
+    investmentId: "INV-LE-AN-20-00021",
+    maturityDate: new Date("2024-01-23T21:41:07.533647Z").toLocaleDateString("en-US"),
+    principalAmount: Number(99980).toLocaleString(),
+    tenor: "1",
+    liquidation: false
+  }
   return (
     <div className="flex gap-x-5 w-full flex-1 p-8">
       <div className="bg-white pt-6 px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16">
@@ -57,22 +83,24 @@ const formattedDateTime = formattedDate?.toLocaleDateString("en-US", {
             <HiPrinter className="text-lg" /> Print
           </button>
           <button
-            onClick={() => {}}
+            onClick={() => { }}
             className="flex whitespace-nowrap gap-x-2 items-center bg-transparent border-none text-[#636363] text-base"
           >
             <HiShare className="text-lg" /> Share
           </button>
         </div>
 
-        <div className="h-[80vh]	my-auto py-10	 overflow-auto w-full">
-{   investmentDetailsTableData?.length && customerDetails?.customerName ?       <PdfViewer ref={targetRef} customerName={customerDetails?.customerName} investmentDetailTable={investmentDetailsTableData} /> : null
-}     
+        <div className="h-[649px]	my-auto py-10	 overflow-auto w-full">
+          {/* {investmentDetailsTableData?.length && customerDetails?.customerName ? <PdfViewer ref={targetRef} customerName={customerDetails?.customerName} investmentDetailTable={investmentDetailsTableData} /> : null
+          } */}
 
-   </div>
+          {/* <PdfViewer ref={targetRef} investmentDetailTable={investDet} /> */}
+
+        </div>
         <div className="flex justify-end gap-5">
           <button
             data-testid="refresh-btn"
-            onClick={() => {}}
+            onClick={() => { }}
             className="flex whitespace-nowrap gap-x-2 items-center bg-transparent border-none text-[#636363] text-base"
           >
             <svg
@@ -93,7 +121,7 @@ const formattedDateTime = formattedDate?.toLocaleDateString("en-US", {
           </button>
           <button
             data-testid="refresh-btn"
-            onClick={() => {}}
+            onClick={() => { }}
             className="flex whitespace-nowrap gap-x-2 items-center bg-transparent border-none text-[#636363] text-base"
           >
             <svg
@@ -120,12 +148,12 @@ const formattedDateTime = formattedDate?.toLocaleDateString("en-US", {
 
           <div className="gap-3 text-sm">
             <p>Initiator</p>
-            <p>{customerDetails?.customerName}</p>
+            {/* <p>{customerDetails?.customerName}</p> */}
           </div>
 
           <div className="gap-3 text-sm mt-6">
             <p>Initiation date and time</p>
-            <p>{formattedDateTime}</p>
+            {/* <p>{formattedDateTime}</p> */}
           </div>
         </div>
       </div>
