@@ -7,9 +7,36 @@ import {
   ProductTypes,
   liquidities,
 } from "@app/constants";
+import {
+  useGetApplicableChargesQuery,
+  useGetApplicableTaxesQuery,
+} from "@app/api";
 import { AppContext } from "@app/utils";
 
+const taxChargeDataOptions = [
+  {
+    header: "Principal Deposit",
+    key: "principalDepositChargesAndTaxes",
+  },
+  {
+    header: "Part Liquidation",
+    key: "partLiquidationChargesAndTaxes",
+  },
+  {
+    header: "Early Liquidation",
+    key: "earlyLiquidationChargesAndTaxes",
+  },
+  {
+    header: "Maturity Liquidation",
+    key: "investmentLiquidationChargesAndTaxes",
+  },
+];
+
 export default ({ productData, setOpen }) => {
+  const { data: charges } = useGetApplicableChargesQuery();
+
+  const { data: taxes } = useGetApplicableTaxesQuery();
+
   const { currencies } = useContext(AppContext);
   return (
     <div className="border border-[#E5E9EB] rounded-lg py-[25px] px-[30px] h-[593px]">
@@ -126,15 +153,17 @@ export default ({ productData, setOpen }) => {
             )}
           </div>
           {productData?.data?.pricingConfiguration.interestRateRangeType !==
-            2 && productData?.data?.pricingConfiguration.interestRateConfigModels.length > 1 && (
-            <button
-              data-testid="more"
-              className="text-[#636363]  underline"
-              onClick={() => setOpen(true)}
-            >
-              View more
-            </button>
-          )}
+            2 &&
+            productData?.data?.pricingConfiguration.interestRateConfigModels
+              .length > 1 && (
+              <button
+                data-testid="more"
+                className="text-[#636363]  underline"
+                onClick={() => setOpen(true)}
+              >
+                View more
+              </button>
+            )}
         </div>
         {productData?.data?.liquidation?.part_AllowPartLiquidation && (
           <div>
@@ -282,15 +311,55 @@ export default ({ productData, setOpen }) => {
           </div>
         )}
 
-        <div>
-          <span className="font-bold block mb-[15px]">
-            Principal Deposit Charge & Tax
-          </span>
-          <div className="flex items-center flex-wrap gap-x-1">
-            <span className="font-normal block">Charges :</span>
-            <span className="font-normal block">Maintenance , Auction</span>
-          </div>
-        </div>
+        {charges?.data?.records?.length > 0 &&
+          taxes?.data?.records?.length > 0 &&
+          taxChargeDataOptions.map((i) => (
+            <div key={i.header}>
+              <span className="font-bold block mb-[15px]">
+                {i.header} Charge & Tax
+              </span>
+              {productData?.data[i.key]?.applicableCharges.length &&
+                charges?.data?.records?.length && (
+                  <div className="flex items-center flex-wrap gap-x-1">
+                    <span className="font-normal block">Charges :</span>
+                    {productData?.data[i.key]?.applicableCharges?.map(
+                      (item, index) => (
+                        <span key={item} className="font-normal block">
+                          {
+                            charges?.data?.records?.find(
+                              (it) => it.charge_id === item
+                            )?.name
+                          }{" "}
+                          {index + 1 !==
+                            productData?.data[i.key]?.applicableCharges
+                              .length && <span>,</span>}
+                        </span>
+                      )
+                    )}
+                  </div>
+                )}
+              {productData?.data[i.key]?.applicableTaxes.length &&
+                taxes?.data?.records?.length && (
+                  <div className="flex items-center flex-wrap gap-x-1">
+                    <span className="font-normal block">Taxes :</span>
+                    {productData?.data[i.key]?.applicableTaxes?.map(
+                      (item, index) => (
+                        <span key={item} className="font-normal block">
+                          {
+                            taxes?.data?.records?.find(
+                              (it) => it.tax_id === item
+                            )?.name
+                          }
+                          {index + 1 !==
+                            productData?.data[i.key]?.applicableTaxes
+                              .length && <span>,</span>}
+                        </span>
+                      )
+                    )}
+                  </div>
+                )}
+            </div>
+          ))}
       </div>
     </div>
   );

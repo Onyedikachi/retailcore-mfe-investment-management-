@@ -1322,4 +1322,5 @@ export const ButtonOptions = [
 ];
 export const SpecificCategory = {
   individual: "individual",
+  reload: "reload",
 };

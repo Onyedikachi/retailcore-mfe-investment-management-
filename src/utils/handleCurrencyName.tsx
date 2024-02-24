@@ -1,5 +1,3 @@
-import { useContext } from "react";
-import { AppContext } from "./context";
 
 export function handleCurrencyName(id: string, currencies: any) {
   // const { currencies } = useContext(AppContext);

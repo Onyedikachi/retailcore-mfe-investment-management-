@@ -1,26 +1,21 @@
 import React, { useContext, useMemo } from "react";
 import { HiShare, HiPrinter } from "react-icons/hi";
 import { PdfViewer } from "./PdfPreviewComponent";
-import { usePDF } from 'react-to-pdf';
-import { useParams } from 'react-router-dom';
+import { usePDF } from "react-to-pdf";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { useGetInvestmentCertificateQuery, useGetInvestmentDetailQuery } from "@app/api";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 import { AppContext } from "@app/utils";
 
-
 export default function IndexComponent() {
   const { toPDF, targetRef } = usePDF({ filename: 'certificate.pdf' });
   const { currencies } = useContext(AppContext);
+  const navigate = useNavigate();
 
   const handlePrint = () => toPDF()
 
   const { id } = useParams();
-
-
-
-
-
 
   const {
     data: investmentCertificateData,
@@ -65,7 +60,7 @@ export default function IndexComponent() {
             <div className="flex justify-end gap-5">
               <button
                 data-testid="refresh-btn"
-                onClick={() => { }}
+                onClick={() => {navigate("/investment-management/individual")}}
                 className="flex whitespace-nowrap gap-x-2 items-center bg-transparent border-none text-[#636363] text-base"
               >
                 <svg
@@ -106,14 +101,14 @@ export default function IndexComponent() {
             </div>
           </div> :
           <div
-            className="bg-white pt-6 px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16"
+            className="bg-white pt-6 px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex justify-center items-center w-full pb-16"
             data-testid="loading-spinner"
           >
             <div className="spinner-border h-11 w-11 border-t border-danger-500 rounded-full animate-spin"></div>
           </div>
       }
       {
-        !isLoading ?
+        !isLoading &&
           <div className="bg-white pt-6 px-[30px] py-4 border border-[#E5E9EB] rounded-lg  w-[300px] pb-16">
             <div className="flex-col gap-5">
               <h1 className="text-[#747373] text-base font-medium mb-7 uppercase">
@@ -129,13 +124,14 @@ export default function IndexComponent() {
                 <p>{formattedDateTime}</p>
               </div>
             </div>
-          </div> :
-          <div
-            className="bg-white pt-6 px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16"
-            data-testid="loading-spinner"
-          >
-            <div className="spinner-border h-11 w-11 border-t border-danger-500 rounded-full animate-spin"></div>
-          </div>
+          </div> 
+          // :
+          // <div
+          //   className="bg-white pt-6 px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16"
+          //   data-testid="loading-spinner"
+          // >
+          //   <div className="spinner-border h-11 w-11 border-t border-danger-500 rounded-full animate-spin"></div>
+          // </div>
       }
     </div >
   );

@@ -4,9 +4,6 @@ import AddedTaxesList from "./AddedTaxesList";
 import { Fragment, useEffect, useRef, useState } from "react";
 import ChargeModal from "../../ChargeModal";
 import { useSearchParams, useNavigate, useParams } from "react-router-dom";
-import { Messages } from "@app/constants/enums";
-import { Loader } from "@app/components";
-import { Failed } from "@app/components/modals";
 import TaxModal from "../../TaxModal";
 import ChargeAndTaxMultiselect from "./ChargeAndTaxMultiselect";
 
@@ -44,10 +41,6 @@ export default ({
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
   const type = useRef("");
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const [isFailed, setFailed] = useState(false);
-  const [failedSubText, setFailedSubtext] = useState("");
-  const [failedText, setFailedText] = useState("");
 
   function handleTab() {
     if (activeTab.includes(tab)) {
