@@ -49,8 +49,8 @@ describe('default', () => {
 
         const searchButton = screen.getByTestId("open-button");
         fireEvent.click(searchButton);
-
         const searchInput = screen.getByTestId("gli-input");
+        expect(screen).toMatchSnapshot()
         expect(searchInput).toBeVisible();
     });
 
