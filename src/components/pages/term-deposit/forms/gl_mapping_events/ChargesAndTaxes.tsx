@@ -1,12 +1,11 @@
 import { Icon } from "@iconify/react";
 import AddedChargeList from "./AddedChargeList";
 import AddedTaxesList from "./AddedTaxesList";
-import ChargesSelector from "./ChargesSelector";
 import { Fragment, useEffect, useRef, useState } from "react";
-import SelectTaxes from "./SelectTaxes";
 import ChargeModal from "../../ChargeModal";
 import { useSearchParams, useNavigate, useParams } from "react-router-dom";
 import TaxModal from "../../TaxModal";
+import ChargeAndTaxMultiselect from "./ChargeAndTaxMultiselect";
 
 export function handleRedirect(type, navigate) {
   if (type === "tax") {
@@ -61,9 +60,8 @@ export default ({
           <span className="text-[18px] flex  gap-[1px] text-[#636363] font-semibold flex-row items-center">
             <Icon
               icon="ph:caret-right-fill"
-              className={`text-danger-500 text-sm mr-4 ${
-                activeTab.includes(tab) && "rotate-90"
-              }`}
+              className={`text-danger-500 text-sm mr-4 ${activeTab.includes(tab) && "rotate-90"
+                }`}
             />
             {header} Charges & Taxes
           </span>
@@ -76,16 +74,16 @@ export default ({
                 <span className="w-[300px] relative">Applicable Charge(s)</span>
                 <div className="w-full flex flex-col">
                   <div className="flex flex-row">
-                    <ChargesSelector
-                      addedOptions={values[event]?.applicableCharges}
+                    <ChargeAndTaxMultiselect
+                      addedOptions={
+                        values?.[event]?.applicableTaxes
+                      }
                       setFormData={setFormData}
                       values={values}
                       event={event}
-                      type={"charges"}
-                      availableOptions={charges}
+                      type={"taxes"}
+                      availableOptions={taxes}
                       disabled={disabled}
-                      placeholder={placeholder}
-                      setValue={setValue}
                     />
                     <span
                       className="ml-12 text-danger-500 underline"
@@ -94,7 +92,7 @@ export default ({
                       Create new charge
                     </span>
                   </div>
-                  {values[event]?.applicableCharges.length > 0 && (
+                  {values[event]?.applicableCharges?.length > 0 && (
                     <AddedChargeList
                       charges={charges}
                       selectedCharges={values[event]?.applicableCharges}
@@ -114,16 +112,16 @@ export default ({
                 <span className="w-[300px] relative">Applicable tax(es)</span>
                 <div className="w-full flex flex-col">
                   <div className="flex flex-row">
-                    <SelectTaxes
-                      availableOptions={taxes}
-                      addedOptions={values[event]?.applicableTaxes}
+                    <ChargeAndTaxMultiselect
+                      addedOptions={
+                        values?.[event]?.applicableTaxes
+                      }
                       setFormData={setFormData}
                       values={values}
                       event={event}
                       type={"taxes"}
-                      disabled={false}
-                      placeholder={placeholder}
-                      setValue={setValue}
+                      availableOptions={taxes}
+                      disabled={disabled}
                     />
                     <span
                       className="ml-12 text-danger-500 underline"
@@ -132,7 +130,7 @@ export default ({
                       Create new tax
                     </span>
                   </div>
-                  {values[event]?.applicableTaxes.length > 0 && (
+                  {values[event]?.applicableTaxes?.length > 0 && (
                     <AddedTaxesList
                       taxes={taxes}
                       selectedTaxes={values[event]?.applicableTaxes}
