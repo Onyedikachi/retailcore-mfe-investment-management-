@@ -92,7 +92,7 @@ export default ({
                       Create new charge
                     </span>
                   </div>
-                  {values[event]?.applicableCharges.length > 0 && (
+                  {values[event]?.applicableCharges?.length > 0 && (
                     <AddedChargeList
                       charges={charges}
                       selectedCharges={values[event]?.applicableCharges}
@@ -130,7 +130,7 @@ export default ({
                       Create new tax
                     </span>
                   </div>
-                  {values[event]?.applicableTaxes.length > 0 && (
+                  {values[event]?.applicableTaxes?.length > 0 && (
                     <AddedTaxesList
                       taxes={taxes}
                       selectedTaxes={values[event]?.applicableTaxes}
