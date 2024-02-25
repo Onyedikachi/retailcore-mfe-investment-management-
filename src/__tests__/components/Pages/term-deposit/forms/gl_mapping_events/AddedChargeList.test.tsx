@@ -37,7 +37,7 @@ describe("AddedChargeList", () => {
         const charges = { data: { records: [{ charge_id: 'charge1', name: 'Charge 1' }, { charge_id: 'charge2', name: 'Charge 2' }] } };
 
         render(<AddedChargeList selectedCharges={selectedCharges} setFormData={setFormData} values={values} event={event} charges={charges} />);
-
+        fireEvent.click(screen.getAllByTestId("remove")[0])
         expect(screen.getByText("Charge 1"))
         expect(screen.getByText("Charge 2"))
     });
