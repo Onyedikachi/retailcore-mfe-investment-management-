@@ -1,47 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
+<<<<<<< HEAD
+  <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/App.test.tsx">
+    <testCase name="Test App Component If App is rendered wihout issues" duration="33"/>
+  </file>
   <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/Sterling-investment.tsx">
-    <testCase name="microfrontend bootstraps the app" duration="10"/>
-    <testCase name="microfrontend mounts and unmounts" duration="20"/>
-  </file>
-  <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/pages/management/book-investment/IndexComponent.test.tsx">
-    <testCase name="IndexComponent should render the component without crashing" duration="106"/>
-    <testCase name="IndexComponent should display the correct title and breadcrumbs based on the investmentType parameter" duration="33"/>
-    <testCase name="IndexComponent should render the correct form step based on the step state" duration="22"/>
-    <testCase name="handleDraft should set isConfirmOpen to false when called" duration="3"/>
-    <testCase name="handleDraft should call modifyProduct with updated form data and isDraft set to true when process is modify" duration="3"/>
-    <testCase name="handleDraft should call createInvestment with form data and isDraft set to true when process is create or clone" duration="1"/>
-    <testCase name="handleLinks should return the input &quot;links&quot; array unmodified when &quot;process&quot; is not &quot;restructure&quot;" duration="2"/>
-    <testCase name="handleLinks should update the title of the object with id=2 to &quot;Restructure Investment&quot; when &quot;process&quot; is &quot;restructure&quot;" duration="8"/>
-    <testCase name="handleLinks should return the input &quot;links&quot; array unmodified when &quot;links&quot; array does not contain an object with id=2 and &quot;process&quot; is &quot;restructure&quot;" duration="1"/>
-    <testCase name="handleLinks should update the title of the first object with id=2 to &quot;Restructure Investment&quot; when &quot;process&quot; is &quot;restructure&quot; and there are multiple objects with id=2" duration="2"/>
-    <testCase name="handleNav should navigate to summary page when current step is equal to total number of steps" duration="1"/>
-    <testCase name="handleNav should throw an error when setStep parameter is not a function" duration="1"/>
-  </file>
-  <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/components/Pages/management/overview/index.test.tsx">
-    <testCase name="updateInvestmentTabs should return an array of objects with updated amount and totalValue properties" duration="12"/>
-    <testCase name="updateInvestmentTabs should update amount property with the total value of investments for each tab" duration="2"/>
-    <testCase name="updateInvestmentTabs should update totalValue property with the total count of investments for each tab" duration="3"/>
-    <testCase name="updateInvestmentTabs should return an empty array when the input tabs array is empty" duration="1"/>
-    <testCase name="updateInvestmentTabs should return an array of objects with amount property set to 0.00 and totalValue property set to 0 total investments when the input tabs array is empty" duration="1"/>
-    <testCase name="updateInvestmentTabs should return an array of objects with the same length as the input tabs array" duration="2"/>
-    <testCase name="Overview should render Overview component without crashing" duration="492"/>
-    <testCase name="Overview should display investment tabs with correct titles and icons" duration="210"/>
-    <testCase name="Overview should display investment amounts and total values correctly formatted" duration="201"/>
-  </file>
-  <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/pages/management/IndexComponent.test.tsx">
-    <testCase name="Dashboard should render Investment Management dashboard with Overview tab selected by default" duration="520"/>
-    <testCase name="Dashboard should render Investment Management dashboard with Book Investment button" duration="237"/>
-    <testCase name="Dashboard should allow user to switch between Overview, Corporate and Individual tabs" duration="163"/>
+    <testCase name="microfrontend bootstraps the app" duration="9"/>
+    <testCase name="microfrontend mounts and unmounts" duration="26"/>
   </file>
   <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/components/Pages/management/SummaryComponent.test.tsx">
-    <testCase name="Summary should render the component without crashing" duration="172"/>
-  </file>
-  <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/components/Pages/management/manage-investment/IndexComponent.test.tsx">
-    <testCase name="code snippet should render the Investment Management page with the correct title and breadcrumbs" duration="142"/>
-    <testCase name="code snippet should display the Investment PRODUCTS section with the Individual Investments and Corporate Investments subsections" duration="45"/>
+    <testCase name="Summary should render the component without crashing" duration="307"/>
+=======
+  <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/Sterling-investment.tsx">
+    <testCase name="microfrontend bootstraps the app" duration="20"/>
+    <testCase name="microfrontend mounts and unmounts" duration="61"/>
   </file>
   <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/App.test.tsx">
-    <testCase name="Test App Component If App is rendered wihout issues" duration="12"/>
+    <testCase name="Test App Component If App is rendered wihout issues" duration="144"/>
+  </file>
+  <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/components/Pages/management/SummaryComponent.test.tsx">
+    <testCase name="Summary should render the component without crashing" duration="1375"/>
+>>>>>>> df40d343cb8792a4b8fa17a86edd21c455571a0e
   </file>
 </testExecutions>
