@@ -31,7 +31,10 @@ import { handleDraft } from "./handleDraft";
 import handleFormRef from "./handleFormRef";
 import FormComponent from "../FormComponent";
 import { AppContext } from "@app/utils";
-import { useGetApplicableChargesQuery, useGetApplicableTaxesQuery } from "@app/api/productMgtApi";
+import {
+  useGetApplicableChargesQuery,
+  useGetApplicableTaxesQuery,
+} from "@app/api/productMgtApi";
 
 export function handleNext(step, setStep, termDepositFormSteps) {
   step < termDepositFormSteps.length && setStep(step + 1);
@@ -55,6 +58,7 @@ export const handlePreviousData = ({ prevProductData, productDetails }) => {
 
   return {
     ...prevProductData,
+    ...productDetails?.data,
     productInfo: productDetails?.data?.productInfo,
     customerEligibility: productDetails?.data?.customerEligibility,
     pricingConfiguration: pricingConfigurationCopy,
@@ -199,11 +203,11 @@ export const handleMessage = ({
     setFailedText(Messages.PRODUCT_DRAFT_FAILED);
     setFailedSubtext(
       error?.message?.message ||
-      modifyError?.message?.message ||
-      modifyRequestError?.message?.message ||
-      error?.message?.Message ||
-      modifyError?.message?.Message ||
-      modifyRequestError?.message?.Message
+        modifyError?.message?.message ||
+        modifyRequestError?.message?.message ||
+        error?.message?.Message ||
+        modifyError?.message?.Message ||
+        modifyRequestError?.message?.Message
     );
     setFailed(true);
   }
@@ -213,9 +217,10 @@ export function handleNav({ process, step, setStep, navigate, id }) {
   step < termDepositFormSteps.length
     ? handleNext(step, setStep, termDepositFormSteps)
     : navigate(
-      `/product-factory/investment/term-deposit/${process}?${id ? `id=${id}&` : ""
-      }stage=summary`
-    );
+        `/product-factory/investment/term-deposit/${process}?${
+          id ? `id=${id}&` : ""
+        }stage=summary`
+      );
 }
 
 export default function CreateTermDeposit() {
@@ -226,7 +231,7 @@ export default function CreateTermDeposit() {
   const refresh = searchParams.get("refresh");
   const activeId = useRef(null);
   const previousData = useRef({});
-  const [step, setStep] = useState(4);
+  const [step, setStep] = useState(1);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [subText, setSubText] = useState("");
   const [successText, setSuccessText] = useState("");
@@ -234,15 +239,17 @@ export default function CreateTermDeposit() {
   const [failedSubText, setFailedSubtext] = useState("");
   const [failedText, setFailedText] = useState("");
   const [initiateDraft, setInitiateDraft] = useState(false);
-  const { currencies } = useContext(AppContext);
+  const { currencies, defaultCurrency } = useContext(AppContext);
+ 
   const [productData, setProductData] = useState({
+    id: id || null,
     productInfo: {
       productName: "",
       slogan: "",
       description: "",
       startDate: new Date(),
       endDate: null,
-      currency: currencies.find((i) => i.text.toLowerCase() === "ngn")?.value,
+      currency: defaultCurrency?.id,
     },
     customerEligibility: {
       ageGroupMin: 0,
@@ -251,10 +258,22 @@ export default function CreateTermDeposit() {
       customerType: [],
       customerCategory: null,
     },
-    principalDepositChargesAndTaxes: { applicableCharges: [], applicableTaxes: [] },
-    partLiquidationChargesAndTaxes: { applicableCharges: [], applicableTaxes: [] },
-    earlyLiquidationChargesAndTaxes: { applicableCharges: [], applicableTaxes: [] },
-    maturityLiquidationChargesAndTaxes: { applicableCharges: [], applicableTaxes: [] },
+    principalDepositChargesAndTaxes: {
+      applicableCharges: [],
+      applicableTaxes: [],
+    },
+    partLiquidationChargesAndTaxes: {
+      applicableCharges: [],
+      applicableTaxes: [],
+    },
+    earlyLiquidationChargesAndTaxes: {
+      applicableCharges: [],
+      applicableTaxes: [],
+    },
+    investmentLiquidationChargesAndTaxes: {
+      applicableCharges: [],
+      applicableTaxes: [],
+    },
     pricingConfiguration: {
       interestRateRangeType: 0,
       applicableTenorMin: 0,
@@ -335,10 +354,9 @@ export default function CreateTermDeposit() {
     },
   ];
 
-
-  useEffect(() => {
-    console.log("d = ", productData)
-  }, [productData])
+  // useEffect(() => {
+  //   console.log("d = ", productData)
+  // }, [productData])
 
   const [createProduct, { isLoading, isSuccess, isError, reset, error }] =
     useCreateProductMutation();

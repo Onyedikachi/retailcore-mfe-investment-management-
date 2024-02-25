@@ -6,15 +6,6 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import SelectTaxes from "./SelectTaxes";
 import ChargeModal from "../../ChargeModal";
 import { useSearchParams, useNavigate, useParams } from "react-router-dom";
-import {
-  useCreateProductMutation,
-  useModifyProductMutation,
-  useModifyRequestMutation,
-} from "@app/api";
-import { handleDraft } from "@app/pages/investment/term-deposit/create-term-deposit/handleDraft";
-import { Messages } from "@app/constants/enums";
-import { Loader } from "@app/components";
-import { Failed } from "@app/components/modals";
 import TaxModal from "../../TaxModal";
 
 export function handleRedirect(type, navigate) {
@@ -26,28 +17,6 @@ export function handleRedirect(type, navigate) {
   }
 }
 
-export function handlePageSave(
-  value,
-  type,
-  productData,
-  process,
-  id,
-  modifyRequest,
-  setIsConfirmOpen,
-  modifyProduct,
-  createProduct
-) {
-  type.current = value;
-  handleDraft({
-    productData,
-    process,
-    id,
-    modifyRequest,
-    setIsConfirmOpen,
-    modifyProduct,
-    createProduct,
-  });
-}
 export default ({
   setActiveTab,
   activeTab,
@@ -62,72 +31,21 @@ export default ({
   taxesLoading,
   productData,
   disabled,
-  placeholder
+  placeholder,
+  setValue,
 }: any) => {
-  console.log("🚀 ~ productData:", productData);
+  console.log("🚀 ~ values:", values);
+
   const navigate = useNavigate();
   const [activeChargeId, setActiveChargeId] = useState(null);
   const { process } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
   const type = useRef("");
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const [isFailed, setFailed] = useState(false);
-  const [failedSubText, setFailedSubtext] = useState("");
-  const [failedText, setFailedText] = useState("");
 
-  const [createProduct, { isLoading, isSuccess, isError, error }] =
-    useCreateProductMutation();
-
-  const [
-    modifyProduct,
-    {
-      isLoading: modifyLoading,
-      isSuccess: modifySuccess,
-      isError: modifyIsError,
-      error: modifyError,
-    },
-  ] = useModifyProductMutation();
-
-  const [
-    modifyRequest,
-    {
-      isLoading: modifyRequestLoading,
-      isSuccess: modifyRequestSuccess,
-      isError: modifyRequestIsError,
-      error: modifyRequestError,
-    },
-  ] = useModifyRequestMutation();
-
-  useEffect(() => {
-    if (isSuccess || modifySuccess || modifyRequestSuccess) {
-      handleRedirect(type, navigate);
-    }
-    if (isError || modifyIsError || modifyRequestIsError) {
-      setFailedText(Messages.PRODUCT_DRAFT_FAILED);
-      setFailedSubtext(
-        error?.message?.message ||
-          modifyError?.message?.message ||
-          modifyRequestError?.message?.message ||
-          error?.message?.Message ||
-          modifyError?.message?.Message ||
-          modifyRequestError?.message?.Message
-      );
-      setFailed(true);
-    }
-  }, [
-    isSuccess,
-    isError,
-    error,
-    modifyIsError,
-    modifySuccess,
-    modifyError,
-    modifyRequestSuccess,
-    modifyRequestIsError,
-  ]);
   function handleTab() {
-    if ( activeTab.includes(tab)) {
-      setActiveTab(activeTab.filter(i => i !== tab));
+    if (activeTab.includes(tab)) {
+      setActiveTab(activeTab.filter((i) => i !== tab));
       return;
     }
     setActiveTab([...activeTab, tab]);
@@ -135,10 +53,7 @@ export default ({
 
   return (
     <div>
-      <div
-      
-        className="bg-[#fff] border border-[#EEEEEE] rounded-[6px]"
-      >
+      <div className="bg-[#fff] border border-[#EEEEEE] rounded-[6px]">
         <div
           onClick={() => handleTab()}
           className=" flex justify-between items-center px-6 py-[14px]"
@@ -162,9 +77,7 @@ export default ({
                 <div className="w-full flex flex-col">
                   <div className="flex flex-row">
                     <ChargesSelector
-                      addedOptions={
-                        values?.[`${event}ChargesAndTaxes`]?.applicableCharges
-                      }
+                      addedOptions={values[event]?.applicableCharges}
                       setFormData={setFormData}
                       values={values}
                       event={event}
@@ -172,35 +85,25 @@ export default ({
                       availableOptions={charges}
                       disabled={disabled}
                       placeholder={placeholder}
+                      setValue={setValue}
                     />
                     <span
                       className="ml-12 text-danger-500 underline"
-                      onClick={() =>
-                        handlePageSave(
-                          "charge",
-                          type,
-                          productData,
-                          process,
-                          id,
-                          modifyRequest,
-                          setIsConfirmOpen,
-                          modifyProduct,
-                          createProduct
-                        )
-                      }
+                      onClick={() => handleRedirect("charge", navigate)}
                     >
                       Create new charge
                     </span>
                   </div>
-                  {values?.[`${event}ChargesAndTaxes`].applicableCharges.length > 0 && (
-                      <AddedChargeList
-                        charges={charges}
-                        selectedCharges={values?.[`${event}ChargesAndTaxes`]?.applicableCharges}
-                        values={values}
-                        setFormData={setFormData}
-                        event={event}
-                      />
-                    )}
+                  {values[event]?.applicableCharges.length > 0 && (
+                    <AddedChargeList
+                      charges={charges}
+                      selectedCharges={values[event]?.applicableCharges}
+                      values={values}
+                      setFormData={setFormData}
+                      event={event}
+                      setValue={setValue}
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -213,42 +116,32 @@ export default ({
                   <div className="flex flex-row">
                     <SelectTaxes
                       availableOptions={taxes}
-                      addedOptions={values?.[`${event}ChargesAndTaxes`]?.applicableTaxes}
+                      addedOptions={values[event]?.applicableTaxes}
                       setFormData={setFormData}
                       values={values}
                       event={event}
                       type={"taxes"}
                       disabled={false}
                       placeholder={placeholder}
+                      setValue={setValue}
                     />
                     <span
                       className="ml-12 text-danger-500 underline"
-                      onClick={() =>
-                        handlePageSave(
-                          "tax",
-                          type,
-                          productData,
-                          process,
-                          id,
-                          modifyRequest,
-                          setIsConfirmOpen,
-                          modifyProduct,
-                          createProduct
-                        )
-                      }
+                      onClick={() => handleRedirect("tax", navigate)}
                     >
                       Create new tax
                     </span>
                   </div>
-                  {values?.[`${event}ChargesAndTaxes`].applicableTaxes.length > 0 && (
-                      <AddedTaxesList
-                        taxes = {taxes}
-                        selectedTaxes={values?.[`${event}ChargesAndTaxes`].applicableTaxes}
-                        values={values}
-                        setFormData={setFormData}
-                        event={event}
-                      />
-                    )}
+                  {values[event]?.applicableTaxes.length > 0 && (
+                    <AddedTaxesList
+                      taxes={taxes}
+                      selectedTaxes={values[event]?.applicableTaxes}
+                      values={values}
+                      setFormData={setFormData}
+                      event={event}
+                      setValue={setValue}
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -257,25 +150,12 @@ export default ({
       </div>
       <ChargeModal
         id={searchParams.get("charge")}
-        closeModal={() => setSearchParams({charge: null})}
+        closeModal={() => setSearchParams({ charge: null })}
       />
       <TaxModal
         id={searchParams.get("tax")}
-        closeModal={() => setSearchParams({tax: null})}
+        closeModal={() => setSearchParams({ tax: null })}
       />
-      <Loader
-        isOpen={isLoading || modifyLoading || modifyRequestLoading}
-        text={"Saving"}
-      />
-      {isFailed && (
-        <Failed
-          text={failedText}
-          subtext={failedSubText}
-          isOpen={isFailed}
-          setIsOpen={setFailed}
-          canRetry
-        />
-      )}
     </div>
   );
 };

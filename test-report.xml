@@ -1,65 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
-  <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/App.test.tsx">
-    <testCase name="Test App Component If App is rendered wihout issues" duration="43">
-      <failure message="Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it&apos;s defined in, or you might have mixed up default and named imports."><![CDATA[Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
-
-Check the render method of `App`.
-    at createFiberFromTypeAndProps (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:25058:21)
-    at createFiberFromElement (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:25086:15)
-    at reconcileSingleElement (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:14052:23)
-    at reconcileChildFibers (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:14112:35)
-    at reconcileChildren (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:16990:28)
-    at mountIndeterminateComponent (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:17890:5)
-    at beginWork (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:19049:16)
-    at HTMLUnknownElement.callCallback (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:3945:14)
-    at HTMLUnknownElement.callTheUserObjectsOperation (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jsdom/lib/jsdom/living/generated/EventListener.js:26:30)
-    at innerInvokeEventListeners (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:338:25)
-    at invokeEventListeners (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:274:3)
-    at HTMLUnknownElementImpl._dispatch (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:221:9)
-    at HTMLUnknownElementImpl.dispatchEvent (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:94:17)
-    at HTMLUnknownElement.dispatchEvent (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jsdom/lib/jsdom/living/generated/EventTarget.js:231:34)
-    at Object.invokeGuardedCallbackDev (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:3994:16)
-    at invokeGuardedCallback (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:4056:31)
-    at beginWork$1 (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:23964:7)
-    at performUnitOfWork (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:22779:12)
-    at workLoopSync (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:22707:5)
-    at renderRootSync (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:22670:7)
-    at performSyncWorkOnRoot (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:22293:18)
-    at scheduleUpdateOnFiber (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:21881:7)
-    at updateContainer (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:25482:3)
-    at /Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:26021:7
-    at unbatchedUpdates (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:22431:12)
-    at legacyRenderSubtreeIntoContainer (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:26020:5)
-    at Object.render (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:26103:10)
-    at /Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/@testing-library/react/dist/pure.js:101:25
-    at batchedUpdates$1 (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom.development.js:22380:12)
-    at act (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/react-dom/cjs/react-dom-test-utils.development.js:1042:14)
-    at render (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/@testing-library/react/dist/pure.js:97:26)
-    at Object.<anonymous> (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/App.test.tsx:23:35)
-    at Promise.then.completed (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jest-circus/build/utils.js:391:28)
-    at new Promise (<anonymous>)
-    at callAsyncCircusFn (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jest-circus/build/utils.js:316:10)
-    at _callCircusTest (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jest-circus/build/run.js:218:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jest-circus/build/run.js:155:3)
-    at _runTestsForDescribeBlock (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jest-circus/build/run.js:66:9)
-    at _runTestsForDescribeBlock (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jest-circus/build/run.js:60:9)
-    at run (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jest-circus/build/run.js:25:3)
-    at runAndTransformResultsToJestFormat (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:170:21)
-    at jestAdapter (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:82:19)
-    at runTestInternal (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jest-runner/build/runTest.js:389:16)
-    at runTest (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jest-runner/build/runTest.js:475:34)
-    at Object.worker (/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/node_modules/jest-runner/build/testWorker.js:135:12)]]></failure>
-    </testCase>
-  </file>
   <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/Sterling-investment.tsx">
-    <testCase name="microfrontend bootstraps the app" duration="7"/>
-    <testCase name="microfrontend mounts and unmounts" duration="35"/>
+    <testCase name="microfrontend bootstraps the app" duration="10"/>
+    <testCase name="microfrontend mounts and unmounts" duration="20"/>
+  </file>
+  <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/pages/management/book-investment/IndexComponent.test.tsx">
+    <testCase name="IndexComponent should render the component without crashing" duration="106"/>
+    <testCase name="IndexComponent should display the correct title and breadcrumbs based on the investmentType parameter" duration="33"/>
+    <testCase name="IndexComponent should render the correct form step based on the step state" duration="22"/>
+    <testCase name="handleDraft should set isConfirmOpen to false when called" duration="3"/>
+    <testCase name="handleDraft should call modifyProduct with updated form data and isDraft set to true when process is modify" duration="3"/>
+    <testCase name="handleDraft should call createInvestment with form data and isDraft set to true when process is create or clone" duration="1"/>
+    <testCase name="handleLinks should return the input &quot;links&quot; array unmodified when &quot;process&quot; is not &quot;restructure&quot;" duration="2"/>
+    <testCase name="handleLinks should update the title of the object with id=2 to &quot;Restructure Investment&quot; when &quot;process&quot; is &quot;restructure&quot;" duration="8"/>
+    <testCase name="handleLinks should return the input &quot;links&quot; array unmodified when &quot;links&quot; array does not contain an object with id=2 and &quot;process&quot; is &quot;restructure&quot;" duration="1"/>
+    <testCase name="handleLinks should update the title of the first object with id=2 to &quot;Restructure Investment&quot; when &quot;process&quot; is &quot;restructure&quot; and there are multiple objects with id=2" duration="2"/>
+    <testCase name="handleNav should navigate to summary page when current step is equal to total number of steps" duration="1"/>
+    <testCase name="handleNav should throw an error when setStep parameter is not a function" duration="1"/>
+  </file>
+  <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/components/Pages/management/overview/index.test.tsx">
+    <testCase name="updateInvestmentTabs should return an array of objects with updated amount and totalValue properties" duration="12"/>
+    <testCase name="updateInvestmentTabs should update amount property with the total value of investments for each tab" duration="2"/>
+    <testCase name="updateInvestmentTabs should update totalValue property with the total count of investments for each tab" duration="3"/>
+    <testCase name="updateInvestmentTabs should return an empty array when the input tabs array is empty" duration="1"/>
+    <testCase name="updateInvestmentTabs should return an array of objects with amount property set to 0.00 and totalValue property set to 0 total investments when the input tabs array is empty" duration="1"/>
+    <testCase name="updateInvestmentTabs should return an array of objects with the same length as the input tabs array" duration="2"/>
+    <testCase name="Overview should render Overview component without crashing" duration="492"/>
+    <testCase name="Overview should display investment tabs with correct titles and icons" duration="210"/>
+    <testCase name="Overview should display investment amounts and total values correctly formatted" duration="201"/>
   </file>
   <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/pages/management/IndexComponent.test.tsx">
-    <testCase name="Dashboard should render Investment Management dashboard with Overview tab selected by default" duration="508"/>
-    <testCase name="Dashboard should render Investment Management dashboard with Book Investment button" duration="149"/>
-    <testCase name="Dashboard should allow user to switch between Overview, Corporate and Individual tabs" duration="180"/>
+    <testCase name="Dashboard should render Investment Management dashboard with Overview tab selected by default" duration="520"/>
+    <testCase name="Dashboard should render Investment Management dashboard with Book Investment button" duration="237"/>
+    <testCase name="Dashboard should allow user to switch between Overview, Corporate and Individual tabs" duration="163"/>
+  </file>
+  <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/components/Pages/management/SummaryComponent.test.tsx">
+    <testCase name="Summary should render the component without crashing" duration="172"/>
+  </file>
+  <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/components/Pages/management/manage-investment/IndexComponent.test.tsx">
+    <testCase name="code snippet should render the Investment Management page with the correct title and breadcrumbs" duration="142"/>
+    <testCase name="code snippet should display the Investment PRODUCTS section with the Individual Investments and Corporate Investments subsections" duration="45"/>
+  </file>
+  <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/App.test.tsx">
+    <testCase name="Test App Component If App is rendered wihout issues" duration="12"/>
   </file>
 </testExecutions>

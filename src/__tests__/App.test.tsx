@@ -8,6 +8,7 @@ jest.mock("react-router-dom", () => ({
   BrowserRouter: ({ children }) => <div>{children}</div>,
   Routes: ({ children }) => <div>{children}</div>,
   Route: ({ element }) => element,
+  Navigate: ({ children }) => <div>{children}</div>,
 }));
 
 jest.mock("../layouts/Layout", () => {
@@ -20,10 +21,10 @@ jest.mock("../components/AppWrapper.tsx", () => {
 
 describe("Test App Component", () => {
   it("If App is rendered wihout issues", async () => {
-    const { getByTestId } = render(<App />);
+    const { getByTestId, getAllByTestId } = render(<App />);
 
     await waitFor(() => {
-      expect(getByTestId("app-outlet")).toBeInTheDocument();
+      expect(getAllByTestId("app-outlet")[0]).toBeInTheDocument();
       expect(getByTestId("app-wrapper")).toBeInTheDocument();
     });
   });

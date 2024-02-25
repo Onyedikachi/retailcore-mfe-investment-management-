@@ -151,7 +151,7 @@ export default function ProductInformation({
   const [charLeft, setCharLeft] = useState<number>(50);
   const [sloganCharLeft, setSloganCharLeft] = useState<number>(160);
   const [currentName, setCurrentName] = useState("");
-  const [isNameOkay, setIsNameOkay] = useState<boolean>(false);
+  const [isNameOkay, setIsNameOkay] = useState<boolean|null>(null);
   const [isSloganOkay, setIsSloganOkay] = useState<boolean>(false);
   const { productId } = useParams();
   const [searchParams] = useSearchParams();
@@ -201,7 +201,9 @@ export default function ProductInformation({
     }
   }, [initiateDraft]);
   useEffect(() => {
-    setDisabled(!isValid);
+    console.log("🚀 ~ useEffect ~ isNameOkay:", isNameOkay)
+
+    setDisabled(!isValid || isNameOkay === false);
   }, [values]);
 
   useEffect(() => {
@@ -314,7 +316,7 @@ export default function ProductInformation({
                   {" "}
                   {charLeft}/{defaultLength}
                 </span>{" "}
-                {isNameOkay && !errors?.productName && (
+                {isNameOkay && !errors?.productName  && (
                   <span>
                     <FaCheckCircle className="text-success-500 text-xl" />
                   </span>
@@ -334,7 +336,7 @@ export default function ProductInformation({
                 {errors?.productName?.message}
               </span>
             )}
-            {isNameOkay && (
+            {isNameOkay && !errors?.productName && (
               <span className="text-sm text-success-500">
                 Name is available
               </span>

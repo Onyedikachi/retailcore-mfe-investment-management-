@@ -35,7 +35,7 @@ describe('checkDocuments', () => {
             document2: 'content2'
         };
 
-        const result = checkDocuments(keys, JSON.stringify(obj));
+        const result = checkDocuments(keys, obj));
 
         expect(result.missingDocuments).toEqual([]);
     });

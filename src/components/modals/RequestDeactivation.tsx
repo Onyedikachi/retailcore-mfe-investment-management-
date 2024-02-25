@@ -153,6 +153,7 @@ export default function RequestDeactivation({
           canRetry={true}
           failedSubText={failedSubText}
           setFailed={setFailed}
+          specificCategory="reload"
           
         />
         {/* {isSuccessOpen && (

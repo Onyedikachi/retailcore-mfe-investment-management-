@@ -31,10 +31,11 @@ export const accountApi: any = createApi({
         };
       },
     }),
+    
     getLedgers: builder.query<any, any>({
       query: (data) => {
         return {
-          url: `accounts/gl/leaf-ledgers/?${new URLSearchParams(
+          url: `accounts/gl?${new URLSearchParams(
             cleanObject(data)
           )}`,
           method: "get",

@@ -196,6 +196,14 @@ const detailTwo = {
   "isDraft": false,
   "productType": 0
 }
+
+jest.mock("react-router-dom", () => ({
+  BrowserRouter: ({ children }) => <div>{children}</div>,
+  Link: ({ to, children }) => <a href={to}>{children}</a>,
+  useNavigate: jest.fn(),
+  useLocation: jest.fn().mockReturnValue({ pathname: "" }),
+  useParams: jest.fn().mockResolvedValue({ process: "modify" })
+}));
 describe("ProductDetail", () => {
 
   it("Renders without crashing when values prev details and detail are the same", () => {
@@ -206,7 +214,7 @@ describe("ProductDetail", () => {
   })
   it("Renders when values are different", () => {
     // renderWithProviders(<ProductDetail detail={{id: "continue"}}/>)
-    const form = renderWithProviders(<ProductDetail isOpen={true} detail={details} previousData = {detailTwo} />)
+    const form = renderWithProviders(<ProductDetail isOpen={true} detail={details} previousData={detailTwo} />)
     expect(screen.getByText("Term Deposit Product Details")).toBeInTheDocument();
     expect(screen.getByText("Slogan")).toBeInTheDocument();
     expect(screen).toMatchSnapshot();

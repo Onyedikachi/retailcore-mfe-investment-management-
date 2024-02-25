@@ -34,11 +34,11 @@ export default function IndexComponent() {
   const [hasMore, setHasMore] = useState(true);
   const setStatusFilter = (investmentType) => {
     const status =
-      investmentType.toLowerCase() == "all investments"
+      investmentType?.toLowerCase() == "all investments"
         ? "all"
-        : investmentType.toLowerCase() == "liquidated investments"
+        : investmentType?.toLowerCase() == "liquidated investments"
         ? "liquidated"
-        : investmentType.toLowerCase() == "active investments"
+        : investmentType?.toLowerCase() == "active investments"
         ? "active"
         : "all";
     return status;
