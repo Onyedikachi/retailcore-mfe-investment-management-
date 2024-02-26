@@ -592,7 +592,7 @@ export default function CreateTermDeposit() {
                 handleDraft({
                   productData,
                   process,
-                  id,
+                  id: id || productData?.id,
                   modifyRequest,
                   setIsConfirmOpen,
                   modifyProduct,

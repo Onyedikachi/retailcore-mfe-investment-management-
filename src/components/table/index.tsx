@@ -965,7 +965,7 @@ export default function TableComponent<TableProps>({
       {/* @ts-ignore */}
       <MessagesComponent
         productDetails={productDetails}
-        specificCategory={specificCategory}
+        specificCategory="reload"
         isConfirmOpen={isConfirmOpen}
         isSuccessOpen={isSuccessOpen}
         setIsConfirmOpen={setIsConfirmOpen}
