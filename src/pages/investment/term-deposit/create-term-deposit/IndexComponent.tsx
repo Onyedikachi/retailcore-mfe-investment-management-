@@ -354,9 +354,9 @@ export default function CreateTermDeposit() {
     },
   ];
 
-  // useEffect(() => {
-  //   console.log("d = ", productData)
-  // }, [productData])
+  useEffect(() => {
+    console.log("d = ", productData)
+  }, [productData])
 
   const [createProduct, { isLoading, isSuccess, isError, reset, error }] =
     useCreateProductMutation();

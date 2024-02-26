@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { FaEdit, FaEye, FaTimes } from "react-icons/fa";
 import { useSearchParams } from "react-router-dom";
 
-export default ({ selectedTaxes, setFormData, values, event, taxes,setValue }) => {
+export default ({ selectedTaxes, setValues, values, event, taxes,setValue }) => {
   console.log("🚀 ~ selectedTaxes:", selectedTaxes)
   const removeTax = (option) => {
     const new_taxes = [...selectedTaxes];
@@ -13,7 +13,7 @@ export default ({ selectedTaxes, setFormData, values, event, taxes,setValue }) =
     const new_values = { ...values };
     new_values[event].applicableTaxes = new_taxes;
     setValue(event, new_values[event]);
-    setFormData(new_values);
+    setValues(new_values);
   };
 
   const [searchParams, setSearchParams] = useSearchParams();

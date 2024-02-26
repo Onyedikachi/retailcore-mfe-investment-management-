@@ -7,7 +7,7 @@ import { Checkbox } from "@app/components/forms";
 export default ({
   addedOptions,
   values,
-  setFormData,
+  setValues,
   event,
   type,
   availableOptions,
@@ -38,7 +38,8 @@ export default ({
     const new_options = [...selectedOptions];
     const new_values = { ...values };
     new_values[event][formatTypeName(type)] = new_options;
-    setFormData(new_values);
+    setValues(new_values);
+    console.log(values, new_values);
     setListOpen(false);
   };
 
