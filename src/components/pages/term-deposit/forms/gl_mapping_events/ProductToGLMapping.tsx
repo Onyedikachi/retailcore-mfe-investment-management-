@@ -132,8 +132,8 @@ export default ({
   const [clearFields, setClearField] = useState(false);
   const [activeTab, setActiveTab] = useState<any>([1, 2, 3, 4, 5]);
   const [filteredTabs, setFilteredTabs] = useState([]);
-  function onProceed(val) {
-    setFormData(val, mapOptions);
+  function onProceed() {
+    setFormData(mapOptions);
     proceed();
   }
 
@@ -150,7 +150,7 @@ export default ({
     formState: { errors, isValid },
   } = useForm({
     // resolver: yupResolver(treasuryBillglMappingSchema),
-    defaultValues: formData,
+    defaultValues: formData?.productGlMappings,
     mode: "all",
     // values,
   });
@@ -206,9 +206,10 @@ export default ({
   }, [values]);
 
   useEffect(() => {
-    setFormData({ data: formData, mapOptions });
+    setFormData(mapOptions );
+  
     return() => {
-      setFormData({ data: formData, mapOptions });
+      setFormData(mapOptions );
       console.log("Gone...")
     }
   }, [mapOptions, initiateDraft]);
@@ -303,7 +304,7 @@ export default ({
         id="productmapping"
         data-testid="submit-button"
         className="grid gap-y-8"
-        onSubmit={handleSubmit((val) => onProceed(val))}
+        onSubmit={handleSubmit(() => onProceed())}
       >
         <div>
           <div className="bg-[#fff] border border-[#EEEEEE] rounded-[6px]">

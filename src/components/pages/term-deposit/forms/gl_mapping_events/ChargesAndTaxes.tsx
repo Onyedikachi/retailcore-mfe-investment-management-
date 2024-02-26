@@ -121,7 +121,7 @@ export default ({
                       event={event}
                       type={"taxes"}
                       availableOptions={taxes}
-                      disabled={disabled}
+                      disabled={false}
                     />
                     <span
                       className="ml-12 text-danger-500 underline"
