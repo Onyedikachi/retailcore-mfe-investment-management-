@@ -7,12 +7,12 @@ import { useSearchParams, useNavigate, useParams } from "react-router-dom";
 import TaxModal from "../../TaxModal";
 import ChargeAndTaxMultiselect from "./ChargeAndTaxMultiselect";
 
-export function handleRedirect(type, navigate) {
+export function handleRedirect(type) {
   if (type === "tax") {
-    navigate("/configuration/tax-management/create-tax/1");
+    window.location.href =("https://seabaas.dev.bepeerless.co/configuration/tax-management/create-tax/1");
   }
   if (type === "charge") {
-    navigate("/configuration/charges-management/create-charge/1");
+    window.location.href =("https://seabaas.dev.bepeerless.co/configuration/charges-management/create-charge/1");
   }
 }
 
@@ -76,18 +76,18 @@ export default ({
                   <div className="flex flex-row">
                     <ChargeAndTaxMultiselect
                       addedOptions={
-                        values?.[event]?.applicableTaxes
+                        values?.[event]?.applicableCharges
                       }
                       setFormData={setFormData}
                       values={values}
                       event={event}
-                      type={"taxes"}
-                      availableOptions={taxes}
+                      type={"charges"}
+                      availableOptions={charges}
                       disabled={disabled}
                     />
                     <span
                       className="ml-12 text-danger-500 underline"
-                      onClick={() => handleRedirect("charge", navigate)}
+                      onClick={() => handleRedirect("charge")}
                     >
                       Create new charge
                     </span>
@@ -125,7 +125,7 @@ export default ({
                     />
                     <span
                       className="ml-12 text-danger-500 underline"
-                      onClick={() => handleRedirect("tax", navigate)}
+                      onClick={() => handleRedirect("tax")}
                     >
                       Create new tax
                     </span>

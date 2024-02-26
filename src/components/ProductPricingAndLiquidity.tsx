@@ -339,7 +339,7 @@ export default ({ productData, setOpen }) => {
                   </div>
                 )}
               {productData?.data[i.key]?.applicableTaxes?.length > 0 &&
-                taxes?.data?.records?.length > 0 && (
+                taxes?.data?.records?.length > 0 ? (
                   <div className="flex items-center flex-wrap gap-x-1">
                     <span className="font-normal block">Taxes :</span>
                     {productData?.data[i.key]?.applicableTaxes?.map(
@@ -356,7 +356,7 @@ export default ({ productData, setOpen }) => {
                       )
                     )}
                   </div>
-                )}
+                ): "-"}
             </div>
           ))}
       </div>

@@ -374,7 +374,7 @@ export default function TableComponent({
           <button
             onClick={() =>
               initiateDownload(
-                query,
+                query = category === StatusCategoryType.Requests? {} : query,
                 category,
                 downloadProducts,
                 downloadRequests,

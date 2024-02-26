@@ -340,7 +340,7 @@ export default function CreateTermDeposit() {
     {
       id: 1,
       title: "Product Factory",
-      url: "/product/factory/dashboard/deposit",
+      url: "/product/factory/dashboard/investment",
     },
     {
       id: 2,
