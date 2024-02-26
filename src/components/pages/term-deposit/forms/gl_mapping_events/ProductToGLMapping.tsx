@@ -167,15 +167,52 @@ export default ({
     isSuccess: taxesSuccess,
   } = useGetApplicableTaxesQuery();
 
-  const values = getValues();
+  useEffect(() => {
+    console.log(formData?.productGlMappings);
+  }, [formData])
+
+  const [values, setValues] = useState({
+    principalDepositChargesAndTaxes: {
+      applicableCharges: [],
+      applicableTaxes: [],
+    },
+    partLiquidationChargesAndTaxes: {
+      applicableCharges: [],
+      applicableTaxes: [],
+    },
+    earlyLiquidationChargesAndTaxes: {
+      applicableCharges: [],
+      applicableTaxes: [],
+    },
+    investmentLiquidationChargesAndTaxes: {
+      applicableCharges: [],
+      applicableTaxes: [],
+    },
+  })
+
+  const prepValues = () => {
+    const vals = getValues();
+    const v2 = {
+      principalDepositChargesAndTaxes: vals.principalDepositChargesAndTaxes,
+      partLiquidationChargesAndTaxes: vals.partLiquidationChargesAndTaxes,
+      earlyLiquidationChargesAndTaxes: vals.earlyLiquidationChargesAndTaxes,
+      investmentLiquidationChargesAndTaxes: vals.investmentLiquidationChargesAndTaxes
+    }
+    return v2;
+  }
+
+  useEffect(() => {
+    console.log("prepValues", prepValues);
+    setValues(prepValues);
+  }, [])
+
+  useEffect(() => {
+    setFormData(values)
+  }, [values]);
 
   useEffect(() => {
     setFormData({ data: formData, mapOptions });
   }, [mapOptions, initiateDraft]);
-
-  // useEffect(() => {
-  //   console.log(tax);
-  // }, [tax]);
 
   useEffect(() => {
     if (mapOptions.length === 3) {
@@ -260,6 +297,7 @@ export default ({
     setActiveTab([...activeTab, 1]);
   }
 
+
   return (
     <Fragment>
       <form
@@ -277,9 +315,8 @@ export default ({
               >
                 <Icon
                   icon="ph:caret-right-fill"
-                  className={`text-danger-500 text-sm mr-4 ${
-                    activeTab.includes(1) && "rotate-90"
-                  }`}
+                  className={`text-danger-500 text-sm mr-4 ${activeTab.includes(1) && "rotate-90"
+                    }`}
                 />
                 Product to GL Mapping <RedDot />
               </span>
@@ -313,7 +350,7 @@ export default ({
                               }
                               inputName={type.key}
                               defaultValue={
-                                mapOptions.find(
+                                mapOptions?.find(
                                   (i) => i?.glAccountType === type.id
                                 )?.accountName
                               }
@@ -335,23 +372,21 @@ export default ({
         </div>
         {filteredTabs.map((item, index) => (
           <ChargesAndTaxes
-            {...{
-              charges,
-              chargesLoading,
-              taxes,
-              taxesLoading,
-              activeTab,
-              setActiveTab,
-              values,
-              setFormData,
-              tab: index + 2,
-              header: item.header,
-              event: item.key,
-              productData: formData,
-              disabled: item.disabled,
-              placeholder: "Type to search and select",
-              setValue,
-            }}
+            charges={charges}
+            chargesLoading={chargesLoading}
+            taxes={taxes}
+            taxesLoading={taxesLoading}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            values={values}
+            setValues={setValues}
+            tab={index + 2}
+            header={item.header}
+            event={item.key}
+            productData={formData}
+            disabled={item.disabled}
+            placeholder="Type to search and select"
+            setValue={setValue}
           />
         ))}
       </form>
