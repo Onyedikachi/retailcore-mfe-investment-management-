@@ -76,13 +76,13 @@ export default ({
                   <div className="flex flex-row">
                     <ChargeAndTaxMultiselect
                       addedOptions={
-                        values?.[event]?.applicableTaxes
+                        values?.[event]?.applicableCharges
                       }
                       setFormData={setFormData}
                       values={values}
                       event={event}
-                      type={"taxes"}
-                      availableOptions={taxes}
+                      type={"charges"}
+                      availableOptions={charges}
                       disabled={disabled}
                     />
                     <span
