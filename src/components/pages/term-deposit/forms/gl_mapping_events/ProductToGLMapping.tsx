@@ -132,8 +132,8 @@ export default ({
   const [clearFields, setClearField] = useState(false);
   const [activeTab, setActiveTab] = useState<any>([1, 2, 3, 4, 5]);
   const [filteredTabs, setFilteredTabs] = useState([]);
-  function onProceed(val) {
-    setFormData(val, mapOptions);
+  function onProceed() {
+    setFormData(mapOptions);
     proceed();
   }
 
@@ -150,7 +150,7 @@ export default ({
     formState: { errors, isValid },
   } = useForm({
     // resolver: yupResolver(treasuryBillglMappingSchema),
-    defaultValues: formData,
+    defaultValues: formData?.productGlMappings,
     mode: "all",
     // values,
   });
@@ -167,15 +167,52 @@ export default ({
     isSuccess: taxesSuccess,
   } = useGetApplicableTaxesQuery();
 
-  const values = getValues();
+  const [values, setValues] = useState({
+    principalDepositChargesAndTaxes: {
+      applicableCharges: [],
+      applicableTaxes: [],
+    },
+    partLiquidationChargesAndTaxes: {
+      applicableCharges: [],
+      applicableTaxes: [],
+    },
+    earlyLiquidationChargesAndTaxes: {
+      applicableCharges: [],
+      applicableTaxes: [],
+    },
+    investmentLiquidationChargesAndTaxes: {
+      applicableCharges: [],
+      applicableTaxes: [],
+    },
+  })
+
+  const prepValues = () => {
+    const vals = getValues();
+    const v2 = {
+      principalDepositChargesAndTaxes: vals.principalDepositChargesAndTaxes,
+      partLiquidationChargesAndTaxes: vals.partLiquidationChargesAndTaxes,
+      earlyLiquidationChargesAndTaxes: vals.earlyLiquidationChargesAndTaxes,
+      investmentLiquidationChargesAndTaxes: vals.investmentLiquidationChargesAndTaxes
+    }
+    return vals;
+  }
 
   useEffect(() => {
-    setFormData({ data: formData, mapOptions });
-  }, [mapOptions, initiateDraft]);
+    setValues(prepValues);
+  }, [])
 
-  // useEffect(() => {
-  //   console.log(tax);
-  // }, [tax]);
+  useEffect(() => {
+    setFormData(values)
+  }, [values]);
+
+  useEffect(() => {
+    setFormData(mapOptions );
+  
+    return() => {
+      setFormData(mapOptions );
+      console.log("Gone...")
+    }
+  }, [mapOptions, initiateDraft]);
 
   useEffect(() => {
     if (mapOptions.length === 3) {
@@ -260,13 +297,14 @@ export default ({
     setActiveTab([...activeTab, 1]);
   }
 
+
   return (
     <Fragment>
       <form
         id="productmapping"
         data-testid="submit-button"
         className="grid gap-y-8"
-        onSubmit={handleSubmit((val) => onProceed(val))}
+        onSubmit={handleSubmit(() => onProceed())}
       >
         <div>
           <div className="bg-[#fff] border border-[#EEEEEE] rounded-[6px]">
@@ -277,9 +315,8 @@ export default ({
               >
                 <Icon
                   icon="ph:caret-right-fill"
-                  className={`text-danger-500 text-sm mr-4 ${
-                    activeTab.includes(1) && "rotate-90"
-                  }`}
+                  className={`text-danger-500 text-sm mr-4 ${activeTab.includes(1) && "rotate-90"
+                    }`}
                 />
                 Product to GL Mapping <RedDot />
               </span>
@@ -335,23 +372,21 @@ export default ({
         </div>
         {filteredTabs.map((item, index) => (
           <ChargesAndTaxes
-            {...{
-              charges,
-              chargesLoading,
-              taxes,
-              taxesLoading,
-              activeTab,
-              setActiveTab,
-              values,
-              setFormData,
-              tab: index + 2,
-              header: item.header,
-              event: item.key,
-              productData: formData,
-              disabled: item.disabled,
-              placeholder: "Type to search and select",
-              setValue,
-            }}
+            charges={charges}
+            chargesLoading={chargesLoading}
+            taxes={taxes}
+            taxesLoading={taxesLoading}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            values={values}
+            setValues={setValues}
+            tab={index + 2}
+            header={item.header}
+            event={item.key}
+            productData={formData}
+            disabled={item.disabled}
+            placeholder="Type to search and select"
+            setValue={setValue}
           />
         ))}
       </form>

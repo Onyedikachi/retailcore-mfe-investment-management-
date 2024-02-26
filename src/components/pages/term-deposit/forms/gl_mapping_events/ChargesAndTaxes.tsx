@@ -22,7 +22,7 @@ export default ({
   tab,
   values,
   event,
-  setFormData,
+  setValues,
   header,
   charges,
   chargesLoading,
@@ -78,7 +78,7 @@ export default ({
                       addedOptions={
                         values?.[event]?.applicableCharges
                       }
-                      setFormData={setFormData}
+                      setValues={setValues}
                       values={values}
                       event={event}
                       type={"charges"}
@@ -97,7 +97,7 @@ export default ({
                       charges={charges}
                       selectedCharges={values[event]?.applicableCharges}
                       values={values}
-                      setFormData={setFormData}
+                      setValues = {setValues}
                       event={event}
                       setValue={setValue}
                     />
@@ -116,12 +116,12 @@ export default ({
                       addedOptions={
                         values?.[event]?.applicableTaxes
                       }
-                      setFormData={setFormData}
+                      setValues={setValues}
                       values={values}
                       event={event}
                       type={"taxes"}
                       availableOptions={taxes}
-                      disabled={disabled}
+                      disabled={false}
                     />
                     <span
                       className="ml-12 text-danger-500 underline"
@@ -135,7 +135,7 @@ export default ({
                       taxes={taxes}
                       selectedTaxes={values[event]?.applicableTaxes}
                       values={values}
-                      setFormData={setFormData}
+                      setValues = {setValues}
                       event={event}
                       setValue={setValue}
                     />

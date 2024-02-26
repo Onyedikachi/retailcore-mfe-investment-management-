@@ -15,7 +15,7 @@ import {
   useGetChargesQuery,
 } from "@app/api";
 import { handleDraft } from "./create-term-deposit/handleDraft";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 
 export default ({
   step,
@@ -28,11 +28,16 @@ export default ({
 }: any) => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const { process, id } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requestId = searchParams.get("id");
+  
   useEffect(() => {
-    if (productData?.liquidation?.early_LiquidationPenalty === 4) {
+    if (
+      productData?.liquidation?.early_LiquidationPenalty === 4 &&
+      productData?.liquidation?.early_SpecificCharges?.length
+    ) {
       setProductData({
         ...productData,
-
         earlyLiquidationChargesAndTaxes: {
           ...productData.earlyLiquidationChargesAndTaxes,
           applicableCharges:
@@ -41,7 +46,10 @@ export default ({
         },
       });
     }
-    if (productData?.liquidation?.part_LiquidationPenalty === 4) {
+    if (
+      productData?.liquidation?.part_LiquidationPenalty === 4 &&
+      productData?.liquidation?.part_SpecificCharges?.length
+    ) {
       setProductData({
         ...productData,
         partLiquidationChargesAndTaxes: {
@@ -52,7 +60,12 @@ export default ({
         },
       });
     }
-  }, [productData?.liquidation]);
+  }, [
+    productData?.liquidation?.part_LiquidationPenalty,
+    productData?.liquidation?.early_LiquidationPenalty,
+    productData?.liquidation?.part_SpecificCharges,
+    productData?.liquidation?.early_SpecificCharges,
+  ]);
 
   const [createProduct, { data, isSuccess }] = useCreateProductMutation();
   const [modifyProduct] = useModifyProductMutation();
@@ -68,7 +81,7 @@ export default ({
       handleDraft({
         productData,
         process,
-        id: id || productData?.id,
+        id: id || requestId || productData?.id,
         modifyRequest,
         setIsConfirmOpen,
         modifyProduct,
@@ -155,10 +168,9 @@ export default ({
         <ProductToGLMapping
           proceed={handleNav}
           formData={productData}
-          setFormData={(data, mapOptions) =>
+          setFormData={(mapOptions) =>
             setProductData({
               ...productData,
-              ...data,
               productGlMappings: mapOptions,
             })
           }
