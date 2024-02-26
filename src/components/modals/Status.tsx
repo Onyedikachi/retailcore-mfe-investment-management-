@@ -33,7 +33,7 @@ export function handleNavigations(
   process,
   role = "superadmin",
   specificCategory = null,
-  closeModal = () => {},
+  closeModal = () => { },
   action = ""
 ) {
   const isIndividual =
@@ -49,7 +49,7 @@ export function handleNavigations(
     return;
   }
   if (specificCategory === SpecificCategory?.reload) {
-   window.location.reload()
+    window.location.reload()
   }
 
   if (isIndividual) {
@@ -84,7 +84,7 @@ export function handleNewCreateText({ pathname }) {
   }
 }
 export function Success({
-  handleRefresh = () => {},
+  handleRefresh = () => { },
   specificCategory,
   text,
   subtext,
@@ -103,6 +103,10 @@ export function Success({
     handleRefresh();
   };
 
+  // useEffect(()=> {
+
+  // }, specif)
+
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="relative h-[400px] w-[606px] overflow-y-auto flex flex-col justify-between px-10 py-8 rounded-lg bg-white text-center items-center">
@@ -119,6 +123,8 @@ export function Success({
         <div className="flex justify-between items-center gap-x-[6px] w-full">
           <Button
             onClick={() =>
+              location.pathname == '/product-factory/investment'?
+              window.location.reload():
               navigate(
                 handleNavigations(
                   location,
@@ -178,7 +184,7 @@ interface FailedProps {
   action?: "";
 }
 export function Failed({
-  handleRefresh = () => {},
+  handleRefresh = () => { },
   specificCategory,
   text,
   isOpen,
@@ -210,9 +216,8 @@ export function Failed({
         <p className="font-normal text-2xl">{text}</p>
         <p className="font-normal text-base mb-[26px]">{subtext}</p>
         <div
-          className={`flex  items-center gap-x-10 w-full ${
-            !canProceed && !canRetry ? "justify-center" : "justify-between"
-          }`}
+          className={`flex  items-center gap-x-10 w-full ${!canProceed && !canRetry ? "justify-center" : "justify-between"
+            }`}
         >
           <div>
             <Button
@@ -313,9 +318,8 @@ export function Prompt({
           {text2 && <p className="font-normal text-base">{text2}</p>}
         </div>
         <div
-          className={`${
-            canProceed ? "justify-between" : "justify-center"
-          } w-full flex  items-center gap-x-[6px]`}
+          className={`${canProceed ? "justify-between" : "justify-center"
+            } w-full flex  items-center gap-x-[6px]`}
         >
           <Button
             onClick={() => setIsOpen(false)}

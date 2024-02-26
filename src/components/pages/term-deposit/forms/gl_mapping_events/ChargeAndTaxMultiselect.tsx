@@ -35,7 +35,7 @@ export default ({
   const idType = type === "charges" ? "charge_id" : "tax_id";
 
   const addOptions = () => {
-    const new_options = selectedOptions;
+    const new_options = [...selectedOptions];
     const new_values = { ...values };
     new_values[event][formatTypeName(type)] = new_options;
     setFormData(new_values);

@@ -1,25 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
-<<<<<<< HEAD
-  <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/App.test.tsx">
-    <testCase name="Test App Component If App is rendered wihout issues" duration="33"/>
-  </file>
-  <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/Sterling-investment.tsx">
-    <testCase name="microfrontend bootstraps the app" duration="9"/>
-    <testCase name="microfrontend mounts and unmounts" duration="26"/>
-  </file>
-  <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/components/Pages/management/SummaryComponent.test.tsx">
-    <testCase name="Summary should render the component without crashing" duration="307"/>
-=======
-  <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/Sterling-investment.tsx">
-    <testCase name="microfrontend bootstraps the app" duration="20"/>
-    <testCase name="microfrontend mounts and unmounts" duration="61"/>
-  </file>
-  <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/App.test.tsx">
-    <testCase name="Test App Component If App is rendered wihout issues" duration="144"/>
-  </file>
-  <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/components/Pages/management/SummaryComponent.test.tsx">
-    <testCase name="Summary should render the component without crashing" duration="1375"/>
->>>>>>> df40d343cb8792a4b8fa17a86edd21c455571a0e
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Pages/term-deposit/forms/gl_mapping_events/ChargesAndTaxes.test.tsx">
+    <testCase name="code snippet should toggle between Charges and Taxes tabs when clicked" duration="592">
+      <failure message="TestingLibraryElementError: Unable to find an element with the text: Charges &amp; Taxes. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible."><![CDATA[TestingLibraryElementError: Unable to find an element with the text: Charges & Taxes. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <div>
+      <div
+        class="bg-[#fff] border border-[#EEEEEE] rounded-[6px]"
+      >
+        <div
+          class=" flex justify-between items-center px-6 py-[14px]"
+        >
+          <span
+            class="text-[18px] flex  gap-[1px] text-[#636363] font-semibold flex-row items-center"
+          >
+            <span />
+            Header
+             Charges & Taxes
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+    at Object.getElementError (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/@testing-library/dom/dist/config.js:37:19)
+    at /Users/work/Documents/retailcore-mfe-investment-management/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+    at /Users/work/Documents/retailcore-mfe-investment-management/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+    at getByText (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/@testing-library/dom/dist/query-helpers.js:95:19)
+    at Object.<anonymous> (/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Pages/term-deposit/forms/gl_mapping_events/ChargesAndTaxes.test.tsx:57:32)
+    at Promise.then.completed (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/utils.js:391:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/utils.js:316:10)
+    at _callCircusTest (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/run.js:218:40)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at _runTest (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/run.js:155:3)
+    at _runTestsForDescribeBlock (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/run.js:66:9)
+    at _runTestsForDescribeBlock (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/run.js:60:9)
+    at run (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/run.js:25:3)
+    at runAndTransformResultsToJestFormat (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:170:21)
+    at jestAdapter (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:82:19)
+    at runTestInternal (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-runner/build/runTest.js:389:16)
+    at runTest (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-runner/build/runTest.js:475:34)
+    at Object.worker (/Users/work/Documents/retailcore-mfe-investment-management/node_modules/jest-runner/build/testWorker.js:133:12)]]></failure>
+    </testCase>
+    <testCase name="code snippet should not display any charges or taxes when none are available" duration="113"/>
   </file>
 </testExecutions>
