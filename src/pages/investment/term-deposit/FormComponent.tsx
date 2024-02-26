@@ -159,7 +159,7 @@ export default ({
             setProductData({
               ...productData,
               ...data,
-              productGlMappings: mapOptions,
+              mappingOptions: mapOptions,
             })
           }
           setDisabled={setDisabled}
