@@ -21,7 +21,7 @@ export const productMgtApi: any = createApi({
         getApplicableCharges: builder.query<any, any>({
             query: () => {
                 return {
-                    url: `${productApi}/charges`,
+                    url: `${productApi}/charges?state=Active`,
                     method: "get",
                 };
             },
