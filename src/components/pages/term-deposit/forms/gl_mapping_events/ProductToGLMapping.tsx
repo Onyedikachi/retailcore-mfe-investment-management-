@@ -167,10 +167,6 @@ export default ({
     isSuccess: taxesSuccess,
   } = useGetApplicableTaxesQuery();
 
-  useEffect(() => {
-    console.log(formData?.productGlMappings);
-  }, [formData])
-
   const [values, setValues] = useState({
     principalDepositChargesAndTaxes: {
       applicableCharges: [],
@@ -198,11 +194,10 @@ export default ({
       earlyLiquidationChargesAndTaxes: vals.earlyLiquidationChargesAndTaxes,
       investmentLiquidationChargesAndTaxes: vals.investmentLiquidationChargesAndTaxes
     }
-    return v2;
+    return vals;
   }
 
   useEffect(() => {
-    console.log("prepValues", prepValues);
     setValues(prepValues);
   }, [])
 
@@ -212,6 +207,10 @@ export default ({
 
   useEffect(() => {
     setFormData({ data: formData, mapOptions });
+    return() => {
+      setFormData({ data: formData, mapOptions });
+      console.log("Gone...")
+    }
   }, [mapOptions, initiateDraft]);
 
   useEffect(() => {
@@ -350,7 +349,7 @@ export default ({
                               }
                               inputName={type.key}
                               defaultValue={
-                                mapOptions?.find(
+                                mapOptions.find(
                                   (i) => i?.glAccountType === type.id
                                 )?.accountName
                               }
