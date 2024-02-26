@@ -313,13 +313,13 @@ export default ({ productData, setOpen }) => {
 
         {charges?.data?.records?.length > 0 &&
           taxes?.data?.records?.length > 0 &&
-          taxChargeDataOptions.map((i) => (
+          taxChargeDataOptions?.map((i) => (
             <div key={i.header}>
               <span className="font-bold block mb-[15px]">
                 {i.header} Charge & Tax
               </span>
-              {productData?.data[i.key]?.applicableCharges.length &&
-                charges?.data?.records?.length && (
+              {productData?.data[i.key]?.applicableCharges?.length > 0 &&
+                charges?.data?.records?.length > 0 && (
                   <div className="flex items-center flex-wrap gap-x-1">
                     <span className="font-normal block">Charges :</span>
                     {productData?.data[i.key]?.applicableCharges?.map(
@@ -338,8 +338,8 @@ export default ({ productData, setOpen }) => {
                     )}
                   </div>
                 )}
-              {productData?.data[i.key]?.applicableTaxes.length &&
-                taxes?.data?.records?.length && (
+              {productData?.data[i.key]?.applicableTaxes?.length > 0 &&
+                taxes?.data?.records?.length > 0 && (
                   <div className="flex items-center flex-wrap gap-x-1">
                     <span className="font-normal block">Taxes :</span>
                     {productData?.data[i.key]?.applicableTaxes?.map(
@@ -351,8 +351,7 @@ export default ({ productData, setOpen }) => {
                             )?.name
                           }
                           {index + 1 !==
-                            productData?.data[i.key]?.applicableTaxes
-                              .length && <span>,</span>}
+                            productData?.data[i.key]?.applicableTaxes?.length && <span>,</span>}
                         </span>
                       )
                     )}
