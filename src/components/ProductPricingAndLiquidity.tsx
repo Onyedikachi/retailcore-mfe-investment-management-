@@ -154,8 +154,7 @@ export default ({ productData, setOpen }) => {
           </div>
           {productData?.data?.pricingConfiguration.interestRateRangeType !==
             2 &&
-            productData?.data?.pricingConfiguration.interestRateConfigModels
-              .length > 1 && (
+            productData?.data?.pricingConfiguration.interestRateConfigModels?.length > 1 && (
               <button
                 data-testid="more"
                 className="text-[#636363]  underline"
@@ -318,7 +317,7 @@ export default ({ productData, setOpen }) => {
               <span className="font-bold block mb-[15px]">
                 {i.header} Charge & Tax
               </span>
-              {productData?.data[i.key]?.applicableCharges.length &&
+              {productData?.data[i.key]?.applicableCharges?.length &&
                 charges?.data?.records?.length && (
                   <div className="flex items-center flex-wrap gap-x-1">
                     <span className="font-normal block">Charges :</span>
@@ -331,14 +330,13 @@ export default ({ productData, setOpen }) => {
                             )?.name
                           }{" "}
                           {index + 1 !==
-                            productData?.data[i.key]?.applicableCharges
-                              .length && <span>,</span>}
+                            productData?.data[i.key]?.applicableCharges?.length && <span>,</span>}
                         </span>
                       )
                     )}
                   </div>
                 )}
-              {productData?.data[i.key]?.applicableTaxes.length &&
+              {productData?.data[i.key]?.applicableTaxes?.length &&
                 taxes?.data?.records?.length && (
                   <div className="flex items-center flex-wrap gap-x-1">
                     <span className="font-normal block">Taxes :</span>
@@ -351,8 +349,8 @@ export default ({ productData, setOpen }) => {
                             )?.name
                           }
                           {index + 1 !==
-                            productData?.data[i.key]?.applicableTaxes
-                              .length && <span>,</span>}
+                            productData?.data[i.key]?.applicableTaxes?.
+                              length && <span>,</span>}
                         </span>
                       )
                     )}
