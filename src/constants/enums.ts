@@ -68,7 +68,7 @@ export enum Messages {
   ADMIN_BOOKING_CREATE_SUCCESS = "Investment Booking creation request submitted for approval",
   ADMIN_BOOKING_CREATE_FAILED = "Investment Booking creation request failed",
   BOOKING_MODIFY_SUCCESS = "Investment Booking modified successfully",
-  BOOKING_MODIFY_FAILED = "Investment Booking modification failed",
+  BOOKING_MODIFY_FAILED = "Request modification failed",
   BOOKING_MODIFY_APPROVED = "Investment Booking modification approved",
   BOOKING_MODIFY_REJECTED = "Investment Booking modification rejected",
   ADMIN_BOOKING_MODIFY_SUCCESS = "Investment Booking modification request submitted for approval",
