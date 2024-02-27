@@ -36,52 +36,60 @@ const taxChargeDataOptions = [
   },
 ];
 export function ChargesAndTaxes({ taxData, chargeData, productDetail }) {
+
   return (
     <div>
       {" "}
-      <>
+      <div className="grid gap-y-2">
         {taxChargeDataOptions?.map((i) => (
           <div key={i.header} className="text-sm">
-            <span className="font-semibold text-sm block mb-[15px]">
+            <span className="font-semibold text-sm block mb-[5px]">
               {i.header} Charge & Tax
             </span>
-            {productDetail[i.key]?.applicableCharges?.length > 0 &&
-              chargeData?.length > 0 && (
-                <div className="flex items-center flex-wrap gap-x-1">
-                  <span className="font-normal block">Charges :</span>
-                  {productDetail[i.key]?.applicableCharges?.map(
-                    (item, index) => (
-                      <span key={item} className="font-normal block">
-                        {chargeData?.find((it) => it.charge_id === item)?.name}{" "}
-                        {index + 1 !==
-                          productDetail[i.key]?.applicableCharges.length && (
-                          <span>,</span>
-                        )}
-                      </span>
-                    )
-                  )}
-                </div>
-              )}
-            {productDetail[i.key]?.applicableTaxes?.length > 0 &&
-            taxData?.length > 0 ? (
-              <div className="flex items-center flex-wrap gap-x-1">
-                <span className="font-normal block">Taxes :</span>
-                {productDetail[i.key]?.applicableTaxes?.map((item, index) => (
+            {productDetail[i.key]?.applicableCharges?.length > 0 && (
+              <div className="flex items-center flex-wrap gap-x-1 mb-2">
+                <span className="font-normal block">Charges :</span>
+                <span className="flex items-center flex-wrap gap-1">
+                {productDetail[i.key]?.applicableCharges?.map((item, index) => (
                   <span key={item} className="font-normal block">
-                    {taxData?.find((it) => it.tax_id === item)?.name}
+                   
+                    <span className="rounded-full px-[10px] py-[2px] text-xs bg-[#E0E0E0] flex gap-x-6 items-center text-[#16252A] capitalize">
+                        {" "}
+                        {chargeData?.find((it) => it.charge_id === item)?.name}
+                      </span>
                     {index + 1 !==
-                      productDetail[i.key]?.applicableTaxes?.length && (
+                      productDetail[i.key]?.applicableCharges.length && (
                       <span>,</span>
                     )}
                   </span>
                 ))}
+                </span>
+              </div>
+            )}
+            {productDetail[i.key]?.applicableTaxes?.length > 0 ? (
+              <div className="flex items-center gap-x-1 mb-2">
+                <span className="font-normal block">Taxes :</span>
+                <span className="flex items-center flex-wrap gap-1">
+                  {productDetail[i.key]?.applicableTaxes?.map((item, index) => (
+                    <span key={item} className="font-normal block">
+                      <span className="rounded-full px-[10px] py-[2px] text-xs bg-[#E0E0E0] flex gap-x-6 items-center text-[#16252A] capitalize">
+                        {" "}
+                        {taxData?.find((it) => it.tax_id === item)?.name}
+                      </span>
+                      {index + 1 !==
+                        productDetail[i.key]?.applicableTaxes?.length && (
+                        <span>,</span>
+                      )}
+                    </span>
+                  ))}
+                </span>
               </div>
             ) : (
               "-"
             )}
           </div>
         ))}
-      </>
+      </div>
     </div>
   );
 }
@@ -475,16 +483,13 @@ export default function ProductInfoInvestmentCalc({
         isItemArray: false,
       },
     ]);
-  }, [productDetail]);
+  }, [productDetail, taxData, chargeData]);
 
   useEffect(() => {
     if (chargeSuccess) {
       setChargeData(charges?.data?.records);
     }
-    console.log(
-      "🚀 ~ useEffect ~ charges?.data?.records:",
-      charges?.data?.records
-    );
+
     if (taxSuccess) {
       setTaxData(taxes?.data?.records);
     }

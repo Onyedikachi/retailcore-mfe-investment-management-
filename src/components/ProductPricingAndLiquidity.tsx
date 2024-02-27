@@ -1,6 +1,6 @@
 import { currencyFormatter } from "@app/utils/formatCurrency";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useState, useEffect } from "react";
 import {
   CustomerCategory,
   Interval,
@@ -32,12 +32,87 @@ const taxChargeDataOptions = [
   },
 ];
 
-export default ({ productData, setOpen }) => {
-  const { data: charges } = useGetApplicableChargesQuery();
+export function ChargesAndTaxes({ taxData, chargeData, productDetail }) {
+  return (
+    <div>
+      {" "}
+      <div className="grid gap-y-3">
+        {taxChargeDataOptions?.map((i) => (
+          <div key={i.header} className="">
+            <span className="font-bold block mb-[15px]">
+              {i.header} Charge & Tax
+            </span>
+            {productDetail[i.key]?.applicableCharges?.length > 0 && (
+              <div className="flex items-center flex-wrap gap-x-1 mb-2">
+                <span className="font-normal block">Charges :</span>
+                <span className="flex items-center flex-wrap gap-1">
+                  {productDetail[i.key]?.applicableCharges?.map(
+                    (item, index) => (
+                      <span key={item} className="font-normal block">
+                        <span className="rounded-full px-[10px] py-[2px] text-xs bg-[#E0E0E0] flex gap-x-6 items-center text-[#16252A] capitalize">
+                          {" "}
+                          {
+                            chargeData?.find((it) => it.charge_id === item)
+                              ?.name
+                          }
+                        </span>
+                        {index + 1 !==
+                          productDetail[i.key]?.applicableCharges.length && (
+                          <span>,</span>
+                        )}
+                      </span>
+                    )
+                  )}
+                </span>
+              </div>
+            )}
+            {productDetail[i.key]?.applicableTaxes?.length > 0 ? (
+              <div className="flex items-center gap-x-1 mb-2">
+                <span className="font-normal block">Taxes :</span>
+                <span className="flex items-center flex-wrap gap-1">
+                  {productDetail[i.key]?.applicableTaxes?.map((item, index) => (
+                    <span key={item} className="font-normal block">
+                      <span className="rounded-full px-[10px] py-[2px] text-xs bg-[#E0E0E0] flex gap-x-6 items-center text-[#16252A] capitalize">
+                        {" "}
+                        {taxData?.find((it) => it.tax_id === item)?.name}
+                      </span>
+                      {index + 1 !==
+                        productDetail[i.key]?.applicableTaxes?.length && (
+                        <span>,</span>
+                      )}
+                    </span>
+                  ))}
+                </span>
+              </div>
+            ) : (
+              "-"
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
-  const { data: taxes } = useGetApplicableTaxesQuery();
+export default ({ productData, setOpen }) => {
+  const [chargeData, setChargeData] = useState([]);
+  const [taxData, setTaxData] = useState([]);
+  const { data: charges, isSuccess: chargeSuccess } =
+    useGetApplicableChargesQuery();
+  const { data: taxes, isSuccess: taxSuccess } = useGetApplicableTaxesQuery();
 
   const { currencies } = useContext(AppContext);
+
+  useEffect(() => {
+    if (chargeSuccess) {
+      setChargeData(charges?.data?.records);
+    }
+
+    if (taxSuccess) {
+      setTaxData(taxes?.data?.records);
+    }
+  }, [chargeSuccess, taxSuccess]);
+
   return (
     <div className="border border-[#E5E9EB] rounded-lg py-[25px] px-[30px] h-[593px]">
       <div className="pr-[30px] h-full gap-y-[35px] overflow-y-auto flex flex-col">
@@ -312,53 +387,13 @@ export default ({ productData, setOpen }) => {
         )}
 
         {charges?.data?.records?.length > 0 &&
-          taxes?.data?.records?.length > 0 &&
-          taxChargeDataOptions?.map((i) => (
-            <div key={i.header}>
-              <span className="font-bold block mb-[15px]">
-                {i.header} Charge & Tax
-              </span>
-              {productData?.data[i.key]?.applicableCharges?.length > 0 &&
-                charges?.data?.records?.length > 0 && (
-                  <div className="flex items-center flex-wrap gap-x-1">
-                    <span className="font-normal block">Charges :</span>
-                    {productData?.data[i.key]?.applicableCharges?.map(
-                      (item, index) => (
-                        <span key={item} className="font-normal block">
-                          {
-                            charges?.data?.records?.find(
-                              (it) => it.charge_id === item
-                            )?.name
-                          }{" "}
-                          {index + 1 !==
-                            productData?.data[i.key]?.applicableCharges
-                              .length && <span>,</span>}
-                        </span>
-                      )
-                    )}
-                  </div>
-                )}
-              {productData?.data[i.key]?.applicableTaxes?.length > 0 &&
-                taxes?.data?.records?.length > 0 ? (
-                  <div className="flex items-center flex-wrap gap-x-1">
-                    <span className="font-normal block">Taxes :</span>
-                    {productData?.data[i.key]?.applicableTaxes?.map(
-                      (item, index) => (
-                        <span key={item} className="font-normal block">
-                          {
-                            taxes?.data?.records?.find(
-                              (it) => it.tax_id === item
-                            )?.name
-                          }
-                          {index + 1 !==
-                            productData?.data[i.key]?.applicableTaxes?.length && <span>,</span>}
-                        </span>
-                      )
-                    )}
-                  </div>
-                ): "-"}
-            </div>
-          ))}
+          taxes?.data?.records?.length > 0 && (
+            <ChargesAndTaxes
+              taxData={taxData}
+              chargeData={chargeData}
+              productDetail={productData?.data}
+            />
+          )}
       </div>
     </div>
   );
