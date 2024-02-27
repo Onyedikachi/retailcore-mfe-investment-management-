@@ -10,7 +10,6 @@ import { Icon } from "@iconify/react";
 import {
   useGetApplicableChargesQuery,
   useGetApplicableTaxesQuery,
-
 } from "@app/api";
 
 const GlMappingOptions = [
@@ -132,8 +131,8 @@ export default ({
   const [clearFields, setClearField] = useState(false);
   const [activeTab, setActiveTab] = useState<any>([1, 2, 3, 4, 5]);
   const [filteredTabs, setFilteredTabs] = useState([]);
-  function onProceed() {
-    setFormData(mapOptions);
+  function onProceed(val) {
+    // setFormData(val, mapOptions);
     proceed();
   }
 
@@ -150,7 +149,7 @@ export default ({
     formState: { errors, isValid },
   } = useForm({
     // resolver: yupResolver(treasuryBillglMappingSchema),
-    defaultValues: formData?.productGlMappings,
+    defaultValues: formData,
     mode: "all",
     // values,
   });
@@ -184,7 +183,7 @@ export default ({
       applicableCharges: [],
       applicableTaxes: [],
     },
-  })
+  });
 
   const prepValues = () => {
     const vals = getValues();
@@ -192,27 +191,28 @@ export default ({
       principalDepositChargesAndTaxes: vals.principalDepositChargesAndTaxes,
       partLiquidationChargesAndTaxes: vals.partLiquidationChargesAndTaxes,
       earlyLiquidationChargesAndTaxes: vals.earlyLiquidationChargesAndTaxes,
-      investmentLiquidationChargesAndTaxes: vals.investmentLiquidationChargesAndTaxes
-    }
+      investmentLiquidationChargesAndTaxes:
+        vals.investmentLiquidationChargesAndTaxes,
+    };
     return vals;
-  }
+  };
 
   useEffect(() => {
     setValues(prepValues);
-  }, [])
+  }, []);
 
   useEffect(() => {
-    setFormData(values)
+   
+    console.log("🚀 ~ useEffect ~ values:", values)
+
   }, [values]);
 
   useEffect(() => {
-    setFormData(mapOptions );
-  
-    return() => {
-      setFormData(mapOptions );
-      console.log("Gone...")
-    }
-  }, [mapOptions, initiateDraft]);
+    setFormData(values, mapOptions);
+    return () => {
+      setFormData(values, mapOptions);
+    };
+  }, [values, mapOptions, initiateDraft]);
 
   useEffect(() => {
     if (mapOptions.length === 3) {
@@ -297,14 +297,13 @@ export default ({
     setActiveTab([...activeTab, 1]);
   }
 
-
   return (
     <Fragment>
       <form
         id="productmapping"
         data-testid="submit-button"
         className="grid gap-y-8"
-        onSubmit={handleSubmit(() => onProceed())}
+        onSubmit={handleSubmit((val) => onProceed(val))}
       >
         <div>
           <div className="bg-[#fff] border border-[#EEEEEE] rounded-[6px]">
@@ -315,13 +314,14 @@ export default ({
               >
                 <Icon
                   icon="ph:caret-right-fill"
-                  className={`text-danger-500 text-sm mr-4 ${activeTab.includes(1) && "rotate-90"
-                    }`}
+                  className={`text-danger-500 text-sm mr-4 ${
+                    activeTab.includes(1) && "rotate-90"
+                  }`}
                 />
                 Product to GL Mapping <RedDot />
               </span>
               {/* <span
-                className="font-normal text-sm text-danger-500 italic underline"
+                className="font-normal text-sm text-danger-500 italic hover:underline"
                 onClick={() =>
                   handleClear(setClearField, clearFields, setMapOptions, reset)
                 }

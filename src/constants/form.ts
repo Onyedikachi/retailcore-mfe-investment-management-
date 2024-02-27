@@ -670,6 +670,15 @@ export const treasuryBillglMappingSchema = yup.object({
 });
 
 export const chargesAndTaxesSchema = {
+  TermDepositLiabilityLedger: yup
+    .string()
+    .required("Term Deposit liability account is required"),
+  InterestAccrualLedger: yup
+    .string()
+    .required("Interest accrual account is required"),
+  InterestExpenseLedger: yup
+    .string()
+    .required("Interest expense account is required"),
   principalDepositChargesAndTaxes: yup.object().shape({
     applicableCharges: yup.array().of(yup.string()),
     applicableTaxes: yup.array().of(yup.string()),
