@@ -309,25 +309,25 @@ export const PdfViewer = forwardRef<any, any>(
               <br />
               <br /> Please confirm that the investment booking details agree
               with your records. If otherwise, please contact - Head, [name of
-              team], Sterling Bank Plc, nth Floor, Sterling Towers, Marina,
-              Lagos. .
+              team], Sterling towers, 20 Marina, Lagos, Nigeria 100221.
             </p>
           </div>
         </div>
 
-        <div className="bg-gray-100 py-10 mt-10">
+        <div className="bg-gray-100 py-10 mt-10 text-sm">
           <div className="max-w-[800px] mx-auto">
             <div className=" flex flex-col gap-7">
               <p className="text-center">
-                If you have any questions, please email us at help@xxyyyxy.com
-                or visit our FAQS, you can also chat with a real live human
-                during our operating hours. They can answer questions about your
+                If you have any questions, please email us at
+                <a href="mailto:contact@sterling.ng">contact@sterling.ng</a> or
+                visit our FAQS, you can also chat with a real live human during
+                our operating hours. They can answer questions about your
                 account
               </p>
 
               <p className="text-center">
-                You have received this email as a registered user of xxyyyxx.com
-                You can unsubscribe from these emails here.
+                You have received this email as a registered user of
+                sterlingholdco.ng You can unsubscribe from these emails here.
               </p>
 
               <div className="justify-center items-center flex gap-4">
