@@ -13,10 +13,6 @@ import SearchInput from "@app/components/SearchInput";
 import Table from "@app/components/table";
 import {
   DropDownOptions,
-  ProductTypes,
-  StatusFilterOptions,
-  StatusTypes,
-  TypeFilterOptions,
   productHeader,
   requestHeader,
 } from "@app/constants";
@@ -374,7 +370,7 @@ export default function TableComponent({
           <button
             onClick={() =>
               initiateDownload(
-                query,
+                query = category === StatusCategoryType.Requests? {} : query,
                 category,
                 downloadProducts,
                 downloadRequests,
@@ -424,6 +420,7 @@ export default function TableComponent({
             ? "No request available"
             : "No product available"
         }
+        handleRefresh={handleRefresh}
         Context={InvestmentContext}
       />
     </section>

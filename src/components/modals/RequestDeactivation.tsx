@@ -20,6 +20,7 @@ interface ApprovedProps {
   onCancel?: () => void;
   onConfirm?: () => void;
   detail?: any;
+  handleRefresh?: () => void;
 }
 
 export default function RequestDeactivation({
@@ -27,6 +28,7 @@ export default function RequestDeactivation({
   detail,
   isOpen,
   setIsOpen,
+  handleRefresh,
 }: ApprovedProps): React.JSX.Element {
   const { role } = useContext(AppContext);
   const [reason, setReason] = useState("");
@@ -47,7 +49,9 @@ export default function RequestDeactivation({
       investmentProductId: detail.id,
       reason,
       url,
-      recentlyUpdatedMeta: previousData.current?JSON.stringify(previousData.current):null,
+      recentlyUpdatedMeta: previousData.current
+        ? JSON.stringify(previousData.current)
+        : null,
     });
   }
   useEffect(() => {
@@ -70,7 +74,6 @@ export default function RequestDeactivation({
 
   useEffect(() => {
     if (isSuccess) {
-   
       setSuccessText(
         role === "superadmin"
           ? Messages.PRODUCT_DEACTIVATE_SUCCESS
@@ -154,7 +157,10 @@ export default function RequestDeactivation({
           failedSubText={failedSubText}
           setFailed={setFailed}
           specificCategory="reload"
-          
+          handleRefresh={() => {
+            setIsOpen(false);
+            handleRefresh();
+          }}
         />
         {/* {isSuccessOpen && (
           <Success

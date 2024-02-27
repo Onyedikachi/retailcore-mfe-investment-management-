@@ -15,6 +15,7 @@ export const confirmationHandler = ({
   activateProduct,
   navigate,
   modifyRequest,
+  modifyProductRequest,
   setLiquidationOpen,
   setLiquidationType,
 }) => {
@@ -71,11 +72,17 @@ export const confirmationHandler = ({
           });
         }
       } else {
-        navigate(
-          `/product-factory/investment/${encodeURIComponent(
-            "term deposit"
-          )}/withdraw_modify/?id=${detail.id}&filter=${selected.value}`
-        );
+        // navigate(
+        //   `/product-factory/investment/${encodeURIComponent(
+        //     "term deposit"
+        //   )}/withdraw_modify/?id=${detail.id}&filter=${selected.value}`
+        // );
+        modifyProductRequest({
+          ...data,
+          isDraft: true,
+          id: detail.id,
+          recentlyUpdatedMeta: null,
+        });
       }
     }
   }

@@ -38,11 +38,12 @@ export const handleSuccessMessage = (
   setIsSuccessOpen,
   setSubText,
   role,
-  text = ""
+  text = "",
+  process
 ) => {
   setSuccessText(
     role === "superadmin"
-      ? isSuccess
+      ? isSuccess && process === "create"
         ? Messages.BOOKING_CREATE_SUCCESS
         : Messages.BOOKING_MODIFY_SUCCESS
       : Messages.ADMIN_BOOKING_CREATE_SUCCESS
@@ -216,7 +217,8 @@ export default function Preview({
         setIsSuccessOpen,
         setSubText,
         role,
-        text
+        text,
+        process
       );
     }
 

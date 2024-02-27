@@ -235,7 +235,7 @@ export const BookingDetailLayout = ({
                     to={`/investment-management/individual/process-summary/preview/${detail?.id}?product_id=${detail?.investmentProductId}&request_id=${detail?.investmentBookingRequestId}`}
                   >
                     <button
-                      className={`group flex items-center whitespace-nowrap py-[1px] text-base text-[#636363] gap-x-3 underline outline-none`}
+                      className={`group flex items-center whitespace-nowrap py-[1px] text-base text-[#636363] gap-x-3 hover:underline outline-none`}
                     >
                       View Activity Log
                     </button>
