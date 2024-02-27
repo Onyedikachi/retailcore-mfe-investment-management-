@@ -63,7 +63,11 @@ export default function MessagesComponent({
       )}
       {(isSuccessOpen || isSuccess) && (
         <Success
-          handleRefresh={handleRefresh}
+          handleRefresh={() => {
+            setLiquidationOpen && setLiquidationOpen(false);
+            setIsDeactivationOpen && setIsDeactivationOpen(false);
+            handleRefresh();
+          }}
           specificCategory={specificCategory}
           text={successText}
           subtext={subText}
@@ -88,6 +92,7 @@ export default function MessagesComponent({
           setIsOpen={setIsDeactivationOpen}
           onConfirm={() => {}}
           detail={detail}
+          handleRefresh={handleRefresh}
           // setReason={() => {}}
         />
       )}
