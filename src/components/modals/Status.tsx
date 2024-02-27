@@ -28,16 +28,22 @@ const factoryRequests = "/product-factory/investment?category=requests";
 const individualRequests =
   "/investment-management/individual?category=requests";
 
+const defaultPaths = [
+  "/product-factory/investment",
+  "/investment-management/individual",
+  "/investment-management/corporate",
+];
 export function handleNavigations(
   { pathname, search },
   process,
   role = "superadmin",
   specificCategory = null,
-  closeModal = () => { },
+  closeModal = () => {},
   action = ""
 ) {
   const isIndividual =
-    pathname.includes("management") && pathname.includes("individual");
+    pathname.includes("management") &&
+    (pathname.includes("individual") || pathname.includes("corporate"));
   const isModifyOrContinueOrCreate =
     process === "create" ||
     process === "modify" ||
@@ -49,7 +55,7 @@ export function handleNavigations(
     return;
   }
   if (specificCategory === SpecificCategory?.reload) {
-    window.location.reload()
+    window.location.reload();
   }
 
   if (isIndividual) {
@@ -69,8 +75,12 @@ export function handleNewCreate({ pathname }) {
     window.location.href = "/product-factory/investment/term deposit/create";
     return;
   }
-  if (pathname.includes("management")) {
+  if (pathname.includes("management") && pathname.includes("individual")) {
     window.location.href = "/investment-management/create/individual";
+    return;
+  }
+  if (pathname.includes("management") && pathname.includes("corporate")) {
+    window.location.href = "/investment-management/create/corporate";
     return;
   }
 }
@@ -84,7 +94,7 @@ export function handleNewCreateText({ pathname }) {
   }
 }
 export function Success({
-  handleRefresh = () => { },
+  handleRefresh = () => {},
   specificCategory,
   text,
   subtext,
@@ -111,7 +121,7 @@ export function Success({
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="relative h-[400px] w-[606px] overflow-y-auto flex flex-col justify-between px-10 py-8 rounded-lg bg-white text-center items-center">
         <div className="flex justify-center items-center">
-          <HiCheckCircle
+          <HiCheckCircle onClick={handleRefresh}
             data-testid="check-circle-icon"
             className="text-[80px] text-[#2FB755]"
           />{" "}
@@ -120,25 +130,25 @@ export function Success({
         {subtext && (
           <p className="font-normal text-base mb-[26px]">{subtext}</p>
         )}
-        <div className="flex justify-between items-center gap-x-[6px] w-full">
+        <div className="flex justify-between items-center gap-x-[12px] w-full">
           <Button
             onClick={() =>
-              location.pathname == '/product-factory/investment'?
-              window.location.reload():
-              navigate(
-                handleNavigations(
-                  location,
-                  process,
-                  role,
-                  specificCategory,
-                  closeModal,
-                  action
-                )
-              )
+              defaultPaths.some((i) => i === location.pathname)
+                ? closeModal()
+                : navigate(
+                    handleNavigations(
+                      location,
+                      process,
+                      role,
+                      specificCategory,
+                      closeModal,
+                      action
+                    )
+                  )
             }
             type="button"
             data-testid="close-btn"
-            className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-10 text-[#667085] outline-none"
+            className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-2 text-[#667085] outline-none"
           >
             <IoIosUndo className="text-sterling-red-800 text-4xl" /> Return to
             dashboard
@@ -184,7 +194,7 @@ interface FailedProps {
   action?: "";
 }
 export function Failed({
-  handleRefresh = () => { },
+  handleRefresh = () => {},
   specificCategory,
   text,
   isOpen,
@@ -216,8 +226,9 @@ export function Failed({
         <p className="font-normal text-2xl">{text}</p>
         <p className="font-normal text-base mb-[26px]">{subtext}</p>
         <div
-          className={`flex  items-center gap-x-10 w-full ${!canProceed && !canRetry ? "justify-center" : "justify-between"
-            }`}
+          className={`flex  items-center gap-x-10 w-full ${
+            !canProceed && !canRetry ? "justify-center" : "justify-between"
+          }`}
         >
           <div>
             <Button
@@ -318,8 +329,9 @@ export function Prompt({
           {text2 && <p className="font-normal text-base">{text2}</p>}
         </div>
         <div
-          className={`${canProceed ? "justify-between" : "justify-center"
-            } w-full flex  items-center gap-x-[6px]`}
+          className={`${
+            canProceed ? "justify-between" : "justify-center"
+          } w-full flex  items-center gap-x-[6px]`}
         >
           <Button
             onClick={() => setIsOpen(false)}

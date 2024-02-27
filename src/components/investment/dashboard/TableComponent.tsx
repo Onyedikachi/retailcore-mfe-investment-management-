@@ -13,10 +13,6 @@ import SearchInput from "@app/components/SearchInput";
 import Table from "@app/components/table";
 import {
   DropDownOptions,
-  ProductTypes,
-  StatusFilterOptions,
-  StatusTypes,
-  TypeFilterOptions,
   productHeader,
   requestHeader,
 } from "@app/constants";
@@ -424,6 +420,7 @@ export default function TableComponent({
             ? "No request available"
             : "No product available"
         }
+        handleRefresh={handleRefresh}
         Context={InvestmentContext}
       />
     </section>
