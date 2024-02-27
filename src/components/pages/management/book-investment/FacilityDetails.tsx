@@ -382,15 +382,15 @@ export default function FacilityDetails({
     } else {
       setCapMethodOptions(CapitalizationOptions);
     }
-    if (
-      formData?.customerBookingInfoModel?.currencyId !==
-      productDetail?.productInfo?.currency
-    ) {
-      setValidCurency(false);
-      setShowError(true);
-    } else {
-      setValidCurency(true);
-    }
+    // if (
+    //   formData?.customerBookingInfoModel?.currencyId !==
+    //   productDetail?.productInfo?.currency
+    // ) {
+    //   setValidCurency(false);
+    //   setShowError(true);
+    // } else {
+    //   setValidCurency(true);
+    // }
   }, [
     formData.customerBookingInfoModel?.balance,
     productDetail,
