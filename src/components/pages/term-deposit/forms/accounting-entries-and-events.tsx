@@ -197,7 +197,7 @@
 //               Product to GL Mapping <RedDot />
 //             </span>
 //             <span
-//               className="font-normal text-sm text-danger-500 italic underline"
+//               className="font-normal text-sm text-danger-500 italic hover:underline"
 //               onClick={() =>
 //                 handleClear(setClearField, clearFields, setMapOptions, reset)
 //               }

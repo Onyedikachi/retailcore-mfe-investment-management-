@@ -52,7 +52,7 @@ export const Info = ({ title, data, type, setIsOpen }: InfoProps) => {
             </span>
           )}
           {type === "relationshipManager" && (
-            <span className={` ${data ? "underline" : ""}`}>{data || "-"}</span>
+            <span className={` ${data ? "hover:underline" : ""}`}>{data || "-"}</span>
           )}
           {type !== "relationshipManager" &&
             type !== "riskStatus" &&
@@ -79,7 +79,7 @@ export const Info = ({ title, data, type, setIsOpen }: InfoProps) => {
       {type === "customerName" && (
         <span
           onClick={() => setIsOpen(true)}
-          className="text-xs font-normal text-[#2FB755] underline"
+          className="text-xs font-normal text-[#2FB755] hover:underline"
         >
           View all customer information
         </span>

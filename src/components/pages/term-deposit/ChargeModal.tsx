@@ -17,7 +17,7 @@ export default ({ id, closeModal }) => {
         <ModalLayout isOpen={id && id !== "null"} setIsOpen={() => closeModal()}>
             <div
                 data-testid="product-view"
-                className="relative  w-[1218px]  rounded-lg bg-white h-[75vh] overflow-x-auto"
+                className="relative  w-[1218px]  rounded-lg bg-white max-h-[75vh] overflow-x-auto"
             >
                 {loading && (
                     <div

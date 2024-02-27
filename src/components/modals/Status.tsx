@@ -28,6 +28,11 @@ const factoryRequests = "/product-factory/investment?category=requests";
 const individualRequests =
   "/investment-management/individual?category=requests";
 
+const defaultPaths = [
+  "/product-factory/investment",
+  "/investment-management/individual",
+  "/investment-management/corporate",
+];
 export function handleNavigations(
   { pathname, search },
   process,
@@ -37,7 +42,8 @@ export function handleNavigations(
   action = ""
 ) {
   const isIndividual =
-    pathname.includes("management") && pathname.includes("individual");
+    pathname.includes("management") &&
+    (pathname.includes("individual") || pathname.includes("corporate"));
   const isModifyOrContinueOrCreate =
     process === "create" ||
     process === "modify" ||
@@ -49,7 +55,7 @@ export function handleNavigations(
     return;
   }
   if (specificCategory === SpecificCategory?.reload) {
-   window.location.reload()
+    window.location.reload();
   }
 
   if (isIndividual) {
@@ -69,8 +75,12 @@ export function handleNewCreate({ pathname }) {
     window.location.href = "/product-factory/investment/term deposit/create";
     return;
   }
-  if (pathname.includes("management")) {
+  if (pathname.includes("management") && pathname.includes("individual")) {
     window.location.href = "/investment-management/create/individual";
+    return;
+  }
+  if (pathname.includes("management") && pathname.includes("corporate")) {
+    window.location.href = "/investment-management/create/corporate";
     return;
   }
 }
@@ -103,11 +113,15 @@ export function Success({
     handleRefresh();
   };
 
+  // useEffect(()=> {
+
+  // }, specif)
+
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="relative h-[400px] w-[606px] overflow-y-auto flex flex-col justify-between px-10 py-8 rounded-lg bg-white text-center items-center">
         <div className="flex justify-center items-center">
-          <HiCheckCircle
+          <HiCheckCircle onClick={handleRefresh}
             data-testid="check-circle-icon"
             className="text-[80px] text-[#2FB755]"
           />{" "}
@@ -116,23 +130,25 @@ export function Success({
         {subtext && (
           <p className="font-normal text-base mb-[26px]">{subtext}</p>
         )}
-        <div className="flex justify-between items-center gap-x-[6px] w-full">
+        <div className="flex justify-between items-center gap-x-[12px] w-full">
           <Button
             onClick={() =>
-              navigate(
-                handleNavigations(
-                  location,
-                  process,
-                  role,
-                  specificCategory,
-                  closeModal,
-                  action
-                )
-              )
+              defaultPaths.some((i) => i === location.pathname)
+                ? closeModal()
+                : navigate(
+                    handleNavigations(
+                      location,
+                      process,
+                      role,
+                      specificCategory,
+                      closeModal,
+                      action
+                    )
+                  )
             }
             type="button"
             data-testid="close-btn"
-            className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-10 text-[#667085] outline-none"
+            className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-2 text-[#667085] outline-none"
           >
             <IoIosUndo className="text-sterling-red-800 text-4xl" /> Return to
             dashboard
@@ -243,7 +259,7 @@ export function Failed({
                 onClick={() => setIsOpen(false)}
                 type="button"
                 data-testid="close-btn"
-                className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-1 text-[#CF2A2A] hover:underline outline-none"
+                className="text-base py-[5px] border-none font-normal h-[44px] bg-transparent border w-full px-1 text-[#CF2A2A] hover:hover:underline outline-none"
               >
                 Click to retry
               </Button>

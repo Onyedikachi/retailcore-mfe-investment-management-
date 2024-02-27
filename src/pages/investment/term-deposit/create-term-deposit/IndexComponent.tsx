@@ -340,7 +340,7 @@ export default function CreateTermDeposit() {
     {
       id: 1,
       title: "Product Factory",
-      url: "/product/factory/dashboard/deposit",
+      url: "/product/factory/dashboard/investment",
     },
     {
       id: 2,
@@ -354,9 +354,9 @@ export default function CreateTermDeposit() {
     },
   ];
 
-  // useEffect(() => {
-  //   console.log("d = ", productData)
-  // }, [productData])
+  useEffect(() => {
+    console.log("d = ", productData)
+  }, [productData])
 
   const [createProduct, { isLoading, isSuccess, isError, reset, error }] =
     useCreateProductMutation();
@@ -592,7 +592,7 @@ export default function CreateTermDeposit() {
                 handleDraft({
                   productData,
                   process,
-                  id,
+                  id: id || productData?.id,
                   modifyRequest,
                   setIsConfirmOpen,
                   modifyProduct,

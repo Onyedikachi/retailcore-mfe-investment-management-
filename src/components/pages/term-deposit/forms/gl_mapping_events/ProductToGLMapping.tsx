@@ -10,7 +10,6 @@ import { Icon } from "@iconify/react";
 import {
   useGetApplicableChargesQuery,
   useGetApplicableTaxesQuery,
-
 } from "@app/api";
 
 const GlMappingOptions = [
@@ -133,7 +132,7 @@ export default ({
   const [activeTab, setActiveTab] = useState<any>([1, 2, 3, 4, 5]);
   const [filteredTabs, setFilteredTabs] = useState([]);
   function onProceed(val) {
-    setFormData(val, mapOptions);
+    // setFormData(val, mapOptions);
     proceed();
   }
 
@@ -167,15 +166,53 @@ export default ({
     isSuccess: taxesSuccess,
   } = useGetApplicableTaxesQuery();
 
-  const values = getValues();
+  const [values, setValues] = useState({
+    principalDepositChargesAndTaxes: {
+      applicableCharges: [],
+      applicableTaxes: [],
+    },
+    partLiquidationChargesAndTaxes: {
+      applicableCharges: [],
+      applicableTaxes: [],
+    },
+    earlyLiquidationChargesAndTaxes: {
+      applicableCharges: [],
+      applicableTaxes: [],
+    },
+    investmentLiquidationChargesAndTaxes: {
+      applicableCharges: [],
+      applicableTaxes: [],
+    },
+  });
+
+  const prepValues = () => {
+    const vals = getValues();
+    const v2 = {
+      principalDepositChargesAndTaxes: vals.principalDepositChargesAndTaxes,
+      partLiquidationChargesAndTaxes: vals.partLiquidationChargesAndTaxes,
+      earlyLiquidationChargesAndTaxes: vals.earlyLiquidationChargesAndTaxes,
+      investmentLiquidationChargesAndTaxes:
+        vals.investmentLiquidationChargesAndTaxes,
+    };
+    return vals;
+  };
 
   useEffect(() => {
-    setFormData({ data: formData, mapOptions });
-  }, [mapOptions, initiateDraft]);
+    setValues(prepValues);
+  }, []);
 
-  // useEffect(() => {
-  //   console.log(tax);
-  // }, [tax]);
+  useEffect(() => {
+   
+    console.log("🚀 ~ useEffect ~ values:", values)
+
+  }, [values]);
+
+  useEffect(() => {
+    setFormData(values, mapOptions);
+    return () => {
+      setFormData(values, mapOptions);
+    };
+  }, [values, mapOptions, initiateDraft]);
 
   useEffect(() => {
     if (mapOptions.length === 3) {
@@ -284,7 +321,7 @@ export default ({
                 Product to GL Mapping <RedDot />
               </span>
               {/* <span
-                className="font-normal text-sm text-danger-500 italic underline"
+                className="font-normal text-sm text-danger-500 italic hover:underline"
                 onClick={() =>
                   handleClear(setClearField, clearFields, setMapOptions, reset)
                 }
@@ -335,23 +372,21 @@ export default ({
         </div>
         {filteredTabs.map((item, index) => (
           <ChargesAndTaxes
-            {...{
-              charges,
-              chargesLoading,
-              taxes,
-              taxesLoading,
-              activeTab,
-              setActiveTab,
-              values,
-              setFormData,
-              tab: index + 2,
-              header: item.header,
-              event: item.key,
-              productData: formData,
-              disabled: item.disabled,
-              placeholder: "Type to search and select",
-              setValue,
-            }}
+            charges={charges}
+            chargesLoading={chargesLoading}
+            taxes={taxes}
+            taxesLoading={taxesLoading}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            values={values}
+            setValues={setValues}
+            tab={index + 2}
+            header={item.header}
+            event={item.key}
+            productData={formData}
+            disabled={item.disabled}
+            placeholder="Type to search and select"
+            setValue={setValue}
           />
         ))}
       </form>

@@ -39,6 +39,7 @@ import {
   useEarlyLiquidateMutation,
   useEditPartLiquidateMutation,
   useEditEarlyLiquidateMutation,
+  useModifyRequestMutation,
 } from "@app/api";
 import Button from "../Button";
 import { ActiveFilterOptions } from "@app/constants";
@@ -78,6 +79,8 @@ const excludedKeys = [
 export const statusHandler = ({
   modifyRequestSuccess,
   modifyRequestIsError,
+  modifySuccess,
+  modifyIsError,
   modifyRequestError,
   partLiquidateSuccess,
   partLiquidateIsError,
@@ -113,13 +116,13 @@ export const statusHandler = ({
   setIsSuccessOpen(false);
   setSubText("");
   setFailed(false);
-  if (modifyRequestSuccess) {
+  if (modifyRequestSuccess || modifySuccess) {
     setSuccessText(Messages.BOOKING_WITHDRAW_SUCCESS);
     setSubText(Messages.BOOKING_WITHDRAW_SUCCESS_SUB);
     setIsSuccessOpen(true);
   }
 
-  if (modifyRequestIsError) {
+  if (modifyRequestIsError || modifyIsError) {
     setFailedText(Messages.BOOKING_MODIFY_FAILED);
     setFailedSubtext(
       modifyRequestError?.message?.message ||
@@ -255,7 +258,6 @@ export function handleUpdated(key, value, options, item, currencies) {
     key === "updated_At" &&
     (parseOptions?.partLiquidation || parseOptions?.earlyLiquidation)
   ) {
-  
     if (parseOptions?.partLiquidation) {
       message = `Part liquidation of ${currencyFormatter(
         parseOptions?.partLiquidation,
@@ -270,9 +272,10 @@ export function handleUpdated(key, value, options, item, currencies) {
     }
   }
   return value !== parseOptions[key]
-    ? (message || `Updated on ${moment(parseOptions[key]?.date).format(
-        "DD MMM YYYY, hh:mm A"
-      )}`)
+    ? message ||
+        `Updated on ${moment(parseOptions[key]?.date).format(
+          "DD MMM YYYY, hh:mm A"
+        )}`
     : null;
 }
 
@@ -622,6 +625,16 @@ export default function TableComponent<TableProps>({
     },
   ] = useModifyInvestmentRequestMutation();
 
+  const [
+    modifyProductRequest,
+    {
+      isLoading: modifyLoading,
+      isSuccess: modifySuccess,
+      isError: modifyIsError,
+      error: modifyError,
+    },
+  ] = useModifyRequestMutation();
+
   const handleConfirm = () =>
     confirmationHandler({
       specificCategory,
@@ -636,6 +649,7 @@ export default function TableComponent<TableProps>({
       activateProduct,
       navigate,
       modifyRequest,
+      modifyProductRequest,
       setLiquidationOpen,
       setLiquidationType,
     });
@@ -644,6 +658,8 @@ export default function TableComponent<TableProps>({
     statusHandler({
       modifyRequestSuccess,
       modifyRequestIsError,
+      modifySuccess,
+      modifyIsError,
       modifyRequestError,
       partLiquidateSuccess,
       partLiquidateIsError,
@@ -693,6 +709,8 @@ export default function TableComponent<TableProps>({
     modifyRequestSuccess,
     modifyRequestIsError,
     modifyRequestError,
+    modifySuccess,
+      modifyIsError,
     partEditLiquidateSuccess,
     partEditLiquidateIsError,
     partEditLiquidateError,
@@ -965,7 +983,7 @@ export default function TableComponent<TableProps>({
       {/* @ts-ignore */}
       <MessagesComponent
         productDetails={productDetails}
-        specificCategory={specificCategory}
+        specificCategory="reload"
         isConfirmOpen={isConfirmOpen}
         isSuccessOpen={isSuccessOpen}
         setIsConfirmOpen={setIsConfirmOpen}
@@ -974,7 +992,9 @@ export default function TableComponent<TableProps>({
         isDetailOpen={isDetailOpen}
         isIndividualDetailOpen={isIndividualDetailOpen}
         deleteLoading={deleteLoading || isDeleteInvestmentRequestLoading}
-        activateIsLoading={activateIsLoading || modifyRequestLoading}
+        activateIsLoading={
+          activateIsLoading || modifyRequestLoading || modifyLoading
+        }
         confirmText={confirmText}
         detail={detail}
         subText={subText}
