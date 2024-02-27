@@ -97,7 +97,7 @@ export default ({
                           onClick={() =>
                             setSearchParams({ charge: item[idType] })
                           }
-                          className="text-blue-500 text-sm hover:underline ml-4"
+                          className="text-blue-500 text-sm hover:underline ml-4 cursor-pointer"
                         >
                           [View]
                         </span>
@@ -109,7 +109,7 @@ export default ({
             <div className="flex flex-row-reverse">
               <span
                 onClick={() => addOptions()}
-                className="text-danger-500 text-sm hover:underline"
+                className="text-danger-500 text-sm hover:underline cursor-pointer"
               >
                 Add selected {type === "charges" ? "charge(s)" : "taxe(es)"}
               </span>
