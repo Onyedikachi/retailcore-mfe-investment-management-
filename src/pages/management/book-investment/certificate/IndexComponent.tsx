@@ -39,7 +39,7 @@ export default function IndexComponent() {
       {
         !isLoading ?
           <div className="bg-white pt-6 px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16">
-            <div className="flex justify-end gap-5">
+            <div className="flex justify-end gap-5 pb-2">
               <button
                 onClick={handlePrint}
                 className="flex whitespace-nowrap gap-x-2 items-center bg-transparent border-none text-[#636363] text-base"
@@ -54,13 +54,13 @@ export default function IndexComponent() {
               </button>
             </div>
 
-            <div className="h-[649px]	my-auto py-10	 overflow-auto w-full">
+            <div className="h-[650px]	my-auto py-10	 overflow-auto w-full">
               <PdfViewer ref={targetRef} investmentDetailTable={investmentCertificateData}/>
             </div>
-            <div className="flex justify-end gap-5">
+            <div className="flex justify-end gap-5 pt-2">
               <button
                 data-testid="refresh-btn"
-                onClick={() => {navigate("/investment-management/individual")}}
+                onClick={() => {navigate("/investment-management/overview")}}
                 className="flex whitespace-nowrap gap-x-2 items-center bg-transparent border-none text-[#636363] text-base"
               >
                 <svg
@@ -81,7 +81,7 @@ export default function IndexComponent() {
               </button>
               {/* <button
                 data-testid="refresh-btn"
-                onClick={() => { }}
+                onClick={() => {navigate("/investment-management/overview")}}
                 className="flex whitespace-nowrap gap-x-2 items-center bg-transparent border-none text-[#636363] text-base"
               >
                 <svg

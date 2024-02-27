@@ -11,6 +11,7 @@ import { currencyFormatter } from "@app/utils/formatCurrency";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 import { AppContext } from "@app/utils";
 import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import PreviewChargesAndTaxes from "./PreviewChargesAndTaxes";
 
 export function DebitCreditTable({ dataTab }) {
   const location = useLocation();
@@ -646,6 +647,7 @@ export default function ProductDetail({ detail, previousData, type }: any) {
             </div>
           </div>
         </div>
+        <PreviewChargesAndTaxes detail={detail} />
         <div className="flex flex-col">
           <h4 className="text-[#636363] text-[16px] font-medium mb-[27px]">
             Account Entries

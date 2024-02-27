@@ -9,10 +9,12 @@ import ChargeAndTaxMultiselect from "./ChargeAndTaxMultiselect";
 
 export function handleRedirect(type) {
   if (type === "tax") {
-    window.location.href =("https://seabaas.dev.bepeerless.co/configuration/tax-management/create-tax/1");
+    window.location.href =
+      "https://seabaas.dev.bepeerless.co/configuration/tax-management/create-tax/1";
   }
   if (type === "charge") {
-    window.location.href =("https://seabaas.dev.bepeerless.co/configuration/charges-management/create-charge/1");
+    window.location.href =
+      "https://seabaas.dev.bepeerless.co/configuration/charges-management/create-charge/1";
   }
 }
 
@@ -33,8 +35,6 @@ export default ({
   placeholder,
   setValue,
 }: any) => {
-  console.log("🚀 ~ values:", values);
-
   const navigate = useNavigate();
   const [activeChargeId, setActiveChargeId] = useState(null);
   const { process } = useParams();
@@ -60,8 +60,9 @@ export default ({
           <span className="text-[18px] flex  gap-[1px] text-[#636363] font-semibold flex-row items-center">
             <Icon
               icon="ph:caret-right-fill"
-              className={`text-danger-500 text-sm mr-4 ${activeTab.includes(tab) && "rotate-90"
-                }`}
+              className={`text-danger-500 text-sm mr-4 ${
+                activeTab.includes(tab) && "rotate-90"
+              }`}
             />
             {header} Charges & Taxes
           </span>
@@ -75,9 +76,7 @@ export default ({
                 <div className="w-full flex flex-col">
                   <div className="flex flex-row">
                     <ChargeAndTaxMultiselect
-                      addedOptions={
-                        values?.[event]?.applicableCharges
-                      }
+                      addedOptions={values?.[event]?.applicableCharges}
                       setValues={setValues}
                       values={values}
                       event={event}
@@ -97,7 +96,7 @@ export default ({
                       charges={charges}
                       selectedCharges={values[event]?.applicableCharges}
                       values={values}
-                      setValues = {setValues}
+                      setValues={setValues}
                       event={event}
                       setValue={setValue}
                     />
@@ -113,9 +112,7 @@ export default ({
                 <div className="w-full flex flex-col">
                   <div className="flex flex-row">
                     <ChargeAndTaxMultiselect
-                      addedOptions={
-                        values?.[event]?.applicableTaxes
-                      }
+                      addedOptions={values?.[event]?.applicableTaxes}
                       setValues={setValues}
                       values={values}
                       event={event}
@@ -135,7 +132,7 @@ export default ({
                       taxes={taxes}
                       selectedTaxes={values[event]?.applicableTaxes}
                       values={values}
-                      setValues = {setValues}
+                      setValues={setValues}
                       event={event}
                       setValue={setValue}
                     />
@@ -148,11 +145,22 @@ export default ({
       </div>
       <ChargeModal
         id={searchParams.get("charge")}
-        closeModal={() => setSearchParams({ charge: null })}
+        closeModal={() => setSearchParams((prevParams: URLSearchParams) => {
+          const updatedParams = new URLSearchParams(prevParams);
+          updatedParams.set('charge', '');
+          return updatedParams;
+      })}
+      
+
       />
       <TaxModal
         id={searchParams.get("tax")}
-        closeModal={() => setSearchParams({ tax: null })}
+        closeModal={() => setSearchParams((prevParams: URLSearchParams) => {
+          const updatedParams = new URLSearchParams(prevParams);
+          updatedParams.set('tax', '');
+          return updatedParams;
+      })}
+      
       />
     </div>
   );
