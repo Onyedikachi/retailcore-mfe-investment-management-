@@ -2724,7 +2724,7 @@ Object {
                 </div>
               </span>
               <span
-                class="font-normal text-sm text-danger-500 italic underline"
+                class="font-normal text-sm text-danger-500 italic hover:underline"
               >
                 Clear all entries
               </span>
@@ -2829,7 +2829,7 @@ Object {
               </div>
             </span>
             <span
-              class="font-normal text-sm text-danger-500 italic underline"
+              class="font-normal text-sm text-danger-500 italic hover:underline"
             >
               Clear all entries
             </span>

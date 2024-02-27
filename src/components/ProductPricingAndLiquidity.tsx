@@ -158,7 +158,7 @@ export default ({ productData, setOpen }) => {
               .length > 1 && (
               <button
                 data-testid="more"
-                className="text-[#636363]  underline"
+                className="text-[#636363]  hover:underline"
                 onClick={() => setOpen(true)}
               >
                 View more

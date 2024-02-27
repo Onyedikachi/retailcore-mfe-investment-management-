@@ -86,7 +86,7 @@ export default ({
                       disabled={disabled}
                     />
                     <span
-                      className="ml-12 text-danger-500 underline"
+                      className="ml-12 text-danger-500 hover:underline"
                       onClick={() => handleRedirect("charge")}
                     >
                       Create new charge
@@ -121,10 +121,10 @@ export default ({
                       event={event}
                       type={"taxes"}
                       availableOptions={taxes}
-                      disabled={false}
+                      disabled={disabled}
                     />
                     <span
-                      className="ml-12 text-danger-500 underline"
+                      className="ml-12 text-danger-500 hover:underline"
                       onClick={() => handleRedirect("tax")}
                     >
                       Create new tax

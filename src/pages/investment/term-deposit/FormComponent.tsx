@@ -168,9 +168,10 @@ export default ({
         <ProductToGLMapping
           proceed={handleNav}
           formData={productData}
-          setFormData={(mapOptions) =>
+          setFormData={(data, mapOptions) =>
             setProductData({
               ...productData,
+              ...data,
               productGlMappings: mapOptions,
             })
           }

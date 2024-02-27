@@ -75,8 +75,8 @@ export default ({
           />
         </div>
         {listOpen && (
-          <div className="flex flex-col shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] w-full min-w-[360px] overflow-hidden p-4 rounded-b-lg top-[35px] h-[300px] bg-white z-[400] absolute">
-            <div className="h-[90%] overflow-y-scroll mb-1">
+          <div className="flex flex-col shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] w-full min-w-[360px] overflow-hidden p-4 rounded-b-lg top-[35px] bg-white z-[400] absolute">
+            <div className=" max-h-[300px] overflow-y-auto mb-3">
               <div className="flex flex-col">
                 {availableOptions?.data?.records
                   ?.filter((e) =>
@@ -97,7 +97,7 @@ export default ({
                           onClick={() =>
                             setSearchParams({ charge: item[idType] })
                           }
-                          className="text-blue-500 text-sm underline ml-4"
+                          className="text-blue-500 text-sm hover:underline ml-4"
                         >
                           [View]
                         </span>
@@ -109,7 +109,7 @@ export default ({
             <div className="flex flex-row-reverse">
               <span
                 onClick={() => addOptions()}
-                className="text-danger-500 text-sm underline"
+                className="text-danger-500 text-sm hover:underline"
               >
                 Add selected {type === "charges" ? "charge(s)" : "taxe(es)"}
               </span>
