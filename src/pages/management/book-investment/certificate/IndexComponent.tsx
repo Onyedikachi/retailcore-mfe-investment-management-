@@ -4,82 +4,85 @@ import { PdfViewer } from "./PdfPreviewComponent";
 import { usePDF } from "react-to-pdf";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { useGetInvestmentCertificateQuery, useGetInvestmentDetailQuery } from "@app/api";
+import {
+  useGetInvestmentCertificateQuery,
+  useGetInvestmentDetailQuery,
+} from "@app/api";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 import { AppContext } from "@app/utils";
 
-export default function IndexComponent() {
-  const { toPDF, targetRef } = usePDF({ filename: 'certificate.pdf' });
-  const { currencies } = useContext(AppContext);
+export default function IndexComponent({ productDetail }) {
+  const { toPDF, targetRef } = usePDF({ filename: "certificate.pdf" });
+  const { currencies, userData } = useContext(AppContext);
   const navigate = useNavigate();
-
-  const handlePrint = () => toPDF()
-
+  const handlePrint = () => toPDF();
   const { id } = useParams();
-
-  const {
-    data: investmentCertificateData,
-    isLoading,
-  } = useGetInvestmentCertificateQuery({ BookingId: id }, { skip: !id });
-
-  const customerDetails = useMemo(() => investmentCertificateData, [investmentCertificateData])
-  console.log(customerDetails)
-
-  const formattedDate = customerDetails?.bookingDate && new Date(customerDetails?.bookingDate);
+  const { data: investmentCertificateData, isLoading } =
+    useGetInvestmentCertificateQuery({ BookingId: id }, { skip: !id });
+  const customerDetails = useMemo(
+    () => investmentCertificateData,
+    [investmentCertificateData]
+  );
+  const formattedDate =
+    customerDetails?.bookingDate && new Date(customerDetails?.bookingDate);
   const formattedDateTime = formattedDate?.toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
     hour: "numeric",
     minute: "numeric",
-
   });
   return (
     <div className="flex gap-x-5 w-full flex-1 p-8">
-      {
-        !isLoading ?
-          <div className="bg-white pt-6 px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16">
-            <div className="flex justify-end gap-5 pb-2">
-              <button
-                onClick={handlePrint}
-                className="flex whitespace-nowrap gap-x-2 items-center bg-transparent border-none text-[#636363] text-base"
-              >
-                <HiPrinter className="text-lg" /> Print
-              </button>
-              <button
-                onClick={() => { }}
-                className="flex whitespace-nowrap gap-x-2 items-center bg-transparent border-none text-[#636363] text-base"
-              >
-                <HiShare className="text-lg" /> Share
-              </button>
-            </div>
+      {!isLoading ? (
+        <div className="bg-white pt-6 px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16">
+          <div className="flex justify-end gap-5 pb-2">
+            <button
+              onClick={handlePrint}
+              className="flex whitespace-nowrap gap-x-2 items-center bg-transparent border-none text-[#636363] text-base"
+            >
+              <HiPrinter className="text-lg" /> Print
+            </button>
+            <button
+              onClick={() => {}}
+              className="flex whitespace-nowrap gap-x-2 items-center bg-transparent border-none text-[#636363] text-base"
+            >
+              <HiShare className="text-lg" /> Share
+            </button>
+          </div>
 
-            <div className="h-[650px]	my-auto py-10	 overflow-auto w-full">
-              <PdfViewer ref={targetRef} investmentDetailTable={investmentCertificateData}/>
-            </div>
-            <div className="flex justify-end gap-5 pt-2">
-              <button
-                data-testid="refresh-btn"
-                onClick={() => {navigate("/investment-management/overview")}}
-                className="flex whitespace-nowrap gap-x-2 items-center bg-transparent border-none text-[#636363] text-base"
+          <div className="h-[80vh]	my-auto px-6 py-10	 overflow-auto w-full">
+            <PdfViewer
+              ref={targetRef}
+              investmentDetailTable={investmentCertificateData}
+              productDetail={productDetail}
+            />
+          </div>
+          <div className="flex justify-end gap-5 pt-2">
+            <button
+              data-testid="refresh-btn"
+              onClick={() => {
+                navigate("/investment-management/overview");
+              }}
+              className="flex whitespace-nowrap gap-x-2 items-center bg-transparent border-none text-[#636363] text-base"
+            >
+              <svg
+                width="28"
+                height="24"
+                viewBox="0 0 28 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  width="28"
-                  height="24"
-                  viewBox="0 0 28 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M11.4332 1.09184C11.4334 0.864339 11.3508 0.642467 11.197 0.457273C11.0431 0.272079 10.8257 0.132831 10.5751 0.0590163C10.3245 -0.0147986 10.0533 -0.0194868 9.79949 0.045608C9.54565 0.110703 9.32186 0.242323 9.15944 0.422049L0.267636 10.2398C0.0941762 10.4313 0 10.667 0 10.9096C0 11.1522 0.0941762 11.3879 0.267636 11.5794L9.15944 21.3972C9.32186 21.5769 9.54565 21.7085 9.79949 21.7736C10.0533 21.8387 10.3245 21.8341 10.5751 21.7602C10.8257 21.6864 11.0431 21.5472 11.197 21.362C11.3508 21.1768 11.4334 20.9549 11.4332 20.7274V16.3749C18.2659 16.497 21.5483 17.6108 23.1971 18.8217C24.7646 19.9725 25.0516 21.3263 25.3502 22.7444L25.4276 23.1099C25.4846 23.3714 25.6509 23.6059 25.8953 23.7695C26.1396 23.933 26.4451 24.0143 26.7543 23.9979C27.0635 23.9816 27.3551 23.8688 27.5742 23.6807C27.7933 23.4926 27.9248 23.2423 27.944 22.9768C28.1612 19.9791 27.8348 15.6353 25.3692 12.0016C22.976 8.47482 18.6661 5.76292 11.4332 5.4793V1.09184Z"
-                    fill="#CF2A2A"
-                  />
-                </svg>
-                Return to dashboard
-              </button>
-              {/* <button
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M11.4332 1.09184C11.4334 0.864339 11.3508 0.642467 11.197 0.457273C11.0431 0.272079 10.8257 0.132831 10.5751 0.0590163C10.3245 -0.0147986 10.0533 -0.0194868 9.79949 0.045608C9.54565 0.110703 9.32186 0.242323 9.15944 0.422049L0.267636 10.2398C0.0941762 10.4313 0 10.667 0 10.9096C0 11.1522 0.0941762 11.3879 0.267636 11.5794L9.15944 21.3972C9.32186 21.5769 9.54565 21.7085 9.79949 21.7736C10.0533 21.8387 10.3245 21.8341 10.5751 21.7602C10.8257 21.6864 11.0431 21.5472 11.197 21.362C11.3508 21.1768 11.4334 20.9549 11.4332 20.7274V16.3749C18.2659 16.497 21.5483 17.6108 23.1971 18.8217C24.7646 19.9725 25.0516 21.3263 25.3502 22.7444L25.4276 23.1099C25.4846 23.3714 25.6509 23.6059 25.8953 23.7695C26.1396 23.933 26.4451 24.0143 26.7543 23.9979C27.0635 23.9816 27.3551 23.8688 27.5742 23.6807C27.7933 23.4926 27.9248 23.2423 27.944 22.9768C28.1612 19.9791 27.8348 15.6353 25.3692 12.0016C22.976 8.47482 18.6661 5.76292 11.4332 5.4793V1.09184Z"
+                  fill="#CF2A2A"
+                />
+              </svg>
+              Return to dashboard
+            </button>
+            {/* <button
                 data-testid="refresh-btn"
                 onClick={() => {navigate("/investment-management/overview")}}
                 className="flex whitespace-nowrap gap-x-2 items-center bg-transparent border-none text-[#636363] text-base"
@@ -98,17 +101,18 @@ export default function IndexComponent() {
                 </svg>
                 Create new investment
               </button> */}
-            </div>
-          </div> :
-          <div
-            className="bg-white pt-6 px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex justify-center items-center w-full pb-16"
-            data-testid="loading-spinner"
-          >
-            <div className="spinner-border h-11 w-11 border-t border-danger-500 rounded-full animate-spin"></div>
           </div>
-      }
+        </div>
+      ) : (
+        <div
+          className="bg-white pt-6 px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex justify-center items-center w-full pb-16"
+          data-testid="loading-spinner"
+        >
+          <div className="spinner-border h-11 w-11 border-t border-danger-500 rounded-full animate-spin"></div>
+        </div>
+      )}
       {
-        !isLoading &&
+        !isLoading && (
           <div className="bg-white pt-6 px-[30px] py-4 border border-[#E5E9EB] rounded-lg  w-[300px] pb-16">
             <div className="flex-col gap-5">
               <h1 className="text-[#747373] text-base font-medium mb-7 uppercase">
@@ -116,7 +120,9 @@ export default function IndexComponent() {
               </h1>
               <div className="gap-3 text-sm">
                 <p>Initiator</p>
-                <p>{customerDetails?.customerName}</p>
+                <p className="capitalize">
+                  {userData?.firstname} {userData?.lastname}
+                </p>
               </div>
 
               <div className="gap-3 text-sm mt-6">
@@ -124,15 +130,16 @@ export default function IndexComponent() {
                 <p>{formattedDateTime}</p>
               </div>
             </div>
-          </div> 
-          // :
-          // <div
-          //   className="bg-white pt-6 px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16"
-          //   data-testid="loading-spinner"
-          // >
-          //   <div className="spinner-border h-11 w-11 border-t border-danger-500 rounded-full animate-spin"></div>
-          // </div>
+          </div>
+        )
+        // :
+        // <div
+        //   className="bg-white pt-6 px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16"
+        //   data-testid="loading-spinner"
+        // >
+        //   <div className="spinner-border h-11 w-11 border-t border-danger-500 rounded-full animate-spin"></div>
+        // </div>
       }
-    </div >
+    </div>
   );
 }

@@ -3,11 +3,11 @@ import {
   useGetCurrenciesQuery,
   useGetCustomerProfileQuery,
   useGetInvestmentDetailQuery,
-  useGetPostInvestmentMutation,
-  useGetUserQuery,
+  useGetApplicableChargesQuery,
+  useGetApplicableTaxesQuery,
 } from "@app/api";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
-import { forwardRef, useContext, useEffect } from "react";
+import { forwardRef, useContext, useEffect, useState } from "react";
 import { AppContext } from "@app/utils";
 import { useParams } from "react-router-dom";
 import { Interval } from "@app/constants";
@@ -32,19 +32,26 @@ type PdfInvestType = {
 };
 
 export const PdfViewer = forwardRef<any, any>(
-  ({ investmentDetailTable, ref }) => {
+  ({ investmentDetailTable, ref, productDetail }) => {
+    console.log("🚀 ~ productDetail:", productDetail)
     const { currencies } = useContext(AppContext);
+    const [taxData, setTaxData] = useState(null)
     const { id } = useParams();
 
     const { data: investmentQueryData, isLoading: investmentDetailLoading } =
       useGetInvestmentDetailQuery({ id: id });
+      const {
+        data: taxes,
+        isLoading: taxesLoading,
+        isSuccess: taxesSuccess,
+      } = useGetApplicableTaxesQuery();
 
-    useEffect(() => {
-      console.log("q = ", investmentQueryData);
-    }, [investmentQueryData]);
-
+      useEffect(() => {
+       setTaxData([])
+      }, [productDetail])
+      
     return (
-      <div ref={ref}>
+      <div ref={ref} className="p-6">
         <div className="max-w-[800px] mx-auto">
           <div className="flex justify-end py-4 mb-10">
             <svg

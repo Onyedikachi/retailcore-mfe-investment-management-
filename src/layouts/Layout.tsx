@@ -65,6 +65,7 @@ const Layout = () => {
   const [permissions, setPermissions] = useState([]);
   const [role, setRole] = useState("default");
   const [isChecker, setIsChecker] = useState(false);
+  const [userData, setUserData] = useState(null);
   const [currencies, setCurrencies] = useState<any[]>([]);
   const [defaultCurrency, setDefaultCurrency] = useState<any>("");
 
@@ -80,6 +81,7 @@ const Layout = () => {
       userId: userId.current,
       isChecker,
       setIsChecker,
+      userData
     }),
 
     [
@@ -92,10 +94,12 @@ const Layout = () => {
       userId.current,
       isChecker,
       setIsChecker,
+      userData
     ]
   );
   useEffect(() => {
     auth$?.subscribe((value) => {
+      setUserData(value.user)
       checkPermissions({ value, setRole, setPermissions, userId, handleRole });
     });
   }, []);
