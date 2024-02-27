@@ -7,11 +7,84 @@ import moment from "moment";
 import React, { useState, useEffect, useContext } from "react";
 import { FaCaretDown, FaCaretRight } from "react-icons/fa";
 import { useParams } from "react-router-dom";
+import {
+  useGetApplicableChargesQuery,
+  useGetApplicableTaxesQuery,
+} from "@app/api";
 // interface ILogProps {
 //   isFetching: boolean;
 //   isLoading: boolean;
 //   activities: Array<any>;
 // }
+
+const taxChargeDataOptions = [
+  {
+    header: "Principal Deposit",
+    key: "principalDepositChargesAndTaxes",
+  },
+  {
+    header: "Part Liquidation",
+    key: "partLiquidationChargesAndTaxes",
+  },
+  {
+    header: "Early Liquidation",
+    key: "earlyLiquidationChargesAndTaxes",
+  },
+  {
+    header: "Maturity Liquidation",
+    key: "investmentLiquidationChargesAndTaxes",
+  },
+];
+export function ChargesAndTaxes({ taxData, chargeData, productDetail }) {
+  return (
+    <div>
+      {" "}
+      <>
+        {taxChargeDataOptions?.map((i) => (
+          <div key={i.header} className="text-sm">
+            <span className="font-semibold text-sm block mb-[15px]">
+              {i.header} Charge & Tax
+            </span>
+            {productDetail[i.key]?.applicableCharges?.length > 0 &&
+              chargeData?.length > 0 && (
+                <div className="flex items-center flex-wrap gap-x-1">
+                  <span className="font-normal block">Charges :</span>
+                  {productDetail[i.key]?.applicableCharges?.map(
+                    (item, index) => (
+                      <span key={item} className="font-normal block">
+                        {chargeData?.find((it) => it.charge_id === item)?.name}{" "}
+                        {index + 1 !==
+                          productDetail[i.key]?.applicableCharges.length && (
+                          <span>,</span>
+                        )}
+                      </span>
+                    )
+                  )}
+                </div>
+              )}
+            {productDetail[i.key]?.applicableTaxes?.length > 0 &&
+            taxData?.length > 0 ? (
+              <div className="flex items-center flex-wrap gap-x-1">
+                <span className="font-normal block">Taxes :</span>
+                {productDetail[i.key]?.applicableTaxes?.map((item, index) => (
+                  <span key={item} className="font-normal block">
+                    {taxData?.find((it) => it.tax_id === item)?.name}
+                    {index + 1 !==
+                      productDetail[i.key]?.applicableTaxes?.length && (
+                      <span>,</span>
+                    )}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              "-"
+            )}
+          </div>
+        ))}
+      </>
+    </div>
+  );
+}
 
 export default function ProductInfoInvestmentCalc({
   productDetail,
@@ -19,10 +92,14 @@ export default function ProductInfoInvestmentCalc({
   calcDetail,
   loading,
 }) {
-
   const { currencies } = useContext(AppContext);
   const [productDetailMap, setProductDetailMap] = useState(null);
   const [active, setActive] = useState([]);
+  const [chargeData, setChargeData] = useState([]);
+  const [taxData, setTaxData] = useState([]);
+  const { data: charges, isSuccess: chargeSuccess } =
+    useGetApplicableChargesQuery();
+  const { data: taxes, isSuccess: taxSuccess } = useGetApplicableTaxesQuery();
 
   const toggleTab = (val) => {
     setActive((prevActive) => {
@@ -62,6 +139,7 @@ export default function ProductInfoInvestmentCalc({
           },
         ],
         isOpen: false,
+        isItemArray: true,
       },
       {
         name: "Customer Eligibility Criteria",
@@ -89,6 +167,7 @@ export default function ProductInfoInvestmentCalc({
           },
         ],
         isOpen: false,
+        isItemArray: true,
       },
       {
         name: "Pricing Configuration",
@@ -182,6 +261,7 @@ export default function ProductInfoInvestmentCalc({
           },
         ],
         isOpen: false,
+        isItemArray: true,
       },
       {
         name: "Liquidation Configuration",
@@ -380,14 +460,35 @@ export default function ProductInfoInvestmentCalc({
           },
         ],
         isOpen: true,
+        isItemArray: true,
       },
       {
         name: "Charges & Taxes Configuration",
-        data: [],
-        isOpen: true,
+        data: (
+          <ChargesAndTaxes
+            taxData={taxData}
+            chargeData={chargeData}
+            productDetail={productDetail}
+          />
+        ),
+        isOpen: false,
+        isItemArray: false,
       },
     ]);
   }, [productDetail]);
+
+  useEffect(() => {
+    if (chargeSuccess) {
+      setChargeData(charges?.data?.records);
+    }
+    console.log(
+      "🚀 ~ useEffect ~ charges?.data?.records:",
+      charges?.data?.records
+    );
+    if (taxSuccess) {
+      setTaxData(taxes?.data?.records);
+    }
+  }, [chargeSuccess, taxSuccess]);
 
   return (
     <div className="flex flex-col w-full gap-[17px]">
@@ -431,24 +532,28 @@ export default function ProductInfoInvestmentCalc({
 
                 {active.includes(item?.name) && (
                   <div>
-                    <div className="grid grid-cols-1 gap-y-1">
-                      {item?.data?.map((k) => (
-                        <div key={k?.name}>
-                          {k.isOpen && (
-                            <div className="flex flex-col  text-sm pl-5">
-                              {k?.name && (
-                                <span className="capitalize w-[150px] font-semibold">
-                                  {k?.name}
+                    {item.isItemArray ? (
+                      <div className="grid grid-cols-1 gap-y-1">
+                        {item?.data?.map((k) => (
+                          <div key={k?.name}>
+                            {k.isOpen && (
+                              <div className="flex flex-col  text-sm pl-5">
+                                {k?.name && (
+                                  <span className="capitalize w-[150px] font-semibold">
+                                    {k?.name}
+                                  </span>
+                                )}
+                                <span className="flex-1">
+                                  <span>{k?.text}</span>
                                 </span>
-                              )}
-                              <span className="flex-1">
-                                <span>{k?.text}</span>
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="pl-5">{item.data}</div>
+                    )}
                   </div>
                 )}
               </div>

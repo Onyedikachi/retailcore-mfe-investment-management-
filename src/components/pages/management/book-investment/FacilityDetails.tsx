@@ -298,7 +298,9 @@ export default function FacilityDetails({
       setProductDetail(null);
     }
 
-    setDisabled(!isValid || balanceError || !validDoc || !validCurrency);
+    setDisabled(!isValid || balanceError || !validDoc
+      //  || !validCurrency
+       );
     if (isValid) {
       setFormData({
         ...formData,
