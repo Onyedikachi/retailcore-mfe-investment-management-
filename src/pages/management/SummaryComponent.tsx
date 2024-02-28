@@ -172,7 +172,7 @@ export default function Summary() {
           />
         </div>
       ) : (
-        <Certificate />
+        <Certificate productDetail={productDetail?.data} />
       )}
     </div>
   );

@@ -155,7 +155,7 @@ export default function PricingConfig({
     }
   }, [watchApplicablePrincipalMax, watchApplicablePrincipalMin]);
 
-  // watch principal
+  // watch interest rate
   const watchInterestRateMin = watch("interestRateMin");
   const watchInterestRateMax = watch("interestRateMax");
   useEffect(() => {
@@ -191,6 +191,7 @@ export default function PricingConfig({
       setDisabled(true);
     }
   }, [values]);
+  
   useEffect(() => {
     if (formData) {
       Object.entries(formData).forEach(([name, value]) =>

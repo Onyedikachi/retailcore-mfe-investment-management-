@@ -3,15 +3,15 @@ import {
   useGetCurrenciesQuery,
   useGetCustomerProfileQuery,
   useGetInvestmentDetailQuery,
-  useGetPostInvestmentMutation,
-  useGetUserQuery,
+  useGetWideChargesQuery,
+  useGetApplicableTaxesQuery,
 } from "@app/api";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
-import { forwardRef, useContext, useEffect } from "react";
+import { forwardRef, useContext, useEffect, useState } from "react";
 import { AppContext } from "@app/utils";
 import { useParams } from "react-router-dom";
 import { Interval } from "@app/constants";
-import { numberFormatter } from "@app/utils/formatCurrency";
+import { currencyFormatter, numberFormatter } from "@app/utils/formatCurrency";
 
 type PdfInvestType = {
   accountName: string;
@@ -31,20 +31,95 @@ type PdfInvestType = {
   liquidation: boolean;
 };
 
+const taxChargeDataOptions = [
+  {
+    header: "Principal Deposit",
+    key: "principalDepositChargesAndTaxes",
+  },
+  {
+    header: "Part Liquidation",
+    key: "partLiquidationChargesAndTaxes",
+  },
+  {
+    header: "Early Liquidation",
+    key: "earlyLiquidationChargesAndTaxes",
+  },
+  {
+    header: "Maturity Liquidation",
+    key: "investmentLiquidationChargesAndTaxes",
+  },
+];
 export const PdfViewer = forwardRef<any, any>(
-  ({ investmentDetailTable, ref }) => {
+  ({ investmentDetailTable, productDetail },ref) => {
     const { currencies } = useContext(AppContext);
+    const [taxData, setTaxData] = useState(null);
     const { id } = useParams();
 
     const { data: investmentQueryData, isLoading: investmentDetailLoading } =
       useGetInvestmentDetailQuery({ id: id });
-
+    const {
+      data: taxes,
+      isLoading: taxesLoading,
+      isSuccess: taxesSuccess,
+    } = useGetApplicableTaxesQuery();
+    const { data: charges, isSuccess: chargeSuccess } =
+      useGetWideChargesQuery();
     useEffect(() => {
-      console.log("q = ", investmentQueryData);
-    }, [investmentQueryData]);
+      if (!productDetail || !taxChargeDataOptions) return;
+
+      const applicableChargesIds = taxChargeDataOptions?.flatMap(
+        (item) => productDetail[item.key]?.applicableCharges || []
+      );
+
+      const applicableTaxesIds = taxChargeDataOptions?.flatMap(
+        (item) => productDetail[item.key]?.applicableTaxes || []
+      );
+
+      const applicableCharges = charges?.data?.active?.records?.filter(
+        (charge) => applicableChargesIds.includes(charge.charge_id)
+      );
+
+      const applicableTaxes = taxes?.data?.records?.filter((tax) =>
+        applicableTaxesIds.includes(tax.tax_id)
+      );
+
+      applicableCharges?.forEach((charge) => {
+        // Do something with each applicable charge
+      });
+
+      if (!applicableChargesIds.length && !applicableChargesIds.length) return;
+      const appCharges = applicableCharges?.map((charge) => {
+        const textChargeValues = charge.charge_value?.map(
+          (value) =>
+            `${
+              value.charge_amount_type?.toLowerCase() === "percent"
+                ? `${value.charge_amount}%`
+                : `${currencyFormatter(value.charge_amount, charge.currency)} `
+            } ${value.charge_type}`
+        );
+
+        return textChargeValues;
+      });
+
+      const appTax = applicableTaxes?.map((tax) => {
+        const textTaxValues = tax.tax_values?.map(
+          (value) =>
+            `${
+              value.tax_amount_type?.toLowerCase() === "percent"
+                ? `${value.tax_amount}%`
+                : `${currencyFormatter(value.tax_amount, tax.currency)} `
+            } ${value.tax_type}`
+        );
+
+        return textTaxValues;
+      });
+      const textData = [...(appTax || []), ...(appCharges || [])]?.flat().join(", ");
+
+      setTaxData(textData);
+    }, [productDetail, taxesSuccess, chargeSuccess]);
 
     return (
-      <div ref={ref}>
+      <div ref={ref} className="p-6">
         <div className="max-w-[800px] mx-auto">
           <div className="flex justify-end py-4 mb-10">
             <svg
@@ -78,9 +153,9 @@ export const PdfViewer = forwardRef<any, any>(
                   width="89"
                   height="89"
                   filterUnits="userSpaceOnUse"
-                  color-interpolation-filters="sRGB"
+                  colorInterpolationFilters="sRGB"
                 >
-                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                  <feFlood floodOpacity="0" result="BackgroundImageFix" />
                   <feColorMatrix
                     in="SourceAlpha"
                     type="matrix"
@@ -112,9 +187,9 @@ export const PdfViewer = forwardRef<any, any>(
                   width="26.4766"
                   height="30.4766"
                   filterUnits="userSpaceOnUse"
-                  color-interpolation-filters="sRGB"
+                  colorInterpolationFilters="sRGB"
                 >
-                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                  <feFlood floodOpacity="0" result="BackgroundImageFix" />
                   <feBlend
                     mode="normal"
                     in="SourceGraphic"
@@ -180,7 +255,7 @@ export const PdfViewer = forwardRef<any, any>(
                       Account Name
                     </td>
                     <td className="py-2 px-4 text-left border border-black">
-                      {investmentDetailTable?.customerName}
+                      {investmentDetailTable?.customerName || "-"}
                     </td>
                   </tr>
                   <tr>
@@ -188,13 +263,13 @@ export const PdfViewer = forwardRef<any, any>(
                       Investment ID
                     </td>
                     <td className="py-2 px-4 text-left border border-black">
-                      {investmentDetailTable?.investmentId}
+                      {investmentDetailTable?.investmentId || "-"}
                     </td>
                   </tr>
                   <tr>
                     <td className="py-2 px-4 border border-black">Address</td>
                     <td className="py-2 px-4 text-left border border-black">
-                      {investmentDetailTable?.address}
+                      {investmentDetailTable?.address || "-"}
                     </td>
                   </tr>
                   <tr>
@@ -242,7 +317,7 @@ export const PdfViewer = forwardRef<any, any>(
                       Interest Rate
                     </td>
                     <td className="py-2 px-4 text-left border border-black">
-                      {investmentDetailTable?.interestRate}
+                      {investmentDetailTable?.interestRate || "-"}
                     </td>
                   </tr>
                   <tr>
@@ -250,7 +325,7 @@ export const PdfViewer = forwardRef<any, any>(
                       Interest Amount
                     </td>
                     <td className="py-2 px-4 text-left border border-black">
-                      {investmentDetailTable?.interestAmount}
+                      {numberFormatter(investmentDetailTable?.interestAmount)}
                     </td>
                   </tr>
                   <tr>
@@ -283,7 +358,7 @@ export const PdfViewer = forwardRef<any, any>(
                       Contract Status
                     </td>
                     <td className="py-2 px-4 text-left border border-black">
-                      {investmentDetailTable?.contractStatus}
+                      {investmentDetailTable?.contractStatus || "-"}
                     </td>
                   </tr>
                 </tbody>
@@ -291,10 +366,17 @@ export const PdfViewer = forwardRef<any, any>(
             </div>
           </div>
           <div>
-            <p>
-              <br />
-              <br /> Please note that 10% Withholding Tax is applicable on the
-              interest amount upon maturity.
+            {taxData && (
+              <p className="mb-2">
+                {" "}
+                Please note that <span className="capitalize">
+                  {taxData}
+                </span>{" "}
+                is applicable on the interest amount upon maturity.
+              </p>
+            )}
+            <p className="mb-2">
+              {" "}
               {investmentDetailTable?.liquidation && (
                 <p>
                   <br />
@@ -303,13 +385,15 @@ export const PdfViewer = forwardRef<any, any>(
                   from time to time.
                 </p>
               )}
-              <br />
-              <br /> This is a computer generated slip and if issued without
+            </p>
+            <p className="mb-2">
+              This is a computer generated slip and if issued without
               alteration, it does not require signature.
-              <br />
-              <br /> Please confirm that the investment booking details agree
-              with your records. If otherwise, please contact - Head, [name of
-              team], Sterling towers, 20 Marina, Lagos, Nigeria 100221.
+            </p>
+            <p className="mb-2">
+              Please confirm that the investment booking details agree with your
+              records. If otherwise, please contact - Head, [name of team],
+              Sterling towers, 20 Marina, Lagos, Nigeria 100221.
             </p>
           </div>
         </div>
