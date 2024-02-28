@@ -83,11 +83,8 @@ export const PdfViewer = forwardRef<any, any>(
         applicableTaxesIds.includes(tax.tax_id)
       );
 
-      applicableCharges?.forEach((charge) => {
-        // Do something with each applicable charge
-      });
 
-      if (!applicableChargesIds.length && !applicableChargesIds.length) return;
+      if (!applicableChargesIds.length && !applicableTaxesIds.length) return;
       const appCharges = applicableCharges?.map((charge) => {
         const textChargeValues = charge.charge_value?.map(
           (value) =>
