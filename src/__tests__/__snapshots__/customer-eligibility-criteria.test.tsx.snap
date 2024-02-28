@@ -166,7 +166,7 @@ Object {
                 />
                 <defs>
                   <filter
-                    color-interpolation-filters="sRGB"
+                    colorInterpolationFilters="sRGB"
                     filterUnits="userSpaceOnUse"
                     height="28"
                     id="filter0_d_48843_94577"
@@ -175,7 +175,7 @@ Object {
                     y="0"
                   >
                     <feflood
-                      flood-opacity="0"
+                      floodOpacity="0"
                       result="BackgroundImageFix"
                     />
                     <fecolormatrix
@@ -394,7 +394,7 @@ Object {
               />
               <defs>
                 <filter
-                  color-interpolation-filters="sRGB"
+                  colorInterpolationFilters="sRGB"
                   filterUnits="userSpaceOnUse"
                   height="28"
                   id="filter0_d_48843_94577"
@@ -403,7 +403,7 @@ Object {
                   y="0"
                 >
                   <feflood
-                    flood-opacity="0"
+                    floodOpacity="0"
                     result="BackgroundImageFix"
                   />
                   <fecolormatrix
