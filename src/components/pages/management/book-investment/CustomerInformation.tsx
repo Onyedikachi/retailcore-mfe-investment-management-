@@ -264,7 +264,7 @@ export default function CustomerInformation({
       setQuery({
         search: formData?.customerBookingInfoModel.customerAccount,
         isAccountNumber: true,
-        // customerType: investmentType === "individual" ? "Individual" : "SME",
+        customerType: investmentType === "individual" ? "Individual" : "SME",
       });
     }
   }, [formData?.customerBookingInfoModel.customerAccount]);
@@ -299,10 +299,10 @@ export default function CustomerInformation({
                       setQuery({
                         search: e,
                         isAccountNumber: true,
-                        // customerType:
-                        //   investmentType === "individual"
-                        //     ? "Individual"
-                        //     : "SME",
+                        customerType:
+                          investmentType === "individual"
+                            ? "Individual"
+                            : "SME",
                       }),
                     500
                   )}
