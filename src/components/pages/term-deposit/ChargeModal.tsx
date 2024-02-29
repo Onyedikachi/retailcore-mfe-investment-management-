@@ -15,7 +15,7 @@ export default ({ id, closeModal }) => {
   } = useGetChargeQuery({ id: id });
 
   return (
-    <ModalLayout isOpen={id && id !== "null"} setIsOpen={() => closeModal()}>
+    <ModalLayout isOpen={id && id !== "null"} setIsOpen={() => {}}>
       <div
         data-testid="product-view"
         className="relative  w-[1218px]  rounded-lg bg-white max-h-[75vh] overflow-x-auto"
