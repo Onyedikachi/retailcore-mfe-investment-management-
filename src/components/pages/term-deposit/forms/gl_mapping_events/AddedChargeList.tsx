@@ -44,7 +44,13 @@ export default ({ selectedCharges, setValues, values, event, charges, setValue }
                 </td>
                 <td className="text-base font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative flex flex-row justify-end gap-x-4">
                   <span
-                    onClick={() => setSearchParams({ charge: item.charge_id })}
+                  onClick={() => setSearchParams((prevParams: URLSearchParams) => {
+                    const updatedParams = new URLSearchParams(prevParams);
+                    updatedParams.set('charge', item.charge_id);
+                    return updatedParams;
+                })}
+                
+
                     className="h-[30px] w-[30px] shadow-md bg-white flex justify-center items-center rounded-md"
                   >
                     <FaEye className="text-danger-500" />

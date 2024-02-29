@@ -422,11 +422,11 @@ export const pricingConfigSchema = yup.object({
             if (
               appPrinMin !== undefined &&
               first?.principalMin !== undefined &&
-              first.principalMin < appPrinMin
+              first.principalMin != appPrinMin
             ) {
               errors.push(
                 new ValidationError(
-                  `Min principal is ${currencyFormatter(appPrinMin)}`,
+                  `Min principal must be ${currencyFormatter(appPrinMin)}`,
                   first,
                   `interestRateConfigModels[${0}].principalMin`
                 )
@@ -522,12 +522,12 @@ export const pricingConfigSchema = yup.object({
             if (
               appTenorMin !== undefined &&
               first?.tenorMin !== undefined &&
-              convertToDays(first.tenorMin, first.tenorMinUnit) <
+              convertToDays(first.tenorMin, first.tenorMinUnit) !=
                 convertToDays(appTenorMin, appTenorMinUnit)
             ) {
               errors.push(
                 new ValidationError(
-                  `Min tenor is ${appTenorMin} ${
+                  `Min tenor must be ${appTenorMin} ${
                     IntervalOptions[appTenorMinUnit - 1].text
                   }`,
                   first,
