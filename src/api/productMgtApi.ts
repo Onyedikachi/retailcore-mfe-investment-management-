@@ -18,10 +18,18 @@ export const productMgtApi: any = createApi({
         }
     },
     endpoints: (builder) => ({
+        getWideCharges: builder.query<any, any>({
+            query: () => {
+                return {
+                    url: `${productApi}/charges/system-wide`,
+                    method: "get",
+                };
+            },
+        }),
         getApplicableCharges: builder.query<any, any>({
             query: () => {
                 return {
-                    url: `${productApi}/charges?state=Active`,
+                    url: `${productApi}/charges`,
                     method: "get",
                 };
             },
@@ -60,4 +68,5 @@ export const {
     useGetApplicableTaxesQuery,
     useGetTaxQuery,
     useGetChargeQuery,
+    useGetWideChargesQuery
 } = productMgtApi;

@@ -3,7 +3,7 @@ import { FaEdit, FaEye, FaTimes } from "react-icons/fa";
 import { useSearchParams } from "react-router-dom";
 
 export default ({ selectedTaxes, setValues, values, event, taxes,setValue }) => {
-  console.log("🚀 ~ selectedTaxes:", selectedTaxes)
+ 
   const removeTax = (option) => {
     const new_taxes = [...selectedTaxes];
     new_taxes.splice(
@@ -58,7 +58,11 @@ export default ({ selectedTaxes, setValues, values, event, taxes,setValue }) => 
                 </td>
                 <td className="text-base font-medium text-[#636363] px-4 py-5 flex flex-row gap-x-4 justify-end">
                   <span
-                    onClick={() => setSearchParams({ tax: item.tax_id })}
+                    onClick={() => setSearchParams((prevParams: URLSearchParams) => {
+                      const updatedParams = new URLSearchParams(prevParams);
+                      updatedParams.set('tax', item.tax_id);
+                      return updatedParams;
+                  })}
                     className="h-[30px] w-[30px] shadow-md bg-white flex justify-center items-center rounded-md"
                   >
                     <FaEye className="text-danger-500" />
