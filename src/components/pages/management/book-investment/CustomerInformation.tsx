@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ErrorMessage } from "@hookform/error-message";
 import { FormUpload } from "@app/components/forms";
 import CustomerInfoCard from "./CustomerInfoCard";
-import { BookingCustomerInfoSchema } from "@app/constants";
+import { AccountStatus, BookingCustomerInfoSchema } from "@app/constants";
 import SearchInput from "@app/components/SearchInput";
 import {
   useGetCustomerSearchQuery,
-  useGetAccountBalanceQuery,
+  // useGetAccountDataByIdQuery,
   useGetCustomerProfileQuery,
+  useGetAccountDataByIdQuery,
 } from "@app/api";
-import { capitalizeFirstLetter } from "@app/utils";
+import { AppContext, capitalizeFirstLetter } from "@app/utils";
 import { currencyFormatter } from "@app/utils/formatCurrency";
 import { CustomerDetail } from "@app/components/modals/CustomerDetail";
 import { Failed } from "@app/components/modals";
@@ -91,7 +92,8 @@ export default function CustomerInformation({
     defaultValues: formData.customerBookingInfoModel,
     mode: "all",
   });
-  const { process, investmentType } = useParams();
+  const { currencies } = useContext(AppContext);
+  const { investmentType } = useParams();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [query, setQuery] = useState(null);
   const [customerData, setCustomerData] = useState(null);
@@ -131,7 +133,7 @@ export default function CustomerInformation({
     isError: accountIsError,
     error: accountError,
     isLoading,
-  } = useGetAccountBalanceQuery(accountNumber, { skip: !accountNumber });
+  } = useGetAccountDataByIdQuery(accountNumber, { skip: !accountNumber });
 
   useEffect(() => {
     if (formData?.customerBookingInfoModel?.investmentformUrl) {
@@ -150,11 +152,14 @@ export default function CustomerInformation({
           return {
             id: i.customerId,
             name: i.customer_products[0]?.accountNumber,
-            code: `${capitalizeFirstLetter(
-              i.customer_profiles[0].firstName
-            )} ${capitalizeFirstLetter(
-              i.customer_profiles[0].otherNames
-            )} ${capitalizeFirstLetter(i.customer_profiles[0].surname)}`,
+            code:
+              investmentType === "individual"
+                ? `${capitalizeFirstLetter(
+                    i.customer_profiles[0].firstName
+                  )} ${capitalizeFirstLetter(
+                    i.customer_profiles[0].otherNames
+                  )} ${capitalizeFirstLetter(i.customer_profiles[0].surname)}`
+                : i.customer_profiles[0]?.companyNameBusiness,
             value: i,
           };
         })
@@ -163,24 +168,28 @@ export default function CustomerInformation({
   }, [isError, isSuccess, searchLoading, data]);
 
   useEffect(() => {
+    const currencyId = currencies.find(
+      (i) =>
+        i?.text?.toLowerCase() === accountData?.value?.currency?.toLowerCase()
+    )?.value;
     if (accountIsSuccess) {
-      setAccountBalance(accountData.data);
+      setAccountBalance(accountData.value);
       setFormData({
         ...formData,
         customerBookingInfoModel: {
           ...formData.customerBookingInfoModel,
-          accountStatus: accountData?.data?.status,
-          currencyId: accountData?.data?.currencyId,
-          customerAccountLedgerId: accountData?.data?.ledgerId,
-          balance: accountData?.data?.status,
+          accountStatus: AccountStatus[accountData?.value?.accountStatus],
+          currencyId,
+          customerAccountLedgerId: accountData?.value?.accountUUID,
+          balance: accountData?.value?.clearedBalance,
         },
       });
     }
 
-    setValue("accountStatus", accountData?.data?.status);
-    setValue("balance", parseFloat(accountData?.data?.balance));
-    setValue("currencyId", accountData?.data?.currencyId);
-    setValue("customerAccountLedgerId", accountData?.data?.ledgerId);
+    setValue("accountStatus", AccountStatus[accountData?.value?.accountStatus]);
+    setValue("balance", parseFloat(accountData?.value?.clearedBalance));
+    setValue("currencyId", currencyId);
+    setValue("customerAccountLedgerId", accountData?.value?.accountUUID);
 
     trigger("balance");
   }, [accountIsError, accountIsSuccess, isLoading, accountData]);
@@ -233,14 +242,7 @@ export default function CustomerInformation({
   useEffect(() => {
     if (profileIsSuccess) {
       const status =
-        profileData?.data?.risk_assessments
-
-          ?.find(
-            (i) =>
-              i.parameter?.toLowerCase() ===
-              "status of customer identity verification"
-          )
-          ?.parameterOption?.toLowerCase() === "passed";
+        profileData?.data?.approvalStatus.toLowerCase() === "approved";
 
       setValidKyc(status);
 
@@ -326,7 +328,7 @@ export default function CustomerInformation({
                       Available Bal:{" "}
                       <span className="text-base font-normal text-[#636363]">
                         {currencyFormatter(
-                          accountBalance.balance,
+                          accountBalance.clearedBalance,
                           accountBalance?.currency
                         )}
                       </span>
@@ -349,6 +351,7 @@ export default function CustomerInformation({
                 customerData={{ ...profileData?.data, accountNumber }}
                 setIsOpen={setIsOpen}
                 isLoading={profileLoading || isLoading}
+                investmentType={investmentType}
               />
             </div>
           )}
