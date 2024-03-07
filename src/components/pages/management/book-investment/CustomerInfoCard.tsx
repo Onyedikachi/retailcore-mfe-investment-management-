@@ -52,7 +52,9 @@ export const Info = ({ title, data, type, setIsOpen }: InfoProps) => {
             </span>
           )}
           {type === "relationshipManager" && (
-            <span className={` ${data ? "hover:underline" : ""}`}>{data || "-"}</span>
+            <span className={` ${data ? "hover:underline" : ""}`}>
+              {data || "-"}
+            </span>
           )}
           {type !== "relationshipManager" &&
             type !== "riskStatus" &&
@@ -91,7 +93,16 @@ export default function CustomerInfoCard({
   customerData,
   setIsOpen,
   isLoading,
+  investmentType = "individual",
 }) {
+  const businessName =
+    customerData?.customer_profiles?.[0]?.companyNameBusiness;
+  const individualName = `${capitalizeFirstLetter(
+    customerData?.customer_profiles?.[0]?.firstName
+  )} ${capitalizeFirstLetter(
+    customerData?.customer_profiles?.[0]?.otherNames
+  )} ${capitalizeFirstLetter(customerData?.customer_profiles?.[0]?.surname)}`;
+
   return (
     <div className="py-6 px-10 rounded-lg shadow-custom bg-gray-100 w-full ">
       {isLoading ? (
@@ -104,13 +115,9 @@ export default function CustomerInfoCard({
           <div className="grid grid-cols-4 gap-8">
             <Info
               title={"Customer Name"}
-              data={`${capitalizeFirstLetter(
-                customerData?.customer_profiles?.[0]?.firstName
-              )} ${capitalizeFirstLetter(
-                customerData?.customer_profiles?.[0]?.otherNames
-              )} ${capitalizeFirstLetter(
-                customerData?.customer_profiles?.[0]?.surname
-              )}`}
+              data={
+                investmentType === "individual" ? individualName : businessName
+              }
               type={"customerName"}
               setIsOpen={setIsOpen}
             />
@@ -146,13 +153,7 @@ export default function CustomerInfoCard({
             <Info
               title={"KYC Status"}
               data={
-                customerData?.risk_assessments
-                  ?.find(
-                    (i) =>
-                      i.parameter.toLowerCase() ===
-                      "status of customer identity verification"
-                  )
-                  ?.parameterOption?.toLowerCase() === "passed"
+                customerData?.approvalStatus?.toLowerCase() === "approved"
                   ? "Complete"
                   : "Incomplete"
               }
