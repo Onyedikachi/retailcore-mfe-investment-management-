@@ -231,7 +231,7 @@ export default function CreateTermDeposit() {
   const refresh = searchParams.get("refresh");
   const activeId = useRef(null);
   const previousData = useRef({});
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(4);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [subText, setSubText] = useState("");
   const [successText, setSuccessText] = useState("");
@@ -276,46 +276,46 @@ export default function CreateTermDeposit() {
     },
     pricingConfiguration: {
       interestRateRangeType: 0,
-      applicableTenorMin: 0,
+      applicableTenorMin: null,
       applicableTenorMinUnit: 1,
-      applicableTenorMax: 0,
+      applicableTenorMax: null,
       applicableTenorMaxUnit: 1,
-      applicablePrincipalMin: 0,
-      applicablePrincipalMax: 0,
+      applicablePrincipalMin: null,
+      applicablePrincipalMax: null,
       interestComputationMethod: 2,
       interestRateConfigModels: [
         {
           index: 0,
-          min: 0,
-          max: 0,
-          principalMin: 0,
-          principalMax: 0,
-          tenorMin: 0,
+          min: null,
+          max: null,
+          principalMin: null,
+          principalMax: null,
+          tenorMin: null,
           tenorMinUnit: 1,
-          tenorMax: 0,
+          tenorMax: null,
           tenorMaxUnit: 1,
         },
       ],
-      interestRateMin: 0,
-      interestRateMax: 0,
+      interestRateMin: null,
+      interestRateMax: null,
     },
     liquidation: {
       part_AllowPartLiquidation: false,
-      part_MaxPartLiquidation: 0,
+      part_MaxPartLiquidation: null,
       part_RequireNoticeBeforeLiquidation: false,
       part_NoticePeriod: 1,
       part_NoticePeriodUnit: 1,
       part_LiquidationPenalty: 0,
-      part_LiquidationPenaltyPercentage: 0,
+      part_LiquidationPenaltyPercentage: null,
       part_SpecificCharges: [],
-      part_SpecialInterestRate: 0,
+      part_SpecialInterestRate: null,
       early_AllowEarlyLiquidation: false,
       early_RequireNoticeBeforeLiquidation: false,
-      early_NoticePeriod: 0,
+      early_NoticePeriod: null,
       early_NoticePeriodUnit: 1,
       early_LiquidationPenalty: 0,
-      early_LiquidationPenaltyPercentage: 0,
-      eary_SpecialInterestRate: 0,
+      early_LiquidationPenaltyPercentage: null,
+      eary_SpecialInterestRate: null,
       early_SpecificCharges: [],
     },
     productGlMappings: [],
