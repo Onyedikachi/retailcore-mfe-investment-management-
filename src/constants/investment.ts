@@ -1238,3 +1238,8 @@ export const RollOverOptions = [
     value: 1,
   },
 ];
+
+export const AccountStatus = {
+  1: "Active",
+  2: "Inactive",
+};

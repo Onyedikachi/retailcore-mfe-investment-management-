@@ -275,7 +275,9 @@ export default function CustomerEligibilityCriteria({
         <div className="flex justify-end mt-10">
           <button
             type="button"
-            disabled={watchCustomerCategory === null || docLoading || typeLoading}
+            disabled={
+              watchCustomerCategory === null || docLoading || typeLoading
+            }
             onClick={() => setIsRequirementsOpen(true)}
             className="cursor-pointer flex items-center gap-[10px] disabled:opacity-60 disabled:cursor-not-allowed"
           >
@@ -345,9 +347,9 @@ export default function CustomerEligibilityCriteria({
           </div>
         ) : (
           <div className="text-xs text-center py-6 text-gray-500 relative flex itemx-center justify-center gap-x-1">
-          Fetching document list...
-          <span className="spinner-border h-4 w-4 border-t border-gray-500 rounded-full animate-spin"></span>
-        </div>
+            Fetching document list...
+            <span className="spinner-border h-4 w-4 border-t border-gray-500 rounded-full animate-spin"></span>
+          </div>
         )}
 
         <div className="max-w-[527px]">
@@ -428,7 +430,7 @@ export default function CustomerEligibilityCriteria({
                           </div>
                         </div>
 
-                        <div className="grid gap-y-2 max-h-[298px] overflow-y-auto pr-6">
+                        <div className="grid gap-y-2  pr-6">
                           {documents
                             .filter((i: any) =>
                               i.name
@@ -498,6 +500,17 @@ export default function CustomerEligibilityCriteria({
                     data-testid="submit-document"
                     onClick={() => {
                       if (!newDocument.length) return;
+
+                      if (
+                        documents.find(
+                          (doc) =>
+                            doc.name.toLowerCase() === newDocument.toLowerCase()
+                        )
+                      ) {
+                        setNewDocument("");
+                        setIsAdd(false);
+                        return;
+                      }
                       setDocuments([
                         ...documents,
                         { id: newDocument, name: newDocument },
