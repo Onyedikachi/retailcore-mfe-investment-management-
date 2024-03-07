@@ -1,8 +1,7 @@
 import { rest } from "msw";
 import { response } from "./responses.json";
 
-const baseUrl =
-  "https://dev2-retailcore-teams-management-api.dev.bepeerless.co/v1";
+const baseUrl = "https://retailcore-teams-management-api.dev.bepeerless.co/v1";
 const utilBaseUrl = `https://utilities-api.dev.bepeerless.co/v1`;
 export const handlers = [
   rest.get(`${baseUrl}/investments`, (req, res, ctx) => {
@@ -27,7 +26,7 @@ export const handlers = [
     );
   }),
   rest.get(
-    `https://dev2-retailcore-teams-management-api.dev.bepeerless.co/v1/Investment/template`,
+    `https://retailcore-teams-management-api.dev.bepeerless.co/v1/Investment/template`,
     (req, res, ctx) => {
       const mockXLSXData = `
         Name, Age
