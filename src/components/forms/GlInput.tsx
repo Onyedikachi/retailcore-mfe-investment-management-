@@ -35,13 +35,12 @@ const LedgerItem = ({
         <div
           role="button"
           tabIndex={0}
-          className={`flex items-center  text-xs  cursor-pointer  py-[3px] rounded ${
-            query === subMenu.name ? "bg-[#E8C8C85E]" : ""
-          } ${
-            subMenu.sub_ledgers.length > 0
+          onMouseOver={() => { }}
+          className={`flex items-center  text-xs  cursor-pointer  py-[3px] rounded ${query === subMenu.name ? "bg-[#E8C8C85E]" : ""
+            } ${subMenu.sub_ledgers.length > 0
               ? "gap-1"
               : "hover:bg-[#E8C8C85E]  px-1"
-          }`}
+            }`}
           onClick={() => {
             if (subMenu.sub_ledgers.length > 0) {
               toggleSubMenu(subMenu.id);
@@ -55,9 +54,8 @@ const LedgerItem = ({
         >
           {subMenu.sub_ledgers.length > 0 && (
             <span
-              className={`${
-                toggleMenu.includes(subMenu.id) ? "transform rotate-45" : ""
-              }`}
+              className={`${toggleMenu.includes(subMenu.id) ? "transform rotate-45" : ""
+                }`}
             >
               <svg
                 width="15"
@@ -83,16 +81,15 @@ const LedgerItem = ({
   return (
     <div className="text-sm text-[#636363]">
       <div
-       role="button" tabIndex={0}
+        role="button" tabIndex={0}
         className="flex items-center gap-[11px] text-xs cursor-pointer"
         onClick={() => {
           toggleSubMenu(menu.id);
         }}
       >
         <span
-          className={`${
-            toggleMenu.includes(menu.id) ? "transform rotate-45" : ""
-          }`}
+          className={`${toggleMenu.includes(menu.id) ? "transform rotate-45" : ""
+            }`}
         >
           <svg
             width="15"
@@ -117,13 +114,11 @@ const LedgerItem = ({
               .map((subMenu, id) => (
                 <div key={subMenu.name + id.toString()}>
                   <div
-                    className={`flex items-center text-xs  cursor-pointer py-[3px] rounded ${
-                      query === subMenu.name ? "bg-[#E8C8C85E]" : ""
-                    }  ${
-                      subMenu.sub_ledgers.length > 0
+                    className={`flex items-center text-xs  cursor-pointer py-[3px] rounded ${query === subMenu.name ? "bg-[#E8C8C85E]" : ""
+                      }  ${subMenu.sub_ledgers.length > 0
                         ? "gap-1"
                         : "hover:bg-[#E8C8C85E]  px-1"
-                    }`}
+                      }`}
                     onClick={() => {
                       if (subMenu.sub_ledgers.length > 0) {
                         toggleSubMenu(subMenu.id);
@@ -137,11 +132,10 @@ const LedgerItem = ({
                   >
                     {subMenu.sub_ledgers.length > 0 && (
                       <span
-                        className={`${
-                          toggleMenu.includes(subMenu.id)
+                        className={`${toggleMenu.includes(subMenu.id)
                             ? "transform rotate-45"
                             : ""
-                        }`}
+                          }`}
                       >
                         <svg
                           width="15"
@@ -237,7 +231,7 @@ export default function EntriesAndEventsSearchResults({
       <div className="w-full" data-testid="gli">
         <div className="relative bg-[#fff] w-full">
           <div
-           role="button" tabIndex={0}
+            role="button" tabIndex={0}
             data-testid="open-button"
             className="flex items-center  border-b border-[#8F8F8F]"
             onClick={() => setOpen(!isOpen)}
@@ -261,25 +255,23 @@ export default function EntriesAndEventsSearchResults({
               >
                 {glClass.map((item) => (
                   <div
-                  role="button" tabIndex={0}
+                    role="button" tabIndex={0}
                     test-id="class-id-item"
                     key={item.id}
                     onClick={() => setClassId(item.id)}
                     className="flex flex-col cursor-pointer"
                   >
                     <div
-                      className={`${
-                        classId === item.id
-                      } ? 'text-[#252C32] text-[14px] font-semibold' : 'text-[#252C32] text-sm font-normal'`}
+                      className={`${classId === item.id
+                        } ? 'text-[#252C32] text-[14px] font-semibold' : 'text-[#252C32] text-sm font-normal'`}
                     >
                       {item.name}
                     </div>
                     <div
-                      className={`${
-                        classId === item.id
+                      className={`${classId === item.id
                           ? "bg-sterling-red-800"
                           : "bg-[#DDE2E4]"
-                      }   h-1  w-full rounded-lg`}
+                        }   h-1  w-full rounded-lg`}
                     ></div>
                   </div>
                 ))}

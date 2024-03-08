@@ -111,7 +111,7 @@ export default function QuickLinks() {
             up here.
           </p>
           <span
-            onMouseOver={() => { }}
+            onKeyUp={() => { }}
             onClick={() => setIsOpen(false)}
             className="absolute top-3 right-2"
             data-testid="close"

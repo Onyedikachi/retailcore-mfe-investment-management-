@@ -124,7 +124,7 @@ export default function CreateButton({ children }) {
             {" "}
           </div>
           <span
-            onMouseOver={() => { }}
+            onKeyDown={() => { }}
             role="button"
             tabIndex={0}
             data-testid="btn-create"

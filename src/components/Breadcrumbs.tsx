@@ -29,7 +29,7 @@ export default function Breadcrumbs({
         {links.map((item: BreadcrumbItem, idx: number) => (
           <li
             key={`${idx.toString()}-index`}
-            onMouseOver={() => { }}
+            onKeyUp={() => { }}
             onClick={() => navigate(item.url)}
             data-testid={item.title}
             className={`first-of-type:hover:bg-[#F9F2F2] ${item.url !== "#" ? "hover:bg-[#F9F2F2] cursor-pointer" : ""
