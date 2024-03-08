@@ -33,9 +33,15 @@ const LedgerItem = ({
     return subLedgers.map((subMenu, id) => (
       <div key={subMenu.name + id.toString()} className="ml-[36px]">
         <div
+          role="button"
+          tabIndex={0}
           className={`flex items-center  text-xs  cursor-pointer  py-[3px] rounded ${
             query === subMenu.name ? "bg-[#E8C8C85E]" : ""
-          } ${subMenu.sub_ledgers.length > 0?'gap-1':'hover:bg-[#E8C8C85E]  px-1'}`}
+          } ${
+            subMenu.sub_ledgers.length > 0
+              ? "gap-1"
+              : "hover:bg-[#E8C8C85E]  px-1"
+          }`}
           onClick={() => {
             if (subMenu.sub_ledgers.length > 0) {
               toggleSubMenu(subMenu.id);
@@ -77,6 +83,7 @@ const LedgerItem = ({
   return (
     <div className="text-sm text-[#636363]">
       <div
+       role="button" tabIndex={0}
         className="flex items-center gap-[11px] text-xs cursor-pointer"
         onClick={() => {
           toggleSubMenu(menu.id);
@@ -112,7 +119,11 @@ const LedgerItem = ({
                   <div
                     className={`flex items-center text-xs  cursor-pointer py-[3px] rounded ${
                       query === subMenu.name ? "bg-[#E8C8C85E]" : ""
-                    }  ${subMenu.sub_ledgers.length > 0?'gap-1':'hover:bg-[#E8C8C85E]  px-1'}`}
+                    }  ${
+                      subMenu.sub_ledgers.length > 0
+                        ? "gap-1"
+                        : "hover:bg-[#E8C8C85E]  px-1"
+                    }`}
                     onClick={() => {
                       if (subMenu.sub_ledgers.length > 0) {
                         toggleSubMenu(subMenu.id);
@@ -226,6 +237,7 @@ export default function EntriesAndEventsSearchResults({
       <div className="w-full" data-testid="gli">
         <div className="relative bg-[#fff] w-full">
           <div
+           role="button" tabIndex={0}
             data-testid="open-button"
             className="flex items-center  border-b border-[#8F8F8F]"
             onClick={() => setOpen(!isOpen)}
@@ -249,6 +261,7 @@ export default function EntriesAndEventsSearchResults({
               >
                 {glClass.map((item) => (
                   <div
+                  role="button" tabIndex={0}
                     test-id="class-id-item"
                     key={item.id}
                     onClick={() => setClassId(item.id)}

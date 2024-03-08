@@ -476,6 +476,8 @@ export default function CustomerEligibilityCriteria({
                     </div>
                     <div className="flex justify-end mb-[10px]">
                       <span
+                        role="button"
+                        tabIndex={0}
                         onClick={() => setIsAdd(true)}
                         className="cursor-pointer text-[#CF2A2A] text-sm "
                       >

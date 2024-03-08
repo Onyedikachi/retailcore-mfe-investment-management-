@@ -57,6 +57,7 @@ export default ({
     <OutsideClickHandler onOutsideClick={() => setListOpen(false)}>
       <div className="relative w-[360px]">
         <div
+         role="button" tabIndex={0}
           data-testid="open-button"
           className={`flex items-center border-b border-[#8F8F8F] ${
             disabled ? "opacity-30" : ""
@@ -94,6 +95,7 @@ export default ({
                       />
                       {type === "charges" && (
                         <span
+                        role="button" tabIndex={0}
                           onClick={() =>
                             setSearchParams({ charge: item[idType] })
                           }
@@ -108,6 +110,7 @@ export default ({
             </div>
             <div className="flex flex-row-reverse">
               <span
+                role="button" tabIndex={0}
                 onClick={() => addOptions()}
                 className="text-danger-500 text-sm hover:underline cursor-pointer"
               >

@@ -521,6 +521,7 @@ export default function ProductInfoInvestmentCalc({
             {productDetailMap?.map((item, index) => (
               <div key={index} className="">
                 <div
+                 role="button" tabIndex={0}
                   onClick={() => toggleTab(item?.name)}
                   className="flex items-center gap-x-1 mb-1"
                 >

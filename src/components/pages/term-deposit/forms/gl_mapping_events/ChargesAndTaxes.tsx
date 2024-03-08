@@ -54,6 +54,8 @@ export default ({
     <div>
       <div className="bg-[#fff] border border-[#EEEEEE] rounded-[6px]">
         <div
+          role="button"
+          tabIndex={0}
           onClick={() => handleTab()}
           className=" flex justify-between items-center px-6 py-[14px]"
         >
@@ -145,22 +147,23 @@ export default ({
       </div>
       <ChargeModal
         id={searchParams.get("charge")}
-        closeModal={() => setSearchParams((prevParams: URLSearchParams) => {
-          const updatedParams = new URLSearchParams(prevParams);
-          updatedParams.set('charge', '');
-          return updatedParams;
-      })}
-      
-
+        closeModal={() =>
+          setSearchParams((prevParams: URLSearchParams) => {
+            const updatedParams = new URLSearchParams(prevParams);
+            updatedParams.set("charge", "");
+            return updatedParams;
+          })
+        }
       />
       <TaxModal
         id={searchParams.get("tax")}
-        closeModal={() => setSearchParams((prevParams: URLSearchParams) => {
-          const updatedParams = new URLSearchParams(prevParams);
-          updatedParams.set('tax', '');
-          return updatedParams;
-      })}
-      
+        closeModal={() =>
+          setSearchParams((prevParams: URLSearchParams) => {
+            const updatedParams = new URLSearchParams(prevParams);
+            updatedParams.set("tax", "");
+            return updatedParams;
+          })
+        }
       />
     </div>
   );
