@@ -122,7 +122,6 @@ export default function CreateButton({ children }) {
             data-testid="click-element-test"
             className="fixed top-0 h-2 w-2 bg-transparent z-[-4px]"
           >
-            {" "}
           </div>
           <span
             role="button"
