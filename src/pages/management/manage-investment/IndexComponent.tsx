@@ -137,16 +137,22 @@ export default function IndexComponent() {
 
   useEffect(() => {
     if (isSuccess) {
-      setInvestmentsList(investmentProducts?.results.map(i=>{
-
-        return {
-          ...i,
-          tenor: `${i.tenor} ${Interval[1]}`,
-          principal: `${currencyFormatter(i?.initialPrincipal, handleCurrencyName(i?.currency, currencies))}`,
-          maturityValue: `${currencyFormatter(i?.maturityValue, handleCurrencyName(i?.currency, currencies))}`,
-        }
-      }));
-    
+      setInvestmentsList(
+        investmentProducts?.results.map((i) => {
+          return {
+            ...i,
+            tenor: `${i.tenor} ${Interval[1]}`,
+            principal: `${currencyFormatter(
+              i?.initialPrincipal,
+              handleCurrencyName(i?.currency, currencies)
+            )}`,
+            maturityValue: `${currencyFormatter(
+              i?.maturityValue,
+              handleCurrencyName(i?.currency, currencies)
+            )}`,
+          };
+        })
+      );
     }
   }, [investmentProducts, isSuccess]);
 
@@ -206,6 +212,8 @@ export default function IndexComponent() {
                 <div className="flex flex-col gap-[17px]">
                   <div className="flex gap-2 items-start">
                     <div
+                      role="button"
+                      tabIndex={0}
                       onClick={() => setIndividualListOpen(!individualListOpen)}
                       className={`cursor-pointer ${
                         individualListOpen ? "transform rotate-45" : ""
@@ -226,6 +234,8 @@ export default function IndexComponent() {
                     </div>
                     <div className="cursor-pointer flex flex-col gap-2">
                       <span
+                        role="button"
+                        tabIndex={0}
                         onClick={() =>
                           setIndividualListOpen(!individualListOpen)
                         }
@@ -237,8 +247,14 @@ export default function IndexComponent() {
                         <ul className="max-h-[400px] overflow-y-auto">
                           {individualInvestments?.map((item, index) => (
                             <li
+                              role="button"
+                              tabIndex={0}
                               onClick={() => handleSelection(item)}
-                              className={`hover:bg-[#F9E5E5] mb-[9px] text-xs text-[#636363] font-normal py-1 px-1 rounded ${query?.investmentProducts_In?.includes(item.id)?'bg-[#F9E5E5]':''}`}
+                              className={`hover:bg-[#F9E5E5] mb-[9px] text-xs text-[#636363] font-normal py-1 px-1 rounded ${
+                                query?.investmentProducts_In?.includes(item.id)
+                                  ? "bg-[#F9E5E5]"
+                                  : ""
+                              }`}
                               key={index}
                             >
                               {item?.productName}
@@ -251,6 +267,8 @@ export default function IndexComponent() {
 
                   <div className="flex gap-2 items-start">
                     <div
+                      role="button"
+                      tabIndex={0}
                       onClick={() => setCorporateListOpen(!corporateListOpen)}
                       className={`cursor-pointer ${
                         corporateListOpen ? "transform rotate-45" : ""
@@ -271,6 +289,8 @@ export default function IndexComponent() {
                     </div>
                     <div className="cursor-pointer flex flex-col gap-2">
                       <span
+                        role="button"
+                        tabIndex={0}
                         onClick={() => setCorporateListOpen(!corporateListOpen)}
                         className="text-sm text-[#636363] font-normal"
                       >
