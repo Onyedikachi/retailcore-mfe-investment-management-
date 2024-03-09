@@ -35,7 +35,7 @@ const LedgerItem = ({
         <div
           role="button"
           tabIndex={0}
-          onMouseOver={() => { }}
+          onKeyDown={() => { }}
           className={`flex items-center  text-xs  cursor-pointer  py-[3px] rounded ${query === subMenu.name ? "bg-[#E8C8C85E]" : ""
             } ${subMenu.sub_ledgers.length > 0
               ? "gap-1"
@@ -81,7 +81,7 @@ const LedgerItem = ({
   return (
     <div className="text-sm text-[#636363]">
       <div
-        role="button" tabIndex={0}
+        role="button" tabIndex={0} onKeyDown={() => { }}
         className="flex items-center gap-[11px] text-xs cursor-pointer"
         onClick={() => {
           toggleSubMenu(menu.id);
@@ -119,6 +119,7 @@ const LedgerItem = ({
                         ? "gap-1"
                         : "hover:bg-[#E8C8C85E]  px-1"
                       }`}
+                    onKeyDown={() => { }}
                     onClick={() => {
                       if (subMenu.sub_ledgers.length > 0) {
                         toggleSubMenu(subMenu.id);
@@ -133,8 +134,8 @@ const LedgerItem = ({
                     {subMenu.sub_ledgers.length > 0 && (
                       <span
                         className={`${toggleMenu.includes(subMenu.id)
-                            ? "transform rotate-45"
-                            : ""
+                          ? "transform rotate-45"
+                          : ""
                           }`}
                       >
                         <svg
@@ -230,7 +231,7 @@ export default function EntriesAndEventsSearchResults({
     <OutsideClickHandler onOutsideClick={() => closeDropdown(setOpen)}>
       <div className="w-full" data-testid="gli">
         <div className="relative bg-[#fff] w-full">
-          <div
+          <div onKeyDown={() => { }}
             role="button" tabIndex={0}
             data-testid="open-button"
             className="flex items-center  border-b border-[#8F8F8F]"
@@ -256,6 +257,7 @@ export default function EntriesAndEventsSearchResults({
                 {glClass.map((item) => (
                   <div
                     role="button" tabIndex={0}
+                    onKeyDown={() => { }}
                     test-id="class-id-item"
                     key={item.id}
                     onClick={() => setClassId(item.id)}
@@ -269,8 +271,8 @@ export default function EntriesAndEventsSearchResults({
                     </div>
                     <div
                       className={`${classId === item.id
-                          ? "bg-sterling-red-800"
-                          : "bg-[#DDE2E4]"
+                        ? "bg-sterling-red-800"
+                        : "bg-[#DDE2E4]"
                         }   h-1  w-full rounded-lg`}
                     ></div>
                   </div>

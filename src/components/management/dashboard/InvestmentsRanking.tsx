@@ -36,22 +36,21 @@ export default function Dashboard() {
             <div
               role="button"
               tabIndex={0}
+              onKeyDown={() => { }}
               onClick={() => tabSelector(tab)}
               key={`${index}+ ${tab}`}
-              className={`${
-                selectedTab == tab
+              className={`${selectedTab == tab
                   ? "text-[14px] font-medium text-[#636363]"
                   : "text-[14px] font-normal text-[ #8F8F8F]"
-              } flex cursor-pointer flex-col justify-between gap-[6px]`}
+                } flex cursor-pointer flex-col justify-between gap-[6px]`}
             >
               <div></div>
               <span>{tab}</span>
               <div
-                className={`${
-                  selectedTab == tab
+                className={`${selectedTab == tab
                     ? "h-[3px] w-full rounded-lg bg-sterling-red-800 shadow-lg"
                     : "h-[0px] w-full rounded-lg bg-[#DDE2E4]"
-                } `}
+                  } `}
               ></div>
             </div>
           ))}

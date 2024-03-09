@@ -478,6 +478,7 @@ export default function CustomerEligibilityCriteria({
                       <span
                         role="button"
                         tabIndex={0}
+                        onKeyDown={() => { }}
                         onClick={() => setIsAdd(true)}
                         className="cursor-pointer text-[#CF2A2A] text-sm "
                       >

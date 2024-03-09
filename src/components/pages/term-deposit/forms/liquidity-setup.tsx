@@ -130,7 +130,7 @@ export default function LiquiditySetup({
 
     setChargeOptions(options1);
   }, [chargesData]);
-  useEffect(() => {}, [formData]);
+  useEffect(() => { }, [formData]);
 
   const values = getValues();
 
@@ -139,7 +139,7 @@ export default function LiquiditySetup({
     setValue("part_SpecificCharges", partOptionCharges);
     setValue("early_SpecificCharges", earlyOptionCharges);
   }, [partOptionCharges, earlyOptionCharges]);
- 
+
   useEffect(() => {
     setDisabled(!isValid);
   }, [values, errors]);
@@ -248,11 +248,10 @@ export default function LiquiditySetup({
                       </div>
 
                       <div
-                        className={`w-full ${
-                          !watch("part_RequireNoticeBeforeLiquidation")
-                            ? "opacity-40"
-                            : ""
-                        }`}
+                        className={`w-full ${!watch("part_RequireNoticeBeforeLiquidation")
+                          ? "opacity-40"
+                          : ""
+                          }`}
                       >
                         <MinMaxInput
                           register={register}
@@ -272,11 +271,10 @@ export default function LiquiditySetup({
 
                       <div className={`w-full flex gap-4 `}>
                         <div
-                          className={`w-[150px] ${
-                            !watch("part_RequireNoticeBeforeLiquidation")
-                              ? "opacity-40"
-                              : ""
-                          }`}
+                          className={`w-[150px] ${!watch("part_RequireNoticeBeforeLiquidation")
+                            ? "opacity-40"
+                            : ""
+                            }`}
                         >
                           <BorderlessSelect
                             inputError={errors?.part_NoticePeriodUnit}
@@ -393,7 +391,7 @@ export default function LiquiditySetup({
                                 className="rounded-full px-[13px] py-[4px] text-xs bg-[#E0E0E0] flex gap-x-6 items-center text-[#16252A] capitalize"
                               >
                                 {i?.name}{" "}
-                                <span
+                                <span onKeyDown={() => { }}
                                   onClick={() => {
                                     setPartOptionCharges(
                                       partOptionCharges.filter((n) => n !== i)
@@ -496,11 +494,10 @@ export default function LiquiditySetup({
                     </div>
 
                     <div
-                      className={`w-[100px] ${
-                        !watch("early_RequireNoticeBeforeLiquidation")
-                          ? "opacity-40"
-                          : ""
-                      }`}
+                      className={`w-[100px] ${!watch("early_RequireNoticeBeforeLiquidation")
+                        ? "opacity-40"
+                        : ""
+                        }`}
                     >
                       <MinMaxInput
                         register={register}
@@ -516,11 +513,10 @@ export default function LiquiditySetup({
                     </div>
                     <div className="flex gap-4">
                       <div
-                        className={`w-[150px] ${
-                          !watch("early_RequireNoticeBeforeLiquidation")
-                            ? "opacity-40"
-                            : ""
-                        }`}
+                        className={`w-[150px] ${!watch("early_RequireNoticeBeforeLiquidation")
+                          ? "opacity-40"
+                          : ""
+                          }`}
                       >
                         <BorderlessSelect
                           inputError={errors?.early_NoticePeriodUnit}
@@ -558,7 +554,7 @@ export default function LiquiditySetup({
                         options={LiquidityOptions.filter((i) => i.value !== 5)}
                       />
                     </div>
-                  
+
                     {watchEarlyLiquidationPenalty === 2 && (
                       <div className="w-[100px]">
                         <MinMaxInput
@@ -637,7 +633,7 @@ export default function LiquiditySetup({
                               className="rounded-full px-[13px] py-[4px] text-xs bg-[#E0E0E0] flex gap-x-6 items-center text-[#16252A] capitalize"
                             >
                               {i?.name}{" "}
-                              <span
+                              <span onKeyDown={() => { }}
                                 onClick={() => {
                                   setEarlyOptionCharges(
                                     earlyOptionCharges.filter((n) => n !== i)

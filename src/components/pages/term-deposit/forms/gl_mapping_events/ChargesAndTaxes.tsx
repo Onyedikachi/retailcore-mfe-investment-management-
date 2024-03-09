@@ -55,16 +55,15 @@ export default ({
       <div className="bg-[#fff] border border-[#EEEEEE] rounded-[6px]">
         <div
           role="button"
-          tabIndex={0}
+          tabIndex={0} onKeyDown={() => { }}
           onClick={() => handleTab()}
           className=" flex justify-between items-center px-6 py-[14px]"
         >
           <span className="text-[18px] flex  gap-[1px] text-[#636363] font-semibold flex-row items-center">
             <Icon
               icon="ph:caret-right-fill"
-              className={`text-danger-500 text-sm mr-4 ${
-                activeTab.includes(tab) && "rotate-90"
-              }`}
+              className={`text-danger-500 text-sm mr-4 ${activeTab.includes(tab) && "rotate-90"
+                }`}
             />
             {header} Charges & Taxes
           </span>
@@ -88,7 +87,7 @@ export default ({
                     />
                     <span
                       className="ml-12 text-danger-500 hover:underline"
-                      onClick={() => handleRedirect("charge")}
+                      onClick={() => handleRedirect("charge")} onKeyDown={() => { }}
                     >
                       Create new charge
                     </span>
@@ -124,7 +123,7 @@ export default ({
                     />
                     <span
                       className="ml-12 text-danger-500 hover:underline"
-                      onClick={() => handleRedirect("tax")}
+                      onClick={() => handleRedirect("tax")} onKeyDown={() => { }}
                     >
                       Create new tax
                     </span>

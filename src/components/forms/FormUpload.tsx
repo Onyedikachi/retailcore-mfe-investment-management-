@@ -287,7 +287,7 @@ const FormUpload = ({
               <span
                 className="absolute bottom-2 right-3 cursor-pointer"
                 data-testid="reset"
-                onMouseOver={() => {}}
+                onKeyUp={() => {}}
                 role="button"
                 tabIndex={0}
                 onClick={() => {

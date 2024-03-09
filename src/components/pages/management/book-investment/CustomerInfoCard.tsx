@@ -40,13 +40,12 @@ export const Info = ({ title, data, type, setIsOpen }: InfoProps) => {
           )}
           {type === "riskStatus" && (
             <span
-              className={` ${
-                data?.toLowerCase() == "low"
+              className={` ${data?.toLowerCase() == "low"
                   ? "text-[#2FB755] font-normal text-base"
                   : data
-                  ? "text-red-600"
-                  : ""
-              } `}
+                    ? "text-red-600"
+                    : ""
+                } `}
             >
               {data || "-"}
             </span>
@@ -67,11 +66,10 @@ export const Info = ({ title, data, type, setIsOpen }: InfoProps) => {
       {type === "status" && (
         <div className="px-2 rounded-[4px] bg-[#D4F7DC] max-w-max">
           <span
-            className={`${
-              data?.toLowerCase() === "active"
+            className={`${data?.toLowerCase() === "active"
                 ? "text-[#15692A] "
                 : "text-red-600"
-            } text-base font-medium`}
+              } text-base font-medium`}
           >
             {data || "-"}
           </span>
@@ -81,6 +79,7 @@ export const Info = ({ title, data, type, setIsOpen }: InfoProps) => {
       {type === "customerName" && (
         <span
           role="button"
+          onKeyDown={() => { }}
           tabIndex={0}
           onClick={() => setIsOpen(true)}
           className="text-xs font-normal text-[#2FB755] hover:underline"
