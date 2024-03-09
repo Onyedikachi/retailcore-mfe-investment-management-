@@ -71,21 +71,20 @@ export default function Dashboard() {
               <div
                 data-testid={`${item}-tab`}
                 onClick={() => navigate(`/investment-management/${item}`)}
+                onKeyDown={() => { }}
                 key={item}
-                className={`${
-                  item == tab || (item == "overview" && !tab)
+                className={`${item == tab || (item == "overview" && !tab)
                     ? "text-[20px] font-semibold text-[#252C32]"
                     : "text-[16px] font-normal text-[#636363]"
-                } flex cursor-pointer flex-col justify-between gap-[6px] capitalize`}
+                  } flex cursor-pointer flex-col justify-between gap-[6px] capitalize`}
               >
                 <div></div>
                 <span>{item}</span>
                 <div
-                  className={`${
-                    item == tab || (item == "overview" && !tab)
+                  className={`${item == tab || (item == "overview" && !tab)
                       ? "h-[3px] w-full rounded-lg bg-sterling-red-800 shadow-lg"
                       : "h-[1.5px] w-full rounded-lg bg-[#DDE2E4] shadow-lg"
-                  } `}
+                    } `}
                 ></div>
               </div>
             ))}

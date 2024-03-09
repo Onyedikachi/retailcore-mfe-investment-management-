@@ -37,10 +37,10 @@ export default function IndexComponent() {
       investmentType?.toLowerCase() == "all investments"
         ? "all"
         : investmentType?.toLowerCase() == "liquidated investments"
-        ? "liquidated"
-        : investmentType?.toLowerCase() == "active investments"
-        ? "active"
-        : "all";
+          ? "liquidated"
+          : investmentType?.toLowerCase() == "active investments"
+            ? "active"
+            : "all";
     return status;
   };
 
@@ -50,11 +50,11 @@ export default function IndexComponent() {
       setStatusFilter(investmentType) == "all"
         ? null
         : [
-            sortTabStatus(
-              setStatusFilter(investmentType),
-              StatusCategoryType?.Investments
-            ),
-          ],
+          sortTabStatus(
+            setStatusFilter(investmentType),
+            StatusCategoryType?.Investments
+          ),
+        ],
     search: "",
     start_Date: null,
     end_Date: null,
@@ -137,7 +137,7 @@ export default function IndexComponent() {
 
   useEffect(() => {
     if (isSuccess) {
-      setInvestmentsList(investmentProducts?.results.map(i=>{
+      setInvestmentsList(investmentProducts?.results.map(i => {
 
         return {
           ...i,
@@ -146,7 +146,7 @@ export default function IndexComponent() {
           maturityValue: `${currencyFormatter(i?.maturityValue, handleCurrencyName(i?.currency, currencies))}`,
         }
       }));
-    
+
     }
   }, [investmentProducts, isSuccess]);
 
@@ -205,11 +205,10 @@ export default function IndexComponent() {
               <div>
                 <div className="flex flex-col gap-[17px]">
                   <div className="flex gap-2 items-start">
-                    <div
+                    <div onKeyDown={() => { }}
                       onClick={() => setIndividualListOpen(!individualListOpen)}
-                      className={`cursor-pointer ${
-                        individualListOpen ? "transform rotate-45" : ""
-                      }`}
+                      className={`cursor-pointer ${individualListOpen ? "transform rotate-45" : ""
+                        }`}
                     >
                       <svg
                         width="15"
@@ -229,6 +228,7 @@ export default function IndexComponent() {
                         onClick={() =>
                           setIndividualListOpen(!individualListOpen)
                         }
+                        onKeyDown={() => { }}
                         className="text-sm text-[#636363] font-normal"
                       >
                         Individual Investments
@@ -236,9 +236,9 @@ export default function IndexComponent() {
                       {individualListOpen && (
                         <ul className="max-h-[400px] overflow-y-auto">
                           {individualInvestments?.map((item, index) => (
-                            <li
+                            <li onKeyDown={() => { }}
                               onClick={() => handleSelection(item)}
-                              className={`hover:bg-[#F9E5E5] mb-[9px] text-xs text-[#636363] font-normal py-1 px-1 rounded ${query?.investmentProducts_In?.includes(item.id)?'bg-[#F9E5E5]':''}`}
+                              className={`hover:bg-[#F9E5E5] mb-[9px] text-xs text-[#636363] font-normal py-1 px-1 rounded ${query?.investmentProducts_In?.includes(item.id) ? 'bg-[#F9E5E5]' : ''}`}
                               key={index}
                             >
                               {item?.productName}
@@ -250,11 +250,10 @@ export default function IndexComponent() {
                   </div>
 
                   <div className="flex gap-2 items-start">
-                    <div
+                    <div onKeyDown={() => { }}
                       onClick={() => setCorporateListOpen(!corporateListOpen)}
-                      className={`cursor-pointer ${
-                        corporateListOpen ? "transform rotate-45" : ""
-                      }`}
+                      className={`cursor-pointer ${corporateListOpen ? "transform rotate-45" : ""
+                        }`}
                     >
                       <svg
                         width="15"
@@ -307,7 +306,7 @@ export default function IndexComponent() {
                     handleRefresh(query, fetch, setInvestmentsList);
                     setQuery({ ...query, page: 1 });
                   }}
-                  handleSearch={(value) => {}}
+                  handleSearch={(value) => { }}
                   productData={investmentsList}
                   // productData={useMemo(() => productData, [productData])}
 

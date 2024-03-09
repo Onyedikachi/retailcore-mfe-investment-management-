@@ -14,7 +14,7 @@ const ChargeItem = ({ charge }) => {
                 <span className="text-black">{charge?.name}</span>
                 <span>{charge?.currency} - </span>
             </div>
-            <span onClick={() => setShow(show ? false : true)}>
+            <span onClick={() => setShow(show ? false : true)} onKeyDown={() => { }}>
                 {
                     show ? <FaEye /> : <FaEyeSlash />
                 }
@@ -30,7 +30,7 @@ const TaxItem = ({ tax }) => {
                 <span className="text-black">{tax?.name}</span>
                 <span>{tax?.currency} {tax?.tax_values[0]?.tax_amount} </span>
             </div>
-            <span onClick={() => setShow(show ? false : true)}>
+            <span onClick={() => setShow(show ? false : true)} onKeyDown={() => { }}>
                 {
                     show ? <FaEye /> : <FaEyeSlash />
                 }

@@ -126,7 +126,7 @@ export const statusHandler = ({
     setFailedText(Messages.BOOKING_MODIFY_FAILED);
     setFailedSubtext(
       modifyRequestError?.message?.message ||
-        modifyRequestError?.message?.Message
+      modifyRequestError?.message?.Message
     );
     setFailed(true);
   }
@@ -194,7 +194,7 @@ export const statusHandler = ({
     setFailedText(Messages.PRODUCT_DELETE_FAILED);
     setFailedSubtext(
       deleteInvestmentRequestError?.message?.message ||
-        deleteInvestmentRequestError?.message?.Message
+      deleteInvestmentRequestError?.message?.Message
     );
     setFailed(true);
   }
@@ -211,7 +211,7 @@ export const statusHandler = ({
     setFailedText(Messages.REQUEST_FAILED);
     setFailedSubtext(
       earlyLiquidateError?.message?.message ||
-        earlyLiquidateError?.message?.Message
+      earlyLiquidateError?.message?.Message
     );
     setFailed(true);
   }
@@ -220,7 +220,7 @@ export const statusHandler = ({
     setFailedText(Messages.REQUEST_FAILED);
     setFailedSubtext(
       partLiquidateError?.message?.message ||
-        partLiquidateError?.message?.Message
+      partLiquidateError?.message?.Message
     );
     setFailed(true);
   }
@@ -229,7 +229,7 @@ export const statusHandler = ({
     setFailedText(Messages.LIQUIDATION_MODIFICATION_REQUEST_FAILED);
     setFailedSubtext(
       earlyEditLiquidateError?.message?.message ||
-        earlyEditLiquidateError?.message?.Message
+      earlyEditLiquidateError?.message?.Message
     );
     setFailed(true);
   }
@@ -238,7 +238,7 @@ export const statusHandler = ({
     setFailedText(Messages.LIQUIDATION_MODIFICATION_REQUEST_FAILED);
     setFailedSubtext(
       partEditLiquidateError?.message?.message ||
-        partEditLiquidateError?.message?.Message
+      partEditLiquidateError?.message?.Message
     );
     setFailed(true);
   }
@@ -273,9 +273,9 @@ export function handleUpdated(key, value, options, item, currencies) {
   }
   return value !== parseOptions[key]
     ? message ||
-        `Updated on ${moment(parseOptions[key]?.date).format(
-          "DD MMM YYYY, hh:mm A"
-        )}`
+    `Updated on ${moment(parseOptions[key]?.date).format(
+      "DD MMM YYYY, hh:mm A"
+    )}`
     : null;
 }
 
@@ -308,9 +308,9 @@ export const handleProductsDropdown = (
   } else {
     let options =
       DropDownOptions[
-        statusType === StatusCategoryType.Investments
-          ? InvestmentBookingStatus[status]?.toLowerCase()
-          : status
+      statusType === StatusCategoryType.Investments
+        ? InvestmentBookingStatus[status]?.toLowerCase()
+        : status
       ];
 
     if (!permissions?.includes("RE_OR_DEACTIVATE_INVESTMENT_PRODUCT")) {
@@ -455,7 +455,7 @@ export default function TableComponent<TableProps>({
   type = "",
   noData = "No data available",
   Context,
-  handleRefresh = () => {},
+  handleRefresh = () => { },
   isOverviewDrillDown = false,
 }) {
   const { role, permissions, userId, isChecker, currencies } =
@@ -710,7 +710,7 @@ export default function TableComponent<TableProps>({
     modifyRequestIsError,
     modifyRequestError,
     modifySuccess,
-      modifyIsError,
+    modifyIsError,
     partEditLiquidateSuccess,
     partEditLiquidateIsError,
     partEditLiquidateError,
@@ -746,9 +746,8 @@ export default function TableComponent<TableProps>({
         >
           <table className="w-full relative">
             <thead
-              className={`${
-                tableRows?.length > 0 ? "sticky" : "relative"
-              } top-0 bg-white border-b border-[#C2C9D1]/30 z-[10]`}
+              className={`${tableRows?.length > 0 ? "sticky" : "relative"
+                } top-0 bg-white border-b border-[#C2C9D1]/30 z-[10]`}
             >
               <tr>
                 {headers.map(
@@ -840,6 +839,7 @@ export default function TableComponent<TableProps>({
                               {header.key === "requestStatus" && (
                                 <span
                                   onClick={() => handleAction("view", item)}
+                                  onKeyDown={() => { }}
                                 >
                                   <StatusCellContent
                                     value={item[header.key]}
@@ -865,31 +865,31 @@ export default function TableComponent<TableProps>({
                                 <ActionsCellContent
                                   dropDownOptions={
                                     type === StatusCategoryType.AllProducts ||
-                                    type === StatusCategoryType.Investments
+                                      type === StatusCategoryType.Investments
                                       ? handleProductsDropdown(
-                                          type,
-                                          item.state
-                                            ? item.state
-                                            : item.investmentBookingStatus
+                                        type,
+                                        item.state
+                                          ? item.state
+                                          : item.investmentBookingStatus
                                             ? item.investmentBookingStatus
                                             : null,
-                                          isChecker,
-                                          dropDownOptions,
-                                          {
-                                            part: item.partLiquidation,
-                                            early: item.earlyLiquidation,
-                                          },
-                                          permissions,
-                                          item.created_By_Id,
-                                          userId
-                                        )
+                                        isChecker,
+                                        dropDownOptions,
+                                        {
+                                          part: item.partLiquidation,
+                                          early: item.earlyLiquidation,
+                                        },
+                                        permissions,
+                                        item.created_By_Id,
+                                        userId
+                                      )
                                       : handleDropdown(
-                                          item.requestStatus,
-                                          item.requestType,
-                                          permissions,
-                                          item.created_By_Id,
-                                          userId
-                                        )
+                                        item.requestStatus,
+                                        item.requestType,
+                                        permissions,
+                                        item.created_By_Id,
+                                        userId
+                                      )
                                   }
                                   onClick={(e: any) => handleAction(e, item)}
                                 />
@@ -923,27 +923,27 @@ export default function TableComponent<TableProps>({
                             item,
                             currencies
                           ) && (
-                            <Tooltip
-                              size="small"
-                              arrow
-                              theme="light"
-                              distance={40}
-                              className="bg-white"
-                              html={
-                                <div className="text-[#636363] text-[10px] z-[999] whitespace-nowrap">
-                                  {handleUpdated(
-                                    header.key,
-                                    item[header.key],
-                                    item.recentlyUpdatedMeta,
-                                    item,
-                                    currencies
-                                  )}
-                                </div>
-                              }
-                            >
-                              <span className="absolute h-[6px] w-[6px] -right-[6px] top-[1px] rounded-full bg-[#CF2A2A]"></span>
-                            </Tooltip>
-                          )}{" "}
+                              <Tooltip
+                                size="small"
+                                arrow
+                                theme="light"
+                                distance={40}
+                                className="bg-white"
+                                html={
+                                  <div className="text-[#636363] text-[10px] z-[999] whitespace-nowrap">
+                                    {handleUpdated(
+                                      header.key,
+                                      item[header.key],
+                                      item.recentlyUpdatedMeta,
+                                      item,
+                                      currencies
+                                    )}
+                                  </div>
+                                }
+                              >
+                                <span className="absolute h-[6px] w-[6px] -right-[6px] top-[1px] rounded-full bg-[#CF2A2A]"></span>
+                              </Tooltip>
+                            )}{" "}
                         </div>
                       </td>
                     ))}
