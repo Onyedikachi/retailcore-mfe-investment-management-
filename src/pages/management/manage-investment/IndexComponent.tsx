@@ -269,7 +269,7 @@ export default function IndexComponent() {
                       </svg>
                     </div>
                     <div className="cursor-pointer flex flex-col gap-2">
-                      <span
+                      <span onKeyDown={() => { }}
                         onClick={() => setCorporateListOpen(!corporateListOpen)}
                         className="text-sm text-[#636363] font-normal"
                       >
