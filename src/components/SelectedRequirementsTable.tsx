@@ -57,6 +57,7 @@ export default function SelectedRequirementsTable({
                       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8">
                         <div className="flex justify-center">
                           <div
+                           role="button" tabIndex={0}
                             onClick={() => deleteTableItem(document)}
                             className="cursor-pointer flex items-center justify-center p-2 rounded-sm bg-white shadow-lg "
                           >
