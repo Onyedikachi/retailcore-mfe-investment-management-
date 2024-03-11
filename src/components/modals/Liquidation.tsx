@@ -299,6 +299,8 @@ export default function Liquidation({
 
                       <div className="overflow-hidden absolute right-0 text-[10px] text-[#8F8F8F] flex items-center   rounded-full shadow-[0px_0px_1px_0px_rgba(26,32,36,0.32),0px_1px_2px_0px_rgba(91,104,113,0.32)] border-[#E5E9EB]">
                         <span
+                          role="button"
+                          tabIndex={0}
                           onClick={() => {
                             setSelection(0);
                           }}
@@ -311,6 +313,8 @@ export default function Liquidation({
                         </span>
 
                         <span
+                          role="button"
+                          tabIndex={0}
                           onClick={() => {
                             setSelection(1);
                           }}

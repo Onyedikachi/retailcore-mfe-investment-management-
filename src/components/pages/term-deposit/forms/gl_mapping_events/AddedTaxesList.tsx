@@ -58,6 +58,7 @@ export default ({ selectedTaxes, setValues, values, event, taxes,setValue }) => 
                 </td>
                 <td className="text-base font-medium text-[#636363] px-4 py-5 flex flex-row gap-x-4 justify-end">
                   <span
+                   role="button" tabIndex={0}
                     onClick={() => setSearchParams((prevParams: URLSearchParams) => {
                       const updatedParams = new URLSearchParams(prevParams);
                       updatedParams.set('tax', item.tax_id);
@@ -68,6 +69,7 @@ export default ({ selectedTaxes, setValues, values, event, taxes,setValue }) => 
                     <FaEye className="text-danger-500" />
                   </span>
                   <span
+                   role="button" tabIndex={0}
                     onClick={() => removeTax(item.tax_id)}
                     className="h-[30px] w-[30px] shadow-md bg-white   flex justify-center items-center rounded-md"
                   >

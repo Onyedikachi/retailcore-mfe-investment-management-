@@ -3,7 +3,7 @@ import routes, { routes2 } from "./routes";
 import Layout from "./layouts/Layout";
 import ProductFactory from "./pages/investment/IndexComponent";
 import InvestmentManagement from "./pages/management/IndexComponent";
-import { Suspense, useEffect } from "react";
+import { Suspense } from "react";
 import PreLoader from "./components/PreLoader";
 import AppWrapper from "./components/AppWrapper";
 

@@ -45,7 +45,7 @@ export const handleDrop = async function (
   setFileInfo(file);
   const type = file?.name?.split(".").pop();
   const fileName = file?.name;
-  
+
   const lastDotIndex = fileName?.lastIndexOf(".");
   const fileType = lastDotIndex !== -1 ? fileName?.slice(lastDotIndex + 1) : "";
 
@@ -184,6 +184,7 @@ const FormUpload = ({
   return (
     <div>
       <div
+       role="button" tabIndex={0}
         className={`border-[0.5px] bg-white ${
           hasError ? "border-danger-500 " : "border-[#C4C4C4]"
         } rounded-lg max-w-[392px] px-4 py-[11px] relative  ${
@@ -287,6 +288,8 @@ const FormUpload = ({
               <span
                 className="absolute bottom-2 right-3 cursor-pointer"
                 data-testid="reset"
+                role="button"
+                tabIndex={0}
                 onClick={() => {
                   handleReset(
                     setSelectedFile,

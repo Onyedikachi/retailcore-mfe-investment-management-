@@ -96,7 +96,7 @@ export default function RequestDeactivation({
             <h1 className="text-2xl text-[#747373] font-bold mb-5 uppercase">
               DEACTIVATION Request
             </h1>
-            <span className="cursor-pointer" onClick={() => setIsOpen(false)}>
+            <span  role="button" tabIndex={0} className="cursor-pointer" onClick={() => setIsOpen(false)}>
               <FaTimes />
             </span>
           </div>

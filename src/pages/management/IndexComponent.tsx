@@ -69,6 +69,8 @@ export default function Dashboard() {
           <div className="flex gap-[32px] ">
             {dashboardTabs.map((item) => (
               <div
+                role="button"
+                tabIndex={0}
                 data-testid={`${item}-tab`}
                 onClick={() => navigate(`/investment-management/${item}`)}
                 key={item}
@@ -93,11 +95,7 @@ export default function Dashboard() {
           <div>
             <SearchInput
               setSearchTerm={(value) =>
-                getSearchResult(
-                  value,
-                  getProducts,
-                  setSearchResults
-                )
+                getSearchResult(value, getProducts, setSearchResults)
               }
               placeholder={`Search by product name`}
               searchResults={searchResults}
@@ -112,7 +110,8 @@ export default function Dashboard() {
       <div className="bg-[#F7F7F7] px-4 sm:px-6 lg:px-8 py-[30px] max-h-[100vh] overflow-y-auto">
         {(tab?.toLowerCase() == "overview" || !tab) && <Overview />}
         {/* {tab?.toLowerCase() == "corporate" && <Corporate />} */}
-        {(tab?.toLowerCase() == "individual" || tab?.toLowerCase() == "corporate") && <Individual tab={tab} />}
+        {(tab?.toLowerCase() == "individual" ||
+          tab?.toLowerCase() == "corporate") && <Individual tab={tab} />}
       </div>
     </div>
   );
