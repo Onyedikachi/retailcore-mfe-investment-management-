@@ -135,11 +135,10 @@ export default function LiquiditySetup({
   const values = getValues();
 
   useEffect(() => {
-
     setValue("part_SpecificCharges", partOptionCharges);
     setValue("early_SpecificCharges", earlyOptionCharges);
   }, [partOptionCharges, earlyOptionCharges]);
- 
+
   useEffect(() => {
     setDisabled(!isValid);
   }, [values, errors]);
@@ -346,9 +345,7 @@ export default function LiquiditySetup({
                             setValue={setValue}
                             trigger={trigger}
                             clearErrors={clearErrors}
-                            defaultValue={
-                              formData?.part_SpecialInterestRate
-                            }
+                            defaultValue={formData?.part_SpecialInterestRate}
                             isCurrency
                             disablegroupseparators
                             isPercent
@@ -394,6 +391,8 @@ export default function LiquiditySetup({
                               >
                                 {i?.name}{" "}
                                 <span
+                                  role="button"
+                                  tabIndex={0}
                                   onClick={() => {
                                     setPartOptionCharges(
                                       partOptionCharges.filter((n) => n !== i)
@@ -558,7 +557,6 @@ export default function LiquiditySetup({
                         options={LiquidityOptions.filter((i) => i.value !== 5)}
                       />
                     </div>
-                  
                     {watchEarlyLiquidationPenalty === 2 && (
                       <div className="w-[100px]">
                         <MinMaxInput
@@ -590,9 +588,7 @@ export default function LiquiditySetup({
                           setValue={setValue}
                           trigger={trigger}
                           clearErrors={clearErrors}
-                          defaultValue={
-                            formData?.eary_SpecialInterestRate
-                          }
+                          defaultValue={formData?.eary_SpecialInterestRate}
                           isCurrency
                           disablegroupseparators
                           isPercent

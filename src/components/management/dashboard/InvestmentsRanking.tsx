@@ -34,6 +34,8 @@ export default function Dashboard() {
         <div className="flex gap-[32px] ">
           {dashboardTabs.map((tab, index) => (
             <div
+              role="button"
+              tabIndex={0}
               onClick={() => tabSelector(tab)}
               key={`${index}+ ${tab}`}
               className={`${
@@ -63,9 +65,9 @@ export default function Dashboard() {
                 <table className="min-w-full divide-y divide-gray-300">
                   <thead>
                     <tr>
-                      {headers.map((header,idx) => (
+                      {headers.map((header, idx) => (
                         <th
-                        key={`${idx}+idtab`}
+                          key={`${idx}+idtab`}
                           scope="col"
                           className="py-3.5 pl-0 pr-3 text-left text-sm font-medium text-[#636363] sm:pl-0"
                         >

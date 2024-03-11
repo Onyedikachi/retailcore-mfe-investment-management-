@@ -80,6 +80,8 @@ export const Info = ({ title, data, type, setIsOpen }: InfoProps) => {
 
       {type === "customerName" && (
         <span
+          role="button"
+          tabIndex={0}
           onClick={() => setIsOpen(true)}
           className="text-xs font-normal text-[#2FB755] hover:underline"
         >

@@ -839,6 +839,7 @@ export default function TableComponent<TableProps>({
 
                               {header.key === "requestStatus" && (
                                 <span
+                                role="button" tabIndex={0}
                                   onClick={() => handleAction("view", item)}
                                 >
                                   <StatusCellContent

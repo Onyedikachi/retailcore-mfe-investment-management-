@@ -114,6 +114,7 @@ export default function Overview() {
             <div className="grid w-full max-w-[350px]  gap-5">
               {tabs.map((tab) => (
                 <div
+                role="button" tabIndex={0}
                   onClick={() => {
                     dataChange(tab);
                   }}

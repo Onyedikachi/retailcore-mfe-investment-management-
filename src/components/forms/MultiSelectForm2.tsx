@@ -76,6 +76,7 @@ export default function MultiSelectForm2({
       </div>
       <OutsideClickHandler onOutsideClick={() => closeDropdown(setIsOpen)}>
         <div
+         role="button" tabIndex={0}
           onClick={() => setIsOpen(!isOpen)}
           className={`relative gap-x-1 w-full cursor-pointer h-10 bg-white py-1 pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm flex items-center justify-between ${
             errors && errors[inputName] ? "border-red-600" : "border-[#8F8F8F]"
@@ -133,6 +134,7 @@ export default function MultiSelectForm2({
                   ))}
               </ul>
               <span
+               role="button" tabIndex={0}
                 onClick={() =>
                   handleClick(
                     register,

@@ -27,10 +27,10 @@ describe("downloadUsingFetch", () => {
   });
 
   it("should download file", async () => {
-    await downloadUsingFetch("https://dev2-retailcore-teams-management-api.dev.bepeerless.co/v1/Product/template");
+    await downloadUsingFetch("https://retailcore-teams-management-api.dev.bepeerless.co/v1/Product/template");
 
     expect(mockFetch).toHaveBeenCalledWith(
-      "https://dev2-retailcore-teams-management-api.dev.bepeerless.co/v1/Product/template"
+      "https://retailcore-teams-management-api.dev.bepeerless.co/v1/Product/template"
     );
 
     expect(mockResponse.blob).toHaveBeenCalled();

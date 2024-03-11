@@ -30,7 +30,9 @@ export default function BookInvestmentButton({
         }}
       >
         <div className="relative">
-          <div onClick={() => setIsOpen(true)}>{children}</div>
+          <div role="button" tabIndex={0} onClick={() => setIsOpen(true)}>
+            {children}
+          </div>
           {isOpen && (
             <div className="top-0 absolute w-[286px] z-10 bg-white rounded-b-lg shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] pt-[1px]">
               <ul>

@@ -7,18 +7,17 @@ import { Fragment, useState } from "react";
 
 const ChargeItem = ({ charge }) => {
     const [show, setShow] = useState(true);
-    console.log("charge", charge)
     return (
         <div className="bg-[#E0E0E0] rounded-full h-12 w-max-[200px] p-2 flex flex-row justify-between items-center">
             <div className="text-sm flex flex-col justify-center items-start m-4">
-                <span className="text-black">{charge?.name}</span>
-                <span>{charge?.currency} - </span>
+                <span className="text-black capitalize">{charge?.name}</span>
+                {/* <span>{charge?.currency} - </span> */}
             </div>
-            <span onClick={() => setShow(show ? false : true)}>
+            {/* <span onClick={() => setShow(show ? false : true)}>
                 {
                     show ? <FaEye /> : <FaEyeSlash />
                 }
-            </span>
+            </span> */}
         </div>
     )
 }
@@ -27,14 +26,14 @@ const TaxItem = ({ tax }) => {
     return (
         <div className="bg-[#E0E0E0] rounded-full h-12 w-max-[200px] p-2 flex flex-row justify-between items-center">
             <div className="text-sm flex flex-col justify-center items-start m-4">
-                <span className="text-black">{tax?.name}</span>
-                <span>{tax?.currency} {tax?.tax_values[0]?.tax_amount} </span>
+                <span className="text-black capitalize">{tax?.name}</span>
+                {/* <span>{tax?.currency} {tax?.tax_values[0]?.tax_amount} </span> */}
             </div>
-            <span onClick={() => setShow(show ? false : true)}>
+            {/* <span onClick={() => setShow(show ? false : true)}>
                 {
                     show ? <FaEye /> : <FaEyeSlash />
                 }
-            </span>
+            </span> */}
         </div>
     )
 }
