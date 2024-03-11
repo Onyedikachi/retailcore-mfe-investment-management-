@@ -10,11 +10,11 @@ import ChargeAndTaxMultiselect from "./ChargeAndTaxMultiselect";
 export function handleRedirect(type) {
   if (type === "tax") {
     window.location.href =
-      "https://seabaas.dev.bepeerless.co/configuration/tax-management/create-tax/1";
+      "https://dev2-seabaas.dev.bepeerless.co/configuration/tax-management/create-tax/1";
   }
   if (type === "charge") {
     window.location.href =
-      "https://seabaas.dev.bepeerless.co/configuration/charges-management/create-charge/1";
+      "https://dev2-seabaas.dev.bepeerless.co/configuration/charges-management/create-charge/1";
   }
 }
 
