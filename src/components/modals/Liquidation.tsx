@@ -52,8 +52,8 @@ export const handleLiquidationCalculationPayload = ({
         type === "early"
           ? detail?.principal
           : values?.amount
-          ? values?.amount
-          : 0,
+            ? values?.amount
+            : 0,
       liquidationUnit: liquidationUnitEnum[selection],
     };
     liquidationCalculation(payload);
@@ -205,23 +205,21 @@ export default function Liquidation({
 
   useEffect(() => {
     setText(
-      `The customer is required to provide a ${
-        type === "early"
-          ? productDetails?.liquidation?.early_NoticePeriod
-          : productDetails?.liquidation?.part_NoticePeriod
-      }-${
-        Interval[
-          type === "early"
-            ? productDetails?.liquidation?.early_NoticePeriodUnit
-            : productDetails?.liquidation?.part_NoticePeriodUnit
-        ]
+      `The customer is required to provide a ${type === "early"
+        ? productDetails?.liquidation?.early_NoticePeriod
+        : productDetails?.liquidation?.part_NoticePeriod
+      }-${Interval[
+      type === "early"
+        ? productDetails?.liquidation?.early_NoticePeriodUnit
+        : productDetails?.liquidation?.part_NoticePeriodUnit
+      ]
       } notice before requesting ${type} liquidation, proceeding with this request implies that the customer has given ample notice as specified.`
     );
 
     setPercentValue(productDetails?.liquidation?.part_MaxPartLiquidation);
     setAmountValue(
       (productDetails?.liquidation?.part_MaxPartLiquidation / 100) *
-        bookingDetails?.data?.facilityDetailsModel?.principal
+      bookingDetails?.data?.facilityDetailsModel?.principal
     );
   }, [productDetails, detail, bookingDetailsIsSuccess, bookingDetails?.data]);
 
@@ -300,13 +298,13 @@ export default function Liquidation({
                       <div className="overflow-hidden absolute right-0 text-[10px] text-[#8F8F8F] flex items-center   rounded-full shadow-[0px_0px_1px_0px_rgba(26,32,36,0.32),0px_1px_2px_0px_rgba(91,104,113,0.32)] border-[#E5E9EB]">
                         <span
                           role="button"
+                          onKeyDown={() => { }}
                           tabIndex={0}
                           onClick={() => {
                             setSelection(0);
                           }}
-                          className={`w-[55px] border-r border-[#E5E9EB] py-1 px-2 ${
-                            selection === 0 ? "bg-[#FFE9E9] " : ""
-                          }`}
+                          className={`w-[55px] border-r border-[#E5E9EB] py-1 px-2 ${selection === 0 ? "bg-[#FFE9E9] " : ""
+                            }`}
                         >
                           {" "}
                           NGN
@@ -315,12 +313,12 @@ export default function Liquidation({
                         <span
                           role="button"
                           tabIndex={0}
+                          onKeyDown={() => { }}
                           onClick={() => {
                             setSelection(1);
                           }}
-                          className={`w-[55px] py-1 px-2 ${
-                            selection === 1 ? "bg-[#FFE9E9] " : ""
-                          }`}
+                          className={`w-[55px] py-1 px-2 ${selection === 1 ? "bg-[#FFE9E9] " : ""
+                            }`}
                         >
                           {" "}
                           Percent
@@ -491,9 +489,9 @@ export default function Liquidation({
                           productDetails?.liquidation
                             ?.early_LiquidationPenalty === 3
                             ? productDetails?.liquidation
-                                ?.eary_SpecialInterestRate
+                              ?.eary_SpecialInterestRate
                             : productDetails?.liquidation
-                                ?.early_LiquidationPenaltyPercentage
+                              ?.early_LiquidationPenaltyPercentage
                         )}
                       {type.toLowerCase() == "part" &&
                         handleLiquidationPenalty(
@@ -501,9 +499,9 @@ export default function Liquidation({
                           productDetails?.liquidation
                             ?.part_LiquidationPenalty === 3
                             ? productDetails?.liquidation
-                                ?.part_SpecialInterestRate
+                              ?.part_SpecialInterestRate
                             : productDetails?.liquidation
-                                ?.part_LiquidationPenaltyPercentage
+                              ?.part_LiquidationPenaltyPercentage
                         )}
                     </span>
                   )}

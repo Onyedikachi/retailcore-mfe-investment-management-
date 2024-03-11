@@ -38,7 +38,7 @@ export default function SelectedRequirementsTable({
                       key={i + idx.toString()}
                       className="text-left relative uppercase font-bold text-sm text-[#AAAAAA] px-4 py-5 after:content-[''] after:w-1 after:h-[18px] after:absolute after:border-r after:left-0 after:top-1/2 after:translate-y-[-50%] after:border-[#AAAAAA]/75 first-of-type:after:content-none last-of-type:after:content-none border-b border-[#C2C9D1]/30 whitespace-nowrap"
                     >
-                  {i}
+                      {i}
                     </th>
                   ))}
                 </tr>
@@ -57,7 +57,7 @@ export default function SelectedRequirementsTable({
                       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8">
                         <div className="flex justify-center">
                           <div
-                           role="button" tabIndex={0}
+                            onKeyUp={() => { }}
                             onClick={() => deleteTableItem(document)}
                             className="cursor-pointer flex items-center justify-center p-2 rounded-sm bg-white shadow-lg "
                           >

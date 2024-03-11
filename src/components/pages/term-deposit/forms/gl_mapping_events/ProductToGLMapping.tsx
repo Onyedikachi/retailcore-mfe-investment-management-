@@ -202,7 +202,7 @@ export default ({
   }, []);
 
   useEffect(() => {
-   
+
     console.log("🚀 ~ useEffect ~ values:", values)
 
   }, [values]);
@@ -308,15 +308,14 @@ export default ({
         <div>
           <div className="bg-[#fff] border border-[#EEEEEE] rounded-[6px]">
             <div className="border-b border-[#EEEEEE] flex justify-between items-center px-6 py-[14px]">
-              <span
+              <span onKeyDown={() => { }}
                 onClick={() => handleTab()}
                 className="text-[18px] flex  gap-[1px] text-[#636363] font-semibold flex-row items-center"
               >
                 <Icon
                   icon="ph:caret-right-fill"
-                  className={`text-danger-500 text-sm mr-4 ${
-                    activeTab.includes(1) && "rotate-90"
-                  }`}
+                  className={`text-danger-500 text-sm mr-4 ${activeTab.includes(1) && "rotate-90"
+                    }`}
                 />
                 Product to GL Mapping <RedDot />
               </span>
