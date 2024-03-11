@@ -133,7 +133,7 @@ export default ({ id, closeModal }) => {
                               </span>
                               <span>{item.ledger_code}</span>
                             </div>
-                            <div className="pl-4 w-[32%] flex justify-center items-center">
+                            <div className="pl-4 w-[32%] flex justify-start items-center">
                               <span>
                                 {item?.balance_impact.toLowerCase() ===
                                 "low" ? (
