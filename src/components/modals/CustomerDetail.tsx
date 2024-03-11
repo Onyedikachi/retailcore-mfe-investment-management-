@@ -15,7 +15,10 @@ interface Props {
 }
 export const TabHeader = ({ title, active }) => {
   return (
-    <div data-testid="tab-header" className="border  flex gap-x-4 items-center py-1 px-4 border-[#eee]">
+    <div
+      data-testid="tab-header"
+      className="border  flex gap-x-4 items-center py-1 px-4 border-[#eee]"
+    >
       {active.includes(title) ? (
         <FaCaretDown className="text-red-600" />
       ) : (
@@ -30,8 +33,15 @@ export const TabContent = ({ title, content, detail }) => {
   return (
     <div className="grid grid-cols-1 gap-y-6 px-[70px] mt-[27px]">
       {content.map((item) => (
-        <div data-testid="tab-content-item" key={`${item.key}-idx`} className="flex gap-x-[60px] items-center">
-          <div data-testid="tab-content-label" className="text-base font-medium w-[200px] capitalize">
+        <div
+          data-testid="tab-content-item"
+          key={`${item.key}-idx`}
+          className="flex gap-x-[60px] items-center"
+        >
+          <div
+            data-testid="tab-content-label"
+            className="text-base font-medium w-[200px] capitalize"
+          >
             {item.label}
           </div>
           {item.type === "date" ? (
@@ -98,7 +108,7 @@ export const CustomerDetail = ({ isOpen, setIsOpen, detail }: Props) => {
                 Customer's Information
               </h1>
             </div>
-            <span onClick={() => setIsOpen(false)}>
+            <span role="button" tabIndex={0} onClick={() => setIsOpen(false)}>
               {" "}
               <FaTimes className="text-[#525252]" />{" "}
             </span>
@@ -133,7 +143,11 @@ export const CustomerDetail = ({ isOpen, setIsOpen, detail }: Props) => {
           <div className="py-2 max-h-[450px] overflow-y-auto grid gap-y-[27px]">
             {detailData.map((item) => (
               <div key={item.title}>
-                <div onClick={() => toggleTab(item.title)}>
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => toggleTab(item.title)}
+                >
                   <TabHeader title={item.title} active={active} />
                 </div>
                 {active.includes(item.title) && (

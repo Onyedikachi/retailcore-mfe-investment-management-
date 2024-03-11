@@ -42,6 +42,7 @@ export function SearchValues({
 
   return (
     <div
+    role="button" tabIndex={0}
       onClick={handleClick}
       className="flex gap-x-2 cursor-pointer hover:bg-[#F9E5E5] py-1 px-2"
     >

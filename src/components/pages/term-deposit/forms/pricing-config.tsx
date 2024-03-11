@@ -191,7 +191,7 @@ export default function PricingConfig({
       setDisabled(true);
     }
   }, [values]);
-  
+
   useEffect(() => {
     if (formData) {
       Object.entries(formData).forEach(([name, value]) =>
@@ -555,7 +555,12 @@ export default function PricingConfig({
                     {/* tenor ends here  */}
                   </div>
                   {interestRateConfigModels.length > 1 && (
-                    <div className="h-4 w-4" onClick={() => removeField(index)}>
+                    <div
+                      className="h-4 w-4"
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => removeField(index)}
+                    >
                       <svg
                         width="11"
                         height="10"

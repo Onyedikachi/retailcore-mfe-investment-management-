@@ -111,6 +111,7 @@ export default function QuickLinks() {
             up here.
           </p>
           <span
+           role="button" tabIndex={0}
             onClick={() => setIsOpen(false)}
             className="absolute top-3 right-2"
             data-testid="close"
