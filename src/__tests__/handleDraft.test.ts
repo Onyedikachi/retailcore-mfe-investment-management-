@@ -33,7 +33,7 @@ describe('handleDraft', () => {
     it("should set createProduct if process == 'create'", () => {
       const setIsConfirmOpen = jest.fn();
       const process = "create";
-      const id = "123";
+      const id = null;
       const modifyRequest = jest.fn();
       const productData = {id: id};
       const modifyProduct = jest.fn();
@@ -48,7 +48,7 @@ describe('handleDraft', () => {
     it("should set createProduct if process == 'clone'", () => {
       const setIsConfirmOpen = jest.fn();
       const process = "clone";
-      const id = "123";
+      const id = null;
       const productData = {id: id};
       const modifyRequest = jest.fn();
       const modifyProduct = jest.fn();

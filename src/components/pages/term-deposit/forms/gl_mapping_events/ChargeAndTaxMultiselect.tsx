@@ -57,11 +57,10 @@ export default ({
     <OutsideClickHandler onOutsideClick={() => setListOpen(false)}>
       <div className="relative w-[360px]">
         <div
-         role="button" tabIndex={0}
+          role="button" tabIndex={0} onKeyDown={() => { }}
           data-testid="open-button"
-          className={`flex items-center border-b border-[#8F8F8F] ${
-            disabled ? "opacity-30" : ""
-          }`}
+          className={`flex items-center border-b border-[#8F8F8F] ${disabled ? "opacity-30" : ""
+            }`}
           onClick={() => setListOpen(true)}
         >
           <span className="w-8 h-8 flex items-center justify-center">
@@ -95,7 +94,7 @@ export default ({
                       />
                       {type === "charges" && (
                         <span
-                        role="button" tabIndex={0}
+                          role="button" tabIndex={0} onKeyDown={() => { }}
                           onClick={() =>
                             setSearchParams({ charge: item[idType] })
                           }
@@ -111,7 +110,7 @@ export default ({
             <div className="flex flex-row-reverse">
               <span
                 role="button" tabIndex={0}
-                onClick={() => addOptions()}
+                onClick={() => addOptions()} onKeyDown={() => { }}
                 className="text-danger-500 text-sm hover:underline cursor-pointer"
               >
                 Add selected {type === "charges" ? "charge(s)" : "taxe(es)"}

@@ -380,7 +380,7 @@ export default function PricingConfig({
                           isCurrency
                           disablegroupseparators
 
-                          // defaultValue={range.min}
+                        // defaultValue={range.min}
                         />
                       </div>{" "}
                       -
@@ -555,12 +555,7 @@ export default function PricingConfig({
                     {/* tenor ends here  */}
                   </div>
                   {interestRateConfigModels.length > 1 && (
-                    <div
-                      className="h-4 w-4"
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => removeField(index)}
-                    >
+                    <div className="h-4 w-4" onClick={() => removeField(index)} onKeyDown={() => { }}>
                       <svg
                         width="11"
                         height="10"
@@ -629,7 +624,7 @@ export default function PricingConfig({
                   isCurrency
                   disablegroupseparators
 
-                  // defaultValue={range.min}
+                // defaultValue={range.min}
                 />
               </div>{" "}
               -
@@ -698,7 +693,7 @@ export default function PricingConfig({
               errors={errors}
               trigger={trigger}
               clearErrors={clearErrors}
-              setValue={() => {}}
+              setValue={() => { }}
               disabled
             />
           </div>

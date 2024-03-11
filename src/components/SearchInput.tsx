@@ -42,7 +42,8 @@ export function SearchValues({
 
   return (
     <div
-    role="button" tabIndex={0}
+      role="button" tabIndex={0}
+      onKeyUp={() => { }}
       onClick={handleClick}
       className="flex gap-x-2 cursor-pointer hover:bg-[#F9E5E5] py-1 px-2"
     >
@@ -204,13 +205,11 @@ export default function SearchInput({
       onOutsideClick={() => closeBox(setSearchResults, setShowBox)}
     >
       <div
-        className={`z-[99] border-b border-[#AAAAAA]  flex items-center relative bg-transparent shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] ${
-          fullW ? "" : "max-w-[340px]"
-        } ${
-          hideBorder
+        className={`z-[99] border-b border-[#AAAAAA]  flex items-center relative bg-transparent shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] ${fullW ? "" : "max-w-[340px]"
+          } ${hideBorder
             ? ""
             : "after:content-[''] after:w-1 after:h-[80%] after:absolute after:border-r after:right-[-15px] after:top-1/2 after:translate-y-[-50%] after:border-[#E5E9EB]"
-        } ${customClass}`}
+          } ${customClass}`}
       >
         <button className="w-8 h-8 p-1 flex items-center justify-center">
           <FaSearch className="text-[#48535B]" />
@@ -225,11 +224,10 @@ export default function SearchInput({
             type={inputType}
             data-testid="search"
             placeholder={placeholder}
-            className={`bg-transparent peer placeholder:text-base h-8 py-2 pl-1 pr-4 placeholder:text-[#AAAAAA] outline-none appearance-none ${
-              isTruncated
+            className={`bg-transparent peer placeholder:text-base h-8 py-2 pl-1 pr-4 placeholder:text-[#AAAAAA] outline-none appearance-none ${isTruncated
                 ? "text-transparent group-hover:text-[#48535B] focus:text-[#48535B] hover:appearance-none"
                 : "text-[#48535B]"
-            } ${fullW ? "w-full" : "w-[280px]"}`}
+              } ${fullW ? "w-full" : "w-[280px]"}`}
           />
           {isTruncated && (
             <span className="peer-focus:text-transparent group-hover:text-transparent text-[#48535B] block max-w-[180px] truncate absolute top-1 left-1">

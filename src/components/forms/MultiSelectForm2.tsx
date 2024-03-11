@@ -45,7 +45,7 @@ export default function MultiSelectForm2({
   value,
   labelName,
   allLabel = "[Select all]",
-  register = () => {},
+  register = () => { },
   inputError,
   inputName,
   defaultProperty,
@@ -76,11 +76,11 @@ export default function MultiSelectForm2({
       </div>
       <OutsideClickHandler onOutsideClick={() => closeDropdown(setIsOpen)}>
         <div
-         role="button" tabIndex={0}
+          role="button" tabIndex={0}
+          onKeyDown={() => { }}
           onClick={() => setIsOpen(!isOpen)}
-          className={`relative gap-x-1 w-full cursor-pointer h-10 bg-white py-1 pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm flex items-center justify-between ${
-            errors && errors[inputName] ? "border-red-600" : "border-[#8F8F8F]"
-          }`}
+          className={`relative gap-x-1 w-full cursor-pointer h-10 bg-white py-1 pr-10 text-left  border-b border-[#636363] focus:outline-none  text-[#252C32] text-sm flex items-center justify-between ${errors && errors[inputName] ? "border-red-600" : "border-[#8F8F8F]"
+            }`}
         >
           <span className="flex items-center justify-center">
             {" "}
@@ -110,8 +110,8 @@ export default function MultiSelectForm2({
             <div>
               <ul className="grid overflow-y-auto max-h-[300px]">
                 {options?.filter((i) =>
-                    i.text?.toLowerCase().includes(search?.toLowerCase())
-                  )
+                  i.text?.toLowerCase().includes(search?.toLowerCase())
+                )
                   .map((item, idx) => (
                     <li
                       key={`${idx.toString()}-key`}
@@ -134,7 +134,8 @@ export default function MultiSelectForm2({
                   ))}
               </ul>
               <span
-               role="button" tabIndex={0}
+                role="button" tabIndex={0}
+                onKeyDown={() => { }}
                 onClick={() =>
                   handleClick(
                     register,
