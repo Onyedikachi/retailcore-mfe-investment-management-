@@ -111,11 +111,7 @@ export default function QuickLinks() {
             up here.
           </p>
           <span
-<<<<<<< HEAD
-           role="button" tabIndex={0}
-=======
             onKeyUp={() => { }}
->>>>>>> fix-button-accessibility
             onClick={() => setIsOpen(false)}
             className="absolute top-3 right-2"
             data-testid="close"
