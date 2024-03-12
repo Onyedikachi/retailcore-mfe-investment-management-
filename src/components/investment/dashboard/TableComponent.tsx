@@ -31,6 +31,7 @@ interface ProductDataProps {
   "product name": string;
   "product code": string;
   "product type": string;
+  "customer category": string;
   state: string;
   "updated on": string;
 }
@@ -124,6 +125,7 @@ export function handleDownload(downloadData, isChecker, csvExporter, category) {
         "product name": i?.productName || "",
         "product code": i?.productCode || "",
         "product type": i?.productType || "",
+        "customer category": i?.customerCategory || "",
         state: i?.state || "",
         "updated on": moment(i.updated_At).format("DD MMM YYYY, hh:mm A"),
       };
