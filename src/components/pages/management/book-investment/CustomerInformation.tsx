@@ -170,7 +170,7 @@ export default function CustomerInformation({
   useEffect(() => {
     const currencyId = currencies.find(
       (i) =>
-        i?.text?.toLowerCase() === accountData?.value?.currency?.toLowerCase()
+        i?.text?.toLowerCase() === accountData?.value?.currencyCode?.toLowerCase()
     )?.value;
     if (accountIsSuccess) {
       setAccountBalance(accountData.value);
