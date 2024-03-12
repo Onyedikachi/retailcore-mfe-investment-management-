@@ -1,13 +1,17 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import Preview, { cancelProcess, handleErrorMessage, handleSuccessMessage, submitForm } from "../../../../../components/pages/term-deposit/forms/preview"
 import { renderWithProviders } from "../../../../../__mocks__/api/Wrapper";
+jest.mock("../../../../../api/productMgtApi.ts", () => ({
+  useGetApplicableCharges: jest.fn().mockReturnValue({ data: {}, isLoading: false, isSuccess: true, isError: false }),
+  useGetApplicableTaxes: jest.fn().mockReturnValue({ data: {}, isLoading: false, isSuccess: true, isError: false })
+}))
 jest.mock("react-router-dom", () => ({
   BrowserRouter: ({ children }) => <div>{children}</div>,
   Link: ({ to, children }) => <a href={to}>{children}</a>,
   useNavigate: jest.fn(),
   useSearchParams: jest.fn(),
   useParams: jest.fn(),
-  useLocation: jest.fn().mockReturnValue({pathname: ""})
+  useLocation: jest.fn().mockReturnValue({ pathname: "" })
 }));
 jest
   .spyOn(require("react-router-dom"), "useNavigate")
@@ -79,6 +83,22 @@ const fData = {
   InterestExpenseAccount: "",
   isDraft: false,
   productType: 0,
+  principalDepositChargesAndTaxes: {
+    applicableCharges: [],
+      applicableTaxes: []
+  },
+  earlyLiquidationChargesAndTaxes: {
+    applicableCharges: [],
+      applicableTaxes: []
+  },
+  partLiquidationChargesAndTaxes: {
+    applicableCharges: [],
+      applicableTaxes: []
+  },
+  investmentLiquidationChargesAndTaxes: {
+    applicableCharges: [],
+      applicableTaxes: []
+  },
 }
 
 describe("Preview", () => {
@@ -166,16 +186,16 @@ describe("handleSubmit", () => {
     })
   })
   it("Should call createProduct if process === create", () => {
-    submitForm(formData, modifyProduct, modifyRequest, createProduct, "create", id, previousData)
-    expect(createProduct).toBeCalledWith({...formData, isDraft: false})
+    submitForm(formData, modifyProduct, modifyRequest, createProduct, "create", null, previousData)
+    expect(createProduct).toBeCalledWith({ ...formData, isDraft: false })
   })
   it("Should call createProduct if process === continue", () => {
-    submitForm(formData, modifyProduct, modifyRequest, createProduct, "continue", id, previousData)
-    expect(createProduct).toBeCalledWith({...formData, isDraft: false})
+    submitForm(formData, modifyProduct, modifyRequest, createProduct, "continue", null, previousData)
+    expect(createProduct).toBeCalledWith({ ...formData, isDraft: false })
   })
   it("Should call createProduct if process === clone", () => {
-    submitForm(formData, modifyProduct, modifyRequest, createProduct, "clone", id, previousData)
-    expect(createProduct).toBeCalledWith({...formData, isDraft: false})
+    submitForm(formData, modifyProduct, modifyRequest, createProduct, "clone", null, previousData)
+    expect(createProduct).toBeCalledWith({ ...formData, isDraft: false })
   })
 })
 

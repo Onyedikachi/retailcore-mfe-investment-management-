@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
-  <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/Sterling-investment.tsx">
-    <testCase name="microfrontend bootstraps the app" duration="20"/>
-    <testCase name="microfrontend mounts and unmounts" duration="61"/>
-  </file>
-  <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/App.test.tsx">
-    <testCase name="Test App Component If App is rendered wihout issues" duration="144"/>
-  </file>
-  <file path="/Users/emmanuelolagundoye/Documents/dev/sterling/retailcore-mfe-investment-management/src/__tests__/components/Pages/management/SummaryComponent.test.tsx">
-    <testCase name="Summary should render the component without crashing" duration="1375"/>
+  <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/components/Pages/term-deposit/forms/preview.test.tsx">
+    <testCase name="Preview Renders without crashing" duration="649"/>
+    <testCase name="handleSuccess Sets success message if isSuccess and role === superadmin" duration="8"/>
+    <testCase name="handleSuccess Sets success message if isSuccess is false and role === superadmin" duration="7"/>
+    <testCase name="handleSuccess Sets success message if role !== superadmin" duration="17"/>
+    <testCase name="handleErrorMessage Sets error message if isError === true" duration="3"/>
+    <testCase name="handleErrorMessage Sets error message if isError === false" duration="5"/>
+    <testCase name="handleSubmit Should call modifyProduct if process === modify" duration="4"/>
+    <testCase name="handleSubmit Should call modifyRequest if process === withdraw_modify" duration="6"/>
+    <testCase name="handleSubmit Should call createProduct if process === create" duration="7"/>
+    <testCase name="handleSubmit Should call createProduct if process === continue" duration="5"/>
+    <testCase name="handleSubmit Should call createProduct if process === clone" duration="3"/>
+    <testCase name="handleCancel Sets correct message when process === create" duration="8"/>
+    <testCase name="handleCancel Sets correct message when process === modify" duration="4"/>
+    <testCase name="handleCancel Sets correct message when process === continue" duration="3"/>
   </file>
 </testExecutions>

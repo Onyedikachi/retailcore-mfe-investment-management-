@@ -46,11 +46,10 @@ const LinkItem = ({
               }
             }}
             className={`disabled:opacity-50 disabled:cursor-not-allowed w-full z-10 relative text-base text-[#636363] capitalize pl-6 pr-4 flex justify-between items-center py-3 group-last:rounded-b-lg hover:bg-[#F9E5E5] cursor-pointer 
-            ${
-              activeChild?.key?.toLowerCase() === item.key
+            ${activeChild?.key?.toLowerCase() === item.key
                 ? "bg-[#F9E5E5]"
                 : "bg-white"
-            }`}
+              }`}
           >
             <span>{item.title}</span> {!item.isUrl && <FaCaretRight />}
             {!item.isUrl && activeChild?.key?.toLowerCase() === item.key && (
@@ -124,6 +123,7 @@ export default function CreateButton({ children }) {
           >
           </div>
           <span
+            onKeyDown={() => { }}
             role="button"
             tabIndex={0}
             data-testid="btn-create"
@@ -173,7 +173,7 @@ export default function CreateButton({ children }) {
                         {...{
                           buttonOptions: fourthActive?.links,
                           permissions,
-                          setActive: () => {},
+                          setActive: () => { },
                           active: secondActive,
                           activeChild: null,
                         }}

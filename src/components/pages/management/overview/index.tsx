@@ -114,14 +114,14 @@ export default function Overview() {
             <div className="grid w-full max-w-[350px]  gap-5">
               {tabs.map((tab) => (
                 <div
-                role="button" tabIndex={0}
+                  role="button" tabIndex={0}
+                  onKeyDown={() => { }}
                   onClick={() => {
                     dataChange(tab);
                   }}
                   key={tab.title}
-                  className={`${
-                    isLoadingDashboardStats ? "animate-pulse opacity-50" : ""
-                  }  cursor-pointer flex gap-3 rounded-[5px] bg-[#FFFFFF] px-6 py-8 shadow-custom`}
+                  className={`${isLoadingDashboardStats ? "animate-pulse opacity-50" : ""
+                    }  cursor-pointer flex gap-3 rounded-[5px] bg-[#FFFFFF] px-6 py-8 shadow-custom`}
                 >
                   <div className="flex items-center">
                     <div className="h-[45px] w-[45px] rounded-full bg-[#D4F7DC] flex items-center justify-center">
