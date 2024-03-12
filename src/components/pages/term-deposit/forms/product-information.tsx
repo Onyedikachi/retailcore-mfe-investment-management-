@@ -199,8 +199,6 @@ export default function ProductInformation({
     }
   }, [initiateDraft]);
   useEffect(() => {
-    console.log("🚀 ~ useEffect ~ isNameOkay:", isNameOkay);
-
     setDisabled(!isValid || isNameOkay === false);
   }, [values]);
 

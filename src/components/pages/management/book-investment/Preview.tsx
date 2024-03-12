@@ -299,7 +299,7 @@ export default function Preview({
                 detail={formData}
                 productDetail={productDetail}
                 previousData={previousData}
-                type="individual"
+                type={investmentType}
               />
             </Container>
           </div>
