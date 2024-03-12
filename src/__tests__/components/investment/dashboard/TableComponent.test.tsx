@@ -292,7 +292,7 @@ describe('initiateDownload', () => {
     const category = StatusCategoryType.AllProducts;
     const downloadProducts = jest.fn();
     const downloadRequests = jest.fn();
-    const selected = { value: 'filterValue' };
+    const selected = { value: 'created_by_anyone' };
 
     initiateDownload(query, category, downloadProducts, downloadRequests, selected);
 
@@ -306,7 +306,7 @@ describe('initiateDownload', () => {
     const category = StatusCategoryType.Requests;
     const downloadProducts = jest.fn();
     const downloadRequests = jest.fn();
-    const selected = { value: 'filterValue' };
+    const selected = { value: 'created_by_anyone' };
 
     initiateDownload(query, category, downloadProducts, downloadRequests, selected);
 
@@ -320,7 +320,7 @@ describe('initiateDownload', () => {
     const category = StatusCategoryType.AllProducts;
     const downloadProducts = jest.fn();
     const downloadRequests = jest.fn();
-    const selected = { value: 'filterValue' };
+    const selected = { value: 'created_by_anyone' };
 
     initiateDownload(query, category, downloadProducts, downloadRequests, selected);
 
@@ -334,11 +334,11 @@ describe('initiateDownload', () => {
     const category = StatusCategoryType.AllProducts;
     const downloadProducts = jest.fn();
     const downloadRequests = jest.fn();
-    const selected = null;
+    const selected = {value: "created_by_anyone"};
 
     initiateDownload(query, category, downloadProducts, downloadRequests, selected);
 
-    expect(downloadProducts).toHaveBeenCalledWith({ ...query, page_Size: 1000000 });
+    expect(downloadProducts).toHaveBeenCalledWith({ ...query, selected_by: selected.value, page_Size: 1000000 });
     expect(downloadRequests).not.toHaveBeenCalled();
   });
 
@@ -348,12 +348,12 @@ describe('initiateDownload', () => {
     const category = 'otherCategory';
     const downloadProducts = jest.fn();
     const downloadRequests = jest.fn();
-    const selected = { value: 'filterValue' };
+    const selected = { value: 'created_by_anyone' };
 
     initiateDownload(query, category, downloadProducts, downloadRequests, selected);
 
     expect(downloadProducts).not.toHaveBeenCalled();
-    expect(downloadRequests).toHaveBeenCalledWith({ "filter_by": "filterValue", "page_Size": 1000000 });
+    expect(downloadRequests).toHaveBeenCalledWith({ "filter_by": "created_by_anyone", "page_Size": 1000000 });
   });
 
   // Query object is empty
@@ -362,7 +362,7 @@ describe('initiateDownload', () => {
     const category = StatusCategoryType.AllProducts;
     const downloadProducts = jest.fn();
     const downloadRequests = jest.fn();
-    const selected = { value: 'filterValue' };
+    const selected = { value: 'created_by_anyone' };
 
     initiateDownload(query, category, downloadProducts, downloadRequests, selected);
 
@@ -376,7 +376,7 @@ describe('initiateDownload', () => {
     const category = StatusCategoryType.AllProducts;
     const downloadProducts = jest.fn();
     const downloadRequests = jest.fn();
-    const selected = { value: 'filterValue' };
+    const selected = { value: 'created_by_anyone' };
 
     initiateDownload(query, category, downloadProducts, downloadRequests, selected);
 

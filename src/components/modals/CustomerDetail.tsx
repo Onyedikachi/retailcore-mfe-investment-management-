@@ -108,7 +108,7 @@ export const CustomerDetail = ({ isOpen, setIsOpen, detail }: Props) => {
                 Customer's Information
               </h1>
             </div>
-            <span role="button" tabIndex={0} onClick={() => setIsOpen(false)}>
+            <span onKeyDown={() => { }} role="button" tabIndex={0} onClick={() => setIsOpen(false)}>
               {" "}
               <FaTimes className="text-[#525252]" />{" "}
             </span>
@@ -144,6 +144,7 @@ export const CustomerDetail = ({ isOpen, setIsOpen, detail }: Props) => {
             {detailData.map((item) => (
               <div key={item.title}>
                 <div
+                  onKeyDown={() => { }}
                   role="button"
                   tabIndex={0}
                   onClick={() => toggleTab(item.title)}
