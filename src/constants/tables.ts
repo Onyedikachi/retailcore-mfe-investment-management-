@@ -662,6 +662,18 @@ export const productFilterOptions: any[] = [
     value: 1,
   },
 ];
+export const customerCategoryFilterOptions: any[] = [
+  {
+    id: 1,
+    name: "Individual",
+    value: 0,
+  },
+  {
+    id: 2,
+    name: "Corporate",
+    value: 1,
+  },
+];
 
 export const DateFilterOptions: any[] = [
   {
@@ -830,6 +842,13 @@ export const productHeader = [
     label: "product type",
     key: "productType",
     options: productFilterOptions,
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "customer category",
+    key: "customerCategory",
+    options: customerCategoryFilterOptions,
     hasSelect: true,
     hasDateSelect: false,
   },
