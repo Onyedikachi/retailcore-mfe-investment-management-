@@ -170,9 +170,7 @@ export default function CustomerInformation({
   useEffect(() => {
     const currencyId = currencies.find(
       (i) =>
-        i?.text?.toLowerCase() === accountData?.value?.currencyCode?.toLowerCase()
-      
-    )?.value;
+        i?.text?.toLowerCase() === accountData?.value?.currencyCode?.toLowerCase())?.value;
     console.log("🚀 ~ useEffect ~ accountData?.value?.currency:", accountData?.value?.currencyCode)
     console.log("🚀 ~ useEffect ~ currencies:", currencies)
     console.log("🚀 ~ useEffect ~ currencyId:", currencyId)
