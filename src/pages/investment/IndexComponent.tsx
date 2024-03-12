@@ -17,11 +17,13 @@ import {
   useGetSystemAlertQuery,
 } from "@app/api";
 import {
+  CustomerCategory,
   FactoryCategories,
   ProductTypes,
   StatusFilterOptions,
   StatusTypes,
   TypeFilterOptions,
+  categoryOptions,
 } from "@app/constants";
 import { sortTabStatus } from "@app/utils/sortTabStatus";
 import { useSearchParams } from "react-router-dom";
@@ -61,8 +63,7 @@ export const handleRequestStatus = ({
   setHasMore,
   request,
   isRequestSuccess,
-  typeOptions
-
+  typeOptions,
 }: any) => {
   if (query.page === 1) {
     setRequestData([]);
@@ -103,6 +104,7 @@ export const handleProductStatus = ({
           ...i,
           state: StatusTypes.find((n) => n.id === i.state)?.type,
           productType: ProductTypes.find((n) => n.id === i.productType)?.name,
+          customerCategory: CustomerCategory[i.customerCategory],
         }))
       ),
     ]);
@@ -110,7 +112,6 @@ export const handleProductStatus = ({
     setHasMore(!!data?.next);
   }
 };
-
 
 export const handleRefresh = (
   category,
@@ -178,6 +179,7 @@ export default function IndexComponent() {
     initiator_In: null,
     approvers_In: null,
     total: 0,
+    customerCategory: null,
   });
   const value = useMemo(
     () => ({
@@ -293,6 +295,7 @@ export default function IndexComponent() {
     query.requestType_In,
     query.initiator_In,
     query.approvers_In,
+    query.customerCategory,
   ]);
   useEffect(() => {
     setCategory(
@@ -321,7 +324,7 @@ export default function IndexComponent() {
         setHasMore,
         isRequestSuccess,
         request,
-        typeOptions:TypeFilterOptions
+        typeOptions: TypeFilterOptions,
       }),
     [request, isRequestSuccess, isRequestError, query]
   );
