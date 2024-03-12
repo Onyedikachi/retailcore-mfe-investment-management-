@@ -1243,3 +1243,11 @@ export const AccountStatus = {
   1: "Active",
   2: "Inactive",
 };
+
+export const AccountCategories = {
+  0: "Casa",
+  1: "Internal",
+  2: "Loan",
+  3: "Investment",
+  4: "Till",
+};

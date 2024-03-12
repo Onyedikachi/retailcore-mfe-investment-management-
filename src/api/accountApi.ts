@@ -50,6 +50,14 @@ export const accountApi: any = createApi({
         };
       },
     }),
+    getAccountListDataById: builder.query<any, any>({
+      query: (data) => {
+        return {
+          url: `${accountEnquiries}GetAccountsByCustomerId?CustomerId=${data}`,
+          method: "get",
+        };
+      },
+    }),
   }),
 });
 
@@ -57,4 +65,5 @@ export const {
   useGetLedgersQuery,
   useGetGlClassQuery,
   useGetAccountDataByIdQuery,
+  useGetAccountListDataByIdQuery,
 } = accountApi;

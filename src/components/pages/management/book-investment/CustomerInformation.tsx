@@ -173,6 +173,7 @@ export default function CustomerInformation({
         i?.text?.toLowerCase() === accountData?.value?.currencyCode?.toLowerCase()
       
     )?.value;
+
     if (accountIsSuccess) {
       setAccountBalance(accountData.value);
       setFormData({
