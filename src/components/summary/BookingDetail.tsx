@@ -24,32 +24,21 @@ export default function BookingDetail({
   type,
   productDetail,
 }: any) {
-
   const { currencies } = useContext(AppContext);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [customerData, setCustomerData] = useState(null);
 
-  const {
-    data: profileData,
-    isSuccess: profileIsSuccess,
-    isError: profileIsError,
-    error: profileError,
-    isLoading: profileLoading,
-  } = useGetCustomerProfileQuery(detail?.customerBookingInfoModel?.customerId, {
-    skip: !detail?.customerBookingInfoModel?.customerId,
-  });
+  const { data: profileData } = useGetCustomerProfileQuery(
+    detail?.customerBookingInfoModel?.customerId,
+    {
+      skip: !detail?.customerBookingInfoModel?.customerId,
+    }
+  );
 
-  const {
-    data: accountData,
-    isSuccess: accountIsSuccess,
-    isError: accountIsError,
-    error: accountError,
-    isLoading,
-  } = useGetAccountBalanceQuery(
+  const { data: accountData } = useGetAccountBalanceQuery(
     detail?.customerBookingInfoModel?.customerAccount,
     { skip: !detail?.customerBookingInfoModel?.customerAccount }
   );
-
   return (
     <div>
       {isOpen && profileData && (
@@ -57,6 +46,7 @@ export default function BookingDetail({
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           detail={profileData?.data?.customer_profiles[0]}
+          id={detail?.customerBookingInfoModel?.customerAccount}
         />
       )}
       <h3 className="text-[#636363] text-[18px] font-semibold capitalize mb-[56px]">
@@ -75,7 +65,6 @@ export default function BookingDetail({
               <div className="w-full text-base font-normal text-[#636363] capitalize flex gap-x-4 items-center">
                 {" "}
                 <span>
-                  {detail?.customerBookingInfoModel?.customerName},{" "}
                   {detail?.customerBookingInfoModel?.customerAccount}{" "}
                 </span>{" "}
                 <button
@@ -91,7 +80,7 @@ export default function BookingDetail({
                 Customer type
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-                <span className="flex itmes-center"> {type} </span>
+                <span className="flex itmes-center capitalize"> {type} </span>
               </div>
             </div>
 

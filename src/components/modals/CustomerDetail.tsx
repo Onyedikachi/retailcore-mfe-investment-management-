@@ -6,11 +6,12 @@ import moment from "moment";
 import ModalLayout from "./Layout";
 import { detailData } from "@app/constants/investment";
 import { downloadUsingFetch } from "@app/utils/downloadFile";
+import { capitalizeFirstLetter } from "@app/utils";
 
 interface Props {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-
+  id?: string;
   detail: any;
 }
 export const TabHeader = ({ title, active }) => {
@@ -80,7 +81,7 @@ export const TabContent = ({ title, content, detail }) => {
   );
 };
 
-export const CustomerDetail = ({ isOpen, setIsOpen, detail }: Props) => {
+export const CustomerDetail = ({ isOpen, setIsOpen, detail, id }: Props) => {
   const [active, setActive] = useState([]);
   const toggleTab = (val) => {
     setActive((prevActive) => {
@@ -91,6 +92,12 @@ export const CustomerDetail = ({ isOpen, setIsOpen, detail }: Props) => {
       }
     });
   };
+  const businessName = detail?.companyNameBusiness;
+  const individualName = `${capitalizeFirstLetter(
+    detail?.firstName
+  )} ${capitalizeFirstLetter(detail?.otherNames)} ${capitalizeFirstLetter(
+    detail?.surname
+  )}`;
 
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -108,7 +115,12 @@ export const CustomerDetail = ({ isOpen, setIsOpen, detail }: Props) => {
                 Customer's Information
               </h1>
             </div>
-            <span onKeyDown={() => { }} role="button" tabIndex={0} onClick={() => setIsOpen(false)}>
+            <span
+              onKeyDown={() => {}}
+              role="button"
+              tabIndex={0}
+              onClick={() => setIsOpen(false)}
+            >
               {" "}
               <FaTimes className="text-[#525252]" />{" "}
             </span>
@@ -128,14 +140,11 @@ export const CustomerDetail = ({ isOpen, setIsOpen, detail }: Props) => {
             </div>
             <div>
               <p className="text-2xl font-semibold mb-[6px] capitalize">
-                {detail?.firstName} {detail?.otherNames} {detail?.surname}
+                {businessName || individualName}
               </p>
               <p className="text-base font-normal">
                 <span className="font-semibold">ID</span>:{" "}
-                {/* {detail?.validId && JSON.parse(detail?.validId).length
-                  ? JSON.parse(detail?.validId)
-                  : "-"} */}
-                {detail?.accountNumber}
+                {id}
               </p>
             </div>
           </div>
@@ -144,7 +153,7 @@ export const CustomerDetail = ({ isOpen, setIsOpen, detail }: Props) => {
             {detailData.map((item) => (
               <div key={item.title}>
                 <div
-                  onKeyDown={() => { }}
+                  onKeyDown={() => {}}
                   role="button"
                   tabIndex={0}
                   onClick={() => toggleTab(item.title)}
