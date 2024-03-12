@@ -9,8 +9,7 @@ import {
   RollOverOptions,
   TransactionSettingModelSchema,
 } from "@app/constants";
-import { useGetCustomerProfileQuery } from "@app/api";
-import { capitalizeFirstLetter } from "@app/utils";
+import { useGetAccountListDataByIdQuery } from "@app/api";
 import { InputDivs } from "../../term-deposit/forms/gl_mapping_events/ProductToGLMapping";
 
 function classNames(...classes) {
@@ -27,12 +26,12 @@ export const handleAccountForLiquidation = ({
   trigger,
 }) => {
   if (profileIsSuccess) {
-    const accountData = profileData.data.customer_products?.map((i: any) => {
+    const accountData = profileData.value?.map((i: any) => {
       return {
-        id: i?.customerProductId,
-        text: `${i?.accountNumber} - ${i?.productType} Account`,
-        value: i?.accountNumber,
-        ledgerId: i?.ledgerId,
+        id: i?.accountId,
+        text: `${i?.accountNo}`,
+        value: i?.accountNo,
+        ledgerId: i?.accountUUID,
       };
     });
     setCustomerData(accountData);
@@ -140,7 +139,7 @@ export default function TransactionSettings({
     isError: profileIsError,
     error: profileError,
     isLoading: profileLoading,
-  } = useGetCustomerProfileQuery(
+  } = useGetAccountListDataByIdQuery(
     formData?.customerBookingInfoModel?.customerId,
     {
       skip: !formData?.customerBookingInfoModel?.customerId,
