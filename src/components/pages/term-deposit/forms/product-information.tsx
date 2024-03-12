@@ -9,10 +9,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { RedDot } from "@app/components/forms";
 
-import {
-  ProductInformationFormSchema,
-  toolTips,
-} from "@app/constants";
+import { ProductInformationFormSchema, toolTips } from "@app/constants";
 import { debounce } from "lodash";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useValidateNameMutation } from "@app/api";
@@ -142,7 +139,7 @@ export default function ProductInformation({
   });
 
   //useState
-  const { currencies } = useContext(AppContext);
+  const { currencies, defaultCurrency } = useContext(AppContext);
   const values = getValues();
 
   const productFormRef = useRef();
@@ -151,7 +148,7 @@ export default function ProductInformation({
   const [charLeft, setCharLeft] = useState<number>(50);
   const [sloganCharLeft, setSloganCharLeft] = useState<number>(160);
   const [currentName, setCurrentName] = useState("");
-  const [isNameOkay, setIsNameOkay] = useState<boolean|null>(null);
+  const [isNameOkay, setIsNameOkay] = useState<boolean | null>(null);
   const [isSloganOkay, setIsSloganOkay] = useState<boolean>(false);
   const { productId } = useParams();
   const [searchParams] = useSearchParams();
@@ -181,14 +178,15 @@ export default function ProductInformation({
 
   useEffect(() => {
     const currency = currencies.find(
-      (i) => i.text.toLowerCase() === "ngn"
+      (i) =>
+        i.text.toLowerCase() === defaultCurrency?.abbreviation?.toLowerCase()
     )?.value;
     setFormData({
       ...formData,
-      currency
+      currency,
     });
     setValue("productName", currency);
-  }, [currencies]);
+  }, [currencies, defaultCurrency]);
 
   useEffect(() => {
     if (initiateDraft) {
@@ -201,7 +199,7 @@ export default function ProductInformation({
     }
   }, [initiateDraft]);
   useEffect(() => {
-    console.log("🚀 ~ useEffect ~ isNameOkay:", isNameOkay)
+    console.log("🚀 ~ useEffect ~ isNameOkay:", isNameOkay);
 
     setDisabled(!isValid || isNameOkay === false);
   }, [values]);
@@ -316,7 +314,7 @@ export default function ProductInformation({
                   {" "}
                   {charLeft}/{defaultLength}
                 </span>{" "}
-                {isNameOkay && !errors?.productName  && (
+                {isNameOkay && !errors?.productName && (
                   <span>
                     <FaCheckCircle className="text-success-500 text-xl" />
                   </span>
