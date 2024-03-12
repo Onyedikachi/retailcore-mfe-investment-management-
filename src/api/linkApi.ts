@@ -6,7 +6,7 @@ import { MODULENAME } from "@app/constants";
 export const linkApi = createApi({
   reducerPath: "linkApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `https://dev2-utilities-api.dev.bepeerless.co/v1`,
+    baseUrl: `https://utilities-api.dev.bepeerless.co/v1`,
     prepareHeaders: (headers) => {
       const token = getToken();
       if (token) {
