@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { FaEye } from "react-icons/fa";
 import moment from "moment";
 import {
+  AccountStatus,
   CapitalizationOptions,
   CustomerCategory,
   Interval,
@@ -15,7 +16,7 @@ import { AppContext } from "@app/utils";
 import { CustomerDetail } from "../modals/CustomerDetail";
 import {
   useGetCustomerProfileQuery,
-  useGetAccountBalanceQuery,
+  useGetAccountDataByIdQuery,
 } from "@app/api";
 
 export default function BookingDetail({
@@ -35,7 +36,7 @@ export default function BookingDetail({
     }
   );
 
-  const { data: accountData } = useGetAccountBalanceQuery(
+  const { data: accountData } = useGetAccountDataByIdQuery(
     detail?.customerBookingInfoModel?.customerAccount,
     { skip: !detail?.customerBookingInfoModel?.customerAccount }
   );
@@ -98,8 +99,8 @@ export default function BookingDetail({
               <div className="w-[300px]   text-base font-medium text-[#636363]">
                 Account status
               </div>
-              <div className="w-full text-base font-normal text-[#636363]">
-                {accountData?.data?.status || "-"}{" "}
+              <div className="w-full text-base font-normal text-[#636363] capitalize">
+                {AccountStatus[accountData?.value?.accountStatus]}{" "}
               </div>
             </div>
           </div>

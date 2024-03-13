@@ -44,7 +44,7 @@ export default function RadialChart({ labels }) {
         breakpoint: 1280,
         options: {
           chart: {
-            width: 300,
+            width: 250,
           },
         },
       },
@@ -52,7 +52,7 @@ export default function RadialChart({ labels }) {
         breakpoint: 780,
         options: {
           chart: {
-            width: 250,
+            width: 220,
           },
         },
       },
