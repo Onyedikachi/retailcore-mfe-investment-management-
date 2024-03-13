@@ -206,7 +206,14 @@ export default function CustomerInformation({
           )
         );
       });
-
+      const businessName =
+      foundObject?.customer_profiles?.[0]?.companyNameBusiness;
+    const individualName = `${capitalizeFirstLetter(
+      foundObject?.customer_profiles?.[0]?.firstName
+    )} ${capitalizeFirstLetter(
+      foundObject?.customer_profiles?.[0]?.otherNames
+    )} ${capitalizeFirstLetter(foundObject?.customer_profiles?.[0]?.surname)}`;
+  
       setCustomerData(foundObject);
       setFormData({
         ...formData,
@@ -215,12 +222,7 @@ export default function CustomerInformation({
       });
       setValue("customerId", foundObject?.customerId);
       setValue(
-        "customerName",
-        `${capitalizeFirstLetter(
-          foundObject?.customer_profiles[0]?.firstName
-        )} ${capitalizeFirstLetter(
-          foundObject?.customer_profiles[0]?.otherNames
-        )} ${capitalizeFirstLetter(foundObject?.customer_profiles[0]?.surname)}`
+        "customerName", investmentType === "individual" ? individualName : businessName
       );
       setValue("customerAccount", accountNumber);
       setValue(
