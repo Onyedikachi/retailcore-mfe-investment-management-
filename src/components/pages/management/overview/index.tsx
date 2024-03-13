@@ -110,8 +110,8 @@ export default function Overview() {
     <OverviewContext.Provider value={value}>
       <div className="flex gap-x-5 w-full flex-1">
         <div className="flex flex-col gap-[25px] flex-1 overflow-x-auto no-scrollbar">
-          <div className="flex  gap-[25px]">
-            <div className="grid w-full max-w-[350px]  gap-5">
+        <div className="flex flex-col 2xl:flex-row gap-[25px]">
+            <div className="grid grid-cols-3 2xl:grid-cols-1 2xl:w-[350px]  gap-5">
               {tabs.map((tab) => (
                 <div
                   role="button" tabIndex={0}
@@ -145,18 +145,21 @@ export default function Overview() {
                 </div>
               ))}
             </div>
-            <div className="flex-1">
-              <OverviewDonutChartInfo
+            <div className="flex-1 flex gap-5">
+             <div className="flex-1">
+             <OverviewDonutChartInfo
                 labels={portFolioLabels}
                 title="Portfolio"
               />
-            </div>
-            <div className="flex-1">
-              <OverviewDonutChartInfo
+             </div>
+              <div className="flex-1">
+                 <OverviewDonutChartInfo
                 labels={allocationLabels}
                 title="Allocation"
               />
+              </div>
             </div>
+        
           </div>
           <div className="grid grid-cols-2 gap-[28px]">
             <div className="">
