@@ -126,6 +126,7 @@ export default function IndexComponent() {
       customerProfileid: "",
       balance: "",
       currencyId: "",
+      currencyCode:"",
     },
     facilityDetailsModel: {
       capitalizationMethod: 2,
