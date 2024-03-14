@@ -236,7 +236,7 @@ export default function FacilityDetails({
     defaultValues: formData.facilityDetailsModel,
     mode: "all",
   });
-  const {investmentType} = useParams();
+  const { investmentType } = useParams();
   const [query, setQuery] = useState("");
   const [productData, setProductData] = useState(null);
   const [productName, setProductName] = useState(null);
@@ -262,7 +262,7 @@ export default function FacilityDetails({
         search: query,
         page_Size: 10000,
         status_In: [2],
-        customerCategory: CustomerCategoryType[investmentType]
+        customerCategory: CustomerCategoryType[investmentType],
       });
     }
   }, [query]);
@@ -298,9 +298,7 @@ export default function FacilityDetails({
       setProductDetail(null);
     }
 
-    setDisabled(!isValid || balanceError || !validDoc
-       || !validCurrency
-       );
+    setDisabled(!isValid || balanceError || !validDoc || !validCurrency);
     if (isValid) {
       setFormData({
         ...formData,
@@ -386,7 +384,9 @@ export default function FacilityDetails({
     }
     if (
       formData?.customerBookingInfoModel?.currencyId !==
-      productDetail?.productInfo?.currency
+        productDetail?.productInfo?.currency &&
+      formData?.customerBookingInfoModel?.currencyCode !==
+        productDetail?.productInfo?.currencyCode
     ) {
       setValidCurency(false);
       setShowError(true);
