@@ -26,6 +26,7 @@ export const ProductInformationFormSchema = yup.object({
   startDate: yup.date().nullable().required("Start date is required"),
   endDate: yup.date().nullable(),
   currency: yup.string().required("Select a currency"),
+  currencyCode: yup.string(),
 });
 
 export const BookingCustomerInfoSchema = yup.object().shape({
