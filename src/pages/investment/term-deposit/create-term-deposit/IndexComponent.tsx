@@ -239,8 +239,8 @@ export default function CreateTermDeposit() {
   const [failedSubText, setFailedSubtext] = useState("");
   const [failedText, setFailedText] = useState("");
   const [initiateDraft, setInitiateDraft] = useState(false);
-  const { currencies, defaultCurrency } = useContext(AppContext);
- 
+  const { defaultCurrency } = useContext(AppContext);
+
   const [productData, setProductData] = useState({
     id: id || null,
     productInfo: {
@@ -250,6 +250,7 @@ export default function CreateTermDeposit() {
       startDate: new Date(),
       endDate: null,
       currency: defaultCurrency?.id,
+      currencyCode: defaultCurrency?.abbreviation,
     },
     customerEligibility: {
       ageGroupMin: 0,
@@ -355,8 +356,8 @@ export default function CreateTermDeposit() {
   ];
 
   useEffect(() => {
-    console.log("d = ", productData)
-  }, [productData])
+    console.log("d = ", productData);
+  }, [productData]);
 
   const [createProduct, { isLoading, isSuccess, isError, reset, error }] =
     useCreateProductMutation();
