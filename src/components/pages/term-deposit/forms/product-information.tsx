@@ -177,15 +177,13 @@ export default function ProductInformation({
   }, [nameIsSuccess, nameIsError]);
 
   useEffect(() => {
-    const currency = currencies.find(
-      (i) =>
-        i.text.toLowerCase() === defaultCurrency?.abbreviation?.toLowerCase()
-    )?.value;
     setFormData({
       ...formData,
-      currency,
+      currency: defaultCurrency?.id,
+      currencyCode: defaultCurrency?.abbreviation,
     });
-    setValue("productName", currency);
+    setValue("currency", defaultCurrency?.id);
+    setValue("currencyCode", defaultCurrency?.abbreviation);
   }, [currencies, defaultCurrency]);
 
   useEffect(() => {
@@ -241,6 +239,12 @@ export default function ProductInformation({
       trigger();
     }
   }, []);
+  useEffect(() => {
+    const currency = currencies.find((i) => i.value === watchCurrency);
+    setValue("currency", currency?.id);
+    setValue("currencyCode", currency?.text);
+  }, [watchCurrency]);
+
   const handleDebouncedNameChange = debounce((e) => {
     setValue("productName", e.target.value);
     handleName(
