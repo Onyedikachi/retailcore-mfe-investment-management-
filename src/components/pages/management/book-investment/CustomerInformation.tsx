@@ -182,6 +182,7 @@ export default function CustomerInformation({
           ...formData.customerBookingInfoModel,
           accountStatus: AccountStatus[accountData?.value?.accountStatus],
           currencyId,
+          currencyCode:accountData?.value?.currencyCode,
           customerAccountLedgerId: accountData?.value?.accountUUID,
           balance: accountData?.value?.clearedBalance,
         },
