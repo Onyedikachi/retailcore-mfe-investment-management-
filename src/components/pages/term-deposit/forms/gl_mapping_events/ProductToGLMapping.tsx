@@ -101,7 +101,7 @@ export const handleClick = (
 ) => {
   const data = {
     accountName: submenu.name,
-    accountId: submenu?.id,
+    accountId: submenu?.ledger_code,
     glAccountType: GlMappingOptions.find((i) => i.key === key)?.id,
   };
 
