@@ -43,7 +43,7 @@ export const handleSuccessMessage = (
 ) => {
   setSuccessText(
     role === "superadmin"
-      ? isSuccess && process === "create"
+      ? process === "create"
         ? Messages.BOOKING_CREATE_SUCCESS
         : Messages.BOOKING_MODIFY_SUCCESS
       : Messages.ADMIN_BOOKING_CREATE_SUCCESS
