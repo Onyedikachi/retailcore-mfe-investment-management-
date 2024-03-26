@@ -79,6 +79,10 @@ export const handleProductStatus = ({
         data.results.map((i) => ({
           ...i,
           principal: `${currencyFormatter(
+            i?.principal,
+            handleCurrencyName(i?.currency, currencies)
+          )}`,
+          initialPrincipal: `${currencyFormatter(
             i?.initialPrincipal,
             handleCurrencyName(i?.currency, currencies)
           )}`,

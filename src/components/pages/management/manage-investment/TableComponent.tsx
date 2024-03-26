@@ -99,11 +99,11 @@ export function initiateDownload(
   //   });
   //   return;
   // }
- 
+
   if (category === StatusCategoryType.Investments) {
     downloadProducts({
       // ...query,
-      page:1,
+      page: 1,
       page_Size: 10000000,
       // filter_by: selected?.value,
       filter_by: "created_by_anyone",
@@ -135,7 +135,10 @@ export function handleDownload(
       let obj: ProductDataProps = {
         "customer name": i?.customerName || "",
         "customer id": i?.investmentId || "",
-        principal: i?.initialPrincipal || "",
+        principal:
+          i.investmentBookingStatus === 2
+            ? i.initialPrincipal
+            : i?.principal || "",
         "investment product": i?.investmentProduct || "",
         status: i?.status || "",
         "updated on": moment(i.updated_At).format("DD MMM YYYY, hh:mm A"),
@@ -144,7 +147,10 @@ export function handleDownload(
       let overviewDrillDownObj = {
         "customer name": i?.customerName || "",
         "customer id": i?.investmentId || "",
-        "principal amount": i?.initialPrincipal || "",
+        "principal amount":
+          i.investmentBookingStatus === 2
+            ? i.initialPrincipal
+            : i?.principal || "",
         tenor: i?.tenor,
         "interest rate": i?.interestRate,
         "value at maturity": i?.maturityValue || "",
@@ -239,7 +245,7 @@ export default function TableComponent({
   setQuery,
   hasMore,
   fetchMoreData,
-  tab
+  tab,
 }: any) {
   const { category, setStatus, selected } = useContext(IndividualContext);
   const { isChecker } = useContext(AppContext);
