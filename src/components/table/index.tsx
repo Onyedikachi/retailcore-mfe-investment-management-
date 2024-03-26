@@ -22,7 +22,7 @@ import {
 } from "@app/utils";
 import { FaBars, FaEye } from "react-icons/fa";
 import { Actions, Messages, Prompts } from "@app/constants/enums";
-import { Interval, InvestmentBookingStatus } from "@app/constants/investment";
+import { Interval, InvestmentBookingStatus, RequiredCreditPermissions } from "@app/constants/investment";
 import { Confirm, Failed, Success } from "../modals";
 import Loader from "../Loader";
 import RequestDeactivation from "../modals/RequestDeactivation";
@@ -74,6 +74,7 @@ const excludedKeys = [
   "investmentBookingStatus",
   "updated_At",
   "requestStatus",
+  "principal"
 ];
 
 export const statusHandler = ({
@@ -120,6 +121,7 @@ export const statusHandler = ({
     setSuccessText(Messages.BOOKING_WITHDRAW_SUCCESS);
     setSubText(Messages.BOOKING_WITHDRAW_SUCCESS_SUB);
     setIsSuccessOpen(true);
+    return;
   }
 
   if (modifyRequestIsError || modifyIsError) {
@@ -140,6 +142,7 @@ export const statusHandler = ({
       `${detail?.customerName}[${detail?.customerAccount}] will be credited, once approval is granted`
     );
     setIsSuccessOpen(true);
+    return;
   }
   if (partLiquidateSuccess) {
     setSuccessText(
@@ -151,6 +154,7 @@ export const statusHandler = ({
       `${detail?.customerName}[${detail?.customerAccount}] will be credited, once approval is granted`
     );
     setIsSuccessOpen(true);
+    return;
   }
   if (earlyEditLiquidateSuccess) {
     setSuccessText(
@@ -159,6 +163,7 @@ export const statusHandler = ({
         : Messages.LIQUIDATION_MODIFICATION_REQUEST_SUCCESS
     );
     setIsSuccessOpen(true);
+    return;
   }
   if (partEditLiquidateSuccess) {
     setSuccessText(
@@ -167,6 +172,7 @@ export const statusHandler = ({
         : Messages.LIQUIDATION_MODIFICATION_REQUEST_SUCCESS
     );
     setIsSuccessOpen(true);
+    return;
   }
 
   if (isDeleteInvestmentRequestSuccess) {
@@ -858,6 +864,12 @@ export default function TableComponent<TableProps>({
                               )}
                               {header.key === "customerName" && (
                                 <CustomerNameCellContent value={item} />
+                              )}
+                              {header.key === "principal" && (
+                                <TextCellContent value={
+                                  item.investmentBookingStatus === 2 ? 
+                                  item.initialPrincipal : item?.principal
+                                } />
                               )}
                             </>
                           ) : (
