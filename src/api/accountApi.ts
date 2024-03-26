@@ -4,11 +4,11 @@ import { REHYDRATE } from "redux-persist";
 import { cleanObject } from "@app/utils/cleanObject";
 
 const accountEnquiries =
-  "https://dev2-peerless-seabaas-accountenquiries.dev.bepeerless.co/Accounts/";
+  "https://peerless-seabaas-accountenquiries.dev.bepeerless.co/Accounts/";
 export const accountApi: any = createApi({
   reducerPath: "accountApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `https://dev2-retailcore-account-and-jounalposting-api.dev.bepeerless.co/api/v1`,
+    baseUrl: `https://retailcore-account-and-jounalposting-api.dev.bepeerless.co/api/v1`,
     prepareHeaders: (headers) => {
       const token = getToken();
       if (token) {
