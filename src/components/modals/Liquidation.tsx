@@ -414,7 +414,7 @@ export default function Liquidation({
                         <RedDot />
                       </span>
                     </label>
-                    <FormToolTip tip="Hello" />
+                    {/* <FormToolTip tip="Hello" /> */}
                   </div>
                   <Switch
                     checked={isTrue}

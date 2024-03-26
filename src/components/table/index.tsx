@@ -74,6 +74,7 @@ const excludedKeys = [
   "investmentBookingStatus",
   "updated_At",
   "requestStatus",
+  "principal"
 ];
 
 export const statusHandler = ({
@@ -863,6 +864,12 @@ export default function TableComponent<TableProps>({
                               )}
                               {header.key === "customerName" && (
                                 <CustomerNameCellContent value={item} />
+                              )}
+                              {header.key === "principal" && (
+                                <TextCellContent value={
+                                  item.investmentBookingStatus === 2 ? 
+                                  item.initialPrincipal : item?.principal
+                                } />
                               )}
                             </>
                           ) : (
