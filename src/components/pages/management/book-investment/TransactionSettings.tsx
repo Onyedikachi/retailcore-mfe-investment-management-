@@ -26,7 +26,7 @@ export const handleAccountForLiquidation = ({
   trigger,
 }) => {
   if (profileIsSuccess) {
-    const accountData = profileData.value?.map((i: any) => {
+    const accountData = profileData.value?.items?.map((i: any) => {
       return {
         id: i?.accountId,
         text: `${i?.accountNo}`,
