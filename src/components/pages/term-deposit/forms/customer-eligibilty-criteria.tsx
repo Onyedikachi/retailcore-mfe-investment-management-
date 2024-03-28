@@ -80,8 +80,18 @@ export default function CustomerEligibilityCriteria({
   proceed,
   initiateDraft,
 }) {
-  const { data, isLoading } = useGetCorporateCustomerTypeQuery();
-  console.log("costomer type: ", data, isLoading);
+  const { data, isLoading: corporateCustomerTypeLoading } =
+    useGetCorporateCustomerTypeQuery();
+
+  const corporateCustomerTypeOptions = data?.data[0]?.values
+    .split(",")
+    .map((item, index) => {
+      return {
+        id: index + 1,
+        value: item,
+        text: item,
+      };
+    });
   const { process } = useParams();
   const [documents, setDocuments] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -226,18 +236,22 @@ export default function CustomerEligibilityCriteria({
             </div>
             {watchCustomerCategory === CustomerCategoryType.Corporate && (
               <div className="w-[300px] flex items-center">
-                <MultiSelectForm
-                  labelName={"Type of corporate customer"}
-                  register={register}
-                  inputName={"customerType"}
-                  defaultValue={formData?.customerType}
-                  errors={errors}
-                  setValue={setValue}
-                  options={customerTypeOptions}
-                  allLabel="All"
-                  clearErrors={clearErrors}
-                  trigger={trigger}
-                />
+                {corporateCustomerTypeLoading ? (
+                  <div>...loading customer type</div>
+                ) : (
+                  <MultiSelectForm
+                    labelName={"Type of corporate customer"}
+                    register={register}
+                    inputName={"customerType"}
+                    defaultValue={formData?.customerType}
+                    errors={errors}
+                    setValue={setValue}
+                    options={corporateCustomerTypeOptions}
+                    allLabel="All"
+                    clearErrors={clearErrors}
+                    trigger={trigger}
+                  />
+                )}
               </div>
             )}
             {watchCustomerCategory === CustomerCategoryType.Individual && (

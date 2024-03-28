@@ -20,11 +20,10 @@ export const investmentApi: any = createApi({
   },
   endpoints: (builder) => ({
     getCorporateCustomerType: builder.query<any, any>({
-      query: (params) => {
+      query: () => {
         return {
           url: `https://customer-management-api.dev.bepeerless.co/v1/column-map/corporate-categories?formType=smeLegacy`,
           method: "get",
-          params: cleanObject(params),
         };
       },
     }),
