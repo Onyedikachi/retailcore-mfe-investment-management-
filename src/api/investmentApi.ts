@@ -19,6 +19,14 @@ export const investmentApi: any = createApi({
     }
   },
   endpoints: (builder) => ({
+    getCorporateCustomerType: builder.query<any, any>({
+      query: () => {
+        return {
+          url: `${customerApi}/column-map/corporate-categories?formType=smeLegacy`,
+          method: "get",
+        };
+      },
+    }),
     getProductActivityLog: builder.query<any, any>({
       query: (params) => {
         return {
@@ -619,5 +627,6 @@ export const {
   useLiquidationCalculationMutation,
   useEditEarlyLiquidateMutation,
   useEditPartLiquidateMutation,
-  useGetInvestmentCertificateQuery
+  useGetInvestmentCertificateQuery,
+  useGetCorporateCustomerTypeQuery
 } = investmentApi;
