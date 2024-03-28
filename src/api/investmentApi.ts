@@ -22,7 +22,7 @@ export const investmentApi: any = createApi({
     getCorporateCustomerType: builder.query<any, any>({
       query: () => {
         return {
-          url: `https://customer-management-api.dev.bepeerless.co/v1/column-map/corporate-categories?formType=smeLegacy`,
+          url: `${customerApi}/column-map/corporate-categories?formType=smeLegacy`,
           method: "get",
         };
       },
