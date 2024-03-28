@@ -18,7 +18,11 @@ import { CustomerCategoryType } from "@app/constants/enums";
 import MultiSelectForm from "@app/components/forms/MultiSelectForm";
 import { useParams } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
-import { useGetFormDocumentsQuery, useGetFormTypeQuery } from "@app/api";
+import {
+  useGetCorporateCustomerTypeQuery,
+  useGetFormDocumentsQuery,
+  useGetFormTypeQuery,
+} from "@app/api";
 import uuid from "react-uuid";
 
 export const handleCheckedRequirement = ({
@@ -76,6 +80,8 @@ export default function CustomerEligibilityCriteria({
   proceed,
   initiateDraft,
 }) {
+  const { data, isLoading } = useGetCorporateCustomerTypeQuery();
+  console.log("costomer type: ", data, isLoading);
   const { process } = useParams();
   const [documents, setDocuments] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -478,7 +484,7 @@ export default function CustomerEligibilityCriteria({
                       <span
                         role="button"
                         tabIndex={0}
-                        onKeyDown={() => { }}
+                        onKeyDown={() => {}}
                         onClick={() => setIsAdd(true)}
                         className="cursor-pointer text-[#CF2A2A] text-sm "
                       >

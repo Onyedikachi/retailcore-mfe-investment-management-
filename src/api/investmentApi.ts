@@ -19,6 +19,15 @@ export const investmentApi: any = createApi({
     }
   },
   endpoints: (builder) => ({
+    getCorporateCustomerType: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `https://customer-management-api.dev.bepeerless.co/v1/column-map/corporate-categories?formType=smeLegacy`,
+          method: "get",
+          params: cleanObject(params),
+        };
+      },
+    }),
     getProductActivityLog: builder.query<any, any>({
       query: (params) => {
         return {
@@ -619,5 +628,6 @@ export const {
   useLiquidationCalculationMutation,
   useEditEarlyLiquidateMutation,
   useEditPartLiquidateMutation,
-  useGetInvestmentCertificateQuery
+  useGetInvestmentCertificateQuery,
+  useGetCorporateCustomerTypeQuery
 } = investmentApi;
