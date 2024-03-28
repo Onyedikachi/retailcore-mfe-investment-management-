@@ -99,7 +99,7 @@ export const investmentApi: any = createApi({
     getFormDocuments: builder.query<any, any>({
       query: (params) => {
         return {
-          url: `${customerApi}/column-map/form-documents/${params}`,
+          url: `${customerApi}/column-map/form-documents?formType=${params}`,
           method: "get",
         };
       },

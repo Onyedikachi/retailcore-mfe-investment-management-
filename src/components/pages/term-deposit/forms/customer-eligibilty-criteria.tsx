@@ -137,24 +137,26 @@ export default function CustomerEligibilityCriteria({
 
   // Api calls
 
-  const {
-    data: formTypeData,
-    isLoading: typeLoading,
-    isSuccess: typeSuccess,
-  } = useGetFormTypeQuery(
-    watchCustomerCategory === 0 ? "individualLegacy" : "smeLegacy",
-    { skip: watchCustomerCategory === null }
-  );
+  // const {
+  //   data: formTypeData,
+  //   isLoading: typeLoading,
+  //   isSuccess: typeSuccess,
+  // } = useGetFormTypeQuery(
+  //   watchCustomerCategory === 0 ? "individualLegacy" : "smeLegacy",
+  //   { skip: watchCustomerCategory === null }
+  // );
   const {
     data: documentList,
     isLoading: docLoading,
     isSuccess: docSuccess,
-  } = useGetFormDocumentsQuery(formTypeData?.data?._id, {
-    skip: !formTypeData?.data?._id,
-  });
+  } = useGetFormDocumentsQuery(
+    watchCustomerCategory === 0 ? "individualLegacy" : "smeLegacy",
+    { skip: watchCustomerCategory === null }
+  );
 
   useEffect(() => {
     if (docSuccess) {
+      console.log("🚀 ~ useEffect ~ documentList:", documentList);
       setDocuments(
         documentList?.data?.map((i) => ({ name: i.title, id: uuid() }))
       );
@@ -295,9 +297,7 @@ export default function CustomerEligibilityCriteria({
         <div className="flex justify-end mt-10">
           <button
             type="button"
-            disabled={
-              watchCustomerCategory === null || docLoading || typeLoading
-            }
+            disabled={watchCustomerCategory === null || docLoading}
             onClick={() => setIsRequirementsOpen(true)}
             className="cursor-pointer flex items-center gap-[10px] disabled:opacity-60 disabled:cursor-not-allowed"
           >
@@ -358,7 +358,7 @@ export default function CustomerEligibilityCriteria({
             </span>
           </button>
         </div>
-        {!docLoading && !typeLoading ? (
+        {!docLoading ? (
           <div>
             <SelectedRequirementsTable
               tableItems={selectedRequirements || []}
