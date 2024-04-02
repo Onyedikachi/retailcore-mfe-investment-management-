@@ -177,13 +177,19 @@ export default function ProductInformation({
   }, [nameIsSuccess, nameIsError]);
 
   useEffect(() => {
-    setFormData({
-      ...formData,
-      currency: defaultCurrency?.id,
-      currencyCode: defaultCurrency?.abbreviation,
-    });
-    setValue("currency", defaultCurrency?.id);
-    setValue("currencyCode", defaultCurrency?.abbreviation);
+    if(!formData.currency || !formData.currencyCode){
+      setFormData({
+        ...formData,
+        currency: defaultCurrency?.id,
+        currencyCode: defaultCurrency?.abbreviation,
+      });
+    }
+   
+    if(!values.currency || !values.currencyCode){
+      setValue("currency", defaultCurrency?.id);
+      setValue("currencyCode", defaultCurrency?.abbreviation);
+    }
+
   }, [currencies, defaultCurrency]);
 
   useEffect(() => {

@@ -67,7 +67,6 @@ export default function EntriesAndEventsSearchResults({
   } = useGetAccountsQuery(
     {
       AccountType: [classId?.toUpperCase()],
-      AccountCategory: 3,
       currencyCode: formData?.productInfo?.currencyCode,
     },
     { skip: !classId }
