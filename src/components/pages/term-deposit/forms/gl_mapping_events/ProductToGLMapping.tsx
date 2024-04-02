@@ -99,9 +99,10 @@ export const handleClick = (
   setMapOptions,
   GlMappingOptions
 ) => {
+
   const data = {
-    accountName: submenu.name,
-    accountId: submenu?.ledger_code,
+    accountName: submenu.accountName,
+    accountId: submenu?.accountNo,
     glAccountType: GlMappingOptions.find((i) => i.key === key)?.id,
   };
 
@@ -113,7 +114,7 @@ export const handleClick = (
     setMapOptions((prevMapOptions) =>
       prevMapOptions.map((i) =>
         i.glAccountType === data.glAccountType
-          ? { ...i, accountName: submenu.name, accountId: data.accountId }
+          ? { ...i, accountName: submenu.accountName, accountId: data.accountId }
           : i
       )
     );
@@ -358,6 +359,7 @@ export default ({
                               errors={errors}
                               clearFields={clearFields}
                               placeholder="Type to search and select"
+                              formData={formData}
                             />
                           </div>
                         </div>

@@ -3,4 +3,8 @@ export * from "./authApi";
 export * from "./investmentApi";
 export * from "./accountApi";
 export * from "./currencyApi";
-export * from "./productMgtApi"
+export * from "./productMgtApi";
+export * from "./camsApi";
+export * from "./chartsAccountApi";
+export * from "./journalApi";
+export * from "./customerApi";

@@ -601,9 +601,6 @@ export const {
   useApproveProductMutation,
   useRejectProductMutation,
   useGetSystemAlertQuery,
-  useGetCustomerSearchQuery,
-  useGetAccountBalanceQuery,
-  useGetCustomerProfileQuery,
   useCreateInvestmentMutation,
   useGetInvestmentActivityLogQuery,
   useGetInvestmentRequestActivityLogQuery,
@@ -618,7 +615,6 @@ export const {
   useModifyInvestmentMutation,
   useModifyInvestmentRequestMutation,
   useGetInvestmentDashboardStatsQuery,
-  useGetFormDocumentsQuery,
   useGetFormTypeQuery,
   useApproveInvestmentMutation,
   useRejectInvestmentMutation,
@@ -627,6 +623,5 @@ export const {
   useLiquidationCalculationMutation,
   useEditEarlyLiquidateMutation,
   useEditPartLiquidateMutation,
-  useGetInvestmentCertificateQuery,
-  useGetCorporateCustomerTypeQuery
+  useGetInvestmentCertificateQuery
 } = investmentApi;
