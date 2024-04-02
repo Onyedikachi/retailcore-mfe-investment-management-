@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import { FaSearch } from "react-icons/fa";
 import { tabLinks } from "@app/constants";
-import { useGetGlClassQuery, useGetLedgersQuery } from "@app/api";
+import { useGetGlClassQuery, useGetAccountsQuery } from "@app/api";
 import { onChange } from "./DateSelect";
 import BottomBarLoader from "../BottomBarLoader";
 
@@ -19,148 +19,22 @@ const LedgerItem = ({
   setOpen,
   trigger,
 }) => {
-  const [toggleMenu, setToggleMenu] = useState([]);
-
-  const toggleSubMenu = (menuId) => {
-    if (toggleMenu.includes(menuId)) {
-      setToggleMenu(toggleMenu.filter((i) => i !== menuId));
-    } else {
-      setToggleMenu([...toggleMenu, menuId]);
-    }
-  };
-
-  const renderSubLedgers = (subLedgers) => {
-    return subLedgers.map((subMenu, id) => (
-      <div key={subMenu.name + id.toString()} className="ml-[36px]">
-        <div
-          role="button"
-          tabIndex={0}
-          onKeyDown={() => { }}
-          className={`flex items-center  text-xs  cursor-pointer  py-[3px] rounded ${query === subMenu.name ? "bg-[#E8C8C85E]" : ""
-            } ${subMenu.sub_ledgers.length > 0
-              ? "gap-1"
-              : "hover:bg-[#E8C8C85E]  px-1"
-            }`}
-          onClick={() => {
-            if (subMenu.sub_ledgers.length > 0) {
-              toggleSubMenu(subMenu.id);
-            } else {
-              handleClick(inputName, subMenu);
-              setQuery(subMenu.name);
-              setOpen(false);
-              trigger(inputName);
-            }
-          }}
-        >
-          {subMenu.sub_ledgers.length > 0 && (
-            <span
-              className={`${toggleMenu.includes(subMenu.id) ? "transform rotate-45" : ""
-                }`}
-            >
-              <svg
-                width="15"
-                height="16"
-                viewBox="0 0 15 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M6.39063 2.76737L6.39062 12.3885C6.39062 12.677 6.69531 12.8382 6.90332 12.6595L12.4814 7.84891C12.6411 7.71122 12.6411 7.44608 12.4814 7.30692L6.90332 2.49637C6.69531 2.31766 6.39063 2.47879 6.39063 2.76737Z"
-                  fill="#555555"
-                />
-              </svg>
-            </span>
-          )}
-          {subMenu.name} [{subMenu.ledger_code}]
-        </div>
-        {subMenu.sub_ledgers && renderSubLedgers(subMenu.sub_ledgers)}
-      </div>
-    ));
-  };
-
   return (
-    <div className="text-sm text-[#636363]">
-      <div
-        role="button" tabIndex={0} onKeyDown={() => { }}
-        className="flex items-center gap-[11px] text-xs cursor-pointer"
-        onClick={() => {
-          toggleSubMenu(menu.id);
-        }}
-      >
-        <span
-          className={`${toggleMenu.includes(menu.id) ? "transform rotate-45" : ""
-            }`}
-        >
-          <svg
-            width="15"
-            height="16"
-            viewBox="0 0 15 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M6.39063 2.76737L6.39062 12.3885C6.39062 12.677 6.69531 12.8382 6.90332 12.6595L12.4814 7.84891C12.6411 7.71122 12.6411 7.44608 12.4814 7.30692L6.90332 2.49637C6.69531 2.31766 6.39063 2.47879 6.39063 2.76737Z"
-              fill="#555555"
-            />
-          </svg>
-        </span>
-        {menu.name}
-      </div>
-      {toggleMenu.includes(menu.id) && (
-        <div className="ml-[36px] flex flex-col gap-y-1 mt-1">
-          {menu.sub_ledgers &&
-            menu.sub_ledgers
-              .filter((i) => i.name.toLowerCase().includes(query.toLowerCase()))
-              .map((subMenu, id) => (
-                <div key={subMenu.name + id.toString()}>
-                  <div
-                    className={`flex items-center text-xs  cursor-pointer py-[3px] rounded ${query === subMenu.name ? "bg-[#E8C8C85E]" : ""
-                      }  ${subMenu.sub_ledgers.length > 0
-                        ? "gap-1"
-                        : "hover:bg-[#E8C8C85E]  px-1"
-                      }`}
-                    onKeyDown={() => { }}
-                    onClick={() => {
-                      if (subMenu.sub_ledgers.length > 0) {
-                        toggleSubMenu(subMenu.id);
-                      } else {
-                        handleClick(inputName, subMenu);
-                        setQuery(subMenu.name);
-                        setOpen(false);
-                        trigger(inputName);
-                      }
-                    }}
-                  >
-                    {subMenu.sub_ledgers.length > 0 && (
-                      <span
-                        className={`${toggleMenu.includes(subMenu.id)
-                          ? "transform rotate-45"
-                          : ""
-                          }`}
-                      >
-                        <svg
-                          width="15"
-                          height="16"
-                          viewBox="0 0 15 16"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M6.39063 2.76737L6.39062 12.3885C6.39062 12.677 6.69531 12.8382 6.90332 12.6595L12.4814 7.84891C12.6411 7.71122 12.6411 7.44608 12.4814 7.30692L6.90332 2.49637C6.69531 2.31766 6.39063 2.47879 6.39063 2.76737Z"
-                            fill="#555555"
-                          />
-                        </svg>
-                      </span>
-                    )}
-                    {subMenu.name} [{subMenu.ledger_code}]
-                  </div>
-                  {subMenu.sub_ledgers &&
-                    toggleMenu.includes(subMenu.id) &&
-                    renderSubLedgers(subMenu.sub_ledgers)}
-                </div>
-              ))}
-        </div>
-      )}
+    <div
+      className={`flex flex-col text-xs  cursor-pointer py-[3px] rounded hover:bg-[#E8C8C85E]  px-1 ${
+        query === menu.accountName ? "bg-[#E8C8C85E]" : ""
+      } `}
+      onKeyDown={() => {}}
+      onClick={() => {
+        handleClick(inputName, menu);
+        setQuery(menu.accountName);
+        setOpen(false);
+        trigger(inputName);
+      }}
+    >
+      <span className="font-medium text-sm block">{menu.accountName}</span>
+      <span className="block text-xs">Code: {menu.accountNo}</span>
+      <span className="block text-xs">Parent: {menu.parentLedgerName}</span>
     </div>
   );
 };
@@ -175,6 +49,7 @@ export default function EntriesAndEventsSearchResults({
   error,
   defaultValue,
   clearFields,
+  formData,
 }: any) {
   const [query, setQuery] = useState("");
   const [isOpen, setOpen] = useState(false);
@@ -185,12 +60,18 @@ export default function EntriesAndEventsSearchResults({
   const { data, isLoading, isSuccess, isError } = useGetGlClassQuery();
   const {
     data: ledgerData,
-    isLoading: ledgerIsLoading,
+    isFetching: ledgerIsLoading,
     isSuccess: ledgerIsSuccess,
     isError: ledgerIsError,
     refetch,
-    isFetching,
-  } = useGetLedgersQuery({ gl_class: classId }, { skip: !classId });
+  } = useGetAccountsQuery(
+    {
+      AccountType: [classId?.toUpperCase()],
+      AccountCategory: 3,
+      currencyCode: formData?.productInfo?.currencyCode,
+    },
+    { skip: !classId }
+  );
 
   useEffect(() => {
     console.log(query);
@@ -204,16 +85,16 @@ export default function EntriesAndEventsSearchResults({
 
   useEffect(() => {
     if (ledgerIsSuccess) {
-      setLedgers(ledgerData.results);
+      setLedgers(ledgerData?.value?.items);
     }
-  }, [ledgerIsSuccess, ledgerIsError, isFetching]);
+  }, [ledgerIsSuccess, ledgerIsError, ledgerIsLoading]);
   useEffect(() => {
     if (classId) {
       refetch();
     }
   }, [classId]);
 
-  const toggleSubMenu = (menuIndex) => {
+  const togglemenu = (menuIndex) => {
     //get the index of the menu on click
     setMenus(menuIndex);
   };
@@ -231,8 +112,10 @@ export default function EntriesAndEventsSearchResults({
     <OutsideClickHandler onOutsideClick={() => closeDropdown(setOpen)}>
       <div className="w-full" data-testid="gli">
         <div className="relative bg-[#fff] w-full">
-          <div onKeyDown={() => { }}
-            role="button" tabIndex={0}
+          <div
+            onKeyDown={() => {}}
+            role="button"
+            tabIndex={0}
             data-testid="open-button"
             className="flex items-center  border-b border-[#8F8F8F]"
             onClick={() => setOpen(!isOpen)}
@@ -256,46 +139,63 @@ export default function EntriesAndEventsSearchResults({
               >
                 {glClass.map((item) => (
                   <div
-                    role="button" tabIndex={0}
-                    onKeyDown={() => { }}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={() => {}}
                     test-id="class-id-item"
                     key={item.id}
-                    onClick={() => setClassId(item.id)}
+                    onClick={() => {
+                      setLedgers([]);
+                      setClassId(item.name);
+                    }}
                     className="flex flex-col cursor-pointer"
                   >
                     <div
-                      className={`${classId === item.id
-                        } ? 'text-[#252C32] text-[14px] font-semibold' : 'text-[#252C32] text-sm font-normal'`}
+                      className={`${
+                        classId === item.name
+                      } ? 'text-[#252C32] text-[14px] font-semibold' : 'text-[#252C32] text-sm font-normal'`}
                     >
                       {item.name}
                     </div>
                     <div
-                      className={`${classId === item.id
-                        ? "bg-sterling-red-800"
-                        : "bg-[#DDE2E4]"
-                        }   h-1  w-full rounded-lg`}
+                      className={`${
+                        classId === item.name
+                          ? "bg-sterling-red-800"
+                          : "bg-[#DDE2E4]"
+                      }   h-1  w-full rounded-lg`}
                     ></div>
                   </div>
                 ))}
               </div>
               {classId && (
                 <div className="max-h-[233px] overflow-y-auto flex flex-col gap-4 py-2 pr-2">
-                  {ledgers?.map((menu, index) => (
-                    <LedgerItem
-                      key={menu.name + index.toString()}
-                      menu={menu}
-                      query={query}
-                      handleClick={handleClick}
-                      inputName={inputName}
-                      setQuery={setQuery}
-                      setOpen={setOpen}
-                      trigger={trigger}
-                    />
-                  ))}
+                  {ledgers
+                    ?.filter((i) =>
+                      i.accountName
+                        ?.toLowerCase()
+                        .includes(query?.toLowerCase())
+                    )
+                    ?.map((menu, index) => (
+                      <LedgerItem
+                        key={menu.accountName + index.toString()}
+                        menu={menu}
+                        query={query}
+                        handleClick={handleClick}
+                        inputName={inputName}
+                        setQuery={setQuery}
+                        setOpen={setOpen}
+                        trigger={trigger}
+                      />
+                    ))}
                 </div>
               )}
               {(ledgerIsLoading || isLoading) && (
                 <BottomBarLoader w="w-4" h="h-4" />
+              )}
+              {!ledgers?.length && !ledgerIsLoading && classId && (
+                <span className="text-center text-xs text-gray-400">
+                  No ledger available
+                </span>
               )}
             </div>
           )}
