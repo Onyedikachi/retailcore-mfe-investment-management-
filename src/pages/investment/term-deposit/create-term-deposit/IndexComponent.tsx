@@ -355,6 +355,16 @@ export default function CreateTermDeposit() {
     },
   ];
 
+    // useEffect(() => {
+  //   setFormData({
+  //     ...formData,
+  //     currency: defaultCurrency?.id,
+  //     currencyCode: defaultCurrency?.abbreviation,
+  //   });
+  //   setValue("currency", defaultCurrency?.id);
+  //   setValue("currencyCode", defaultCurrency?.abbreviation);
+  // }, [currencies, defaultCurrency]);
+
   useEffect(() => {
     console.log("d = ", productData);
   }, [productData]);
