@@ -57,7 +57,7 @@ export default ({ selectedCharges, setValues, values, event, charges, setValue }
                   >
                     <FaEye className="text-danger-500" />
                   </span>
-                  <span
+                  <span data-testid="remove"
                     role="button" tabIndex={0} onKeyDown={() => { }}
                     onClick={() => removeCharge(item.charge_id)}
                     className="h-[30px] w-[30px] shadow-md bg-white   flex justify-center items-center rounded-md"
