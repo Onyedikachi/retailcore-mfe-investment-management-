@@ -322,7 +322,7 @@ export const PdfViewer = forwardRef<any, any>(
                       Interest Amount
                     </td>
                     <td className="py-2 px-4 text-left border border-black">
-                      {numberFormatter(investmentDetailTable?.interestAmount)}
+                      {numberFormatter(investmentDetailTable?.amountAtMaturity - investmentDetailTable?.principalAmount)}
                     </td>
                   </tr>
                   <tr>
