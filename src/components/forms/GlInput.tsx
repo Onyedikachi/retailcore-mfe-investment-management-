@@ -66,8 +66,10 @@ export default function EntriesAndEventsSearchResults({
     refetch,
   } = useGetAccountsQuery(
     {
+      Q: query,
       AccountType: [classId?.toUpperCase()],
       currencyCode: formData?.productInfo?.currencyCode,
+      AccountCategory: 1,
     },
     { skip: !classId }
   );
@@ -117,7 +119,7 @@ export default function EntriesAndEventsSearchResults({
             tabIndex={0}
             data-testid="open-button"
             className="flex items-center  border-b border-[#8F8F8F]"
-            onClick={() => setOpen(!isOpen)}
+            onClick={() => setOpen(true)}
           >
             <span className="w-8 h-8 flex items-center justify-center">
               <FaSearch className="text-[#48535B] text-lg" />
