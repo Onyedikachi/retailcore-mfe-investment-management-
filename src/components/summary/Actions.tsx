@@ -269,15 +269,22 @@ export default function Actions({
     investmentRejectSuccess,
     investmentRejectIsError,
   ]);
-  const factoryDashboard = `/product-factory/investment?category=requests${
+  const factoryDashboard = `/product-factory/investment?${
     filter ? "&filter=" + filter : ""
   }`;
-  const individualDashboard = `/investment-management/individual?category=requests${
+  const individualDashboard = `/investment-management/individual?${
+    filter ? "&filter=" + filter : ""
+  }`;
+  const corporateDashboard = `/investment-management/corporate?${
     filter ? "&filter=" + filter : ""
   }`;
 
   const handleNavigation = () => {
-    if (location.pathname.includes("management")) return individualDashboard;
+    if (location.pathname.includes("management")) {
+      return location.pathname.includes("individual")
+        ? individualDashboard
+        : corporateDashboard;
+    }
     if (!location.pathname.includes("management")) return factoryDashboard;
   };
   return (
