@@ -371,7 +371,7 @@ export default function CustomerInformation({
             <div className="w-[360px]">
               <FormUpload
                 data-testid="input"
-                accept={["pdf", "jpg", "png", "jpeg"]}
+                accept={["jpg", "jpeg", "png", "pdf", "docx"]}
                 onUploadComplete={(value) => {
                   setValue("investmentformUrl", value);
                   setFormData({
