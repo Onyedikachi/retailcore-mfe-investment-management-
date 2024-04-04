@@ -40,6 +40,7 @@ export const BookingDetailLayout = ({
   setOpen,
   handleClick,
 }) => {
+  console.log("🚀 ~ productInfo:", productInfo)
   const { currencies } = useContext(AppContext);
 
   return (
@@ -232,7 +233,7 @@ export const BookingDetailLayout = ({
                       </div>
                     )}
                   <Link
-                    to={`/investment-management/individual/process-summary/preview/${detail?.id}?product_id=${detail?.investmentProductId}&request_id=${detail?.investmentBookingRequestId}`}
+                    to={`/investment-management/${CustomerCategory[productInfo?.data?.customerEligibility?.customerCategory]?.toLowerCase()}/process-summary/preview/${detail?.id}?product_id=${detail?.investmentProductId}&request_id=${detail?.investmentBookingRequestId}`}
                   >
                     <button
                       className={`group flex items-center whitespace-nowrap py-[1px] text-base text-[#636363] gap-x-3 hover:underline outline-none`}
