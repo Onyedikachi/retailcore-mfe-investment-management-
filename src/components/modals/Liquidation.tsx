@@ -381,7 +381,7 @@ export default function Liquidation({
                   </div>
                   <FormUpload
                     data-testid="input"
-                    accept={["jpg", "jpeg", "png", "pdf"]}
+                    accept={["jpg", "jpeg", "png", "pdf", "docx"]}
                     onUploadComplete={(value) => {
                       setValue("documentUrl", value);
                       trigger();
