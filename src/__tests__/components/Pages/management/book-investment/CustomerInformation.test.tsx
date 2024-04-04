@@ -1,5 +1,5 @@
 import { renderWithProviders } from "../../../../../__mocks__/api/Wrapper";
-import {screen} from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import CustomerInformation, { onProceed } from "../../../../../components/pages/management/book-investment/CustomerInformation"
 
 jest.mock("react-router-dom", () => ({
@@ -7,7 +7,7 @@ jest.mock("react-router-dom", () => ({
   Link: ({ to, children }) => <a href={to}>{children}</a>,
   useNavigate: jest.fn(),
   useSearchParams: jest.fn(),
-  useParams: jest.fn().mockResolvedValue({investmentType: "individual"}),
+  useParams: jest.fn().mockResolvedValue({ investmentType: "individual" }),
   useLocation: jest.fn().mockReturnValue({ pathname: "" })
 }));
 
@@ -1033,22 +1033,944 @@ jest.mock("../../../../../api", () => ({
     }
   }),
   useGetCustomerProfileQuery: jest.fn().mockReturnValue({
-    data: {}
+    isSuccess: true,
+    data: {
+      "data": {
+        "customerId": "938e8c9a-3970-430d-b346-5e7fa9c74139",
+        "customerType": "Individual",
+        "status": "Active",
+        "monitoring": false,
+        "isTerminated": false,
+        "approvalStatus": "Approved",
+        "tenantId": "79fa72ce-2ff1-48fb-8558-f9b0c9b02fae",
+        "initiator": "Harry Kane",
+        "initiatorId": "ab1ef73f-adca-490f-9835-aec8ba06e2b6",
+        "approver": "Michael Jackson",
+        "approverId": "b86b0505-aedf-4a7d-b948-665b507b53de",
+        "branch": "S001",
+        "branchId": null,
+        "requiresRegularization": false,
+        "createdAt": "2024-04-02T10:13:05.487Z",
+        "updatedAt": "2024-04-02T15:46:07.040Z",
+        "customer_profiles": [
+          {
+            "customerProfileId": "b4e15a2b-8c6b-4fe6-9fae-2e2f90c8cb2c",
+            "customerId": "938e8c9a-3970-430d-b346-5e7fa9c74139",
+            "title": null,
+            "firstName": "Ayomide",
+            "surname": "Adetola",
+            "otherNames": null,
+            "customerNumber": "32293516648",
+            "mobileNumber": "",
+            "alternateMobileNumber": "",
+            "emailAddress": null,
+            "dateOfBirth": null,
+            "companyNameBusiness": null,
+            "bvn": "22113344556",
+            "nin": null,
+            "certificateOfIncorporation": null,
+            "taxIdentificationNumber": null,
+            "nationality": null,
+            "categoryOfBusiness": null,
+            "dateOfRegistration": null,
+            "introducer": null,
+            "lga": "",
+            "ci_lga": "",
+            "ed_lga": "",
+            "gender": "Male",
+            "country": "Select Country",
+            "validId": "[]",
+            "fullName": "Ayomide Adetola",
+            "customerPhoto": "[{\"signedUrl\":\"https://revent-sterling-services.s3.amazonaws.com/CustomerDocument-MicrosoftTeams-image%20%28John%20Doe%20Individual%29.pdf9b7el8?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAUEFPZCRBUP25HJJY%2F20240402%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240402T101057Z&X-Amz-Expires=604800&X-Amz-Signature=e2dfa2db94336a51ff9245242ac29fc246a75921a53f4bdba32b65c582885a8c&X-Amz-SignedHeaders=host\"}]",
+            "maritalStatus": "Single",
+            "stateOfOrigin": "",
+            "mailingAddress": "ayomideadetola@gmail.com",
+            "dualCitizenship": "No",
+            "ci_stateOfOrigin": "",
+            "customerEntityId": "77287539693",
+            "customerSignature": "[{\"signedUrl\":\"https://revent-sterling-services.s3.amazonaws.com/CustomerDocument-International%20passport.jpg0ps2a3?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAUEFPZCRBUP25HJJY%2F20240402%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240402T101039Z&X-Amz-Expires=604800&X-Amz-Signature=52f71e6a24ec69605bd7207779a1d60e1a4d497ee12969388c8aa3bbeb1a46cc&X-Amz-SignedHeaders=host\"}]",
+            "residentialPermit": "[]",
+            "residentialAddress": "10, Mobolaji crescent",
+            "marriageCertificate": "[]",
+            "employersMobileNumber": "",
+            "proofOfResidenceAddress": "[]",
+            "employersAlternativeNumber": "",
+            "otherUncategorisedDocuments": "[]",
+            "detailedDescriptionOfAddress": "",
+            "letterFromEmployerSchoolNusc": "[]",
+            "independentSatisfactoryReference": "[]",
+            "detailedDecsriptionOfEmployersAddress": "",
+            "detailedDescriptionOfResidentialAddress": ""
+          }
+        ],
+        "customer_products": [
+          {
+            "customerProductId": "4d688f96-e5c4-4949-8812-e2d0dcf99ea3",
+            "customerId": "938e8c9a-3970-430d-b346-5e7fa9c74139",
+            "productId": "6f911609-3728-4974-878f-cbc55386e4b9",
+            "productName": "Smart Savers",
+            "productCode": "SAV050",
+            "accountNumber": "7763696535",
+            "currency": "NGN",
+            "productCategory": "CASA",
+            "productType": "Savings",
+            "status": "Active",
+            "description": "Smart Savers",
+            "slogan": "SS",
+            "hasVariant": true,
+            "parentProductId": null,
+            "primaryRelationshipOfficer": null,
+            "secondaryRelationshipOfficer": null,
+            "transactionNote": null,
+            "createdAt": "2024-04-02T10:13:08.843Z",
+            "updatedAt": "2024-04-02T10:13:08.843Z",
+            "account_termination_record": false
+          },
+          {
+            "customerProductId": "d2a445cf-b9eb-46c2-a7cc-d169ac36f9a6",
+            "customerId": "938e8c9a-3970-430d-b346-5e7fa9c74139",
+            "productId": "59895a71-f447-41a7-8423-402c4044856b",
+            "productName": "Techno Product",
+            "productCode": "SAV088",
+            "accountNumber": "4792880728",
+            "currency": "NGN",
+            "productCategory": "CASA",
+            "productType": "Savings",
+            "status": "Active",
+            "description": "For techno",
+            "slogan": "DCC",
+            "hasVariant": false,
+            "parentProductId": null,
+            "primaryRelationshipOfficer": null,
+            "secondaryRelationshipOfficer": null,
+            "transactionNote": null,
+            "createdAt": "2024-04-02T15:46:07.047Z",
+            "updatedAt": "2024-04-02T15:46:07.047Z",
+            "account_termination_record": false
+          }
+        ],
+        "risk_assessments": [
+          {
+            "parameter": "Status of Customer identity verification",
+            "impliedWeight": 10,
+            "parameterOption": "Passed",
+            "assessmentType": "",
+            "escalationFactor": 1,
+            "percentageOptionsWeightAllocation": 0,
+            "score": 0,
+            "sectionName": "Customer's Identity",
+            "riskAssessmentId": "482053fa-f4b3-422e-9762-f91f96c9fd0d"
+          },
+          {
+            "parameter": "Is Customer a Politically Exposed Person?",
+            "impliedWeight": 8,
+            "parameterOption": "No",
+            "assessmentType": "CDD",
+            "escalationFactor": 1,
+            "percentageOptionsWeightAllocation": 20,
+            "score": 2,
+            "sectionName": "Customer's Identity",
+            "riskAssessmentId": "9dea61a5-1359-45f5-9f68-b5e6b84f0732"
+          },
+          {
+            "parameter": "Customer Persona",
+            "impliedWeight": 5,
+            "parameterOption": "Floating Middle Class",
+            "assessmentType": "CDD",
+            "escalationFactor": 1,
+            "percentageOptionsWeightAllocation": 10,
+            "score": 1,
+            "sectionName": "Customer's Identity",
+            "riskAssessmentId": "feeae4b8-b7ec-46b7-a8e7-c77bb7a86f4d"
+          },
+          {
+            "parameter": "Is Customer a Non-Resident?",
+            "impliedWeight": 7,
+            "parameterOption": "No",
+            "assessmentType": "CDD",
+            "escalationFactor": 1,
+            "percentageOptionsWeightAllocation": 20,
+            "score": 1,
+            "sectionName": "Customer's Address",
+            "riskAssessmentId": "26cb7dd0-b574-42ce-8222-554d0c47a8e0"
+          },
+          {
+            "parameter": "Status of customer address verification",
+            "impliedWeight": 10,
+            "parameterOption": "Passed",
+            "assessmentType": "",
+            "escalationFactor": 1,
+            "percentageOptionsWeightAllocation": 0,
+            "score": 0,
+            "sectionName": "Customer's Address",
+            "riskAssessmentId": "10162b25-e1f2-4e36-83b9-762f17f02967"
+          },
+          {
+            "parameter": "Status of Customer livelihood verification",
+            "impliedWeight": 10,
+            "parameterOption": "Passed",
+            "assessmentType": "",
+            "escalationFactor": 1,
+            "percentageOptionsWeightAllocation": 0,
+            "score": 0,
+            "sectionName": "Customer's Livelihood",
+            "riskAssessmentId": "bba9ba09-5b5d-4df5-b3b0-1d6a1a4b4c3c"
+          },
+          {
+            "parameter": "Status of Cross border banking relationship",
+            "impliedWeight": 6,
+            "parameterOption": "No",
+            "assessmentType": "CDD",
+            "escalationFactor": 1,
+            "percentageOptionsWeightAllocation": 20,
+            "score": 1,
+            "sectionName": "Customer's Livelihood",
+            "riskAssessmentId": "817aacc3-9f10-44c7-865f-7b10552f5e33"
+          },
+          {
+            "parameter": "Is originating Country a FATF listed country?",
+            "impliedWeight": 7,
+            "parameterOption": "No",
+            "assessmentType": "CDD",
+            "escalationFactor": 1,
+            "percentageOptionsWeightAllocation": 90,
+            "score": 1,
+            "sectionName": "Watchlist",
+            "riskAssessmentId": "6b48ca84-c513-41ed-8359-8b230201e195"
+          },
+          {
+            "parameter": "Is Customer on any AML related sanction list?",
+            "impliedWeight": 10,
+            "parameterOption": "No",
+            "assessmentType": "CDD",
+            "escalationFactor": 1,
+            "percentageOptionsWeightAllocation": 0,
+            "score": 0,
+            "sectionName": "Watchlist",
+            "riskAssessmentId": "08395761-4600-49cb-9a48-f0646c425c73"
+          }
+        ],
+        "signatories": [],
+        "executives": [],
+        "other_accounts": [],
+        "requests": [
+          {
+            "requestId": "be7f7529-4d1e-4154-995d-f68bf47bb77c",
+            "customerId": "938e8c9a-3970-430d-b346-5e7fa9c74139",
+            "requestTitle": "Concession modification of Account Number 4792880728",
+            "requestType": "ContractModification",
+            "requestSubType": "account-concession",
+            "accountNumber": "4792880728",
+            "justification": "",
+            "initiator": "Harry Kane",
+            "initiatorId": "ab1ef73f-adca-490f-9835-aec8ba06e2b6",
+            "status": "Approved",
+            "approvalStatus": "Approved",
+            "approver": "Michael Jackson",
+            "approverId": "b86b0505-aedf-4a7d-b948-665b507b53de",
+            "data": {
+              "isProduct": true,
+              "accountNumber": "4792880728",
+              "accountConcessionData": [
+                {
+                  "hasConcession": false,
+                  "concessionId": null,
+                  "accountNumber": "4792880728",
+                  "productId": "59895a71-f447-41a7-8423-402c4044856b",
+                  "productOperatingConditionId": "04949b3d-5635-4c1f-bb9c-823aa2957668",
+                  "data": {
+                    "accountNo": "4792880728",
+                    "createdById": "ab1ef73f-adca-490f-9835-aec8ba06e2b6",
+                    "createBy": "harrykane@yopmail.com",
+                    "tenantId": "79fa72ce-2ff1-48fb-8558-f9b0c9b02fae",
+                    "minOpeningBal": 1000,
+                    "minOpertBal": 0,
+                    "minOpertBalBreachPen": "DoNothing",
+                    "minOpertBalResMech": "Manual",
+                    "minOpertBalChrgId": null,
+                    "minOpertBalChrgName": null,
+                    "maxCumBal": null,
+                    "maxCumBalBreachPen": null,
+                    "maxCumBalResMech": null,
+                    "maxCumBalChrgId": null,
+                    "maxCumBalChrgName": null,
+                    "maxCumBalPortion": null,
+                    "lockInPeriod": null,
+                    "lockInPeriodValue": null,
+                    "lockInPeriodBreachPen": null,
+                    "lockInPeriodResMech": null,
+                    "lockInPeriodChrgId": null,
+                    "lockInPeriodChrgName": null,
+                    "lockInPeriodPortion": null,
+                    "inactivityPeriod": null,
+                    "inactivityPeriodValue": null,
+                    "inactivityPeriodBreachPen": null,
+                    "inactivityPeriodResMech": null,
+                    "inactivityPeriodChrgId": null,
+                    "inactivityPeriodChrgName": null,
+                    "inactivityPeriodPortion": null,
+                    "maxCumWithdValue": null,
+                    "maxCumBreachPen": null,
+                    "maxCumWithdPeriod": null,
+                    "maxCumResMech": null,
+                    "maxCumWithdChrgId": null,
+                    "maxCumWithdChrgName": null,
+                    "maxCumWithdPortion": null,
+                    "maxCumWithdCountPortion": null,
+                    "maxCumWithdCount": null,
+                    "maxCumWithdCountBreachPen": null,
+                    "maxCumWithdCountPeriod": null,
+                    "maxCumWithdCountResMech": null,
+                    "maxCumCountChrgId": null,
+                    "maxCumCountChrgName": null,
+                    "maxSingleDepst": null,
+                    "maxSingleDepstBreachPen": null,
+                    "maxSingleDepstResMech": null,
+                    "maxSingleDepstChrgId": null,
+                    "maxSingleDepstChrgName": null,
+                    "maxSingleDepstBalPortion": null,
+                    "maxSingleWithd": null,
+                    "maxSingleWithdBreachPen": null,
+                    "maxSingleWithdResMech": null,
+                    "maxSingleWithdChrgId": null,
+                    "maxSingleWithdChrgName": null,
+                    "maxSingleWithdPortion": null,
+                    "productOperatingConditionId": "04949b3d-5635-4c1f-bb9c-823aa2957668",
+                    "productId": "59895a71-f447-41a7-8423-402c4044856b",
+                    "pricingConfigurationId": "fefe56d5-b9b5-4686-8797-3d9ea720fdbc",
+                    "interestAccrualMechanism": "Simple",
+                    "interestComputationDaysMethod": "Actual/365",
+                    "interestCapitalizationInterval": "Monthly",
+                    "interestRates": [
+                      {
+                        "interestRatePercentage": 8,
+                        "minimumAccountBalance": -1,
+                        "maximumAccountBalance": -1
+                      }
+                    ],
+                    "enabledOverdraft": false,
+                    "overdraftProductId": null,
+                    "overdraftProductName": null,
+                    "productAccountingEntryId": "2179e334-528d-4270-be53-24dee4f827c8",
+                    "depositLiabilityLedgerId": "6bbed7f2-5982-4648-9779-25e1cbbecae5",
+                    "depositLiabilityLedgerName": "Term deposit",
+                    "depositLiabilityLedgerCode": "LIALIADLLDLL10001000I002I002",
+                    "depositLiabilityLedgerClass": null,
+                    "depositLiabilityParentLedgerId": "ff9f0d26-5d2a-4f13-9363-e2dde987ba5f",
+                    "depositLiabilityParentLedgerCode": "LIADLL",
+                    "interestAccuralLedgerId": "a2156086-8bf2-4255-b268-15f748cf9c8f",
+                    "interestAccuralLedgerName": "Interest accrual",
+                    "interestAccuralLedgerCode": "LIALIADLLDLL10011001I002I002",
+                    "interestAccuralLedgerClass": null,
+                    "interestAccuralParentLedgerId": "ff9f0d26-5d2a-4f13-9363-e2dde987ba5f",
+                    "interestAccuralParentLedgerCode": "LIADLL",
+                    "interestExpenseLedgerId": "cd7b57b6-5492-4604-b700-85af28b35834",
+                    "interestExpenseLedgerName": "Interest expense",
+                    "interestExpenseLedgerCode": "EXPPEX0004I002",
+                    "interestExpenseLedgerClass": null,
+                    "interestExpenseParentLedgerId": "bdf0914d-449a-4b3c-a25b-1d357ac87946",
+                    "interestExpenseParentLedgerCode": "EXPPEX",
+                    "fundsDepositCharges": [
+                      {
+                        "id": "7da655fd-4074-449c-ba8c-c39fd75b6ffe"
+                      }
+                    ],
+                    "fundsDepositTaxes": [],
+                    "branchTransactionCharges": [],
+                    "branchTransactionTaxes": [],
+                    "interestAccuralCharges": [],
+                    "interestAccuralTaxes": [],
+                    "interestDisbursementCharges": [],
+                    "interestDisbursementTaxes": [],
+                    "recentlyUpdatedColumn": ""
+                  }
+                }
+              ],
+              "productData": [
+                {
+                  "customerProductId": "d2a445cf-b9eb-46c2-a7cc-d169ac36f9a6",
+                  "customerId": "938e8c9a-3970-430d-b346-5e7fa9c74139",
+                  "productId": "59895a71-f447-41a7-8423-402c4044856b",
+                  "productName": "Techno Product",
+                  "productCode": "SAV088",
+                  "accountNumber": "4792880728",
+                  "currency": "NGN",
+                  "productCategory": "CASA",
+                  "productType": "Savings",
+                  "status": "Active",
+                  "description": "For techno",
+                  "slogan": "DCC",
+                  "hasVariant": false,
+                  "parentProductId": null,
+                  "primaryRelationshipOfficer": null,
+                  "secondaryRelationshipOfficer": null,
+                  "transactionNote": null,
+                  "createdAt": "2024-04-02T15:46:07.047Z",
+                  "updatedAt": "2024-04-02T15:46:07.047Z"
+                }
+              ]
+            },
+            "customerType": "Individual",
+            "creationMode": "Legacy",
+            "branch": "S001",
+            "branchId": null,
+            "withdrawn": false,
+            "isDeleted": false,
+            "deletedOn": null,
+            "rejectionDocument": null,
+            "rejectionReason": null,
+            "createdAt": "2024-04-02T15:48:21.544Z",
+            "updatedAt": "2024-04-02T15:50:48.423Z",
+            "waiver_requests": []
+          },
+          {
+            "requestId": "1eb4569b-1073-43d5-a849-ae4fa6ccb8d0",
+            "customerId": "938e8c9a-3970-430d-b346-5e7fa9c74139",
+            "requestTitle": "Restriction Placement on Account Number 4792880728",
+            "requestType": "Modification",
+            "requestSubType": "account-freeze",
+            "accountNumber": "4792880728",
+            "justification": "test",
+            "initiator": "Harry Kane",
+            "initiatorId": "ab1ef73f-adca-490f-9835-aec8ba06e2b6",
+            "status": "Approved",
+            "approvalStatus": "Approved",
+            "approver": "Michael Jackson",
+            "approverId": "b86b0505-aedf-4a7d-b948-665b507b53de",
+            "data": {
+              "isProduct": true,
+              "accountNumber": "4792880728",
+              "accountFreezeData": [
+                {
+                  "accountNumber": "4792880728",
+                  "freezeCode": "002"
+                }
+              ]
+            },
+            "customerType": "Individual",
+            "creationMode": "Legacy",
+            "branch": "S001",
+            "branchId": null,
+            "withdrawn": false,
+            "isDeleted": false,
+            "deletedOn": null,
+            "rejectionDocument": null,
+            "rejectionReason": null,
+            "createdAt": "2024-04-02T15:54:50.853Z",
+            "updatedAt": "2024-04-02T15:56:28.153Z",
+            "waiver_requests": []
+          },
+          {
+            "requestId": "076a4ba8-8e4e-446b-b9ca-137c1be7ed96",
+            "customerId": "938e8c9a-3970-430d-b346-5e7fa9c74139",
+            "requestTitle": "Restriction Placement on Account Number 4792880728",
+            "requestType": "Modification",
+            "requestSubType": "account-lien",
+            "accountNumber": "4792880728",
+            "justification": "Test",
+            "initiator": "Harry Kane",
+            "initiatorId": "ab1ef73f-adca-490f-9835-aec8ba06e2b6",
+            "status": "Approved",
+            "approvalStatus": "Approved",
+            "approver": "Michael Jackson",
+            "approverId": "b86b0505-aedf-4a7d-b948-665b507b53de",
+            "data": {
+              "isProduct": true,
+              "accountNumber": "4792880728",
+              "accountLienData": [
+                {
+                  "accountNumber": "4792880728",
+                  "productId": "59895a71-f447-41a7-8423-402c4044856b",
+                  "isPlaceLien": true,
+                  "lienAmount": "100",
+                  "activeLienRequestId": null,
+                  "currency": "NGN"
+                }
+              ]
+            },
+            "customerType": "Individual",
+            "creationMode": "Legacy",
+            "branch": "S001",
+            "branchId": null,
+            "withdrawn": false,
+            "isDeleted": false,
+            "deletedOn": null,
+            "rejectionDocument": null,
+            "rejectionReason": null,
+            "createdAt": "2024-04-02T16:34:28.541Z",
+            "updatedAt": "2024-04-02T16:36:12.399Z",
+            "waiver_requests": []
+          },
+          {
+            "requestId": "ad2a9e11-7ab6-477d-b62c-11f4f31271a1",
+            "customerId": "938e8c9a-3970-430d-b346-5e7fa9c74139",
+            "requestTitle": "Creation of Adetola Ayomide",
+            "requestType": "Creation",
+            "requestSubType": null,
+            "accountNumber": null,
+            "justification": null,
+            "initiator": "Harry Kane",
+            "initiatorId": "ab1ef73f-adca-490f-9835-aec8ba06e2b6",
+            "status": "Approved",
+            "approvalStatus": "Approved",
+            "approver": "Michael Jackson",
+            "approverId": "b86b0505-aedf-4a7d-b948-665b507b53de",
+            "data": {
+              "customerData": [
+                {
+                  "sectionName": "biodata",
+                  "data": {
+                    "surname": "Adetola",
+                    "firstName": "Ayomide",
+                    "stateOfOrigin": "",
+                    "lga": "",
+                    "gender": "Male",
+                    "maritalStatus": "Single",
+                    "country": "Select Country",
+                    "dualCitizenship": "No"
+                  },
+                  "pageId": "16667844047024844404",
+                  "sectionId": "16667844112065919555"
+                },
+                {
+                  "sectionName": "identityVerification",
+                  "data": {
+                    "bvn": "22113344556"
+                  },
+                  "pageId": "16667844047024844404",
+                  "sectionId": "16686080911868326167"
+                },
+                {
+                  "sectionName": "contactInformation",
+                  "data": {
+                    "detailedDescriptionOfAddress": "",
+                    "mobileNumber": "",
+                    "alternateMobileNumber": "",
+                    "ci_stateOfOrigin": "",
+                    "ci_lga": "",
+                    "residentialAddress": "10, Mobolaji crescent",
+                    "mailingAddress": "ayomideadetola@gmail.com"
+                  },
+                  "pageId": "16667844047024844404",
+                  "sectionId": "16733527390997989957"
+                },
+                {
+                  "sectionName": "detailsOfSpouse",
+                  "data": {
+                    "detailedDescriptionOfResidentialAddress": "",
+                    "mobileNumber": "",
+                    "alternateMobileNumber": ""
+                  },
+                  "pageId": "16667844047024844404",
+                  "sectionId": "16741206899292354242"
+                },
+                {
+                  "sectionName": "employmentDetails",
+                  "data": {
+                    "detailedDecsriptionOfEmployersAddress": "",
+                    "employersMobileNumber": "",
+                    "employersAlternativeNumber": "",
+                    "ed_lga": ""
+                  },
+                  "pageId": "16667844047024844404",
+                  "sectionId": "16835777764642564094"
+                },
+                {
+                  "sectionName": "documentation-SECTIONLESS",
+                  "data": {
+                    "customerSignature": "[{\"signedUrl\":\"https://revent-sterling-services.s3.amazonaws.com/CustomerDocument-International%20passport.jpg0ps2a3?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAUEFPZCRBUP25HJJY%2F20240402%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240402T101039Z&X-Amz-Expires=604800&X-Amz-Signature=52f71e6a24ec69605bd7207779a1d60e1a4d497ee12969388c8aa3bbeb1a46cc&X-Amz-SignedHeaders=host\"}]",
+                    "validId": "[]",
+                    "proofOfResidenceAddress": "[]",
+                    "residentialPermit": "[]",
+                    "marriageCertificate": "[]",
+                    "letterFromEmployerSchoolNusc": "[]",
+                    "independentSatisfactoryReference": "[]",
+                    "customerPhoto": "[{\"signedUrl\":\"https://revent-sterling-services.s3.amazonaws.com/CustomerDocument-MicrosoftTeams-image%20%28John%20Doe%20Individual%29.pdf9b7el8?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAUEFPZCRBUP25HJJY%2F20240402%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240402T101057Z&X-Amz-Expires=604800&X-Amz-Signature=e2dfa2db94336a51ff9245242ac29fc246a75921a53f4bdba32b65c582885a8c&X-Amz-SignedHeaders=host\"}]",
+                    "otherUncategorisedDocuments": "[]"
+                  },
+                  "pageId": "16843532234632058630",
+                  "sectionId": ""
+                }
+              ],
+              "formInformation": {
+                "formType": "legacy",
+                "formId": "660702ce7a996da8093d75af"
+              },
+              "riskAssessmentData": [
+                {
+                  "sectionName": "Customer's Identity",
+                  "data": [
+                    {
+                      "parameter": "Status of Customer identity verification",
+                      "impliedWeight": 10,
+                      "parameterOption": "Passed",
+                      "assessmentType": "",
+                      "escalationFactor": 1,
+                      "percentageOptionsWeightAllocation": 0,
+                      "score": 0
+                    },
+                    {
+                      "parameter": "Is Customer a Politically Exposed Person?",
+                      "impliedWeight": 8,
+                      "parameterOption": "No",
+                      "assessmentType": "CDD",
+                      "escalationFactor": 1,
+                      "percentageOptionsWeightAllocation": 20,
+                      "score": 1.6
+                    },
+                    {
+                      "parameter": "Customer Persona",
+                      "impliedWeight": 5,
+                      "parameterOption": "Floating Middle Class",
+                      "assessmentType": "CDD",
+                      "escalationFactor": 1,
+                      "percentageOptionsWeightAllocation": 10,
+                      "score": 0.5
+                    }
+                  ]
+                },
+                {
+                  "sectionName": "Customer's Address",
+                  "data": [
+                    {
+                      "parameter": "Is Customer a Non-Resident?",
+                      "impliedWeight": 7,
+                      "parameterOption": "No",
+                      "assessmentType": "CDD",
+                      "escalationFactor": 1,
+                      "percentageOptionsWeightAllocation": 20,
+                      "score": 1.4
+                    },
+                    {
+                      "parameter": "Status of customer address verification",
+                      "impliedWeight": 10,
+                      "parameterOption": "Passed",
+                      "assessmentType": "",
+                      "escalationFactor": 1,
+                      "percentageOptionsWeightAllocation": 0,
+                      "score": 0
+                    }
+                  ]
+                },
+                {
+                  "sectionName": "Customer's Livelihood",
+                  "data": [
+                    {
+                      "parameter": "Status of Customer livelihood verification",
+                      "impliedWeight": 10,
+                      "parameterOption": "Passed",
+                      "assessmentType": "",
+                      "escalationFactor": 1,
+                      "percentageOptionsWeightAllocation": 0,
+                      "score": 0
+                    },
+                    {
+                      "parameter": "Status of Cross border banking relationship",
+                      "impliedWeight": 6,
+                      "parameterOption": "No",
+                      "assessmentType": "CDD",
+                      "escalationFactor": 1,
+                      "percentageOptionsWeightAllocation": 20,
+                      "score": 1.2
+                    }
+                  ]
+                },
+                {
+                  "sectionName": "Watchlist",
+                  "data": [
+                    {
+                      "parameter": "Is originating Country a FATF listed country?",
+                      "impliedWeight": 7,
+                      "parameterOption": "No",
+                      "assessmentType": "CDD",
+                      "escalationFactor": 1,
+                      "percentageOptionsWeightAllocation": 90,
+                      "score": 1.4
+                    },
+                    {
+                      "parameter": "Is Customer on any AML related sanction list?",
+                      "impliedWeight": 10,
+                      "parameterOption": "No",
+                      "assessmentType": "CDD",
+                      "escalationFactor": 1,
+                      "percentageOptionsWeightAllocation": 0,
+                      "score": 0
+                    }
+                  ]
+                }
+              ],
+              "tenantId": "79fa72ce-2ff1-48fb-8558-f9b0c9b02fae",
+              "requestData": {
+                "initiator": "Harry Kane",
+                "initiatorId": "ab1ef73f-adca-490f-9835-aec8ba06e2b6",
+                "requestType": "creation",
+                "tenantId": "79fa72ce-2ff1-48fb-8558-f9b0c9b02fae",
+                "branch": "S001",
+                "creationMode": "Legacy"
+              },
+              "waiverData": [],
+              "productData": [
+                {
+                  "productName": "Smart Savers",
+                  "productCode": "SAV050",
+                  "productId": "6f911609-3728-4974-878f-cbc55386e4b9",
+                  "productCategory": "CASA",
+                  "productType": "Savings"
+                },
+                {
+                  "productName": "Smart Savers",
+                  "productCode": "SAV050",
+                  "productId": "6f911609-3728-4974-878f-cbc55386e4b9",
+                  "productCategory": "CASA",
+                  "productType": "Savings"
+                }
+              ],
+              "branch": "S001",
+              "riskData": {
+                "riskScore": "11.00",
+                "riskStatus": "LOW"
+              }
+            },
+            "customerType": "Individual",
+            "creationMode": "Legacy",
+            "branch": "S001",
+            "branchId": null,
+            "withdrawn": false,
+            "isDeleted": false,
+            "deletedOn": null,
+            "rejectionDocument": null,
+            "rejectionReason": null,
+            "createdAt": "2024-04-02T10:12:12.089Z",
+            "updatedAt": "2024-04-02T10:13:08.852Z",
+            "waiver_requests": []
+          },
+          {
+            "requestId": "8d01d0f0-c23e-4331-b51c-24e2716c7e4e",
+            "customerId": "938e8c9a-3970-430d-b346-5e7fa9c74139",
+            "requestTitle": "Restriction Removal from Account Number 4792880728",
+            "requestType": "Modification",
+            "requestSubType": "account-freeze",
+            "accountNumber": "4792880728",
+            "justification": "test",
+            "initiator": "Harry Kane",
+            "initiatorId": "ab1ef73f-adca-490f-9835-aec8ba06e2b6",
+            "status": "Approved",
+            "approvalStatus": "Approved",
+            "approver": "Customer Checker",
+            "approverId": "05aa59cb-4f51-4704-9b9c-e0560273af8a",
+            "data": {
+              "isProduct": true,
+              "accountNumber": "4792880728",
+              "accountFreezeData": [
+                {
+                  "accountNumber": "4792880728",
+                  "freezeCode": "000"
+                }
+              ]
+            },
+            "customerType": "Individual",
+            "creationMode": "Legacy",
+            "branch": "S001",
+            "branchId": null,
+            "withdrawn": false,
+            "isDeleted": false,
+            "deletedOn": null,
+            "rejectionDocument": null,
+            "rejectionReason": null,
+            "createdAt": "2024-04-02T15:58:19.446Z",
+            "updatedAt": "2024-04-02T16:22:36.040Z",
+            "waiver_requests": []
+          },
+          {
+            "requestId": "e3f0b3e2-5c01-4366-85f0-302736112b5d",
+            "customerId": "938e8c9a-3970-430d-b346-5e7fa9c74139",
+            "requestTitle": "Restriction Removal from Account Number 4792880728",
+            "requestType": "Modification",
+            "requestSubType": "account-lien",
+            "accountNumber": "4792880728",
+            "justification": "test",
+            "initiator": "Harry Kane",
+            "initiatorId": "ab1ef73f-adca-490f-9835-aec8ba06e2b6",
+            "status": "Approved",
+            "approvalStatus": "Approved",
+            "approver": "Michael Jackson",
+            "approverId": "b86b0505-aedf-4a7d-b948-665b507b53de",
+            "data": {
+              "isProduct": true,
+              "accountNumber": "4792880728",
+              "accountLienData": [
+                {
+                  "accountNumber": "4792880728",
+                  "productId": "59895a71-f447-41a7-8423-402c4044856b",
+                  "isPlaceLien": false,
+                  "activeLienRequestId": "bc5cec7f-71dc-45bc-9371-69bef620e090",
+                  "lienAmount": 100,
+                  "currency": "NGN"
+                }
+              ]
+            },
+            "customerType": "Individual",
+            "creationMode": "Legacy",
+            "branch": "S001",
+            "branchId": null,
+            "withdrawn": false,
+            "isDeleted": false,
+            "deletedOn": null,
+            "rejectionDocument": null,
+            "rejectionReason": null,
+            "createdAt": "2024-04-02T16:37:59.432Z",
+            "updatedAt": "2024-04-02T16:38:28.494Z",
+            "waiver_requests": []
+          },
+          {
+            "requestId": "f212c034-4378-47ee-85e1-b20ecce723c9",
+            "customerId": "938e8c9a-3970-430d-b346-5e7fa9c74139",
+            "requestTitle": "Modification of Adetola Ayomide",
+            "requestType": "Modification",
+            "requestSubType": null,
+            "accountNumber": null,
+            "justification": null,
+            "initiator": "Harry Kane",
+            "initiatorId": "ab1ef73f-adca-490f-9835-aec8ba06e2b6",
+            "status": "Approved",
+            "approvalStatus": "Approved",
+            "approver": "Michael Jackson",
+            "approverId": "b86b0505-aedf-4a7d-b948-665b507b53de",
+            "data": {
+              "productData": [
+                {
+                  "productName": "Techno Product",
+                  "productCode": "SAV088",
+                  "productId": "59895a71-f447-41a7-8423-402c4044856b",
+                  "productCategory": "CASA",
+                  "productType": "Savings"
+                }
+              ],
+              "tierUpgradeData": [],
+              "tenantId": "79fa72ce-2ff1-48fb-8558-f9b0c9b02fae",
+              "branch": "S001",
+              "formType": "legacy"
+            },
+            "customerType": "Individual",
+            "creationMode": "Legacy",
+            "branch": "S001",
+            "branchId": null,
+            "withdrawn": false,
+            "isDeleted": false,
+            "deletedOn": null,
+            "rejectionDocument": null,
+            "rejectionReason": null,
+            "createdAt": "2024-04-02T15:45:29.233Z",
+            "updatedAt": "2024-04-02T15:46:07.058Z",
+            "waiver_requests": []
+          }
+        ],
+        "hasProducts": true,
+        "hasGracePeriod": false,
+        "customer_grace_period": [],
+        "requestInReview": null,
+        "hasRequestInReview": false,
+        "riskStatus": "LOW",
+        "riskScore": "11.00"
+      }
+    }, isSuccess: true
   }),
   useGetAccountDataByIdQuery: jest.fn().mockReturnValue({
-    data: {}
+    isSuccess: true,
+    data: {
+      "totalBalance": null,
+      "value": {
+        "accountId": 284,
+        "accountUUID": "98edc00e-fcdf-42e9-aa3a-8041b0c0fa4d",
+        "customerId": "938e8c9a-3970-430d-b346-5e7fa9c74139",
+        "accountCode": "SAV050",
+        "accountName": "Adetola Ayomide",
+        "accountNo": "7763696535",
+        "accountNoAlias": "",
+        "postedBy": "ab1ef73f-adca-490f-9835-aec8ba06e2b6",
+        "accountDescription": null,
+        "nin": null,
+        "isLocked": false,
+        "accountNoAliasIndex": 0,
+        "accountStatus": 1,
+        "accountCategory": 0,
+        "dateOpened": "2024-04-02T00:00:00",
+        "dateClosed": null,
+        "branchCode": "S001",
+        "unClearedBalance": 0,
+        "clearedBalance": 748598.3052,
+        "lienAmount": 0,
+        "phoneNumber": "",
+        "bvn": "22113344556",
+        "overDraftLimit": 0,
+        "isReplicated": false,
+        "freezeCode": "000",
+        "currencyCode": "NGN",
+        "tenantId": "79fa72ce-2ff1-48fb-8558-f9b0c9b02fae",
+        "initiator": "",
+        "approvedBy": "b86b0505-aedf-4a7d-b948-665b507b53de",
+        "isReplicable": false,
+        "isReplicate": false,
+        "branchCodeOfInitiator": "",
+        "branchCodeOfApprover": "",
+        "isProductLedger": false,
+        "isSystemEntryOnly": false,
+        "enableSmsAlert": false,
+        "enableEmailAlert": false,
+        "enableMonthlyStatement": false,
+        "enableAnnualStatement": false,
+        "currentInterestRate": 0,
+        "lastModifiedDate": "2024-04-02T00:00:00",
+        "subLedgerCode": "LIATTTPROD11001S0201",
+        "hasConcession": false,
+        "productId": "6f911609-3728-4974-878f-cbc55386e4b9",
+        "accountType": "LIABILITY",
+        "hasBreach": false,
+        "subLedgerId": "52819d35-56f9-477b-8ff7-63b8615a70fc",
+        "accountCategoryName": null,
+        "parentLedgerCode": "LIATTT",
+        "ledgerCategory": null,
+        "parentLedgerId": "ece5acc8-f1a9-4b35-8aec-da682edb8317",
+        "primaryRelationshipManager": "",
+        "secondaryRelationshipManager": "",
+        "parentLedgerName": "",
+        "creditUpdateFrequency": 0,
+        "debitUpdateFrequency": 0,
+        "isCollectionAccount": false,
+        "isHighVolumeTransation": false,
+        "isOfficeAccount": false,
+        "minBalance": 0,
+        "maxBalance": -1,
+        "maxDailyCredit": -1,
+        "maxDailyDebit": -1,
+        "maxOneTimeDebit": 0
+      },
+      "requestId": null,
+      "errorMessage": null,
+      "message": "",
+      "hasError": false,
+      "responseCode": "000",
+      "responseDescription": "Account details for 7763696535 retrieved successfully",
+      "requestTime": "2024-04-04T14:49:41.9714215+01:00",
+      "responseTime": "2024-04-04T14:49:41.9748979+01:00",
+      "activityTime": 3.4764,
+      "isSuccess": true
+    }
   }),
   useUploadDocumentMutation: jest.fn().mockReturnValue([
     jest.fn(),
-    {data: {}}
-  ])
+    { data: {} }
+  ]),
+  useGetUserQuery: jest.fn().mockReturnValue({
+    data: {}
+  })
 }))
 
 describe('onProceed', () => {
   it('should call preCreateInvestment when formData.id is falsy', () => {
     const data = {};
     const proceed = jest.fn();
-    const formData = { id: null, customerBookingInfoModel: {} };
+    const formData = { id: null, customerBookingInfoModel: { customerAccount: {} } };
     const setFormData = jest.fn();
     const preCreateInvestment = jest.fn();
     const preModifyRequest = jest.fn();
@@ -1100,10 +2022,10 @@ describe('onProceed', () => {
 
 
 describe("CustomerInformation", () => {
-  const formData = { id: null, customerBookingInfoModel: {} };
+  const formData = { id: null, customerBookingInfoModel: { customerAccount: 123 } };
   it("Should render", () => {
-    renderWithProviders(<CustomerInformation formData={formData} proceed={jest.fn()} 
-    setDisabled={jest.fn()} setFormData={jest.fn()}/>);
+    renderWithProviders(<CustomerInformation formData={formData} proceed={jest.fn()}
+      setDisabled={jest.fn()} setFormData={jest.fn()} />);
     screen.debug();
   })
 })

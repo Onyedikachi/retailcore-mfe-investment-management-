@@ -199,6 +199,7 @@ export default function CustomerInformation({
 
   useEffect(() => {
     if (accountNumber && data) {
+      console.log("touchdown")
       const foundObject = data?.data?.find((item) => {
         return (
           item.customer_products &&
