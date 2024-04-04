@@ -25,6 +25,26 @@ import {
 } from "@app/api";
 import uuid from "react-uuid";
 
+export const addDocument = ({ newDocument, documents, setNewDocument, setIsAdd, setDocuments }) => {
+  if (!newDocument.length) return;
+  if (
+    documents.find(
+      (doc) =>
+        doc.name.toLowerCase() === newDocument.toLowerCase()
+    )
+  ) {
+    setNewDocument("");
+    setIsAdd(false);
+    return;
+  }
+  setDocuments([
+    ...documents,
+    { id: newDocument, name: newDocument },
+  ]);
+  setNewDocument("");
+  setIsAdd(false);
+}
+
 export const handleCheckedRequirement = ({
   document,
   toggledRequirements,
@@ -498,7 +518,7 @@ export default function CustomerEligibilityCriteria({
                       <span
                         role="button"
                         tabIndex={0}
-                        onKeyDown={() => {}}
+                        onKeyDown={() => { }}
                         onClick={() => setIsAdd(true)}
                         className="cursor-pointer text-[#CF2A2A] text-sm "
                       >
@@ -522,24 +542,7 @@ export default function CustomerEligibilityCriteria({
                     type="button"
                     data-testid="submit-document"
                     onClick={() => {
-                      if (!newDocument.length) return;
-
-                      if (
-                        documents.find(
-                          (doc) =>
-                            doc.name.toLowerCase() === newDocument.toLowerCase()
-                        )
-                      ) {
-                        setNewDocument("");
-                        setIsAdd(false);
-                        return;
-                      }
-                      setDocuments([
-                        ...documents,
-                        { id: newDocument, name: newDocument },
-                      ]);
-                      setNewDocument("");
-                      setIsAdd(false);
+                      addDocument({ documents, newDocument, setDocuments, setIsAdd, setNewDocument })
                     }}
                     className="flex mx-auto rounded-lg text-base font-medium py-[5px] h-[44px] bg-sterling-red-800 border border-sterling-red-800 text-white  px-10 disabled:border-gray-50 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-[#636363]"
                   >
