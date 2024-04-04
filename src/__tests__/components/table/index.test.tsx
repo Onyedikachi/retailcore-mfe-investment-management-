@@ -14,6 +14,7 @@ import TableComponent, {
   UpdatedOnCellContent,
   handleProductsDropdown,
   handleUpdated,
+  liquidationHandler,
   statusHandler,
 } from "../../../components/table";
 import { FaBars } from "react-icons/fa";
@@ -818,6 +819,25 @@ describe("statusHandler", () => {
   const setFailed = jest.fn();
   const role = "superadmin";
 
+
+  it("should handle earlyEditLiquidateSuccess and early ", () => {
+    statusHandler({ setSuccessText, setIsSuccessOpen, setSubText, setFailed, earlyEditLiquidateSuccess: true, role: "superadmin" });
+    expect(setSuccessText).toHaveBeenCalledWith(Messages.LIQUIDATION_MODIFICATION__SUCCESS)
+    expect(setIsSuccessOpen).toBeCalledWith(true);
+
+    statusHandler({ setSuccessText, setIsSuccessOpen, setSubText, setFailed, earlyEditLiquidateSuccess: true });
+    expect(setSuccessText).toHaveBeenCalledWith(Messages.LIQUIDATION_MODIFICATION__SUCCESS)
+    expect(setIsSuccessOpen).toBeCalledWith(true);
+
+    statusHandler({ setSuccessText, setIsSuccessOpen, setSubText, setFailed, partEditLiquidateSuccess: true, role: "superadmin" });
+    expect(setSuccessText).toHaveBeenCalledWith(Messages.LIQUIDATION_MODIFICATION__SUCCESS)
+    expect(setIsSuccessOpen).toBeCalledWith(true);
+
+    statusHandler({ setSuccessText, setIsSuccessOpen, setSubText, setFailed, partEditLiquidateSuccess: true });
+    expect(setSuccessText).toHaveBeenCalledWith(Messages.LIQUIDATION_MODIFICATION__SUCCESS)
+    expect(setIsSuccessOpen).toBeCalledWith(true);
+  })
+
   it('should set success text and open success modal when isSuccess is true', () => {
     const isSuccess = true;
 
@@ -832,17 +852,13 @@ describe("statusHandler", () => {
 
     statusHandler({ modifyRequestSuccess: true, activateSuccess, setSuccessText, setIsSuccessOpen, setSubText, role, setFailed });
 
-
     expect(setSuccessText).toHaveBeenCalledWith(Messages.BOOKING_WITHDRAW_SUCCESS);
     expect(setSubText).toHaveBeenCalledWith(Messages.BOOKING_WITHDRAW_SUCCESS_SUB);
     expect(setIsSuccessOpen).toHaveBeenCalledWith(true);
   });
 
   it('should handle modifyRequestError', () => {
-
     statusHandler({ modifyRequestIsError: true, modifyRequestError: { message: { message: "E sha fail" } }, setFailedText, setFailed, setFailedSubtext, role, setSuccessText, setIsSuccessOpen, setSubText });
-
-
     expect(setFailedText).toHaveBeenCalledWith(Messages.BOOKING_MODIFY_FAILED);
     expect(setFailedSubtext).toHaveBeenCalledWith("E sha fail")
     expect(setFailed).toHaveBeenCalledWith(true);
@@ -861,6 +877,17 @@ describe("statusHandler", () => {
   it("shluld handle earlyLiquidateSuccess", () => {
     statusHandler({ earlyLiquidateSuccess: true, setSuccessText, setIsSuccessOpen, setSubText, setFailed });
     expect(setSuccessText).toBeCalledWith(Messages.EARLY_LIQUIDATION_REQUEST)
+    expect(setIsSuccessOpen).toBeCalledWith(true);
+  })
+
+  it("shluld handle activateSuccess", () => {
+    // As superadmin
+    statusHandler({ activateSuccess: true, setSuccessText, setIsSuccessOpen, setSubText, setFailed, role });
+    expect(setSuccessText).toBeCalledWith(Messages.PRODUCT_ACTIVATE_SUCCESS)
+    expect(setIsSuccessOpen).toBeCalledWith(true);
+
+    statusHandler({ activateSuccess: true, setSuccessText, setIsSuccessOpen, setSubText, setFailed });
+    expect(setSuccessText).toBeCalledWith(Messages.ADMIN_PRODUCT_ACTIVATE_SUCCESS)
     expect(setIsSuccessOpen).toBeCalledWith(true);
   })
 
@@ -940,3 +967,74 @@ describe("statusHandler", () => {
     expect(setFailed).toHaveBeenCalledWith(true);
   });
 })
+
+describe('liquidationHandler', () => {
+  // metaInfo parameter is null or undefined
+  it('should call the appropriate liquidation function based on the type parameter when metaInfo is null or undefined', () => {
+    const resetModals = jest.fn();
+    const data = {};
+    const type = "part";
+    const metaInfo = null;
+    const partLiquidateInvestment = jest.fn();
+    const earlyLiquidateInvestment = jest.fn();
+    const partEditLiquidateInvestment = jest.fn();
+    const earlyEditLiquidateInvestment = jest.fn();
+
+    liquidationHandler({
+      data,
+      type : "part",
+      metaInfo: null,
+      resetModals,
+      partLiquidateInvestment,
+      earlyLiquidateInvestment,
+      partEditLiquidateInvestment,
+      earlyEditLiquidateInvestment,
+    });
+    expect(resetModals).toBeCalled();
+
+    expect(partLiquidateInvestment).toHaveBeenCalled();
+    liquidationHandler({
+      data,
+      type : "part",
+      metaInfo: {data: ""},
+      resetModals,
+      partLiquidateInvestment,
+      earlyLiquidateInvestment,
+      partEditLiquidateInvestment,
+      earlyEditLiquidateInvestment,
+    });
+    expect(resetModals).toBeCalled();
+    expect(partEditLiquidateInvestment).toHaveBeenCalled();
+
+    liquidationHandler({
+      data,
+      type : "early",
+      metaInfo: null,
+      resetModals,
+      partLiquidateInvestment,
+      earlyLiquidateInvestment,
+      partEditLiquidateInvestment,
+      earlyEditLiquidateInvestment,
+    });
+    expect(resetModals).toBeCalled();
+
+    expect(earlyLiquidateInvestment).toHaveBeenCalled();
+    liquidationHandler({
+      data,
+      type : "early",
+      metaInfo: {data: ""},
+      resetModals,
+      partLiquidateInvestment,
+      earlyLiquidateInvestment,
+      partEditLiquidateInvestment,
+      earlyEditLiquidateInvestment,
+    });
+    expect(resetModals).toBeCalled();
+    expect(earlyEditLiquidateInvestment).toHaveBeenCalled();
+
+    // expect(partLiquidateInvestment).toHaveBeenCalledWith(data);
+    // expect(earlyLiquidateInvestment).not.toHaveBeenCalled();
+    // expect(partEditLiquidateInvestment).not.toHaveBeenCalled();
+    // expect(earlyEditLiquidateInvestment).not.toHaveBeenCalled();
+  });
+});
