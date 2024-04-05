@@ -5,7 +5,7 @@ import { cleanObject } from "@app/utils/cleanObject";
 
 export const currencyApi: any = createApi({
   reducerPath: "currencyApi",
-  baseQuery: axiosBaseQuery({ serviceKey: "currency" }),
+  baseQuery: axiosBaseQuery({ serviceKey: "currencyV2" }),
   keepUnusedDataFor: 0,
   extractRehydrationInfo(action, { reducerPath }) {
     if (action.type === REHYDRATE && action.payload) {
