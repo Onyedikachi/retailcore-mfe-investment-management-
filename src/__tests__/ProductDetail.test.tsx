@@ -268,7 +268,7 @@ describe("ProductDetail", () => {
     const previousData = null;
 
     // Act
-    render(<ProductDetail detail={details} previousData={previousData} />);
+    renderWithProviders(<ProductDetail detail={details} previousData={previousData} />);
 
     // Assert
     expect(screen.getByText('Draft Box updated')).toBeInTheDocument();
@@ -282,12 +282,12 @@ describe("ProductDetail", () => {
 
 
 describe("DebitCreditable", () => {
-  it('should render product details correctly', () => {
+    it('should render product details correctly', () => {
     // Arrange
     const previousData = null;
 
     // Act
-    const page = render(<ProductDetail detail={details} previousData={previousData} />);
+    const page = renderWithProviders(<ProductDetail detail={details} previousData={previousData} />);
     // Assert
     expect(screen.getByText('Draft Box updated')).toBeInTheDocument();
     expect(screen.getByText('Draft slogan updat')).toBeInTheDocument();

@@ -30,7 +30,7 @@ export function checkDocuments(keys, obj) {
       obj[doc.camelCaseName] === undefined ||
       obj[doc.camelCaseName] === null ||
       (obj[doc?.camelCaseName] &&
-        JSON.parse(obj[doc?.camelCaseName])?.length === 0)
+        obj[doc?.camelCaseName]?.length === 0)
     ) {
       missingDocuments.push(doc.originalName);
     }

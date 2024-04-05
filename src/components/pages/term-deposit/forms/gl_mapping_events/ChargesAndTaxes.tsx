@@ -18,6 +18,13 @@ export function handleRedirect(type) {
   }
 }
 
+export const closeModal = ({ type, setSearchParams }) =>
+  setSearchParams((prevParams: URLSearchParams) => {
+    const updatedParams = new URLSearchParams(prevParams);
+    updatedParams.set(type, "");
+    return updatedParams;
+  })
+
 export default ({
   setActiveTab,
   activeTab,
@@ -146,23 +153,11 @@ export default ({
       </div>
       <ChargeModal
         id={searchParams.get("charge")}
-        closeModal={() =>
-          setSearchParams((prevParams: URLSearchParams) => {
-            const updatedParams = new URLSearchParams(prevParams);
-            updatedParams.set("charge", "");
-            return updatedParams;
-          })
-        }
+        closeModal={() => closeModal({ type: "charge", setSearchParams })}
       />
       <TaxModal
         id={searchParams.get("tax")}
-        closeModal={() =>
-          setSearchParams((prevParams: URLSearchParams) => {
-            const updatedParams = new URLSearchParams(prevParams);
-            updatedParams.set("tax", "");
-            return updatedParams;
-          })
-        }
+        closeModal={() => closeModal({ type: "tax", setSearchParams })}
       />
     </div>
   );

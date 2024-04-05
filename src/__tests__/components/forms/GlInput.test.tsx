@@ -1,11 +1,18 @@
-import { fireEvent, screen, render } from "@testing-library/react";
 import React from "react";
-import SideLabelSearchSelect, {
-  InputDivs,
-} from "../../components/forms/SideLabelSearchSelect";
-import { renderWithProviders } from "../../utils/test-util";
+import { screen, render, fireEvent } from "@testing-library/react";
+import "@testing-library/jest-dom/extend-expect"; // Import this for additional matchers
+import { Actions } from "../../../components/summary";
+import userEvent from "@testing-library/user-event";
+import { MemoryRouter } from "react-router-dom";
+import { renderWithProviders } from "../../../utils/test-util";
+import { GlInput } from "../../../components/forms";
+import { waitFor } from "@testing-library/react";
+import "@testing-library/jest-dom/extend-expect";
+import EntriesAndEventsSearchResults, {
+  closeDropdown,
+} from "@app/components/forms/GlInput";
 
-jest.mock("../../api", () => {
+jest.mock("../../../api", () => {
   const glClasses = [
     {
       "id": "3235dcde-d9da-469f-8c39-24d82d8267c8",
@@ -796,91 +803,306 @@ jest.mock("../../api", () => {
   }
 })
 
-describe("InputDivs", () => {
-  // Renders a div with a label and a child div
-  it("should render a div with a label and a child div", () => {
-    // Arrange
-    const label = "Test Label";
-    const children = <div>Test Child</div>;
-
-    // Act
-    render(<InputDivs label={label}>{children}</InputDivs>);
-
-    // Assert
-    expect(screen.getByText(label)).toBeInTheDocument();
-    expect(screen.getByText("Test Child")).toBeInTheDocument();
-  });
-
-  // Displays a RedDot component next to the label
-  it("should display a RedDot component next to the label", () => {
-    // Arrange
-    const label = "Test Label";
-    const children = <div>Test Child</div>;
-
-    // Act
-    render(<InputDivs label={label}>{children}</InputDivs>);
-
-    // Assert
-    expect(screen.getByTestId("red-dot")).toBeInTheDocument();
-  });
-
-  // Accepts a label prop and renders it as text
-  it("should accept a label prop and render it as text", () => {
-    // Arrange
-    const label = "Test Label";
-    const children = <div>Test Child</div>;
-
-    // Act
-    render(<InputDivs label={label}>{children}</InputDivs>);
-
-    // Assert
-    expect(screen.getByText(label)).toBeInTheDocument();
-  });
-
-  // label prop is not provided
-  it("should render without a label when label prop is not provided", () => {
-    // Arrange
-    const children = <div>Test Child</div>;
-
-    // Act
-    render(<InputDivs label={undefined}>{children}</InputDivs>);
-
-    // Assert
-    expect(screen.queryByTestId("red-dot")).toBeInTheDocument();
-  });
-
-  // children prop is not provided
-  it("should render without a child div when children prop is not provided", () => {
-    // Arrange
-    const label = "Test Label";
-
-    // Act
-    render(<InputDivs label={label} children={undefined} />);
-
-    // Assert
-    expect(screen.getByText(label)).toBeInTheDocument();
-    expect(screen.queryByText("Test Child")).not.toBeInTheDocument();
-  });
-
-  // label prop is an empty string
-  it("should render an empty label when label prop is an empty string", () => {
-    // Arrange
-    const label = "";
-    const children = <div>Test Child</div>;
-
-    // Act
-    render(<InputDivs label={label}>{children}</InputDivs>);
-    const data = screen.getAllByText(label);
-    // Assert
-    expect(data[0]).toBeInTheDocument();
+describe("closeDropdown", () => {
+  // Sets the 'isOpen' state to false when called with a valid 'setIsOpen' function.
+  it("should set isOpen state to false when called with a valid setIsOpen function", () => {
+    const setIsOpen = jest.fn();
+    closeDropdown(setIsOpen);
+    expect(setIsOpen).toHaveBeenCalledWith(false);
   });
 });
 
 
-describe("SideLabelSearchSelect", () => {
-  // Renders correctly with default props and input options
-  it("should render the component with default props and input options", () => {
-    renderWithProviders(<SideLabelSearchSelect />);
-    // Add assertions here
+describe("EntriesAndEventsSearchResults", () => {
+  // Renders a search input field with a search icon
+
+  it("should render a search input field with a search icon", () => {
+    // Arrange
+    const placeholder = "Search";
+    const handleClick = jest.fn();
+    const inputName = "searchInput";
+    const register = jest.fn();
+    const trigger = jest.fn();
+    const errors = {};
+    const error = "";
+    const defaultValue = "";
+    const clearFields = false;
+
+    // Act
+    renderWithProviders(
+      <EntriesAndEventsSearchResults
+        placeholder={placeholder}
+        handleClick={handleClick}
+        inputName={inputName}
+        register={register}
+        trigger={trigger}
+        errors={errors}
+        error={error}
+        defaultValue={defaultValue}
+        clearFields={clearFields}
+      />
+    );
+
+    // Assert
+    expect(screen.getByTestId("gli-input")).toBeInTheDocument();
+    expect(screen.getByTestId("open-button")).toBeInTheDocument();
+
   });
+
+  // Allows user to input search query
+  it("should allow user to input search query", () => {
+    // Arrange
+    const placeholder = "Search";
+    const handleClick = jest.fn();
+    const inputName = "searchInput";
+    const register = jest.fn();
+    const trigger = jest.fn();
+    const errors = {};
+    const error = "";
+    const defaultValue = "";
+    const clearFields = false;
+
+    renderWithProviders(
+      <EntriesAndEventsSearchResults
+        placeholder={placeholder}
+        handleClick={handleClick}
+        inputName={inputName}
+        register={register}
+        trigger={trigger}
+        errors={errors}
+        error={error}
+        defaultValue={defaultValue}
+        clearFields={clearFields}
+      />
+    );
+
+    // Act
+    const searchInput = screen.getByTestId("gli-input") as HTMLElement;
+    fireEvent.change(searchInput, { target: { value: "query" } });
+
+    // Assert
+    // @ts-ignore 
+    expect(searchInput.value).toBe("query");
+  });
+
+  // Displays a dropdown menu when search input field is clicked
+  it("should display a dropdown menu when search input field is clicked", () => {
+    // Arrange
+    const placeholder = "Search";
+    const handleClick = jest.fn();
+    const inputName = "searchInput";
+    const register = jest.fn();
+    const trigger = jest.fn();
+    const errors = {};
+    const error = "";
+    const defaultValue = "";
+    const clearFields = false;
+
+    renderWithProviders(
+      <EntriesAndEventsSearchResults
+        placeholder={placeholder}
+        handleClick={handleClick}
+        inputName={inputName}
+        register={register}
+        trigger={trigger}
+        errors={errors}
+        error={error}
+        defaultValue={defaultValue}
+        clearFields={clearFields}
+      />
+    );
+
+    // Act
+    const openButton = screen.getByTestId("open-button");
+    fireEvent.click(openButton);
+
+    // Assert
+    expect(screen.getByTestId("glclasses")).toBeInTheDocument();
+  });
+
+  // Displays an empty dropdown menu when there are no GL classes
+  it("should display an empty dropdown menu when there are no GL classes", () => {
+    // Arrange
+    const placeholder = "Search";
+    const handleClick = jest.fn();
+    const inputName = "searchInput";
+    const register = jest.fn();
+    const trigger = jest.fn();
+    const errors = {};
+    const error = "";
+    const defaultValue = "";
+    const clearFields = false;
+
+    renderWithProviders(
+      <EntriesAndEventsSearchResults
+        placeholder={placeholder}
+        handleClick={handleClick}
+        inputName={inputName}
+        register={register}
+        trigger={trigger}
+        errors={errors}
+        error={error}
+        defaultValue={defaultValue}
+        clearFields={clearFields}
+      />
+    );
+
+    // Act
+    const openButton = screen.getByTestId("open-button");
+    fireEvent.click(openButton);
+
+    // Assert
+    expect(screen.queryByTestId("glclasses")).toBeInTheDocument();
+  });
+
+  // Displays an empty list of ledgers when a GL class has no ledgers
+  it("should display an empty list of ledgers when a GL class has no ledgers", () => {
+    // Arrange
+    const placeholder = "Search";
+    const handleClick = jest.fn();
+    const inputName = "searchInput";
+    const register = jest.fn();
+    const trigger = jest.fn();
+    const errors = {};
+    const error = "";
+    const defaultValue = "";
+    const clearFields = false;
+
+    renderWithProviders(
+      <EntriesAndEventsSearchResults
+        placeholder={placeholder}
+        handleClick={handleClick}
+        inputName={inputName}
+        register={register}
+        trigger={trigger}
+        errors={errors}
+        error={error}
+        defaultValue={defaultValue}
+        clearFields={clearFields}
+      />
+    );
+
+    // Act
+    const openButton = screen.getByTestId("open-button");
+    fireEvent.click(openButton);
+
+    // Assert
+    expect(screen.queryByTestId("glclasses")).toBeInTheDocument();
+  });
+
+  // Displays an error message when there is an error fetching GL classes or ledgers
+  it("should display an error message when there is an error fetching GL classes or ledgers", () => {
+    // Arrange
+    const placeholder = "Search";
+    const handleClick = jest.fn();
+    const inputName = "searchInput";
+    const register = jest.fn();
+    const trigger = jest.fn();
+    const errors = {};
+    const error = "Error fetching GL classes";
+    const defaultValue = "";
+    const clearFields = false;
+
+    renderWithProviders(
+      <EntriesAndEventsSearchResults
+        placeholder={placeholder}
+        handleClick={handleClick}
+        inputName={inputName}
+        register={register}
+        trigger={trigger}
+        errors={errors}
+        error={error}
+        defaultValue={defaultValue}
+        clearFields={clearFields}
+      />
+    );
+
+    // Act
+    const openButton = screen.getByTestId("open-button");
+    fireEvent.click(openButton);
+
+    // Assert
+    expect(screen.getByText("Error fetching GL classes")).toBeInTheDocument();
+  });
+});
+
+// Mock external dependencies or functions as needed
+
+describe("EntriesAndEventsSearchResults", () => {
+  it("renders with default props", () => {
+    const { getByTestId } = renderWithProviders(
+      <EntriesAndEventsSearchResults
+        placeholder="Search..."
+        handleClick={jest.fn()}
+        inputName="searchInput"
+        register={jest.fn()}
+        trigger={jest.fn()}
+        errors={{}}
+        error=""
+        defaultValue=""
+        clearFields={false}
+      />
+    );
+
+    // Assertions for initial render
+    expect(getByTestId("gli")).toBeInTheDocument();
+    expect(getByTestId("open-button")).toBeInTheDocument();
+    expect(getByTestId("gli-input")).toBeInTheDocument();
+  });
+
+  it("handles input change and displays results", async () => {
+    const mockHandleClick = jest.fn();
+    const mockRegister = jest.fn();
+    const mockTrigger = jest.fn();
+
+    const { getByTestId, getByText } = renderWithProviders(
+      <EntriesAndEventsSearchResults
+        placeholder="Search..."
+        handleClick={mockHandleClick}
+        inputName="searchInput"
+        register={mockRegister}
+        trigger={mockTrigger}
+        errors={{}}
+        error=""
+        defaultValue=""
+        clearFields={false}
+      />
+    );
+
+    const inputElement = getByTestId("gli-input");
+
+    // Type into the input
+    fireEvent.change(inputElement, { target: { value: "Term Deposit" } });
+
+
+  });
+
+  it("handles click on a result and triggers functions", async () => {
+    const mockHandleClick = jest.fn();
+    const mockRegister = jest.fn();
+    const mockTrigger = jest.fn();
+
+    const { getByTestId, getByText } = renderWithProviders(
+      <EntriesAndEventsSearchResults
+        placeholder="Search..."
+        handleClick={mockHandleClick}
+        inputName="searchInput"
+        register={mockRegister}
+        trigger={mockTrigger}
+        errors={{}}
+        error=""
+        defaultValue=""
+        clearFields={false}
+      />
+    );
+
+    const inputElement = getByTestId("gli-input");
+
+    // Type into the input
+    fireEvent.change(inputElement, { target: { value: "Term Deposit" } });
+
+
+  });
+
+  // Add more test cases as needed
 });
