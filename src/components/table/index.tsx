@@ -446,6 +446,30 @@ export const StatusCellContent = ({ value, isChecker }) => (
 export const ActionsCellContent = ({ dropDownOptions, onClick }) => (
   <DropdownButton options={dropDownOptions} handleClick={onClick} />
 );
+
+export const liquidationHandler = ({data, type, metaInfo, resetModals, partLiquidateInvestment, earlyLiquidateInvestment, partEditLiquidateInvestment, earlyEditLiquidateInvestment}) => {
+  resetModals();
+  if (!metaInfo) {
+    if (type.toLowerCase() === "part") {
+      partLiquidateInvestment(data);
+    }
+
+    if (type.toLowerCase() === "early") {
+      earlyLiquidateInvestment(data);
+    }
+  } else {
+    if (type.toLowerCase() === "part") {
+      partEditLiquidateInvestment({ ...data });
+    }
+
+    if (type.toLowerCase() === "early") {
+      earlyEditLiquidateInvestment({
+        ...data,
+      });
+    }
+  }
+};
+
 export default function TableComponent<TableProps>({
   headers,
   tableRows,
@@ -503,28 +527,11 @@ export default function TableComponent<TableProps>({
 
   // function getdata(item, key) {}
   // @ts-ignore
+
   const handleLiquidation = (data, type, metaInfo) => {
-    resetModals();
-    if (!metaInfo) {
-      if (type.toLowerCase() === "part") {
-        partLiquidateInvestment(data);
-      }
+    liquidationHandler({data, type, metaInfo, earlyEditLiquidateInvestment,  earlyLiquidateInvestment, partEditLiquidateInvestment, partLiquidateInvestment, resetModals})
+  }
 
-      if (type.toLowerCase() === "early") {
-        earlyLiquidateInvestment(data);
-      }
-    } else {
-      if (type.toLowerCase() === "part") {
-        partEditLiquidateInvestment({ ...data });
-      }
-
-      if (type.toLowerCase() === "early") {
-        earlyEditLiquidateInvestment({
-          ...data,
-        });
-      }
-    }
-  };
   const handleAction = (action, items) => {
     actionHandler({
       specificCategory,

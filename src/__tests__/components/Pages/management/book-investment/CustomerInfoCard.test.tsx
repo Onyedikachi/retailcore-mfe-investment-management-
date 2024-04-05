@@ -1,21 +1,22 @@
 import CustomerInfoCard, { Info } from "../../../../../components/pages/management/book-investment/CustomerInfoCard"
 import { render, screen } from "@testing-library/react"
+import {renderWithProviders} from "../../../../../__mocks__/api/Wrapper"
 describe('CustomerInfoCard', () => {
 
     // Renders the CustomerInfoCard component without crashing
     it('should render CustomerInfoCard without crashing', () => {
-        render(<CustomerInfoCard />);
+        renderWithProviders(<CustomerInfoCard />);
     });
 
     // Displays the title "Customer’s Information"
     it('should display the title "Customer’s Information"', () => {
-        render(<CustomerInfoCard />);
+        renderWithProviders(<CustomerInfoCard />);
         expect(screen.getByText("Customer’s Information")).toBeInTheDocument();
     });
 
     // Displays all customer information titles and data
     it('should display all customer information titles and data', () => {
-        render(<CustomerInfoCard />);
+        renderWithProviders(<CustomerInfoCard />);
         expect(screen.getByText("Customer Name")).toBeInTheDocument();
         expect(screen.getByText("Customer ID")).toBeInTheDocument();
         expect(screen.getByText("Customer Type")).toBeInTheDocument();
@@ -31,7 +32,7 @@ describe('CustomerInfoCard', () => {
 
     // Does not display customer name as a link for non-customerName Info components
     it('should not display customer name as a link for non-customerName Info components', () => {
-        render(<CustomerInfoCard />);
+        renderWithProviders(<CustomerInfoCard />);
         expect(screen.queryByText("View all customer information")).toBeInTheDocument();
         expect(screen).toMatchSnapshot();
     });

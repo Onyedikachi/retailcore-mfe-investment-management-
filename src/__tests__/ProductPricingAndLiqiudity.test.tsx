@@ -110,8 +110,7 @@ const details = {
 
 describe('ProductPricingAndLiquidity', () => {
     jest.mock("../api/productMgtApi.ts", () => ({
-        useGetApplicableCharges: jest.fn().mockReturnValue({ data: {}, isLoading: false, isSuccess: true, isError: false }),
-        useGetApplicableTaxes: jest.fn().mockReturnValue({ data: {}, isLoading: false, isSuccess: true, isError: false })
+        useGetCustomerSearchQuery: jest.fn()
     }))
     // Renders the component with the correct data
     // it('should render the component with the correct data', () => {

@@ -521,6 +521,7 @@ export default function ProductInfoInvestmentCalc({
               <div key={index} className="">
                 <div
                   role="button" tabIndex={0}
+                  data-testid={`btn`}
                   onKeyDown={() => { }}
                   onClick={() => toggleTab(item?.name)}
                   className="flex items-center gap-x-1 mb-1"

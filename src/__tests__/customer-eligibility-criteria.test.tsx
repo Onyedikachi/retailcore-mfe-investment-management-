@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import ProductInformation, { handleCheckedRequirement, handleSelectAllChange, requirementDeleteHandler } from "../components/pages/term-deposit/forms/customer-eligibilty-criteria";
+import ProductInformation, { handleCheckedRequirement, handleSelectAllChange, requirementDeleteHandler, addDocument } from "../components/pages/term-deposit/forms/customer-eligibilty-criteria";
 import { renderWithProviders } from "../__mocks__/api/Wrapper"
 import { act } from "react-dom/test-utils";
 import CustomerEligibilityCriteria from "../components/pages/term-deposit/forms/customer-eligibilty-criteria";
@@ -126,3 +126,43 @@ describe("requirementDeleteHandler", () => {
     requirementDeleteHandler({ itemToDelete, selectedRequirements, setSelectedRequirements });
   });
 })
+
+
+describe('addDocument', () => {
+
+  // Adds a new document to the list of documents if the new document is not empty and does not already exist in the list
+  it('should add a new document when the new document is not empty and does not already exist in the list', () => {
+    // Arrange
+    const newDocument = "New Document";
+    const documents = [{ id: "1", name: "Document 1" }, { id: "2", name: "Document 2" }];
+    const setNewDocument = jest.fn();
+    const setIsAdd = jest.fn();
+    const setDocuments = jest.fn();
+
+    // Act
+    addDocument({ newDocument, documents, setNewDocument, setIsAdd, setDocuments });
+
+    // Assert
+    expect(setDocuments).toHaveBeenCalledWith([...documents, { id: newDocument, name: newDocument }]);
+    expect(setNewDocument).toHaveBeenCalledWith("");
+    expect(setIsAdd).toHaveBeenCalledWith(false);
+  });
+
+  // Does nothing if the new document is empty
+  it('should do nothing when the new document is empty', () => {
+    // Arrange
+    const newDocument = "";
+    const documents = [{ id: "1", name: "Document 1" }, { id: "2", name: "Document 2" }];
+    const setNewDocument = jest.fn();
+    const setIsAdd = jest.fn();
+    const setDocuments = jest.fn();
+
+    // Act
+    addDocument({ newDocument, documents, setNewDocument, setIsAdd, setDocuments });
+
+    // Assert
+    expect(setDocuments).not.toHaveBeenCalled();
+    expect(setNewDocument).not.toHaveBeenCalled();
+    expect(setIsAdd).not.toHaveBeenCalled();
+  });
+});
