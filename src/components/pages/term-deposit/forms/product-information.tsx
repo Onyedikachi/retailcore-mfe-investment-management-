@@ -177,19 +177,18 @@ export default function ProductInformation({
   }, [nameIsSuccess, nameIsError]);
 
   useEffect(() => {
-    if(!formData.currency || !formData.currencyCode){
+    if (!formData.currency || !formData.currencyCode) {
       setFormData({
         ...formData,
         currency: defaultCurrency?.id,
         currencyCode: defaultCurrency?.abbreviation,
       });
     }
-   
-    if(!values.currency || !values.currencyCode){
+
+    if (!values.currency || !values.currencyCode) {
       setValue("currency", defaultCurrency?.id);
       setValue("currencyCode", defaultCurrency?.abbreviation);
     }
-
   }, [currencies, defaultCurrency]);
 
   useEffect(() => {
@@ -246,10 +245,10 @@ export default function ProductInformation({
     }
   }, []);
   useEffect(() => {
-    const currency = currencies.find((i) => i.value === watchCurrency);
+    const currency = currencies?.find((i) => i.value === watchCurrency);
     setValue("currency", currency?.id);
     setValue("currencyCode", currency?.text);
-  }, [watchCurrency]);
+  }, [watchCurrency, currencies]);
 
   const handleDebouncedNameChange = debounce((e) => {
     setValue("productName", e.target.value);

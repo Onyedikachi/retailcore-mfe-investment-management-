@@ -105,13 +105,14 @@ const Layout = () => {
   }, []);
   const { data: currencyData, isSuccess: currencyIsSuccess } =
     useGetCurrenciesQuery({ page_size: 1000 });
-  const { data: defaultCurrencyData, isSuccess: defaultCurrencyIsSuccess } =
-    useGetDefaultCurrencyQuery();
+  // const { data: defaultCurrencyData, isSuccess: defaultCurrencyIsSuccess } =
+  //   useGetDefaultCurrencyQuery();
 
   useEffect(() => {
     if (currencyIsSuccess) {
+     
       setCurrencies(
-        currencyData.results.map((i) => {
+        currencyData?.data?.results?.map((i) => {       
           return {
             id: i.id,
             text: i.abbreviation,
@@ -119,12 +120,13 @@ const Layout = () => {
           };
         })
       );
+      setDefaultCurrency(currencyData?.data?.results?.find(i=> i?.is_default))
     }
 
-    if (defaultCurrencyIsSuccess) {
-      setDefaultCurrency(defaultCurrencyData?.data);
-    }
-  }, [currencyIsSuccess, defaultCurrencyIsSuccess]);
+    // if (defaultCurrencyIsSuccess) {
+    //   setDefaultCurrency(defaultCurrencyData?.data);
+    // }
+  }, [currencyIsSuccess]);
 
   return (
     <div data-testid="outlet">
