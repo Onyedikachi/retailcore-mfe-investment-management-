@@ -4,7 +4,7 @@ import { REHYDRATE } from "redux-persist";
 import { cleanObject } from "@app/utils/cleanObject";
 
 const accountEnquiries =
-  "https://dev2-peerless-seabaas-accountenquiries.dev.bepeerless.co/Accounts/";
+  "https://peerless-seabaas-accountenquiries.qa.bepeerless.co/Accounts/";
 export const journalApi: any = createApi({
   reducerPath: "journalApi",
   baseQuery: axiosBaseQuery({ serviceKey: "journalPosting" }),

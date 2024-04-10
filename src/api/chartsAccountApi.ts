@@ -4,7 +4,7 @@ import { REHYDRATE } from "redux-persist";
 import urls from "../helpers/url_helpers";
 import { cleanObject } from "@app/utils/cleanObject";
 
-const customerApi = "https://dev2-customer-management-api.dev.bepeerless.co/v1";
+const customerApi = "https://customer-management-api.qa.bepeerless.co/v1";
 
 export const chartsAccountApi: any = createApi({
   reducerPath: "chartsAccountApi",

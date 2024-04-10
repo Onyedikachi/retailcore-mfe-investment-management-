@@ -6,7 +6,7 @@ import urls from "../helpers/url_helpers";
 import { cleanObject } from "@app/utils/cleanObject";
 
 
-const productApi = "https://dev2-product-mgt-api.dev.bepeerless.co/v1";
+const productApi = "https://product-mgt-api.qa.bepeerless.co/v1";
 
 export const productMgtApi: any = createApi({
     reducerPath: "magagementApi",
