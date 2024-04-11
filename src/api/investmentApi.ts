@@ -5,9 +5,9 @@ import { IGetProducts, ICreateProduct } from "./types/investmentApi.types";
 import urls from "../helpers/url_helpers";
 import { cleanObject } from "@app/utils/cleanObject";
 
-const formApi = "https://customer-management-forms-api.qa.bepeerless.co/v1";
-const customerApi = "https://customer-management-api.qa.bepeerless.co/v1";
-const productApi = "https://product-mgt-api.qa.bepeerless.co/v1";
+// const formApi = "https://customer-management-forms-api.qa.bepeerless.co/v1";
+// const customerApi = "https://customer-management-api.qa.bepeerless.co/v1";
+// const productApi = "https://product-mgt-api.qa.bepeerless.co/v1";
 
 export const investmentApi: any = createApi({
   reducerPath: "investmentApi",
@@ -19,14 +19,14 @@ export const investmentApi: any = createApi({
     }
   },
   endpoints: (builder) => ({
-    getCorporateCustomerType: builder.query<any, any>({
-      query: () => {
-        return {
-          url: `${customerApi}/column-map/corporate-categories?formType=smeLegacy`,
-          method: "get",
-        };
-      },
-    }),
+    // getCorporateCustomerType: builder.query<any, any>({
+    //   query: () => {
+    //     return {
+    //       url: `${customerApi}/column-map/corporate-categories?formType=smeLegacy`,
+    //       method: "get",
+    //     };
+    //   },
+    // }),
     getProductActivityLog: builder.query<any, any>({
       query: (params) => {
         return {
@@ -48,22 +48,22 @@ export const investmentApi: any = createApi({
         };
       },
     }),
-    getCharges: builder.query<any, any>({
-      query: () => {
-        return {
-          url: `${productApi}/charges/state?state=active`,
-          method: "get",
-        };
-      },
-    }),
-    getCustomerSearch: builder.query<any, any>({
-      query: (params) => {
-        return {
-          url: `${customerApi}/customer/search?${new URLSearchParams(params)}`,
-          method: "get",
-        };
-      },
-    }),
+    // getCharges: builder.query<any, any>({
+    //   query: () => {
+    //     return {
+    //       url: `${productApi}/charges/state?state=active`,
+    //       method: "get",
+    //     };
+    //   },
+    // }),
+    // getCustomerSearch: builder.query<any, any>({
+    //   query: (params) => {
+    //     return {
+    //       url: `${customerApi}/customer/search?${new URLSearchParams(params)}`,
+    //       method: "get",
+    //     };
+    //   },
+    // }),
     getInvestmentCertificate: builder.query<any, any>({
       query: (params) => {
         return {
@@ -72,38 +72,38 @@ export const investmentApi: any = createApi({
         };
       },
     }),
-    getAccountBalance: builder.query<any, any>({
-      query: (params) => {
-        return {
-          url: `${customerApi}/accounts/${params}`,
-          method: "get",
-        };
-      },
-    }),
-    getCustomerProfile: builder.query<any, any>({
-      query: (params) => {
-        return {
-          url: `${customerApi}/customer/profile/${params}`,
-          method: "get",
-        };
-      },
-    }),
-    getFormType: builder.query<any, any>({
-      query: (params) => {
-        return {
-          url: `${formApi}/form/customer/published/type/${params}`,
-          method: "get",
-        };
-      },
-    }),
-    getFormDocuments: builder.query<any, any>({
-      query: (params) => {
-        return {
-          url: `${customerApi}/column-map/form-documents?formType=${params}`,
-          method: "get",
-        };
-      },
-    }),
+    // getAccountBalance: builder.query<any, any>({
+    //   query: (params) => {
+    //     return {
+    //       url: `${customerApi}/accounts/${params}`,
+    //       method: "get",
+    //     };
+    //   },
+    // }),
+    // getCustomerProfile: builder.query<any, any>({
+    //   query: (params) => {
+    //     return {
+    //       url: `${customerApi}/customer/profile/${params}`,
+    //       method: "get",
+    //     };
+    //   },
+    // }),
+    // getFormType: builder.query<any, any>({
+    //   query: (params) => {
+    //     return {
+    //       url: `${formApi}/form/customer/published/type/${params}`,
+    //       method: "get",
+    //     };
+    //   },
+    // }),
+    // getFormDocuments: builder.query<any, any>({
+    //   query: (params) => {
+    //     return {
+    //       url: `${customerApi}/column-map/form-documents?formType=${params}`,
+    //       method: "get",
+    //     };
+    //   },
+    // }),
 
     getSystemAlert: builder.query<any, any>({
       query: () => {
@@ -595,7 +595,6 @@ export const {
   useDeleteProductRequestMutation,
   useGetProductActivityLogQuery,
   useGetProductRequestActivityLogQuery,
-  useGetChargesQuery,
   useGetProductDetailQuery,
   useGetRequestDetailQuery,
   useApproveProductMutation,
@@ -615,7 +614,7 @@ export const {
   useModifyInvestmentMutation,
   useModifyInvestmentRequestMutation,
   useGetInvestmentDashboardStatsQuery,
-  useGetFormTypeQuery,
+
   useApproveInvestmentMutation,
   useRejectInvestmentMutation,
   useEarlyLiquidateMutation,

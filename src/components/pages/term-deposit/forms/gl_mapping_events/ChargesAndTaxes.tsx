@@ -9,12 +9,10 @@ import ChargeAndTaxMultiselect from "./ChargeAndTaxMultiselect";
 
 export function handleRedirect(type) {
   if (type === "tax") {
-    window.location.href =
-      "https://seabaas.qa.bepeerless.co/configuration/tax-management/create-tax/1";
+    window.location.href = `${window.location.origin}/configuration/tax-management/create-tax/1`;
   }
   if (type === "charge") {
-    window.location.href =
-      "https://seabaas.qa.bepeerless.co/configuration/charges-management/create-charge/1";
+    window.location.href = `${window.location.origin}/configuration/charges-management/create-charge/1`;
   }
 }
 
@@ -55,15 +53,17 @@ export default ({
       <div className="bg-[#fff] border border-[#EEEEEE] rounded-[6px]">
         <div
           role="button"
-          tabIndex={0} onKeyDown={() => { }}
+          tabIndex={0}
+          onKeyDown={() => {}}
           onClick={() => handleTab()}
           className=" flex justify-between items-center px-6 py-[14px]"
         >
           <span className="text-[18px] flex  gap-[1px] text-[#636363] font-semibold flex-row items-center">
             <Icon
               icon="ph:caret-right-fill"
-              className={`text-danger-500 text-sm mr-4 ${activeTab.includes(tab) && "rotate-90"
-                }`}
+              className={`text-danger-500 text-sm mr-4 ${
+                activeTab.includes(tab) && "rotate-90"
+              }`}
             />
             {header} Charges & Taxes
           </span>
@@ -87,7 +87,8 @@ export default ({
                     />
                     <span
                       className="ml-12 text-danger-500 hover:underline"
-                      onClick={() => handleRedirect("charge")} onKeyDown={() => { }}
+                      onClick={() => handleRedirect("charge")}
+                      onKeyDown={() => {}}
                     >
                       Create new charge
                     </span>
@@ -123,7 +124,8 @@ export default ({
                     />
                     <span
                       className="ml-12 text-danger-500 hover:underline"
-                      onClick={() => handleRedirect("tax")} onKeyDown={() => { }}
+                      onClick={() => handleRedirect("tax")}
+                      onKeyDown={() => {}}
                     >
                       Create new tax
                     </span>
