@@ -82,7 +82,7 @@ export default function QuickLinks() {
   const [updateLink] = useUpdateLinkMutation();
 
   const [addLink] = useAddLinkMutation();
-  const baseUrl = "https://dev2-seabaas.dev.bepeerless.co";
+  const baseUrl = "https://seabaas.qa.bepeerless.co";
 
   React.useEffect(() => {
     handleLinksUpdate(
