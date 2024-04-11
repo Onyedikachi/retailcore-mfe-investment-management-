@@ -5,16 +5,7 @@ import { REHYDRATE } from "redux-persist";
 import { MODULENAME } from "@app/constants";
 export const linkApi = createApi({
   reducerPath: "linkApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: `https://dev2-utilities-api.dev.bepeerless.co/v1`,
-    prepareHeaders: (headers) => {
-      const token = getToken();
-      if (token) {
-        headers.set("authorization", `Bearer ${token}`);
-      }
-      return headers;
-    },
-  }),
+  baseQuery: axiosBaseQuery({ serviceKey: "utility" }),
   extractRehydrationInfo(action, { reducerPath }) {
     if (action.type === REHYDRATE && action.payload) {
       return action.payload[reducerPath];
