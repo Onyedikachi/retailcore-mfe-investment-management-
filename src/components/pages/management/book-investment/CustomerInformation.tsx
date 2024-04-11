@@ -192,6 +192,7 @@ export default function CustomerInformation({
     setValue("accountStatus", AccountStatus[accountData?.value?.accountStatus]);
     setValue("balance", parseFloat(accountData?.value?.clearedBalance));
     setValue("currencyId", currencyId);
+    setValue("currencyCode", accountData?.value?.currencyCode);
     setValue("customerAccountLedgerId", accountData?.value?.accountUUID);
 
     trigger("balance");
