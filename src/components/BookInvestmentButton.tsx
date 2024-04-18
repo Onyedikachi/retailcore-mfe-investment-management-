@@ -29,7 +29,7 @@ export default function BookInvestmentButton({
           setIsOpen(false);
         }}
       >
-        <div className="relative">
+        <div className="relative cursor-pointer">
           <div onKeyUp={() => {}} onClick={() => setIsOpen(true)}>{children}</div>
           {isOpen && (
             <div className="top-0 absolute w-[286px] z-10 bg-white rounded-b-lg shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] pt-[1px]">

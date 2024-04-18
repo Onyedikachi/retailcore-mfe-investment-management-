@@ -46,9 +46,9 @@ export function handleValidatingName(
   }
 }
 
-export function InputDiv({ children }) {
+export function InputDiv({ children, customClass="" }) {
   return (
-    <div data-testid="input-div" className="w-full flex flex-col gap-2">
+    <div data-testid="input-div" className={`w-full flex flex-col gap-2 ${customClass}`}>
       {children}
     </div>
   );
@@ -143,16 +143,16 @@ export default function ProductInformation({
   const values = getValues();
 
   const productFormRef = useRef();
-  const { process } = useParams();
   const [error, setError] = useState<string>("");
   const [charLeft, setCharLeft] = useState<number>(50);
   const [sloganCharLeft, setSloganCharLeft] = useState<number>(160);
   const [currentName, setCurrentName] = useState("");
   const [isNameOkay, setIsNameOkay] = useState<boolean | null>(null);
   const [isSloganOkay, setIsSloganOkay] = useState<boolean>(false);
-  const { productId } = useParams();
+  const { productId, type, process } = useParams();
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
+  const [showInputs, setShowInputs] = useState<boolean>(true);
   const [
     validateName,
     {
@@ -162,6 +162,12 @@ export default function ProductInformation({
       error: nameError,
     },
   ] = useValidateNameMutation();
+
+  useEffect(() => {
+    if (type !== "term-deposit") {
+      setShowInputs(false);
+    }
+  }, [type]);
 
   useEffect(() => {
     handleValidatingName(
@@ -267,267 +273,360 @@ export default function ProductInformation({
       activeId?.current || productId || id
     );
   }, 800);
+  const handleInvestmentId = (
+    value: string,
+    setError: any,
+    clearError: any
+  ) => {
+    console.log("🚀 ~ handleInvestmentId ~ value:", value);
+    return {};
+  };
   return (
     <form
       id="productform"
       data-testid="submit-button"
       onSubmit={handleSubmit((d) => onProceed(d, setFormData, proceed))}
     >
-      <div className="">
-        <div className="mb-6 flex flex-col gap-[1px]">
-          <div className="flex itemx-center gap-2 w-[300px]">
-            {" "}
+      {type !== "term-deposit" && (
+        <div className="mb-6 flex flex-col gap-[1px] max-w-[600px]">
+          <div className="flex itemx-center gap-x-2">
             <label
-              htmlFor="productName"
-              className=" pt-[10px]  flex text-base font-semibold text-[#636363]"
+              htmlFor="investment"
+              className="w-[300px] pt-[10px]  text-base font-semibold text-[#636363] capitalize flex items-start"
             >
-              Product Name{" "}
+              {type.replace("-", " ")} investment ID{" "}
               <span className="flex">
                 {" "}
                 <RedDot />
+              </span>{" "}
+              <span className="ml-2">
+                <FormToolTip tip={toolTips.investmentId} />
               </span>
             </label>
-            <FormToolTip tip={toolTips.productName} />
           </div>
-
-          <InputDiv>
-            <div className="relative flex items-center max-w-[642px]">
-              <input
-                id="productName"
-                data-testid="product-name"
-                className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB] ${
-                  errors?.productName || error ? "border-red-500" : ""
-                } ${
-                  isNameOkay && !errors?.productName ? "border-success-500" : ""
-                }`}
-                onChange={(e) => {
-                  if (e.target.value.length < 4) {
-                    trigger("productName");
-                    setIsNameOkay(false);
-                  } else {
-                    handleDebouncedNameChange(e);
-                  }
-                }}
-                placeholder="Enter Name"
-                maxLength={defaultLength}
-                defaultValue={formData?.productName}
-                aria-invalid={errors?.productName ? "true" : "false"}
-              />
-              <div
-                data-testid="product-name-char-count"
-                className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]"
-              >
-                <span>
-                  {" "}
-                  {charLeft}/{defaultLength}
-                </span>{" "}
-                {isNameOkay && !errors?.productName && (
-                  <span>
-                    <FaCheckCircle className="text-success-500 text-xl" />
-                  </span>
-                )}
-                {errors?.productName && (
-                  <span>
-                    <RiErrorWarningFill className="text-danger-500 text-xl w-5 h-5" />
-                  </span>
-                )}
-                {nameLoading && (
-                  <AiOutlineLoading className="text-xl text-[#636363] animate-spin" />
-                )}
-              </div>
-            </div>
-            {errors?.productName && (
-              <span className="text-sm text-danger-500">
-                {errors?.productName?.message}
-              </span>
-            )}
-            {isNameOkay && !errors?.productName && (
-              <span className="text-sm text-success-500">
-                Name is available
-              </span>
-            )}
-            {error && <span className="text-sm text-danger-500">{error}</span>}
-          </InputDiv>
-        </div>
-
-        <div className="mb-6 flex flex-col gap-[1px]">
-          <label
-            htmlFor="slogan"
-            className="w-[300px] pt-[10px]  text-base font-semibold text-[#636363]"
-          >
-            Slogan
-          </label>
-
           <InputDiv>
             <div className="relative flex items-center">
               <input
-                id="logan"
-                data-testid="investment-slogan"
+                id="investment"
+                data-testid="investment-id"
                 className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB] ${
-                  errors?.slogan || error ? "border-red-500" : ""
+                  errors?.investmentId || error ? "border-red-500" : ""
                 }`}
-                {...register("slogan", {
-                  maxLength: 160,
-                })}
+                {...register("investmentId")}
                 onChange={(e) => {
-                  handleSlogan(
-                    e.target.value,
-                    setSloganCharLeft,
-                    setIsSloganOkay,
-                    clearErrors,
-                    setError
-                  );
+                  handleInvestmentId(e.target.value, clearErrors, setError);
                 }}
-                placeholder="Enter a slogan"
-                maxLength={defaultSloganLength}
-                defaultValue={formData?.slogan}
-                aria-invalid={errors?.slogan ? "true" : "false"}
+                placeholder="Enter ID"
+                defaultValue={formData?.investmentId}
+                aria-invalid={errors?.investmentId ? "true" : "false"}
               />
-              <div className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]">
-                <span>
-                  {sloganCharLeft}/{defaultSloganLength}
-                </span>{" "}
-                {isSloganOkay && !errors?.slogan && (
-                  <span>
-                    <FaCheckCircle className="text-success-500 text-xl" />
-                  </span>
-                )}
-                {(error || errors?.slogan) && (
-                  <span>
-                    <RiErrorWarningFill className="text-danger-500 text-xl w-5 h-5" />
-                  </span>
-                )}
-              </div>
             </div>
-
-            {errors?.slogan && (
-              <span className="text-sm text-danger-500">
-                {errors?.slogan?.message}
-              </span>
-            )}
 
             {error && <span className="text-sm text-danger-500">{error}</span>}
           </InputDiv>
         </div>
+      )}
+      {showInputs && (
+        <div className="">
+          {type !== "term-deposit" && (
+            <div className="mb-6 flex flex-col gap-[1px] max-w-[600px]">
+              <div className="flex itemx-center gap-x-2">
+                <label
+                  htmlFor="investment"
+                  className="w-[300px] pt-[10px]  text-base font-semibold text-[#636363] capitalize flex items-start"
+                >
+                  Issuer
+                  <span className="flex">
+                    {" "}
+                    <RedDot />
+                  </span>{" "}
+                  <span className="ml-2">
+                    <FormToolTip tip={toolTips.issuer} />
+                  </span>
+                </label>
+              </div>
+              <InputDiv>
+                <div className="relative flex items-center">
+                  <input
+                    id="issuer"
+                    data-testid="issuer"
+                    className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB] ${
+                      errors?.issuer || error ? "border-red-500" : ""
+                    }`}
+                    {...register("issuer")}
+                    placeholder="Enter issuer"
+                    defaultValue={formData?.issuer}
+                    aria-invalid={errors?.issuer ? "true" : "false"}
+                  />
+                </div>
 
-        <div className="mb-6 flex flex-col gap-[13px]">
-          <div className="flex  gap-2 w-[300px]">
-            {" "}
-            <label
-              htmlFor="productDescription"
-              className=" pt-[10px] flex text-base font-semibold text-[#636363]"
-            >
-              Product Description{" "}
-              <span className="flex">
-                {" "}
-                <RedDot />
-              </span>
-              <FormToolTip tip={toolTips.description} />
-            </label>
+                {error && (
+                  <span className="text-sm text-danger-500">{error}</span>
+                )}
+              </InputDiv>
+            </div>
+          )}
+          <div className="mb-6 flex flex-col gap-[1px]">
+            <div className="flex itemx-center gap-2 w-[300px]">
+              {" "}
+              <label
+                htmlFor="productName"
+                className=" pt-[10px]  flex text-base font-semibold text-[#636363]"
+              >
+                Product Name{" "}
+                <span className="flex">
+                  {" "}
+                  <RedDot />
+                </span>
+              </label>
+              <FormToolTip tip={toolTips.productName} />
+            </div>
+
+            <InputDiv>
+              <div className="relative flex items-center max-w-[642px]">
+                <input
+                  id="productName"
+                  data-testid="product-name"
+                  className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB] ${
+                    errors?.productName || error ? "border-red-500" : ""
+                  } ${
+                    isNameOkay && !errors?.productName
+                      ? "border-success-500"
+                      : ""
+                  }`}
+                  onChange={(e) => {
+                    if (e.target.value.length < 4) {
+                      trigger("productName");
+                      setIsNameOkay(false);
+                    } else {
+                      handleDebouncedNameChange(e);
+                    }
+                  }}
+                  placeholder="Enter Name"
+                  maxLength={defaultLength}
+                  defaultValue={formData?.productName}
+                  aria-invalid={errors?.productName ? "true" : "false"}
+                />
+                <div
+                  data-testid="product-name-char-count"
+                  className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]"
+                >
+                  <span>
+                    {" "}
+                    {charLeft}/{defaultLength}
+                  </span>{" "}
+                  {isNameOkay && !errors?.productName && (
+                    <span>
+                      <FaCheckCircle className="text-success-500 text-xl" />
+                    </span>
+                  )}
+                  {errors?.productName && (
+                    <span>
+                      <RiErrorWarningFill className="text-danger-500 text-xl w-5 h-5" />
+                    </span>
+                  )}
+                  {nameLoading && (
+                    <AiOutlineLoading className="text-xl text-[#636363] animate-spin" />
+                  )}
+                </div>
+              </div>
+              {errors?.productName && (
+                <span className="text-sm text-danger-500">
+                  {errors?.productName?.message}
+                </span>
+              )}
+              {isNameOkay && !errors?.productName && (
+                <span className="text-sm text-success-500">
+                  Name is available
+                </span>
+              )}
+              {error && (
+                <span className="text-sm text-danger-500">{error}</span>
+              )}
+            </InputDiv>
           </div>
-          <InputDiv>
-            <div className="relative">
-              <textarea
-                id="productDescription"
-                data-testid="product-description"
-                placeholder="Enter description"
-                maxLength={250}
-                {...register("description", {
-                  required: true,
-                  maxLength: 250,
-                })}
-                defaultValue={values?.description}
-                className={`min-h-[150px] w-full rounded-md border border-[#8F8F8F] focus:outline-none px-3 py-[11px] placeholder:text-[#BCBBBB] resize-none ${
-                  errors?.description || error
-                    ? "border-red-500 ring-1 ring-red-500"
-                    : ""
-                }`}
-              />
+
+          <div className="mb-6 flex flex-col gap-[1px]">
+            <label
+              htmlFor="slogan"
+              className="w-[300px] pt-[10px]  text-base font-semibold text-[#636363]"
+            >
+              Slogan
+            </label>
+
+            <InputDiv>
+              <div className="relative flex items-center">
+                <input
+                  id="logan"
+                  data-testid="investment-slogan"
+                  className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB] ${
+                    errors?.slogan || error ? "border-red-500" : ""
+                  }`}
+                  {...register("slogan", {
+                    maxLength: 160,
+                  })}
+                  onChange={(e) => {
+                    handleSlogan(
+                      e.target.value,
+                      setSloganCharLeft,
+                      setIsSloganOkay,
+                      clearErrors,
+                      setError
+                    );
+                  }}
+                  placeholder="Enter a slogan"
+                  maxLength={defaultSloganLength}
+                  defaultValue={formData?.slogan}
+                  aria-invalid={errors?.slogan ? "true" : "false"}
+                />
+                <div className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]">
+                  <span>
+                    {sloganCharLeft}/{defaultSloganLength}
+                  </span>{" "}
+                  {isSloganOkay && !errors?.slogan && (
+                    <span>
+                      <FaCheckCircle className="text-success-500 text-xl" />
+                    </span>
+                  )}
+                  {(error || errors?.slogan) && (
+                    <span>
+                      <RiErrorWarningFill className="text-danger-500 text-xl w-5 h-5" />
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {errors?.slogan && (
+                <span className="text-sm text-danger-500">
+                  {errors?.slogan?.message}
+                </span>
+              )}
 
               {error && (
                 <span className="text-sm text-danger-500">{error}</span>
               )}
-              <span className="absolute bottom-4 right-2 text-xs text-[#8F8F8F] flex items-center gap-x-1">
-                <span>{watch("description")?.length || 0}</span>/
-                <span>250</span>
-              </span>
-            </div>
-            {errors?.description && (
-              <span className="text-sm text-danger-500">
-                {errors?.description?.message}
-              </span>
-            )}
-          </InputDiv>
-        </div>
+            </InputDiv>
+          </div>
 
-        <div className="flex gap-12">
-          <div className="flex flex-col gap">
-            <div className="flex  gap-x-2 w-[300px]">
+          <div className="mb-6 flex flex-col gap-[13px]">
+            <div className="flex  gap-2 w-[300px]">
               {" "}
               <label
-                htmlFor="productLifeCycle"
-                className=" pt-[10px]  text-base font-semibold text-[#636363]"
+                htmlFor="productDescription"
+                className=" pt-[10px] flex text-base font-semibold text-[#636363]"
               >
-                Product Life Cycle
+                Product Description{" "}
+                <span className="flex">
+                  {" "}
+                  <RedDot />
+                </span>
+                <FormToolTip tip={toolTips.description} />
               </label>
-              <FormToolTip tip={toolTips.lifeCycle} />
             </div>
+            <InputDiv>
+              <div className="relative">
+                <textarea
+                  id="productDescription"
+                  data-testid="product-description"
+                  placeholder="Enter description"
+                  maxLength={250}
+                  {...register("description", {
+                    required: true,
+                    maxLength: 250,
+                  })}
+                  defaultValue={values?.description}
+                  className={`min-h-[150px] w-full rounded-md border border-[#8F8F8F] focus:outline-none px-3 py-[11px] placeholder:text-[#BCBBBB] resize-none ${
+                    errors?.description || error
+                      ? "border-red-500 ring-1 ring-red-500"
+                      : ""
+                  }`}
+                />
 
-            <div className="flex gap-x-4">
-              <FormDate
-                id="productLifeCycle"
-                register={register}
-                inputName={"startDate"}
-                errors={errors}
-                handleChange={(value) => {
-                  setValue("startDate", value);
-                }}
-                defaultValue={formData?.startDate}
-                minDate={new Date()}
-                trigger={trigger}
-                clearErrors={clearErrors}
-              />
-              -
-              <FormDate
-                register={register}
-                inputName={"endDate"}
-                errors={errors}
-                minDate={watchStartDate}
-                trigger={trigger}
-                handleChange={(value) => {
-                  setValue("endDate", value);
-                }}
-                defaultValue={formData?.endDate}
-                clearErrors={clearErrors}
-                placeholder="Unspecified"
-              />
-            </div>
+                {error && (
+                  <span className="text-sm text-danger-500">{error}</span>
+                )}
+                <span className="absolute bottom-4 right-2 text-xs text-[#8F8F8F] flex items-center gap-x-1">
+                  <span>{watch("description")?.length || 0}</span>/
+                  <span>250</span>
+                </span>
+              </div>
+              {errors?.description && (
+                <span className="text-sm text-danger-500">
+                  {errors?.description?.message}
+                </span>
+              )}
+            </InputDiv>
           </div>
 
-          <div className="flex items-end gap">
-            {/* <InputDiv> */}
-            <div className="w-[300px]">
-              <BorderlessSelect
-                inputError={errors?.currency}
-                register={register}
-                errors={errors}
-                setValue={setValue}
-                inputName={"currency"}
-                labelName={"Product Currency"}
-                defaultValue={formData?.currency}
-                placeholder="Select currency"
-                clearErrors={clearErrors}
-                requiredField={true}
-                tip={toolTips.currency}
-                options={currencies}
-                trigger={trigger}
-              />
+          <div className="flex gap-12">
+            <div className="flex flex-col gap">
+              <div className="flex  gap-x-2 w-[300px]">
+                {" "}
+                <label
+                  htmlFor="productLifeCycle"
+                  className=" pt-[10px]  text-base font-semibold text-[#636363]"
+                >
+                  Product Life Cycle
+                </label>
+                <FormToolTip tip={toolTips.lifeCycle} />
+              </div>
+
+              <div className="flex gap-x-4">
+                <FormDate
+                  id="productLifeCycle"
+                  register={register}
+                  inputName={"startDate"}
+                  errors={errors}
+                  handleChange={(value) => {
+                    setValue("startDate", value);
+                  }}
+                  defaultValue={formData?.startDate}
+                  minDate={new Date()}
+                  trigger={trigger}
+                  clearErrors={clearErrors}
+                />
+                -
+                <FormDate
+                  register={register}
+                  inputName={"endDate"}
+                  errors={errors}
+                  minDate={watchStartDate}
+                  trigger={trigger}
+                  handleChange={(value) => {
+                    setValue("endDate", value);
+                  }}
+                  defaultValue={formData?.endDate}
+                  clearErrors={clearErrors}
+                  placeholder="Unspecified"
+                />
+              </div>
             </div>
 
-            {/* </InputDiv> */}
+            <div className="flex items-end gap">
+              {/* <InputDiv> */}
+              <div className="w-[300px]">
+                <BorderlessSelect
+                  inputError={errors?.currency}
+                  register={register}
+                  errors={errors}
+                  setValue={setValue}
+                  inputName={"currency"}
+                  labelName={"Product Currency"}
+                  defaultValue={formData?.currency}
+                  placeholder="Select currency"
+                  clearErrors={clearErrors}
+                  requiredField={true}
+                  tip={toolTips.currency}
+                  options={currencies}
+                  trigger={trigger}
+                />
+              </div>
+
+              {/* </InputDiv> */}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </form>
   );
 }

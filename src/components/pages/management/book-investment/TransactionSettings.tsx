@@ -52,13 +52,13 @@ export const handleAccountForLiquidation = ({
         ...formData,
         transactionSettingModel: {
           ...formData?.transactionSettingModel,
-          // accountForLiquidation: accountData[0].value,
-          // accountForInterest: accountData[0].value,
+          accountForLiquidation: accountData[0].value,
+          accountForInterest: accountData[0].value,
           accountForLiquidationLedgerId: accountData[0]?.ledgerId,
         },
       });
-      // setValue("accountForLiquidation", accountData[0].value);
-      // setValue("accountForInterest", accountData[0].value);
+      setValue("accountForLiquidation", accountData[0].value);
+      setValue("accountForInterest", accountData[0].value);
       setValue("accountForLiquidationLedgerId", accountData[0].ledgerId);
       trigger();
     }

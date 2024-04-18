@@ -67,8 +67,7 @@ export const handlePreviousData = ({ prevProductData, productDetails }) => {
     interestComputationMethod: productDetails?.data?.interestComputationMethod,
     TermDepositLiabilityAccount:
       productDetails?.data?.TermDepositLiabilityAccount,
-      PrepaidAssetLedger:
-      productDetails?.data?.PrepaidAssetLedger,
+    PrepaidAssetLedger: productDetails?.data?.PrepaidAssetLedger,
     InterestAccrualAccount: productDetails?.data?.InterestAccrualAccount,
     InterestExpenseAccount: productDetails?.data?.InterestExpenseAccount,
     isDraft: productDetails?.data?.isDraft,
@@ -227,7 +226,7 @@ export function handleNav({ process, step, setStep, navigate, id }) {
 }
 
 export default function CreateTermDeposit() {
-  const { process } = useParams();
+  const { process, type } = useParams();
   const [searchParams] = useSearchParams();
   const stage = searchParams.get("stage");
   const id = searchParams.get("id");
@@ -247,6 +246,7 @@ export default function CreateTermDeposit() {
   const [productData, setProductData] = useState({
     id: id || null,
     productInfo: {
+      investmentId: "",
       productName: "",
       slogan: "",
       description: "",
@@ -321,7 +321,7 @@ export default function CreateTermDeposit() {
       early_LiquidationPenaltyPercentage: null,
       eary_SpecialInterestRate: null,
       early_SpecificCharges: [],
-      allowPrincipalWithdrawal:false,
+      allowPrincipalWithdrawal: false,
       withdrawalPenalty: 0,
     },
     productGlMappings: [],
@@ -329,7 +329,7 @@ export default function CreateTermDeposit() {
     TermDepositLiabilityAccount: "",
     InterestAccrualAccount: "",
     InterestExpenseAccount: "",
-    PrepaidAssetLedger:"",
+    PrepaidAssetLedger: "",
     isDraft: false,
     productType: 0,
   });
@@ -356,11 +356,10 @@ export default function CreateTermDeposit() {
     },
     {
       id: 3,
-      title: "New Term Deposit Product",
+      title: `New ${type.replace("-", " ")} Product`,
       url: "#",
     },
   ];
-
 
   const [createProduct, { isLoading, isSuccess, isError, reset, error }] =
     useCreateProductMutation();
@@ -510,7 +509,7 @@ export default function CreateTermDeposit() {
         <div className="flex flex-col min-h-[100vh] ">
           <div className="px-[37px] py-[11px] bg-white">
             <h1 className="text-[#747373] text-[24px] font-bold mb-7 uppercase">
-              New Term Deposit Product
+              New {type.replace("-", " ")} Product
             </h1>
             <Breadcrumbs links={handleLinks(links, process)} />
           </div>
