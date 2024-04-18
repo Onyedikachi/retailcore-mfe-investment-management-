@@ -22,6 +22,7 @@ import {
   overviewDrillDownIndividualHeader,
   IndividualRequestHeader,
   CustomerCategoryType,
+  securiyPurchaseHeader,
 } from "@app/constants";
 import { useProductList } from "@app/hooks";
 import optionsDataHandler from "@app/utils/optionsDataHandler";
@@ -290,7 +291,9 @@ export default function TableComponent({
   });
 
   useEffect(() => {
-    if (isOverviewDrillDown) {
+    if (tab === "security-purchase") {
+      setIndividualListHeaders(securiyPurchaseHeader);
+    } else if (isOverviewDrillDown) {
       setIndividualListHeaders(overviewDrillDownIndividualHeader);
     } else {
       const results = fetchedProductsList?.results;
@@ -318,7 +321,7 @@ export default function TableComponent({
         setIndividualListHeaders(updatedItems);
       }
     }
-  }, [fetchedProductsList, isOverviewDrillDown]);
+  }, [fetchedProductsList, isOverviewDrillDown, tab]);
 
   const [
     getRequests,

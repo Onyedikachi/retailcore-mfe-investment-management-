@@ -18,23 +18,27 @@ on:
       - staging
       - main
 
+  workflow_dispatch:
+    inputs:
+      DEPLOY_TARGET:
+        description: 'Deploy to target environment'
+        required: true
+        type: choice
+        options:
+        - dm
+
 jobs:
   code_quality:
-    uses: sterling-retailcore-team/workflow-templates/.github/workflows/code_quality.yml@main
+    uses: sterling-retailcore-team/workflow-templates/.github/workflows/code_quality.yml@enhancements
     secrets: inherit
     with:
       CODE_COVERAGE: "node" # specify codebase for code coverage. e.g CODE_COVERAGE: 'node' or CODE_COVERAGE: 'python', e.t.c
-  build_image:
-    uses: sterling-retailcore-team/workflow-templates/.github/workflows/build.yml@main
+  build:
+    uses: sterling-retailcore-team/workflow-templates/.github/workflows/build.yml@enhancements
     needs: [code_quality]
-    if: |
-      always() &&
-      (!contains(needs.code_quality.result, 'failure') || !contains(needs.code_quality.result, 'cancelled'))
-    with:
-      GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}
-      GITHUB_BASE_REF: ${GITHUB_BASE_REF}
-      GITHUB_SHA: ${GITHUB_SHA::8}
-      GITHUB_EVENT_NAME: ${GITHUB_EVENT_NAME}
+    if: always() && (contains(fromJSON('["success", "skipped"]'),  needs.code_quality.result))
+    with:     
+      GITHUB_SHA: ${GITHUB_SHA::8} 
       USE_BUILDTIME_ARGS: false # toggle to use buildtime variables
       DEPLOY_VARIANT_CONTAINER: false # toggle to build a variant
       USE_VARIANT_BUILDTIME_ARGS: false # toggle to use buildtime variables for variants
@@ -46,32 +50,22 @@ jobs:
       VARIANT_BUILDTIME_ARGS: "" # if using buildtime variables for the variant, specify secrets in this format "${{ secrets.example }}"
       GH_ACTIONS_PAT: ${{ secrets.GH_ACTIONS_PAT }} # mandatory, do not remove
 
-  deploy_microservice:
-    uses: sterling-retailcore-team/workflow-templates/.github/workflows/deploy.yml@main
+  deploy:
+    uses: sterling-retailcore-team/workflow-templates/.github/workflows/deploy.yml@enhancements
     with:
-      GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}
-      GITHUB_BASE_REF: ${GITHUB_BASE_REF}
-      GITHUB_SHA: ${GITHUB_SHA::8}
-      GITHUB_REPOSITORY_OWNER: ${GITHUB_REPOSITORY_OWNER}
-      GITHUB_EVENT_NAME: ${GITHUB_EVENT_NAME}
+      GITHUB_SHA: ${GITHUB_SHA::8}      
       DEPLOY_VARIANT_CONTAINER: false # toggle to deploy a variant
       VARIANT_CONTAINER_NAME: "" # provide a name for the container variant if deploying one
       MFE: true # set to true for microfrontend repositories and false for microservices
       MFE_PACKAGE_NAME: 'investment-management' # for microfrontends, specify the package name to be used in the import-map
     secrets: inherit
-    needs: build_image
-    if: |
-      always() &&
-      (!contains(needs.build_image.result, 'failure') ||
-      !contains(needs.build_image.result, 'cancelled'))
+    needs: build
+    if: always() && (contains(fromJSON('["success", "skipped"]'),  needs.build.result))  
   
-  smoke_test:
+  test:
     uses: sterling-retailcore-team/workflow-templates/.github/workflows/smoke_tests.yml@main
     with:
-      MICROSERVICE_URL: ${{ needs.deploy_microservice.outputs.MICROSERVICE_URL }}
+      MICROSERVICE_URL: ${{ needs.deploy.outputs.MICROSERVICE_URL }}
     secrets: inherit
-    needs: deploy_microservice
-    if: |
-      always() &&
-      (!contains(needs.deploy_microservice.result, 'failure') ||
-      !contains(needs.deploy_microservice.result, 'cancelled'))
+    needs: deploy
+    if: always() && (contains(fromJSON('["success", "skipped"]'),  needs.deploy.result))

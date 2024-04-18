@@ -12,7 +12,7 @@ describe('checkDocuments', () => {
 
         const result = checkDocuments(keys, obj);
         console.log("res = ", result)
-        expect(result.hasAllDocuments).toBe(true);
+        expect(result?.hasAllDocuments).toBe(true);
     });
 
     // Returns an object with 'hasAllDocuments' property as false when at least one document is missing from the object
@@ -24,7 +24,7 @@ describe('checkDocuments', () => {
 
         const result = checkDocuments(keys, obj);
 
-        expect(result.hasAllDocuments).toBe(false);
+        expect(result?.hasAllDocuments).toBe(false);
     });
 
     // Returns an object with 'missingDocuments' property as an empty array when all documents are present in the object
@@ -37,7 +37,7 @@ describe('checkDocuments', () => {
 
         const result = checkDocuments(keys, obj);
 
-        expect(result.missingDocuments).toEqual([]);
+        expect(result?.missingDocuments).toEqual([]);
     });
 
     // Returns undefined when the 'keys' parameter is undefined
