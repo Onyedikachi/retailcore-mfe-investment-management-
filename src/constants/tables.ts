@@ -261,14 +261,24 @@ export const DropDownOptions: any = {
     },
     {
       id: "",
+      text: "Investment topup",
+      icon: "BiSolidEdit",
+    },
+    {
+      id: "",
       text: "Generate certificate",
       icon: "IoArrowUndo",
     },
     {
       id: "",
-      text: "Restructure",
+      text: "Principal withdrawal",
       icon: "BiSolidReceipt",
     },
+    // {
+    //   id: "",
+    //   text: "Restructure",
+    //   icon: "BiSolidReceipt",
+    // },
   ],
   inactive: [
     {
@@ -435,15 +445,21 @@ export const IndividualDropDownOptions: any = {
     },
     {
       id: "",
+      text: "Investment topup",
+      icon: "BiSolidEdit",
+      key: "investment topup",
+    },
+    {
+      id: "",
       text: "Generate certificate",
       icon: "IoArrowUndo",
       key: "certificate",
     },
     {
       id: "",
-      text: "Restructure",
+      text: "Principal withdrawal",
       icon: "BiSolidReceipt",
-      key: "restructure",
+      key: "principal withdrawal",
     },
   ],
   liquidated: [
@@ -551,6 +567,10 @@ export const ProductTypes: any[] = [
   {
     id: 2,
     name: "Commercial Paper",
+  },
+  {
+    id: 3,
+    name: "Bonds",
   },
 ];
 export const StatusFilterOptions: any[] = [
@@ -660,6 +680,11 @@ export const productFilterOptions: any[] = [
     id: 3,
     name: "Treasury Bills",
     value: 1,
+  },
+  {
+    id: 4,
+    name: "Bonds",
+    value: 3,
   },
 ];
 export const customerCategoryFilterOptions: any[] = [
@@ -1332,6 +1357,13 @@ export const ButtonOptions = [
             key: "commercial-paper",
             isUrl: true,
             url: "commercial-paper/create",
+            permission: "CREATE_INVESTMENT_PRODUCT",
+          },
+          {
+            title: "Bonds",
+            key: "bonds",
+            isUrl: true,
+            url: "bonds/create",
             permission: "CREATE_INVESTMENT_PRODUCT",
           },
         ],

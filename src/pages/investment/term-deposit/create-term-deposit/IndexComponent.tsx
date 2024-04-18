@@ -67,6 +67,8 @@ export const handlePreviousData = ({ prevProductData, productDetails }) => {
     interestComputationMethod: productDetails?.data?.interestComputationMethod,
     TermDepositLiabilityAccount:
       productDetails?.data?.TermDepositLiabilityAccount,
+      PrepaidAssetLedger:
+      productDetails?.data?.PrepaidAssetLedger,
     InterestAccrualAccount: productDetails?.data?.InterestAccrualAccount,
     InterestExpenseAccount: productDetails?.data?.InterestExpenseAccount,
     isDraft: productDetails?.data?.isDraft,
@@ -146,6 +148,7 @@ export const handleRequestIsSuccess = ({
         slogan: data?.productInfo?.slogan,
 
         currency: data?.productInfo?.currency,
+        currencyCode: data?.productInfo?.currencyCode,
         prodType: data?.productType,
         state: data?.state,
         requestStatus: requestData?.data?.requestStatus,
@@ -318,12 +321,15 @@ export default function CreateTermDeposit() {
       early_LiquidationPenaltyPercentage: null,
       eary_SpecialInterestRate: null,
       early_SpecificCharges: [],
+      allowPrincipalWithdrawal:false,
+      withdrawalPenalty: 0,
     },
     productGlMappings: [],
     interestComputationMethod: 2,
     TermDepositLiabilityAccount: "",
     InterestAccrualAccount: "",
     InterestExpenseAccount: "",
+    PrepaidAssetLedger:"",
     isDraft: false,
     productType: 0,
   });
@@ -355,19 +361,6 @@ export default function CreateTermDeposit() {
     },
   ];
 
-    // useEffect(() => {
-  //   setFormData({
-  //     ...formData,
-  //     currency: defaultCurrency?.id,
-  //     currencyCode: defaultCurrency?.abbreviation,
-  //   });
-  //   setValue("currency", defaultCurrency?.id);
-  //   setValue("currencyCode", defaultCurrency?.abbreviation);
-  // }, [currencies, defaultCurrency]);
-
-  useEffect(() => {
-    console.log("d = ", productData);
-  }, [productData]);
 
   const [createProduct, { isLoading, isSuccess, isError, reset, error }] =
     useCreateProductMutation();

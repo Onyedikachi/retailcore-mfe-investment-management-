@@ -18,6 +18,8 @@ export const confirmationHandler = ({
   modifyProductRequest,
   setLiquidationOpen,
   setLiquidationType,
+  setTopUpType,
+  setTopUpOpen,
 }) => {
   if (action.toLowerCase().includes("delete")) {
     if (specificCategory === SpecificCategory.individual) {
@@ -51,7 +53,12 @@ export const confirmationHandler = ({
   }
 
   if (action.toLowerCase() === Actions.WITHDARW_MODIFY) {
-    if ((!permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&  specificCategory !== SpecificCategory.individual) || (!permissions?.includes("BOOK_INVESTMENT")  && specificCategory === SpecificCategory.individual)) {
+    if (
+      (!permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&
+        specificCategory !== SpecificCategory.individual) ||
+      (!permissions?.includes("BOOK_INVESTMENT") &&
+        specificCategory === SpecificCategory.individual)
+    ) {
       errorToast("You do not have permission to make changes!");
     } else {
       const data = JSON.parse(detail?.metaInfo);
@@ -63,7 +70,6 @@ export const confirmationHandler = ({
           setLiquidationType(detail?.requestType.split(" ")[0]);
           setLiquidationOpen(true);
         } else {
-        
           modifyRequest({
             ...data,
             isDraft: true,
@@ -85,5 +91,14 @@ export const confirmationHandler = ({
         });
       }
     }
+  }
+
+  if (action.toLowerCase() === Actions.TOPUP) {
+    setTopUpType("topup");
+    setTopUpOpen(true);
+  }
+  if (action.toLowerCase() === Actions.PRINCIPAL_WITHDRAWAL) {
+    setTopUpType("withdraw");
+    setTopUpOpen(true);
   }
 };

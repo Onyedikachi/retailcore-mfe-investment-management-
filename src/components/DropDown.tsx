@@ -12,7 +12,7 @@ import {
   FaRegTimesCircle,
 } from "react-icons/fa";
 import { IoArrowUndo } from "react-icons/io5";
-import { BiSolidReceipt } from "react-icons/bi";
+import { BiSolidReceipt,BiSolidEdit } from "react-icons/bi";
 import { usePopper } from "../hooks/use-popper";
 
 export function handleIcons(value: string) {
@@ -33,6 +33,8 @@ export function handleIcons(value: string) {
       return <FaRegTimesCircle className="text-[#444444]" />;
     case "BiSolidReceipt":
       return <BiSolidReceipt className="text-[#D4A62F]" />;
+      case "BiSolidEdit":
+        return <BiSolidEdit className="text-[#444444]" />;
       case "IoArrowUndo":
       return <IoArrowUndo className="text-[#444444]" />;
   }

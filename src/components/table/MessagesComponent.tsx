@@ -5,6 +5,7 @@ import ProductDetail from "../modals/ProductDetail";
 import BookingDetail from "../modals/BookingDetail";
 import Loader from "../Loader";
 import Liquidation from "../modals/Liquidation";
+import TopUp from "../modals/TopUp";
 
 export default function MessagesComponent({
   productDetails,
@@ -40,6 +41,11 @@ export default function MessagesComponent({
   isLiquidation,
   setLiquidationOpen,
   liquidationType,
+
+  isTopUp,
+  setTopUpOpen,
+  topUpType,
+
   handleLiquidation = (data, type, metaInfo) => {},
   liquidationLoading,
   handleRefresh = () => {},
@@ -111,6 +117,22 @@ export default function MessagesComponent({
               ? "part liquidation request"
               : "early liquidation request"
           }
+          productDetails={productDetails}
+
+          // setReason={() => {}}
+        />
+      )}
+
+      {isTopUp && (
+        <TopUp
+          isOpen={isTopUp}
+          setIsOpen={setTopUpOpen}
+          onConfirm={(data, type, metaInfo) =>
+            handleLiquidation(data, type, metaInfo)
+          }
+          detail={detail}
+          type={topUpType}
+          title={topUpType}
           productDetails={productDetails}
 
           // setReason={() => {}}

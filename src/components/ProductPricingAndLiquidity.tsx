@@ -148,10 +148,7 @@ export default ({ productData, setOpen }) => {
               ? `- ${currencyFormatter(
                   productData?.data?.pricingConfiguration
                     ?.applicablePrincipalMax,
-                  handleCurrencyName(
-                    productData?.data?.productInfo?.currency,
-                    currencies
-                  )
+                  productData?.data?.productInfo?.currencyCode
                 )}`
               : "and above"}
           </span>
@@ -176,16 +173,10 @@ export default ({ productData, setOpen }) => {
                       between{" "}
                       {`${currencyFormatter(
                         configModel.principalMin,
-                        handleCurrencyName(
-                          productData?.data?.productInfo?.currency,
-                          currencies
-                        )
+                        productData?.data?.productInfo?.currencyCode
                       )} - ${currencyFormatter(
                         configModel.principalMax,
-                        handleCurrencyName(
-                          productData?.data?.productInfo?.currency,
-                          currencies
-                        )
+                        productData?.data?.productInfo?.currencyCode
                       )}`}{" "}
                     </span>
                   )

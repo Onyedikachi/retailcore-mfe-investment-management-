@@ -608,10 +608,7 @@ export default function FacilityDetails({
                 <div className="flex gap-[15px]">
                   <div className=" w-[360px]">
                     <MinMaxInput
-                      currency={handleCurrencyName(
-                        productDetail?.productInfo?.currency,
-                        currencies
-                      )}
+                      currency={productDetail?.productInfo?.currencyCode}
                       isCurrency
                       inputName="principal"
                       register={register}
@@ -626,20 +623,14 @@ export default function FacilityDetails({
                         {currencyFormatter(
                           productDetail?.pricingConfiguration
                             ?.applicablePrincipalMin,
-                          handleCurrencyName(
-                            productDetail?.productInfo?.currency,
-                            currencies
-                          )
+                            productDetail?.productInfo?.currencyCode
                         )}{" "}
                         -{" "}
                         {currencyFormatter(
                           productDetail?.pricingConfiguration
                             ?.applicablePrincipalMax,
 
-                          handleCurrencyName(
-                            productDetail?.productInfo?.currency,
-                            currencies
-                          )
+                            productDetail?.productInfo?.currencyCode
                         )}
                       </span>
                     </div>
@@ -684,18 +675,12 @@ export default function FacilityDetails({
                                     {"for principal between "}
                                     {currencyFormatter(
                                       i?.principalMin,
-                                      handleCurrencyName(
-                                        productDetail?.productInfo?.currency,
-                                        currencies
-                                      )
+                                      productDetail?.productInfo?.currencyCode
                                     )}{" "}
                                     -
                                     {currencyFormatter(
                                       i?.principalMax,
-                                      handleCurrencyName(
-                                        productDetail?.productInfo?.currency,
-                                        currencies
-                                      )
+                                      productDetail?.productInfo?.currencyCode
                                     )}
                                   </span>
                                 ) : (

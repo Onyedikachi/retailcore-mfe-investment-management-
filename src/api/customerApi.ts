@@ -4,9 +4,6 @@ import { REHYDRATE } from "redux-persist";
 import urls from "../helpers/url_helpers";
 import { cleanObject } from "@app/utils/cleanObject";
 
-// const customerApiUrl =
-//   "https://customer-management-api.qa.bepeerless.co/v1";
-
 export const customerApi: any = createApi({
   reducerPath: "customerApi",
   baseQuery: axiosBaseQuery({ serviceKey: "customerManagement" }),

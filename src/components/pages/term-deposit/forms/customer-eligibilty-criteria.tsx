@@ -156,7 +156,6 @@ export default function CustomerEligibilityCriteria({
 
   useEffect(() => {
     if (docSuccess) {
-      console.log("🚀 ~ useEffect ~ documentList:", documentList);
       setDocuments(
         documentList?.data?.map((i) => ({ name: i.title, id: uuid() }))
       );

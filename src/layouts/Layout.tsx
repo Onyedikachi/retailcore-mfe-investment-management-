@@ -122,12 +122,8 @@ const Layout = () => {
       );
       setDefaultCurrency(currencyData?.data?.results?.find(i=> i?.is_default))
     }
-
-    // if (defaultCurrencyIsSuccess) {
-    //   setDefaultCurrency(defaultCurrencyData?.data);
-    // }
   }, [currencyIsSuccess]);
-console.log("window", window.location.origin)
+
   return (
     <div data-testid="outlet">
       <AuthGuard>

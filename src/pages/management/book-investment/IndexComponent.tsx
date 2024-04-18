@@ -126,7 +126,9 @@ export default function IndexComponent() {
       customerProfileid: "",
       balance: "",
       currencyId: "",
-      currencyCode:"",
+      currencyCode: "",
+      relationshipOfficerId: "",
+      relationshipOfficerName: "",
     },
     facilityDetailsModel: {
       capitalizationMethod: 2,
@@ -147,17 +149,20 @@ export default function IndexComponent() {
     transactionSettingModel: {
       accountName: "",
       accountForLiquidation: "",
+      accountForInterest: "",
       notifyCustomerOnMaturity: false,
       rollOverAtMaturity: false,
       rollOverOption: 0,
       accountForLiquidationLedgerId: "",
+      startDateOption: 0,
+      startDate: new Date(),
     },
     isDraft: false,
     recentUpdated: false,
     recentlyUpdatedMeta: "",
-    bookingType: CustomerCategoryType[investmentType]
+    bookingType: CustomerCategoryType[investmentType],
   });
- 
+
   const links = [
     {
       id: 1,
@@ -174,7 +179,6 @@ export default function IndexComponent() {
       title: investmentType,
       url: `/investment-management/${investmentType}`,
     },
-  
   ];
 
   const {
@@ -345,7 +349,7 @@ export default function IndexComponent() {
       setFormData,
       type: "individual_booking",
       formData,
-      id
+      id,
     });
   }, [requestIsSuccess]);
 

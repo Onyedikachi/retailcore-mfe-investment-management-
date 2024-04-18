@@ -59,6 +59,7 @@ export function onProceed(
   partOptionCharges,
   proceed
 ) {
+ 
   setFormData({
     ...formData,
     early_SpecificCharges: earlyOptionCharges,
@@ -130,7 +131,7 @@ export default function LiquiditySetup({
 
     setChargeOptions(options1);
   }, [chargesData]);
-  useEffect(() => { }, [formData]);
+  useEffect(() => {}, [formData]);
 
   const values = getValues();
 
@@ -155,6 +156,37 @@ export default function LiquiditySetup({
   }, [setValue, formData]);
   const watchPartLiquidationPenalty = watch("part_LiquidationPenalty");
   const watchEarlyLiquidationPenalty = watch("early_LiquidationPenalty");
+  const watchAllowPrincipalWithdrawal = watch("allowPrincipalWithdrawal");
+  const watchPartAllowPartLiquidation = watch("part_AllowPartLiquidation");
+  const watchEarlyAllowEarlyLiquidation = watch("early_AllowEarlyLiquidation");
+
+  useEffect(() => {
+    if (watchAllowPrincipalWithdrawal) {
+      setValue("part_AllowPartLiquidation", false);
+      setValue("early_AllowEarlyLiquidation", false);
+      setValue("part_MaxPartLiquidation", null);
+      setValue("part_RequireNoticeBeforeLiquidation", false);
+      setValue("part_NoticePeriod", 1);
+      setValue("part_NoticePeriodUnit", 1);
+      setValue("part_LiquidationPenalty", 0);
+      setValue("part_LiquidationPenaltyPercentage", null);
+      setValue("part_SpecificCharges", []);
+      setValue("part_SpecialInterestRate", null);
+      setValue("early_RequireNoticeBeforeLiquidation", false);
+      setValue("early_NoticePeriod", null);
+      setValue("early_NoticePeriodUnit", 1);
+      setValue("early_LiquidationPenalty", 0);
+      setValue("early_LiquidationPenaltyPercentage", null);
+      setValue("eary_SpecialInterestRate", null);
+      setValue("early_SpecificCharges", []);
+    }
+  }, [watchAllowPrincipalWithdrawal]);
+
+  useEffect(() => {
+    if (watchEarlyAllowEarlyLiquidation || watchPartAllowPartLiquidation) {
+      setValue("allowPrincipalWithdrawal", false);
+    }
+  }, [watchEarlyAllowEarlyLiquidation, watchPartAllowPartLiquidation]);
 
   useEffect(() => {
     const resetNoticePeriod = (fieldName) => {
@@ -203,9 +235,9 @@ export default function LiquiditySetup({
             setValue={setValue}
             trigger={trigger}
             register={register}
-            defaultValue={formData[type.value]}
+            defaultValue={values[type.value]}
           >
-            {type.label === "Allow Part Liquidation" ? (
+            {type.value === "part_AllowPartLiquidation" ? (
               <div>
                 {/* Part liquidation */}
                 <div className="flex flex-col gap-[40px]">
@@ -247,10 +279,11 @@ export default function LiquiditySetup({
                       </div>
 
                       <div
-                        className={`w-full ${!watch("part_RequireNoticeBeforeLiquidation")
-                          ? "opacity-40"
-                          : ""
-                          }`}
+                        className={`w-full ${
+                          !watch("part_RequireNoticeBeforeLiquidation")
+                            ? "opacity-40"
+                            : ""
+                        }`}
                       >
                         <MinMaxInput
                           register={register}
@@ -270,10 +303,11 @@ export default function LiquiditySetup({
 
                       <div className={`w-full flex gap-4 `}>
                         <div
-                          className={`w-[150px] ${!watch("part_RequireNoticeBeforeLiquidation")
-                            ? "opacity-40"
-                            : ""
-                            }`}
+                          className={`w-[150px] ${
+                            !watch("part_RequireNoticeBeforeLiquidation")
+                              ? "opacity-40"
+                              : ""
+                          }`}
                         >
                           <BorderlessSelect
                             inputError={errors?.part_NoticePeriodUnit}
@@ -388,7 +422,8 @@ export default function LiquiditySetup({
                                 className="rounded-full px-[13px] py-[4px] text-xs bg-[#E0E0E0] flex gap-x-6 items-center text-[#16252A] capitalize"
                               >
                                 {i?.name}{" "}
-                                <span onKeyDown={() => { }}
+                                <span
+                                  onKeyDown={() => {}}
                                   onClick={() => {
                                     setPartOptionCharges(
                                       partOptionCharges.filter((n) => n !== i)
@@ -476,7 +511,7 @@ export default function LiquiditySetup({
                   )}
                 </div>
               </div>
-            ) : (
+            ) : type.value === "early_AllowEarlyLiquidation" ? (
               <div className="flex flex-col gap-[40px]">
                 <InputDivs label={"Require notice before liquidation"}>
                   <div className="flex gap-4 items-end">
@@ -491,10 +526,11 @@ export default function LiquiditySetup({
                     </div>
 
                     <div
-                      className={`w-[100px] ${!watch("early_RequireNoticeBeforeLiquidation")
-                        ? "opacity-40"
-                        : ""
-                        }`}
+                      className={`w-[100px] ${
+                        !watch("early_RequireNoticeBeforeLiquidation")
+                          ? "opacity-40"
+                          : ""
+                      }`}
                     >
                       <MinMaxInput
                         register={register}
@@ -510,10 +546,11 @@ export default function LiquiditySetup({
                     </div>
                     <div className="flex gap-4">
                       <div
-                        className={`w-[150px] ${!watch("early_RequireNoticeBeforeLiquidation")
-                          ? "opacity-40"
-                          : ""
-                          }`}
+                        className={`w-[150px] ${
+                          !watch("early_RequireNoticeBeforeLiquidation")
+                            ? "opacity-40"
+                            : ""
+                        }`}
                       >
                         <BorderlessSelect
                           inputError={errors?.early_NoticePeriodUnit}
@@ -627,7 +664,8 @@ export default function LiquiditySetup({
                               className="rounded-full px-[13px] py-[4px] text-xs bg-[#E0E0E0] flex gap-x-6 items-center text-[#16252A] capitalize"
                             >
                               {i?.name}{" "}
-                              <span onKeyDown={() => { }}
+                              <span
+                                onKeyDown={() => {}}
                                 onClick={() => {
                                   setEarlyOptionCharges(
                                     earlyOptionCharges.filter((n) => n !== i)
@@ -713,6 +751,45 @@ export default function LiquiditySetup({
                     </InputDivs>
                   </div>
                 )}
+              </div>
+            ) : (
+              <div className="flex flex-col gap-[40px]">
+                <InputDivs label={"Principal withdrawal penalty"}>
+                  <div className="flex gap-x-6 items-end">
+                    {" "}
+                    <div className="w-[300px]">
+                      <BorderlessSelect
+                        inputError={errors?.withdrawalPenalty}
+                        register={register}
+                        inputName={"withdrawalPenalty"}
+                        errors={errors}
+                        setValue={setValue}
+                        trigger={trigger}
+                        clearErrors={clearErrors}
+                        defaultValue={values?.withdrawalPenalty}
+                        options={LiquidityOptions.filter((i) => i.value === 0)}
+                      />
+                    </div>
+                    {watchEarlyLiquidationPenalty === 2 && (
+                      <div className="w-[100px]">
+                        <MinMaxInput
+                          register={register}
+                          inputName={"early_LiquidationPenaltyPercentage"}
+                          errors={errors}
+                          setValue={setValue}
+                          trigger={trigger}
+                          clearErrors={clearErrors}
+                          defaultValue={
+                            formData?.early_LiquidationPenaltyPercentage
+                          }
+                          isCurrency
+                          disablegroupseparators
+                          isPercent
+                        />
+                      </div>
+                    )}
+                  </div>
+                </InputDivs>
               </div>
             )}
           </ToggleInputChildren>

@@ -12,9 +12,7 @@ import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 import { AppContext } from "@app/utils";
 
 export default function InvestmentCalculation({ detail, productDetail }: any) {
-
   const { currencies } = useContext(AppContext);
-
 
   return (
     <div>
@@ -32,13 +30,9 @@ export default function InvestmentCalculation({ detail, productDetail }: any) {
                 Value at maturity
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-        
                 {currencyFormatter(
                   detail?.calcDetail?.maturityValue || 0,
-                  handleCurrencyName(
-                    productDetail?.productInfo?.currency,
-                    currencies
-                  )
+                  productDetail?.productInfo?.currencyCode
                 )}
               </div>
             </div>
@@ -47,12 +41,9 @@ export default function InvestmentCalculation({ detail, productDetail }: any) {
                 Principal
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-              {currencyFormatter(
+                {currencyFormatter(
                   detail?.calcDetail?.principal || 0,
-                  handleCurrencyName(
-                    detail?.productDetail?.productInfo?.currency,
-                    currencies
-                  )
+                  productDetail?.productInfo?.currencyCode
                 )}
               </div>
             </div>
@@ -61,15 +52,11 @@ export default function InvestmentCalculation({ detail, productDetail }: any) {
                 Maturity date
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
-              <span className="">
-                {detail?.calcDetail?.maturityDate}{" "}
-                {
-                  Interval[
-                    detail?.facilityDetailsModel?.tenorUnit
-                  ]
-                }
-                , effective after approval
-              </span>
+                <span className="">
+                  {detail?.calcDetail?.maturityDate}{" "}
+                  {Interval[detail?.facilityDetailsModel?.tenorUnit]}, effective
+                  upon approval
+                </span>
               </div>
             </div>
           </div>
