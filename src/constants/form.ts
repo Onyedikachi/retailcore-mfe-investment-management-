@@ -83,6 +83,22 @@ export const FacilityDetailsModelSchema = yup.object().shape({
   intMax: yup.number().typeError("Invalid value").nullable(),
 });
 
+export const FacilityDetailsModelSchema2 = yup.object().shape({
+  category: yup.string().required(),
+  issuer: yup.string().required().max(50),
+  description: yup.string().required().max(250),
+  // dealDate: yup.date().nullable().required(),
+  // maturiyDate: yup.date().nullable().required(),
+  currency: yup.string().required(),
+  discountRate: yup.number().required(),
+  perAmount: yup.number().required(),
+  faceValue: yup.number().required(),
+  consideration: yup.number().required(),
+  interestCapitalizationMethod: yup.number().required(),
+  interestComputationMethod: yup.number().required(),
+  interval: yup.number()
+})
+
 export const TransactionSettingModelSchema = yup.object().shape({
   accountForLiquidation: yup
     .mixed()
@@ -226,7 +242,7 @@ export const pricingConfigSchema = yup.object({
         value === undefined ||
         applicableTenorMin === undefined ||
         convertToDays(value, applicableTenorMaxUnit) >
-          convertToDays(applicableTenorMin, applicableTenorMinUnit)
+        convertToDays(applicableTenorMin, applicableTenorMinUnit)
       );
     }),
 
@@ -324,12 +340,11 @@ export const pricingConfigSchema = yup.object({
             const newerror = new ValidationError(
               "Invalid value",
               current,
-              `interestRateConfigModels[${i}].${
-                current?.min === undefined ||
+              `interestRateConfigModels[${i}].${current?.min === undefined ||
                 isNaN(current?.min) ||
                 current?.min === null
-                  ? "min"
-                  : "max"
+                ? "min"
+                : "max"
               }`
             );
 
@@ -372,12 +387,11 @@ export const pricingConfigSchema = yup.object({
               const newerror = new ValidationError(
                 "Invalid value",
                 current,
-                `interestRateConfigModels[${i}].${
-                  current?.principalMin === undefined ||
+                `interestRateConfigModels[${i}].${current?.principalMin === undefined ||
                   isNaN(current?.principalMin) ||
                   current?.principalMin === null
-                    ? "principalMin"
-                    : "principalMax"
+                  ? "principalMin"
+                  : "principalMax"
                 }`
               );
 
@@ -464,12 +478,11 @@ export const pricingConfigSchema = yup.object({
               const newerror = new ValidationError(
                 "Invalid value",
                 current,
-                `interestRateConfigModels[${i}].${
-                  current?.tenorMin === undefined ||
+                `interestRateConfigModels[${i}].${current?.tenorMin === undefined ||
                   isNaN(current?.tenorMin) ||
                   current?.tenorMin === null
-                    ? "tenorMin"
-                    : "tenorMax"
+                  ? "tenorMin"
+                  : "tenorMax"
                 }`
               );
 
@@ -480,7 +493,7 @@ export const pricingConfigSchema = yup.object({
               prev?.tenorMax !== undefined &&
               current?.tenorMin !== undefined &&
               convertToDays(current.tenorMin, current.tenorMinUnit) <=
-                convertToDays(prev.tenorMax, prev.tenorMaxUnit)
+              convertToDays(prev.tenorMax, prev.tenorMaxUnit)
             ) {
               errors.push(
                 new ValidationError(
@@ -495,7 +508,7 @@ export const pricingConfigSchema = yup.object({
               current?.tenorMin !== undefined &&
               current?.tenorMax !== undefined &&
               convertToDays(current.tenorMax, current.tenorMaxUnit) <=
-                convertToDays(current.tenorMin, current.tenorMinUnit)
+              convertToDays(current.tenorMin, current.tenorMinUnit)
             ) {
               errors.push(
                 new ValidationError(
@@ -510,12 +523,11 @@ export const pricingConfigSchema = yup.object({
               appTenorMax !== undefined &&
               last?.tenorMax !== undefined &&
               convertToDays(last.tenorMax, last.tenorMaxUnit) >
-                convertToDays(appTenorMax, appTenorMaxUnit)
+              convertToDays(appTenorMax, appTenorMaxUnit)
             ) {
               errors.push(
                 new ValidationError(
-                  `Max tenor  is ${appTenorMax} ${
-                    IntervalOptions[appTenorMaxUnit - 1].text
+                  `Max tenor  is ${appTenorMax} ${IntervalOptions[appTenorMaxUnit - 1].text
                   }`,
                   last,
                   `interestRateConfigModels[${value.length - 1}].tenorMax`
@@ -527,12 +539,11 @@ export const pricingConfigSchema = yup.object({
               appTenorMax !== undefined &&
               last?.tenorMin !== undefined &&
               convertToDays(last.tenorMin, last.tenorMinUnit) >=
-                convertToDays(appTenorMax, appTenorMaxUnit)
+              convertToDays(appTenorMax, appTenorMaxUnit)
             ) {
               errors.push(
                 new ValidationError(
-                  `Min tenor must be less than ${appTenorMax} ${
-                    IntervalOptions[appTenorMaxUnit - 1].text
+                  `Min tenor must be less than ${appTenorMax} ${IntervalOptions[appTenorMaxUnit - 1].text
                   }`,
                   last,
                   `interestRateConfigModels[${value.length - 1}].tenorMin`
@@ -544,12 +555,11 @@ export const pricingConfigSchema = yup.object({
               appTenorMin !== undefined &&
               first?.tenorMin !== undefined &&
               convertToDays(first.tenorMin, first.tenorMinUnit) !=
-                convertToDays(appTenorMin, appTenorMinUnit)
+              convertToDays(appTenorMin, appTenorMinUnit)
             ) {
               errors.push(
                 new ValidationError(
-                  `Min tenor must be ${appTenorMin} ${
-                    IntervalOptions[appTenorMinUnit - 1].text
+                  `Min tenor must be ${appTenorMin} ${IntervalOptions[appTenorMinUnit - 1].text
                   }`,
                   first,
                   `interestRateConfigModels[${0}].tenorMin`

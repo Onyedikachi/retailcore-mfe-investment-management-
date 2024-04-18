@@ -46,9 +46,9 @@ export function handleValidatingName(
   }
 }
 
-export function InputDiv({ children }) {
+export function InputDiv({ children, customClass="" }) {
   return (
-    <div data-testid="input-div" className="w-full flex flex-col gap-2">
+    <div data-testid="input-div" className={`w-full flex flex-col gap-2 ${customClass}`}>
       {children}
     </div>
   );

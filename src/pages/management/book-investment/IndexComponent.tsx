@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
-import { BookInvestmentFormSteps, CustomerCategoryType } from "@app/constants";
+import React, { useEffect, useState, useRef, Fragment } from "react";
+import { BookInvestmentFormSteps, CustomerCategoryType, securityPurchageFormSteps } from "@app/constants";
 import { ProductInfoInvestmentCalc } from "@app/components/management";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import handleFormRef from "./handleFormRef";
@@ -27,9 +27,11 @@ import {
   handleRequestIsSuccess,
 } from "@app/pages/investment/term-deposit/create-term-deposit/IndexComponent";
 import BottomBarLoader from "@app/components/BottomBarLoader";
+import SecurityPurchaseFormComponent from "./SecurityPurchaseFormComponent";
+import SecurityPurchasePreview from "./SecurityPurchasePreview";
 
-export function handleNext(step, setStep, BookInvestmentFormSteps) {
-  step < BookInvestmentFormSteps.length && setStep(step + 1);
+export function handleNext(step, setStep, formSteps) {
+  step < formSteps.length && setStep(step + 1);
 }
 
 export function handleNav({
@@ -40,21 +42,20 @@ export function handleNav({
   process,
   id,
   formData,
+  formSteps
 }) {
-  if (!formData?.customerBookingInfoModel?.customerId) return;
-
-  step < BookInvestmentFormSteps.length
-    ? handleNext(step, setStep, BookInvestmentFormSteps)
+  if (!formData?.customerBookingInfoModel?.customerId && investmentType !== "security-purchase") return;
+  step < formSteps.length
+    ? handleNext(step, setStep, formSteps)
     : navigate(
-        `/investment-management/${process}/${investmentType}?stage=summary&id=${
-          formData?.id || id
-        }`
-      );
+      `/investment-management/${process}/${investmentType}?stage=summary&id=${formData?.id || id
+      }`
+    );
 }
 
 export function handleLinks(links, process) {
   if (process === "restructure") {
-    const linkWithId2 = links.find((link) => link.id === 2);
+    const linkWithId2 = links.find((link) => link?.id === 2);
 
     // Update its title property
     if (linkWithId2) {
@@ -65,8 +66,8 @@ export function handleLinks(links, process) {
   return links;
 }
 
-export function handlePrev(step, setStep, BookInvestmentFormSteps) {
-  step > BookInvestmentFormSteps[0].index && setStep(step - 1);
+export function handlePrev(step, setStep, formSteps) {
+  step > formSteps[0].index && setStep(step - 1);
 }
 
 export const handleDraft = ({
@@ -91,6 +92,7 @@ export const handleDraft = ({
   }
 };
 
+
 export default function IndexComponent() {
   const { process, investmentType } = useParams();
   const [searchParams] = useSearchParams();
@@ -113,55 +115,80 @@ export default function IndexComponent() {
   const [productDetail, setProductDetail] = useState(null);
   const [calcDetail, setCalcDetail] = useState(null);
   const navigate = useNavigate();
-  const [formData, setFormData] = useState<any>({
-    id: id || null,
-    customerId: "",
-    customerProfile: null,
-    customerBookingInfoModel: {
-      customerId: "",
-      customerName: "",
-      customerAccount: "",
-      investmentformUrl: "",
-      accountStatus: "",
-      customerProfileid: "",
-      balance: "",
-      currencyId: "",
-      currencyCode: "",
-      relationshipOfficerId: "",
-      relationshipOfficerName: "",
-    },
-    facilityDetailsModel: {
-      capitalizationMethod: 2,
-      interestRate: null,
-      principal: null,
-      tenor: null,
-      investmentPurpose: "",
-      investmentProductId: null,
-      investmentProductName: "",
-      tenorMin: null,
-      tenorMax: null,
-      prinMin: null,
-      prinMax: null,
-      intMin: 0,
-      intMax: 100,
-      tenorUnit: 1,
-    },
-    transactionSettingModel: {
-      accountName: "",
-      accountForLiquidation: "",
-      accountForInterest: "",
-      notifyCustomerOnMaturity: false,
-      rollOverAtMaturity: false,
-      rollOverOption: 0,
-      accountForLiquidationLedgerId: "",
-      startDateOption: 0,
-      startDate: new Date(),
-    },
-    isDraft: false,
-    recentUpdated: false,
-    recentlyUpdatedMeta: "",
-    bookingType: CustomerCategoryType[investmentType],
-  });
+
+  const [formData, setFormData] = useState<any>(
+    investmentType === "security-purchase" ?
+      {
+        id: id || "",
+        facilityDetailsModel: {
+          category: "",
+          issuer: "",
+          description: "",
+          dealDate: null,
+          maturiyDate: null,
+          currency: "",
+          discountRate: "",
+          perAmount: "",
+          faceValue: "",
+          consideration: "",
+          interestCapitalizationMethod: "",
+          interestComputationMethod: "",
+          interval: ""
+        },
+        accountingEntries: {
+          debitLedger: "",
+          creditLedger: ""
+        }
+      } :
+      {
+        id: id || null,
+        customerId: "",
+        customerProfile: null,
+        customerBookingInfoModel: {
+          customerId: "",
+          customerName: "",
+          customerAccount: "",
+          investmentformUrl: "",
+          accountStatus: "",
+          customerProfileid: "",
+          balance: "",
+          currencyId: "",
+          currencyCode: "",
+          relationshipOfficerId: "",
+          relationshipOfficerName: "",
+        },
+        facilityDetailsModel: {
+          capitalizationMethod: 2,
+          interestRate: null,
+          principal: null,
+          tenor: null,
+          investmentPurpose: "",
+          investmentProductId: null,
+          investmentProductName: "",
+          tenorMin: null,
+          tenorMax: null,
+          prinMin: null,
+          prinMax: null,
+          intMin: 0,
+          intMax: 100,
+          tenorUnit: 1,
+        },
+        transactionSettingModel: {
+          accountName: "",
+          accountForLiquidation: "",
+          accountForInterest: "",
+          notifyCustomerOnMaturity: false,
+          rollOverAtMaturity: false,
+          rollOverOption: 0,
+          accountForLiquidationLedgerId: "",
+          startDateOption: 0,
+          startDate: new Date(),
+        },
+        isDraft: false,
+        recentUpdated: false,
+        recentlyUpdatedMeta: "",
+        bookingType: CustomerCategoryType[investmentType]
+      });
 
   const links = [
     {
@@ -180,6 +207,8 @@ export default function IndexComponent() {
       url: `/investment-management/${investmentType}`,
     },
   ];
+
+
 
   const {
     data: detail,
@@ -263,6 +292,8 @@ export default function IndexComponent() {
     });
   };
 
+  const [formSteps, setFormSteps] = useState(investmentType === "security-purchase" ? securityPurchageFormSteps : BookInvestmentFormSteps)
+
   useEffect(() => {
     if (
       productDetail &&
@@ -298,12 +329,29 @@ export default function IndexComponent() {
     }
   }, [detailIsSuccess, detail]);
 
+  const handleFormRef2 = ({ step, setFormRef }) => {
+    switch (step) {
+      case 1:
+        setFormRef("facilityDetails");
+        break;
+      case 2:
+        setFormRef("accountingEntries");
+        break;
+      default:
+        setFormRef("facilityDetails");
+    }
+  }
+
   useEffect(() => {
-    handleFormRef({ step, setFormRef });
+    if (investmentType === "security-purchase") {
+      handleFormRef2({ step, setFormRef });
+    } else {
+      handleFormRef({ step, setFormRef });
+    }
   }, [step]);
 
   useEffect(() => {
-    if (preSuccess && !formData.id) {
+    if (preSuccess && !formData?.id) {
       setFormData({
         ...formData,
         id: preData?.data,
@@ -369,36 +417,67 @@ export default function IndexComponent() {
               <div className="flex-1 bg-[#ffffff] rounded-md px-10 lg:px-[100px] pt-[54px] pb-[49px] oveflow-x-auto">
                 <div className="pb-[49px] ">
                   <FormStepComponent
-                    formStepItems={BookInvestmentFormSteps}
+                    formStepItems={formSteps}
                     step={step}
                   />
                 </div>
                 <div className=" bg-[#ffffff] border border-[#EEEEEE] rounded-[10px] px-[87px] pt-[100px] pb-[43px] ">
                   {/* {form component} */}
                   {!requestIsLoading ? (
-                    <BookInvestmentFormComponent
-                      formData={formData}
-                      setFormData={setFormData}
-                      step={step}
-                      handleNav={() =>
-                        handleNav({
-                          step,
-                          setStep,
-                          navigate,
-                          investmentType,
-                          process,
-                          id,
-                          formData,
-                        })
+                    <Fragment>
+                      {
+                        investmentType !== "security-purchase" ?
+                          <BookInvestmentFormComponent
+                            formData={formData}
+                            setFormData={setFormData}
+                            step={step}
+                            handleNav={() =>
+                              handleNav({
+                                step,
+                                setStep,
+                                navigate,
+                                investmentType,
+                                process,
+                                id,
+                                formData,
+                                formSteps
+                              })
+                            }
+                            setDisabled={setDisabled}
+                            isSavingDraft={isSavingDraft}
+                            setProductDetail={setProductDetail}
+                            productDetail={productDetail}
+                            detailLoading={detailLoading}
+                            preModifyRequest={preModifyRequest}
+                            preCreateInvestment={preCreateInvestment}
+                          />
+                          :
+                          <SecurityPurchaseFormComponent
+                            formData={formData}
+                            setFormData={setFormData}
+                            step={step}
+                            handleNav={() =>
+                              handleNav({
+                                step,
+                                setStep,
+                                navigate,
+                                investmentType,
+                                process,
+                                id,
+                                formData,
+                                formSteps
+                              })
+                            }
+                            setDisabled={setDisabled}
+                            isSavingDraft={isSavingDraft}
+                            setProductDetail={setProductDetail}
+                            productDetail={productDetail}
+                            detailLoading={detailLoading}
+                            preModifyRequest={preModifyRequest}
+                            preCreateInvestment={preCreateInvestment}
+                          />
                       }
-                      setDisabled={setDisabled}
-                      isSavingDraft={isSavingDraft}
-                      setProductDetail={setProductDetail}
-                      productDetail={productDetail}
-                      detailLoading={detailLoading}
-                      preModifyRequest={preModifyRequest}
-                      preCreateInvestment={preCreateInvestment}
-                    />
+                    </Fragment>
                   ) : (
                     <BottomBarLoader />
                   )}
@@ -458,10 +537,18 @@ export default function IndexComponent() {
         </div>
       )}
       {stage && stage === "summary" && (
-        <Preview
-          productDetail={productDetail}
-          formData={{ ...formData, calcDetail }}
-        />
+        <Fragment>
+          {
+            investmentType === "security-purchase" ?
+              <SecurityPurchasePreview productDetail={formData} />
+              :
+              <Preview
+                productDetail={productDetail}
+                formData={{ ...formData, calcDetail }}
+              />
+
+          }
+        </Fragment>
       )}
 
       <Loader
