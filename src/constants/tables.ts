@@ -1006,6 +1006,57 @@ export const individualHeader = [
     key: "actions",
   },
 ];
+export const securiyPurchaseHeader = [
+  {
+    label: "Issuer NAME/ID",
+    key: "customerName",
+    options: [
+      {
+        id: 1,
+        name: "",
+        value: "",
+      },
+    ],
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+  {
+    label: "Consideration",
+    key: "principal",
+    options: [],
+    hasSelect: false,
+    hasDateSelect: false,
+  },
+
+  {
+    label: "Investment Category",
+    key: "investmentProduct",
+    options: productFilterOptions,
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "status",
+    key: "investmentBookingStatus",
+    options: IndividualFilterOptions,
+    hasSelect: true,
+    hasDateSelect: false,
+  },
+  {
+    label: "updated on",
+    key: "updated_At",
+    options: [],
+    hasSelect: false,
+    hasDateSelect: true,
+  },
+  {
+    label: "",
+    options: [],
+    hasSelect: false,
+    hasDateSelect: false,
+    key: "actions",
+  },
+];
 export const requestHeader = [
   {
     label: "request",
