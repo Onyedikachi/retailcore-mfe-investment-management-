@@ -36,7 +36,6 @@ const taxChargeDataOptions = [
   },
 ];
 export function ChargesAndTaxes({ taxData, chargeData, productDetail }) {
-
   return (
     <div>
       {" "}
@@ -50,19 +49,23 @@ export function ChargesAndTaxes({ taxData, chargeData, productDetail }) {
               <div className="flex items-center flex-wrap gap-x-1 mb-2">
                 <span className="font-normal block">Charges :</span>
                 <span className="flex items-center flex-wrap gap-1">
-                  {productDetail[i.key]?.applicableCharges?.map((item, index) => (
-                    <span key={item} className="font-normal block">
-
-                      <span className="rounded-full px-[10px] py-[2px] text-xs bg-[#E0E0E0] flex gap-x-6 items-center text-[#16252A] capitalize">
-                        {" "}
-                        {chargeData?.find((it) => it.charge_id === item)?.name}
-                      </span>
-                      {index + 1 !==
-                        productDetail[i.key]?.applicableCharges.length && (
+                  {productDetail[i.key]?.applicableCharges?.map(
+                    (item, index) => (
+                      <span key={item} className="font-normal block">
+                        <span className="rounded-full px-[10px] py-[2px] text-xs bg-[#E0E0E0] flex gap-x-6 items-center text-[#16252A] capitalize">
+                          {" "}
+                          {
+                            chargeData?.find((it) => it.charge_id === item)
+                              ?.name
+                          }
+                        </span>
+                        {index + 1 !==
+                          productDetail[i.key]?.applicableCharges.length && (
                           <span>,</span>
                         )}
-                    </span>
-                  ))}
+                      </span>
+                    )
+                  )}
                 </span>
               </div>
             )}
@@ -78,8 +81,8 @@ export function ChargesAndTaxes({ taxData, chargeData, productDetail }) {
                       </span>
                       {index + 1 !==
                         productDetail[i.key]?.applicableTaxes?.length && (
-                          <span>,</span>
-                        )}
+                        <span>,</span>
+                      )}
                     </span>
                   ))}
                 </span>
@@ -126,22 +129,20 @@ export default function ProductInfoInvestmentCalc({
         data: [
           {
             name: "Currency",
-            text: handleCurrencyName(
-              productDetail?.productInfo?.currency,
-              currencies
-            ),
+            text: productDetail?.productInfo?.currencyCode,
             isOpen: true,
           },
           {
             name: "Life cycle",
             text: `${moment(productDetail?.productInfo?.startDate).format(
               "yyyy-MM-DD"
-            )} - ${moment(productDetail?.productInfo?.endDate).isValid()
+            )} - ${
+              moment(productDetail?.productInfo?.endDate).isValid()
                 ? moment(productDetail?.productInfo?.endDate).format(
-                  "yyyy-MM-DD"
-                )
+                    "yyyy-MM-DD"
+                  )
                 : "Unlimited"
-              }`,
+            }`,
             isOpen: true,
           },
         ],
@@ -183,19 +184,13 @@ export default function ProductInfoInvestmentCalc({
             name: "Allowable principal",
             text: ` ${currencyFormatter(
               productDetail?.pricingConfiguration?.applicablePrincipalMin,
-              handleCurrencyName(
-                productDetail?.productInfo?.currency,
-                currencies
-              )
+              productDetail?.productInfo?.currencyCode
             )}
             -
             ${currencyFormatter(
               productDetail?.pricingConfiguration?.applicablePrincipalMax,
 
-              handleCurrencyName(
-                productDetail?.productInfo?.currency,
-                currencies
-              )
+              productDetail?.productInfo?.currencyCode
             )}`,
             isOpen: true,
           },
@@ -207,7 +202,7 @@ export default function ProductInfoInvestmentCalc({
                 {productDetail?.pricingConfiguration?.applicableTenorMax}{" "}
                 {
                   Interval[
-                  productDetail?.pricingConfiguration?.applicableTenorMaxUnit
+                    productDetail?.pricingConfiguration?.applicableTenorMaxUnit
                   ]
                 }
               </span>
@@ -239,18 +234,12 @@ export default function ProductInfoInvestmentCalc({
                       {i?.min} - {i?.max}% for{" "}
                       {currencyFormatter(
                         i?.principalMin,
-                        handleCurrencyName(
-                          productDetail?.productInfo?.currency,
-                          currencies
-                        )
+                        productDetail?.productInfo?.currencyCode
                       )}{" "}
                       -
                       {currencyFormatter(
                         i?.principalMax,
-                        handleCurrencyName(
-                          productDetail?.productInfo?.currency,
-                          currencies
-                        )
+                        productDetail?.productInfo?.currencyCode
                       )}
                     </span>
                   ) : (
@@ -285,20 +274,20 @@ export default function ProductInfoInvestmentCalc({
                     <span className="font-normal block">
                       {productDetail?.liquidation
                         ?.part_RequireNoticeBeforeLiquidation && (
-                          <span>
-                            <span>Require notice of</span>{" "}
-                            <span className="">
-                              {productDetail?.liquidation?.part_NoticePeriod}{" "}
-                              {
-                                Interval[
+                        <span>
+                          <span>Require notice of</span>{" "}
+                          <span className="">
+                            {productDetail?.liquidation?.part_NoticePeriod}{" "}
+                            {
+                              Interval[
                                 productDetail?.liquidation
                                   ?.part_NoticePeriodUnit
-                                ]
-                              }
-                            </span>{" "}
-                            <span>before part liquidation.</span>
-                          </span>
-                        )}
+                              ]
+                            }
+                          </span>{" "}
+                          <span>before part liquidation.</span>
+                        </span>
+                      )}
                       {
                         <div className="font-normal">
                           <div className="flex gap-x-[2px]">
@@ -309,8 +298,8 @@ export default function ProductInfoInvestmentCalc({
                                   ?.part_LiquidationPenalty
                               ] == "none" &&
                                 liquidities[
-                                productDetail?.liquidation
-                                  ?.part_LiquidationPenalty
+                                  productDetail?.liquidation
+                                    ?.part_LiquidationPenalty
                                 ]}
                             </span>
                             <span>
@@ -339,24 +328,24 @@ export default function ProductInfoInvestmentCalc({
                                 productDetail?.liquidation
                                   ?.part_LiquidationPenalty
                               ] == "TakeCharge" && (
+                                <span>
+                                  {" "}
                                   <span>
                                     {" "}
-                                    <span>
-                                      {" "}
-                                      Take a charge{" "}
-                                      <span className="flex flex-wrap">
-                                        {productDetail?.liquidation?.part_SpecificCharges?.map(
-                                          (charge) => (
-                                            <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
-                                              {" "}
-                                              {charge?.name} {charge?.amount}
-                                            </span>
-                                          )
-                                        )}
-                                      </span>
+                                    Take a charge{" "}
+                                    <span className="flex flex-wrap">
+                                      {productDetail?.liquidation?.part_SpecificCharges?.map(
+                                        (charge) => (
+                                          <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
+                                            {" "}
+                                            {charge?.name} {charge?.amount}
+                                          </span>
+                                        )
+                                      )}
                                     </span>
                                   </span>
-                                )}
+                                </span>
+                              )}
                             </span>
                           </div>
                         </div>
@@ -376,20 +365,20 @@ export default function ProductInfoInvestmentCalc({
                     <span className="font-normal block">
                       {productDetail?.liquidation
                         ?.early_RequireNoticeBeforeLiquidation && (
-                          <span>
-                            <span>Require notice of</span>{" "}
-                            <span className="">
-                              {productDetail?.liquidation?.early_NoticePeriod}{" "}
-                              {
-                                Interval[
+                        <span>
+                          <span>Require notice of</span>{" "}
+                          <span className="">
+                            {productDetail?.liquidation?.early_NoticePeriod}{" "}
+                            {
+                              Interval[
                                 productDetail?.liquidation
                                   ?.early_NoticePeriodUnit
-                                ]
-                              }
-                            </span>{" "}
-                            <span>before liquidation.</span>
-                          </span>
-                        )}
+                              ]
+                            }
+                          </span>{" "}
+                          <span>before liquidation.</span>
+                        </span>
+                      )}
                       {
                         <div className="font-normal">
                           <div className="flex gap-x-[2px]">
@@ -400,8 +389,8 @@ export default function ProductInfoInvestmentCalc({
                                   ?.early_LiquidationPenalty
                               ] == "none" &&
                                 liquidities[
-                                productDetail?.liquidation
-                                  ?.early_LiquidationPenalty
+                                  productDetail?.liquidation
+                                    ?.early_LiquidationPenalty
                                 ]}
                             </span>
                             <span>
@@ -430,24 +419,24 @@ export default function ProductInfoInvestmentCalc({
                                 productDetail?.liquidation
                                   ?.early_LiquidationPenalty
                               ] == "TakeCharge" && (
+                                <span>
+                                  {" "}
                                   <span>
                                     {" "}
-                                    <span>
-                                      {" "}
-                                      Take a charge{" "}
-                                      <span className="flex flex-wrap">
-                                        {productDetail?.liquidation?.early_SpecificCharges?.map(
-                                          (charge) => (
-                                            <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
-                                              {" "}
-                                              {charge?.name} {charge?.amount}
-                                            </span>
-                                          )
-                                        )}
-                                      </span>
+                                    Take a charge{" "}
+                                    <span className="flex flex-wrap">
+                                      {productDetail?.liquidation?.early_SpecificCharges?.map(
+                                        (charge) => (
+                                          <span className="flex items-center font-medium text-[#16252A] bg-[#E0E0E0] px-[15px] py-[9px] rounded-full text-xs">
+                                            {" "}
+                                            {charge?.name} {charge?.amount}
+                                          </span>
+                                        )
+                                      )}
                                     </span>
                                   </span>
-                                )}
+                                </span>
+                              )}
                             </span>
                           </div>
                         </div>
@@ -520,6 +509,7 @@ export default function ProductInfoInvestmentCalc({
             {productDetailMap?.map((item, index) => (
               <div key={index} className="">
                 <div
+
                   role="button" tabIndex={0}
                   data-testid={`btn`}
                   onKeyDown={() => { }}
@@ -589,10 +579,7 @@ export default function ProductInfoInvestmentCalc({
                   <span className="">
                     {currencyFormatter(
                       calcDetail?.maturityValue || 0,
-                      handleCurrencyName(
-                        productDetail?.productInfo?.currency,
-                        currencies
-                      )
+                      productDetail?.productInfo?.currencyCode
                     )}
                   </span>
                 </div>
@@ -603,10 +590,7 @@ export default function ProductInfoInvestmentCalc({
                   <span className="">
                     {currencyFormatter(
                       calcDetail?.principal || 0,
-                      handleCurrencyName(
-                        productDetail?.productInfo?.currency,
-                        currencies
-                      )
+                      productDetail?.productInfo?.currencyCode
                     )}
                   </span>
                 </div>

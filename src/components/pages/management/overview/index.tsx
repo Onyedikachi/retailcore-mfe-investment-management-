@@ -35,7 +35,6 @@ export const updateInvestmentTabs = (data, tabs) => {
 // import { createOverviewState } from '../../../utils'
 export default function Overview() {
   const { defaultCurrency } = useContext(AppContext);
-  console.log("🚀 ~ Overview ~ defaultCurrency:", defaultCurrency)
   const [overviewTabStats, setOverviewTabStats] = useState(null);
   const navigate = useNavigate();
   const {

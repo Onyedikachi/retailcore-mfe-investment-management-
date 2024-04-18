@@ -14,14 +14,14 @@ import { AppContext, removeNullEmptyKeys } from "@app/utils";
 import { Switch } from "@headlessui/react";
 import { ProductSearch, Button, FormToolTip } from "@app/components";
 import { FormUpload, MinMaxInput, RedDot } from "../forms";
-import { Interval, LiquidationSchema } from "@app/constants";
+import { Interval, TopUpSchema } from "@app/constants";
 import { liquiditiesPenaltyStrings } from "@app/constants";
 import { currencyFormatter } from "@app/utils/formatCurrency";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 import { useLiquidationCalculationMutation } from "@app/api";
 // import {useEarlyLiquidateMutation} from '@app/api'
 
-interface LiquidationProps {
+interface TopUpProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   onConfirm: (data: any, type: string, metaInfo: any) => void;
@@ -29,14 +29,14 @@ interface LiquidationProps {
   title: string;
   type: string;
   productDetails?: any;
-  // handleLiquidation?: (e: any) => {};
+  // handleTopUp?: (e: any) => {};
 }
 
 export const onProceed = (data, onConfirm, type, metaInfo) => {
   onConfirm(data, type, metaInfo);
 };
 
-export const handleLiquidationCalculationPayload = ({
+export const handleTopUpCalculationPayload = ({
   detail,
   productDetails,
   type,
@@ -60,7 +60,7 @@ export const handleLiquidationCalculationPayload = ({
   }
 };
 
-export default function Liquidation({
+export default function TopUp({
   isOpen,
   setIsOpen,
   onConfirm,
@@ -68,7 +68,8 @@ export default function Liquidation({
   title,
   type,
   productDetails,
-}: LiquidationProps): React.JSX.Element {
+}: TopUpProps): React.JSX.Element {
+  console.log("🚀 ~ type:", type);
   const [metaInfo, setMetaInfo] = useState(null);
   const initialValues = {
     investementBookingId: detail?.id,
@@ -89,7 +90,7 @@ export default function Liquidation({
     trigger,
     formState: { errors, isValid },
   } = useForm({
-    resolver: yupResolver(LiquidationSchema), // Use the Yup resolver
+    resolver: yupResolver(TopUpSchema), // Use the Yup resolver
     defaultValues: initialValues, // Provide initial values
   });
   const { currencies } = useContext(AppContext);
@@ -97,11 +98,11 @@ export default function Liquidation({
   const [selection, setSelection] = useState(0);
 
   const values = getValues();
-  const [isTrue, setTrue] = useState(false);
+  const [isChecked, setChecked] = useState(false);
   const [text, setText] = useState("");
   const [percentValue, setPercentValue] = useState(0);
   const [amountValue, setAmountValue] = useState(0);
-  const [liquidationValue, setLiquidationValue] = useState(0);
+  const [liquidationValue, setTopUpValue] = useState(0);
   const liquidationUnitEnum = {
     currency: 0,
     percent: 1,
@@ -121,10 +122,10 @@ export default function Liquidation({
     liquidationCalculation,
     {
       data: liquidationCalculationData,
-      isSuccess: isLiquidationCalculationSuccess,
-      isError: isLiquidationCalculationError,
+      isSuccess: isTopUpCalculationSuccess,
+      isError: isTopUpCalculationError,
       error: liquidationCalculationError,
-      isLoading: isLiquidationCalculationLoading,
+      isLoading: isTopUpCalculationLoading,
     },
   ] = useLiquidationCalculationMutation();
 
@@ -134,7 +135,7 @@ export default function Liquidation({
       const data = JSON.parse(detail?.metaInfo);
 
       setMetaInfo(data);
-      setTrue(data?.notify);
+      setChecked(data?.notify);
       setSelection(data.liquidationUnit);
       Object.keys(data).forEach((item) => {
         // @ts-ignore
@@ -175,55 +176,22 @@ export default function Liquidation({
   ]);
 
   useEffect(() => {
-    if (isLiquidationCalculationSuccess) {
-      setLiquidationValue(liquidationCalculationData?.data);
+    if (isTopUpCalculationSuccess) {
+      setTopUpValue(liquidationCalculationData?.data);
     }
   }, [
     bookingDetailsIsSuccess,
     liquidationCalculationData,
-    isLiquidationCalculationSuccess,
+    isTopUpCalculationSuccess,
   ]);
 
   useEffect(() => {
-    setValue("notify", isTrue);
-  }, [isTrue]);
+    setValue("notify", isChecked);
+  }, [isChecked]);
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
-
-  const handleLiquidationPenalty = (penaltyEnum, percentage) => {
-    let penalty = "";
-
-    penalty =
-      penaltyEnum == 2 || penaltyEnum == 3
-        ? liquiditiesPenaltyStrings[penaltyEnum]?.replace("%", percentage + "%")
-        : liquiditiesPenaltyStrings[penaltyEnum];
-
-    return penalty;
-  };
-
-  useEffect(() => {
-    setText(
-      `The customer is required to provide a ${
-        type === "early"
-          ? productDetails?.liquidation?.early_NoticePeriod
-          : productDetails?.liquidation?.part_NoticePeriod
-      }-${
-        Interval[
-          type === "early"
-            ? productDetails?.liquidation?.early_NoticePeriodUnit
-            : productDetails?.liquidation?.part_NoticePeriodUnit
-        ]
-      } notice before requesting ${type} liquidation, proceeding with this request implies that the customer has given ample notice as specified.`
-    );
-
-    setPercentValue(productDetails?.liquidation?.part_MaxPartLiquidation);
-    setAmountValue(
-      (productDetails?.liquidation?.part_MaxPartLiquidation / 100) *
-        bookingDetails?.data?.facilityDetailsModel?.principal
-    );
-  }, [productDetails, detail, bookingDetailsIsSuccess, bookingDetails?.data]);
 
   useEffect(() => {
     setValue("maxAmount", selection === 1 ? percentValue : amountValue);
@@ -249,7 +217,9 @@ export default function Liquidation({
           <div className="w-[700px] p-8 rounded-lg bg-white text-left shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]">
             <div className="flex justify-between items-center pb-4 mb-[42px] border-b border-[#CCCCCC]">
               <h3 className="text-[#747373] font-bold text-xl uppercase">
-                {title}
+                {type === "topup"
+                  ? "INVESTMENT TOP UP REQUEST"
+                  : "principal withdrawal request"}
               </h3>
               <button
                 data-testid="cancel-btn"
@@ -261,84 +231,22 @@ export default function Liquidation({
             </div>
 
             <div className="overflow-y-auto h-[500px] pr-6">
-              <div className="flex items-start mb-10 rounded-[10px] border border-[#EBEBEB] bg-[#AAAAAA12] py-6 px-5 gap-x-[6px]">
-                <span className="inline-flex mt-1">
-                  <FaInfoCircle className="text-[#D4A62F]" />
-                </span>
-                <span className="text-sm text-[#747373]">{text}</span>
-              </div>
-
               <div>
-                {type === "part" && (
-                  <div className="mb-10">
+                {type === "withdraw" && (
+                  <div className="mb-10 flex items-center gap-x-[50px]">
                     <label
-                      htmlFor="reason"
+                      htmlFor="Principal"
                       className="flex items-center text-[#333333] mb-2 gap-x-1"
                     >
-                      Amount to liquidate{" "}
+                      Principal value{" "}
                       <span className="flex">
                         {" "}
                         <RedDot />
                       </span>
                     </label>
 
-                    <div className="relative flex items-start max-w-[642px] mb-[2px] py-2">
-                      <MinMaxInput
-                        inputName="amounttoLiquidate"
-                        register={register}
-                        errors={errors}
-                        setValue={setValue}
-                        trigger={trigger}
-                        clearErrors={clearErrors}
-                        isCurrency={selection === 0}
-                        isPercent={selection === 1}
-                        defaultValue={values?.amounttoLiquidate}
-                        type="number"
-                        placeholder="Enter value"
-                      />
-
-                      <div className="overflow-hidden absolute right-0 text-[10px] text-[#8F8F8F] flex items-center   rounded-full shadow-[0px_0px_1px_0px_rgba(26,32,36,0.32),0px_1px_2px_0px_rgba(91,104,113,0.32)] border-[#E5E9EB]">
-                        <span
-                          role="button"
-                          onKeyDown={() => {}}
-                          tabIndex={0}
-                          onClick={() => {
-                            setSelection(0);
-                          }}
-                          className={`w-[55px] border-r border-[#E5E9EB] py-1 px-2 ${
-                            selection === 0 ? "bg-[#FFE9E9] " : ""
-                          }`}
-                        >
-                          {" "}
-                          NGN
-                        </span>
-
-                        <span
-                          role="button"
-                          tabIndex={0}
-                          onKeyDown={() => {}}
-                          onClick={() => {
-                            setSelection(1);
-                          }}
-                          className={`w-[55px] py-1 px-2 ${
-                            selection === 1 ? "bg-[#FFE9E9] " : ""
-                          }`}
-                        >
-                          {" "}
-                          Percent
-                        </span>
-                      </div>
-                    </div>
-                    <div className="text-sm text-[#AAAAAA]">
-                      <span>
-                        {" "}
-                        Max: {percentValue}% of investment (
-                        {currencyFormatter(
-                          amountValue,
-                          productDetails?.productInfo?.currencyCode
-                        )}
-                        )
-                      </span>{" "}
+                    <div className="relative flex flex-1 items-start max-w-[642px] mb-[2px] py-2 px-3 bg-[#EEEEEE]">
+                      {currencyFormatter(0)}
                     </div>
                   </div>
                 )}
@@ -347,7 +255,71 @@ export default function Liquidation({
                     htmlFor="reason"
                     className="flex items-center text-[#333333] mb-2 gap-x-1"
                   >
-                    Provide justification for {type} liquidation{" "}
+                    Amount to {type}{" "}
+                    <span className="flex">
+                      {" "}
+                      <RedDot />
+                    </span>
+                  </label>
+
+                  <div className="relative flex items-start max-w-[642px] mb-[2px] py-2">
+                    <MinMaxInput
+                      inputName="amounttoLiquidate"
+                      register={register}
+                      errors={errors}
+                      setValue={setValue}
+                      trigger={trigger}
+                      clearErrors={clearErrors}
+                      isCurrency={selection === 0}
+                      isPercent={selection === 1}
+                      defaultValue={values?.amounttoLiquidate}
+                      type="number"
+                      placeholder="Enter value"
+                    />
+
+                    <div className="overflow-hidden absolute right-0 text-[10px] text-[#8F8F8F] flex items-center   rounded-full shadow-[0px_0px_1px_0px_rgba(26,32,36,0.32),0px_1px_2px_0px_rgba(91,104,113,0.32)] border-[#E5E9EB]">
+                      <span
+                        role="button"
+                        onKeyDown={() => {}}
+                        tabIndex={0}
+                        onClick={() => {
+                          setSelection(0);
+                        }}
+                        className={`w-[55px] border-r border-[#E5E9EB] py-1 px-2 ${
+                          selection === 0 ? "bg-[#FFE9E9] " : ""
+                        }`}
+                      >
+                        {" "}
+                        NGN
+                      </span>
+
+                      <span
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={() => {}}
+                        onClick={() => {
+                          setSelection(1);
+                        }}
+                        className={`w-[55px] py-1 px-2 ${
+                          selection === 1 ? "bg-[#FFE9E9] " : ""
+                        }`}
+                      >
+                        {" "}
+                        Percent
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mb-10">
+                  <label
+                    htmlFor="reason"
+                    className="flex items-center text-[#333333] mb-2 gap-x-1"
+                  >
+                    Provide justification for{" "}
+                    {type === "topup"
+                      ? "investment topup"
+                      : "principal withdrawal"}
                     <span className="flex">
                       {" "}
                       <RedDot />
@@ -397,31 +369,29 @@ export default function Liquidation({
                     )}
                   />
                 </div>
-                {(type === "part" &&
-                  productDetails?.liquidation
-                    ?.part_RequireNoticeBeforeLiquidation) ||
-                  (type === "early" &&
-                    productDetails?.liquidation
-                      ?.part_RequireNoticeBeforeLiquidation)}
+
                 <div className="mb-10 flex items-center gap-x-2">
-                  <div className="flex items-center gap-2 w-[340px]">
+                  <div className="flex items-center gap-2 w-[350px]">
                     <label
                       htmlFor="upload"
                       className="text-[#333333] mb-2 flex items-center"
                     >
-                      Notify customer of liquidation
+                      Notify customer of{" "}
+                      {type === "topup"
+                        ? "investment topup"
+                        : "principal withdrawal"}
                       <span className="flex">
                         {" "}
                         <RedDot />
                       </span>
                     </label>
-                    {/* <FormToolTip tip="Hello" /> */}
+                    <FormToolTip tip="Hello" />
                   </div>
                   <Switch
-                    checked={isTrue}
-                    onChange={(data) => setTrue(data)}
+                    checked={isChecked}
+                    onChange={(data) => setChecked(data)}
                     className={classNames(
-                      isTrue ? "bg-[#CF2A2A]" : "bg-transparent",
+                      isChecked ? "bg-[#CF2A2A]" : "bg-transparent",
                       "border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
                     )}
                   >
@@ -429,7 +399,7 @@ export default function Liquidation({
                       data-testid="switch"
                       aria-hidden="true"
                       className={classNames(
-                        isTrue
+                        isChecked
                           ? "translate-x-[14px] bg-white"
                           : "translate-x-0  bg-white ",
                         "pointer-events-none inline-block h-[14px] w-[14px] transform rounded-full border border-[#CF2A2A] shadow ring-0 transition duration-200 ease-in-out"
@@ -444,56 +414,42 @@ export default function Liquidation({
                     )}
                   />
                 </div>
-                <div className="mb-10 rounded-[10px] border border-[#EBEBEB] bg-[#AAAAAA12] py-6 px-5">
-                  <div className="flex items-center gap-x-1 mb-2">
-                    <span className="inline-flex mr-1">
-                      <FaInfoCircle className="text-[#D4A62F]" />
-                    </span>
-                    <span className="text-sm text-[#747373] font-semibold capitalize">
-                      {type} Liquidation Penalties
-                    </span>
-                 
-                  </div>
 
-       
-
-                  {liquiditiesPenaltyStrings[
-                    productDetails?.liquidation?.early_LiquidationPenalty
-                  ] === "charge" ? (
-                    <div className="flex items-center mb-2  gap-x-1">
-                      <span className="text-sm text-[#747373]">Charge: </span>
-                      <span className="text-sm text-[#747373] font-semibold">
-                        Term Deposition Liquidation Charge
+                {type === "withdraw" && (
+                  <div className="mb-10 rounded-[10px] border border-[#EBEBEB] bg-[#AAAAAA12] py-6 px-5">
+                    <div className="flex items-center gap-x-1 mb-2">
+                      <span className="inline-flex mr-1">
+                        <FaInfoCircle className="text-[#D4A62F]" />
+                      </span>
+                      <span className="text-sm text-[#747373] font-semibold capitalize">
+                        Principal withdrawal
                       </span>
                     </div>
-                  ) : (
-                    <span className="block text-sm text-[#747373] mb-4">
-                      {type.toLowerCase() == "early" &&
-                        handleLiquidationPenalty(
-                          productDetails?.liquidation?.early_LiquidationPenalty,
-                          productDetails?.liquidation
-                            ?.early_LiquidationPenalty === 3
-                            ? productDetails?.liquidation
-                                ?.eary_SpecialInterestRate
-                            : productDetails?.liquidation
-                                ?.early_LiquidationPenaltyPercentage
-                        )}
-                      {type.toLowerCase() == "part" &&
-                        handleLiquidationPenalty(
-                          productDetails?.liquidation?.part_LiquidationPenalty,
-                          productDetails?.liquidation
-                            ?.part_LiquidationPenalty === 3
-                            ? productDetails?.liquidation
-                                ?.part_SpecialInterestRate
-                            : productDetails?.liquidation
-                                ?.part_LiquidationPenaltyPercentage
-                        )}
-                    </span>
-                  )}
-                </div>
+
+                    <ul className="flex flex-col gap-y-2">
+                      <li className="text-sm text-[#747373]">
+                        {" "}
+                        Call deposit contract will continue until end of tenor
+                      </li>
+                      <li className="text-sm text-[#747373]">
+                        {" "}
+                        Interest accrual will be calcualted based on principal
+                        balance
+                      </li>
+                      <li className="text-sm text-[#747373]">
+                        {" "}
+                        Topup is alloowed till; the end of the call deposit
+                        contract/tenor
+                      </li>
+                    </ul>
+                  </div>
+                )}
                 <div className="flex items-center mb-10 rounded-[10px] border border-[#EBEBEB] bg-[#AAAAAA12] py-6 px-5 gap-x-1">
-                  <span className="text-sm text-[#747373]">
-                    Liquidation value:{" "}
+                  <span className="text-sm text-[#747373] capitalize">
+                    {type === "topup"
+                      ? "investment topup"
+                      : "principal withdrawal"}{" "}
+                    value:{" "}
                   </span>
                   <span className="text-sm text-[#747373] font-semibold">
                     {currencyFormatter(

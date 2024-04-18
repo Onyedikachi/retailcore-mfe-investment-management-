@@ -35,6 +35,8 @@ export const BookingCustomerInfoSchema = yup.object().shape({
   customerAccount: yup.string().required("Select a customer account"),
   investmentformUrl: yup.string(),
   customerAccountLedgerId: yup.string(),
+  relationshipOfficerId: yup.string().required("Select a relationship officer"),
+  relationshipOfficerName: yup.string().required("Select a relationship officer"),
   balance: yup
     .number()
     .typeError("Invalid value")
@@ -96,11 +98,27 @@ export const FacilityDetailsModelSchema2 = yup.object().shape({
 })
 
 export const TransactionSettingModelSchema = yup.object().shape({
-  accountForLiquidation: yup.mixed().required("Select an account"),
+  accountForLiquidation: yup
+    .mixed()
+    .typeError("Select an account")
+    .required("Select an account"),
+  accountForInterest: yup
+    .mixed()
+    .typeError("Select an account")
+    .required("Select an account"),
   accountForLiquidationLedgerId: yup.string().required("Ledger id is required"),
   notifyCustomerOnMaturity: yup.boolean().required("Required"),
   rollOverAtMaturity: yup.boolean().required("Required"),
   rollOverOption: yup.number().integer().min(0).max(2).required("Required"),
+  startDateOption: yup.number().integer().min(0).max(1),
+  startDate: yup
+    .date()
+    .typeError("Select a date")
+    .when("startDateOption", {
+      is: (val) => parseInt(val, 10) === 1,
+      then: (schema) => schema.required("Date is required"),
+      otherwise: (schema) => schema.nullable(),
+    }),
 });
 
 export const CustomerEligibilityCriteriaSchema = yup
@@ -560,6 +578,15 @@ export const pricingConfigSchema = yup.object({
 
 export const liquiditySetupSchema = yup
   .object({
+    allowPrincipalWithdrawal: yup.boolean().typeError("Invalid value"),
+    withdrawalPenalty: yup
+      .number()
+      .typeError("Invalid value")
+      .when("allowPrincipalWithdrawal", {
+        is: true,
+        then: (schema) => schema.required("Provide value"),
+        otherwise: (schema) => schema.nullable(),
+      }),
     part_AllowPartLiquidation: yup.boolean().typeError("Invalid value"),
     part_MaxPartLiquidation: yup
       .number()
@@ -667,6 +694,20 @@ export const LiquidationSchema = yup.object({
     .nullable(),
   maxAmount: yup.number(),
 });
+export const TopUpSchema = yup.object({
+  investementBookingId: yup.string().required(),
+  reason: yup.string().required("Provide a reason"),
+  documentUrl: yup.string(),
+  notify: yup.boolean().required(),
+  amounttoLiquidate: yup
+    .number()
+    .typeError("Invalid value")
+    .integer()
+    .positive()
+    .max(yup.ref("maxAmount"), "Exceeded max amount")
+    .nullable(),
+  maxAmount: yup.number(),
+});
 
 export const treasuryBillglMappingSchema = yup.object({
   TermDepositLiabilityLedger: yup
@@ -712,6 +753,9 @@ export const glMappingSchema = yup.object({
   TermDepositLiabilityAccount: yup
     .string()
     .required("Term Deposit liability account is required"),
+  PrepaidAssetLedger: yup
+    .string()
+    .required("Prepaid Asset Ledger account is required"),
   InterestAccrualAccount: yup
     .string()
     .required("Interest accrual account is required"),
@@ -814,6 +858,10 @@ export const liquidationTypes = [
     label: "Allow Early Liquidation",
     value: "early_AllowEarlyLiquidation",
   },
+  {
+    label: "Allow Principal Withdrawal",
+    value: "allowPrincipalWithdrawal",
+  },
 ];
 
 export const toolTips = {
@@ -841,5 +889,7 @@ export const toolTips = {
     "Allows customers to access their investment funds without fully cashing out their investment.",
   allowEarlyLiquidation:
     "Allows for withdrawing or closing the investment before its predetermined maturity date",
+  allowPrincipalWithdrawal:
+    "Allows customers to access their investment funds without fully cashing out their investments",
   description: "Enter a description for this loan product",
 };

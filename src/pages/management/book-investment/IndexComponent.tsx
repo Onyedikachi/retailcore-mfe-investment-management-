@@ -201,7 +201,6 @@ export default function IndexComponent() {
       title: investmentType,
       url: `/investment-management/${investmentType}`,
     },
-
   ];
 
 
@@ -393,7 +392,7 @@ export default function IndexComponent() {
       setFormData,
       type: "individual_booking",
       formData,
-      id
+      id,
     });
   }, [requestIsSuccess]);
 

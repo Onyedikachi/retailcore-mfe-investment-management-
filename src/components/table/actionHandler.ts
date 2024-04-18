@@ -18,6 +18,8 @@ export const actionHandler = ({
   setIndividualDetailOpen,
   setLiquidationOpen,
   setLiquidationType,
+  setTopUpType,
+  setTopUpOpen,
   navigate,
 }) => {
 
@@ -95,6 +97,19 @@ export const actionHandler = ({
     setLiquidationOpen(true);
     return;
   }
+
+  if (action.toLowerCase() === Actions.TOPUP) {
+    setTopUpType("topup");
+    setTopUpOpen(true);
+    return;
+  }
+
+  if (action.toLowerCase() === Actions.PRINCIPAL_WITHDRAWAL) {
+    setTopUpType("withdraw");
+    setTopUpOpen(true);
+    return;
+  }
+
   if (action.toLowerCase() === Actions.DELETE_DRAFT) {
     setConfirmText(Prompts.PRODUCT_DELETE);
     setIsConfirmOpen(true);

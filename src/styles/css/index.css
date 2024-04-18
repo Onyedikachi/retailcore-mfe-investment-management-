@@ -354,6 +354,9 @@ button {
 .date-picker .react-datepicker__view-calendar-icon input {
   padding: 6px 25px 5px 10px;
 }
+.form_data .react-datepicker-wrapper{
+  width:100%
+}
 #form-file-upload {
   height: 16rem;
   width: 28rem;

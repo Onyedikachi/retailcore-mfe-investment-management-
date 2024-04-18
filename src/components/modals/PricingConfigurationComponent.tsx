@@ -12,22 +12,20 @@ export default ({ productData }) => {
         <div className="flex flex-col">
           {productData?.data?.pricingConfiguration.interestRateConfigModels?.map(
             (configModel, index) => (
-              <p key={index} data-testid="principal" className="block  mb-2 text-[#636363]">
+              <p
+                key={index}
+                data-testid="principal"
+                className="block  mb-2 text-[#636363]"
+              >
                 {" "}
                 {`${configModel.min} - ${configModel.max}%`} for principal
                 between{" "}
                 {`${currencyFormatter(
                   configModel.principalMin,
-                  handleCurrencyName(
-                    productData?.data?.productInfo?.currency,
-                    currencies
-                  )
+                  productData?.data?.productInfo?.currencyCode
                 )} - ${currencyFormatter(
                   configModel.principalMax,
-                  handleCurrencyName(
-                    productData?.data?.productInfo?.currency,
-                    currencies
-                  )
+                  productData?.data?.productInfo?.currencyCode
                 )}`}{" "}
               </p>
             )

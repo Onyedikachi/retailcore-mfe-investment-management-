@@ -560,6 +560,12 @@ export const ProductType = {
   0: "Term Deposit",
   1: "Treasure Bill",
   2: "Commercial Paper",
+  3: "Bonds",
+};
+
+export const StartdateType = {
+  0: "On Approval",
+  1: "Scheduled date",
 };
 
 export const ProductState = {
@@ -628,7 +634,7 @@ export const InvestmentBookingRequestType = {
 export const RequestStatus = {
   0: "Draft",
   1: "In-Review",
-  2: "Approved",
+  2: "Approved", 
   3: "In-Issue",
 };
 
@@ -1263,3 +1269,14 @@ export const AccountCategories = {
   3: "Investment",
   4: "Till",
 };
+
+export const StartDateOptions = [
+  {
+    text: "On Approval",
+    value: 0,
+  },
+  {
+    text: "On Scheduled date",
+    value: 1,
+  },
+];

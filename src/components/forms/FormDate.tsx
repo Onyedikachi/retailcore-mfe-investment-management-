@@ -13,9 +13,10 @@ interface FormDateProps {
   minDate?: Date | null;
   maxDate?: Date | null;
   clearErrors?: (name?: string | string[]) => void;
-  trigger: any
+  trigger: any;
   placeholder?: string;
-  id?: string
+  id?: string;
+  dateFormat?: string;
 }
 
 const FormDate: React.FC<FormDateProps> = ({
@@ -29,8 +30,9 @@ const FormDate: React.FC<FormDateProps> = ({
   maxDate,
   clearErrors,
   trigger,
-  placeholder ="yyyy/mm/dd",
-  id
+  placeholder = "yyyy/mm/dd",
+  dateFormat  = "dd/MM/yyyy",
+  id,
 }: FormDateProps) => {
   const [date, setDate] = useState<Date | null>(
     defaultValue ? new Date(defaultValue) : null
@@ -57,28 +59,29 @@ const FormDate: React.FC<FormDateProps> = ({
         color: "#fff",
         borderRadius: "4px",
         boxShadow: "0px 4px 8px 0px rgba(5, 27, 68, 0.08)",
+        width:"100%"
       }}
     >
-      <CalendarContainer className={className}>
-        <div style={{ position: "relative" }}>{children}</div>
+      <CalendarContainer className={`w-full ${className}`}>
+        <div style={{ position: "relative" }} className="w-full">{children}</div>
       </CalendarContainer>
     </div>
   );
 
   return (
     <div>
-      <div className="relative flex items-center date-picker">
+      <div className="relative flex items-center date-picker form_data">
         <DatePicker
-        id={id}
+          id={id}
           showIcon
-          dateFormat="dd/MM/yyyy"
+          dateFormat={dateFormat}
           data-testid="date-picker"
           selected={date}
           onChange={(date) => {
-            handleChange(date)
+            handleChange(date);
             setDate(date);
             clearErrors && clearErrors(inputName);
-            trigger && trigger(inputName)
+            trigger && trigger(inputName);
           }}
           calendarContainer={MyContainer}
           minDate={minDate}
@@ -88,7 +91,10 @@ const FormDate: React.FC<FormDateProps> = ({
             errors && errors[inputName] ? "border-red-600" : "border-[#8F8F8F]"
           }`}
         />
-       <span className="absolute right-[2px]"> <FaRegCalendarAlt /></span>
+        <span className="absolute right-[2px]">
+          {" "}
+          <FaRegCalendarAlt />
+        </span>
       </div>
       {errors && errors[inputName] && (
         <span className="text-sm text-danger-500">

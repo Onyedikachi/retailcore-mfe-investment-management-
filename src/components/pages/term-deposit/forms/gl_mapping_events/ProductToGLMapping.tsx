@@ -17,16 +17,25 @@ const GlMappingOptions = [
     id: 0,
     text: "Term Deposit Liability Ledger",
     key: "TermDepositLiabilityLedger",
+    sub:""
   },
   {
     id: 1,
     text: "Interest accural ledger",
     key: "InterestAccrualLedger",
+    sub:""
   },
   {
     id: 2,
     text: "Interest expense ledger",
     key: "InterestExpenseLedger",
+    sub:""
+  },
+  {
+    id: 3,
+    text: "Prepaid asset ledger",
+    key: "PrepaidAssetLedger",
+    sub:"Applies when the interest is immediately paid upon booking"
   },
 ];
 
@@ -66,11 +75,11 @@ export function InputDivs({
         <div className="w-[300px]">
           <span
             data-testid="input-div"
-            className="flex items-start gap-x-[1px] text-[#636363] text-base font-medium mb-1"
+            className="flex items-start justify-start gap-x-[1px] text-[#636363] text-base font-medium mb-1"
           >
-            {label} {isCompulsory && <RedDot />}
+           {label}{isCompulsory && <RedDot />}
           </span>
-          <span className="flex items-start gap-x-[1px] text-[#AAAAAA] text-sm font-normal">
+          <span className="flex items-start gap-x-[1px] text-[#AAAAAA] text-sm font-normal max-w-[260px]">
             {subLabel}
           </span>
         </div>
@@ -203,12 +212,6 @@ export default ({
   }, []);
 
   useEffect(() => {
-
-    console.log("🚀 ~ useEffect ~ values:", values)
-
-  }, [values]);
-
-  useEffect(() => {
     setFormData(values, mapOptions);
     return () => {
       setFormData(values, mapOptions);
@@ -216,7 +219,7 @@ export default ({
   }, [values, mapOptions, initiateDraft]);
 
   useEffect(() => {
-    if (mapOptions.length === 3) {
+    if (mapOptions.length === 4) {
       setDisabled(false);
     }
   }, [values, mapOptions]);
@@ -333,7 +336,7 @@ export default ({
               <div className="flex flex-col gap-4 px-[30px] py-5">
                 <div className="flex flex-col items-start gap-y-5">
                   {GlMappingOptions.map((type) => (
-                    <InputDivs key={type.text} label={type.text}>
+                    <InputDivs key={type.text} label={type.text} subLabel={type?.sub}>
                       <div>
                         <div className="w-[360px] relative">
                           <div className=" ">

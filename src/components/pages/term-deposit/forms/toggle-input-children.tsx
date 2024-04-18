@@ -19,9 +19,9 @@ export default function ToggleInputChildren({
   const [isOpen, setIsOpen] = useState(false);
 
   React.useEffect(() => {
-    if (defaultValue !== null) {
-      setIsOpen(defaultValue);
-    }
+    setIsOpen(defaultValue);
+    setValue(inputName, defaultValue);
+    trigger(inputName);
   }, [defaultValue]);
   return (
     <div
@@ -40,6 +40,9 @@ export default function ToggleInputChildren({
           {label == liquidationTypes[1].label && (
             <FormToolTip tip={toolTips.allowEarlyLiquidation} />
           )}
+           {label == liquidationTypes[2].label && (
+            <FormToolTip tip={toolTips.allowPrincipalWithdrawal} />
+          )}
         </span>
         <Switch
           {...register(inputName)}
@@ -55,7 +58,6 @@ export default function ToggleInputChildren({
             "border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
           )}
         >
-          <span className="sr-only">Use setting</span>
           <span
             data-testid="switch"
             aria-hidden="true"

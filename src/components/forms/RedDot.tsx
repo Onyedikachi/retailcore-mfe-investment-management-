@@ -2,7 +2,7 @@ import React from "react";
 
 export default function RedDot() {
   return (
-    <div>
+    <span>
       <svg
         width="5"
         height="5"
@@ -13,6 +13,6 @@ export default function RedDot() {
       >
         <circle cx="2.5" cy="2.5" r="2.5" fill="#CF2A2A" />
       </svg>
-    </div>
+    </span>
   );
 }

@@ -143,10 +143,7 @@ export default function ProductDetail({
                   <div>
                     <span className="font-bold block mb-[15px]">Currency</span>
                     <span className="font-normal block">
-                      {handleCurrencyName(
-                        productData?.data?.productInfo?.currency,
-                        currencies
-                      )}{" "}
+                      {productData?.data?.productInfo?.currencyCode}{" "}
                     </span>
                   </div>
                   <div>

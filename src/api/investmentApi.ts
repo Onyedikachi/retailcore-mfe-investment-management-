@@ -5,10 +5,6 @@ import { IGetProducts, ICreateProduct } from "./types/investmentApi.types";
 import urls from "../helpers/url_helpers";
 import { cleanObject } from "@app/utils/cleanObject";
 
-// const formApi = "https://customer-management-forms-api.qa.bepeerless.co/v1";
-// const customerApi = "https://customer-management-api.qa.bepeerless.co/v1";
-// const productApi = "https://product-mgt-api.qa.bepeerless.co/v1";
-
 export const investmentApi: any = createApi({
   reducerPath: "investmentApi",
   baseQuery: axiosBaseQuery({ serviceKey: "investment" }),
@@ -19,14 +15,6 @@ export const investmentApi: any = createApi({
     }
   },
   endpoints: (builder) => ({
-    // getCorporateCustomerType: builder.query<any, any>({
-    //   query: () => {
-    //     return {
-    //       url: `${customerApi}/column-map/corporate-categories?formType=smeLegacy`,
-    //       method: "get",
-    //     };
-    //   },
-    // }),
     getProductActivityLog: builder.query<any, any>({
       query: (params) => {
         return {
