@@ -1404,19 +1404,20 @@ export const ButtonOptions = [
             permission: "CREATE_INVESTMENT_PRODUCT",
           },
           {
+            title: "Treasury bills",
+            key: "treasury-bills",
+            isUrl: true,
+            url: "treasury-bills/create",
+            permission: "CREATE_INVESTMENT_PRODUCT",
+          },
+          {
             title: "Commercial paper",
             key: "commercial-paper",
             isUrl: true,
             url: "commercial-paper/create",
             permission: "CREATE_INVESTMENT_PRODUCT",
           },
-          {
-            title: "Bonds",
-            key: "bonds",
-            isUrl: true,
-            url: "bonds/create",
-            permission: "CREATE_INVESTMENT_PRODUCT",
-          },
+          
         ],
       },
     ],
