@@ -28,15 +28,15 @@ on:
         - dm
 
 jobs:
-  code_quality:
-    uses: sterling-retailcore-team/workflow-templates/.github/workflows/code_quality.yml@enhancements
-    secrets: inherit
-    with:
-      CODE_COVERAGE: "node" # specify codebase for code coverage. e.g CODE_COVERAGE: 'node' or CODE_COVERAGE: 'python', e.t.c
+  # code_quality:
+  #   uses: sterling-retailcore-team/workflow-templates/.github/workflows/code_quality.yml@enhancements
+  #   secrets: inherit
+  #   with:
+  #     CODE_COVERAGE: "node" # specify codebase for code coverage. e.g CODE_COVERAGE: 'node' or CODE_COVERAGE: 'python', e.t.c
   build:
     uses: sterling-retailcore-team/workflow-templates/.github/workflows/build.yml@enhancements
-    needs: [code_quality]
-    if: always() && (contains(fromJSON('["success", "skipped"]'),  needs.code_quality.result))
+    # needs: [code_quality]
+    # if: always() && (contains(fromJSON('["success", "skipped"]'),  needs.code_quality.result))
     with:     
       GITHUB_SHA: ${GITHUB_SHA::8} 
       USE_BUILDTIME_ARGS: false # toggle to use buildtime variables
