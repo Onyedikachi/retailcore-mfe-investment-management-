@@ -91,7 +91,7 @@ export const PdfViewer = forwardRef<any, any>(
             `${
               value.charge_amount_type?.toLowerCase() === "percent"
                 ? `${value.charge_amount}%`
-                : `${currencyFormatter(value.charge_amount, charge.currency)} `
+                : `${currencyFormatter(value.charge_amount, charge?.currency)} `
             } ${value.charge_type}`
         );
 
@@ -104,13 +104,13 @@ export const PdfViewer = forwardRef<any, any>(
             `${
               value.tax_amount_type?.toLowerCase() === "percent"
                 ? `${value.tax_amount}%`
-                : `${currencyFormatter(value.tax_amount, tax.currency)} `
+                : `${currencyFormatter(value.tax_amount, tax?.currency)} `
             } ${value.tax_type}`
         );
-
         return textTaxValues;
       });
       const textData = [...(appTax || []), ...(appCharges || [])]?.flat().join(", ");
+      console.log(taxes?.data?.records, applicableTaxes)
 
       setTaxData(textData);
     }, [productDetail, taxesSuccess, chargeSuccess]);
@@ -345,9 +345,9 @@ export const PdfViewer = forwardRef<any, any>(
                     <td className="py-2 px-4 border border-black">Currency</td>
                     <td className="py-2 px-4 text-left border border-black">
                       {handleCurrencyName(
-                        investmentDetailTable.currency,
+                        investmentDetailTable?.currency,
                         currencies
-                      ) || investmentDetailTable.currency}
+                      ) || investmentDetailTable?.currency}
                     </td>
                   </tr>
                   <tr>

@@ -36,7 +36,7 @@ export const Info = ({ title, data, type, setIsOpen }: InfoProps) => {
             </svg>
           )}
 
-          {type === "customerPersona" && (
+          {/* {type === "customerPersona" && (
             <span className={`text-[#3FA2F7]  `}>{data || "-"}</span>
           )}
           {type === "riskStatus" && (
@@ -61,7 +61,7 @@ export const Info = ({ title, data, type, setIsOpen }: InfoProps) => {
             type !== "riskStatus" &&
             type !== "customerPersona" && (
               <span className={``}>{data || "-"}</span>
-            )}
+            )} */}
         </div>
       )}
 
@@ -113,7 +113,7 @@ export default function CustomerInfoCard({
   const relationshipName = `${capitalizeFirstLetter(
     userData?.firstname
   )} ${capitalizeFirstLetter(userData?.lastname)}`;
-
+  console.log(investmentType, "data = ", customerData)
   return (
     <div className="py-6 px-10 rounded-lg shadow-custom bg-gray-100 w-full ">
       {isLoading ? (

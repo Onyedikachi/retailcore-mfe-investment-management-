@@ -128,6 +128,8 @@ Object {
                         <div>
                           <div
                             class="border-[0.5px] bg-white border-[#C4C4C4] rounded-lg max-w-[392px] px-4 py-[11px] relative   border-[#C4C4C4]"
+                            role="button"
+                            tabindex="0"
                           >
                             <label
                               class="flex gap-x-12 items-center text-[#636363] text-sm cursor-pointer font-normal capitalize"

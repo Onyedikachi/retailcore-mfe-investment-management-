@@ -790,6 +790,8 @@ jest.mock("../../api", () => {
         // useDeactivateProductMutation: jest.fn().mockReturnValue({ handleReject: reject, isSuccess: true, isError: false, error: null, isLoading: false })
         useGetGlClassQuery: jest.fn().mockReturnValue({ data: glClasses, isLoading: false, isSuccess: true, isError: false }),
         useGetLedgersQuery: jest.fn().mockReturnValue({ data: glLedgerQueries, isLoading: false, isSuccess: true, isError: false, refetch: jest.fn(), isFetching: false }),
+        // Might need changing
+        useGetAccountsQuery: jest.fn().mockReturnValue({ data: glLedgerQueries, isLoading: false, isSuccess: true, isError: false, refetch: jest.fn(), isFetching: false }),
     }
 })
 

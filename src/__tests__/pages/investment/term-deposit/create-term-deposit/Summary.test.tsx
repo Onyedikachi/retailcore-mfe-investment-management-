@@ -9,13 +9,13 @@ import { useGetProductDetailQuery } from "../../../../../api";
 import { MemoryRouter } from "react-router-dom";
 
 jest.mock("react-router-dom", () => ({
-    BrowserRouter: ({ children }) => <div>{children}</div>,
-    Link: ({ to, children }) => <a href={to}>{children}</a>,
-    useNavigate: jest.fn(),
-    useSearchParams: jest.fn(),
-    useParams: jest.fn(),
-    useLocation: jest.fn().mockReturnValue({pathname: ""})
-  }));
+  BrowserRouter: ({ children }) => <div>{children}</div>,
+  Link: ({ to, children }) => <a href={to}>{children}</a>,
+  useNavigate: jest.fn(),
+  useSearchParams: jest.fn(),
+  useParams: jest.fn(),
+  useLocation: jest.fn().mockReturnValue({ pathname: "" })
+}));
 describe("Container", () => {
   // Renders a div element with a class of 'rounded-[10px] border border-[#EEE] px-12 py-10'
   it("should render a div element with the correct class", () => {
@@ -65,28 +65,22 @@ describe("Container", () => {
 
 
 beforeEach(() => {
-    jest
-      .spyOn(require("react-router-dom"), "useSearchParams")
-      .mockReturnValue([new URLSearchParams({ category: ""})]);
+  jest
+    .spyOn(require("react-router-dom"), "useSearchParams")
+    .mockReturnValue([new URLSearchParams({ category: "" })]);
 
-    jest.spyOn(require("react-router-dom"), "useParams")
-      .mockReturnValue({ tab:"", type:"", id:"", process:"create"  })
-  });
+  jest.spyOn(require("react-router-dom"), "useParams")
+    .mockReturnValue({ tab: "", type: "", id: "", process: "create" })
+});
 describe("Summary", () => {
+  it("should render the component without crashing", () => {
+    renderWithProviders(<Summary />);
+  });
+  it("should display the correct title and breadcrumbs", () => {
+    renderWithProviders(<Summary />);
 
-  // Renders the component without crashing
-  // it("should render the component without crashing", () => {
-  //   renderWithProviders(<Summary />);
-  // });
-
-  // Displays the correct title and breadcrumbs
-  // it("should display the correct title and breadcrumbs", () => {
-  //   renderWithProviders(<Summary />);
-
-  //   expect(screen.getByText("Pending submission")).toBeInTheDocument();
-  //   expect(screen.getByText("Approved")).toBeInTheDocument();
-  // });
-
-  // Fetches and displays product data correctly
+    expect(screen.getByText("Pending submission")).toBeInTheDocument();
+    expect(screen.getByText("Approved")).toBeInTheDocument();
+  });
 
 });

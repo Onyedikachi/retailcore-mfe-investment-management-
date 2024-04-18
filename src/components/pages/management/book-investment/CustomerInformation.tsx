@@ -34,7 +34,7 @@ export const onProceed = (
     preModifyRequest({
       ...formData,
       customerBookingInfoModel: {
-        ...formData.customerBookingInfoModel,
+        ...formData?.customerBookingInfoModel,
         ...data,
       },
       isDraft: true,
@@ -43,7 +43,7 @@ export const onProceed = (
     preCreateInvestment({
       ...formData,
       customerBookingInfoModel: {
-        ...formData.customerBookingInfoModel,
+        ...formData?.customerBookingInfoModel,
         ...data,
       },
       isDraft: true,
@@ -51,7 +51,7 @@ export const onProceed = (
   }
   setFormData({
     ...formData,
-    customerBookingInfoModel: { ...formData.customerBookingInfoModel, ...data },
+    customerBookingInfoModel: { ...formData?.customerBookingInfoModel, ...data },
   });
 
   proceed();
@@ -206,7 +206,7 @@ export default function CustomerInformation({
       setFormData({
         ...formData,
         customerBookingInfoModel: {
-          ...formData.customerBookingInfoModel,
+          ...formData?.customerBookingInfoModel,
           accountStatus: AccountStatus[accountData?.value?.accountStatus],
           currencyId,
           currencyCode: accountData?.value?.currencyCode,
@@ -227,6 +227,7 @@ export default function CustomerInformation({
 
   useEffect(() => {
     if (accountNumber && data) {
+      console.log("touchdown")
       const foundObject = data?.data?.find((item) => {
         return (
           item.customer_products &&

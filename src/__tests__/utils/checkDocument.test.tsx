@@ -6,12 +6,12 @@ describe('checkDocuments', () => {
     it('should return an object with \'hasAllDocuments\' property as true when all documents are present in the object', () => {
         const keys = ['document1', 'document2'];
         const obj = {
-            "document1": 'content1',
-            "document2": 'content2'
+            document1: 'content1',
+            document2: 'content2'
         };
 
-        const result = checkDocuments(keys, JSON.stringify(obj));
-
+        const result = checkDocuments(keys, obj);
+        console.log("res = ", result)
         expect(result.hasAllDocuments).toBe(true);
     });
 
@@ -22,7 +22,7 @@ describe('checkDocuments', () => {
             document1: 'content1'
         };
 
-        const result = checkDocuments(keys, JSON.stringify(obj));
+        const result = checkDocuments(keys, obj);
 
         expect(result.hasAllDocuments).toBe(false);
     });
@@ -35,7 +35,7 @@ describe('checkDocuments', () => {
             document2: 'content2'
         };
 
-        const result = checkDocuments(keys, obj));
+        const result = checkDocuments(keys, obj);
 
         expect(result.missingDocuments).toEqual([]);
     });
