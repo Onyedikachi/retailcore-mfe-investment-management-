@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
-import { FaSearch } from "react-icons/fa";
+import { FaCaretDown, FaCaretUp, FaSearch, FaTimes } from "react-icons/fa";
 import { tabLinks } from "@app/constants";
 import { useGetGlClassQuery, useGetAccountsQuery } from "@app/api";
+import { Icon } from "@iconify/react";
 
 export function closeDropdown(setIsOpen) {
     setIsOpen(false);
@@ -38,15 +39,12 @@ const LedgerItem = ({
 
 export default function ({
     placeholder,
-    handleClick,
-    inputName,
-    register,
-    trigger,
-    errors,
-    error,
-    defaultValue,
+    handleEntry,
+    entryValue,
     clearFields,
     formData,
+    inputName,
+    entryData
 }: any) {
     const [query, setQuery] = useState("");
     const [isOpen, setOpen] = useState(false);
@@ -92,15 +90,19 @@ export default function ({
         }
     }, [classId]);
 
+    useEffect(() => {
+        query !== "" && setQuery("");
+    }, [entryValue])
+
     const togglemenu = (menuIndex) => {
         //get the index of the menu on click
         setMenus(menuIndex);
     };
     useEffect(() => {
-        if (defaultValue) {
-            setQuery(defaultValue);
+        if (entryValue) {
+            setQuery(entryValue);
         }
-    }, [defaultValue]);
+    }, [entryValue]);
 
     useEffect(() => {
         clearFields && setQuery("");
@@ -113,7 +115,7 @@ export default function ({
             glClass: "LIABILITY",
             type: "Customer",
             accountNumber: "1097398425",
-            priceImpact: true,
+            balance_impact: "low"
         },
         {
             name: "Cash Receivable balances",
@@ -121,7 +123,7 @@ export default function ({
             glClass: "LIABILITY",
             type: "Internal",
             accountNumber: "ASTCAS23421",
-            priceImpact: true,
+            balance_impact: "high"
         },
     ]
 
@@ -141,31 +143,62 @@ export default function ({
                             <FaSearch className="text-[#48535B] text-lg" />
                         </span>{" "}
                         <input
+                            disabled={entryData.name}
                             placeholder={placeholder}
                             data-testid="gli-input"
                             className="w-full min-w-[360px]  ring-0 outline-none bg-transparent"
                             onChange={(event) => setQuery(event.target.value)}
-                            value={query}
+                            value={entryData.name || query}
                         />
+                        {entryData.name && <FaTimes onClick={() => {
+                            handleEntry(inputName, {})
+                            setTimeout(() => {
+                                setOpen(false)
+                            }, 0)
+                        }} />}
                     </div>
+                    {
+                        (entryValue) &&
+                        <span className="flex text-sm flex-row text-[12px] h-[12px] leading-[12px] text-[#8F8F8F] mt-3">
+                            <span className="border-r-2 border-[#8F8F8F] pr-2 mr-2">
+                                GL Class <span className="h-auto w-auto min-w-[10px] rounded-[10px] border-[1px] bg-[#6363632B] border-[#636363] px-2">{entryData?.glClass || "LIABILITY"}</span>
+                            </span>
+                            <span className="flex flex-row items-center justify-start">
+                                <span>
+                                    Balance Impact
+                                </span>
+                                {entryData.balance_impact.toLowerCase() ===
+                                    "low" ? (
+                                    <FaCaretDown className="text-red-500" fontSize="36px" />
+                                ) : (
+                                    <FaCaretUp className="text-green-500" fontSize="36px"/>
+                                )}
+
+                            </span>
+                        </span>
+                    }
                     {isOpen && (
                         <div className="flex flex-col shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]  pt-2 min-h-[54px] max-h-[216px] overflow-y-auto rounded-b-lg top-[35px] bg-white z-[400] absolute w-full min-w-[360px] items-center">
                             {
-                                [1, 2, 3, 4, 5].map((i) => (
-                                    <div className="w-[94%] min-h-[38px] mb-2 hover:bg-[#F6EBEB] flex flex-col justify-around">
-                                        <span className="text-[14px] h-[15px]">
-                                            Chukwuebuka Chisom
-                                        </span>
-                                        <span className="flex text-sm flex-row text-[12px] h-[12px] leading-[12px] text-[#8F8F8F]">
-                                            <span className="border-r-2 border-[#8F8F8F] pr-2 mr-2">
-                                                Customer
+                                debitLedgerOptions
+                                    .map((option, index) => (
+                                        <div key={index} onClick={() => {
+                                            handleEntry(inputName, option);
+                                            setOpen(false)
+                                        }} className="w-[94%] min-h-[38px] mb-2 hover:bg-[#F6EBEB] flex flex-col justify-around">
+                                            <span className="text-[14px] h-[15px]">
+                                                {option?.name}
                                             </span>
-                                            <span>
-                                                45203928360
+                                            <span className="flex text-sm flex-row text-[12px] h-[12px] leading-[12px] text-[#8F8F8F]">
+                                                <span className="border-r-2 border-[#8F8F8F] pr-2 mr-2">
+                                                    {option?.type}
+                                                </span>
+                                                <span>
+                                                    {option?.accountNumber}
+                                                </span>
                                             </span>
-                                        </span>
-                                    </div>
-                                ))
+                                        </div>
+                                    ))
                             }
                         </div>
                     )}

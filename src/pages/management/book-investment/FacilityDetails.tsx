@@ -444,6 +444,8 @@ export default ({
                                             defaultValue={values?.interval}
                                             placeholder="Select"
                                             clearErrors={clearErrors}
+                                            requiredField={false}
+                                            required={false}
                                             options={intervalOptions}
                                             trigger={trigger}
                                         />

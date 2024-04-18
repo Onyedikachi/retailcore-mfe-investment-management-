@@ -291,12 +291,12 @@ export default function ({
                         <Container>
                             <div>
                                 <h3 className="text-[#636363] text-[18px] font-semibold mb-[56px]">
-                                    Investment calculation
+                                    Security Purchase Details
                                 </h3>
                                 <div className="grid gap-y-[56px]">
                                     <div className="flex flex-col">
                                         <h4 className="text-[#636363] text-[16px] font-medium mb-[27px]">
-                                            FacilityDetails
+                                            Facility Details
                                         </h4>
                                         <div className="grid grid-cols-1 gap-[25px] px-12">
                                             <div className=" flex gap-[54px]">
@@ -412,6 +412,31 @@ export default function ({
                                                     <span className="">
                                                         {productDetail.facilityDetailsModel?.interestCapitalizationMethod}
                                                     </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="grid gap-y-[56px] mt-[56px]">
+                                    <div className="flex flex-col">
+                                        <h4 className="text-[#636363] text-[16px] font-medium mb-[27px]">
+                                            Account Entries
+                                        </h4>
+                                        <div className="grid grid-cols-1 gap-[25px] px-12">
+                                            <div className=" flex gap-[54px]">
+                                                <div className="w-[300px]   text-base font-medium text-[#636363]">
+                                                    Credit Ledger
+                                                </div>
+                                                <div className="w-full text-base font-normal text-[#636363]">
+                                                    {productDetail.accountingEntries.creditLedger || ' - '}
+                                                </div>
+                                            </div>
+                                            <div className=" flex gap-[54px]">
+                                                <div className="w-[300px]   text-base font-medium text-[#636363]">
+                                                    DebitLedger
+                                                </div>
+                                                <div className="w-full text-base font-normal text-[#636363]">
+                                                    {productDetail.accountingEntries.debitLedger || ' - '}
                                                 </div>
                                             </div>
                                         </div>

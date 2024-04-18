@@ -136,6 +136,8 @@ export default function IndexComponent() {
           interval: ""
         },
         accountingEntries: {
+          debitLedger: "",
+          creditLedger: ""
         }
       } :
       {

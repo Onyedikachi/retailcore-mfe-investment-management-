@@ -41,7 +41,6 @@ export default ({
 
     const {
         register,
-        handleSubmit,
         watch,
         clearErrors,
         setValue,
@@ -49,38 +48,45 @@ export default ({
         getValues,
         trigger,
         formState: { errors, isValid },
+        reset
     } = useForm({
         defaultValues: formData.accountingEntries,
         mode: "all",
     });
 
+    const values = getValues();
+
     const { currencies, defaultCurrency } = useContext(AppContext);
 
     const [error, updateError] = useState(null);
     const [clearFields, setClearField] = useState(false);
+    const [entries, setEntries] = useState(formData?.accountingEntries);
+    const [entriesData, setEntriesData] = useState(formData?.accountingEntries);
 
-    const values = getValues();
     useEffect(() => {
-        setDisabled(!isValid);
-        if (isValid) {
-            setFormData({
-                ...formData,
-                accountingEntries: values,
-            });
-        }
-    }, [
-        isValid,
-    ]);
+        setDisabled(true);
+    }, [])
 
+    useEffect(() => {
+        setDisabled(!(entriesData?.creditLedger?.name && entriesData?.debitLedger?.name))
+    }, [entriesData])
+
+    const handleEntry = (key, value) => {
+        const newVal = {...entries};
+        newVal[key] = value?.accountNumber;
+        setEntries(newVal);
+        setEntriesData({...entriesData, ...{[key]:value}})
+    }
+
+    useEffect(() => {
+        reset(entries);
+    }, [entries])
 
     return (
         <form
             id="accountingEntries"
             data-testid="submit-button"
-            onSubmit={handleSubmit((d) => {
-                onProceed(d, proceed, formData, setFormData, preModifyRequest)
-            }
-            )}
+            onSubmit={() => onProceed(entries, proceed, formData, setFormData, preModifyRequest)}
         >
             <div
                 data-testid="accounting-entries"
@@ -102,14 +108,11 @@ export default ({
                     </div>
 
                     <AccountSelectInput
-                        handleClick={(key, submenu) => { }}
-                        inputName={"debitLedger"}
-                        defaultValue={values.debitLedger}
-                        register={register}
-                        trigger={trigger}
-                        errors={errors}
+                        const handleEntry = {handleEntry}
+                        entryValue={entries.debitLedger}
+                        inputName="debitLedger"
                         placeholder="Search by Account Number"
-                        formData={formData}
+                        entryData={entriesData.debitLedger}
                     />
                 </div>
             </div>
@@ -124,7 +127,7 @@ export default ({
                             htmlFor="creditLedger"
                             className=" pt-[10px] min-w-[250px] flex text-base font-semibold text-[#636363]"
                         >
-                            credit Ledger{" "}
+                            Credit Ledger{" "}
                             <span className="flex">
                                 {" "}
                                 <RedDot />
@@ -133,14 +136,11 @@ export default ({
                     </div>
 
                     <AccountSelectInput
-                        handleClick={(key, submenu) => { }}
-                        inputName={"creditLedger"}
-                        defaultValue={values.creditLedger}
-                        register={register}
-                        trigger={trigger}
-                        errors={errors}
+                        const handleEntry = {handleEntry}
+                        entryValue={entries.creditLedger}
+                        inputName="creditLedger"
                         placeholder="Search by Account Number"
-                        formData={formData}
+                        entryData={entriesData.creditLedger}
                     />
                 </div>
             </div>
