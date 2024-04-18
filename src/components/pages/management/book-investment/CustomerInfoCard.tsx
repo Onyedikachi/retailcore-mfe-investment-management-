@@ -36,7 +36,7 @@ export const Info = ({ title, data, type, setIsOpen }: InfoProps) => {
             </svg>
           )}
 
-          {/* {type === "customerPersona" && (
+          {type === "customerPersona" && (
             <span className={`text-[#3FA2F7]  `}>{data || "-"}</span>
           )}
           {type === "riskStatus" && (
@@ -61,7 +61,7 @@ export const Info = ({ title, data, type, setIsOpen }: InfoProps) => {
             type !== "riskStatus" &&
             type !== "customerPersona" && (
               <span className={``}>{data || "-"}</span>
-            )} */}
+            )}
         </div>
       )}
 
@@ -99,17 +99,15 @@ export default function CustomerInfoCard({
   isLoading,
   investmentType = "individual",
 }) {
+
   const { data: userData } = useGetUserQuery(
     customerData?.customer_profiles?.[0]?.relationshipOfficer,
     { skip: !customerData?.customer_profiles?.[0]?.relationshipOfficer }
   );
   const businessName =
     customerData?.customer_profiles?.[0]?.companyNameBusiness;
-  const individualName = `${capitalizeFirstLetter(
-    customerData?.customer_profiles?.[0]?.firstName
-  )} ${capitalizeFirstLetter(
-    customerData?.customer_profiles?.[0]?.otherNames
-  )} ${capitalizeFirstLetter(customerData?.customer_profiles?.[0]?.surname)}`;
+    const individualName = customerData?.customer_profiles?.[0]?.fullName;
+    console.log("🚀 ~ individualName:", individualName)
   const relationshipName = `${capitalizeFirstLetter(
     userData?.firstname
   )} ${capitalizeFirstLetter(userData?.lastname)}`;

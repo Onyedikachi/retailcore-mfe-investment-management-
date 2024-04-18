@@ -72,7 +72,7 @@ export function InputDivs({
       <div
         className={`flex gap-x-[50px] items-center ${divClass ? divClass : ""}`}
       >
-        <div className="w-[300px]">
+        <div className="w-[330px]">
           <span
             data-testid="input-div"
             className="flex items-start justify-start gap-x-[1px] text-[#636363] text-base font-medium mb-1"

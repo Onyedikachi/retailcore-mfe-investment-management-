@@ -101,11 +101,11 @@ export const FacilityDetailsModelSchema2 = yup.object().shape({
 
 export const TransactionSettingModelSchema = yup.object().shape({
   accountForLiquidation: yup
-    .mixed()
+    .string()
     .typeError("Select an account")
     .required("Select an account"),
   accountForInterest: yup
-    .mixed()
+    .string()
     .typeError("Select an account")
     .required("Select an account"),
   accountForLiquidationLedgerId: yup.string().required("Ledger id is required"),
