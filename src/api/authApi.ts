@@ -39,4 +39,4 @@ export const authApi = createApi({
   }),
 });
 
-export const { useGetUserQuery, useGetUsersPermissionsQuery } = authApi;
+export const { useGetUserQuery, useGetUsersPermissionsQuery, useGetUsersQuery } = authApi;

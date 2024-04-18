@@ -285,10 +285,7 @@ export default function PricingConfig({
               <MinMaxInput
                 className="w-[300px]"
                 label={"Min"}
-                currency={handleCurrencyName(
-                  productData?.productInfo?.currency,
-                  currencies
-                )}
+                currency={productData?.productInfo?.currencyCode}
                 register={register}
                 inputName={"applicablePrincipalMin"}
                 defaultValue={formData?.applicablePrincipalMin}
@@ -304,10 +301,7 @@ export default function PricingConfig({
               <MinMaxInput
                 className="w-[300px]"
                 label={"Max"}
-                currency={handleCurrencyName(
-                  productData?.productInfo?.currency,
-                  currencies
-                )}
+                currency={productData?.productInfo?.currencyCode}
                 register={register}
                 inputName={"applicablePrincipalMax"}
                 defaultValue={formData?.applicablePrincipalMax}
@@ -380,7 +374,7 @@ export default function PricingConfig({
                           isCurrency
                           disablegroupseparators
 
-                        // defaultValue={range.min}
+                          // defaultValue={range.min}
                         />
                       </div>{" "}
                       -
@@ -413,10 +407,7 @@ export default function PricingConfig({
                         <span>for principal between:</span>
                         <div className="flex gap-[25px] ">
                           <MinMaxInput
-                            label={handleCurrencyName(
-                              productData?.productInfo?.currency,
-                              currencies
-                            )}
+                            label={productData?.productInfo?.currencyCode}
                             className="w-[180px]"
                             register={register}
                             inputName={`interestRateConfigModels.${index}.principalMin`}
@@ -438,10 +429,7 @@ export default function PricingConfig({
                         -
                         <div className="flex gap-[25px] ">
                           <MinMaxInput
-                            label={handleCurrencyName(
-                              productData?.productInfo?.currency,
-                              currencies
-                            )}
+                            label={productData?.productInfo?.currencyCode}
                             className="w-[180px]"
                             register={register}
                             inputName={`interestRateConfigModels.${index}.principalMax`}
@@ -555,7 +543,11 @@ export default function PricingConfig({
                     {/* tenor ends here  */}
                   </div>
                   {interestRateConfigModels.length > 1 && (
-                    <div className="h-4 w-4" onClick={() => removeField(index)} onKeyDown={() => { }}>
+                    <div
+                      className="h-4 w-4"
+                      onClick={() => removeField(index)}
+                      onKeyDown={() => {}}
+                    >
                       <svg
                         width="11"
                         height="10"
@@ -624,7 +616,7 @@ export default function PricingConfig({
                   isCurrency
                   disablegroupseparators
 
-                // defaultValue={range.min}
+                  // defaultValue={range.min}
                 />
               </div>{" "}
               -
@@ -693,7 +685,7 @@ export default function PricingConfig({
               errors={errors}
               trigger={trigger}
               clearErrors={clearErrors}
-              setValue={() => { }}
+              setValue={() => {}}
               disabled
             />
           </div>

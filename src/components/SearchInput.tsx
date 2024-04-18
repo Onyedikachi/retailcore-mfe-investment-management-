@@ -205,7 +205,7 @@ export default function SearchInput({
       onOutsideClick={() => closeBox(setSearchResults, setShowBox)}
     >
       <div
-        className={`z-[99] border-b border-[#AAAAAA]  flex items-center relative bg-transparent shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] ${fullW ? "" : "max-w-[340px]"
+        className={`border-b border-[#AAAAAA]  flex items-center relative bg-transparent shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] ${fullW ? "" : "max-w-[340px]"
           } ${hideBorder
             ? ""
             : "after:content-[''] after:w-1 after:h-[80%] after:absolute after:border-r after:right-[-15px] after:top-1/2 after:translate-y-[-50%] after:border-[#E5E9EB]"
@@ -237,7 +237,7 @@ export default function SearchInput({
         </div>
 
         {showSearchbox && showBox && (
-          <div className="z-[99] w-[352px] right-0 max-h-[386px] overflow-y-auto bg-white absolute top-[100%] mt-2 rounded-lg py-[22px] px-[10px] shadow-[0px_0px_6px_0px_rgba(0,0,0,0.25)] ">
+          <div className="w-[352px] z-[2] right-0 max-h-[386px] overflow-y-auto bg-white absolute top-[100%] mt-2 rounded-lg py-[22px] px-[10px] shadow-[0px_0px_6px_0px_rgba(0,0,0,0.25)] ">
             {!searchLoading ? (
               <div>
                 <div>

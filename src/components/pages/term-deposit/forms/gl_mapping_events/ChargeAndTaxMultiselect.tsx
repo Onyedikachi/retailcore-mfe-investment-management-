@@ -39,7 +39,7 @@ export default ({
     const new_values = { ...values };
     new_values[event][formatTypeName(type)] = new_options;
     setValues(new_values);
-    console.log(values, new_values);
+
     setListOpen(false);
   };
 

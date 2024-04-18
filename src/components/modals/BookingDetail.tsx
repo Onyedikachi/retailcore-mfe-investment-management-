@@ -40,8 +40,6 @@ export const BookingDetailLayout = ({
   setOpen,
   handleClick,
 }) => {
-  console.log("🚀 ~ productInfo:", productInfo)
-  const { currencies } = useContext(AppContext);
 
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -127,10 +125,7 @@ export const BookingDetailLayout = ({
                       <span className="font-normal block">
                         {currencyFormatter(
                           detail?.maturityValue,
-                          handleCurrencyName(
-                            productInfo?.data?.productInfo?.currency,
-                            currencies
-                          )
+                          productInfo?.data?.productInfo?.currencyCode
                         ) || "-"}{" "}
                       </span>
                     </div>
@@ -143,10 +138,7 @@ export const BookingDetailLayout = ({
                     <span className="font-normal block">
                       {currencyFormatter(
                         detail?.maturityValue,
-                        handleCurrencyName(
-                          productInfo?.data?.productInfo?.currency,
-                          currencies
-                        )
+                        productInfo?.data?.productInfo?.currencyCode
                       ) || "-"}{" "}
                     </span>
                   </div>
@@ -170,10 +162,7 @@ export const BookingDetailLayout = ({
                   <div>
                     <span className="font-bold block mb-[15px]">Currency</span>
                     <span className="font-normal block">
-                      {handleCurrencyName(
-                        productInfo?.data?.productInfo?.currency,
-                        currencies
-                      )}{" "}
+                      {productInfo?.data?.productInfo?.currencyCode}{" "}
                     </span>
                   </div>
                   <div>
@@ -233,7 +222,13 @@ export const BookingDetailLayout = ({
                       </div>
                     )}
                   <Link
-                    to={`/investment-management/${CustomerCategory[productInfo?.data?.customerEligibility?.customerCategory]?.toLowerCase()}/process-summary/preview/${detail?.id}?product_id=${detail?.investmentProductId}&request_id=${detail?.investmentBookingRequestId}`}
+                    to={`/investment-management/${CustomerCategory[
+                      productInfo?.data?.customerEligibility?.customerCategory
+                    ]?.toLowerCase()}/process-summary/preview/${
+                      detail?.id
+                    }?product_id=${detail?.investmentProductId}&request_id=${
+                      detail?.investmentBookingRequestId
+                    }`}
                   >
                     <button
                       className={`group flex items-center whitespace-nowrap py-[1px] text-base text-[#636363] gap-x-3 hover:underline outline-none`}
@@ -345,7 +340,6 @@ export default function BookingDetail({
   });
 
   const [open, setOpen] = useState(false);
-
 
   useEffect(() => {
     if (!isInvestmentLoading && !isProductLoading) {

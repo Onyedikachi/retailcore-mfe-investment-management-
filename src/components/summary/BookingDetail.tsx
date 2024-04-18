@@ -9,6 +9,7 @@ import {
   liquidities,
   ProductTypes,
   RollOverOptions,
+  StartdateType,
 } from "@app/constants";
 import { currencyFormatter } from "@app/utils/formatCurrency";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
@@ -153,10 +154,7 @@ export default function BookingDetail({
               <div className="w-full text-base font-normal text-[#636363]">
                 {currencyFormatter(
                   detail?.facilityDetailsModel?.principal,
-                  handleCurrencyName(
-                    productDetail?.productInfo?.currency,
-                    currencies
-                  )
+                  productDetail?.productInfo?.currencyCode
                 )}
               </div>
             </div>
@@ -191,10 +189,18 @@ export default function BookingDetail({
           <div className="grid grid-cols-1 gap-[25px] px-12">
             <div className=" flex gap-[54px]">
               <div className="w-[300px]   text-base font-medium text-[#636363]">
-                Account for liquidation
+                Customer account for principal liquidation
               </div>
               <div className="w-full text-base font-normal text-[#636363]">
                 {detail?.transactionSettingModel?.accountForLiquidation}
+              </div>
+            </div>
+            <div className=" flex gap-[54px]">
+              <div className="w-[300px]   text-base font-medium text-[#636363]">
+                Customer account for interest payment
+              </div>
+              <div className="w-full text-base font-normal text-[#636363]">
+                {detail?.transactionSettingModel?.accountForInterest}
               </div>
             </div>
             <div className=" flex gap-[54px]">
@@ -219,6 +225,20 @@ export default function BookingDetail({
                         detail?.transactionSettingModel?.rollOverOption
                     )?.text
                   : "No"}
+              </div>
+            </div>
+            <div className=" flex gap-[54px]">
+              <div className="w-[300px]   text-base font-medium text-[#636363]">
+                Investment effective start date
+              </div>
+              <div className="w-full text-base font-normal text-[#636363]">
+                {detail?.transactionSettingModel?.startDateOption == 0
+                  ? StartdateType[
+                      detail?.transactionSettingModel?.startDateOption
+                    ]
+                  : moment(detail?.transactionSettingModel?.startDate).format(
+                      "DD MMM YYYY"
+                    )}
               </div>
             </div>
           </div>

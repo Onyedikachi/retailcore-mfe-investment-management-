@@ -8,7 +8,7 @@ import { AccountStatus, BookingCustomerInfoSchema } from "@app/constants";
 import SearchInput from "@app/components/SearchInput";
 import {
   useGetCustomerSearchQuery,
-  // useGetAccountDataByIdQuery,
+  useGetUsersQuery,
   useGetCustomerProfileQuery,
   useGetAccountDataByIdQuery,
 } from "@app/api";
@@ -21,6 +21,7 @@ import BottomBarLoader from "@app/components/BottomBarLoader";
 import debounce from "lodash.debounce";
 import { InputDivs } from "../../term-deposit/forms/gl_mapping_events/ProductToGLMapping";
 import { useParams } from "react-router-dom";
+import ProductSearch from "@app/components/ProductSearch";
 export const onProceed = (
   data,
   proceed,
@@ -102,6 +103,12 @@ export default function CustomerInformation({
   const [accountBalance, setAccountBalance] = useState(null);
   const [validKyc, setValidKyc] = useState(null);
   const [isKycFailed, setKycFailed] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [usersQuery, setUserQuery] = useState({
+    search: "",
+    page: 1,
+    page_size: 100,
+  });
   const [defaultValue, setDefaultValue] = useState(
     formData?.customerBookingInfoModel?.investmentformUrl
   );
@@ -116,6 +123,12 @@ export default function CustomerInformation({
   } = useGetCustomerSearchQuery(query, {
     skip: query?.search?.length !== 10 || !query,
   });
+
+  const {
+    data: usersData,
+    isSuccess: isUsersSuccess,
+    isLoading: isUsersLoading,
+  } = useGetUsersQuery(usersQuery);
 
   const {
     data: profileData,
@@ -134,6 +147,20 @@ export default function CustomerInformation({
     error: accountError,
     isLoading,
   } = useGetAccountDataByIdQuery(accountNumber, { skip: !accountNumber });
+
+  useEffect(() => {
+    if (isUsersSuccess) {
+      setUsers(
+        usersData?.results?.map((i) => {
+          return {
+            name: `${i.firstname} ${i.lastname}`,
+            id: i.id,
+            value: `${i.firstname} ${i.lastname}`,
+          };
+        })
+      );
+    }
+  }, [isUsersSuccess, usersData]);
 
   useEffect(() => {
     if (formData?.customerBookingInfoModel?.investmentformUrl) {
@@ -170,8 +197,8 @@ export default function CustomerInformation({
   useEffect(() => {
     const currencyId = currencies.find(
       (i) =>
-        i?.text?.toLowerCase() === accountData?.value?.currencyCode?.toLowerCase()
-      
+        i?.text?.toLowerCase() ===
+        accountData?.value?.currencyCode?.toLowerCase()
     )?.value;
 
     if (accountIsSuccess) {
@@ -182,7 +209,7 @@ export default function CustomerInformation({
           ...formData?.customerBookingInfoModel,
           accountStatus: AccountStatus[accountData?.value?.accountStatus],
           currencyId,
-          currencyCode:accountData?.value?.currencyCode,
+          currencyCode: accountData?.value?.currencyCode,
           customerAccountLedgerId: accountData?.value?.accountUUID,
           balance: accountData?.value?.clearedBalance,
         },
@@ -210,13 +237,15 @@ export default function CustomerInformation({
         );
       });
       const businessName =
-      foundObject?.customer_profiles?.[0]?.companyNameBusiness;
-    const individualName = `${capitalizeFirstLetter(
-      foundObject?.customer_profiles?.[0]?.firstName
-    )} ${capitalizeFirstLetter(
-      foundObject?.customer_profiles?.[0]?.otherNames
-    )} ${capitalizeFirstLetter(foundObject?.customer_profiles?.[0]?.surname)}`;
-  
+        foundObject?.customer_profiles?.[0]?.companyNameBusiness;
+      const individualName = `${capitalizeFirstLetter(
+        foundObject?.customer_profiles?.[0]?.firstName
+      )} ${capitalizeFirstLetter(
+        foundObject?.customer_profiles?.[0]?.otherNames
+      )} ${capitalizeFirstLetter(
+        foundObject?.customer_profiles?.[0]?.surname
+      )}`;
+
       setCustomerData(foundObject);
       setFormData({
         ...formData,
@@ -225,7 +254,8 @@ export default function CustomerInformation({
       });
       setValue("customerId", foundObject?.customerId);
       setValue(
-        "customerName", investmentType === "individual" ? individualName : businessName
+        "customerName",
+        investmentType === "individual" ? individualName : businessName
       );
       setValue("customerAccount", accountNumber);
       setValue(
@@ -362,7 +392,46 @@ export default function CustomerInformation({
               />
             </div>
           )}
-
+          <InputDivs
+            label={"Relationship officer"}
+            errors={errors}
+            name="relationshipOfficerName"
+            isCompulsory
+          >
+            <div className="w-[360px]">
+              <SearchInput
+                setSearchTerm={debounce(
+                  (e) =>
+                    setUserQuery({
+                      ...usersQuery,
+                      search: e,
+                    }),
+                  500
+                )}
+                searchResults={users}
+                setSearchResults={() => {}}
+                searchLoading={isUsersLoading}
+                handleSearch={(value: any, data: any) => {
+                  if (!data?.id && !data?.name) return;
+                  setValue("relationshipOfficerId", data?.id);
+                  setValue("relationshipOfficerName", data?.name);
+                  setFormData({
+                    ...formData,
+                    customerBookingInfoModel: {
+                      ...formData?.customerBookingInfoModel,
+                      relationshipOfficerId: data?.id,
+                      relationshipOfficerName: data?.name,
+                    },
+                  });
+                  trigger(["relationshipOfficerId", "relationshipOfficerName"]);
+                }}
+                placeholder="Search by user or username"
+                customClass="shadow-none"
+                hideBorder
+                defaultValue={values.relationshipOfficerName}
+              />
+            </div>
+          </InputDivs>
           <InputDivs
             label={"Customer’s investment request form"}
             errors={errors}

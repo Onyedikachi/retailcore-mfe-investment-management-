@@ -5,7 +5,6 @@ import { IGetProducts, ICreateProduct } from "./types/investmentApi.types";
 import urls from "../helpers/url_helpers";
 import { cleanObject } from "@app/utils/cleanObject";
 
-// const productApi = "https://product-mgt-api.qa.bepeerless.co/v1";
 export const productMgtApi: any = createApi({
   reducerPath: "magagementApi",
   baseQuery: axiosBaseQuery({ serviceKey: "product" }),

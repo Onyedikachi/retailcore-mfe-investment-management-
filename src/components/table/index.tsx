@@ -509,7 +509,9 @@ export default function TableComponent<TableProps>({
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [liquidationType, setLiquidationType] = useState(null);
+  const [topUpType, setTopUpType] = useState(null);
   const [isLiquidation, setLiquidationOpen] = useState(false);
+  const [isTopUp, setTopUpOpen] = useState(false);
   const [isDeactivationOpen, setIsDeactivationOpen] = useState(false);
   const [confirmText, setConfirmText] = useState("");
   const [subText, setSubText] = useState("");
@@ -546,6 +548,8 @@ export default function TableComponent<TableProps>({
       setConfirmText,
       setIsConfirmOpen,
       setLiquidationOpen,
+      setTopUpType,
+      setTopUpOpen,
       setLiquidationType,
       setDetailOpen,
       setIndividualDetailOpen,
@@ -665,6 +669,8 @@ export default function TableComponent<TableProps>({
       modifyProductRequest,
       setLiquidationOpen,
       setLiquidationType,
+      setTopUpType,
+      setTopUpOpen,
     });
 
   useEffect(() => {
@@ -1031,6 +1037,9 @@ export default function TableComponent<TableProps>({
         isLiquidation={isLiquidation}
         setLiquidationOpen={setLiquidationOpen}
         liquidationType={liquidationType}
+        topUpType={topUpType}
+        setTopUpOpen={setTopUpOpen}
+        isTopUp={isTopUp}
         handleLiquidation={handleLiquidation}
         liquidationLoading={earlyLiquidateIsLoading || partLiquidateIsLoading}
         handleRefresh={handleRefresh}

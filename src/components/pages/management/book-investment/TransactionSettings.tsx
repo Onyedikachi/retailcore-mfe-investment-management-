@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import moment from "moment";
 import { yupResolver } from "@hookform/resolvers/yup";
 // import { InputDivs } from "@app/components/pages/term-deposit/forms/accounting-entries-and-events";
-import { BorderlessSelect, Checkbox, MinMaxInput } from "@app/components/forms";
+import {
+  BorderlessSelect,
+  Checkbox,
+  FormDate,
+  MinMaxInput,
+} from "@app/components/forms";
 import { Switch } from "@headlessui/react";
 import {
   Interval,
   RollOverOptions,
+  StartDateOptions,
   TransactionSettingModelSchema,
 } from "@app/constants";
 import { useGetAccountListDataByIdQuery } from "@app/api";
@@ -25,6 +32,7 @@ export const handleAccountForLiquidation = ({
   setCustomerData,
   trigger,
 }) => {
+
   if (profileIsSuccess) {
     const accountData = profileData.value?.items?.map((i: any) => {
       return {
@@ -44,11 +52,13 @@ export const handleAccountForLiquidation = ({
         ...formData,
         transactionSettingModel: {
           ...formData?.transactionSettingModel,
-          accountForLiquidation: accountData[0].value,
+          // accountForLiquidation: accountData[0].value,
+          // accountForInterest: accountData[0].value,
           accountForLiquidationLedgerId: accountData[0]?.ledgerId,
         },
       });
-      setValue("accountForLiquidation", accountData[0].value);
+      // setValue("accountForLiquidation", accountData[0].value);
+      // setValue("accountForInterest", accountData[0].value);
       setValue("accountForLiquidationLedgerId", accountData[0].ledgerId);
       trigger();
     }
@@ -62,14 +72,23 @@ export const onProceed = (
   setFormData,
   preModifyRequest
 ) => {
+
   preModifyRequest({
     ...formData,
-    transactionSettingModel: { ...formData.transactionSettingModel, ...data },
+    transactionSettingModel: {
+      ...formData.transactionSettingModel,
+      ...data,
+      startDate: data.startDate && moment(data.startDate).format("yyyy-MM-DD"),
+    },
     isDraft: true,
   });
   setFormData({
     ...formData,
-    transactionSettingModel: { ...formData.transactionSettingModel, ...data },
+    transactionSettingModel: {
+      ...formData.transactionSettingModel,
+      ...data,
+      startDate: data.startDate && moment(data.startDate).format("yyyy-MM-DD"),
+    },
   });
   proceed();
 };
@@ -131,7 +150,6 @@ export default function TransactionSettings({
     mode: "all",
   });
   const values = getValues();
-
   const [customerData, setCustomerData] = useState<any>([]);
   const {
     data: profileData,
@@ -202,7 +220,10 @@ export default function TransactionSettings({
       {" "}
       <div className="flex flex-col gap-4 px-[30px] py-5">
         <div className="flex flex-col items-start gap-y-5">
-          <InputDivs label={"Account for liquidation"}>
+          <InputDivs
+            label={"Customer account for principal liquidation"}
+            isCompulsory
+          >
             <div className="flex gap-[15px]">
               <div className="w-[360px]">
                 <BorderlessSelect
@@ -211,6 +232,29 @@ export default function TransactionSettings({
                   inputName={"accountForLiquidation"}
                   defaultValue={
                     formData?.transactionSettingModel?.accountForLiquidation
+                  }
+                  options={customerData}
+                  errors={errors}
+                  setValue={setValue}
+                  trigger={trigger}
+                  clearErrors={clearErrors}
+                  placeholder="Select account"
+                />
+              </div>
+            </div>
+          </InputDivs>
+          <InputDivs
+            label={"Customer account for interest payment"}
+            isCompulsory
+          >
+            <div className="flex gap-[15px]">
+              <div className="w-[360px]">
+                <BorderlessSelect
+                  inputError={errors?.accountForInterest}
+                  register={register}
+                  inputName={"accountForInterest"}
+                  defaultValue={
+                    formData?.transactionSettingModel?.accountForInterest
                   }
                   options={customerData}
                   errors={errors}
@@ -332,6 +376,51 @@ export default function TransactionSettings({
               </div>
             </InputDivs>
           )}
+
+          <InputDivs label={"Investment effective start date"} isCompulsory>
+            <div className="flex gap-[15px]">
+              <div className="w-[360px]">
+                <BorderlessSelect
+                  inputError={errors?.startDateOption}
+                  register={register}
+                  inputName={"startDateOption"}
+                  defaultValue={
+                    formData?.transactionSettingModel?.startDateOption
+                  }
+                  options={StartDateOptions}
+                  errors={errors}
+                  setValue={setValue}
+                  trigger={trigger}
+                  clearErrors={clearErrors}
+                  placeholder="Select option"
+                />
+              </div>
+            </div>
+          </InputDivs>
+          {values.startDateOption === 1 && (
+            <InputDivs label={"Scheduled date"} isCompulsory>
+              <div className="flex gap-[15px]">
+                <div className="w-[360px]">
+                  <FormDate
+                    id="startDate"
+                    register={register}
+                    inputName={"startDate"}
+                    errors={errors}
+                    handleChange={(value) => {
+                      setValue("startDate", value);
+                    }}
+                    defaultValue={values?.startDate}
+                    trigger={trigger}
+                    clearErrors={clearErrors}
+                    className="w-full"
+                    dateFormat="MM/dd/yyyy"
+                    placeholder="mm/dd/yyyy"
+                  />
+                </div>
+              </div>
+            </InputDivs>
+          )}
+
           {productDetail?.liquidation?.early_AllowEarlyLiquidation ||
             (productDetail?.liquidation?.part_AllowPartLiquidation && (
               <div className="mt-10 flex flex-col w-full gap-y-2 py-6 px-5 rounded-lg border border-[#EBEBEB] bg-[#AAAAAA12]">
