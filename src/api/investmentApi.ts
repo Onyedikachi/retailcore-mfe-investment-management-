@@ -210,7 +210,7 @@ export const investmentApi: any = createApi({
     modifyInvestmentRequest: builder.mutation<any, any>({
       query: (data) => {
         return {
-          url: `${urls.INVESTMENT_REQUEST}/edit/${data.id}`,
+          url: `${urls.INVESTMENT_REQUEST}/edit/${data?.id}`,
           method: "put",
           body: data,
         };

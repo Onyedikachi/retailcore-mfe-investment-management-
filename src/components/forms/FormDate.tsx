@@ -84,7 +84,7 @@ const FormDate: React.FC<FormDateProps> = ({
           minDate={minDate}
           maxDate={maxDate}
           placeholderText={placeholder}
-          className={`placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4 border-b placeholder:text-[#BCBBBB] ${
+          className={`placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-2 pr-4 border-b ${className} placeholder:text-[#BCBBBB] ${
             errors && errors[inputName] ? "border-red-600" : "border-[#8F8F8F]"
           }`}
         />

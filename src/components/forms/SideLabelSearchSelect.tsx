@@ -5,10 +5,10 @@ import {
   EntriesAndEventsSearchResults,
 } from "@app/components/pages/term-deposit/forms";
 // import { InputDivs } from "@app/components/pages/term-deposit/forms/liquidity-setup";
-export function InputDivs({ children, label }) {
+export function InputDivs({ children, label, customClass = ""}) {
   return (
     <div className="flex gap-[10px] items-center">
-      <span className="min-w-[250px] capitalize flex items-start gap-x-[1px] text-[##636363] text-base font-medium">
+      <span className={`min-w-[250px] capitalize flex items-start gap-x-[1px] text-[##636363] text-base font-medium ${customClass}`}>
         {label} <RedDot />
       </span>
       <div>{children}</div>

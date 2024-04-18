@@ -1188,6 +1188,10 @@ export const BookInvestmentOptions = [
     title: "corporate",
     url: "/investment-management/create/corporate",
   },
+{
+    title: "security purchase",
+    url: "/investment-management/create/security-purchase",
+  },
 ];
 export interface IBookInvestmentOptions {
   title: string;

@@ -411,6 +411,18 @@ export const colorState = {
   liquidated: "bg-[#FFEBCC] text-[#804C00]",
 };
 export const productNameRegex = /^[A-Za-z0-9\s]+$/;
+export const securityPurchageFormSteps = [
+  {
+    id: 1,
+    label: "Facility Details",
+    index: 1
+  },
+  {
+    id: 2,
+    label: "Accounting Entries",
+    index: 2
+  }
+]
 export const BookInvestmentFormSteps = [
   {
     id: 1,
