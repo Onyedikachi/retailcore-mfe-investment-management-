@@ -2,10 +2,11 @@ import { DropDown } from "@app/components";
 import { BorderlessSelect, FormDate, RedDot } from "@app/components/forms";
 import { InputDivs } from "@app/components/forms/SideLabelSearchSelect";
 import { InputDiv } from "@app/components/pages/term-deposit/forms/product-information";
-import { FacilityDetailsModelSchema, SecurityPurchaseFacilityDetailSchema, categoryOptions } from "@app/constants";
+import { FacilityDetailsModelSchema, FacilityDetailsModelSchema2, categoryOptions } from "@app/constants";
 import { AppContext } from "@app/utils";
+import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useContext, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 export const onProceed = (
@@ -50,6 +51,7 @@ export default ({
         trigger,
         formState: { errors, isValid },
     } = useForm({
+        resolver: yupResolver(FacilityDetailsModelSchema2),
         defaultValues: formData.facilityDetailsModel,
         mode: "all",
     });
@@ -60,6 +62,8 @@ export default ({
     const [error, updateError] = useState(null);
 
     const values = getValues();
+
+    // useEffect(() => console.log(values, isValid, errors), [])
 
     const productCategoryOptions = [
         {
@@ -161,7 +165,6 @@ export default ({
             id="facilityDetails"
             data-testid="submit-button"
             onSubmit={handleSubmit((d) => {
-                console.log("d = ", d)
                 onProceed(d, proceed, formData, setFormData, preModifyRequest)
             }
             )}
@@ -192,245 +195,262 @@ export default ({
                             />
                         </div>
                     </InputDivs>
-                    <InputDivs
-                        label={"issuer"}
-                    >
-                        <div className="relative flex items-center max-w-full">
-                            <input
-                                id="issuer"
-                                data-testid="issuer"
-                                onChange={(e) => setValue("issuer", e.target.value)}
-                                {...register("issuer")}
-                                className={`placeholder-[#BCBBBB] ring-0 outline-none min-w-[300px] w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] placeholder:text-[#BCBBBB]`}
-                                placeholder="Enter Name"
-                                defaultValue={values.issuer}
-                            />
-                        </div>
-                    </InputDivs>
-                    <InputDivs
-                        label={"Description"}
-                    >
-                        <InputDiv>
-                            <div className="relative w-full min-w-[300px]">
-                                <textarea
-                                    id="description"
-                                    data-testid="product-description"
-                                    placeholder="Enter description"
-                                    maxLength={250}
-                                    {...register("description", {
-                                        maxLength: 250,
-                                    })}
-                                    defaultValue={values?.description}
-                                    className={`min-h-[150px] w-full rounded-md border border-[#8F8F8F] focus:outline-none px-3 py-[11px] placeholder:text-[#BCBBBB] resize-none ${errors?.description || error
-                                        ? "border-red-500 ring-1 ring-red-500"
-                                        : ""
-                                        }`}
-                                />
-
-                                {error && (
-                                    <span className="text-sm text-danger-500">{error}</span>
-                                )}
-                                <span className="absolute bottom-4 right-2 text-xs text-[#8F8F8F] flex items-center gap-x-1">
-                                    <span>{watch("description")?.length || 0}</span>/
-                                    <span>250</span>
-                                </span>
-                            </div>
-                            {errors?.description && (
-                                <span className="text-sm text-danger-500">
-                                    {errors?.description?.message}
-                                </span>
-                            )}
-                        </InputDiv>
-                    </InputDivs>
-                    <InputDivs
-                        label={"Deal Date"}
-                    >
-                        <InputDiv>
-                            <FormDate
-                                id="dealDate"
-                                className="w-full min-w-[300px]"
-                                register={register}
-                                inputName={"dealDate"}
-                                errors={errors}
-                                handleChange={(value) => {
-                                    setValue("dealDate", value);
-                                }}
-                                defaultValue={values?.dealDate}
-                                minDate={new Date()}
-                                trigger={trigger}
-                                clearErrors={clearErrors}
-                            />
-                        </InputDiv>
-
-                    </InputDivs>
-                    <InputDivs
-                        label={"Maturity Date"}
-                    >
-                        <InputDiv>
-                            <FormDate
-                                id="maturityDate"
-                                className="w-full min-w-[300px]"
-                                register={register}
-                                inputName={"maturityDate"}
-                                errors={errors}
-                                handleChange={(value) => {
-                                    setValue("maturityDate", value);
-                                }}
-                                defaultValue={values?.maturityDate}
-                                minDate={new Date()}
-                                trigger={trigger}
-                                clearErrors={clearErrors}
-                            />
-                        </InputDiv>
-
-                    </InputDivs>
-
-                    <InputDivs
-                        label={"Currency"}
-                    >
-                        <div className="w-[300px]">
-                            <BorderlessSelect
-                                inputError={errors?.currency}
-                                register={register}
-                                errors={errors}
-                                setValue={setValue}
-                                inputName={"currency"}
-                                defaultValue={values?.currency}
-                                placeholder="Select currency"
-                                clearErrors={clearErrors}
-                                requiredField={true}
-                                options={currencies}
-                                trigger={trigger}
-                            />
-                        </div>
-
-                    </InputDivs>
-                    <InputDivs label={"Discount Rate"}>
-                        <InputDiv customClass="w-full min-w-[300px] ">
-                            <div className="relative flex items-center max-w-[642px] border-b border-[#8F8F8F]">
-                                <input
-                                    id="discountRate"
-                                    data-testid="discountRate"
-                                    {...register("discountRate")}
-                                    className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] placeholder:text-[#BCBBBB]`}
-                                    placeholder="Enter Rate"
-                                    defaultValue={values.discountRate}
-                                />
-                                <div className="rounded-[100px] mr-2 bg-[#FFE9E9] p-1">
-                                    Percent
-                                </div>
-                            </div>
-                        </InputDiv>
-                    </InputDivs>
-                    <InputDivs
-                        label="Per Amount"
-                    >
-                        <InputDiv customClass="w-full min-w-[300px]">
-                            <div className="relative flex items-center max-w-[642px]">
-                                <input
-                                    id="perAmount"
-                                    data-testid="perAmount"
-                                    {...register("perAmount")}
-                                    className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB]`}
-                                    placeholder="Enter Rate"
-                                    defaultValue={values.perAmount}
-                                />
-                            </div>
-                        </InputDiv>
-                    </InputDivs>
-                    <InputDivs
-                        label="Face Value"
-                    >
-                        <InputDiv customClass="w-full min-w-[300px]">
-                            <div className="relative flex items-center max-w-[642px]">
-                                <input
-                                    id="faceValue"
-                                    data-testid="faceValue"
-                                    {...register("faceValue")}
-                                    className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB]`}
-                                    placeholder="Enter Rate"
-                                    defaultValue={values.faceValue}
-                                />
-                            </div>
-                        </InputDiv>
-                    </InputDivs>
-                    <InputDivs
-                        label="Consideration"
-                    >
-                        <InputDiv customClass="w-full min-w-[300px]">
-                            <div className="relative flex items-center max-w-[642px]">
-                                <input
-                                    id="consideration"
-                                    data-testid="consideration"
-                                    {...register("consideration")}
-                                    className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB]`}
-                                    placeholder="Enter Rate"
-                                    defaultValue={values.consideration}
-                                />
-                            </div>
-                        </InputDiv>
-                    </InputDivs>
-
-
-                    <InputDivs
-                        label={`Interest Computation  Days in Years Method`}
-                        customClass="max-w-[250px]"
-                    >
-                        <div className="w-[300px]">
-                            <BorderlessSelect
-                                inputError={errors?.interestComputationMethod}
-                                register={register}
-                                errors={errors}
-                                setValue={setValue}
-                                inputName={"interestComputationMethod"}
-                                defaultValue={values?.interestComputationMethod}
-                                placeholder="Select"
-                                clearErrors={clearErrors}
-                                options={interestComputationMethodOptions}
-                                trigger={trigger}
-                            />
-                        </div>
-
-                    </InputDivs>
-
-                    <InputDivs
-                        label={"Interest Capitalization Method"}
-                    >
-                        <div className="w-[300px]">
-                            <BorderlessSelect
-                                inputError={errors?.interestCapitalizationMethod}
-                                register={register}
-                                errors={errors}
-                                setValue={setValue}
-                                inputName={"interestCapitalizationMethod"}
-                                defaultValue={values?.interestCapitalizationMethod}
-                                placeholder="Select"
-                                clearErrors={clearErrors}
-                                options={interestCapitalizationMethodOptions}
-                                trigger={trigger}
-                            />
-                        </div>
-                    </InputDivs>
                     {
-                        values.interestCapitalizationMethod === 2 &&
-                        <InputDivs
-                            label={"Specify Interval"}
-                        >
-                            <div className="w-[300px]">
-                                <BorderlessSelect
-                                    inputError={errors?.interval}
-                                    register={register}
-                                    errors={errors}
-                                    setValue={setValue}
-                                    inputName={"interval"}
-                                    defaultValue={values?.interval}
-                                    placeholder="Select"
-                                    clearErrors={clearErrors}
-                                    options={intervalOptions}
-                                    trigger={trigger}
-                                />
-                            </div>
-                        </InputDivs>
+                        values?.category &&
+                        <Fragment>
+                            <InputDivs
+                                label={"issuer"}
+                            >
+                                <div className="relative flex items-center max-w-full">
+                                    <input
+                                        id="issuer"
+                                        data-testid="issuer"
+                                        onChange={(e) => setValue("issuer", e.target.value)}
+                                        {...register("issuer")}
+                                        className={`placeholder-[#BCBBBB] ring-0 outline-none min-w-[300px] w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] placeholder:text-[#BCBBBB]`}
+                                        placeholder="Enter Name"
+                                        defaultValue={values.issuer}
+                                    />
+                                </div>
+                            </InputDivs>
+                            <InputDivs
+                                label={"Description"}
+                            >
+                                <InputDiv>
+                                    <div className="relative w-full min-w-[300px]">
+                                        <textarea
+                                            id="description"
+                                            data-testid="product-description"
+                                            placeholder="Enter description"
+                                            maxLength={250}
+                                            {...register("description", {
+                                                maxLength: 250,
+                                            })}
+                                            defaultValue={values?.description}
+                                            className={`min-h-[150px] w-full rounded-md border border-[#8F8F8F] focus:outline-none px-3 py-[11px] placeholder:text-[#BCBBBB] resize-none ${errors?.description || error
+                                                ? "border-red-500 ring-1 ring-red-500"
+                                                : ""
+                                                }`}
+                                        />
+
+                                        {error && (
+                                            <span className="text-sm text-danger-500">{error}</span>
+                                        )}
+                                        <span className="absolute bottom-4 right-2 text-xs text-[#8F8F8F] flex items-center gap-x-1">
+                                            <span>{watch("description")?.length || 0}</span>/
+                                            <span>250</span>
+                                        </span>
+                                    </div>
+                                    {errors?.description && (
+                                        <span className="text-sm text-danger-500">
+                                            {errors?.description?.message}
+                                        </span>
+                                    )}
+                                </InputDiv>
+                            </InputDivs>
+                            <InputDivs
+                                label={"Deal Date"}
+                            >
+                                <InputDiv>
+                                    <FormDate
+                                        id="dealDate"
+                                        className="w-full min-w-[300px]"
+                                        register={register}
+                                        inputName={"dealDate"}
+                                        errors={errors}
+                                        handleChange={(value) => {
+                                            setValue("dealDate", value);
+                                        }}
+                                        defaultValue={values?.dealDate}
+                                        minDate={new Date()}
+                                        trigger={trigger}
+                                        clearErrors={clearErrors}
+                                    />
+                                </InputDiv>
+
+                            </InputDivs>
+                            <InputDivs
+                                label={"Maturity Date"}
+                            >
+                                <InputDiv>
+                                    <FormDate
+                                        id="maturityDate"
+                                        className="w-full min-w-[300px]"
+                                        register={register}
+                                        inputName={"maturityDate"}
+                                        errors={errors}
+                                        handleChange={(value) => {
+                                            setValue("maturityDate", value);
+                                        }}
+                                        defaultValue={values?.maturityDate}
+                                        minDate={new Date()}
+                                        trigger={trigger}
+                                        clearErrors={clearErrors}
+                                    />
+                                </InputDiv>
+
+                            </InputDivs>
+
+                            <InputDivs
+                                label={"Currency"}
+                            >
+                                <div className="w-[300px]">
+                                    <BorderlessSelect
+                                        inputError={errors?.currency}
+                                        register={register}
+                                        errors={errors}
+                                        setValue={setValue}
+                                        inputName={"currency"}
+                                        defaultValue={values?.currency}
+                                        placeholder="Select currency"
+                                        clearErrors={clearErrors}
+                                        options={currencies}
+                                        trigger={trigger}
+                                    />
+                                </div>
+
+                            </InputDivs>
+                            <InputDivs label={"Discount Rate"}>
+                                <InputDiv customClass="w-full min-w-[300px] ">
+                                    <div className="relative flex items-center max-w-[642px] border-b border-[#8F8F8F]">
+                                        <input
+                                            id="discountRate"
+                                            data-testid="discountRate"
+                                            type="number"
+                                            {...register("discountRate")}
+                                            className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] placeholder:text-[#BCBBBB]`}
+                                            placeholder="Enter Rate"
+                                            defaultValue={values.discountRate}
+                                        />
+                                        <div className="rounded-[100px] text-[14px] mr-2 bg-[#FFE9E9]">
+                                            Percent
+                                        </div>
+                                    </div>
+                                </InputDiv>
+                            </InputDivs>
+                            <InputDivs
+                                label="Per Amount"
+                            >
+                                <InputDiv customClass="w-full min-w-[300px]">
+                                    <div className="relative flex items-center max-w-[642px]">
+                                        {
+                                            values?.currency &&
+                                            <span className="mr-2">{handleCurrencyName(values?.currency, currencies)}</span>
+                                        }
+                                        <input
+                                            id="perAmount"
+                                            data-testid="perAmount"
+                                            type="number"
+                                            {...register("perAmount")}
+                                            className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB]`}
+                                            placeholder="Enter Rate"
+                                            defaultValue={values.perAmount}
+                                        />
+                                    </div>
+                                </InputDiv>
+                            </InputDivs>
+                            <InputDivs
+                                label="Face Value"
+                            >
+                                <InputDiv customClass="w-full min-w-[300px]">
+                                    <div className="relative flex items-center max-w-[642px]">
+                                        {
+                                            values?.currency &&
+                                            <span className="mr-2">{handleCurrencyName(values?.currency, currencies)}</span>
+                                        }
+                                        <input
+                                            id="faceValue"
+                                            data-testid="faceValue"
+                                            type="number"
+                                            {...register("faceValue")}
+                                            className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB]`}
+                                            placeholder="Enter Rate"
+                                            defaultValue={values.faceValue}
+                                        />
+                                    </div>
+                                </InputDiv>
+                            </InputDivs>
+                            <InputDivs
+                                label="Consideration"
+                            >
+                                <InputDiv customClass="w-full min-w-[300px]">
+                                    <div className="relative flex items-center max-w-[642px]">
+                                        {
+                                            values?.currency &&
+                                            <span className="mr-2">{handleCurrencyName(values?.currency, currencies)}</span>
+                                        }
+                                        <input
+                                            id="consideration"
+                                            data-testid="consideration"
+                                            type="number"
+                                            {...register("consideration")}
+                                            className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB]`}
+                                            placeholder="Enter Rate"
+                                            defaultValue={values.consideration}
+                                        />
+                                    </div>
+                                </InputDiv>
+                            </InputDivs>
+                            <InputDivs
+                                label={`Interest Computation  Days in Years Method`}
+                                customClass="max-w-[250px]"
+                            >
+                                <div className="w-[300px]">
+                                    <BorderlessSelect
+                                        inputError={errors?.interestComputationMethod}
+                                        register={register}
+                                        errors={errors}
+                                        setValue={setValue}
+                                        inputName={"interestComputationMethod"}
+                                        defaultValue={values?.interestComputationMethod}
+                                        placeholder="Select"
+                                        clearErrors={clearErrors}
+                                        options={interestComputationMethodOptions}
+                                        trigger={trigger}
+                                    />
+                                </div>
+
+                            </InputDivs>
+                            <InputDivs
+                                label={"Interest Capitalization Method"}
+                            >
+                                <div className="w-[300px]">
+                                    <BorderlessSelect
+                                        inputError={errors?.interestCapitalizationMethod}
+                                        register={register}
+                                        errors={errors}
+                                        setValue={setValue}
+                                        inputName={"interestCapitalizationMethod"}
+                                        defaultValue={values?.interestCapitalizationMethod}
+                                        placeholder="Select"
+                                        clearErrors={clearErrors}
+                                        options={interestCapitalizationMethodOptions}
+                                        trigger={trigger}
+                                    />
+                                </div>
+                            </InputDivs>
+                            {
+                                values.interestCapitalizationMethod === 2 &&
+                                <InputDivs
+                                    label={"Specify Interval"}
+                                >
+                                    <div className="w-[300px]">
+                                        <BorderlessSelect
+                                            inputError={errors?.interval}
+                                            register={register}
+                                            errors={errors}
+                                            setValue={setValue}
+                                            inputName={"interval"}
+                                            defaultValue={values?.interval}
+                                            placeholder="Select"
+                                            clearErrors={clearErrors}
+                                            options={intervalOptions}
+                                            trigger={trigger}
+                                        />
+                                    </div>
+                                </InputDivs>
+                            }
+                        </Fragment>
                     }
                 </div>
             </div>

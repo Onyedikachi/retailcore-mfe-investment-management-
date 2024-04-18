@@ -79,8 +79,20 @@ export const FacilityDetailsModelSchema = yup.object().shape({
   intMax: yup.number().typeError("Invalid value").nullable(),
 });
 
-export const SecurityPurchaseFacilityDetailSchema = yup.object().shape({
-
+export const FacilityDetailsModelSchema2 = yup.object().shape({
+  category: yup.string().required(),
+  issuer: yup.string().required().max(50),
+  description: yup.string().required().max(250),
+  // dealDate: yup.date().nullable().required(),
+  // maturiyDate: yup.date().nullable().required(),
+  currency: yup.string().required(),
+  discountRate: yup.number().required(),
+  perAmount: yup.number().required(),
+  faceValue: yup.number().required(),
+  consideration: yup.number().required(),
+  interestCapitalizationMethod: yup.number().required(),
+  interestComputationMethod: yup.number().required(),
+  interval: yup.number()
 })
 
 export const TransactionSettingModelSchema = yup.object().shape({

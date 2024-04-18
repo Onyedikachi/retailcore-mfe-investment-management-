@@ -23,6 +23,7 @@ export default function Select({
   trigger,
   error,
   disabled = false,
+  required = true
 }: BorderlessSelectProps): React.JSX.Element {
   const [selected, setSelected] = useState<any>("");
 
@@ -55,7 +56,7 @@ export default function Select({
       <Listbox
         value={selected || ""}
         {...register(inputName, {
-          required: true,
+          required: required,
         })}
         onChange={handleChange}
         disabled={disabled}

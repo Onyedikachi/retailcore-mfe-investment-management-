@@ -28,6 +28,7 @@ import {
 } from "@app/pages/investment/term-deposit/create-term-deposit/IndexComponent";
 import BottomBarLoader from "@app/components/BottomBarLoader";
 import SecurityPurchaseFormComponent from "./SecurityPurchaseFormComponent";
+import SecurityPurchasePreview from "./SecurityPurchasePreview";
 
 export function handleNext(step, setStep, formSteps) {
   step < formSteps.length && setStep(step + 1);
@@ -114,17 +115,17 @@ export default function IndexComponent() {
   const [productDetail, setProductDetail] = useState(null);
   const [calcDetail, setCalcDetail] = useState(null);
   const navigate = useNavigate();
-  
+
   const [formData, setFormData] = useState<any>(
     investmentType === "security-purchase" ?
-    {
-      id: id || "",
-      facilityDetailsModel: {
+      {
+        id: id || "",
+        facilityDetailsModel: {
           category: "",
           issuer: "",
           description: "",
-          dealDate: "",
-          maturiyDate: "",
+          dealDate: null,
+          maturiyDate: null,
           currency: "",
           discountRate: "",
           perAmount: "",
@@ -135,8 +136,6 @@ export default function IndexComponent() {
           interval: ""
         },
         accountingEntries: {
-          debitLedger : "",
-          creditLedger: ""
         }
       } :
       {
@@ -183,13 +182,13 @@ export default function IndexComponent() {
         recentlyUpdatedMeta: "",
         bookingType: CustomerCategoryType[investmentType]
       });
-      
-      const links = [
-        {
-          id: 1,
-          title: "Investment Management",
-          url: "/investment-management/overview",
-        },
+
+  const links = [
+    {
+      id: 1,
+      title: "Investment Management",
+      url: "/investment-management/overview",
+    },
     {
       id: 2,
       title: "book new Investment",
@@ -324,7 +323,7 @@ export default function IndexComponent() {
     }
   }, [detailIsSuccess, detail]);
 
-  const handleFormRef2 = ({step, setFormRef}) => {
+  const handleFormRef2 = ({ step, setFormRef }) => {
     switch (step) {
       case 1:
         setFormRef("facilityDetails");
@@ -532,10 +531,18 @@ export default function IndexComponent() {
         </div>
       )}
       {stage && stage === "summary" && (
-        <Preview
-          productDetail={productDetail}
-          formData={{ ...formData, calcDetail }}
-        />
+        <Fragment>
+          {
+            investmentType === "security-purchase" ?
+              <SecurityPurchasePreview productDetail={formData} />
+              :
+              <Preview
+                productDetail={productDetail}
+                formData={{ ...formData, calcDetail }}
+              />
+
+          }
+        </Fragment>
       )}
 
       <Loader
