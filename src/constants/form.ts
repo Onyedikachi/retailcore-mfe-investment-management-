@@ -44,6 +44,46 @@ export const BookingCustomerInfoSchema = yup.object().shape({
     .min(1, "Insufficient balance")
     .required(),
 });
+
+export const BondsProductFacilityDetailsModelSchema = yup.object().shape({
+  investmentProductId: yup.string().uuid().required("Select an investment"),
+  investmentPurpose: yup.string().required(),
+  availableVolume: yup.number().required(),
+  tenor: yup
+    .number()
+    .typeError("Invalid value")
+    .integer()
+    .positive()
+    .min(yup.ref("tenorMin"), "Tenor is too short")
+    .max(yup.ref("tenorMax"), "Tenor is too long")
+    .nullable()
+    .required("Tenor is required"),
+  faceValue: yup.number().required(),
+  cleanPrice: yup.number().required(),
+  dirtyPrice: yup.number().required(),
+  totalConsideration: yup.number().required(),
+  couponRate: yup.number().required(),
+  principal: yup
+    .number()
+    .typeError("Invalid value")
+    .positive()
+    .min(yup.ref("prinMin"), "Principal is too small")
+    .max(yup.ref("prinMax"), "Principal is too large")
+    .nullable()
+    .required("Principal is required"),
+  capitalizationMethod: yup.number().integer().min(0).max(4).required(),
+  interval: yup.number().integer().min(0).max(4)
+  .when("capitalizationMethod", {
+    is: 1,
+    then: (schema) => schema.required(),
+  }),
+  tenorMin: yup.number().typeError("Invalid value").nullable(),
+  tenorMax: yup.number().typeError("Invalid value").integer().nullable(),
+  prinMin: yup.number().typeError("Invalid value").integer().nullable(),
+  prinMax: yup.number().typeError("Invalid value").integer().nullable(),
+  intMin: yup.number().typeError("Invalid value").nullable(),
+  intMax: yup.number().typeError("Invalid value").nullable(),
+});
 export const FacilityDetailsModelSchema = yup.object().shape({
   investmentProductId: yup.string().uuid().required("Select an investment"),
   investmentPurpose: yup.string(),

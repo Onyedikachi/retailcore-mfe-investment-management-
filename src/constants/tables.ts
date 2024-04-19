@@ -558,7 +558,7 @@ export const IndividualFilterOptions: any[] = [
 export const ProductTypes: any[] = [
   {
     id: 0,
-    name: "Term Deposit",
+    name: "Bonds",
   },
   {
     id: 1,
