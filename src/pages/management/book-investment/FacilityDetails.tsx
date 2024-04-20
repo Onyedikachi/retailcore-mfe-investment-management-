@@ -1,5 +1,5 @@
 import { DropDown } from "@app/components";
-import { BorderlessSelect, FormDate, RedDot } from "@app/components/forms";
+import { BorderlessSelect, FormDate, MinMaxInput, RedDot } from "@app/components/forms";
 import { InputDivs } from "@app/components/forms/SideLabelSearchSelect";
 import { InputDiv } from "@app/components/pages/term-deposit/forms/product-information";
 import { FacilityDetailsModelSchema, FacilityDetailsModelSchema2, categoryOptions } from "@app/constants";
@@ -27,6 +27,68 @@ export const onProceed = (
     });
     proceed();
 };
+
+export const interestCapitalizationMethodOptions = [
+    {
+        id: 1,
+        text: "Upon Booking",
+        value: 1,
+    },
+
+    {
+        id: 2,
+        text: "At Intervals",
+        value: 2,
+    },
+    {
+        id: 3,
+        text: "At Maturity",
+        value: 3,
+    },
+];
+
+export const interestComputationMethodOptions = [
+    {
+        id: 1,
+        text: "Actual/Actual",
+        value: 1,
+    },
+
+    {
+        id: 2,
+        text: "Actual/360",
+        value: 2,
+    },
+    {
+        id: 3,
+        text: "Actual/365",
+        value: 3,
+    },
+];
+
+export const intervalOptions = [
+    {
+        id: 1,
+        text: "Semi-Anually",
+        value: 1,
+    },
+
+    {
+        id: 2,
+        text: "Anually",
+        value: 2,
+    },
+    {
+        id: 3,
+        text: "Quarterly",
+        value: 3,
+    },
+    {
+        id: 4,
+        text: "Monthly",
+        value: 4,
+    },
+];
 
 export default ({
     formData,
@@ -63,88 +125,29 @@ export default ({
 
     const values = getValues();
 
-    // useEffect(() => console.log(values, isValid, errors), [])
 
     const productCategoryOptions = [
         {
             id: 1,
             text: "Bonds",
-            value: "bonds",
+            value: 1,
         },
 
         {
             id: 2,
             text: "Commercial Paper",
-            value: "commercial-paper",
+            value: 2,
         },
         {
             id: 3,
             text: "Treasury Bills",
-            value: "treasury-bills",
-        },
-    ];
-
-    const interestCapitalizationMethodOptions = [
-        {
-            id: 1,
-            text: "Upon Booking",
-            value: 1,
-        },
-
-        {
-            id: 2,
-            text: "At Intervals",
-            value: 2,
-        },
-        {
-            id: 3,
-            text: "At Maturity",
             value: 3,
         },
     ];
 
-    const interestComputationMethodOptions = [
-        {
-            id: 1,
-            text: "Actual/Actual",
-            value: 1,
-        },
 
-        {
-            id: 2,
-            text: "Actual/360",
-            value: 2,
-        },
-        {
-            id: 3,
-            text: "Actual/365",
-            value: 3,
-        },
-    ];
 
-    const intervalOptions = [
-        {
-            id: 1,
-            text: "Semi-Anually",
-            value: 1,
-        },
 
-        {
-            id: 2,
-            text: "Anually",
-            value: 2,
-        },
-        {
-            id: 3,
-            text: "Quarterly",
-            value: 3,
-        },
-        {
-            id: 4,
-            text: "Monthly",
-            value: 4,
-        },
-    ];
 
     useEffect(() => {
         setDisabled(!isValid);
@@ -156,9 +159,21 @@ export default ({
         }
     }, [
         isValid,
-        () => values
     ]);
 
+    useEffect(() => {
+        setValue("currency", defaultCurrency?.id)
+    }, [defaultCurrency])
+
+    useEffect(() => {
+        console.log(values)
+        if (values.faceValue && values.discountRate) {
+            const val = (values.discountRate / 100) * values.faceValue;
+            console.log(val !== values.totalConsideration, val)
+            if (val !== values.totalConsideration)
+                setValue("totalConsideration", val)
+        }
+    }, [values])
 
     return (
         <form
@@ -179,14 +194,14 @@ export default ({
                     >
                         <div className="flex gap-[15px]">
                             <BorderlessSelect
-                                inputError={errors?.category}
+                                inputError={errors?.moneyMarketCategory}
                                 register={register}
                                 errors={errors}
                                 setValue={setValue}
-                                inputName={"category"}
+                                inputName={"moneyMarketCategory"}
                                 labelName={""}
                                 defaultValue={
-                                    values?.category
+                                    values?.moneyMarketCategory
                                 }
                                 placeholder="Select Category"
                                 clearErrors={clearErrors}
@@ -196,7 +211,7 @@ export default ({
                         </div>
                     </InputDivs>
                     {
-                        values?.category &&
+                        values?.moneyMarketCategory ?
                         <Fragment>
                             <InputDivs
                                 label={"issuer"}
@@ -301,26 +316,28 @@ export default ({
                                         errors={errors}
                                         setValue={setValue}
                                         inputName={"currency"}
-                                        defaultValue={values?.currency}
+                                        defaultValue={defaultCurrency?.id}
                                         placeholder="Select currency"
                                         clearErrors={clearErrors}
                                         options={currencies}
                                         trigger={trigger}
                                     />
                                 </div>
-
                             </InputDivs>
                             <InputDivs label={"Discount Rate"}>
                                 <InputDiv customClass="w-full min-w-[300px] ">
                                     <div className="relative flex items-center max-w-[642px] border-b border-[#8F8F8F]">
-                                        <input
-                                            id="discountRate"
-                                            data-testid="discountRate"
-                                            type="number"
-                                            {...register("discountRate")}
-                                            className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] placeholder:text-[#BCBBBB]`}
-                                            placeholder="Enter Rate"
+                                        <MinMaxInput
+                                            inputName="discountRate"
+                                            register={register}
+                                            errors={errors}
+                                            setValue={setValue}
+                                            trigger={trigger}
+                                            clearErrors={clearErrors}
                                             defaultValue={values.discountRate}
+                                            type="number"
+                                            min={1}
+                                            max={100}
                                         />
                                         <div className="rounded-[100px] text-[14px] mr-2 bg-[#FFE9E9]">
                                             Percent
@@ -358,20 +375,22 @@ export default ({
                                             values?.currency &&
                                             <span className="mr-2">{handleCurrencyName(values?.currency, currencies)}</span>
                                         }
-                                        <input
-                                            id="faceValue"
-                                            data-testid="faceValue"
-                                            type="number"
-                                            {...register("faceValue")}
-                                            className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB]`}
-                                            placeholder="Enter Rate"
+                                        <MinMaxInput
+                                            inputName="faceValue"
+                                            register={register}
+                                            errors={errors}
+                                            setValue={setValue}
+                                            trigger={trigger}
+                                            clearErrors={clearErrors}
                                             defaultValue={values.faceValue}
+                                            type="number"
+                                            min={0}
                                         />
                                     </div>
                                 </InputDiv>
                             </InputDivs>
                             <InputDivs
-                                label="Consideration"
+                                label="Total Consideration"
                             >
                                 <InputDiv customClass="w-full min-w-[300px]">
                                     <div className="relative flex items-center max-w-[642px]">
@@ -379,14 +398,7 @@ export default ({
                                             values?.currency &&
                                             <span className="mr-2">{handleCurrencyName(values?.currency, currencies)}</span>
                                         }
-                                        <input
-                                            id="consideration"
-                                            data-testid="consideration"
-                                            type="number"
-                                            {...register("consideration")}
-                                            className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB]`}
-                                            placeholder="Enter Rate"
-                                            defaultValue={values.consideration}
+                                        <input className="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB]" value={values.totalConsideration}
                                         />
                                     </div>
                                 </InputDiv>
@@ -416,32 +428,34 @@ export default ({
                             >
                                 <div className="w-[300px]">
                                     <BorderlessSelect
-                                        inputError={errors?.interestCapitalizationMethod}
+                                        inputError={errors?.capitalizationMethod}
                                         register={register}
                                         errors={errors}
                                         setValue={setValue}
-                                        inputName={"interestCapitalizationMethod"}
-                                        defaultValue={values?.interestCapitalizationMethod}
+                                        inputName={"capitalizationMethod"}
+                                        defaultValue={values?.capitalizationMethod}
                                         placeholder="Select"
                                         clearErrors={clearErrors}
+                                        requiredField={false}
+                                        required={false}
                                         options={interestCapitalizationMethodOptions}
                                         trigger={trigger}
                                     />
                                 </div>
                             </InputDivs>
                             {
-                                values.interestCapitalizationMethod === 2 &&
+                                values.capitalizationMethod === 2 &&
                                 <InputDivs
                                     label={"Specify Interval"}
                                 >
                                     <div className="w-[300px]">
                                         <BorderlessSelect
-                                            inputError={errors?.interval}
+                                            inputError={errors?.securityPurchaseIntervals}
                                             register={register}
                                             errors={errors}
                                             setValue={setValue}
                                             inputName={"interval"}
-                                            defaultValue={values?.interval}
+                                            defaultValue={values?.securityPurchaseIntervals}
                                             placeholder="Select"
                                             clearErrors={clearErrors}
                                             requiredField={false}
@@ -452,7 +466,7 @@ export default ({
                                     </div>
                                 </InputDivs>
                             }
-                        </Fragment>
+                        </Fragment> : <div></div>
                     }
                 </div>
             </div>

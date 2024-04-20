@@ -122,19 +122,23 @@ export const FacilityDetailsModelSchema = yup.object().shape({
 });
 
 export const FacilityDetailsModelSchema2 = yup.object().shape({
-  category: yup.string().required(),
+  moneyMarketCategory: yup.number().integer().nullable().required(),
   issuer: yup.string().required().max(50),
   description: yup.string().required().max(250),
-  // dealDate: yup.date().nullable().required(),
-  // maturiyDate: yup.date().nullable().required(),
+  dealDate: yup.date().nullable().required(),
+  maturityDate: yup.date().nullable().required(),
   currency: yup.string().required(),
   discountRate: yup.number().required(),
   perAmount: yup.number().required(),
   faceValue: yup.number().required(),
-  consideration: yup.number().required(),
-  interestCapitalizationMethod: yup.number().required(),
-  interestComputationMethod: yup.number().required(),
-  interval: yup.number()
+  totalConsideration: yup.number().required(),
+  interestComputationMethod: yup.number().integer().required(),
+  capitalizationMethod: yup.number().required(),
+    securityPurchaseIntervals: yup.number().nullable()
+    .when("capitalizationMethod", {
+      is: 2,
+      then: (schema) => schema.required()
+    })
 })
 
 export const TransactionSettingModelSchema = yup.object().shape({

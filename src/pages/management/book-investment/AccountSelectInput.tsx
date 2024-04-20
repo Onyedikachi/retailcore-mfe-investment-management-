@@ -167,7 +167,7 @@ export default function ({
                                 <span>
                                     Balance Impact
                                 </span>
-                                {entryData.balance_impact.toLowerCase() ===
+                                {entryData.balance_impact?.toLowerCase() ===
                                     "low" ? (
                                     <FaCaretDown className="text-red-500" fontSize="36px" />
                                 ) : (

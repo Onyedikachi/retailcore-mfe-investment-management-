@@ -159,9 +159,10 @@ export const investmentApi: any = createApi({
       },
     }),
     createInvestment: builder.mutation<any, any>({
-      query: (data) => {
+      query: (data) => {  
+        const {isSecurityPurchase} = data;
         return {
-          url: urls.INVESTMENT_CREATE,
+          url: isSecurityPurchase ? urls.SECURITY_PURCHASE_CREATE :  urls.INVESTMENT_CREATE,
           method: "post",
           body: data,
         };

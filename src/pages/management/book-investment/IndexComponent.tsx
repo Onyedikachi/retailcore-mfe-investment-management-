@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, Fragment } from "react";
+import React, { useEffect, useState, useRef, Fragment, useContext } from "react";
 import { BookInvestmentFormSteps, CustomerCategoryType, securityPurchageFormSteps } from "@app/constants";
 import { ProductInfoInvestmentCalc } from "@app/components/management";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
@@ -29,6 +29,7 @@ import {
 import BottomBarLoader from "@app/components/BottomBarLoader";
 import SecurityPurchaseFormComponent from "./SecurityPurchaseFormComponent";
 import SecurityPurchasePreview from "./SecurityPurchasePreview";
+import { AppContext } from "@app/utils";
 
 export function handleNext(step, setStep, formSteps) {
   step < formSteps.length && setStep(step + 1);
@@ -115,29 +116,31 @@ export default function IndexComponent() {
   const [productDetail, setProductDetail] = useState(null);
   const [calcDetail, setCalcDetail] = useState(null);
   const navigate = useNavigate();
+  const { currencies, defaultCurrency } = useContext(AppContext);
 
   const [formData, setFormData] = useState<any>(
     investmentType === "security-purchase" ?
       {
         id: id || "",
         facilityDetailsModel: {
-          category: "",
+          moneyMarketCategory: 0,
           issuer: "",
           description: "",
           dealDate: null,
-          maturiyDate: null,
-          currency: "",
-          discountRate: "",
-          perAmount: "",
-          faceValue: "",
-          consideration: "",
-          interestCapitalizationMethod: "",
-          interestComputationMethod: "",
-          interval: ""
+          maturityDate: null,
+          perAmount: null,
+          currencyCode: "",
+          cleanPrice: 0,
+          faceValue: null,
+          totalConsideration: null,
+          interestComputationMethod: 1,
+          capitalizationMethod: 1,
+          discountRate: null,
+          securityPurchaseIntervals: 1,
         },
         accountingEntries: {
           debitLedger: "",
-          creditLedger: ""
+          creditLedger: "",
         }
       } :
       {
@@ -535,7 +538,7 @@ export default function IndexComponent() {
         <Fragment>
           {
             investmentType === "security-purchase" ?
-              <SecurityPurchasePreview productDetail={formData} />
+              <SecurityPurchasePreview productDetail={formData} formData={{ ...formData?.facilityDetailsModel, ...formData?.accountingEntries }} />
               :
               <Preview
                 productDetail={productDetail}
