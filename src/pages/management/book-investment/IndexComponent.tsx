@@ -157,6 +157,8 @@ export default function IndexComponent() {
           balance: "",
           currencyId: "",
           currencyCode: "",
+          relationshipOfficerId: "",
+          relationshipOfficerName: "",
         },
         facilityDetailsModel: {
           capitalizationMethod: 2,
@@ -177,10 +179,13 @@ export default function IndexComponent() {
         transactionSettingModel: {
           accountName: "",
           accountForLiquidation: "",
+          accountForInterest: "",
           notifyCustomerOnMaturity: false,
           rollOverAtMaturity: false,
           rollOverOption: 0,
           accountForLiquidationLedgerId: "",
+          startDateOption: 0,
+          startDate: new Date(),
         },
         isDraft: false,
         recentUpdated: false,

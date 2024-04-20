@@ -8,6 +8,8 @@ import { ValidationError } from "yup";
 import { currencyFormatter } from "@app/utils/formatCurrency";
 
 export const ProductInformationFormSchema = yup.object({
+  investmentId: yup.string(),
+  issuer: yup.string(),
   productName: yup
     .string()
     .required("Product name is required")
@@ -143,11 +145,11 @@ export const FacilityDetailsModelSchema2 = yup.object().shape({
 
 export const TransactionSettingModelSchema = yup.object().shape({
   accountForLiquidation: yup
-    .mixed()
+    .string()
     .typeError("Select an account")
     .required("Select an account"),
   accountForInterest: yup
-    .mixed()
+    .string()
     .typeError("Select an account")
     .required("Select an account"),
   accountForLiquidationLedgerId: yup.string().required("Ledger id is required"),
@@ -936,4 +938,6 @@ export const toolTips = {
   allowPrincipalWithdrawal:
     "Allows customers to access their investment funds without fully cashing out their investments",
   description: "Enter a description for this loan product",
+  issuer:"",
+  investmentId:""
 };
