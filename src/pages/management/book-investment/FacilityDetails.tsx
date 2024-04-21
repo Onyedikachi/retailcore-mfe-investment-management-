@@ -167,14 +167,12 @@ export default ({
     }, [defaultCurrency])
 
     useEffect(() => {
-        console.log("formData = ", formData);
         if (formData?.facilityDetailsModel) {
             reset(formData?.facilityDetailsModel);
         }
     }, [formData])
 
     useEffect(() => {
-        console.log("preSave", formData)
         setFormData({
             ...formData,
             facilityDetailsModel: values,

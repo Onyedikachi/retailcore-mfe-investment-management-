@@ -336,7 +336,7 @@ export default function IndexComponent() {
   }
 
   useEffect(() => {
-    if (productDetailsIsSuccess) {
+    if (productDetailsIsSuccess && investmentType === "security-purchase") {
       setFormData({ ...formData, ...setupForm(productDetails?.data) })
     }
   }, [productDetailsIsSuccess, productDetails]);
@@ -429,7 +429,7 @@ export default function IndexComponent() {
       (process !== "create")
     ) {
       console.log("rq", requestData?.data?.metaInfo)
-      if (requestData?.data?.metaInfo) {
+      if (requestData?.data?.metaInfo && investmentType === "security-purchase") {
         const d = JSON.parse(requestData?.data?.metaInfo)
         setFormData({ ...formData, ...setupForm(d) })
       }

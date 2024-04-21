@@ -190,6 +190,7 @@ export default function ({
     const [
         modifyProduct,
         {
+            data: modifyRes,
             isLoading: modifyLoading,
             isSuccess: modifySuccess,
             isError: modifyIsError,
@@ -198,7 +199,8 @@ export default function ({
     ] = useModifyInvestmentMutation();
     const [
         modifyRequest,
-        {
+        {   
+            data: modifyRequestRes,
             isLoading: modifyRequestLoading,
             isSuccess: modifyRequestSuccess,
             isError: modifyRequestIsError,
@@ -227,7 +229,7 @@ export default function ({
         if (isSuccess || modifySuccess || modifyRequestSuccess) {
             let text;
             if (investmentType === "security-purchase") {
-                text = reqData?.message || "Good"
+                text = reqData?.message || modifyRes?.message || modifyRequestRes || "" 
             }
             else if (process === "create" && role === "superadmin") {
                 text = `${currencyFormatter(
