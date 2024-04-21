@@ -129,7 +129,7 @@ export const FacilityDetailsModelSchema2 = yup.object().shape({
   description: yup.string().required().max(250),
   dealDate: yup.date().nullable().required(),
   maturityDate: yup.date().nullable().required(),
-  currency: yup.string().required(),
+  currencyCode: yup.string().required(),
   discountRate: yup.number().required(),
   perAmount: yup.number().required(),
   faceValue: yup.number().required(),

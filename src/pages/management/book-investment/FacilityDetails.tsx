@@ -162,7 +162,7 @@ export default ({
     ]);
 
     useEffect(() => {
-        setValue("currency", defaultCurrency?.id)
+        setValue("currencyCode", defaultCurrency?.id)
     }, [defaultCurrency])
 
     useEffect(() => {
@@ -311,11 +311,11 @@ export default ({
                             >
                                 <div className="w-[300px]">
                                     <BorderlessSelect
-                                        inputError={errors?.currency}
+                                        inputError={errors?.currencyCode}
                                         register={register}
                                         errors={errors}
                                         setValue={setValue}
-                                        inputName={"currency"}
+                                        inputName={"currencyCode"}
                                         defaultValue={defaultCurrency?.id}
                                         placeholder="Select currency"
                                         clearErrors={clearErrors}
@@ -351,8 +351,8 @@ export default ({
                                 <InputDiv customClass="w-full min-w-[300px]">
                                     <div className="relative flex items-center max-w-[642px]">
                                         {
-                                            values?.currency &&
-                                            <span className="mr-2">{handleCurrencyName(values?.currency, currencies)}</span>
+                                            values?.currencyCode &&
+                                            <span className="mr-2">{handleCurrencyName(values?.currencyCode, currencies)}</span>
                                         }
                                         <input
                                             id="perAmount"
@@ -372,8 +372,8 @@ export default ({
                                 <InputDiv customClass="w-full min-w-[300px]">
                                     <div className="relative flex items-center max-w-[642px]">
                                         {
-                                            values?.currency &&
-                                            <span className="mr-2">{handleCurrencyName(values?.currency, currencies)}</span>
+                                            values?.currencyCode &&
+                                            <span className="mr-2">{handleCurrencyName(values?.currencyCode, currencies)}</span>
                                         }
                                         <MinMaxInput
                                             inputName="faceValue"
@@ -395,8 +395,8 @@ export default ({
                                 <InputDiv customClass="w-full min-w-[300px]">
                                     <div className="relative flex items-center max-w-[642px]">
                                         {
-                                            values?.currency &&
-                                            <span className="mr-2">{handleCurrencyName(values?.currency, currencies)}</span>
+                                            values?.currencyCode &&
+                                            <span className="mr-2">{handleCurrencyName(values?.currencyCode, currencies)}</span>
                                         }
                                         <input className="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB]" value={values.totalConsideration}
                                         />
