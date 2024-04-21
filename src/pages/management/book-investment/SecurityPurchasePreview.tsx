@@ -471,7 +471,7 @@ export default function ({
                                                     Credit Ledger
                                                 </div>
                                                 <div className="w-full text-base font-normal text-[#636363]">
-                                                    {ledgerData?.value?.items?.find(i => i.accountNo === productDetail.accountingEntries.creditLedger)?.accountName || " - "}
+                                                    {ledgerData?.value?.items?.find(i => i.accountNo === productDetail.accountingEntries?.creditLedger)?.accountName || " - "}
                                                 </div>
                                             </div>
                                             <div className=" flex gap-[54px]">
@@ -479,7 +479,7 @@ export default function ({
                                                     DebitLedger
                                                 </div>
                                                 <div className="w-full text-base font-normal text-[#636363]">
-                                                    {ledgerData?.value?.items?.find(i => i.accountNo === productDetail.accountingEntries.debitLedger)?.accountName || " - "}
+                                                    {ledgerData?.value?.items?.find(i => i.accountNo === productDetail.accountingEntries?.debitLedger)?.accountName || " - "}
                                                 </div>
                                             </div>
                                         </div>

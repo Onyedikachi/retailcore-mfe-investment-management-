@@ -84,7 +84,7 @@ export const handleDraft = ({
 }) => {
   setIsConfirmOpen(false);
   const reqData = investmentType === "security-purchase" ?
-    { ...formData?.facilityDetailsModel, ...formData?.accountingEntries, id: formData.id } : formData;
+    { ...formData?.accountingEntries, ...formData?.facilityDetailsModel, id: formData.id } : formData;
   if (process === "modify") {
     modifyProduct({ ...reqData, isDraft: true, id, investmentType });
   }
@@ -327,9 +327,17 @@ export default function IndexComponent() {
     setCalcDetail(calcData?.data);
   }, [calcData, calcIsSuccess]);
 
+  const setupForm = (source) => {
+    const facilityDetailsModel = source;
+    const accountingEntries = { debitLedger: source?.debitLedger, creditLedger: source?.creditLedger };
+    delete facilityDetailsModel.creditLedger;
+    delete facilityDetailsModel.debitLedger;
+    return ({ facilityDetailsModel, accountingEntries })
+  }
+
   useEffect(() => {
     if (productDetailsIsSuccess) {
-      setFormData({ ...formData, facilityDetailsModel: productDetails?.data, accountingEntries: productDetails?.data })
+      setFormData({ ...formData, ...setupForm(productDetails?.data) })
     }
   }, [productDetailsIsSuccess, productDetails]);
 
@@ -416,6 +424,16 @@ export default function IndexComponent() {
       formData,
       id,
     });
+    if (
+      investmentType === "security-purchase" &&
+      (process !== "create")
+    ) {
+      console.log("rq", requestData?.data?.metaInfo)
+      if (requestData?.data?.metaInfo) {
+        const d = JSON.parse(requestData?.data?.metaInfo)
+        setFormData({ ...formData, ...setupForm(d) })
+      }
+    }
   }, [requestIsSuccess]);
 
   return (

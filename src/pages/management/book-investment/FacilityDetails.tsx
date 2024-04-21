@@ -174,6 +174,7 @@ export default ({
     }, [formData])
 
     useEffect(() => {
+        console.log("preSave", formData)
         setFormData({
             ...formData,
             facilityDetailsModel: values,
