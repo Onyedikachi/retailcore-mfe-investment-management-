@@ -159,10 +159,10 @@ export const investmentApi: any = createApi({
       },
     }),
     createInvestment: builder.mutation<any, any>({
-      query: (data) => {  
-        const {isSecurityPurchase} = data;
+      query: (data) => {
+        const { isSecurityPurchase } = data;
         return {
-          url: isSecurityPurchase ? urls.SECURITY_PURCHASE_CREATE :  urls.INVESTMENT_CREATE,
+          url: isSecurityPurchase ? urls.SECURITY_PURCHASE_CREATE : urls.INVESTMENT_CREATE,
           method: "post",
           body: data,
         };
@@ -199,7 +199,7 @@ export const investmentApi: any = createApi({
     modifyInvestmentRequest: builder.mutation<any, any>({
       query: (data) => {
         return {
-          url: `${urls.INVESTMENT_REQUEST}/edit/${data?.id}`,
+          url: `${data?.isSecurityPurchase ? urls.SECURITY_PURCHASE_REQUEST : urls.INVESTMENT_REQUEST}/edit/${data?.id}`,
           method: "put",
           body: data,
         };
@@ -435,6 +435,28 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    getSecurityPurchaseActivityLog: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `${urls.SECURITY_PURCHASE_ACTIVITY_LOG}?${new URLSearchParams(
+            cleanObject(params)
+          )}`,
+          method: "get",
+          params: cleanObject(params),
+        };
+      },
+    }),
+    getSecurityPurchaseRequestActivityLog: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `${urls.SECURITY_PURCHASE_REQUEST_ACTIVITY_LOG}?${new URLSearchParams(
+            cleanObject(params)
+          )}`,
+          method: "get",
+          params: cleanObject(params),
+        };
+      },
+    }),
 
     getInvestmentStats: builder.query<any, any>({
       query: (data) => {
@@ -603,7 +625,8 @@ export const {
   useModifyInvestmentMutation,
   useModifyInvestmentRequestMutation,
   useGetInvestmentDashboardStatsQuery,
-
+  useGetSecurityPurchaseActivityLogQuery,
+  useGetSecurityPurchaseRequestActivityLogQuery,
   useApproveInvestmentMutation,
   useRejectInvestmentMutation,
   useEarlyLiquidateMutation,

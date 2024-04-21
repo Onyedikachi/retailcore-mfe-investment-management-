@@ -11,13 +11,13 @@ import {
 import { Breadcrumbs, Loader, Button } from "@app/components";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import {
-    useGetInvestmentActivityLogQuery,
     useModifyInvestmentMutation,
     useModifyInvestmentRequestMutation,
     useCreateInvestmentMutation,
-    useGetInvestmentRequestActivityLogQuery,
     useGetGlClassQuery,
     useGetAccountsQuery,
+    useGetSecurityPurchaseRequestActivityLogQuery,
+    useGetSecurityPurchaseActivityLogQuery,
 } from "@app/api";
 import { Confirm, Failed, Success } from "@app/components/modals";
 
@@ -160,10 +160,10 @@ export default function ({
     const [entriesData, setEntriesData] = useState(null);
 
     const { data: activityData, isLoading: activityIsLoading } =
-        useGetInvestmentActivityLogQuery({ bookingId: id }, { skip: !id });
+        useGetSecurityPurchaseActivityLogQuery({ id: id }, { skip: !id });
     const { data: activityRequestData, isLoading: activityRequestIsLoading } =
-        useGetInvestmentRequestActivityLogQuery(
-            { bookingrequestId: id },
+        useGetSecurityPurchaseRequestActivityLogQuery(
+            { id: id },
             { skip: !id }
         );
     const [
@@ -470,7 +470,7 @@ export default function ({
                                                     Credit Ledger
                                                 </div>
                                                 <div className="w-full text-base font-normal text-[#636363]">
-                                                    {productDetail.accountingEntries.creditLedger || ' - '}
+                                                    {ledgerData?.value?.items?.find(i => i.accountNo === productDetail.accountingEntries.creditLedger)?.accountName || " - "}
                                                 </div>
                                             </div>
                                             <div className=" flex gap-[54px]">
@@ -478,7 +478,7 @@ export default function ({
                                                     DebitLedger
                                                 </div>
                                                 <div className="w-full text-base font-normal text-[#636363]">
-                                                    {productDetail.accountingEntries.debitLedger || ' - '}
+                                                    {ledgerData?.value?.items?.find(i => i.accountNo === productDetail.accountingEntries.debitLedger)?.accountName || " - "}
                                                 </div>
                                             </div>
                                         </div>

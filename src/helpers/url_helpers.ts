@@ -36,7 +36,9 @@ const urls = {
 
   // Security Purchase
   SECURITY_PURCHASE_CREATE: "/SecurityPurchase/add",
-
+  SECURITY_PURCHASE_REQUEST: "/SecurityPurchaseRequest",
+  SECURITY_PURCHASE_ACTIVITY_LOG: "SecurityPurchase/activityLog",
+  SECURITY_PURCHASE_REQUEST_ACTIVITY_LOG: "SecurityPurchaseRequest/activityLog"
 };
 
 export default urls;

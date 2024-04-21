@@ -211,7 +211,7 @@ export default function IndexComponent() {
     },
   ];
 
-
+// To modify
 
   const {
     data: detail,
