@@ -75,6 +75,13 @@ export default ({
     }
 
     useEffect(() => {
+        setFormData({
+            ...formData,
+            accountingEntries: entries,
+        });
+    }, [isSavingDraft]);
+
+    useEffect(() => {
         reset(entries);
     }, [entries])
 
@@ -104,7 +111,7 @@ export default ({
                     </div>
                     <AccountSelectInput
                         const handleEntry={handleEntry}
-                        entryValue={entries.debitLedger}
+                        entryValue={entries?.debitLedger}
                         inputName="debitLedger"
                         placeholder="Search by Account Number"
                         entryData={entriesData?.debitLedger}
@@ -133,7 +140,7 @@ export default ({
 
                     <AccountSelectInput
                         const handleEntry={handleEntry}
-                        entryValue={entries.creditLedger}
+                        entryValue={entries?.creditLedger}
                         inputName="creditLedger"
                         placeholder="Search by Account Number"
                         entryData={entriesData?.creditLedger}

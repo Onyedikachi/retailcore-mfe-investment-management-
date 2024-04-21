@@ -19,6 +19,7 @@ import {
   useGetInvestmentRequestDetailQuery,
   useModifyInvestmentMutation,
   useModifyInvestmentRequestMutation,
+  useGetValuesQuery,
 } from "@app/api";
 import { Confirm, Failed, Success } from "@app/components/modals";
 import { Prompts } from "@app/constants/enums";
@@ -79,17 +80,20 @@ export const handleDraft = ({
   setIsConfirmOpen,
   modifyProduct,
   createInvestment,
+  investmentType
 }) => {
   setIsConfirmOpen(false);
+  const reqData = investmentType === "security-purchase" ?
+    { ...formData?.facilityDetailsModel, ...formData?.accountingEntries, id: formData.id } : formData;
   if (process === "modify") {
-    modifyProduct({ ...formData, isDraft: true, id });
+    modifyProduct({ ...reqData, isDraft: true, id, investmentType });
   }
   if (process === "create" || process === "clone") {
-    const { id, ...restData } = formData;
-    createInvestment({ ...restData, isDraft: true });
+    const { id, ...restData } = reqData;
+    createInvestment({ ...restData, isDraft: true, investmentType });
   }
   if (process === "continue" || process === "withdraw_modify") {
-    modifyRequest({ ...formData, isDraft: true, id });
+    modifyRequest({ ...reqData, isDraft: true, id, investmentType });
   }
 };
 
@@ -211,7 +215,7 @@ export default function IndexComponent() {
     },
   ];
 
-// To modify
+  // To modify
 
   const {
     data: detail,
@@ -259,7 +263,7 @@ export default function IndexComponent() {
     isSuccess: requestIsSuccess,
   } = useGetInvestmentRequestDetailQuery(
     {
-      id,
+      id, investmentType
     },
     { skip: !id }
   );
@@ -270,7 +274,7 @@ export default function IndexComponent() {
     isSuccess: productDetailsIsSuccess,
   } = useGetInvestmentDetailQuery(
     {
-      id,
+      id, investmentType
     },
     { skip: !id }
   );
@@ -297,6 +301,10 @@ export default function IndexComponent() {
 
   const [formSteps, setFormSteps] = useState(investmentType === "security-purchase" ? securityPurchageFormSteps : BookInvestmentFormSteps)
 
+  const {
+    data: d
+  } = useGetValuesQuery();
+
   useEffect(() => {
     if (
       productDetail &&
@@ -318,6 +326,12 @@ export default function IndexComponent() {
   useEffect(() => {
     setCalcDetail(calcData?.data);
   }, [calcData, calcIsSuccess]);
+
+  useEffect(() => {
+    if (productDetailsIsSuccess) {
+      setFormData({ ...formData, facilityDetailsModel: productDetails?.data, accountingEntries: productDetails?.data })
+    }
+  }, [productDetailsIsSuccess, productDetails]);
 
   useEffect(() => {
     if (detailIsSuccess) {
@@ -426,7 +440,7 @@ export default function IndexComponent() {
                 </div>
                 <div className=" bg-[#ffffff] border border-[#EEEEEE] rounded-[10px] px-[87px] pt-[100px] pb-[43px] ">
                   {/* {form component} */}
-                  {!requestIsLoading ? (
+                  {(!requestIsLoading && !productDetailsIsLoading) ? (
                     <Fragment>
                       {
                         investmentType !== "security-purchase" ?
@@ -475,7 +489,7 @@ export default function IndexComponent() {
                             isSavingDraft={isSavingDraft}
                             setProductDetail={setProductDetail}
                             productDetail={productDetail}
-                            detailLoading={detailLoading}
+                            detailLoading={productDetailsIsLoading}
                             preModifyRequest={preModifyRequest}
                             preCreateInvestment={preCreateInvestment}
                           />
@@ -575,6 +589,7 @@ export default function IndexComponent() {
               setIsConfirmOpen,
               modifyProduct,
               createInvestment,
+              investmentType
             })
           }
         />

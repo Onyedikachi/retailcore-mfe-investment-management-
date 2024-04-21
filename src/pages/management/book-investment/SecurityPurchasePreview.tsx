@@ -105,15 +105,15 @@ export const submitForm = (
     createRequest,
     process,
     id,
-    previousData
+    previousData,
+    investmentType
 ) => {
     if (process === "modify") {
         modifyProduct({
             ...formData,
             isDraft: false,
             id,
-            recentlyUpdatedMeta: previousData ? JSON.stringify(previousData) : null,
-            isSecurityPurchase: true
+            recentlyUpdatedMeta: previousData ? JSON.stringify(previousData) : null, investmentType
         });
     }
     if (
@@ -126,12 +126,12 @@ export const submitForm = (
             isDraft: false,
             id: formData.id || id,
             recentlyUpdatedMeta: previousData ? JSON.stringify(previousData) : null,
-            isSecurityPurchase: true,
+            investmentType
         });
     }
 
     if ((process === "create" || process === "clone") && !formData?.id) {
-        createRequest({ ...formData, isDraft: false, isSecurityPurchase: true });
+        createRequest({ ...formData, isDraft: false, investmentType });
     }
 
     // navigate(paths.INVESTMENT_DASHBOARD);
@@ -220,7 +220,8 @@ export default function ({
             createRequest,
             process,
             id,
-            previousData
+            previousData,
+            investmentType
         );
     useEffect(() => {
         if (isSuccess || modifySuccess || modifyRequestSuccess) {

@@ -107,8 +107,6 @@ export default function ({
         setEntyData(ledgerData?.value?.items?.find(i => i.accountNo === entryValue))
     }, [ledgerData, entryValue])
 
-    useEffect(() => console.log(entryData), [entryData])
-
     useEffect(() => {
         if (glClass && entryData) {
             console.log(entryData?.accountType?.toLowerCase(), "abeg");
