@@ -1,41 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import { FaCaretDown, FaCaretUp, FaSearch, FaTimes } from "react-icons/fa";
 import { tabLinks } from "@app/constants";
 import { useGetGlClassQuery, useGetAccountsQuery } from "@app/api";
 import { Icon } from "@iconify/react";
+import debounce from "lodash.debounce";
+import { AccountCategories } from "@app/constants"
 
 export function closeDropdown(setIsOpen) {
     setIsOpen(false);
 }
-
-const LedgerItem = ({
-    menu,
-    query,
-    handleClick,
-    inputName,
-    setQuery,
-    setOpen,
-    trigger,
-}) => {
-    return (
-        <div
-            className={`flex flex-col text-xs  cursor-pointer py-[3px] rounded hover:bg-[#E8C8C85E]  px-1 ${query === menu.accountName ? "bg-[#E8C8C85E]" : ""
-                } `}
-            onKeyDown={() => { }}
-            onClick={() => {
-                handleClick(inputName, menu);
-                setQuery(menu.accountName);
-                setOpen(false);
-                trigger(inputName);
-            }}
-        >
-            <span className="font-medium text-sm block">{menu.accountName}</span>
-            <span className="block text-xs">Code: {menu.accountNo}</span>
-            <span className="block text-xs">Parent: {menu.parentLedgerName}</span>
-        </div>
-    );
-};
 
 export default function ({
     placeholder,
@@ -44,14 +18,17 @@ export default function ({
     clearFields,
     formData,
     inputName,
-    entryData
+    impact
 }: any) {
     const [query, setQuery] = useState("");
+    const [searchParams, setSearchParams] = useState({ search: "" });
     const [isOpen, setOpen] = useState(false);
     const [glClass, setGlass] = useState([]);
     const [classId, setClassId] = useState(null);
     const [ledgers, setLedgers] = useState([]);
     const [toggleMenu, setMenus] = useState(null);
+    const [entryData, setEntyData] = useState(null);
+
     const { data, isLoading, isSuccess, isError } = useGetGlClassQuery();
     const {
         data: ledgerData,
@@ -61,13 +38,15 @@ export default function ({
         refetch,
     } = useGetAccountsQuery(
         {
-            Q: query,
-            AccountType: [classId?.toUpperCase()],
-            currencyCode: formData?.productInfo?.currencyCode,
-            AccountCategory: 1,
-        },
-        { skip: !classId }
+            Q: searchParams?.search,
+            currencyCode: formData?.facilityDetailsModel?.currencyCode,
+        }
     );
+
+    useEffect(() => console.log(formData), [formData])
+
+
+    const [selectedLedgerClass, setSelectedLedgerClass] = useState(null)
 
     useEffect(() => {
         console.log(query);
@@ -108,24 +87,36 @@ export default function ({
         clearFields && setQuery("");
     }, [clearFields]);
 
-    const debitLedgerOptions = [
-        {
-            name: "Current Account balances",
-            id: "767t98099df",
-            glClass: "LIABILITY",
-            type: "Customer",
-            accountNumber: "1097398425",
-            balance_impact: "low"
-        },
-        {
-            name: "Cash Receivable balances",
-            id: "767t980df",
-            glClass: "LIABILITY",
-            type: "Internal",
-            accountNumber: "ASTCAS23421",
-            balance_impact: "high"
-        },
-    ]
+    const handleQuery = (event) => {
+        setQuery(event.target.value)
+    }
+
+    const verify = useMemo(
+        () => debounce(query => {
+            setSearchParams({ search: query })
+        }, 500),
+        []
+    );
+
+    useEffect(() => {
+        verify(query)
+    }, [query])
+
+
+    useEffect(() => {
+        setEntyData(ledgerData?.value?.items?.find(i => i.accountNo === entryValue))
+    }, [ledgerData, entryValue])
+
+    useEffect(() => console.log(entryData), [entryData])
+
+    useEffect(() => {
+        if (glClass && entryData) {
+            console.log(entryData?.accountType?.toLowerCase(), "abeg");
+            entryData?.accountType?.toLowerCase() === "assets" ?
+                setSelectedLedgerClass(glClass.find(i => i.name?.toLowerCase() === "asset")) :
+                setSelectedLedgerClass(glClass.find(i => i.name?.toLowerCase() === entryData?.accountType?.toLowerCase()));
+        }
+    }, [glClass, entryData])
 
     return (
         <OutsideClickHandler onOutsideClick={() => closeDropdown(setOpen)}>
@@ -143,14 +134,14 @@ export default function ({
                             <FaSearch className="text-[#48535B] text-lg" />
                         </span>{" "}
                         <input
-                            disabled={entryData.name}
+                            disabled={entryValue}
                             placeholder={placeholder}
                             data-testid="gli-input"
                             className="w-full min-w-[360px]  ring-0 outline-none bg-transparent"
-                            onChange={(event) => setQuery(event.target.value)}
-                            value={entryData.name || query}
+                            onChange={(event) => handleQuery(event)}
+                            value={entryData?.accountName || query}
                         />
-                        {entryData.name && <FaTimes onClick={() => {
+                        {entryValue && <FaTimes onClick={() => {
                             handleEntry(inputName, {})
                             setTimeout(() => {
                                 setOpen(false)
@@ -161,17 +152,16 @@ export default function ({
                         (entryValue) &&
                         <span className="flex text-sm flex-row text-[12px] h-[12px] leading-[12px] text-[#8F8F8F] mt-3">
                             <span className="border-r-2 border-[#8F8F8F] pr-2 mr-2">
-                                GL Class <span className="h-auto w-auto min-w-[10px] rounded-[10px] border-[1px] bg-[#6363632B] border-[#636363] px-2">{entryData?.glClass || "LIABILITY"}</span>
+                                GL Class <span className="h-auto w-auto min-w-[10px] rounded-[10px] border-[1px] bg-[#6363632B] border-[#636363] px-2">{entryData?.accountType?.toUpperCase()}</span>
                             </span>
                             <span className="flex flex-row items-center justify-start">
                                 <span>
                                     Balance Impact
                                 </span>
-                                {entryData.balance_impact?.toLowerCase() ===
-                                    "low" ? (
+                                {selectedLedgerClass?.[impact] === "DECREASE" ? (
                                     <FaCaretDown className="text-red-500" fontSize="36px" />
                                 ) : (
-                                    <FaCaretUp className="text-green-500" fontSize="36px"/>
+                                    <FaCaretUp className="text-green-500" fontSize="36px" />
                                 )}
 
                             </span>
@@ -180,21 +170,21 @@ export default function ({
                     {isOpen && (
                         <div className="flex flex-col shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]  pt-2 min-h-[54px] max-h-[216px] overflow-y-auto rounded-b-lg top-[35px] bg-white z-[400] absolute w-full min-w-[360px] items-center">
                             {
-                                debitLedgerOptions
-                                    .map((option, index) => (
+                                ledgerIsLoading ? <div></div> :
+                                    ledgers?.map((option, index) => (
                                         <div key={index} onClick={() => {
                                             handleEntry(inputName, option);
                                             setOpen(false)
                                         }} className="w-[94%] min-h-[38px] mb-2 hover:bg-[#F6EBEB] flex flex-col justify-around">
                                             <span className="text-[14px] h-[15px]">
-                                                {option?.name}
+                                                {option?.accountName}
                                             </span>
                                             <span className="flex text-sm flex-row text-[12px] h-[12px] leading-[12px] text-[#8F8F8F]">
                                                 <span className="border-r-2 border-[#8F8F8F] pr-2 mr-2">
-                                                    {option?.type}
+                                                    {AccountCategories[option?.accountCategory]}
                                                 </span>
                                                 <span>
-                                                    {option?.accountNumber}
+                                                    {option?.accountNo}
                                                 </span>
                                             </span>
                                         </div>

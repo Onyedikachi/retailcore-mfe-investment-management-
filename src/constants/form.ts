@@ -143,6 +143,11 @@ export const FacilityDetailsModelSchema2 = yup.object().shape({
     })
 })
 
+export const accountingEntriesSchema = yup.object().shape({
+  debitLedger: yup.string().required(),
+  creditLedger: yup.string().required()
+})
+
 export const TransactionSettingModelSchema = yup.object().shape({
   accountForLiquidation: yup
     .string()

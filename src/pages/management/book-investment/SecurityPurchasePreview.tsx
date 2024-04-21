@@ -16,6 +16,8 @@ import {
     useModifyInvestmentRequestMutation,
     useCreateInvestmentMutation,
     useGetInvestmentRequestActivityLogQuery,
+    useGetGlClassQuery,
+    useGetAccountsQuery,
 } from "@app/api";
 import { Confirm, Failed, Success } from "@app/components/modals";
 
@@ -155,6 +157,7 @@ export default function ({
     const [isFailed, setFailed] = useState(false);
     const [failedText, setFailedText] = useState("");
     const [state, setState] = useState();
+    const [entriesData, setEntriesData] = useState(null);
 
     const { data: activityData, isLoading: activityIsLoading } =
         useGetInvestmentActivityLogQuery({ bookingId: id }, { skip: !id });
@@ -167,6 +170,22 @@ export default function ({
         createRequest,
         { isLoading: createRequestLoading, isSuccess, isError, reset, error, data: reqData },
     ] = useCreateInvestmentMutation();
+
+    const { data: glClass, isLoading } = useGetGlClassQuery();
+
+
+    const {
+        data: ledgerData,
+        isFetching: ledgerIsLoading,
+        isSuccess: ledgerIsSuccess,
+        isError: ledgerIsError,
+        refetch,
+    } = useGetAccountsQuery(
+        {
+            Q: "",
+            currencyCode: formData?.facilityDetailsModel?.currencyCode,
+        }
+    );
 
     const [
         modifyProduct,
@@ -252,6 +271,9 @@ export default function ({
         modifyRequestIsError,
         modifyRequestSuccess,
     ]);
+
+
+
     const links = [
         {
             id: 1,
