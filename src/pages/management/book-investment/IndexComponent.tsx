@@ -102,7 +102,7 @@ export default function IndexComponent() {
   const refresh = searchParams.get("refresh");
   const activeId = useRef(null);
   const previousData = useRef({});
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [subText, setSubText] = useState("");
   const [successText, setSuccessText] = useState("");
