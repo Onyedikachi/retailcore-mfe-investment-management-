@@ -9,6 +9,7 @@ import {
   useGetPostInvestmentMutation,
   useGetPostInvestmentRequestsMutation,
   useGetUsersPermissionsQuery,
+  useGetPostSecurityPurchaseMutation,
 } from "@app/api";
 import SearchInput from "@app/components/SearchInput";
 import Table from "@app/components/table";
@@ -282,6 +283,16 @@ export default function TableComponent({
     { data, isSuccess, isError, error, isLoading: searchLoading },
   ] = useGetPostInvestmentMutation();
   const [
+    getSecurityPurchaseProduct,
+    {
+      data: securityPurchaseData,
+      isSuccess: securityPurchaseIsSuccess,
+      isError: securityPurchaseIsError,
+      error: securityPurchaseError,
+      isLoading: searchSecurityPurchaseLoading,
+    },
+  ] = useGetPostSecurityPurchaseMutation();
+  const [
     downloadProducts,
     { data: productDownloadData, isSuccess: productDownloadIsSuccess },
   ] = useGetPostInvestmentMutation();
@@ -371,6 +382,17 @@ export default function TableComponent({
           };
         })
       );
+    securityPurchaseIsSuccess &&
+      category === StatusCategoryType?.Investments &&
+      setSearchResults(
+        securityPurchaseData.results.map((i) => {
+          return {
+            ...i,
+            name: i.productName,
+            code: i.productCode,
+          };
+        })
+      );
 
     isRequestSuccess &&
       category === StatusCategoryType?.Requests &&
@@ -398,7 +420,14 @@ export default function TableComponent({
     return () => {
       setSearchResults([]);
     };
-  }, [data, request, isSuccess, isRequestSuccess]);
+  }, [
+    data,
+    request,
+    isSuccess,
+    isRequestSuccess,
+    securityPurchaseIsSuccess,
+    securityPurchaseData,
+  ]);
 
   useEffect(() => {
     handleProductDownloadSuccess({
@@ -463,7 +492,9 @@ export default function TableComponent({
           setSearchTerm={(value) =>
             getSearchResult(
               value,
-              getProducts,
+              tab === "security-purchase"
+                ? getSecurityPurchaseProduct
+                : getProducts,
               getRequests,
               category,
               setSearchResults,
@@ -476,7 +507,7 @@ export default function TableComponent({
           }`}
           searchResults={searchResults}
           setSearchResults={setSearchResults}
-          searchLoading={searchLoading}
+          searchLoading={searchLoading || searchSecurityPurchaseLoading}
           handleSearch={(value) => handleSearch(value, setQuery, query)}
           type={category}
         />

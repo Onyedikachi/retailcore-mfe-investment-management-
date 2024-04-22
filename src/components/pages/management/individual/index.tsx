@@ -11,6 +11,7 @@ import {
   useGetInvestmentStatsQuery,
   useGetInvestmentRequestStatsQuery,
   useGetSystemAlertQuery,
+  useGetPostSecurityPurchaseMutation,
 } from "@app/api";
 import {
   IndividualStatusTypes,
@@ -73,21 +74,32 @@ export const handleProductStatus = ({
     setProductData([]);
   }
 
-  if (isSuccess && data.results.length) {
+  console.log("data,", data?.results?.length, data);
+
+  if (isSuccess && data?.results?.length) {
     setProductData((prevData) => [
       ...prevData.concat(
         data.results.map((i) => ({
           ...i,
-          principal: `${currencyFormatter(
-            i?.principal,
-            handleCurrencyName(i?.currency, currencies)
-          )}`,
-          initialPrincipal: `${currencyFormatter(
-            i?.initialPrincipal,
-            handleCurrencyName(i?.currency, currencies)
-          )}`,
-          state: IndividualStatusTypes.find((n) => n.id === i.state)?.type,
-          productType: ProductTypes.find((n) => n.id === i.productType)?.name,
+          ...(i?.principal && {
+            principal: `${currencyFormatter(
+              i?.principal,
+              handleCurrencyName(i?.currency, currencies)
+            )}`,
+          }),
+
+          ...(i?.initialPrincipal && {
+            initialPrincipal: `${currencyFormatter(
+              i?.initialPrincipal,
+              handleCurrencyName(i?.currency, currencies)
+            )}`,
+          }),
+          ...(i.state && {
+            state: IndividualStatusTypes.find((n) => n.id === i.state)?.type,
+          }),
+          ...(i.productType && {
+            productType: ProductTypes.find((n) => n.id === i.productType)?.name,
+          }),
         }))
       ),
     ]);
@@ -176,6 +188,7 @@ export default function Individual({ tab }: any) {
     initiator_In: null,
     approvers_In: null,
     total: 0,
+    customerCategory: 0,
     bookingType: CustomerCategoryType[tab],
   });
   const value = useMemo(
@@ -242,6 +255,17 @@ export default function Individual({ tab }: any) {
     useGetPostInvestmentMutation();
 
   const [
+    getSecurityPurchaseProduct,
+    {
+      data: securityPurchaseData,
+      isSuccess: securityPurchaseIsSuccess,
+      isError: securityPurchaseIsError,
+      error: securityPurchaseError,
+      isLoading: securityPurchaseIsLoading,
+    },
+  ] = useGetPostSecurityPurchaseMutation();
+
+  const [
     getRequests,
     {
       data: request,
@@ -276,12 +300,28 @@ export default function Individual({ tab }: any) {
 
   function fetch() {
     if (category === StatusCategoryType?.Investments) {
-      getProducts({
-        ...query,
-        page: 1,
-        filter_by: selected?.value,
-        bookingType: CustomerCategoryType[tab],
-      });
+      if (tab === "security-purchase") {
+        getSecurityPurchaseProduct({
+          ...(query.page_Size && { page_Size: query.page_Size }),
+          ...(query.search && { search: query.search }),
+          ...(query.status_In && { status_In: query.status_In }),
+          ...(query.productType_In && { productType_In: query.productType_In }),
+          ...(query.start_Date && { start_Date: query.start_Date }),
+          ...(query.end_Date && { end_Date: query.end_Date }),
+          ...(query.customerCategory && {
+            customerCategory: query.customerCategory,
+          }),
+          page: 1,
+          filter_by: selected?.value,
+        });
+      } else {
+        getProducts({
+          ...query,
+          page: 1,
+          filter_by: selected?.value,
+          bookingType: CustomerCategoryType[tab],
+        });
+      }
     } else {
       getRequests({
         ...query,
@@ -332,18 +372,17 @@ export default function Individual({ tab }: any) {
     }
   }, [systemAlertDataSuccess]);
 
-  useEffect(
-    () =>
-      handleProductStatus({
-        query,
-        setProductData,
-        isSuccess,
-        data,
-        setHasMore,
-        currencies,
-      }),
-    [data, isSuccess, isError, query]
-  );
+  useEffect(() => {
+    handleProductStatus({
+      query,
+      setProductData,
+      isSuccess:
+        tab === "security-purchase" ? securityPurchaseIsSuccess : isSuccess,
+      data: tab === "security-purchase" ? securityPurchaseData : data,
+      setHasMore,
+      currencies,
+    });
+  }, [data, isSuccess, isError, query]);
   useEffect(
     () =>
       handleRequestStatus({
@@ -368,11 +407,29 @@ export default function Individual({ tab }: any) {
     setQuery((prevQuery) => {
       const updatedPage = prevQuery.page + 1;
       if (category === StatusCategoryType?.Investments) {
-        getProducts({
-          ...prevQuery,
-          page: updatedPage,
-          filter_by: selected?.value,
-        });
+        if (tab === "security-purchase") {
+          getSecurityPurchaseProduct({
+            ...(query.page_Size && { page_Size: query.page_Size }),
+            ...(query.search && { search: query.search }),
+            ...(query.status_In && { status_In: query.status_In }),
+            ...(query.productType_In && {
+              productType_In: query.productType_In,
+            }),
+            ...(query.start_Date && { start_Date: query.start_Date }),
+            ...(query.end_Date && { end_Date: query.end_Date }),
+            ...(query.customerCategory && {
+              customerCategory: query.customerCategory,
+            }),
+            page: 1,
+            filter_by: selected?.value,
+          });
+        } else {
+          getProducts({
+            ...prevQuery,
+            page: updatedPage,
+            filter_by: selected?.value,
+          });
+        }
       } else {
         getRequests({
           ...prevQuery,

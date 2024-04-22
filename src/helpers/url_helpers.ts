@@ -29,10 +29,19 @@ const urls = {
   INVESTMENT_REQUEST_STATS: '/InvestmentRequest/stats',
   INVESTMENT_ACTIVITY_LOG: '/Investment/activitylog',
   INVESTMENT_REQUEST_ACTIVITY_LOG: '/InvestmentRequest/activitylog',
-
   INVESTMENT_CALC: "/investment/calc",
   INVESTMENT_DASHBOARD_STATS: '/Dashboard/investmentstats',
-  CHARGES: "/charges/"
+  CHARGES: "/charges/",
+
+  //Security Purchase
+SECURITY_PURCHASE: '/SecurityPurchase',
+SECURITY_PURCHASE_REQUEST: '/SecurityPurchaseRequest',
+SECURITY_PURCHASE_STATS: '/SecurityPurchase/stats',
+SECURITY_PURCHASE_REQUEST_STATS: '/SecurityPurchaseRequest/stats',
+SECURITY_PURCHASE_ACTIVITY_LOG: '/SecurityPurchase/activitylog',
+SECURITY_PURCHASE_REQUEST_ACTIVITY_LOG: '/SecurityPurchaseRequest/activitylog',
+
+ 
 
 };
 

@@ -391,6 +391,30 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    getPostSecurityPurchase: builder.mutation<
+      any,
+      {
+        filter_by: string;
+        status_In: number[];
+        productType_In: number[];
+        search: string;
+        start_Date: string;
+        end_Date: string;
+        page: number;
+        page_Size: number;
+        customerCategory: number;
+        
+      }
+    >({
+      query: (params) => {
+        if (!params?.filter_by) return;
+        return {
+          url: urls.SECURITY_PURCHASE,
+          method: "post",
+          body: cleanObject(params),
+        };
+      },
+    }),
     getPostInvestmentRequests: builder.mutation<
       any,
       {
@@ -593,6 +617,7 @@ export const {
   useGetInvestmentRequestActivityLogQuery,
   useGetPostInvestmentRequestsMutation,
   useGetPostInvestmentMutation,
+  useGetPostSecurityPurchaseMutation,
   useGetInvestmentRequestStatsQuery,
   useGetInvestmentStatsQuery,
   useGetInvestmentDetailQuery,
