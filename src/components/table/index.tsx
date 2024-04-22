@@ -391,6 +391,19 @@ export const ProductNameCellContent = ({ value }) => (
     </span>
   </>
 );
+export const NameCellContent = ({ value }) => {
+  return (
+    <span className="relative">
+      <span className="relative max-w-[290px] whitespace-normal">
+        {value?.name || "-"}{" "}
+      </span>
+      <br />
+      <span className="relative font-medium text-sm text-[#aaaaaa] uppercase">
+        {value?.code || "-"}
+      </span>
+    </span>
+  );
+};
 export const CustomerNameCellContent = ({ value }) => (
   <>
     <br />
@@ -421,7 +434,7 @@ export const StateCellContent = ({
     {statusType === StatusCategoryType.Investments || isOverviewDrillDown ? (
       <span
         className={`font-medium px-2 py-[4px] rounded capitalize max-h-[26px] relative leading-[24px] ${handleColorState(
-          InvestmentBookingStatus[value].toLowerCase()
+          InvestmentBookingStatus[value]?.toLowerCase()
         )}`}
       >
         {InvestmentBookingStatus[value]}
@@ -902,6 +915,9 @@ export default function TableComponent<TableProps>({
                               )}
                               {header.key === "customerName" && (
                                 <CustomerNameCellContent value={item} />
+                              )}
+                              {header.key === "nameObject" && (
+                                <NameCellContent value={item[header.key]} />
                               )}
                               {header.key === "principal" && (
                                 <TextCellContent

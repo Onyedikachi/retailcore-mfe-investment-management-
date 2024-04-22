@@ -408,7 +408,7 @@ export const colorState = {
   "in-issue": "bg-[#FFD4D2] text-[#9F1F17]",
   rejected: "bg-[#FFD4D2] text-[#9F1F17]",
   draft: "bg-[#E5E5EA] text-[#1E0A3C]",
-  liquidated: "bg-[#FFEBCC] text-[#804C00]",
+  liquidated: "bg-[#E5E5EA] text-[#1E0A3C]",
 };
 export const productNameRegex = /^[A-Za-z0-9\s]+$/;
 export const securityPurchageFormSteps = [
@@ -557,6 +557,12 @@ export const CustomerCategoryType = {
 };
 
 export const ProductType = {
+  0: "Term Deposit",
+  1: "Treasure Bill",
+  2: "Commercial Paper",
+  3: "Bonds",
+};
+export const MoneyMarketCategory = {
   0: "Term Deposit",
   1: "Treasure Bill",
   2: "Commercial Paper",

@@ -80,7 +80,18 @@ export default function EntriesAndEventsSearchResults({
 
   useEffect(() => {
     if (isSuccess) {
-      setGlass(data);
+      setGlass(
+        data.map((item) => {
+          // Create a new object with the same properties as the item
+          const newItem = { ...item };
+          // Check if the name is 'asset' (case insensitive)
+          if (newItem.name.toLowerCase() === "asset") {
+            // Update the name to 'ASSETS'
+            newItem.name = "Assets";
+          }
+          return newItem; // Return the modified object
+        })
+      );
     }
   }, [isSuccess, isError]);
 

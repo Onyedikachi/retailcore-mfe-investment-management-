@@ -380,41 +380,23 @@ export const investmentApi: any = createApi({
         end_Date: string;
         page: number;
         page_Size: number;
+        customerCategory?: number;
+        type?: string;
       }
     >({
       query: (params) => {
         if (!params?.filter_by) return;
         return {
-          url: urls.INVESTMENT,
+          url:
+            params.type === "security-purchase"
+              ? urls.SECURITY_PURCHASE
+              : urls.INVESTMENT,
           method: "post",
           body: cleanObject(params),
         };
       },
     }),
-    getPostSecurityPurchase: builder.mutation<
-      any,
-      {
-        filter_by: string;
-        status_In: number[];
-        productType_In: number[];
-        search: string;
-        start_Date: string;
-        end_Date: string;
-        page: number;
-        page_Size: number;
-        customerCategory: number;
-        
-      }
-    >({
-      query: (params) => {
-        if (!params?.filter_by) return;
-        return {
-          url: urls.SECURITY_PURCHASE,
-          method: "post",
-          body: cleanObject(params),
-        };
-      },
-    }),
+
     getPostInvestmentRequests: builder.mutation<
       any,
       {
@@ -425,12 +407,16 @@ export const investmentApi: any = createApi({
         end_Date: string;
         page: number;
         page_Size: number;
+        type?: string;
       }
     >({
       query: (params) => {
         if (!params?.filter_by) return;
         return {
-          url: urls.INVESTMENT_REQUEST,
+          url:
+            params?.type === "security-purchase"
+              ? urls.SECURITY_PURCHASE_REQUEST
+              : urls.INVESTMENT_REQUEST,
           method: "post",
           body: cleanObject(params),
         };
@@ -439,9 +425,11 @@ export const investmentApi: any = createApi({
     getInvestmentActivityLog: builder.query<any, any>({
       query: (params) => {
         return {
-          url: `${urls.INVESTMENT_ACTIVITY_LOG}?${new URLSearchParams(
-            cleanObject(params)
-          )}`,
+          url: `${
+            params?.type === "security-purchase"
+              ? urls.SECURITY_PURCHASE_ACTIVITY_LOG
+              : urls.INVESTMENT_ACTIVITY_LOG
+          }?${new URLSearchParams(cleanObject(params))}`,
           method: "get",
           params: cleanObject(params),
         };
@@ -450,9 +438,11 @@ export const investmentApi: any = createApi({
     getInvestmentRequestActivityLog: builder.query<any, any>({
       query: (params) => {
         return {
-          url: `${urls.INVESTMENT_REQUEST_ACTIVITY_LOG}?${new URLSearchParams(
-            cleanObject(params)
-          )}`,
+          url: `${
+            params?.type === "security-purchase"
+              ? urls.SECURITY_PURCHASE_REQUEST_ACTIVITY_LOG
+              : urls.INVESTMENT_REQUEST_ACTIVITY_LOG
+          }?${new URLSearchParams(cleanObject(params))}`,
           method: "get",
           params: cleanObject(params),
         };
@@ -463,7 +453,11 @@ export const investmentApi: any = createApi({
       query: (data) => {
         if (!data.filter_by) return;
         return {
-          url: `${urls.INVESTMENT_STATS}?${new URLSearchParams(
+          url: `${
+            data?.type === "security-purchase"
+              ? urls.SECURITY_PURCHASE_STATS
+              : urls.INVESTMENT_STATS
+          }?${new URLSearchParams(
             cleanObject({
               ...data,
               filterBy: data.filter_by,
@@ -477,7 +471,11 @@ export const investmentApi: any = createApi({
       query: (data) => {
         if (!data.filter_by) return;
         return {
-          url: `${urls.INVESTMENT_REQUEST_STATS}?${new URLSearchParams(
+          url: `${
+            data?.type === "security-purchase"
+              ? urls.SECURITY_PURCHASE_REQUEST_STATS
+              : urls.INVESTMENT_REQUEST_STATS
+          }?${new URLSearchParams(
             cleanObject({
               ...data,
               filterBy: data.filter_by,
@@ -617,7 +615,6 @@ export const {
   useGetInvestmentRequestActivityLogQuery,
   useGetPostInvestmentRequestsMutation,
   useGetPostInvestmentMutation,
-  useGetPostSecurityPurchaseMutation,
   useGetInvestmentRequestStatsQuery,
   useGetInvestmentStatsQuery,
   useGetInvestmentDetailQuery,
@@ -635,5 +632,5 @@ export const {
   useLiquidationCalculationMutation,
   useEditEarlyLiquidateMutation,
   useEditPartLiquidateMutation,
-  useGetInvestmentCertificateQuery
+  useGetInvestmentCertificateQuery,
 } = investmentApi;

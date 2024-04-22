@@ -9,7 +9,6 @@ import {
   useGetPostInvestmentMutation,
   useGetPostInvestmentRequestsMutation,
   useGetUsersPermissionsQuery,
-  useGetPostSecurityPurchaseMutation,
 } from "@app/api";
 import SearchInput from "@app/components/SearchInput";
 import Table from "@app/components/table";
@@ -249,6 +248,7 @@ export default function TableComponent({
   fetchMoreData,
   tab,
 }: any) {
+
   const { category, setStatus, selected } = useContext(IndividualContext);
   const { isChecker } = useContext(AppContext);
   const [users, setUsers] = useState([]);
@@ -282,16 +282,7 @@ export default function TableComponent({
     getProducts,
     { data, isSuccess, isError, error, isLoading: searchLoading },
   ] = useGetPostInvestmentMutation();
-  const [
-    getSecurityPurchaseProduct,
-    {
-      data: securityPurchaseData,
-      isSuccess: securityPurchaseIsSuccess,
-      isError: securityPurchaseIsError,
-      error: securityPurchaseError,
-      isLoading: searchSecurityPurchaseLoading,
-    },
-  ] = useGetPostSecurityPurchaseMutation();
+
   const [
     downloadProducts,
     { data: productDownloadData, isSuccess: productDownloadIsSuccess },
@@ -382,17 +373,6 @@ export default function TableComponent({
           };
         })
       );
-    securityPurchaseIsSuccess &&
-      category === StatusCategoryType?.Investments &&
-      setSearchResults(
-        securityPurchaseData.results.map((i) => {
-          return {
-            ...i,
-            name: i.productName,
-            code: i.productCode,
-          };
-        })
-      );
 
     isRequestSuccess &&
       category === StatusCategoryType?.Requests &&
@@ -420,14 +400,7 @@ export default function TableComponent({
     return () => {
       setSearchResults([]);
     };
-  }, [
-    data,
-    request,
-    isSuccess,
-    isRequestSuccess,
-    securityPurchaseIsSuccess,
-    securityPurchaseData,
-  ]);
+  }, [data, request, isSuccess, isRequestSuccess]);
 
   useEffect(() => {
     handleProductDownloadSuccess({
@@ -492,9 +465,7 @@ export default function TableComponent({
           setSearchTerm={(value) =>
             getSearchResult(
               value,
-              tab === "security-purchase"
-                ? getSecurityPurchaseProduct
-                : getProducts,
+              getProducts,
               getRequests,
               category,
               setSearchResults,
@@ -507,7 +478,7 @@ export default function TableComponent({
           }`}
           searchResults={searchResults}
           setSearchResults={setSearchResults}
-          searchLoading={searchLoading || searchSecurityPurchaseLoading}
+          searchLoading={searchLoading}
           handleSearch={(value) => handleSearch(value, setQuery, query)}
           type={category}
         />
