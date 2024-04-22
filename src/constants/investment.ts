@@ -408,21 +408,21 @@ export const colorState = {
   "in-issue": "bg-[#FFD4D2] text-[#9F1F17]",
   rejected: "bg-[#FFD4D2] text-[#9F1F17]",
   draft: "bg-[#E5E5EA] text-[#1E0A3C]",
-  liquidated: "bg-[#FFEBCC] text-[#804C00]",
+  liquidated: "bg-[#E5E5EA] text-[#1E0A3C]",
 };
 export const productNameRegex = /^[A-Za-z0-9\s]+$/;
 export const securityPurchageFormSteps = [
   {
     id: 1,
     label: "Facility Details",
-    index: 1
+    index: 1,
   },
   {
     id: 2,
     label: "Accounting Entries",
-    index: 2
-  }
-]
+    index: 2,
+  },
+];
 export const BookInvestmentFormSteps = [
   {
     id: 1,
@@ -585,6 +585,12 @@ export const ProductType = {
   2: "Commercial Paper",
   3: "Bonds",
 };
+export const MoneyMarketCategory = {
+  0: "Term Deposit",
+  1: "Treasure Bill",
+  2: "Commercial Paper",
+  3: "Bonds",
+};
 
 export const StartdateType = {
   0: "On Approval",
@@ -657,7 +663,7 @@ export const InvestmentBookingRequestType = {
 export const RequestStatus = {
   0: "Draft",
   1: "In-Review",
-  2: "Approved", 
+  2: "Approved",
   3: "In-Issue",
 };
 
@@ -1300,6 +1306,49 @@ export const StartDateOptions = [
   },
   {
     text: "On Scheduled date",
+    value: 1,
+  },
+];
+
+export const intervalOptions = [
+  {
+    id: 1,
+    text: "Semi-Anually",
+    value: 1,
+  },
+
+  {
+    id: 2,
+    text: "Anually",
+    value: 2,
+  },
+  {
+    id: 3,
+    text: "Quarterly",
+    value: 3,
+  },
+  {
+    id: 4,
+    text: "Monthly",
+    value: 4,
+  },
+];
+
+export const productCategoryOptions = [
+  {
+    id: 1,
+    text: "Bonds",
+    value: 3,
+  },
+
+  {
+    id: 2,
+    text: "Commercial Paper",
+    value: 2,
+  },
+  {
+    id: 3,
+    text: "Treasury Bills",
     value: 1,
   },
 ];

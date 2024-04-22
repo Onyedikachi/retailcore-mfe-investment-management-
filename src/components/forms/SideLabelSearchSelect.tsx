@@ -7,8 +7,8 @@ import {
 // import { InputDivs } from "@app/components/pages/term-deposit/forms/liquidity-setup";
 export function InputDivs({ children, label, customClass = ""}) {
   return (
-    <div className="flex gap-[10px] items-center">
-      <span className={`min-w-[250px] capitalize flex items-start gap-x-[1px] text-[##636363] text-base font-medium ${customClass}`}>
+    <div className="flex gap-[54px] items-center">
+      <span className={`min-w-[330px] capitalize flex items-start gap-x-[1px] text-[##636363] text-base font-medium ${customClass}`}>
         {label} <RedDot />
       </span>
       <div>{children}</div>

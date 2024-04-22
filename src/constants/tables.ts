@@ -1009,20 +1009,14 @@ export const individualHeader = [
 export const securiyPurchaseHeader = [
   {
     label: "Issuer NAME/ID",
-    key: "customerName",
-    options: [
-      {
-        id: 1,
-        name: "",
-        value: "",
-      },
-    ],
+    key: "nameObject",
+    options: [],
     hasSelect: false,
     hasDateSelect: false,
   },
   {
     label: "Consideration",
-    key: "principal",
+    key: "totalConsideration",
     options: [],
     hasSelect: false,
     hasDateSelect: false,
@@ -1030,15 +1024,15 @@ export const securiyPurchaseHeader = [
 
   {
     label: "Investment Category",
-    key: "investmentProduct",
+    key: "moneyMarketType",
     options: productFilterOptions,
     hasSelect: true,
     hasDateSelect: false,
   },
   {
     label: "status",
-    key: "investmentBookingStatus",
-    options: IndividualFilterOptions,
+    key: "state",
+    options: ActiveFilterOptions,
     hasSelect: true,
     hasDateSelect: false,
   },

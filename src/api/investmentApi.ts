@@ -384,17 +384,23 @@ export const investmentApi: any = createApi({
         end_Date: string;
         page: number;
         page_Size: number;
+        customerCategory?: number;
+        type?: string;
       }
     >({
       query: (params) => {
         if (!params?.filter_by) return;
         return {
-          url: urls.INVESTMENT,
+          url:
+            params.type === "security-purchase"
+              ? urls.SECURITY_PURCHASE
+              : urls.INVESTMENT,
           method: "post",
           body: cleanObject(params),
         };
       },
     }),
+
     getPostInvestmentRequests: builder.mutation<
       any,
       {
@@ -405,23 +411,40 @@ export const investmentApi: any = createApi({
         end_Date: string;
         page: number;
         page_Size: number;
+        type?: string;
       }
     >({
       query: (params) => {
         if (!params?.filter_by) return;
         return {
-          url: urls.INVESTMENT_REQUEST,
+          url:
+            params?.type === "security-purchase"
+              ? urls.SECURITY_PURCHASE_REQUEST
+              : urls.INVESTMENT_REQUEST,
           method: "post",
           body: cleanObject(params),
         };
       },
     }),
+    calcTotalConsideration: builder.mutation<
+    any,any
+  >({
+    query: (params) => {
+      return {
+        url:`${urls.SECURITY_PURCHASE}/calc-totalconsideration`,
+        method: "post",
+        body: cleanObject(params),
+      };
+    },
+  }),
     getInvestmentActivityLog: builder.query<any, any>({
       query: (params) => {
         return {
-          url: `${urls.INVESTMENT_ACTIVITY_LOG}?${new URLSearchParams(
-            cleanObject(params)
-          )}`,
+          url: `${
+            params?.type === "security-purchase"
+              ? urls.SECURITY_PURCHASE_ACTIVITY_LOG
+              : urls.INVESTMENT_ACTIVITY_LOG
+          }?${new URLSearchParams(cleanObject(params))}`,
           method: "get",
           params: cleanObject(params),
         };
@@ -430,9 +453,11 @@ export const investmentApi: any = createApi({
     getInvestmentRequestActivityLog: builder.query<any, any>({
       query: (params) => {
         return {
-          url: `${urls.INVESTMENT_REQUEST_ACTIVITY_LOG}?${new URLSearchParams(
-            cleanObject(params)
-          )}`,
+          url: `${
+            params?.type === "security-purchase"
+              ? urls.SECURITY_PURCHASE_REQUEST_ACTIVITY_LOG
+              : urls.INVESTMENT_REQUEST_ACTIVITY_LOG
+          }?${new URLSearchParams(cleanObject(params))}`,
           method: "get",
           params: cleanObject(params),
         };
@@ -465,7 +490,11 @@ export const investmentApi: any = createApi({
       query: (data) => {
         if (!data.filter_by) return;
         return {
-          url: `${urls.INVESTMENT_STATS}?${new URLSearchParams(
+          url: `${
+            data?.type === "security-purchase"
+              ? urls.SECURITY_PURCHASE_STATS
+              : urls.INVESTMENT_STATS
+          }?${new URLSearchParams(
             cleanObject({
               ...data,
               filterBy: data.filter_by,
@@ -479,7 +508,11 @@ export const investmentApi: any = createApi({
       query: (data) => {
         if (!data.filter_by) return;
         return {
-          url: `${urls.INVESTMENT_REQUEST_STATS}?${new URLSearchParams(
+          url: `${
+            data?.type === "security-purchase"
+              ? urls.SECURITY_PURCHASE_REQUEST_STATS
+              : urls.INVESTMENT_REQUEST_STATS
+          }?${new URLSearchParams(
             cleanObject({
               ...data,
               filterBy: data.filter_by,
@@ -666,5 +699,6 @@ export const {
   useLiquidationCalculationMutation,
   useEditEarlyLiquidateMutation,
   useEditPartLiquidateMutation,
-  useGetInvestmentCertificateQuery
+  useGetInvestmentCertificateQuery,
+  useCalcTotalConsiderationMutation
 } = investmentApi;

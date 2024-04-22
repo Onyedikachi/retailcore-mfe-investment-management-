@@ -293,7 +293,7 @@ export default function ProductInformation({
     >
       {type !== "term-deposit" && (
         <div className="mb-6 flex flex-col gap-[1px] max-w-[600px]">
-          <div className="flex itemx-center gap-x-2">
+          <div className="flex items-center gap-x-2">
             <label
               htmlFor="investment"
               className="w-[300px] pt-[10px]  text-base font-semibold text-[#636363] capitalize flex items-start"
@@ -334,7 +334,7 @@ export default function ProductInformation({
         <div className="">
           {type !== "term-deposit" && (
             <div className="mb-6 flex flex-col gap-[1px] max-w-[600px]">
-              <div className="flex itemx-center gap-x-2">
+              <div className="flex items-center gap-x-2">
                 <label
                   htmlFor="investment"
                   className="w-[300px] pt-[10px]  text-base font-semibold text-[#636363] capitalize flex items-start"
@@ -371,7 +371,7 @@ export default function ProductInformation({
             </div>
           )}
           <div className="mb-6 flex flex-col gap-[1px]">
-            <div className="flex itemx-center gap-2 w-[300px]">
+            <div className="flex items-center gap-2 w-[300px]">
               {" "}
               <label
                 htmlFor="productName"
@@ -567,7 +567,11 @@ export default function ProductInformation({
               type !== "term-deposit" ? "flex-row-reverse justify-end" : ""
             }`}
           >
-            <div className={`flex  ${ type !== "term-deposit" ? "gap-x-12" : "gap-x-4"} items-end`}>
+            <div
+              className={`flex  ${
+                type !== "term-deposit" ? "gap-x-12" : "gap-x-4"
+              } items-end`}
+            >
               <div>
                 <div className="flex  gap-x-2 w-[300px] mb-1">
                   {" "}
@@ -600,22 +604,24 @@ export default function ProductInformation({
                   clearErrors={clearErrors}
                 />
               </div>
-             {type !== "term-deposit"?" ":"-"}
+              {type !== "term-deposit" ? " " : "-"}
               <div>
-                <div className="flex  gap-x-2 w-[300px] mb-1">
-                  {" "}
-                  <label
-                    htmlFor="productLifeCycle"
-                    className=" pt-[10px]  text-base font-semibold text-[#636363] flex"
-                  >
-                    Maturity date{" "}
-                    <span className="flex">
-                      {" "}
-                      <RedDot />
-                    </span>{" "}
-                  </label>
-                  <FormToolTip tip={toolTips.lifeCycle} />
-                </div>
+                {type !== "term-deposit" && (
+                  <div className="flex  gap-x-2 w-[300px] mb-1">
+                    {" "}
+                    <label
+                      htmlFor="productLifeCycle"
+                      className=" pt-[10px]  text-base font-semibold text-[#636363] flex"
+                    >
+                      Maturity date{" "}
+                      <span className="flex">
+                        {" "}
+                        <RedDot />
+                      </span>{" "}
+                    </label>
+                    <FormToolTip tip={toolTips.lifeCycle} />
+                  </div>
+                )}
 
                 <FormDate
                   register={register}
