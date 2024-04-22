@@ -29,7 +29,7 @@ export default ({
               setProductDetail={setProductDetail}
               productDetail={productDetail}
               detailLoading={detailLoading}
-              preModifyRequest={preModifyRequest}
+              preCreateInvestment={preCreateInvestment}
             />
           ) : (
             <AccountingEntries

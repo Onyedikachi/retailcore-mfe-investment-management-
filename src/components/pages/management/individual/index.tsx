@@ -50,7 +50,8 @@ export const handleChange = (
   activeType,
   setQuery,
   query,
-  category
+  category,
+  tab
 ) => {
   setQuery({
     ...query,
@@ -58,7 +59,7 @@ export const handleChange = (
     investmentProducts_In: null,
 
     status_In:
-      activeType === "all" ? null : [sortTabStatus(activeType, category)],
+      activeType === "all" ? null : [sortTabStatus(activeType, category, tab)],
   });
 };
 
@@ -422,10 +423,11 @@ export default function Individual() {
             data={prodStatData}
             requests={requestStatData}
             handleChange={({ selected, activeType }) =>
-              handleChange(selected, activeType, setQuery, query, category)
+              handleChange(selected, activeType, setQuery, query, category, tab)
             }
             isLoading={requestStatLoading || prodStatLoading}
             Context={IndividualContext}
+            tab={tab}
           />
 
           <div className="bg-white px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16">

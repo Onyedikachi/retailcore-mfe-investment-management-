@@ -28,12 +28,15 @@ export const onProceed = (
   proceed,
   formData,
   setFormData,
-  preModifyRequest
+  preCreateInvestment
 ) => {
-  preModifyRequest({
+  preCreateInvestment({
     ...formData,
     facilityDetailsModel: { ...formData.facilityDetailsModel, ...data },
+    ...formData.facilityDetailsModel,
+    ...data,
     isDraft: true,
+    investmentType: "security-purchase",
   });
   setFormData({
     ...formData,
@@ -51,7 +54,7 @@ export default ({
   productDetail,
   setProductDetail,
   detailLoading,
-  preModifyRequest,
+  preCreateInvestment,
 }) => {
   const {
     register,
@@ -112,7 +115,7 @@ export default ({
       id="facilityDetails"
       data-testid="submit-button"
       onSubmit={handleSubmit((d) => {
-        onProceed(d, proceed, formData, setFormData, preModifyRequest);
+        onProceed(d, proceed, formData, setFormData, preCreateInvestment);
       })}
     >
       <div
@@ -190,7 +193,6 @@ export default ({
                   <FormDate
                     id="dealDate"
                     className="w-full min-w-[300px]"
-                    register={register}
                     inputName={"dealDate"}
                     errors={errors}
                     handleChange={(value) => {
@@ -210,7 +212,6 @@ export default ({
                   <FormDate
                     id="maturityDate"
                     className="w-full min-w-[300px]"
-                    register={register}
                     inputName={"maturityDate"}
                     errors={errors}
                     handleChange={(value) => {
