@@ -23,6 +23,7 @@ import {
   IndividualRequestHeader,
   CustomerCategoryType,
   securiyPurchaseHeader,
+  MoneyMarketCategory,
 } from "@app/constants";
 import { useProductList } from "@app/hooks";
 import optionsDataHandler from "@app/utils/optionsDataHandler";
@@ -109,6 +110,7 @@ export function initiateDownload(
       // filter_by: selected?.value,
       filter_by: "created_by_anyone",
       customerCategory: CustomerCategoryType[tab],
+      type: tab,
     });
   } else {
     downloadRequests({
@@ -118,6 +120,7 @@ export function initiateDownload(
       // filter_by: selected?.value,
       filter_by: "created_by_anyone",
       customerCategory: CustomerCategoryType[tab],
+      type: tab,
     });
   }
 }
@@ -134,15 +137,33 @@ export function handleDownload(
     const productData = downloadData.map((i) => {
       // @ts-ignore
       let obj: ProductDataProps = {
-        "customer name": i?.customerName || "",
-        "customer id": i?.investmentId || "",
-        principal:
-          i.investmentBookingStatus === 2
-            ? i.initialPrincipal
-            : i?.principal || "",
-        "investment product": i?.investmentProduct || "",
-        status: i?.status || "",
-        "updated on": moment(i.updated_At).format("DD MMM YYYY, hh:mm A"),
+        ...(i.issuer && { "issuer name": i.issuer || "" }),
+        ...(i.totalConsideration && {
+          consideration: i.totalConsideration || "",
+        }),
+        ...(i.moneyMarketCategory && {
+          "investment category":
+            MoneyMarketCategory[i.moneyMarketCategory] || "",
+        }),
+        ...(i.customerName && { "customer name": i?.customerName || "" }),
+        ...(i.investmentId && { "customer id": i?.investmentId || "" }),
+        ...(i.investmentBookingStatus && {
+          principal:
+            i.investmentBookingStatus === 2
+              ? i.initialPrincipal
+              : i?.principal || "",
+        }),
+        ...(i?.investmentProduct && {
+          "investment product": i?.investmentProduct || "",
+        }),
+        ...(i?.status && { status: i?.status || "" }),
+        ...(i?.state && {
+          status:
+            IndividualStatusTypes.find((n) => n.id === i.state)?.type || "",
+        }),
+        ...(i.updated_At && {
+          "updated on": moment(i.updated_At).format("DD MMM YYYY, hh:mm A"),
+        }),
       };
 
       let overviewDrillDownObj = {
@@ -161,6 +182,7 @@ export function handleDownload(
 
       return isOverviewDrillDown ? overviewDrillDownObj : obj;
     });
+
     const requestData = downloadData.map((i) => {
       // @ts-ignore
       let obj: RequestDataProps = {
@@ -248,7 +270,6 @@ export default function TableComponent({
   fetchMoreData,
   tab,
 }: any) {
-
   const { category, setStatus, selected } = useContext(IndividualContext);
   const { isChecker } = useContext(AppContext);
   const [users, setUsers] = useState([]);
@@ -515,8 +536,6 @@ export default function TableComponent({
         </div>
       </div>
 
-      {/* main table  */}
-      {/* { category === StatusCategoryType?.Investments ? 't' : 'f'} */}
       <Table
         headers={
           category === StatusCategoryType?.Investments || isOverviewDrillDown

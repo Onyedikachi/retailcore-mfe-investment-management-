@@ -514,7 +514,6 @@ export default function TableComponent<TableProps>({
   handleRefresh = () => {},
   isOverviewDrillDown = false,
 }) {
-  console.log("table row:", tableRows);
   const { role, permissions, userId, isChecker, currencies } =
     useContext(AppContext);
 
