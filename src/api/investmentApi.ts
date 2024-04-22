@@ -426,6 +426,17 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    calcTotalConsideration: builder.mutation<
+    any,any
+  >({
+    query: (params) => {
+      return {
+        url:`${urls.SECURITY_PURCHASE}/calc-totalconsideration`,
+        method: "post",
+        body: cleanObject(params),
+      };
+    },
+  }),
     getInvestmentActivityLog: builder.query<any, any>({
       query: (params) => {
         return {
@@ -689,4 +700,5 @@ export const {
   useEditEarlyLiquidateMutation,
   useEditPartLiquidateMutation,
   useGetInvestmentCertificateQuery,
+  useCalcTotalConsiderationMutation
 } = investmentApi;

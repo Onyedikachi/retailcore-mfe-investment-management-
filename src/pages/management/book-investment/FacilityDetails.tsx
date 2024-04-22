@@ -1,5 +1,11 @@
+import { useCalcTotalConsiderationMutation } from "@app/api";
 import { DropDown } from "@app/components";
-import { BorderlessSelect, FormDate, RedDot } from "@app/components/forms";
+import {
+  BorderlessSelect,
+  FormDate,
+  MinMaxInput,
+  RedDot,
+} from "@app/components/forms";
 import { InputDivs } from "@app/components/forms/SideLabelSearchSelect";
 import { InputDiv } from "@app/components/pages/term-deposit/forms/product-information";
 import {
@@ -8,7 +14,7 @@ import {
   categoryOptions,
   CapitalizationOptions,
   interestComputationDaysOptions,
-  intervalOptions
+  intervalOptions,
 } from "@app/constants";
 import { AppContext } from "@app/utils";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
@@ -56,7 +62,6 @@ export default ({
     getValues,
     trigger,
     formState: { errors, isValid },
- 
   } = useForm({
     resolver: yupResolver(FacilityDetailsModelSchema2),
     defaultValues: formData.facilityDetailsModel,
@@ -64,38 +69,33 @@ export default ({
   });
 
   const { currencies, defaultCurrency } = useContext(AppContext);
-  console.log("🚀 ~ errors:", errors)
+  console.log("🚀 ~ errors:", errors);
   useEffect(() => {
-    setValue("currency", defaultCurrency?.abbreviation);
+    setValue("currencyCode", defaultCurrency?.abbreviation);
   }, [defaultCurrency]);
-  const [error, updateError] = useState(null);
-
   const values = getValues();
-
-  // useEffect(() => console.log(values, isValid, errors), [])
+  console.log("🚀 ~ values:", values);
+  const [calcTotal, { data, isSuccess, isLoading }] =
+    useCalcTotalConsiderationMutation();
 
   const productCategoryOptions = [
     {
       id: 1,
       text: "Bonds",
-      value: "bonds",
+      value: 3,
     },
 
     {
       id: 2,
       text: "Commercial Paper",
-      value: "commercial-paper",
+      value: 2,
     },
     {
       id: 3,
       text: "Treasury Bills",
-      value: "treasury-bills",
+      value: 1,
     },
   ];
-
- 
-
-  
 
   useEffect(() => {
     setDisabled(!isValid);
@@ -107,6 +107,22 @@ export default ({
     }
   }, [isValid, () => values]);
 
+  useEffect(() => {
+    if (!values.faceValue || !values.discountRate) return;
+    let data = {
+      discountRate: values.discountRate,
+      faceValue: values.faceValue,
+    };
+    setTimeout(() => {
+      calcTotal(data);
+    }, 1200);
+  }, [values.discountRate, values.faceValue]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      setValue("totalConsideration", data.data);
+    }
+  }, [isSuccess, data, isLoading]);
   return (
     <form
       id="facilityDetails"
@@ -123,13 +139,13 @@ export default ({
           <InputDivs label={"Investment product"}>
             <div className="flex gap-[15px]">
               <BorderlessSelect
-                inputError={errors?.category}
+                inputError={errors?.moneyMarketCategory}
                 register={register}
                 errors={errors}
                 setValue={setValue}
-                inputName={"category"}
+                inputName={"moneyMarketCategory"}
                 labelName={""}
-                defaultValue={values?.category}
+                defaultValue={values?.moneyMarketCategory}
                 placeholder="Select Category"
                 clearErrors={clearErrors}
                 options={productCategoryOptions}
@@ -137,7 +153,7 @@ export default ({
               />
             </div>
           </InputDivs>
-          {values?.category && (
+          {values?.moneyMarketCategory && (
             <Fragment>
               <InputDivs label={"issuer"}>
                 <div className="relative flex items-center max-w-full">
@@ -165,15 +181,12 @@ export default ({
                       })}
                       defaultValue={values?.description}
                       className={`min-h-[150px] w-full rounded-md border border-[#8F8F8F] focus:outline-none px-3 py-[11px] placeholder:text-[#BCBBBB] resize-none ${
-                        errors?.description || error
+                        errors?.description
                           ? "border-red-500 ring-1 ring-red-500"
                           : ""
                       }`}
                     />
 
-                    {error && (
-                      <span className="text-sm text-danger-500">{error}</span>
-                    )}
                     <span className="absolute bottom-4 right-2 text-xs text-[#8F8F8F] flex items-center gap-x-1">
                       <span>{watch("description")?.length || 0}</span>/
                       <span>250</span>
@@ -226,12 +239,12 @@ export default ({
               <InputDivs label={"Currency"}>
                 <div className="w-[300px]">
                   <BorderlessSelect
-                    inputError={errors?.currency}
+                    inputError={errors?.currencyCode}
                     register={register}
                     errors={errors}
                     setValue={setValue}
-                    inputName={"currency"}
-                    defaultValue={values?.currency}
+                    inputName={"currencyCode"}
+                    defaultValue={values?.currencyCode}
                     placeholder="Select currency"
                     clearErrors={clearErrors}
                     options={currencies.map((i) => ({ ...i, value: i.text }))}
@@ -241,74 +254,79 @@ export default ({
               </InputDivs>
               <InputDivs label={"Discount Rate"}>
                 <InputDiv customClass="w-full min-w-[300px] ">
-                  <div className="relative flex items-center max-w-[642px] border-b border-[#8F8F8F]">
-                    <input
-                      id="discountRate"
-                      data-testid="discountRate"
-                      type="number"
-                      {...register("discountRate")}
-                      className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] placeholder:text-[#BCBBBB]`}
-                      placeholder="Enter Rate"
-                      defaultValue={values.discountRate}
-                    />
-                    <div className="rounded-[100px] text-[14px] mr-2 bg-[#FFE9E9]">
-                      Percent
-                    </div>
-                  </div>
+                  <MinMaxInput
+                    className="w-[300px]"
+                    label={""}
+                    // currency={values?.currencyCode}
+                    register={register}
+                    inputName={"discountRate"}
+                    placeholder="Enter Rate"
+                    defaultValue={values?.discountRate}
+                    errors={errors}
+                    setValue={setValue}
+                    trigger={trigger}
+                    clearErrors={clearErrors}
+                    isPercent
+                    isCurrency
+                    max={100}
+                  />
                 </InputDiv>
               </InputDivs>
               <InputDivs label="Per Amount">
                 <InputDiv customClass="w-full min-w-[300px]">
-                  <div className="relative flex items-center max-w-[642px]">
-                    {values?.currency && (
-                      <span className="mr-2">{values?.currency}</span>
-                    )}
-                    <input
-                      id="perAmount"
-                      data-testid="perAmount"
-                      type="number"
-                      {...register("perAmount")}
-                      className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB]`}
-                      placeholder="Enter Rate"
-                      defaultValue={values.perAmount}
-                    />
-                  </div>
+                  <MinMaxInput
+                    className="w-[300px]"
+                    label={""}
+                    currency={values?.currencyCode}
+                    register={register}
+                    inputName={"perAmount"}
+                    placeholder="Enter Rate"
+                    defaultValue={values?.perAmount}
+                    errors={errors}
+                    setValue={setValue}
+                    trigger={trigger}
+                    clearErrors={clearErrors}
+                    isCurrency
+                  />
                 </InputDiv>
               </InputDivs>
               <InputDivs label="Face Value">
                 <InputDiv customClass="w-full min-w-[300px]">
-                  <div className="relative flex items-center max-w-[642px]">
-                    {values?.currency && (
-                      <span className="mr-2">{values?.currency}</span>
-                    )}
-                    <input
-                      id="faceValue"
-                      data-testid="faceValue"
-                      type="number"
-                      {...register("faceValue")}
-                      className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB]`}
-                      placeholder="Enter Rate"
-                      defaultValue={values.faceValue}
-                    />
-                  </div>
+                  <MinMaxInput
+                    className="w-[300px]"
+                    label={""}
+                    currency={values?.currencyCode}
+                    register={register}
+                    inputName={"faceValue"}
+                    placeholder="Enter Rate"
+                    defaultValue={values?.faceValue}
+                    errors={errors}
+                    setValue={setValue}
+                    trigger={trigger}
+                    clearErrors={clearErrors}
+                    isCurrency
+                  />
                 </InputDiv>
               </InputDivs>
-              <InputDivs label="Consideration">
+              <InputDivs label="Total Consideration">
                 <InputDiv customClass="w-full min-w-[300px]">
-                  <div className="relative flex items-center max-w-[642px]">
-                    {values?.currency && (
-                      <span className="mr-2">{values?.currency}</span>
-                    )}
-                    <input
-                      id="consideration"
-                      data-testid="consideration"
-                      type="number"
-                      {...register("consideration")}
-                      className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB]`}
-                      placeholder="Enter Rate"
-                      defaultValue={values.consideration}
-                    />
-                  </div>
+                  <MinMaxInput
+                    className="w-[300px]"
+                    label={""}
+                    currency={values?.currencyCode}
+                    register={register}
+                    inputName={"totalConsideration"}
+                    placeholder={
+                      isLoading ? "Calculating value ..." : "Enter Rate"
+                    }
+                    defaultValue={values?.totalConsideration}
+                    errors={errors}
+                    setValue={setValue}
+                    trigger={trigger}
+                    clearErrors={clearErrors}
+                    isCurrency
+                    disabled
+                  />
                 </InputDiv>
               </InputDivs>
               <InputDivs
@@ -333,12 +351,12 @@ export default ({
               <InputDivs label={"Interest Capitalization Method"}>
                 <div className="w-[300px]">
                   <BorderlessSelect
-                    inputError={errors?.interestCapitalizationMethod}
+                    inputError={errors?.capitalizationMethod}
                     register={register}
                     errors={errors}
                     setValue={setValue}
-                    inputName={"interestCapitalizationMethod"}
-                    defaultValue={values?.interestCapitalizationMethod}
+                    inputName={"capitalizationMethod"}
+                    defaultValue={values?.capitalizationMethod}
                     placeholder="Select"
                     clearErrors={clearErrors}
                     options={CapitalizationOptions}
@@ -346,16 +364,16 @@ export default ({
                   />
                 </div>
               </InputDivs>
-              {values.interestCapitalizationMethod === 2 && (
+              {values.capitalizationMethod === 1 && (
                 <InputDivs label={"Specify Interval"}>
                   <div className="w-[300px]">
                     <BorderlessSelect
-                      inputError={errors?.interval}
+                      inputError={errors?.securityPurchaseIntervals}
                       register={register}
                       errors={errors}
                       setValue={setValue}
-                      inputName={"interval"}
-                      defaultValue={values?.interval}
+                      inputName={"securityPurchaseIntervals"}
+                      defaultValue={values?.securityPurchaseIntervals}
                       placeholder="Select"
                       clearErrors={clearErrors}
                       requiredField={false}
