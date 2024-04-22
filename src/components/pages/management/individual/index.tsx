@@ -23,9 +23,10 @@ import {
   InvestmentBookingRequestType,
   IndividualTypeFilterOptions,
   CustomerCategoryType,
+  MoneyMarketCategory,
 } from "@app/constants";
 import { sortTabStatus } from "@app/utils/sortTabStatus";
-import { useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { errorToast } from "@app/components/Toast";
 import { handleRequestStatus } from "@app/pages/investment/IndexComponent";
 import { currencyFormatter } from "@app/utils/formatCurrency";
@@ -79,15 +80,26 @@ export const handleProductStatus = ({
         data.results.map((i) => ({
           ...i,
           principal: `${currencyFormatter(
-            i?.principal,
-            handleCurrencyName(i?.currency, currencies)
+            i?.principal, // i.currencyCode
+            "ngn"
           )}`,
           initialPrincipal: `${currencyFormatter(
             i?.initialPrincipal,
-            handleCurrencyName(i?.currency, currencies)
+            // i.currencyCode
+            "ngn"
           )}`,
           state: IndividualStatusTypes.find((n) => n.id === i.state)?.type,
           productType: ProductTypes.find((n) => n.id === i.productType)?.name,
+          moneyMarketType: MoneyMarketCategory[i.moneyMarketCategory],
+          totalConsideration: currencyFormatter(
+            i?.totalConsideration,
+            // i.currencyCode
+            "ngn"
+          ),
+          nameObject: {
+            name: i?.issuer,
+            code: i?.code,
+          },
         }))
       ),
     ]);
@@ -136,7 +148,8 @@ export const handleSearch = (value, query, setQuery) => {
     search: value,
   });
 };
-export default function Individual({ tab }: any) {
+export default function Individual() {
+  const { tab } = useParams();
   const { isChecker, setIsChecker, currencies } = useContext(AppContext);
   const [category, setCategory] = useState<string>(
     StatusCategoryType?.Investments
@@ -176,7 +189,9 @@ export default function Individual({ tab }: any) {
     initiator_In: null,
     approvers_In: null,
     total: 0,
+    customerCategory: 0,
     bookingType: CustomerCategoryType[tab],
+    type: tab,
   });
   const value = useMemo(
     () => ({
@@ -257,7 +272,11 @@ export default function Individual({ tab }: any) {
     refetch: prodStatRefetch,
     isFetching: prodStatLoading,
   } = useGetInvestmentStatsQuery(
-    { filter_by: selected?.value, bookingType: CustomerCategoryType[tab] },
+    {
+      filter_by: selected?.value,
+      bookingType: CustomerCategoryType[tab],
+      type: tab,
+    },
     {
       skip: category !== StatusCategoryType?.Investments,
     }
@@ -268,7 +287,11 @@ export default function Individual({ tab }: any) {
     refetch: requestRefetch,
     isFetching: requestStatLoading,
   } = useGetInvestmentRequestStatsQuery(
-    { filter_by: selected?.value, bookingType: CustomerCategoryType[tab] },
+    {
+      filter_by: selected?.value,
+      bookingType: CustomerCategoryType[tab],
+      type: tab,
+    },
     {
       skip: category !== StatusCategoryType.Requests,
     }
@@ -281,6 +304,7 @@ export default function Individual({ tab }: any) {
         page: 1,
         filter_by: selected?.value,
         bookingType: CustomerCategoryType[tab],
+        type: tab,
       });
     } else {
       getRequests({
@@ -288,6 +312,7 @@ export default function Individual({ tab }: any) {
         page: 1,
         filter_by: selected?.value,
         bookingType: CustomerCategoryType[tab],
+        type: tab,
       });
     }
   }
@@ -296,6 +321,7 @@ export default function Individual({ tab }: any) {
     setQuery({
       ...query,
       page: 1,
+      type: tab,
     });
 
     fetch();
@@ -332,18 +358,16 @@ export default function Individual({ tab }: any) {
     }
   }, [systemAlertDataSuccess]);
 
-  useEffect(
-    () =>
-      handleProductStatus({
-        query,
-        setProductData,
-        isSuccess,
-        data,
-        setHasMore,
-        currencies,
-      }),
-    [data, isSuccess, isError, query]
-  );
+  useEffect(() => {
+    handleProductStatus({
+      query,
+      setProductData,
+      isSuccess,
+      data,
+      setHasMore,
+      currencies,
+    });
+  }, [data, isSuccess, isError, query]);
   useEffect(
     () =>
       handleRequestStatus({

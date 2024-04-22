@@ -293,7 +293,7 @@ export default function ProductInformation({
     >
       {type !== "term-deposit" && (
         <div className="mb-6 flex flex-col gap-[1px] max-w-[600px]">
-          <div className="flex itemx-center gap-x-2">
+          <div className="flex items-center gap-x-2">
             <label
               htmlFor="investment"
               className="w-[300px] pt-[10px]  text-base font-semibold text-[#636363] capitalize flex items-start"
@@ -334,7 +334,7 @@ export default function ProductInformation({
         <div className="">
           {type !== "term-deposit" && (
             <div className="mb-6 flex flex-col gap-[1px] max-w-[600px]">
-              <div className="flex itemx-center gap-x-2">
+              <div className="flex items-center gap-x-2">
                 <label
                   htmlFor="investment"
                   className="w-[300px] pt-[10px]  text-base font-semibold text-[#636363] capitalize flex items-start"
@@ -371,7 +371,7 @@ export default function ProductInformation({
             </div>
           )}
           <div className="mb-6 flex flex-col gap-[1px]">
-            <div className="flex itemx-center gap-2 w-[300px]">
+            <div className="flex items-center gap-2 w-[300px]">
               {" "}
               <label
                 htmlFor="productName"
