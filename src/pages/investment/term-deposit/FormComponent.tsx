@@ -16,6 +16,9 @@ import {
 } from "@app/api";
 import { handleDraft } from "./create-term-deposit/handleDraft";
 import { useParams, useSearchParams } from "react-router-dom";
+import MoneyPricingConfig from "@app/components/pages/term-deposit/forms/money-pricing-config";
+import MoneyGlMapping from "@app/components/pages/term-deposit/forms/money-gl-mapping";
+import CommercialChargesAndTaxes from "@app/components/pages/term-deposit/forms/gl_mapping_events/CommercialChargesAndTaxes";
 
 export default ({
   step,
@@ -27,10 +30,10 @@ export default ({
   initiateDraft,
 }: any) => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const { process, id } = useParams();
+  const { process, id, type } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const requestId = searchParams.get("id");
-  
+
   useEffect(() => {
     if (
       productData?.liquidation?.early_LiquidationPenalty === 4 &&
@@ -119,50 +122,104 @@ export default ({
         />
       )}
       {step === 2 && (
-        <CustomerEligibilityCriteria
-          proceed={handleNav}
-          formData={productData.customerEligibility}
-          setFormData={(customerEligibility) =>
-            setProductData({
-              ...productData,
-              productInfo: {
-                ...productData.productInfo,
-              },
-              customerEligibility: customerEligibility,
-            })
-          }
-          setDisabled={setDisabled}
-          initiateDraft={initiateDraft}
-        />
+        <>
+          {type === "term-deposit" ? (
+            <CustomerEligibilityCriteria
+              proceed={handleNav}
+              formData={productData.customerEligibility}
+              setFormData={(customerEligibility) =>
+                setProductData({
+                  ...productData,
+                  productInfo: {
+                    ...productData.productInfo,
+                  },
+                  customerEligibility: customerEligibility,
+                })
+              }
+              setDisabled={setDisabled}
+              initiateDraft={initiateDraft}
+            />
+          ) : (
+            <MoneyPricingConfig
+              formData={productData.pricingConfiguration}
+              setFormData={(pricingConfiguration) =>
+                setProductData({
+                  ...productData,
+                  pricingConfiguration: pricingConfiguration,
+                })
+              }
+              productData={productData}
+              proceed={handleNav}
+              setDisabled={setDisabled}
+              initiateDraft={initiateDraft}
+            />
+          )}
+        </>
       )}
       {step === 3 && (
-        <PricingConfig
-          formData={productData.pricingConfiguration}
-          setFormData={(pricingConfiguration) =>
-            setProductData({
-              ...productData,
-              pricingConfiguration: pricingConfiguration,
-            })
-          }
-          productData={productData}
-          proceed={handleNav}
-          setDisabled={setDisabled}
-          initiateDraft={initiateDraft}
-        />
+        <>
+          {type === "term-deposit" ? (
+            <PricingConfig
+              formData={productData.pricingConfiguration}
+              setFormData={(pricingConfiguration) =>
+                setProductData({
+                  ...productData,
+                  pricingConfiguration: pricingConfiguration,
+                })
+              }
+              productData={productData}
+              proceed={handleNav}
+              setDisabled={setDisabled}
+              initiateDraft={initiateDraft}
+            />
+          ) : (
+            <MoneyGlMapping
+              proceed={handleNav}
+              formData={productData}
+              setFormData={(data, mapOptions) =>
+                setProductData({
+                  ...productData,
+                  ...data,
+                  productGlMappings: mapOptions,
+                })
+              }
+              setDisabled={setDisabled}
+              initiateDraft={initiateDraft}
+            />
+          )}
+        </>
       )}
       {step === 4 && (
-        <LiquiditySetup
-          proceed={handleNav}
-          formData={productData.liquidation}
-          setFormData={(liquidation) =>
-            setProductData({
-              ...productData,
-              liquidation: liquidation,
-            })
-          }
-          setDisabled={setDisabled}
-          initiateDraft={initiateDraft}
-        />
+        <>
+          {type === "term-deposit" ? (
+            <LiquiditySetup
+              proceed={handleNav}
+              formData={productData.liquidation}
+              setFormData={(liquidation) =>
+                setProductData({
+                  ...productData,
+                  liquidation: liquidation,
+                })
+              }
+              setDisabled={setDisabled}
+              initiateDraft={initiateDraft}
+            />
+          ) : (
+            <CommercialChargesAndTaxes
+              proceed={handleNav}
+              formData={productData}
+              setFormData={(data, mapOptions) =>
+                setProductData({
+                  ...productData,
+                  ...data,
+                  productGlMappings: mapOptions,
+                })
+              }
+              setDisabled={setDisabled}
+              initiateDraft={initiateDraft}
+            />
+          )}
+        </>
       )}
       {step === 5 && (
         <ProductToGLMapping

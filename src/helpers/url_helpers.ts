@@ -21,7 +21,7 @@ const urls = {
   //  Invesment
   INVESTMENT_CREATE: "/investment/add",
   INVESTMENT_EDIT: "/investment/edit",
-
+  
   //investment
   INVESTMENT: '/Investment',
   INVESTMENT_REQUEST: '/InvestmentRequest',
@@ -29,11 +29,17 @@ const urls = {
   INVESTMENT_REQUEST_STATS: '/InvestmentRequest/stats',
   INVESTMENT_ACTIVITY_LOG: '/Investment/activitylog',
   INVESTMENT_REQUEST_ACTIVITY_LOG: '/InvestmentRequest/activitylog',
-
+  
   INVESTMENT_CALC: "/investment/calc",
   INVESTMENT_DASHBOARD_STATS: '/Dashboard/investmentstats',
-  CHARGES: "/charges/"
+  CHARGES: "/charges/",
 
+  // Security Purchase
+  SECURITY_PURCHASE_CREATE: "/SecurityPurchase/add",
+  SECURITY_PURCHASE: "/SecurityPurchase",
+  SECURITY_PURCHASE_REQUEST: "/SecurityPurchaseRequest",
+  SECURITY_PURCHASE_ACTIVITY_LOG: "SecurityPurchase/activityLog",
+  SECURITY_PURCHASE_REQUEST_ACTIVITY_LOG: "SecurityPurchaseRequest/activityLog"
 };
 
 export default urls;

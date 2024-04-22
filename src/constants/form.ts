@@ -46,6 +46,46 @@ export const BookingCustomerInfoSchema = yup.object().shape({
     .min(1, "Insufficient balance")
     .required(),
 });
+
+export const BondsProductFacilityDetailsModelSchema = yup.object().shape({
+  investmentProductId: yup.string().uuid().required("Select an investment"),
+  investmentPurpose: yup.string().required(),
+  availableVolume: yup.number().required(),
+  tenor: yup
+    .number()
+    .typeError("Invalid value")
+    .integer()
+    .positive()
+    .min(yup.ref("tenorMin"), "Tenor is too short")
+    .max(yup.ref("tenorMax"), "Tenor is too long")
+    .nullable()
+    .required("Tenor is required"),
+  faceValue: yup.number().required(),
+  cleanPrice: yup.number().required(),
+  dirtyPrice: yup.number().required(),
+  totalConsideration: yup.number().required(),
+  couponRate: yup.number().required(),
+  principal: yup
+    .number()
+    .typeError("Invalid value")
+    .positive()
+    .min(yup.ref("prinMin"), "Principal is too small")
+    .max(yup.ref("prinMax"), "Principal is too large")
+    .nullable()
+    .required("Principal is required"),
+  capitalizationMethod: yup.number().integer().min(0).max(4).required(),
+  interval: yup.number().integer().min(0).max(4)
+  .when("capitalizationMethod", {
+    is: 1,
+    then: (schema) => schema.required(),
+  }),
+  tenorMin: yup.number().typeError("Invalid value").nullable(),
+  tenorMax: yup.number().typeError("Invalid value").integer().nullable(),
+  prinMin: yup.number().typeError("Invalid value").integer().nullable(),
+  prinMax: yup.number().typeError("Invalid value").integer().nullable(),
+  intMin: yup.number().typeError("Invalid value").nullable(),
+  intMax: yup.number().typeError("Invalid value").nullable(),
+});
 export const FacilityDetailsModelSchema = yup.object().shape({
   investmentProductId: yup.string().uuid().required("Select an investment"),
   investmentPurpose: yup.string(),
@@ -84,19 +124,28 @@ export const FacilityDetailsModelSchema = yup.object().shape({
 });
 
 export const FacilityDetailsModelSchema2 = yup.object().shape({
-  category: yup.string().required(),
+  moneyMarketCategory: yup.number().integer().nullable().required(),
   issuer: yup.string().required().max(50),
   description: yup.string().required().max(250),
-  // dealDate: yup.date().nullable().required(),
-  // maturiyDate: yup.date().nullable().required(),
-  currency: yup.string().required(),
-  discountRate: yup.number().required(),
-  perAmount: yup.number().required(),
-  faceValue: yup.number().required(),
-  consideration: yup.number().required(),
-  interestCapitalizationMethod: yup.number().required(),
-  interestComputationMethod: yup.number().required(),
-  interval: yup.number()
+  dealDate: yup.date().nullable().required(),
+  maturityDate: yup.date().nullable().required(),
+  currencyCode: yup.string().required(),
+  discountRate: yup.number().required().min(0.001).max(100),
+  perAmount: yup.number().required().min(0),
+  faceValue: yup.number().required().min(0),
+  totalConsideration: yup.number().required(),
+  interestComputationMethod: yup.number().integer().required(),
+  capitalizationMethod: yup.number().required(),
+    securityPurchaseIntervals: yup.number().nullable()
+    .when("capitalizationMethod", {
+      is: 2,
+      then: (schema) => schema.required()
+    })
+})
+
+export const accountingEntriesSchema = yup.object().shape({
+  debitLedger: yup.string().required(),
+  creditLedger: yup.string().required()
 })
 
 export const TransactionSettingModelSchema = yup.object().shape({

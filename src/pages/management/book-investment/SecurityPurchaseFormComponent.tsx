@@ -17,34 +17,37 @@ export default ({
 }) => {
     return (
         <Fragment>
-            <span>
-                {
-                    step === 1 ?
-                        <FacilityDetails
-                            proceed={handleNav}
-                            formData={formData}
-                            setFormData={setFormData}
-                            setDisabled={setDisabled}
-                            isSavingDraft={isSavingDraft}
-                            setProductDetail={setProductDetail}
-                            productDetail={productDetail}
-                            detailLoading={detailLoading}
-                            preModifyRequest={preModifyRequest}
-                        /> :
-                        <AccountingEntries
-                            proceed={handleNav}
-                            formData={formData}
-                            setFormData={setFormData}
-                            setDisabled={setDisabled}
-                            isSavingDraft={isSavingDraft}
-                            setProductDetail={setProductDetail}
-                            productDetail={productDetail}
-                            detailLoading={detailLoading}
-                            preModifyRequest={preModifyRequest}
-                        />
-                }
+            {
+                !detailLoading &&
+                <span>
+                    {
+                        step === 1 ?
+                            <FacilityDetails
+                                proceed={handleNav}
+                                formData={formData}
+                                setFormData={setFormData}
+                                setDisabled={setDisabled}
+                                isSavingDraft={isSavingDraft}
+                                setProductDetail={setProductDetail}
+                                productDetail={productDetail}
+                                detailLoading={detailLoading}
+                                preModifyRequest={preModifyRequest}
+                            /> :
+                            <AccountingEntries
+                                proceed={handleNav}
+                                formData={formData}
+                                setFormData={setFormData}
+                                setDisabled={setDisabled}
+                                isSavingDraft={isSavingDraft}
+                                setProductDetail={setProductDetail}
+                                productDetail={productDetail}
+                                detailLoading={detailLoading}
+                                preModifyRequest={preModifyRequest}
+                            />
+                    }
 
-            </span>
+                </span>
+            }
         </Fragment>
     )
 }

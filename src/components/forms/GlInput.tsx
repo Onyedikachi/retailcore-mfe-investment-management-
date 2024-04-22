@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
-import { FaSearch } from "react-icons/fa";
+import { FaCaretDown, FaSearch, FaCaretUp } from "react-icons/fa";
 import { tabLinks } from "@app/constants";
 import { useGetGlClassQuery, useGetAccountsQuery } from "@app/api";
 import { onChange } from "./DateSelect";
@@ -18,6 +18,7 @@ const LedgerItem = ({
   setQuery,
   setOpen,
   trigger,
+  setLedger,
 }) => {
   return (
     <div
@@ -28,6 +29,7 @@ const LedgerItem = ({
       onClick={() => {
         handleClick(inputName, menu);
         setQuery(menu.accountName);
+        setLedger(menu);
         setOpen(false);
         trigger(inputName);
       }}
@@ -50,12 +52,15 @@ export default function EntriesAndEventsSearchResults({
   defaultValue,
   clearFields,
   formData,
+  accountType,
+  showImpact = false
 }: any) {
   const [query, setQuery] = useState("");
   const [isOpen, setOpen] = useState(false);
   const [glClass, setGlass] = useState([]);
   const [classId, setClassId] = useState(null);
   const [ledgers, setLedgers] = useState([]);
+  const [ledger, setLedger] = useState(null);
   const [toggleMenu, setMenus] = useState(null);
   const { data, isLoading, isSuccess, isError } = useGetGlClassQuery();
   const {
@@ -69,6 +74,7 @@ export default function EntriesAndEventsSearchResults({
       Q: query,
       AccountType: [classId?.toUpperCase()],
       currencyCode: formData?.productInfo?.currencyCode,
+      isAccountNumber: true,
       AccountCategory: 1,
     },
     { skip: !classId }
@@ -132,6 +138,28 @@ export default function EntriesAndEventsSearchResults({
               value={query}
             />
           </div>
+          {showImpact && accountType && (
+            <div className="flex gap-x-4 text-sm mb-1  mt-[10px]">
+              <span className="flex gap-x-1 items-center">
+                <span>GL Class:</span>
+                <span className="bg-[#6363632B] border-[#636363] border font-medium rounded-full text-xs px-[10px] py-[2px] uppercase">
+                  {accountType}
+                </span>
+              </span>
+              <span>|</span>
+              <span className="flex gap-x-1 items-center">
+                <span>Balance impact:</span>
+                <span>
+                  {inputName === "debit" && (
+                    <FaCaretDown className="text-red-500 text-2xl drop-shadow-[0px_0px_8px_0px_#00000040]" />
+                  )}
+                  {inputName === "credit" && (
+                    <FaCaretUp className="text-green-500 text-2xl drop-shadow-[0px_0px_8px_0px_#00000040]" />
+                  )}
+                </span>
+              </span>
+            </div>
+          )}
           {isOpen && (
             <div className="flex flex-col shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]  p-4 rounded-b-lg top-[35px] bg-white z-[400] absolute w-full min-w-[360px]">
               <div
@@ -186,6 +214,7 @@ export default function EntriesAndEventsSearchResults({
                         setQuery={setQuery}
                         setOpen={setOpen}
                         trigger={trigger}
+                        setLedger={setLedger}
                       />
                     ))}
                 </div>

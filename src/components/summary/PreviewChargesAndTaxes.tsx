@@ -57,9 +57,19 @@ export default ({ detail }) => {
       key: "investmentLiquidationChargesAndTaxes",
     },
   ];
+  const valueTypes1 = [
+    {
+      header: "Issuance Charges & Taxes",
+      key: "issuanceChargesAndTaxes",
+    },
+    {
+      header: "Redemption Charges & Taxes",
+      key: "redemptionChargesAndTaxes",
+    },
+  
+  ];
 
   const { data: charges } = useGetApplicableChargesQuery();
-
   const { data: taxes } = useGetApplicableTaxesQuery();
 
   return (

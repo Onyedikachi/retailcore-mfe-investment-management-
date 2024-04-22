@@ -11,11 +11,13 @@ import {
 import { Breadcrumbs, Loader, Button } from "@app/components";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import {
-    useGetInvestmentActivityLogQuery,
     useModifyInvestmentMutation,
     useModifyInvestmentRequestMutation,
     useCreateInvestmentMutation,
-    useGetInvestmentRequestActivityLogQuery,
+    useGetGlClassQuery,
+    useGetAccountsQuery,
+    useGetSecurityPurchaseRequestActivityLogQuery,
+    useGetSecurityPurchaseActivityLogQuery,
 } from "@app/api";
 import { Confirm, Failed, Success } from "@app/components/modals";
 
@@ -25,6 +27,7 @@ import { summaryLinks } from "@app/constants";
 import { currencyFormatter } from "@app/utils/formatCurrency";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 import moment from "moment";
+import { interestCapitalizationMethodOptions, intervalOptions } from "./FacilityDetails";
 export function Container({ children }) {
     return (
         <div className="rounded-[10px] border border-[#EEE] px-12 py-10">
@@ -40,7 +43,8 @@ export const handleSuccessMessage = (
     setSubText,
     role,
     text = "",
-    process
+    process,
+    investmentType
 ) => {
     setSuccessText(
         role === "superadmin"
@@ -48,7 +52,7 @@ export const handleSuccessMessage = (
                 ? Messages.BOOKING_CREATE_SUCCESS
                 : Messages.BOOKING_MODIFY_SUCCESS
             : Messages.ADMIN_BOOKING_CREATE_SUCCESS
-    );
+    )
     if (text) {
         setSubText(text);
     }
@@ -101,14 +105,15 @@ export const submitForm = (
     createRequest,
     process,
     id,
-    previousData
+    previousData,
+    investmentType
 ) => {
     if (process === "modify") {
         modifyProduct({
             ...formData,
             isDraft: false,
             id,
-            recentlyUpdatedMeta: previousData ? JSON.stringify(previousData) : null,
+            recentlyUpdatedMeta: previousData ? JSON.stringify(previousData) : null, investmentType
         });
     }
     if (
@@ -121,11 +126,12 @@ export const submitForm = (
             isDraft: false,
             id: formData.id || id,
             recentlyUpdatedMeta: previousData ? JSON.stringify(previousData) : null,
+            investmentType
         });
     }
 
     if ((process === "create" || process === "clone") && !formData?.id) {
-        createRequest({ ...formData, isDraft: false });
+        createRequest({ ...formData, isDraft: false, investmentType });
     }
 
     // navigate(paths.INVESTMENT_DASHBOARD);
@@ -151,22 +157,40 @@ export default function ({
     const [isFailed, setFailed] = useState(false);
     const [failedText, setFailedText] = useState("");
     const [state, setState] = useState();
+    const [entriesData, setEntriesData] = useState(null);
 
     const { data: activityData, isLoading: activityIsLoading } =
-        useGetInvestmentActivityLogQuery({ bookingId: id }, { skip: !id });
+        useGetSecurityPurchaseActivityLogQuery({ id: id }, { skip: !id });
     const { data: activityRequestData, isLoading: activityRequestIsLoading } =
-        useGetInvestmentRequestActivityLogQuery(
-            { bookingrequestId: id },
+        useGetSecurityPurchaseRequestActivityLogQuery(
+            { id: id },
             { skip: !id }
         );
     const [
         createRequest,
-        { isLoading: createRequestLoading, isSuccess, isError, reset, error },
+        { isLoading: createRequestLoading, isSuccess, isError, reset, error, data: reqData },
     ] = useCreateInvestmentMutation();
+
+    const { data: glClass, isLoading } = useGetGlClassQuery();
+
+
+    const {
+        data: ledgerData,
+        isFetching: ledgerIsLoading,
+        isSuccess: ledgerIsSuccess,
+        isError: ledgerIsError,
+        refetch,
+    } = useGetAccountsQuery(
+        {
+            Q: "",
+            currencyCode: formData?.facilityDetailsModel?.currencyCode,
+        }
+    );
 
     const [
         modifyProduct,
         {
+            data: modifyRes,
             isLoading: modifyLoading,
             isSuccess: modifySuccess,
             isError: modifyIsError,
@@ -175,7 +199,8 @@ export default function ({
     ] = useModifyInvestmentMutation();
     const [
         modifyRequest,
-        {
+        {   
+            data: modifyRequestRes,
             isLoading: modifyRequestLoading,
             isSuccess: modifyRequestSuccess,
             isError: modifyRequestIsError,
@@ -197,12 +222,16 @@ export default function ({
             createRequest,
             process,
             id,
-            previousData
+            previousData,
+            investmentType
         );
     useEffect(() => {
         if (isSuccess || modifySuccess || modifyRequestSuccess) {
             let text;
-            if (process === "create" && role === "superadmin") {
+            if (investmentType === "security-purchase") {
+                text = reqData?.message || modifyRes?.message || modifyRequestRes || "" 
+            }
+            else if (process === "create" && role === "superadmin") {
                 text = `${currencyFormatter(
                     formData?.facilityDetailsModel?.principal,
                     handleCurrencyName(productDetail?.productInfo?.currency, currencies)
@@ -218,7 +247,8 @@ export default function ({
                 setSubText,
                 role,
                 text,
-                process
+                process,
+                investmentType
             );
         }
 
@@ -244,6 +274,9 @@ export default function ({
         modifyRequestIsError,
         modifyRequestSuccess,
     ]);
+
+
+
     const links = [
         {
             id: 1,
@@ -378,8 +411,8 @@ export default function ({
                                                 </div>
                                                 <div className="w-full text-base font-normal text-[#636363]">
                                                     <span className="">
-                                                    {handleCurrencyName(productDetail.facilityDetailsModel?.currency, currencies)}
-                                                     {productDetail.facilityDetailsModel?.faceValue || '-'}
+                                                        {handleCurrencyName(productDetail.facilityDetailsModel?.currency, currencies)}
+                                                        {productDetail.facilityDetailsModel?.faceValue || '-'}
                                                     </span>
                                                 </div>
                                             </div>
@@ -389,18 +422,8 @@ export default function ({
                                                 </div>
                                                 <div className="w-full text-base font-normal text-[#636363]">
                                                     <span className="">
-                                                        {productDetail.facilityDetailsModel?.consideration}
+                                                        {productDetail.facilityDetailsModel?.totalConsideration}
                                                         {handleCurrencyName(productDetail.facilityDetailsModel?.currency, currencies)}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div className=" flex gap-[54px]">
-                                                <div className="w-[300px]   text-base font-medium text-[#636363]">
-                                                    Specify Interval
-                                                </div>
-                                                <div className="w-full text-base font-normal text-[#636363]">
-                                                    <span className="">
-                                                        {productDetail.facilityDetailsModel?.interval}
                                                     </span>
                                                 </div>
                                             </div>
@@ -410,10 +433,32 @@ export default function ({
                                                 </div>
                                                 <div className="w-full text-base font-normal text-[#636363]">
                                                     <span className="">
-                                                        {productDetail.facilityDetailsModel?.interestCapitalizationMethod}
+                                                        {
+                                                            interestCapitalizationMethodOptions.find(i => i.id ===
+                                                                productDetail.facilityDetailsModel?.interestCapitalizationMethod)
+                                                                ?.text
+                                                        }
                                                     </span>
                                                 </div>
                                             </div>
+                                            {
+                                                productDetail.facilityDetailsModel?.securityPurchaseIntervals &&
+                                                <div className=" flex gap-[54px]">
+                                                    <div className="w-[300px]   text-base font-medium text-[#636363]">
+                                                        Specify Interval
+                                                    </div>
+                                                    <div className="w-full text-base font-normal text-[#636363]">
+                                                        <span className="">
+                                                            {productDetail.facilityDetailsModel?.securityPurchaseIntervals}
+                                                            {
+                                                                intervalOptions.find(i => i.id ===
+                                                                    productDetail.facilityDetailsModel?.securityPurchaseIntervals)
+                                                                    ?.text
+                                                            }
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -428,7 +473,7 @@ export default function ({
                                                     Credit Ledger
                                                 </div>
                                                 <div className="w-full text-base font-normal text-[#636363]">
-                                                    {productDetail.accountingEntries.creditLedger || ' - '}
+                                                    {ledgerData?.value?.items?.find(i => i.accountNo === productDetail.accountingEntries?.creditLedger)?.accountName || " - "}
                                                 </div>
                                             </div>
                                             <div className=" flex gap-[54px]">
@@ -436,7 +481,7 @@ export default function ({
                                                     DebitLedger
                                                 </div>
                                                 <div className="w-full text-base font-normal text-[#636363]">
-                                                    {productDetail.accountingEntries.debitLedger || ' - '}
+                                                    {ledgerData?.value?.items?.find(i => i.accountNo === productDetail.accountingEntries?.debitLedger)?.accountName || " - "}
                                                 </div>
                                             </div>
                                         </div>

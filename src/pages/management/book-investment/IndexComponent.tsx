@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, Fragment } from "react";
+import React, { useEffect, useState, useRef, Fragment, useContext } from "react";
 import { BookInvestmentFormSteps, CustomerCategoryType, securityPurchageFormSteps } from "@app/constants";
 import { ProductInfoInvestmentCalc } from "@app/components/management";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
@@ -19,6 +19,7 @@ import {
   useGetInvestmentRequestDetailQuery,
   useModifyInvestmentMutation,
   useModifyInvestmentRequestMutation,
+  useGetValuesQuery,
 } from "@app/api";
 import { Confirm, Failed, Success } from "@app/components/modals";
 import { Prompts } from "@app/constants/enums";
@@ -29,6 +30,7 @@ import {
 import BottomBarLoader from "@app/components/BottomBarLoader";
 import SecurityPurchaseFormComponent from "./SecurityPurchaseFormComponent";
 import SecurityPurchasePreview from "./SecurityPurchasePreview";
+import { AppContext } from "@app/utils";
 
 export function handleNext(step, setStep, formSteps) {
   step < formSteps.length && setStep(step + 1);
@@ -78,17 +80,20 @@ export const handleDraft = ({
   setIsConfirmOpen,
   modifyProduct,
   createInvestment,
+  investmentType
 }) => {
   setIsConfirmOpen(false);
+  const reqData = investmentType === "security-purchase" ?
+    { ...formData?.accountingEntries, ...formData?.facilityDetailsModel, id: formData.id } : formData;
   if (process === "modify") {
-    modifyProduct({ ...formData, isDraft: true, id });
+    modifyProduct({ ...reqData, isDraft: true, id, investmentType });
   }
   if (process === "create" || process === "clone") {
-    const { id, ...restData } = formData;
-    createInvestment({ ...restData, isDraft: true });
+    const { id, ...restData } = reqData;
+    createInvestment({ ...restData, isDraft: true, investmentType });
   }
   if (process === "continue" || process === "withdraw_modify") {
-    modifyRequest({ ...formData, isDraft: true, id });
+    modifyRequest({ ...reqData, isDraft: true, id, investmentType });
   }
 };
 
@@ -115,29 +120,31 @@ export default function IndexComponent() {
   const [productDetail, setProductDetail] = useState(null);
   const [calcDetail, setCalcDetail] = useState(null);
   const navigate = useNavigate();
+  const { currencies, defaultCurrency } = useContext(AppContext);
 
   const [formData, setFormData] = useState<any>(
     investmentType === "security-purchase" ?
       {
         id: id || "",
         facilityDetailsModel: {
-          category: "",
+          moneyMarketCategory: 0,
           issuer: "",
           description: "",
           dealDate: null,
-          maturiyDate: null,
-          currency: "",
-          discountRate: "",
-          perAmount: "",
-          faceValue: "",
-          consideration: "",
-          interestCapitalizationMethod: "",
-          interestComputationMethod: "",
-          interval: ""
+          maturityDate: null,
+          perAmount: null,
+          currencyCode: "",
+          cleanPrice: 0,
+          faceValue: null,
+          totalConsideration: null,
+          interestComputationMethod: 1,
+          capitalizationMethod: 1,
+          discountRate: null,
+          securityPurchaseIntervals: 1,
         },
         accountingEntries: {
-          debitLedger: "",
-          creditLedger: ""
+          debitLedger: null,
+          creditLedger: null,
         }
       } :
       {
@@ -208,7 +215,7 @@ export default function IndexComponent() {
     },
   ];
 
-
+  // To modify
 
   const {
     data: detail,
@@ -256,7 +263,7 @@ export default function IndexComponent() {
     isSuccess: requestIsSuccess,
   } = useGetInvestmentRequestDetailQuery(
     {
-      id,
+      id, investmentType
     },
     { skip: !id }
   );
@@ -267,7 +274,7 @@ export default function IndexComponent() {
     isSuccess: productDetailsIsSuccess,
   } = useGetInvestmentDetailQuery(
     {
-      id,
+      id, investmentType
     },
     { skip: !id }
   );
@@ -294,6 +301,10 @@ export default function IndexComponent() {
 
   const [formSteps, setFormSteps] = useState(investmentType === "security-purchase" ? securityPurchageFormSteps : BookInvestmentFormSteps)
 
+  const {
+    data: d
+  } = useGetValuesQuery();
+
   useEffect(() => {
     if (
       productDetail &&
@@ -315,6 +326,20 @@ export default function IndexComponent() {
   useEffect(() => {
     setCalcDetail(calcData?.data);
   }, [calcData, calcIsSuccess]);
+
+  const setupForm = (source) => {
+    const facilityDetailsModel = source;
+    const accountingEntries = { debitLedger: source?.debitLedger, creditLedger: source?.creditLedger };
+    delete facilityDetailsModel.creditLedger;
+    delete facilityDetailsModel.debitLedger;
+    return ({ facilityDetailsModel, accountingEntries })
+  }
+
+  useEffect(() => {
+    if (productDetailsIsSuccess && investmentType === "security-purchase") {
+      setFormData({ ...formData, ...setupForm(productDetails?.data) })
+    }
+  }, [productDetailsIsSuccess, productDetails]);
 
   useEffect(() => {
     if (detailIsSuccess) {
@@ -399,6 +424,16 @@ export default function IndexComponent() {
       formData,
       id,
     });
+    if (
+      investmentType === "security-purchase" &&
+      (process !== "create")
+    ) {
+      console.log("rq", requestData?.data?.metaInfo)
+      if (requestData?.data?.metaInfo && investmentType === "security-purchase") {
+        const d = JSON.parse(requestData?.data?.metaInfo)
+        setFormData({ ...formData, ...setupForm(d) })
+      }
+    }
   }, [requestIsSuccess]);
 
   return (
@@ -423,7 +458,7 @@ export default function IndexComponent() {
                 </div>
                 <div className=" bg-[#ffffff] border border-[#EEEEEE] rounded-[10px] px-[87px] pt-[100px] pb-[43px] ">
                   {/* {form component} */}
-                  {!requestIsLoading ? (
+                  {(!requestIsLoading && !productDetailsIsLoading) ? (
                     <Fragment>
                       {
                         investmentType !== "security-purchase" ?
@@ -472,7 +507,7 @@ export default function IndexComponent() {
                             isSavingDraft={isSavingDraft}
                             setProductDetail={setProductDetail}
                             productDetail={productDetail}
-                            detailLoading={detailLoading}
+                            detailLoading={productDetailsIsLoading}
                             preModifyRequest={preModifyRequest}
                             preCreateInvestment={preCreateInvestment}
                           />
@@ -540,7 +575,7 @@ export default function IndexComponent() {
         <Fragment>
           {
             investmentType === "security-purchase" ?
-              <SecurityPurchasePreview productDetail={formData} />
+              <SecurityPurchasePreview productDetail={formData} formData={{ ...formData?.facilityDetailsModel, ...formData?.accountingEntries }} />
               :
               <Preview
                 productDetail={productDetail}
@@ -572,6 +607,7 @@ export default function IndexComponent() {
               setIsConfirmOpen,
               modifyProduct,
               createInvestment,
+              investmentType
             })
           }
         />
