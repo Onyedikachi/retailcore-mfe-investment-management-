@@ -114,7 +114,7 @@ export default function Dashboard() {
         </div>
       </div>
       <div className="bg-[#F7F7F7] px-4 sm:px-6 lg:px-8 py-[30px] max-h-[100vh] overflow-y-auto">
-        {tab?.toLowerCase() == "overview" ? <Overview /> : <Individual />}
+        {tab?.toLowerCase() == "overview" || !tab ? <Overview /> : <Individual />}
       </div>
     </div>
   );
