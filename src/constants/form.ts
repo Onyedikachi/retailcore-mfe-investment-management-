@@ -131,8 +131,8 @@ export const FacilityDetailsModelSchema = yup.object().shape({
 
 export const FacilityDetailsModelSchema2 = yup.object().shape({
   moneyMarketCategory: yup.number().integer().nullable().required(),
-  issuer: yup.string().required().max(50),
-  description: yup.string().required().max(250),
+  issuer: yup.string().max(50).required(),
+  description: yup.string().max(250).required(),
   dealDate: yup.date().nullable().required(),
   maturityDate: yup.date().nullable().required(),
   currencyCode: yup.string().required(),
@@ -142,7 +142,7 @@ export const FacilityDetailsModelSchema2 = yup.object().shape({
     .max(100, "Maximum value exceeded").required(),
   perAmount: yup.number().required(),
   faceValue: yup.number().required(),
-  totalConsideration: yup.number().required(),
+  totalConsideration: yup.mixed().required(),
   interestComputationMethod: yup.number().integer().required(),
   capitalizationMethod: yup.number().required(),
   securityPurchaseIntervals: yup

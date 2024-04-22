@@ -567,7 +567,11 @@ export default function ProductInformation({
               type !== "term-deposit" ? "flex-row-reverse justify-end" : ""
             }`}
           >
-            <div className={`flex  ${ type !== "term-deposit" ? "gap-x-12" : "gap-x-4"} items-end`}>
+            <div
+              className={`flex  ${
+                type !== "term-deposit" ? "gap-x-12" : "gap-x-4"
+              } items-end`}
+            >
               <div>
                 <div className="flex  gap-x-2 w-[300px] mb-1">
                   {" "}
@@ -600,22 +604,24 @@ export default function ProductInformation({
                   clearErrors={clearErrors}
                 />
               </div>
-             {type !== "term-deposit"?" ":"-"}
+              {type !== "term-deposit" ? " " : "-"}
               <div>
-                <div className="flex  gap-x-2 w-[300px] mb-1">
-                  {" "}
-                  <label
-                    htmlFor="productLifeCycle"
-                    className=" pt-[10px]  text-base font-semibold text-[#636363] flex"
-                  >
-                    Maturity date{" "}
-                    <span className="flex">
-                      {" "}
-                      <RedDot />
-                    </span>{" "}
-                  </label>
-                  <FormToolTip tip={toolTips.lifeCycle} />
-                </div>
+                {type !== "term-deposit" && (
+                  <div className="flex  gap-x-2 w-[300px] mb-1">
+                    {" "}
+                    <label
+                      htmlFor="productLifeCycle"
+                      className=" pt-[10px]  text-base font-semibold text-[#636363] flex"
+                    >
+                      Maturity date{" "}
+                      <span className="flex">
+                        {" "}
+                        <RedDot />
+                      </span>{" "}
+                    </label>
+                    <FormToolTip tip={toolTips.lifeCycle} />
+                  </div>
+                )}
 
                 <FormDate
                   register={register}

@@ -147,7 +147,7 @@ export default function IndexComponent() {
             perAmount: "",
             faceValue: "",
             totalConsideration: "",
-            capitalizationMethod: "",
+            capitalizationMethod: 0,
             interestComputationMethod: "",
             interval: "",
           },

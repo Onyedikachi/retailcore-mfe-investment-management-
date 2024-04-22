@@ -20,7 +20,7 @@ import {
   useGetSecurityPurchaseActivityLogQuery,
 } from "@app/api";
 import { Confirm, Failed, Success } from "@app/components/modals";
-import { intervalOptions, CapitalizationOptions } from "@app/constants";
+import { intervalOptions, CapitalizationOptions, productCategoryOptions } from "@app/constants";
 import { Messages, Prompts } from "@app/constants/enums";
 import { AppContext } from "@app/utils";
 import { summaryLinks } from "@app/constants";
@@ -337,8 +337,7 @@ export default function ({
                           Money Market Category
                         </div>
                         <div className="w-full text-base font-normal text-[#636363]">
-                          {productDetail.facilityDetailsModel?.category ||
-                            " - "}
+                          {productCategoryOptions.find(i=> i.value === productDetail.facilityDetailsModel?.moneyMarketCategory )?.text}
                         </div>
                       </div>
                       <div className=" flex gap-[54px]">
