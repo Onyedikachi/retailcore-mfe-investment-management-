@@ -6,6 +6,9 @@ import {
   FacilityDetailsModelSchema,
   FacilityDetailsModelSchema2,
   categoryOptions,
+  CapitalizationOptions,
+  interestComputationDaysOptions,
+  intervalOptions
 } from "@app/constants";
 import { AppContext } from "@app/utils";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
@@ -53,6 +56,7 @@ export default ({
     getValues,
     trigger,
     formState: { errors, isValid },
+ 
   } = useForm({
     resolver: yupResolver(FacilityDetailsModelSchema2),
     defaultValues: formData.facilityDetailsModel,
@@ -60,7 +64,7 @@ export default ({
   });
 
   const { currencies, defaultCurrency } = useContext(AppContext);
-
+  console.log("🚀 ~ errors:", errors)
   useEffect(() => {
     setValue("currency", defaultCurrency?.abbreviation);
   }, [defaultCurrency]);
@@ -89,67 +93,9 @@ export default ({
     },
   ];
 
-  const interestCapitalizationMethodOptions = [
-    {
-      id: 1,
-      text: "Upon Booking",
-      value: 1,
-    },
+ 
 
-    {
-      id: 2,
-      text: "At Intervals",
-      value: 2,
-    },
-    {
-      id: 3,
-      text: "At Maturity",
-      value: 3,
-    },
-  ];
-
-  const interestComputationMethodOptions = [
-    {
-      id: 1,
-      text: "Actual/Actual",
-      value: 1,
-    },
-
-    {
-      id: 2,
-      text: "Actual/360",
-      value: 2,
-    },
-    {
-      id: 3,
-      text: "Actual/365",
-      value: 3,
-    },
-  ];
-
-  const intervalOptions = [
-    {
-      id: 1,
-      text: "Semi-Anually",
-      value: 1,
-    },
-
-    {
-      id: 2,
-      text: "Anually",
-      value: 2,
-    },
-    {
-      id: 3,
-      text: "Quarterly",
-      value: 3,
-    },
-    {
-      id: 4,
-      text: "Monthly",
-      value: 4,
-    },
-  ];
+  
 
   useEffect(() => {
     setDisabled(!isValid);
@@ -379,7 +325,7 @@ export default ({
                     defaultValue={values?.interestComputationMethod}
                     placeholder="Select"
                     clearErrors={clearErrors}
-                    options={interestComputationMethodOptions}
+                    options={interestComputationDaysOptions}
                     trigger={trigger}
                   />
                 </div>
@@ -395,7 +341,7 @@ export default ({
                     defaultValue={values?.interestCapitalizationMethod}
                     placeholder="Select"
                     clearErrors={clearErrors}
-                    options={interestCapitalizationMethodOptions}
+                    options={CapitalizationOptions}
                     trigger={trigger}
                   />
                 </div>

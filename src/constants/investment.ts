@@ -1309,3 +1309,27 @@ export const StartDateOptions = [
     value: 1,
   },
 ];
+
+export const  intervalOptions = [
+  {
+    id: 1,
+    text: "Semi-Anually",
+    value: 1,
+  },
+
+  {
+    id: 2,
+    text: "Anually",
+    value: 2,
+  },
+  {
+    id: 3,
+    text: "Quarterly",
+    value: 3,
+  },
+  {
+    id: 4,
+    text: "Monthly",
+    value: 4,
+  },
+];
