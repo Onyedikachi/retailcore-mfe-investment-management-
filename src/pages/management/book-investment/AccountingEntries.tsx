@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import AccountSelectInput from "./AccountSelectInput";
+import { useGetAccountsQuery, useGetGlClassQuery } from "@app/api";
 
 export const onProceed = (
     data,
@@ -25,7 +26,6 @@ export const onProceed = (
     });
     proceed();
 };
-
 
 export default ({
     formData,
@@ -54,29 +54,32 @@ export default ({
         mode: "all",
     });
 
-    const values = getValues();
+    const { glClass } = useGetGlClassQuery();
 
-    const { currencies, defaultCurrency } = useContext(AppContext);
-
-    const [error, updateError] = useState(null);
-    const [clearFields, setClearField] = useState(false);
     const [entries, setEntries] = useState(formData?.accountingEntries);
-    const [entriesData, setEntriesData] = useState(formData?.accountingEntries);
+    const [entriesData, setEntriesData] = useState(null);
 
     useEffect(() => {
         setDisabled(true);
     }, [])
 
     useEffect(() => {
-        setDisabled(!(entriesData?.creditLedger?.name && entriesData?.debitLedger?.name))
+        setDisabled(!(entries?.creditLedger && entries?.debitLedger))
     }, [entriesData])
 
     const handleEntry = (key, value) => {
-        const newVal = {...entries};
-        newVal[key] = value?.accountNumber;
+        const newVal = { ...entries };
+        newVal[key] = value?.accountNo;
         setEntries(newVal);
-        setEntriesData({...entriesData, ...{[key]:value}})
+        setEntriesData({ ...entriesData, ...{ [key]: value } })
     }
+
+    useEffect(() => {
+        setFormData({
+            ...formData,
+            accountingEntries: entries,
+        });
+    }, [isSavingDraft]);
 
     useEffect(() => {
         reset(entries);
@@ -106,13 +109,13 @@ export default ({
                             </span>
                         </label>
                     </div>
-
                     <AccountSelectInput
-                        const handleEntry = {handleEntry}
-                        entryValue={entries.debitLedger}
+                        const handleEntry={handleEntry}
+                        entryValue={entries?.debitLedger}
                         inputName="debitLedger"
                         placeholder="Search by Account Number"
-                        entryData={entriesData.debitLedger}
+                        entryData={entriesData?.debitLedger}
+                        impact={"debit_impact_on_balance"}
                     />
                 </div>
             </div>
@@ -136,11 +139,12 @@ export default ({
                     </div>
 
                     <AccountSelectInput
-                        const handleEntry = {handleEntry}
-                        entryValue={entries.creditLedger}
+                        const handleEntry={handleEntry}
+                        entryValue={entries?.creditLedger}
                         inputName="creditLedger"
                         placeholder="Search by Account Number"
-                        entryData={entriesData.creditLedger}
+                        entryData={entriesData?.creditLedger}
+                        impact={"credit_impact_on_balance"}
                     />
                 </div>
             </div>

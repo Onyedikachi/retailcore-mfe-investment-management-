@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { Fragment, useCallback, useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import MinMaxInput from "@app/components/forms/MinMaxInput";
 import {
+  BondsProductFacilityDetailsModelSchema,
   CapitalizationOptions,
   CustomerCategory,
   CustomerCategoryType,
@@ -29,6 +30,8 @@ import { convertToDays, convertDuration } from "@app/utils/convertToDays";
 import debounce from "lodash.debounce";
 import { InputDivs } from "../../term-deposit/forms/gl_mapping_events/ProductToGLMapping";
 import { useParams } from "react-router-dom";
+import BondsFacilityDetails from "./BondsFacilityDetails";
+import TermDepositFacilityDetails from "./TermDepositFacilityDetails";
 export const onProceed = (
   data,
   proceed,
@@ -47,6 +50,37 @@ export const onProceed = (
   });
   proceed();
 };
+
+const useYupValidationResolver = (validationSchema) =>
+  useCallback(
+    async (data) => {
+      try {
+        const values = await validationSchema.validate(data, {
+          abortEarly: false,
+        })
+
+        return {
+          values,
+          errors: {},
+        }
+      } catch (errors) {
+        return {
+          values: {},
+          errors: errors.inner?.reduce(
+            (allErrors, currentError) => ({
+              ...allErrors,
+              [currentError.path]: {
+                type: currentError.type ?? "validation",
+                message: currentError.message,
+              },
+            }),
+            {}
+          ),
+        }
+      }
+    },
+    [validationSchema]
+  )
 
 type FacilityDetailsProps = {
   formData?: any;
@@ -84,9 +118,9 @@ export const handleInterestRateValues = ({
       (i) => {
         if (
           values.tenor >=
-            convertDuration(i.tenorMin, i.tenorMinUnit, values.tenorUnit) &&
+          convertDuration(i.tenorMin, i.tenorMinUnit, values.tenorUnit) &&
           values.tenor <=
-            convertDuration(i.tenorMax, i.tenorMaxUnit, values.tenorUnit)
+          convertDuration(i.tenorMax, i.tenorMaxUnit, values.tenorUnit)
         ) {
           setValue("intMin", i.min);
           setValue("intMax", i.max);
@@ -143,6 +177,7 @@ export const handleProductDetails = ({
           values.tenorUnit
         )
       );
+
     }
 
     setValue(
@@ -209,6 +244,7 @@ export const handleSearch = (
 
   setProductName(value);
 };
+
 export default function FacilityDetails({
   formData,
   setFormData,
@@ -221,6 +257,9 @@ export default function FacilityDetails({
   preModifyRequest,
 }: FacilityDetailsProps) {
   const { currencies } = useContext(AppContext);
+
+  const [mySchema, setMySchema] = useState(null);
+
   const {
     register,
     handleSubmit,
@@ -232,7 +271,7 @@ export default function FacilityDetails({
     trigger,
     formState: { errors, isValid },
   } = useForm({
-    resolver: yupResolver(FacilityDetailsModelSchema),
+    resolver: useYupValidationResolver(mySchema),
     defaultValues: formData.facilityDetailsModel,
     mode: "all",
   });
@@ -357,7 +396,7 @@ export default function FacilityDetails({
   useEffect(() => {
     if (
       formData.customerBookingInfoModel?.balance <
-        productDetail?.pricingConfiguration?.applicablePrincipalMin ||
+      productDetail?.pricingConfiguration?.applicablePrincipalMin ||
       formData.customerBookingInfoModel?.balance === 0
     ) {
       setBalanceError(true);
@@ -384,9 +423,9 @@ export default function FacilityDetails({
     }
     if (
       formData?.customerBookingInfoModel?.currencyId !==
-        productDetail?.productInfo?.currency &&
+      productDetail?.productInfo?.currency &&
       formData?.customerBookingInfoModel?.currencyCode !==
-        productDetail?.productInfo?.currencyCode
+      productDetail?.productInfo?.currencyCode
     ) {
       setValidCurency(false);
       setShowError(true);
@@ -398,6 +437,23 @@ export default function FacilityDetails({
     productDetail,
     formData.customerBookingInfoModel?.currencyId,
   ]);
+
+  useEffect(() => {
+    const type = 
+    ProductTypes.find(
+      (n) => n.id === productDetail?.productType
+    )?.name
+    setValue(
+      "productType", type
+    )
+
+    setMySchema(type === "Bonds" ? BondsProductFacilityDetailsModelSchema : FacilityDetailsModelSchema)
+    if (type === "Bonds") {
+      setValue("tenorUnitMin", 1)
+      setValue("tenorUnitMax", 3)
+    }
+
+  }, [productDetail?.productType])
 
   return (
     <form
@@ -423,7 +479,7 @@ export default function FacilityDetails({
                 <SearchInput
                   setSearchTerm={debounce((e) => setQuery(e), 800)}
                   searchResults={productsData}
-                  setSearchResults={() => {}}
+                  setSearchResults={() => { }}
                   searchLoading={searchLoading}
                   handleSearch={(value, data) =>
                     handleSearch(
@@ -476,251 +532,32 @@ export default function FacilityDetails({
                   </div>
                 </div>
               </InputDivs>
-              <InputDivs
-                label={"Investment purpose"}
-                isCompulsory={false}
-                errors={errors}
-                name="investmentPurpose"
-                divClass={"!items-start"}
-              >
-                <div className="relative w-full">
-                  <textarea
-                    {...register("investmentPurpose", {
-                      maxLength: 360,
-                    })}
-                    defaultValue={
-                      formData?.facilityDetailsModel.investmentPurpose
-                    }
-                    id="investmentPurpose"
-                    data-testid="investmentPurpose"
-                    placeholder="Enter Investment Purpose"
-                    maxLength={250}
-                    className={`w-[360px]  min-h-[150px] rounded-md border border-[#8F8F8F] focus:outline-none px-3 py-[11px] placeholder:text-[#BCBBBB] resize-none `}
-                  />
-                </div>
-              </InputDivs>
-              <InputDivs label={"Tenor"}>
-                <div className="flex gap-[15px]">
-                  <div className=" w-[360px]">
-                    <div className="flex items-center w-full gap-[15px] justify-between">
-                      <MinMaxInput
-                        inputName="tenor"
-                        register={register}
-                        errors={errors}
-                        setValue={setValue}
-                        trigger={trigger}
-                        clearErrors={clearErrors}
-                        defaultValue={formData?.facilityDetailsModel.tenor}
-                        type="number"
-                      />
-                      <span className="text-base font-normal text-[#636363] capitalize">
-                        {productDetail?.pricingConfiguration
-                          ?.applicableTenorMinUnit !==
-                        productDetail?.pricingConfiguration
-                          ?.applicableTenorMaxUnit ? (
-                          <div className="w-[100px]">
-                            <BorderlessSelect
-                              inputError={errors?.tenorUnit}
-                              register={register}
-                              inputName={"tenorUnit"}
-                              defaultValue={values?.tenorUnit}
-                              options={IntervalOptions.filter((i) =>
-                                [
-                                  productDetail?.pricingConfiguration
-                                    ?.applicableTenorMinUnit,
-                                  productDetail?.pricingConfiguration
-                                    ?.applicableTenorMaxUnit,
-                                ].includes(i.value)
-                              )}
-                              errors={errors}
-                              setValue={setValue}
-                              trigger={trigger}
-                              clearErrors={clearErrors}
-                              placeholder="Select duration"
-                            />
-                          </div>
-                        ) : (
-                          Interval[
-                            productDetail?.pricingConfiguration
-                              ?.applicableTenorMaxUnit
-                          ]
-                        )}
-                      </span>
-                    </div>
-                    <div className="text-sm text-[#AAAAAA] mt-1">
-                      {productDetail?.pricingConfiguration
-                        ?.interestRateRangeType === 2 && (
-                        <span>
-                          {
-                            productDetail?.pricingConfiguration
-                              ?.applicableTenorMin
-                          }{" "}
-                          {
-                            Interval[
-                              productDetail?.pricingConfiguration
-                                ?.applicableTenorMinUnit
-                            ]
-                          }
-                          -{" "}
-                          {
-                            productDetail?.pricingConfiguration
-                              ?.applicableTenorMax
-                          }{" "}
-                          {
-                            Interval[
-                              productDetail?.pricingConfiguration
-                                ?.applicableTenorMaxUnit
-                            ]
-                          }
-                        </span>
-                      )}
-                      {productDetail?.pricingConfiguration
-                        ?.interestRateRangeType !== 2 && (
-                        <span>
-                          {
-                            productDetail?.pricingConfiguration
-                              ?.applicableTenorMin
-                          }{" "}
-                          {
-                            Interval[
-                              productDetail?.pricingConfiguration
-                                ?.applicableTenorMinUnit
-                            ]
-                          }
-                          -{" "}
-                          {
-                            productDetail?.pricingConfiguration
-                              ?.applicableTenorMax
-                          }{" "}
-                          {
-                            Interval[
-                              productDetail?.pricingConfiguration
-                                ?.applicableTenorMaxUnit
-                            ]
-                          }
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </InputDivs>
-              <InputDivs label={"Principal"}>
-                <div className="flex gap-[15px]">
-                  <div className=" w-[360px]">
-                    <MinMaxInput
-                      currency={productDetail?.productInfo?.currencyCode}
-                      isCurrency
-                      inputName="principal"
-                      register={register}
-                      errors={errors}
-                      setValue={setValue}
-                      trigger={trigger}
-                      clearErrors={clearErrors}
-                      defaultValue={formData?.facilityDetailsModel.principal}
-                    />
-                    <div className="text-sm text-[#AAAAAA] mt-1">
-                      <span>
-                        {currencyFormatter(
-                          productDetail?.pricingConfiguration
-                            ?.applicablePrincipalMin,
-                            productDetail?.productInfo?.currencyCode
-                        )}{" "}
-                        -{" "}
-                        {currencyFormatter(
-                          productDetail?.pricingConfiguration
-                            ?.applicablePrincipalMax,
-
-                            productDetail?.productInfo?.currencyCode
-                        )}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </InputDivs>
-              <InputDivs label={"Interest rate"}>
-                <div className="flex gap-[15px]">
-                  <div className=" w-[360px]">
-                    <MinMaxInput
-                      isCurrency
-                      disablegroupseparators
-                      isPercent
-                      max={100}
-                      inputName="interestRate"
-                      register={register}
-                      errors={errors}
-                      setValue={setValue}
-                      trigger={trigger}
-                      clearErrors={clearErrors}
-                      defaultValue={formData?.facilityDetailsModel.interestRate}
-                    />
-                    <div className="text-sm text-[#AAAAAA] mt-1">
-                      {productDetail?.pricingConfiguration
-                        ?.interestRateRangeType === 2 ? (
-                        <span>
-                          {productDetail?.pricingConfiguration?.interestRateMin}{" "}
-                          -{" "}
-                          {productDetail?.pricingConfiguration?.interestRateMax}
-                          % per annum
-                        </span>
-                      ) : (
-                        <span>
-                          {productDetail?.pricingConfiguration?.interestRateConfigModels?.map(
-                            (i, idx) => (
-                              <div key={idx}>
-                                {productDetail?.pricingConfiguration
-                                  ?.interestRateRangeType === 0 ? (
-                                  <span>
-                                    {" "}
-                                    {i?.min} - {i?.max}%{" "}
-                                    {"for principal between "}
-                                    {currencyFormatter(
-                                      i?.principalMin,
-                                      productDetail?.productInfo?.currencyCode
-                                    )}{" "}
-                                    -
-                                    {currencyFormatter(
-                                      i?.principalMax,
-                                      productDetail?.productInfo?.currencyCode
-                                    )}
-                                  </span>
-                                ) : (
-                                  <span>
-                                    {" "}
-                                    {i?.min} - {i?.max}% {"for tenor betweeen"}{" "}
-                                    {i?.tenorMin} {Interval[i?.tenorMinUnit]} -{" "}
-                                    {i?.tenorMax} {Interval[i?.tenorMaxUnit]}
-                                  </span>
-                                )}
-                              </div>
-                            )
-                          )}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </InputDivs>
-              <InputDivs label={"Interest Capitalization Method"}>
-                <div className="flex gap-[15px]">
-                  <div className="w-[300px]">
-                    <BorderlessSelect
-                      inputError={errors?.capitalizationMethod}
-                      register={register}
-                      errors={errors}
-                      setValue={setValue}
-                      inputName={"capitalizationMethod"}
-                      labelName={""}
-                      defaultValue={
-                        formData?.facilityDetailsModel?.capitalizationMethod
-                      }
-                      placeholder="Select option"
-                      clearErrors={clearErrors}
-                      options={capMethodOptions}
-                      trigger={trigger}
-                    />
-                  </div>
-                </div>
-              </InputDivs>
+              {
+                ProductTypes.find(
+                  (n) => n.id === productDetail?.productType
+                )?.name === "Term Deposit" &&
+                <TermDepositFacilityDetails
+                  {...{
+                    capMethodOptions, clearErrors,
+                    errors, formData, productDetail,
+                    register, setValue,
+                    trigger, values
+                  }}
+                />
+              }
+              {
+                ProductTypes.find(
+                  (n) => n.id === productDetail?.productType
+                )?.name === "Bonds" &&
+                <BondsFacilityDetails
+                  {...{
+                    capMethodOptions, clearErrors,
+                    errors, formData, productDetail,
+                    register, setValue,
+                    trigger, values
+                  }}
+                />
+              }
             </div>
           )}
         </div>

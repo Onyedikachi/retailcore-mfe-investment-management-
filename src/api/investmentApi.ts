@@ -160,8 +160,9 @@ export const investmentApi: any = createApi({
     }),
     createInvestment: builder.mutation<any, any>({
       query: (data) => {
+        const { investmentType } = data;
         return {
-          url: urls.INVESTMENT_CREATE,
+          url: investmentType === "security-purchase" ? urls.SECURITY_PURCHASE_CREATE : urls.INVESTMENT_CREATE,
           method: "post",
           body: data,
         };
@@ -179,8 +180,9 @@ export const investmentApi: any = createApi({
     }),
     modifyInvestment: builder.mutation<any, any>({
       query: (data) => {
+        const { investmentType } = data;
         return {
-          url: `${urls.INVESTMENT}/edit`,
+          url: `${investmentType === "security-purchase" ? urls.SECURITY_PURCHASE :urls.INVESTMENT}/edit`,
           method: "put",
           body: data,
         };
@@ -197,8 +199,9 @@ export const investmentApi: any = createApi({
     }),
     modifyInvestmentRequest: builder.mutation<any, any>({
       query: (data) => {
+        const {investmentType} = data;
         return {
-          url: `${urls.INVESTMENT_REQUEST}/edit/${data?.id}`,
+          url: `${investmentType === "security-purchase" ? urls.SECURITY_PURCHASE_REQUEST : urls.INVESTMENT_REQUEST}/edit/${data?.id}`,
           method: "put",
           body: data,
         };
@@ -236,6 +239,7 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    // Tch
     getProductDetail: builder.query<any, any>({
       query: (data) => {
         if (!data.id) return;
@@ -434,6 +438,28 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    getSecurityPurchaseActivityLog: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `${urls.SECURITY_PURCHASE_ACTIVITY_LOG}?${new URLSearchParams(
+            cleanObject(params)
+          )}`,
+          method: "get",
+          params: cleanObject(params),
+        };
+      },
+    }),
+    getSecurityPurchaseRequestActivityLog: builder.query<any, any>({
+      query: (params) => {
+        return {
+          url: `${urls.SECURITY_PURCHASE_REQUEST_ACTIVITY_LOG}?${new URLSearchParams(
+            cleanObject(params)
+          )}`,
+          method: "get",
+          params: cleanObject(params),
+        };
+      },
+    }),
 
     getInvestmentStats: builder.query<any, any>({
       query: (data) => {
@@ -467,7 +493,7 @@ export const investmentApi: any = createApi({
       query: (data) => {
         if (!data.id) return;
         return {
-          url: `${urls.INVESTMENT}/${data.id}`,
+          url: data?.investmentType === "security-purchase" ? `SecurityPurchase/details?id=${data.id}` : `${urls.INVESTMENT}/${data.id}`,
           method: "get",
         };
       },
@@ -477,7 +503,7 @@ export const investmentApi: any = createApi({
       query: (data) => {
         if (!data.id) return;
         return {
-          url: `${urls.INVESTMENT_REQUEST}/${data.id}`,
+          url: `${data?.investmentType === "security-purchase" ? urls.SECURITY_PURCHASE_REQUEST : urls.INVESTMENT_REQUEST}/${data.id}`,
           method: "get",
         };
       },
@@ -561,10 +587,39 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    getValues: builder.query<any, any>({
+      query: () => {
+        return {
+          url: `/SecurityPurchaseRequest`,
+          method: "post",
+          body: cleanObject({
+            "filter_by": "",
+            // "status_In": [
+            //   1
+            // ],
+            // "requestType_In": [
+            //   1
+            // ],
+            // "initiator_In": [
+            //   "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+            // ],
+            // "approvers_In": [
+            //   "string"
+            // ],
+            // "search": "string",
+            // "start_Date": "2024-04-21T19:23:10.028Z",
+            // "end_Date": "2024-04-21T19:23:10.028Z",
+            // "page": 2147483647,
+            // "page_Size": 2147483647
+          }),
+        };
+      },
+    }),
   }),
 });
 
 export const {
+  useGetValuesQuery,
   useCreateProductMutation,
   useValidateNameMutation,
   useGetProductQuery,
@@ -602,7 +657,8 @@ export const {
   useModifyInvestmentMutation,
   useModifyInvestmentRequestMutation,
   useGetInvestmentDashboardStatsQuery,
-
+  useGetSecurityPurchaseActivityLogQuery,
+  useGetSecurityPurchaseRequestActivityLogQuery,
   useApproveInvestmentMutation,
   useRejectInvestmentMutation,
   useEarlyLiquidateMutation,
