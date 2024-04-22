@@ -239,6 +239,11 @@ export default ({
                                             defaultValue={values.issuer}
                                         />
                                     </div>
+                                    {((errors && errors?.issuer) || error) && (
+                                        <span className="text-sm text-danger-500">
+                                            {errors?.issuer?.message || error}
+                                        </span>
+                                    )}
                                 </InputDivs>
                                 <InputDivs
                                     label={"Description"}
@@ -338,7 +343,7 @@ export default ({
                                 </InputDivs>
                                 <InputDivs label={"Discount Rate"}>
                                     <InputDiv customClass="w-full min-w-[300px] ">
-                                        <div className="relative flex items-center max-w-[642px] border-b border-[#8F8F8F]">
+                                        <div className="relative flex items-center max-w-[300px] border-b border-[#8F8F8F]">
                                             <MinMaxInput
                                                 inputName="discountRate"
                                                 register={register}
@@ -348,6 +353,7 @@ export default ({
                                                 clearErrors={clearErrors}
                                                 defaultValue={values.discountRate}
                                                 type="number"
+                                                isPercent
                                                 min={1}
                                                 max={100}
                                             />
@@ -361,7 +367,7 @@ export default ({
                                     label="Per Amount"
                                 >
                                     <InputDiv customClass="w-full min-w-[300px]">
-                                        <div className="relative flex items-center max-w-[642px]">
+                                        <div className="relative flex items-center max-w-[300px]">
                                             {
                                                 values?.currencyCode &&
                                                 <span className="mr-2">{handleCurrencyName(values?.currencyCode, currencies)}</span>
@@ -376,41 +382,49 @@ export default ({
                                                 defaultValue={values.perAmount}
                                             />
                                         </div>
+                                        {((errors && errors?.perAmount) || error) && (
+                                            <span className="text-sm text-danger-500">
+                                                {errors?.perAmount?.message || error}
+                                            </span>
+                                        )}
                                     </InputDiv>
                                 </InputDivs>
                                 <InputDivs
                                     label="Face Value"
                                 >
                                     <InputDiv customClass="w-full min-w-[300px]">
-                                        <div className="relative flex items-center max-w-[642px]">
+                                        <div className="relative flex items-center max-w-[300px]">
                                             {
                                                 values?.currencyCode &&
                                                 <span className="mr-2">{handleCurrencyName(values?.currencyCode, currencies)}</span>
                                             }
-                                            <MinMaxInput
-                                                inputName="faceValue"
-                                                register={register}
-                                                errors={errors}
-                                                setValue={setValue}
-                                                trigger={trigger}
-                                                clearErrors={clearErrors}
-                                                defaultValue={values.faceValue}
+                                            <input
+                                                id="faceValue"
+                                                data-testid="faceValue"
                                                 type="number"
-                                                min={0}
+                                                {...register("faceValue")}
+                                                className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB]`}
+                                                placeholder="Enter Rate"
+                                                defaultValue={values.faceValue}
                                             />
                                         </div>
+                                        {((errors && errors?.faceValue) || error) && (
+                                            <span className="text-sm text-danger-500">
+                                                {errors?.faceValue?.message || error}
+                                            </span>
+                                        )}
                                     </InputDiv>
                                 </InputDivs>
                                 <InputDivs
                                     label="Total Consideration"
                                 >
                                     <InputDiv customClass="w-full min-w-[300px]">
-                                        <div className="relative flex items-center max-w-[642px]">
+                                        <div className="relative flex items-center max-w-[300px]">
                                             {
                                                 values?.currencyCode &&
                                                 <span className="mr-2">{handleCurrencyName(values?.currencyCode, currencies)}</span>
                                             }
-                                            <input className="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB]" value={values.totalConsideration}
+                                            <input className="placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB]" disabled value={values.totalConsideration}
                                             />
                                         </div>
                                     </InputDiv>
