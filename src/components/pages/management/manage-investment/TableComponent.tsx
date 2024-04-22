@@ -248,6 +248,7 @@ export default function TableComponent({
   fetchMoreData,
   tab,
 }: any) {
+
   const { category, setStatus, selected } = useContext(IndividualContext);
   const { isChecker } = useContext(AppContext);
   const [users, setUsers] = useState([]);
@@ -281,6 +282,7 @@ export default function TableComponent({
     getProducts,
     { data, isSuccess, isError, error, isLoading: searchLoading },
   ] = useGetPostInvestmentMutation();
+
   const [
     downloadProducts,
     { data: productDownloadData, isSuccess: productDownloadIsSuccess },
