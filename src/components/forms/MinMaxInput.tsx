@@ -98,8 +98,11 @@ export default function MinMaxInput({
               />
             )}
             {isPercent && (
-              <span data-testid="percent" className="absolute right-1">
-                %
+              <span
+                data-testid="percent"
+                className="absolute right-1 text-[10px] bg-[#FFE9E9] rounded-full px-[5px] py-[2px]"
+              >
+                Percent
               </span>
             )}
             <div className="absolute right-0 text-xs text-[#8F8F8F] flex items-center gap-x-[11px]">

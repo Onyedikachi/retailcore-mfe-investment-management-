@@ -323,14 +323,6 @@ export default ({
                 />
                 Product to GL Mapping <RedDot />
               </span>
-              {/* <span
-                className="font-normal text-sm text-danger-500 italic hover:underline"
-                onClick={() =>
-                  handleClear(setClearField, clearFields, setMapOptions, reset)
-                }
-              >
-                Clear all entries
-              </span> */}
             </div>
             {activeTab.includes(1) && (
               <div className="flex flex-col gap-4 px-[30px] py-5">

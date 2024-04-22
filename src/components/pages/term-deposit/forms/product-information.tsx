@@ -46,9 +46,12 @@ export function handleValidatingName(
   }
 }
 
-export function InputDiv({ children, customClass="" }) {
+export function InputDiv({ children, customClass = "" }) {
   return (
-    <div data-testid="input-div" className={`w-full flex flex-col gap-2 ${customClass}`}>
+    <div
+      data-testid="input-div"
+      className={`w-full flex flex-col gap-2 ${customClass}`}
+    >
       {children}
     </div>
   );
@@ -279,6 +282,7 @@ export default function ProductInformation({
     clearError: any
   ) => {
     console.log("🚀 ~ handleInvestmentId ~ value:", value);
+    setShowInputs(true);
     return {};
   };
   return (
@@ -558,20 +562,30 @@ export default function ProductInformation({
             </InputDiv>
           </div>
 
-          <div className="flex gap-12">
-            <div className="flex flex-col gap">
-              <div className="flex  gap-x-2 w-[300px]">
-                {" "}
-                <label
-                  htmlFor="productLifeCycle"
-                  className=" pt-[10px]  text-base font-semibold text-[#636363]"
-                >
-                  Product Life Cycle
-                </label>
-                <FormToolTip tip={toolTips.lifeCycle} />
-              </div>
+          <div
+            className={`flex gap-x-12 ${
+              type !== "term-deposit" ? "flex-row-reverse justify-end" : ""
+            }`}
+          >
+            <div className={`flex  ${ type !== "term-deposit" ? "gap-x-12" : "gap-x-4"} items-end`}>
+              <div>
+                <div className="flex  gap-x-2 w-[300px] mb-1">
+                  {" "}
+                  <label
+                    htmlFor="productLifeCycle"
+                    className=" pt-[10px]  text-base font-semibold text-[#636363] flex"
+                  >
+                    {type !== "term-deposit"
+                      ? "Deal date"
+                      : "Product Life Cycle"}{" "}
+                    <span className="flex">
+                      {" "}
+                      <RedDot />
+                    </span>{" "}
+                  </label>
+                  <FormToolTip tip={toolTips.lifeCycle} />
+                </div>
 
-              <div className="flex gap-x-4">
                 <FormDate
                   id="productLifeCycle"
                   register={register}
@@ -585,7 +599,24 @@ export default function ProductInformation({
                   trigger={trigger}
                   clearErrors={clearErrors}
                 />
-                -
+              </div>
+             {type !== "term-deposit"?" ":"-"}
+              <div>
+                <div className="flex  gap-x-2 w-[300px] mb-1">
+                  {" "}
+                  <label
+                    htmlFor="productLifeCycle"
+                    className=" pt-[10px]  text-base font-semibold text-[#636363] flex"
+                  >
+                    Maturity date{" "}
+                    <span className="flex">
+                      {" "}
+                      <RedDot />
+                    </span>{" "}
+                  </label>
+                  <FormToolTip tip={toolTips.lifeCycle} />
+                </div>
+
                 <FormDate
                   register={register}
                   inputName={"endDate"}
@@ -602,7 +633,7 @@ export default function ProductInformation({
               </div>
             </div>
 
-            <div className="flex items-end gap">
+            <div className="flex items-end">
               {/* <InputDiv> */}
               <div className="w-[300px]">
                 <BorderlessSelect

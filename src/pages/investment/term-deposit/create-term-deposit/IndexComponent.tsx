@@ -24,7 +24,11 @@ import {
   FormStepComponent,
 } from "@app/components";
 
-import { ProductState, termDepositFormSteps } from "@app/constants";
+import {
+  ProductState,
+  termDepositFormSteps,
+  moneyMarketFormSteps,
+} from "@app/constants";
 import Preview from "@app/components/pages/term-deposit/forms/preview";
 import { Messages } from "@app/constants/enums";
 import { handleDraft } from "./handleDraft";
@@ -36,12 +40,12 @@ import {
   useGetApplicableTaxesQuery,
 } from "@app/api/productMgtApi";
 
-export function handleNext(step, setStep, termDepositFormSteps) {
-  step < termDepositFormSteps.length && setStep(step + 1);
+export function handleNext(step, setStep, formStepOption) {
+  step < formStepOption.length && setStep(step + 1);
 }
 
-export function handlePrev(step, setStep, termDepositFormSteps) {
-  step > termDepositFormSteps[0].index && setStep(step - 1);
+export function handlePrev(step, setStep, formStepOption) {
+  step > formStepOption[0].index && setStep(step - 1);
 }
 
 export const handlePreviousData = ({ prevProductData, productDetails }) => {
@@ -215,11 +219,22 @@ export const handleMessage = ({
   }
 };
 
-export function handleNav({ process, step, setStep, navigate, id }) {
-  step < termDepositFormSteps.length
-    ? handleNext(step, setStep, termDepositFormSteps)
+export function handleNav({
+  process,
+  step,
+  setStep,
+  navigate,
+  id,
+  formStepOption,
+  type,
+}) {
+  console.log("🚀 ~ type:", type)
+  console.log("🚀 ~ formStepOption.length:", formStepOption.length)
+
+  step < formStepOption.length
+    ? handleNext(step, setStep, formStepOption)
     : navigate(
-        `/product-factory/investment/term-deposit/${process}?${
+        `/product-factory/investment/${type}/${process}?${
           id ? `id=${id}&` : ""
         }stage=summary`
       );
@@ -242,6 +257,9 @@ export default function CreateTermDeposit() {
   const [failedText, setFailedText] = useState("");
   const [initiateDraft, setInitiateDraft] = useState(false);
   const { defaultCurrency } = useContext(AppContext);
+  const [formStepOption, setFormStepOption] = useState(
+    type !== "term-deposit" ? moneyMarketFormSteps : termDepositFormSteps
+  );
 
   const [productData, setProductData] = useState({
     id: id || null,
@@ -275,6 +293,14 @@ export default function CreateTermDeposit() {
       applicableTaxes: [],
     },
     investmentLiquidationChargesAndTaxes: {
+      applicableCharges: [],
+      applicableTaxes: [],
+    },
+    issuanceChargesAndTaxes: {
+      applicableCharges: [],
+      applicableTaxes: [],
+    },
+    redemptionChargesAndTaxes: {
       applicableCharges: [],
       applicableTaxes: [],
     },
@@ -407,6 +433,12 @@ export default function CreateTermDeposit() {
   );
 
   useEffect(() => {
+    setFormStepOption(
+      type !== "term-deposit" ? moneyMarketFormSteps : termDepositFormSteps
+    );
+  }, [type]);
+
+  useEffect(() => {
     if (productDetailsIsSuccess) {
       handleDetailsSuccess(
         activeId,
@@ -517,10 +549,7 @@ export default function CreateTermDeposit() {
           <div className="h-full px-[37px] py-[30px] bg-[#F7F7F7]">
             <div className=" bg-[#ffffff] rounded-md px-[100px] pt-[54px] pb-[49px] ">
               <div className="pb-[49px] ">
-                <FormStepComponent
-                  formStepItems={termDepositFormSteps}
-                  step={step}
-                />
+                <FormStepComponent formStepItems={formStepOption} step={step} />
               </div>
               <div className=" bg-[#ffffff] border border-[#EEEEEE] rounded-[10px] px-[87px] pt-[100px] pb-[43px] ">
                 {/* {component} */}
@@ -529,7 +558,15 @@ export default function CreateTermDeposit() {
                   productData={productData}
                   activeId={activeId}
                   handleNav={() =>
-                    handleNav({ process, id, navigate, setStep, step })
+                    handleNav({
+                      process,
+                      id,
+                      navigate,
+                      setStep,
+                      step,
+                      formStepOption,
+                      type,
+                    })
                   }
                   setProductData={setProductData}
                   setDisabled={setDisabled}
@@ -544,7 +581,7 @@ export default function CreateTermDeposit() {
                       <Button
                         type="button"
                         onClick={() =>
-                          handlePrev(step, setStep, termDepositFormSteps)
+                          handlePrev(step, setStep, formStepOption)
                         }
                         className="text-gray-500 px-10 py-1 font-medium text-base bg-white border border-[#D8DAE5] leading-[24px] disabled:bg-transparent"
                       >

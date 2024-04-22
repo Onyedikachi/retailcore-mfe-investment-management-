@@ -494,6 +494,29 @@ export const termDepositFormSteps = [
     index: 5,
   },
 ];
+export const moneyMarketFormSteps = [
+  {
+    id: 1,
+    label: "Product Information",
+    index: 1,
+  },
+  {
+    id: 2,
+    label: "Pricing Configuration",
+    index: 2,
+  },
+
+  {
+    id: 3,
+    label: "Product to GL mapping & events",
+    index: 3,
+  },
+  {
+    id: 4,
+    label: "Charges and Taxes setup",
+    index: 4,
+  },
+];
 
 export const partLiquidationPenaltyOptions = [
   {
@@ -674,8 +697,8 @@ export const IntervalOptions = [
 ];
 export const interestComputationDaysOptions = [
   {
-    id: "30E/360",
-    text: "30E/360",
+    id: "Actual/Actual",
+    text: "Actual/Actual",
     value: 0,
   },
   {
