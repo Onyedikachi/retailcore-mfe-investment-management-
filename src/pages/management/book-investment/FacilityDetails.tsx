@@ -258,7 +258,7 @@ export default ({
                     // currency={values?.currencyCode}
                     register={register}
                     inputName={"discountRate"}
-                    placeholder="Enter Rate"
+                    placeholder="Enter discount rate"
                     defaultValue={values?.discountRate}
                     errors={errors}
                     setValue={setValue}
@@ -278,7 +278,7 @@ export default ({
                     currency={values?.currencyCode}
                     register={register}
                     inputName={"perAmount"}
-                    placeholder="Enter Rate"
+                    placeholder="Enter per amount value"
                     defaultValue={values?.perAmount}
                     errors={errors}
                     setValue={setValue}
@@ -296,7 +296,7 @@ export default ({
                     currency={values?.currencyCode}
                     register={register}
                     inputName={"faceValue"}
-                    placeholder="Enter Rate"
+                    placeholder="Enter face value"
                     defaultValue={values?.faceValue}
                     errors={errors}
                     setValue={setValue}
@@ -315,7 +315,7 @@ export default ({
                     register={register}
                     inputName={"totalConsideration"}
                     placeholder={
-                      isLoading ? "Calculating value ..." : "Enter Rate"
+                      isLoading ? "Calculating value ..." : "Enter consideration value"
                     }
                     defaultValue={values?.totalConsideration}
                     errors={errors}
