@@ -11,7 +11,6 @@ describe('checkDocuments', () => {
         };
 
         const result = checkDocuments(keys, obj);
-        console.log("res = ", result)
         expect(result?.hasAllDocuments).toBe(true);
     });
 

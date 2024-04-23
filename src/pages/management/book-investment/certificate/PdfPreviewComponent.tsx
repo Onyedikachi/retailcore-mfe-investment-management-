@@ -110,8 +110,7 @@ export const PdfViewer = forwardRef<any, any>(
         return textTaxValues;
       });
       const textData = [...(appTax || []), ...(appCharges || [])]?.flat().join(", ");
-      console.log(taxes?.data?.records, applicableTaxes)
-
+  
       setTaxData(textData);
     }, [productDetail, taxesSuccess, chargeSuccess]);
 

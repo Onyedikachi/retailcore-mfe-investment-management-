@@ -154,7 +154,7 @@ export default function ({
   productDetail,
   previousData = null,
 }: any) {
-  console.log("🚀 ~ formData:", formData);
+ 
   const { role, currencies } = useContext(AppContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();

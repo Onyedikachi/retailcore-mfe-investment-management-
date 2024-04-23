@@ -32,7 +32,7 @@ export const handleClick = ({
   index,
   setLedgerType,
 }) => {
-  console.log("🚀 ~ handleClick ~ ledgerInfo:", ledgerInfo);
+ 
   let data = {
     accountName: ledgerInfo.accountName,
     accountId: ledgerInfo?.accountNo,
@@ -48,7 +48,7 @@ export const handleClick = ({
     // Return the updated array
     return updatedLedgerType;
   });
-  console.log("🚀 ~ ledgerType:", ledgerType);
+ 
 };
 
 export default ({
@@ -76,13 +76,13 @@ export default ({
       });
     } else {
       setLedgerType((prevLedgerType) => {
-        console.log("🚀 ~ setLedgerType ~ prevLedgerType:", prevLedgerType);
+      
         const [first] = prevLedgerType;
         const updatedFirst = {
           ...first,
           type: first?.type === "credit" ? "debit" : "credit",
         };
-        console.log("🚀 ~ setLedgerType ~ updatedFirst:", updatedFirst);
+   
         return [updatedFirst];
       });
     }

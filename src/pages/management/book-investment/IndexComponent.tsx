@@ -358,7 +358,7 @@ export default function IndexComponent() {
   };
 
   useEffect(() => {
-    console.log("Workin...");
+   
     if (productDetailsIsSuccess && investmentType === "security-purchase") {
       setFormData({ ...formData, ...setupForm(productDetails?.data) });
     }
@@ -450,7 +450,7 @@ export default function IndexComponent() {
         id,
       });
       if (investmentType === "security-purchase" && process !== "create") {
-        console.log("rq", requestData?.data?.metaInfo);
+       
         if (
           requestData?.data?.metaInfo &&
           investmentType === "security-purchase"

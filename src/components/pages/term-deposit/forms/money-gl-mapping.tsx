@@ -265,7 +265,6 @@ export default ({
   }
   useEffect(() => {
     // Update error messages whenever formFields changes
-    console.log("🚀 ~ formFields:", formFields);
     updateErrors();
   }, [formFields]);
 

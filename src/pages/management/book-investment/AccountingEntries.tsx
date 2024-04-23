@@ -50,7 +50,7 @@ export default ({
   detailLoading,
   preModifyRequest,
 }) => {
-  console.log("🚀 ~ formData:", formData);
+ 
   const {
     register,
     watch,

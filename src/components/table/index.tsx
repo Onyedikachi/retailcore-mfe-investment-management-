@@ -351,8 +351,7 @@ export const handleProductsDropdown = (
   created_By_Id,
   userId
 ): any => {
-  console.log("🚀 ~ status:", typeof status);
-  console.log("🚀 ~ statusType:", statusType);
+
   if (!status) return [];
 
   if (isChecker) {
@@ -377,7 +376,7 @@ export const handleProductsDropdown = (
             : status?.toLowerCase()
           : status
       ];
-    console.log("🚀 ~ options:", options);
+ 
     if (!permissions?.includes("RE_OR_DEACTIVATE_INVESTMENT_PRODUCT")) {
       options = options?.filter(
         (i: any) =>

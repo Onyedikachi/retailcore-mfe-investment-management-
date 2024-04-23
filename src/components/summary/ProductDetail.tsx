@@ -171,7 +171,7 @@ export function MoneyDebitCreditTable({ dataTab }) {
 export default function ProductDetail({ detail, previousData }: any) {
   const { currencies } = useContext(AppContext);
   const { type } = useParams();
-  console.log("🚀 ~ ProductDetail ~ type:", type);
+
   const chargeArray = [
     {
       id: "79e00876-2244-4e21-9bbf-ccbd5cf62233",

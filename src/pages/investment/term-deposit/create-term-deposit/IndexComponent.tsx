@@ -228,8 +228,6 @@ export function handleNav({
   formStepOption,
   type,
 }) {
-  console.log("🚀 ~ type:", type)
-  console.log("🚀 ~ formStepOption.length:", formStepOption.length)
 
   step < formStepOption.length
     ? handleNext(step, setStep, formStepOption)

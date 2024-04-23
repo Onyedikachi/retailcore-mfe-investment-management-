@@ -43,13 +43,9 @@ export default function ({
     currencyCode,
   });
 
-  useEffect(() => console.log(formData), [formData]);
 
   const [selectedLedgerClass, setSelectedLedgerClass] = useState(null);
 
-  useEffect(() => {
-    console.log(query);
-  }, [query]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -106,7 +102,7 @@ export default function ({
 
   useEffect(() => {
     if (glClass && entryData) {
-      console.log("abeg", entryData?.accountType?.toLowerCase());
+     
       entryData?.accountType?.toLowerCase() === "assets"
         ? setSelectedLedgerClass(
             glClass.find((i) => i.name?.toLowerCase() === "asset")

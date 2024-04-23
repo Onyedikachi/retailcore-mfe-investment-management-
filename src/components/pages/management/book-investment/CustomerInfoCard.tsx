@@ -107,11 +107,11 @@ export default function CustomerInfoCard({
   const businessName =
     customerData?.customer_profiles?.[0]?.companyNameBusiness;
     const individualName = customerData?.customer_profiles?.[0]?.fullName;
-    console.log("🚀 ~ individualName:", individualName)
+  
   const relationshipName = `${capitalizeFirstLetter(
     userData?.firstname
   )} ${capitalizeFirstLetter(userData?.lastname)}`;
-  console.log(investmentType, "data = ", customerData)
+  
   return (
     <div className="py-6 px-10 rounded-lg shadow-custom bg-gray-100 w-full ">
       {isLoading ? (

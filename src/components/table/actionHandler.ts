@@ -23,9 +23,7 @@ export const actionHandler = ({
   navigate,
   tab,
 }) => {
-  console.log("🚀 ~ action:", action)
-  console.log("🚀 ~ tab:", tab);
-
+ 
   setAction(action);
   setDetail(items);
   dropDownClick(action, items);

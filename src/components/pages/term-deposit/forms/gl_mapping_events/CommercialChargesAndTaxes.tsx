@@ -77,8 +77,7 @@ export default ({
   const [filteredTabs, setFilteredTabs] = useState([]);
   function onProceed() {
     // setFormData(val, mapOptions);
-    console.log("🚀 ~ onProceed ~ mapOptions:")
-
+  
     proceed();
   }
  
