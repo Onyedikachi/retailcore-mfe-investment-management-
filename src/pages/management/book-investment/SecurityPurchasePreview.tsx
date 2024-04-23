@@ -20,7 +20,11 @@ import {
   useGetSecurityPurchaseActivityLogQuery,
 } from "@app/api";
 import { Confirm, Failed, Success } from "@app/components/modals";
-import { intervalOptions, CapitalizationOptions, productCategoryOptions } from "@app/constants";
+import {
+  intervalOptions,
+  CapitalizationOptions,
+  productCategoryOptions,
+} from "@app/constants";
 import { Messages, Prompts } from "@app/constants/enums";
 import { AppContext } from "@app/utils";
 import { summaryLinks } from "@app/constants";
@@ -111,6 +115,7 @@ export const submitForm = (
   if (process === "modify") {
     modifyProduct({
       ...formData,
+      ...formData.accountingEntries,
       isDraft: false,
       id,
       recentlyUpdatedMeta: previousData ? JSON.stringify(previousData) : null,
@@ -124,6 +129,7 @@ export const submitForm = (
   ) {
     modifyRequest({
       ...formData,
+      ...formData.accountingEntries,
       isDraft: false,
       id: formData.id || id,
       recentlyUpdatedMeta: previousData ? JSON.stringify(previousData) : null,
@@ -132,7 +138,12 @@ export const submitForm = (
   }
 
   if ((process === "create" || process === "clone") && !formData?.id) {
-    createRequest({ ...formData, isDraft: false, investmentType });
+    createRequest({
+      ...formData,
+      ...formData.accountingEntries,
+      isDraft: false,
+      investmentType,
+    });
   }
 
   // navigate(paths.INVESTMENT_DASHBOARD);
@@ -143,6 +154,7 @@ export default function ({
   productDetail,
   previousData = null,
 }: any) {
+  console.log("🚀 ~ formData:", formData);
   const { role, currencies } = useContext(AppContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -150,15 +162,15 @@ export default function ({
   const id = searchParams.get("id");
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const [isDeactivationOpen, setIsDeactivationOpen] = useState(false);
+  // const [isDeactivationOpen, setIsDeactivationOpen] = useState(false);
   const [confirmText, setConfirmText] = useState("");
   const [successText, setSuccessText] = useState("");
   const [subText, setSubText] = useState("");
   const [failedSubText, setFailedSubtext] = useState("");
   const [isFailed, setFailed] = useState(false);
   const [failedText, setFailedText] = useState("");
-  const [state, setState] = useState();
-  const [entriesData, setEntriesData] = useState(null);
+  // const [state, setState] = useState();
+  // const [entriesData, setEntriesData] = useState(null);
 
   const { data: activityData, isLoading: activityIsLoading } =
     useGetSecurityPurchaseActivityLogQuery({ id: id }, { skip: !id });
@@ -186,7 +198,7 @@ export default function ({
     refetch,
   } = useGetAccountsQuery({
     Q: "",
-    currencyCode: formData?.facilityDetailsModel?.currencyCode,
+    currencyCode: formData?.currencyCode,
   });
 
   const [
@@ -231,10 +243,10 @@ export default function ({
     if (isSuccess || modifySuccess || modifyRequestSuccess) {
       let text;
       if (investmentType === "security-purchase") {
-        text = reqData?.message || modifyRes?.message || modifyRequestRes || "";
+        text = reqData?.message || modifyRes?.message || modifyRequestRes?.message || "";
       } else if (process === "create" && role === "superadmin") {
         text = `${currencyFormatter(
-          formData?.facilityDetailsModel?.principal,
+          formData?.principal,
           handleCurrencyName(productDetail?.productInfo?.currency, currencies)
         )} will be deducted from ${
           formData?.transactionSettingModel?.accountForLiquidation
@@ -337,7 +349,14 @@ export default function ({
                           Money Market Category
                         </div>
                         <div className="w-full text-base font-normal text-[#636363]">
-                          {productCategoryOptions.find(i=> i.value === productDetail.facilityDetailsModel?.moneyMarketCategory )?.text}
+                          {
+                            productCategoryOptions.find(
+                              (i) =>
+                                i.value ===
+                                productDetail
+                                  ?.moneyMarketCategory
+                            )?.text
+                          }
                         </div>
                       </div>
                       <div className=" flex gap-[54px]">
@@ -345,7 +364,7 @@ export default function ({
                           Issuer
                         </div>
                         <div className="w-full text-base font-normal text-[#636363]">
-                          {productDetail.facilityDetailsModel?.issuer || " - "}
+                          {productDetail?.issuer || " - "}
                         </div>
                       </div>
                       <div className=" flex gap-[54px]">
@@ -354,7 +373,7 @@ export default function ({
                         </div>
                         <div className="w-full text-base font-normal text-[#636363]">
                           <span className="">
-                            {productDetail.facilityDetailsModel?.description ||
+                            {productDetail?.description ||
                               " - "}
                           </span>
                         </div>
@@ -366,9 +385,8 @@ export default function ({
                         <div className="w-full text-base font-normal text-[#636363]">
                           <span className="">
                             {moment(
-                              productDetail.facilityDetailsModel?.dealDate
+                              productDetail?.dealDate
                             ).format("DD MMM YYYY")}{" "}
-                            -{" "}
                           </span>
                         </div>
                       </div>
@@ -379,9 +397,8 @@ export default function ({
                         <div className="w-full text-base font-normal text-[#636363]">
                           <span className="">
                             {moment(
-                              productDetail.facilityDetailsModel?.maturityDate
+                              productDetail?.maturityDate
                             ).format("DD MMM YYYY")}{" "}
-                            -{" "}
                           </span>
                         </div>
                       </div>
@@ -391,10 +408,7 @@ export default function ({
                         </div>
                         <div className="w-full text-base font-normal text-[#636363]">
                           <span className="">
-                            {handleCurrencyName(
-                              productDetail.facilityDetailsModel?.currency,
-                              currencies
-                            )}
+                            {productDetail?.currencyCode}
                           </span>
                         </div>
                       </div>
@@ -404,9 +418,9 @@ export default function ({
                         </div>
                         <div className="w-full text-base font-normal text-[#636363]">
                           <span className="">
-                            {productDetail.facilityDetailsModel?.discountRate ||
+                            {productDetail?.discountRate ||
                               "-"}
-                            {productDetail.facilityDetailsModel?.discountRate &&
+                            {productDetail?.discountRate &&
                               "%"}
                           </span>
                         </div>
@@ -417,12 +431,11 @@ export default function ({
                         </div>
                         <div className="w-full text-base font-normal text-[#636363]">
                           <span className="">
-                            {handleCurrencyName(
-                              productDetail.facilityDetailsModel?.currency,
-                              currencies
+                            {currencyFormatter(
+                              productDetail?.faceValue ||
+                                0,
+                              productDetail?.currencyCode
                             )}
-                            {productDetail.facilityDetailsModel?.faceValue ||
-                              "-"}
                           </span>
                         </div>
                       </div>
@@ -432,13 +445,10 @@ export default function ({
                         </div>
                         <div className="w-full text-base font-normal text-[#636363]">
                           <span className="">
-                            {
-                              productDetail.facilityDetailsModel
-                                ?.totalConsideration
-                            }
-                            {handleCurrencyName(
-                              productDetail.facilityDetailsModel?.currency,
-                              currencies
+                            {currencyFormatter(
+                              productDetail
+                                ?.totalConsideration,
+                              productDetail?.currencyCode
                             )}
                           </span>
                         </div>
@@ -452,15 +462,15 @@ export default function ({
                             {
                               CapitalizationOptions.find(
                                 (i) =>
-                                  i.id ===
-                                  productDetail.facilityDetailsModel
-                                    ?.interestCapitalizationMethod
+                                  i.value ===
+                                  productDetail
+                                    ?.capitalizationMethod
                               )?.text
                             }
                           </span>
                         </div>
                       </div>
-                      {productDetail.facilityDetailsModel
+                      {productDetail
                         ?.securityPurchaseIntervals && (
                         <div className=" flex gap-[54px]">
                           <div className="w-[300px]   text-base font-medium text-[#636363]">
@@ -469,14 +479,14 @@ export default function ({
                           <div className="w-full text-base font-normal text-[#636363]">
                             <span className="">
                               {
-                                productDetail.facilityDetailsModel
+                                productDetail
                                   ?.securityPurchaseIntervals
                               }
                               {
                                 intervalOptions.find(
                                   (i) =>
                                     i.id ===
-                                    productDetail.facilityDetailsModel
+                                    productDetail
                                       ?.securityPurchaseIntervals
                                 )?.text
                               }
@@ -498,11 +508,8 @@ export default function ({
                           Credit Ledger
                         </div>
                         <div className="w-full text-base font-normal text-[#636363]">
-                          {ledgerData?.value?.items?.find(
-                            (i) =>
-                              i.accountNo ===
-                              productDetail.accountingEntries?.creditLedger
-                          )?.accountName || " - "}
+                          {productDetail?.creditLedger ||
+                            " - "}
                         </div>
                       </div>
                       <div className=" flex gap-[54px]">
@@ -510,11 +517,8 @@ export default function ({
                           DebitLedger
                         </div>
                         <div className="w-full text-base font-normal text-[#636363]">
-                          {ledgerData?.value?.items?.find(
-                            (i) =>
-                              i.accountNo ===
-                              productDetail.accountingEntries?.debitLedger
-                          )?.accountName || " - "}
+                          {productDetail?.debitLedger ||
+                            " - "}
                         </div>
                       </div>
                     </div>

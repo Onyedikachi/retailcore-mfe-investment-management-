@@ -27,16 +27,16 @@ export const handleClear = (
 
 export const handleClick = ({
   key,
-  submenu,
+  ledgerInfo,
   ledgerType,
   index,
   setLedgerType,
 }) => {
-  console.log("🚀 ~ handleClick ~ submenu:", submenu);
+  console.log("🚀 ~ handleClick ~ ledgerInfo:", ledgerInfo);
   let data = {
-    accountName: submenu.accountName,
-    accountId: submenu?.accountNo,
-    accountType: submenu?.accountType,
+    accountName: ledgerInfo.accountName,
+    accountId: ledgerInfo?.accountNo,
+    accountType: ledgerInfo?.accountType,
   };
   setLedgerType((prevLedgerType) => {
     const updatedLedgerType = [...prevLedgerType];
@@ -76,7 +76,7 @@ export default ({
       });
     } else {
       setLedgerType((prevLedgerType) => {
-        console.log("🚀 ~ setLedgerType ~ prevLedgerType:", prevLedgerType)
+        console.log("🚀 ~ setLedgerType ~ prevLedgerType:", prevLedgerType);
         const [first] = prevLedgerType;
         const updatedFirst = {
           ...first,
@@ -122,10 +122,10 @@ export default ({
                 </button>
               </div>
               <GlInput
-                handleClick={(key, submenu) =>
+                handleClick={(key, ledgerInfo) =>
                   handleClick({
                     key,
-                    submenu,
+                    ledgerInfo,
                     ledgerType,
                     index,
                     setLedgerType,
@@ -141,6 +141,11 @@ export default ({
                 formData={formData}
                 accountType={item?.value?.accountType}
                 showImpact={true}
+                impact={
+                  item.type === "debit"
+                    ? "debit_impact_on_balance"
+                    : "credit_impact_on_balance"
+                }
               />
 
               {index === 1 && ledgerType.length === 2 && (

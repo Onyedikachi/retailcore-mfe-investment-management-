@@ -20,7 +20,6 @@ interface FormDateProps {
 }
 
 const FormDate: React.FC<FormDateProps> = ({
-  register = () => {},
   inputName,
   handleChange,
   className,

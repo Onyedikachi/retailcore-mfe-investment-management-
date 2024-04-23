@@ -46,7 +46,7 @@ export const confirmationHandler = ({
     } else {
       navigate(
         `/product-factory/investment/${encodeURIComponent(
-          "term deposit"
+          "term-deposit"
         )}/modify/?id=${detail.id}&filter=${selected.value}`
       );
     }
@@ -80,7 +80,7 @@ export const confirmationHandler = ({
       } else {
         // navigate(
         //   `/product-factory/investment/${encodeURIComponent(
-        //     "term deposit"
+        //     "term-deposit"
         //   )}/withdraw_modify/?id=${detail.id}&filter=${selected.value}`
         // );
         modifyProductRequest({

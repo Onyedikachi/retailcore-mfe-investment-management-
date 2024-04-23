@@ -65,6 +65,24 @@ export const StatusTypes = [
     color: "#AAAAAA",
   },
 ];
+
+export const SecurityStatusTypes = [
+  {
+    id: 0,
+    type: "all",
+    color: "#252C32",
+  },
+  {
+    id: 2,
+    type: "active",
+    color: "#2FB755",
+  },
+  {
+    id: 1,
+    type: "liquidated",
+    color: "#AAAAAA",
+  },
+];
 export const IndividualStatusTypes = [
   {
     id: 0,

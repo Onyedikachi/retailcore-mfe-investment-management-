@@ -9,6 +9,7 @@ import {
   useGetInvestmentDetailQuery,
   useGetUserQuery,
   useGetUsersPermissionsQuery,
+  useTopUpCalculationMutation,
 } from "../../api";
 import { AppContext, removeNullEmptyKeys } from "@app/utils";
 import { Switch } from "@headlessui/react";
@@ -48,13 +49,8 @@ export const handleTopUpCalculationPayload = ({
   if (detail?.principal && productDetails) {
     const payload = {
       principal: detail?.principal,
-      amounttoLiquidate:
-        type === "early"
-          ? detail?.principal
-          : values?.amount
-          ? values?.amount
-          : 0,
-      liquidationUnit: liquidationUnitEnum[selection],
+      amounttoTopUp: values.amounttoTopUp,
+      topUpUnit: liquidationUnitEnum[selection],
     };
     liquidationCalculation(payload);
   }
@@ -75,8 +71,9 @@ export default function TopUp({
     investementBookingId: detail?.id,
     reason: "",
     documentUrl: "",
+    topUpUnit: 2,
     notify: false,
-    amounttoLiquidate: null,
+    amounttoTopUp: null,
     maxAmount: 100,
   };
   const {
@@ -90,8 +87,8 @@ export default function TopUp({
     trigger,
     formState: { errors, isValid },
   } = useForm({
-    resolver: yupResolver(TopUpSchema), // Use the Yup resolver
     defaultValues: initialValues, // Provide initial values
+    resolver: yupResolver(TopUpSchema), // Use the Yup resolver
   });
   const { currencies } = useContext(AppContext);
   const [defaultValue, setDefaultValue] = useState("");
@@ -100,8 +97,8 @@ export default function TopUp({
   const values = getValues();
   const [isChecked, setChecked] = useState(false);
   const [text, setText] = useState("");
-  const [percentValue, setPercentValue] = useState(0);
-  const [amountValue, setAmountValue] = useState(0);
+  const [percentValue, setPercentValue] = useState(100);
+  const [amountValue, setAmountValue] = useState(300000000);
   const [liquidationValue, setTopUpValue] = useState(0);
   const liquidationUnitEnum = {
     currency: 0,
@@ -119,15 +116,15 @@ export default function TopUp({
     { skip: !detail?.investmentBookingId && !detail?.id }
   );
   const [
-    liquidationCalculation,
+    topUpCalculation,
     {
-      data: liquidationCalculationData,
+      data: topUpCalculationData,
       isSuccess: isTopUpCalculationSuccess,
       isError: isTopUpCalculationError,
-      error: liquidationCalculationError,
+      error: topUpCalculationError,
       isLoading: isTopUpCalculationLoading,
     },
-  ] = useLiquidationCalculationMutation();
+  ] = useTopUpCalculationMutation();
 
   useEffect(() => {
     if (detail?.metaInfo) {
@@ -136,7 +133,7 @@ export default function TopUp({
 
       setMetaInfo(data);
       setChecked(data?.notify);
-      setSelection(data.liquidationUnit);
+      setSelection(data.topUpUnit);
       Object.keys(data).forEach((item) => {
         // @ts-ignore
         setValue(item, data[item]);
@@ -147,41 +144,34 @@ export default function TopUp({
   useEffect(() => {
     if (
       bookingDetails?.data &&
-      productDetails &&
-      ((type === "early" &&
-        bookingDetails?.data?.facilityDetailsModel?.principal) ||
-        (type === "part" && values?.amounttoLiquidate))
+      productDetails
     ) {
       const payload = {
         principal: bookingDetails?.data?.facilityDetailsModel?.principal,
-        amounttoLiquidate:
-          type === "early"
-            ? bookingDetails?.data?.facilityDetailsModel?.principal
-            : values?.amounttoLiquidate,
-        liquidationUnit: selection,
-        liquidationType: type === "early" ? 0 : 1,
+        [type === "topup" ? 'amounttoTopUp' : 'amounttoWithdraw']: parseInt(values?.amounttoTopUp),
+        [type === "topup" ? 'topUpUnit' : "withdrawalUnit"]: selection,
         investmentBookingId: !detail?.metaInfo
           ? detail?.id
           : detail?.investmentBookingId,
       };
-      liquidationCalculation(payload);
+      topUpCalculation(payload);
     }
   }, [
     bookingDetailsIsSuccess,
     detail,
     productDetails,
-    values.amounttoLiquidate,
+    values.amounttoTopUp,
     selection,
     metaInfo,
   ]);
 
   useEffect(() => {
     if (isTopUpCalculationSuccess) {
-      setTopUpValue(liquidationCalculationData?.data);
+      setTopUpValue(topUpCalculationData?.data);
     }
   }, [
     bookingDetailsIsSuccess,
-    liquidationCalculationData,
+    topUpCalculationData,
     isTopUpCalculationSuccess,
   ]);
 
@@ -197,6 +187,10 @@ export default function TopUp({
     setValue("maxAmount", selection === 1 ? percentValue : amountValue);
   }, [selection, percentValue, amountValue]);
 
+  useEffect(() => {
+    trigger("amounttoTopUp");
+  }, [selection])
+
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen} data-testid="Layout">
       {productDetails && (
@@ -205,7 +199,8 @@ export default function TopUp({
             onProceed(
               {
                 ...d,
-                liquidationUnit: selection,
+                [type === "topup" ? 'amounttoTopUp' : 'amounttoWithdraw']: parseInt(values?.amounttoTopUp),
+                [type === "topup" ? 'topUpUnit' : "withdrawalUnit"]: selection,
                 id: detail?.id,
               },
               onConfirm,
@@ -246,7 +241,7 @@ export default function TopUp({
                     </label>
 
                     <div className="relative flex flex-1 items-start max-w-[642px] mb-[2px] py-2 px-3 bg-[#EEEEEE]">
-                      {currencyFormatter(0)}
+                      {currencyFormatter(parseInt(bookingDetails?.data?.facilityDetailsModel?.principal))}
                     </div>
                   </div>
                 )}
@@ -264,7 +259,7 @@ export default function TopUp({
 
                   <div className="relative flex items-start max-w-[642px] mb-[2px] py-2">
                     <MinMaxInput
-                      inputName="amounttoLiquidate"
+                      inputName="amounttoTopUp"
                       register={register}
                       errors={errors}
                       setValue={setValue}
@@ -272,7 +267,7 @@ export default function TopUp({
                       clearErrors={clearErrors}
                       isCurrency={selection === 0}
                       isPercent={selection === 1}
-                      defaultValue={values?.amounttoLiquidate}
+                      defaultValue={values?.amounttoTopUp}
                       type="number"
                       placeholder="Enter value"
                     />
@@ -280,14 +275,13 @@ export default function TopUp({
                     <div className="overflow-hidden absolute right-0 text-[10px] text-[#8F8F8F] flex items-center   rounded-full shadow-[0px_0px_1px_0px_rgba(26,32,36,0.32),0px_1px_2px_0px_rgba(91,104,113,0.32)] border-[#E5E9EB]">
                       <span
                         role="button"
-                        onKeyDown={() => {}}
+                        onKeyDown={() => { }}
                         tabIndex={0}
                         onClick={() => {
                           setSelection(0);
                         }}
-                        className={`w-[55px] border-r border-[#E5E9EB] py-1 px-2 ${
-                          selection === 0 ? "bg-[#FFE9E9] " : ""
-                        }`}
+                        className={`w-[55px] border-r border-[#E5E9EB] py-1 px-2 ${selection === 0 ? "bg-[#FFE9E9] " : ""
+                          }`}
                       >
                         {" "}
                         NGN
@@ -296,13 +290,12 @@ export default function TopUp({
                       <span
                         role="button"
                         tabIndex={0}
-                        onKeyDown={() => {}}
+                        onKeyDown={() => { }}
                         onClick={() => {
                           setSelection(1);
                         }}
-                        className={`w-[55px] py-1 px-2 ${
-                          selection === 1 ? "bg-[#FFE9E9] " : ""
-                        }`}
+                        className={`w-[55px] py-1 px-2 ${selection === 1 ? "bg-[#FFE9E9] " : ""
+                          }`}
                       >
                         {" "}
                         Percent

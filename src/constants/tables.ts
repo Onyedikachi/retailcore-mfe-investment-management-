@@ -571,6 +571,18 @@ export const ActiveFilterOptions: any[] = [
     value: 1,
   },
 ];
+export const SecurityFilterOptions: any[] = [
+  {
+    id: 1,
+    name: "active",
+    value: 2,
+  },
+  {
+    id: 2,
+    name: "liquidated",
+    value: 1,
+  },
+];
 export const IndividualFilterOptions: any[] = [
   {
     id: 1,
@@ -712,6 +724,24 @@ export const productFilterOptions: any[] = [
     name: "Term Deposit",
     value: 0,
   },
+  {
+    id: 2,
+    name: "Commercial Paper",
+    value: 2,
+  },
+  {
+    id: 3,
+    name: "Treasury Bills",
+    value: 1,
+  },
+  {
+    id: 4,
+    name: "Bonds",
+    value: 3,
+  },
+];
+export const SecurityProductFilterOptions: any[] = [
+
   {
     id: 2,
     name: "Commercial Paper",
@@ -1066,14 +1096,14 @@ export const securityPurchaseHeader = [
   {
     label: "Investment Category",
     key: "moneyMarketType",
-    options: productFilterOptions,
+    options: SecurityProductFilterOptions,
     hasSelect: true,
     hasDateSelect: false,
   },
   {
     label: "status",
     key: "state",
-    options: SecurityPurchaseFilterOptions,
+    options: SecurityFilterOptions,
     hasSelect: true,
     hasDateSelect: false,
   },

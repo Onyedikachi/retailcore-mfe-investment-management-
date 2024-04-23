@@ -18,6 +18,7 @@ import {
   ApproveRequestOptions,
   FactoryCategories,
   IndividualStatusTypes,
+  SecurityStatusTypes,
 } from "@app/constants";
 
 export function filterAllProductsOptions(): any[] {
@@ -38,12 +39,18 @@ export function filterDefaultOptions(): any[] {
 }
 
 // Main sorting function
-export function sortOptions(category: string, isChecker: boolean): any[] {
+export function sortOptions(
+  category: string,
+  isChecker: boolean,
+  tab: string
+): any[] {
   if (category === StatusCategoryType.AllProducts) {
     return filterAllProductsOptions();
   }
   if (category === StatusCategoryType?.Investments) {
-    return filterAllInvestmentsOptions();
+    return tab === "security-purchase"
+      ? SecurityStatusTypes
+      : filterAllInvestmentsOptions();
   }
 
   if (isChecker) {
@@ -392,6 +399,7 @@ export default function StatusCard({
   categoryType1 = "all products",
   categoryType2 = "requests",
   Context,
+  tab,
 }: any): React.JSX.Element {
   // const { permissions } = useContext(AppContext);
 
@@ -472,7 +480,7 @@ export default function StatusCard({
       </div>
       <div className="flex-1 bg-white py-[10px] px-[22px] rounded-r-lg flex justify-between">
         <div className="flex gap-x-5 py-[14px] pl-[20px]">
-          {sortOptions(category, isChecker).map((item) => (
+          {sortOptions(category, isChecker, tab).map((item) => (
             <StatusButton
               key={`${item.type}-${item.id}`}
               item={item}

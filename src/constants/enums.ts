@@ -101,9 +101,13 @@ export enum Messages {
   REQUEST_FAILED = "Request Failed",
   LIQUIDATION_MODIFICATION_REQUEST_FAILED = "Liquidation modification requests failed",
   LIQUIDATION_MODIFICATION_REQUEST_SUCCESS = "Liquidation modifcation requests submitted for approval",
-  LIQUIDATION_MODIFICATION__SUCCESS = "Liquidation modifcation successful"
-
-
+  LIQUIDATION_MODIFICATION__SUCCESS = "Liquidation modifcation successful",
+  TOPUP_REQUEST_SUCCESS = "Investment topup requests submitted for approval",
+  TOPUP__SUCCESS = "Investment topup successful",
+  TOPUP_REQUEST_FAILED = "Topup requests failed",
+  WITHDRAWAL_REQUEST_SUCCESS = "Withdrawal requests submitted for approval",
+  WITHDRAWAL__SUCCESS = "Withdrawal successful",
+  WITHDRAWAL_REQUEST_FAILED = "Withdrawal requests failed",
 
 }
 
