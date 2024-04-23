@@ -257,6 +257,7 @@ export default function Individual() {
   const [getProducts, { data, isSuccess, isError, error, isLoading }] =
     useGetPostInvestmentMutation();
 
+
   const [
     getRequests,
     {
