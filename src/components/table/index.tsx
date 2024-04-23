@@ -308,7 +308,10 @@ export const handleProductsDropdown = (
   created_By_Id,
   userId
 ): any => {
+  console.log("what is the status: ", status);
+
   if (!status) return [];
+
   if (isChecker) {
     return DropDownOptions[
       statusType === StatusCategoryType.Investments
@@ -369,6 +372,7 @@ export const handleProductsDropdown = (
     ) {
       options = options?.filter((i: any) => i.text.toLowerCase() === "view");
     }
+
     return options;
   }
 };
@@ -937,8 +941,9 @@ export default function TableComponent<TableProps>({
                                     type === StatusCategoryType.Investments
                                       ? handleProductsDropdown(
                                           type,
-                                          item.state
-                                            ? item.state
+                                          item.state === "liquidated"
+                                            ? "2" :   item.state === "active" 
+                                            ? "1"
                                             : item.investmentBookingStatus
                                             ? item.investmentBookingStatus
                                             : null,

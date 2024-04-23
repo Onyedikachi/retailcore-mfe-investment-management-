@@ -530,6 +530,34 @@ export const IndividualDropDownOptions: any = {
     },
   ],
 };
+export const SecurityPurchaseDropDownOptions: any = {
+
+  active: [
+    {
+      id: "",
+      text: "View",
+      icon: "FaEye",
+      key: "view",
+    },
+ 
+    {
+      id: "",
+      text: "Top Up Security",
+      icon: "BiSolidEdit",
+      key: "investment topup",
+    },
+
+  ],
+  liquidated: [
+    {
+      id: "",
+      text: "View",
+      icon: "FaEye",
+      key: "view",
+    },
+  ],
+
+};
 
 export const ActiveFilterOptions: any[] = [
   {
@@ -555,6 +583,19 @@ export const IndividualFilterOptions: any[] = [
     value: 2,
   },
 ];
+export const SecurityPurchaseFilterOptions: any[] = [
+  {
+    id: 1,
+    name: "active",
+    value: 1,
+  },
+  {
+    id: 2,
+    name: "liquidated",
+    value: 2,
+  },
+];
+
 export const ProductTypes: any[] = [
   {
     id: 0,
@@ -1006,7 +1047,7 @@ export const individualHeader = [
     key: "actions",
   },
 ];
-export const securiyPurchaseHeader = [
+export const securityPurchaseHeader = [
   {
     label: "Issuer NAME/ID",
     key: "nameObject",
@@ -1032,7 +1073,7 @@ export const securiyPurchaseHeader = [
   {
     label: "status",
     key: "state",
-    options: ActiveFilterOptions,
+    options: SecurityPurchaseFilterOptions,
     hasSelect: true,
     hasDateSelect: false,
   },
