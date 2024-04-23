@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
+import { useParams } from "react-router-dom";
 import { RiErrorWarningFill } from "react-icons/ri";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -20,7 +21,6 @@ import { liquiditiesPenaltyStrings } from "@app/constants";
 import { currencyFormatter } from "@app/utils/formatCurrency";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 import { useLiquidationCalculationMutation } from "@app/api";
-// import {useEarlyLiquidateMutation} from '@app/api'
 
 interface TopUpProps {
   isOpen: boolean;
@@ -65,7 +65,7 @@ export default function TopUp({
   type,
   productDetails,
 }: TopUpProps): React.JSX.Element {
-  console.log("🚀 ~ type:", type);
+  const { tab } = useParams();
   const [metaInfo, setMetaInfo] = useState(null);
   const initialValues = {
     investementBookingId: detail?.id,
@@ -112,6 +112,7 @@ export default function TopUp({
   } = useGetInvestmentDetailQuery(
     {
       id: detail?.metaInfo ? detail?.investmentBookingId : detail?.id,
+      investmentType: tab,
     },
     { skip: !detail?.investmentBookingId && !detail?.id }
   );
@@ -192,7 +193,7 @@ export default function TopUp({
 
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen} data-testid="Layout">
-      {productDetails && (
+      {(productDetails || bookingDetails) && (
         <form
           onSubmit={handleSubmit((d: any) =>
             onProceed(
@@ -213,9 +214,9 @@ export default function TopUp({
             <div className="flex justify-between items-center pb-4 mb-[42px] border-b border-[#CCCCCC]">
               <h3 className="text-[#747373] font-bold text-xl uppercase">
                 {type === "topup"
-                  ? "INVESTMENT TOP UP REQUEST"
-                  : type === "security_purchase_topup"
-                  ? "security PURCHASE Top up Request"
+                  ? tab === "security-purchase"
+                    ? "security PURCHASE Top up Request"
+                    : "INVESTMENT TOP UP REQUEST"
                   : "principal withdrawal request"}
               </h3>
               <button
@@ -246,7 +247,8 @@ export default function TopUp({
                       {currencyFormatter(
                         parseInt(
                           bookingDetails?.data?.facilityDetailsModel?.principal
-                        )
+                        ),
+                        bookingDetails?.data?.currencyCode
                       )}
                     </div>
                   </div>
@@ -292,7 +294,8 @@ export default function TopUp({
                         }`}
                       >
                         {" "}
-                        NGN
+                        {productDetails?.productInfo?.currencyCode ||
+                          bookingDetails?.data?.currencyCode}
                       </span>
 
                       <span
@@ -462,7 +465,8 @@ export default function TopUp({
                   <span className="text-sm text-[#747373] font-semibold">
                     {currencyFormatter(
                       liquidationValue,
-                      productDetails?.productInfo?.currencyCode
+                      productDetails?.productInfo?.currencyCode ||
+                        bookingDetails?.data?.currencyCode
                     )}
                   </span>
                 </div>

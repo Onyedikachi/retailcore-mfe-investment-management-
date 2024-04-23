@@ -23,6 +23,7 @@ export const actionHandler = ({
   navigate,
   tab,
 }) => {
+  console.log("🚀 ~ action:", action)
   console.log("🚀 ~ tab:", tab);
 
   setAction(action);
@@ -100,9 +101,9 @@ export const actionHandler = ({
     return;
   }
 
-  if (action.toLowerCase() === Actions.TOPUP) {
-    setTopUpType("security_purchase_topup");
-    // setTopUpType("topup");
+  if (action.toLowerCase() === Actions.TOPUP || action.toLowerCase() === Actions.SECURITY_PURCHASE_TOPUP) {
+    // setTopUpType("security_purchase_topup");
+    setTopUpType("topup");
     setTopUpOpen(true);
     return;
   }

@@ -651,6 +651,7 @@ export default function TableComponent<TableProps>({
   const [failedText, setFailedText] = useState("");
   const [productDetails, setProductDetails] = useState(null);
 
+
   const resetModals = () => {
     setFailed(false);
     setIsSuccessOpen(false);
@@ -802,6 +803,7 @@ export default function TableComponent<TableProps>({
     id:
       detail?.investmentProductId ||
       (detail?.metaInfo && JSON.parse(detail?.metaInfo)?.investmentProductId),
+      investmentType:tab
   });
 
   const [
