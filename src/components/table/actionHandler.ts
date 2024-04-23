@@ -101,9 +101,15 @@ export const actionHandler = ({
   }
 
   if (action.toLowerCase() === Actions.TOPUP) {
-    setTopUpType("topup");
+    setTopUpType("security_purchase_topup");
+    // setTopUpType("topup");
     setTopUpOpen(true);
     return;
+  }
+
+  if (action.toLowerCase() === Actions.SECURITY_PURCHASE_TOPUP) {
+    setTopUpType("security_purchase_topup");
+    setTopUpOpen(true);
   }
 
   if (action.toLowerCase() === Actions.PRINCIPAL_WITHDRAWAL) {

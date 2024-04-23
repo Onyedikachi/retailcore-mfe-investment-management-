@@ -354,6 +354,7 @@ export const handleProductsDropdown = (
   console.log("🚀 ~ status:", typeof status);
   console.log("🚀 ~ statusType:", statusType);
   if (!status) return [];
+
   if (isChecker) {
     const dropdownStatus =
       DropDownOptions[
@@ -423,6 +424,7 @@ export const handleProductsDropdown = (
     ) {
       options = options?.filter((i: any) => i.text.toLowerCase() === "view");
     }
+
     return options;
   }
 };
@@ -626,6 +628,7 @@ export default function TableComponent<TableProps>({
     setDetailOpen,
     isIndividualDetailOpen,
     setIndividualDetailOpen,
+    isSecurityPurchase,
     detail,
     setDetail,
   }: any = useContext(Context);
@@ -1209,6 +1212,7 @@ export default function TableComponent<TableProps>({
         isDeactivationOpen={isDeactivationOpen}
         isDetailOpen={isDetailOpen}
         isIndividualDetailOpen={isIndividualDetailOpen}
+        isSecurityPurchase={isSecurityPurchase}
         deleteLoading={deleteLoading || isDeleteInvestmentRequestLoading}
         activateIsLoading={
           activateIsLoading || modifyRequestLoading || modifyLoading

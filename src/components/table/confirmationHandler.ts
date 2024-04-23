@@ -98,6 +98,7 @@ export const confirmationHandler = ({
     setTopUpType("topup");
     setTopUpOpen(true);
   }
+
   if (action.toLowerCase() === Actions.PRINCIPAL_WITHDRAWAL) {
     setTopUpType("withdraw");
     setTopUpOpen(true);

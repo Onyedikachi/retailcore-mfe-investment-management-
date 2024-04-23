@@ -155,6 +155,7 @@ export default function Individual() {
   const [category, setCategory] = useState<string>(
     StatusCategoryType?.Investments
   );
+  const isSecurityPurchase = tab === "security-purchase";
   const [searchParams] = useSearchParams();
   const queryCategory = searchParams.get("category");
   const productId = searchParams.get("productId");
@@ -171,6 +172,7 @@ export default function Individual() {
   const [initiator, setInitiator] = useState("");
   const [detail, setDetail] = useState<any>(null);
   const [isIndividualDetailOpen, setIndividualDetailOpen] = useState(false);
+
   const [duration, setDuration] = useState("");
   const [isRefreshing, setRefreshing] = useState<boolean>(false);
   const [requestData, setRequestData] = useState<any[]>([]);
@@ -218,6 +220,7 @@ export default function Individual() {
       setRefreshing,
       isIndividualDetailOpen,
       setIndividualDetailOpen,
+      isSecurityPurchase,
       detail,
       setDetail,
     }),
@@ -245,6 +248,7 @@ export default function Individual() {
       setRefreshing,
       isIndividualDetailOpen,
       setIndividualDetailOpen,
+      isSecurityPurchase,
       detail,
       setDetail,
     ]
@@ -256,7 +260,6 @@ export default function Individual() {
 
   const [getProducts, { data, isSuccess, isError, error, isLoading }] =
     useGetPostInvestmentMutation();
-
 
   const [
     getRequests,

@@ -178,6 +178,7 @@ export enum Actions {
   RESTRUCTURE = "restructure",
   GENERATE_CERTIFICATE= "generate certificate",
   TOPUP = "investment topup",
+  SECURITY_PURCHASE_TOPUP = "security purchase topup",
   PRINCIPAL_WITHDRAWAL = "principal withdrawal"
 }
 

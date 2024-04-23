@@ -22,8 +22,9 @@ import {
   overviewDrillDownIndividualHeader,
   IndividualRequestHeader,
   CustomerCategoryType,
-  securiyPurchaseHeader,
   MoneyMarketCategory,
+  securityPurchaseHeader,
+  SecurityPurchaseDropDownOptions,
 } from "@app/constants";
 import { useProductList } from "@app/hooks";
 import optionsDataHandler from "@app/utils/optionsDataHandler";
@@ -315,7 +316,7 @@ export default function TableComponent({
 
   useEffect(() => {
     if (tab === "security-purchase") {
-      setIndividualListHeaders(securiyPurchaseHeader);
+      setIndividualListHeaders(securityPurchaseHeader);
     } else if (isOverviewDrillDown) {
       setIndividualListHeaders(overviewDrillDownIndividualHeader);
     } else {
@@ -531,7 +532,7 @@ export default function TableComponent({
             data-testid="download-btn"
             className="flex gap-x-2 items-center bg-transparent border-none text-[#636363] text-base"
           >
-            <HiDownload className="text-lg" /> Download
+            <HiDownload className="text-lg" /> Download security Table
           </button>
         </div>
       </div>
@@ -561,7 +562,11 @@ export default function TableComponent({
         hasMore={hasMore}
         getOptionData={getOptionData}
         isLoading={isLoading}
-        dropDownOptions={IndividualDropDownOptions}
+        dropDownOptions={
+          tab === "security-purchase"
+            ? SecurityPurchaseDropDownOptions
+            : IndividualDropDownOptions
+        }
         dropDownClick={handleDropClick}
         onChangeDate={onChangeDate}
         type={category?.toLowerCase()}
