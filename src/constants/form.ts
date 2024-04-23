@@ -767,7 +767,8 @@ export const TopUpSchema = yup.object({
   reason: yup.string().required("Provide a reason"),
   documentUrl: yup.string(),
   notify: yup.boolean().required(),
-  amounttoLiquidate: yup
+  topUpUnit: yup.number(),
+  amounttoTopUp: yup
     .number()
     .typeError("Invalid value")
     .integer()

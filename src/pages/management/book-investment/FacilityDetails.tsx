@@ -65,6 +65,7 @@ export default ({
     setError,
     getValues,
     trigger,
+    reset,
     formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(FacilityDetailsModelSchema2),
@@ -110,6 +111,13 @@ export default ({
       trigger("totalConsideration");
     }
   }, [isSuccess, data, isLoading]);
+
+  useEffect(() => {
+    if (formData?.facilityDetailsModel) {
+      reset(formData?.facilityDetailsModel);
+    }
+  }, [formData])
+
   return (
     <form
       id="facilityDetails"
@@ -169,11 +177,10 @@ export default ({
                       maxLength={250}
                       {...register("description")}
                       defaultValue={values?.description}
-                      className={`min-h-[150px] w-full rounded-md border border-[#8F8F8F] focus:outline-none px-3 py-[11px] placeholder:text-[#BCBBBB] resize-none ${
-                        errors?.description
+                      className={`min-h-[150px] w-full rounded-md border border-[#8F8F8F] focus:outline-none px-3 py-[11px] placeholder:text-[#BCBBBB] resize-none ${errors?.description
                           ? "border-red-500 ring-1 ring-red-500"
                           : ""
-                      }`}
+                        }`}
                     />
 
                     <span className="absolute bottom-4 right-2 text-xs text-[#8F8F8F] flex items-center gap-x-1">

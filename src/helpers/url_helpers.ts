@@ -32,6 +32,8 @@ const urls = {
   INVESTMENT_CALC: "/investment/calc",
   INVESTMENT_DASHBOARD_STATS: "/Dashboard/investmentstats",
   CHARGES: "/charges/",
+  INVESTMENT_TOPUP: "/Investment/top up",
+  WITHDRAW_PRINCIPAL: "/Investment/withdrawal",
 
   //Security Purchase
   SECURITY_PURCHASE_CREATE: "/SecurityPurchase/add",
