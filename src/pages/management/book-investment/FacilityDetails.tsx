@@ -45,6 +45,7 @@ export const onProceed = (
       ...formData,
       facilityDetailsModel: { ...formData.facilityDetailsModel, ...data },
       ...formData.facilityDetailsModel,
+      ...formData.accountingEntries,
       ...data,
       isDraft: true,
       investmentType: "security-purchase",
