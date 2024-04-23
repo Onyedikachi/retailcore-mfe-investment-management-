@@ -94,11 +94,17 @@ export const handleDraft = ({
   setIsConfirmOpen,
   modifyProduct,
   createInvestment,
-investmentType
+  investmentType,
 }) => {
   setIsConfirmOpen(false);
-const reqData = investmentType === "security-purchase" ?
-    { ...formData?.accountingEntries, ...formData?.facilityDetailsModel, id: formData.id } : formData;
+  const reqData =
+    investmentType === "security-purchase"
+      ? {
+          ...formData?.accountingEntries,
+          ...formData?.facilityDetailsModel,
+          id: formData.id,
+        }
+      : formData;
   if (process === "modify") {
     modifyProduct({ ...reqData, isDraft: true, id, investmentType });
   }
@@ -286,7 +292,8 @@ export default function IndexComponent() {
     isSuccess: productDetailsIsSuccess,
   } = useGetInvestmentDetailQuery(
     {
-      id,investmentType
+      id,
+      investmentType,
     },
     { skip: !id }
   );
@@ -341,16 +348,19 @@ export default function IndexComponent() {
 
   const setupForm = (source) => {
     const facilityDetailsModel = source;
-    const accountingEntries = { debitLedger: source?.debitLedger, creditLedger: source?.creditLedger };
+    const accountingEntries = {
+      debitLedger: source?.debitLedger,
+      creditLedger: source?.creditLedger,
+    };
     delete facilityDetailsModel.creditLedger;
     delete facilityDetailsModel.debitLedger;
-    return ({ facilityDetailsModel, accountingEntries })
-  }
+    return { facilityDetailsModel, accountingEntries };
+  };
 
   useEffect(() => {
-    console.log("Workin...")
+    console.log("Workin...");
     if (productDetailsIsSuccess && investmentType === "security-purchase") {
-      setFormData({ ...formData, ...setupForm(productDetails?.data) })
+      setFormData({ ...formData, ...setupForm(productDetails?.data) });
     }
   }, [productDetailsIsSuccess, productDetails]);
 
@@ -390,7 +400,7 @@ export default function IndexComponent() {
 
   useEffect(() => {
     if (preSuccess && !formData?.id) {
-      console.log("🚀 ~ useEffect ~ formData:", formData);
+ 
       setFormData({
         ...formData,
         id: preData?.data,
@@ -427,28 +437,30 @@ export default function IndexComponent() {
   ]);
 
   useEffect(() => {
-    handleRequestIsSuccess({
-      activeId,
-      previousData,
-      process,
-      requestData,
-      requestIsSuccess,
-      setFormData,
-      type: "individual_booking",
-      formData,
-      id,
-    });
-if (
-      investmentType === "security-purchase" &&
-      (process !== "create")
-    ) {
-      console.log("rq", requestData?.data?.metaInfo)
-      if (requestData?.data?.metaInfo && investmentType === "security-purchase") {
-        const d = JSON.parse(requestData?.data?.metaInfo)
-        setFormData({ ...formData, ...setupForm(d) })
+    if (requestIsSuccess) {
+      handleRequestIsSuccess({
+        activeId,
+        previousData,
+        process,
+        requestData,
+        requestIsSuccess,
+        setFormData,
+        type: "individual_booking",
+        formData,
+        id,
+      });
+      if (investmentType === "security-purchase" && process !== "create") {
+        console.log("rq", requestData?.data?.metaInfo);
+        if (
+          requestData?.data?.metaInfo &&
+          investmentType === "security-purchase"
+        ) {
+          const d = JSON.parse(requestData?.data?.metaInfo);
+          setFormData({ ...formData, ...setupForm(d) });
+        }
       }
     }
-  }, [requestIsSuccess]);
+  }, [requestIsSuccess, requestData]);
 
   return (
     <div>
@@ -618,7 +630,7 @@ if (
               setIsConfirmOpen,
               modifyProduct,
               createInvestment,
-              investmentType
+              investmentType,
             })
           }
         />

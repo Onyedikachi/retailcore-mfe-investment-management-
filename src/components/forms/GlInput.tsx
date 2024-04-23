@@ -55,6 +55,7 @@ export default function EntriesAndEventsSearchResults({
   accountType,
   showImpact = false,
   impact = "",
+  currencyCode = "NGN",
 }: any) {
   const [query, setQuery] = useState("");
   const [isOpen, setOpen] = useState(false);
@@ -76,7 +77,7 @@ export default function EntriesAndEventsSearchResults({
     {
       Q: query,
       AccountType: [classId?.toUpperCase()],
-      currencyCode: formData?.productInfo?.currencyCode,
+      currencyCode: currencyCode,
       isAccountNumber: true,
       AccountCategory: 1,
     },
@@ -84,7 +85,6 @@ export default function EntriesAndEventsSearchResults({
   );
   useEffect(() => {
     if (glClass && ledger) {
-      console.log("abeg", ledger?.accountType?.toLowerCase());
       ledger?.accountType?.toLowerCase() === "assets"
         ? setSelectedLedgerClass(
             glClass.find((i) => i.name?.toLowerCase() === "asset")
@@ -97,9 +97,6 @@ export default function EntriesAndEventsSearchResults({
           );
     }
   }, [glClass, ledger]);
-  useEffect(() => {
-    console.log(query);
-  }, [query]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -145,7 +142,7 @@ export default function EntriesAndEventsSearchResults({
 
   return (
     <OutsideClickHandler onOutsideClick={() => closeDropdown(setOpen)}>
-      <div className="w-full" data-testid="gli">
+      <div className="w-full min-w-[350px]" data-testid="gli">
         <div className="relative bg-[#fff] w-full">
           <div
             onKeyDown={() => {}}
@@ -164,14 +161,15 @@ export default function EntriesAndEventsSearchResults({
               className="w-full  ring-0 outline-none bg-transparent"
               onChange={(event) => setQuery(event.target.value)}
               value={query}
+              type="search"
             />
           </div>
-          {showImpact && accountType && (
+          {showImpact && ledger && (
             <div className="flex gap-x-4 text-sm mb-1  mt-[10px]">
               <span className="flex gap-x-1 items-center">
                 <span>GL Class:</span>
                 <span className="bg-[#6363632B] border-[#636363] border font-medium rounded-full text-xs px-[10px] py-[2px] uppercase">
-                  {accountType}
+                  {ledger?.accountType?.toUpperCase()}
                 </span>
               </span>
               <span>|</span>
