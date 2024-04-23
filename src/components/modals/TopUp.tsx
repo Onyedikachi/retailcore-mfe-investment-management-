@@ -258,8 +258,7 @@ export default function TopUp({
                     htmlFor="reason"
                     className="flex items-center text-[#333333] mb-2 gap-x-1"
                   >
-                    Amount to{" "}
-                    {type === "security_purchase_topup" ? "top up" : type}{" "}
+                    Amount to {tab === "security-purchase" ? "top up" : type}{" "}
                     <span className="flex">
                       {" "}
                       <RedDot />
@@ -323,9 +322,9 @@ export default function TopUp({
                   >
                     Provide justification for{" "}
                     {type === "topup"
-                      ? "investment topup"
-                      : type === "security_purchase_topup"
-                      ? "security purchase top up"
+                      ? tab === "security-purchase"
+                        ? "security purchase top up"
+                        : "investment topup"
                       : "principal withdrawal"}
                     <span className="flex">
                       {" "}
@@ -377,7 +376,7 @@ export default function TopUp({
                   />
                 </div>
 
-                {type !== "security_purchase_topup" && (
+                {tab !== "security-purchase" && (
                   <div className="mb-10 flex items-center gap-x-2">
                     <div className="flex items-center gap-2 w-[350px]">
                       <label
@@ -456,10 +455,10 @@ export default function TopUp({
                 <div className="flex items-center mb-10 rounded-[10px] border border-[#EBEBEB] bg-[#AAAAAA12] py-6 px-5 gap-x-1">
                   <span className="text-sm text-[#747373] capitalize">
                     {type === "topup"
-                      ? "investment topup"
-                      : type === "security_purchase_topup"
-                      ? "Security Purchase Top UP"
-                      : "principal withdrawal"}{" "}
+                      ? tab === "security-purchase"
+                        ? "security purchase top up"
+                        : "investment topup"
+                      : "principal withdrawal"}
                     value:{" "}
                   </span>
                   <span className="text-sm text-[#747373] font-semibold">
