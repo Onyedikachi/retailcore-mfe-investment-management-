@@ -468,7 +468,7 @@ export default function IndexComponent() {
         <div className="flex flex-col min-h-[100vh] ">
           <div className="px-[37px] py-[11px] bg-white">
             <h1 className="text-[#747373] text-[24px] font-bold mb-7 uppercase">
-              New Term Deposit Product
+              New {investmentType.replace("-", " ")} Product
             </h1>
             <Breadcrumbs links={handleLinks(links, process)} />
           </div>
