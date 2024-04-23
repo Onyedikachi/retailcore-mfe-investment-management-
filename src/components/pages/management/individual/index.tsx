@@ -14,6 +14,7 @@ import {
 } from "@app/api";
 import {
   IndividualStatusTypes,
+  SecurityStatusTypes,
   ManagementCategories,
   ProductTypes,
   StatusFilterOptions,
@@ -70,6 +71,7 @@ export const handleProductStatus = ({
   data,
   setHasMore,
   currencies,
+  tab,
 }) => {
   if (query.page === 1) {
     setProductData([]);
@@ -80,22 +82,20 @@ export const handleProductStatus = ({
       ...prevData.concat(
         data.results.map((i) => ({
           ...i,
-          principal: `${currencyFormatter(
-            i?.principal, // i.currencyCode
-            "ngn"
-          )}`,
+          principal: `${currencyFormatter(i?.principal, i.currencyCode)}`,
           initialPrincipal: `${currencyFormatter(
             i?.initialPrincipal,
-            // i.currencyCode
-            "ngn"
+            i?.currencyCode
           )}`,
-          state: IndividualStatusTypes.find((n) => n.id === i.state)?.type,
+          state: (tab === "security-purchase"
+            ? SecurityStatusTypes
+            : IndividualStatusTypes
+          ).find((n) => n.id === i.state)?.type,
           productType: ProductTypes.find((n) => n.id === i.productType)?.name,
           moneyMarketType: MoneyMarketCategory[i.moneyMarketCategory],
           totalConsideration: currencyFormatter(
             i?.totalConsideration,
-            // i.currencyCode
-            "ngn"
+            i?.currencyCode
           ),
           nameObject: {
             name: i?.issuer,
@@ -367,6 +367,7 @@ export default function Individual() {
       data,
       setHasMore,
       currencies,
+      tab,
     });
   }, [data, isSuccess, isError, query]);
   useEffect(

@@ -308,6 +308,7 @@ export const handleProductsDropdown = (
   created_By_Id,
   userId
 ): any => {
+
   if (!status) return [];
   if (isChecker) {
     return DropDownOptions[
@@ -317,12 +318,13 @@ export const handleProductsDropdown = (
     ]?.filter((i: any) => i.text?.toLowerCase() === "view");
   } else {
     let options =
+     
       DropDownOptions[
         statusType === StatusCategoryType.Investments
           ? InvestmentBookingStatus[status]?.toLowerCase()
           : status
       ];
-
+      console.log("🚀 ~ options:", options)
     if (!permissions?.includes("RE_OR_DEACTIVATE_INVESTMENT_PRODUCT")) {
       options = options?.filter(
         (i: any) =>
