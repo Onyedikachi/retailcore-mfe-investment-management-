@@ -99,8 +99,8 @@ export const actionHandler = ({
   }
 
   if (action.toLowerCase() === Actions.TOPUP) {
-    setTopUpType("security_purchase_topup");
-    // setTopUpType("topup");
+    // setTopUpType("security_purchase_topup");
+    setTopUpType("topup");
     setTopUpOpen(true);
     return;
   }
