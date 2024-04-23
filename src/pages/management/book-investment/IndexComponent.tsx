@@ -94,17 +94,20 @@ export const handleDraft = ({
   setIsConfirmOpen,
   modifyProduct,
   createInvestment,
+investmentType
 }) => {
   setIsConfirmOpen(false);
+const reqData = investmentType === "security-purchase" ?
+    { ...formData?.accountingEntries, ...formData?.facilityDetailsModel, id: formData.id } : formData;
   if (process === "modify") {
-    modifyProduct({ ...formData, isDraft: true, id });
+    modifyProduct({ ...reqData, isDraft: true, id, investmentType });
   }
   if (process === "create" || process === "clone") {
-    const { id, ...restData } = formData;
-    createInvestment({ ...restData, isDraft: true });
+    const { id, ...restData } = reqData;
+    createInvestment({ ...restData, isDraft: true, investmentType });
   }
   if (process === "continue" || process === "withdraw_modify") {
-    modifyRequest({ ...formData, isDraft: true, id });
+    modifyRequest({ ...reqData, isDraft: true, id, investmentType });
   }
 };
 
@@ -271,7 +274,7 @@ export default function IndexComponent() {
     isSuccess: requestIsSuccess,
   } = useGetInvestmentRequestDetailQuery(
     {
-      id,
+      id, investmentType
     },
     { skip: !id }
   );
@@ -282,7 +285,7 @@ export default function IndexComponent() {
     isSuccess: productDetailsIsSuccess,
   } = useGetInvestmentDetailQuery(
     {
-      id,
+      id, investmentType
     },
     { skip: !id }
   );
@@ -334,6 +337,21 @@ export default function IndexComponent() {
   useEffect(() => {
     setCalcDetail(calcData?.data);
   }, [calcData, calcIsSuccess]);
+
+  const setupForm = (source) => {
+    const facilityDetailsModel = source;
+    const accountingEntries = { debitLedger: source?.debitLedger, creditLedger: source?.creditLedger };
+    delete facilityDetailsModel.creditLedger;
+    delete facilityDetailsModel.debitLedger;
+    return ({ facilityDetailsModel, accountingEntries })
+  }
+
+  useEffect(() => {
+    console.log("Workin...")
+    if (productDetailsIsSuccess && investmentType === "security-purchase") {
+      setFormData({ ...formData, ...setupForm(productDetails?.data) })
+    }
+  }, [productDetailsIsSuccess, productDetails]);
 
   useEffect(() => {
     if (detailIsSuccess) {
@@ -418,6 +436,16 @@ export default function IndexComponent() {
       formData,
       id,
     });
+if (
+      investmentType === "security-purchase" &&
+      (process !== "create")
+    ) {
+      console.log("rq", requestData?.data?.metaInfo)
+      if (requestData?.data?.metaInfo && investmentType === "security-purchase") {
+        const d = JSON.parse(requestData?.data?.metaInfo)
+        setFormData({ ...formData, ...setupForm(d) })
+      }
+    }
   }, [requestIsSuccess]);
 
   return (
@@ -585,6 +613,7 @@ export default function IndexComponent() {
               setIsConfirmOpen,
               modifyProduct,
               createInvestment,
+              investmentType
             })
           }
         />
