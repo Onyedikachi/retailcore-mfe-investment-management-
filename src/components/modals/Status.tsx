@@ -43,7 +43,7 @@ export function handleNavigations(
 ) {
   const isIndividual =
     pathname.includes("management") &&
-    (pathname.includes("individual") || pathname.includes("corporate"));
+    (pathname.includes("individual") || pathname.includes("corporate") || pathname.includes("security-purchase"));
   const isModifyOrContinueOrCreate =
     process === "create" ||
     process === "modify" ||
@@ -81,6 +81,10 @@ export function handleNewCreate({ pathname }) {
   }
   if (pathname.includes("management") && pathname.includes("corporate")) {
     window.location.href = "/investment-management/create/corporate";
+    return;
+  }
+  if (pathname.includes("management") && pathname.includes("security-purchase")) {
+    window.location.href = "/investment-management/create/security-purchase";
     return;
   }
 }

@@ -14,6 +14,7 @@ export function currencyFormatter(
   showSymbol = true,
   minimumFractionDigits = 0
 ) {
+  if (!currency || currency?.length > 4) currency = "NGN";
   const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: currency || "NGN",

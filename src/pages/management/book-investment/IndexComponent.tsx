@@ -63,8 +63,8 @@ export function handleNav({
   step < formSteps.length
     ? handleNext(step, setStep, formSteps)
     : navigate(
-        `/investment-management/${process}/${investmentType}?stage=summary&id=${
-          formData?.id || id
+        `/investment-management/${process}/${investmentType}?stage=summary${
+          formData?.id || id ? `&id=${formData?.id || id}` : ""
         }`
       );
 }
@@ -135,21 +135,21 @@ export default function IndexComponent() {
   const [formData, setFormData] = useState<any>(
     investmentType === "security-purchase"
       ? {
-          id: id || "",
+          id: id || null,
           facilityDetailsModel: {
             moneyMarketCategory: "",
             issuer: "",
             description: "",
             dealDate: null,
-            maturiyDate: null,
+            maturityDate: null,
             currencyCode: defaultCurrency?.abbreviation,
             discountRate: "",
             perAmount: "",
             faceValue: "",
             totalConsideration: "",
-            capitalizationMethod: "",
+            capitalizationMethod: 0,
             interestComputationMethod: "",
-            interval: "",
+            cleanPrice: 0,
           },
           accountingEntries: {
             debitLedger: "",
@@ -272,6 +272,7 @@ export default function IndexComponent() {
   } = useGetInvestmentRequestDetailQuery(
     {
       id,
+      investmentType,
     },
     { skip: !id }
   );
@@ -282,7 +283,7 @@ export default function IndexComponent() {
     isSuccess: productDetailsIsSuccess,
   } = useGetInvestmentDetailQuery(
     {
-      id,
+      id,investmentType
     },
     { skip: !id }
   );
@@ -371,6 +372,7 @@ export default function IndexComponent() {
 
   useEffect(() => {
     if (preSuccess && !formData?.id) {
+      console.log("🚀 ~ useEffect ~ formData:", formData);
       setFormData({
         ...formData,
         id: preData?.data,
@@ -554,7 +556,10 @@ export default function IndexComponent() {
       {stage && stage === "summary" && (
         <Fragment>
           {investmentType === "security-purchase" ? (
-            <SecurityPurchasePreview productDetail={formData} />
+            <SecurityPurchasePreview
+              productDetail={formData}
+              formData={formData}
+            />
           ) : (
             <Preview
               productDetail={productDetail}

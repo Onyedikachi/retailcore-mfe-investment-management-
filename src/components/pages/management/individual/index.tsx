@@ -14,6 +14,7 @@ import {
 } from "@app/api";
 import {
   IndividualStatusTypes,
+  SecurityStatusTypes,
   ManagementCategories,
   ProductTypes,
   StatusFilterOptions,
@@ -50,7 +51,8 @@ export const handleChange = (
   activeType,
   setQuery,
   query,
-  category
+  category,
+  tab
 ) => {
   setQuery({
     ...query,
@@ -58,7 +60,7 @@ export const handleChange = (
     investmentProducts_In: null,
 
     status_In:
-      activeType === "all" ? null : [sortTabStatus(activeType, category)],
+      activeType === "all" ? null : [sortTabStatus(activeType, category, tab)],
   });
 };
 
@@ -69,6 +71,7 @@ export const handleProductStatus = ({
   data,
   setHasMore,
   currencies,
+  tab,
 }) => {
   if (query.page === 1) {
     setProductData([]);
@@ -79,22 +82,20 @@ export const handleProductStatus = ({
       ...prevData.concat(
         data.results.map((i) => ({
           ...i,
-          principal: `${currencyFormatter(
-            i?.principal, // i.currencyCode
-            "ngn"
-          )}`,
+          principal: `${currencyFormatter(i?.principal, i.currencyCode)}`,
           initialPrincipal: `${currencyFormatter(
             i?.initialPrincipal,
-            // i.currencyCode
-            "ngn"
+            i?.currencyCode
           )}`,
-          state: IndividualStatusTypes.find((n) => n.id === i.state)?.type,
+          state: (tab === "security-purchase"
+            ? SecurityStatusTypes
+            : IndividualStatusTypes
+          ).find((n) => n.id === i.state)?.type,
           productType: ProductTypes.find((n) => n.id === i.productType)?.name,
           moneyMarketType: MoneyMarketCategory[i.moneyMarketCategory],
           totalConsideration: currencyFormatter(
             i?.totalConsideration,
-            // i.currencyCode
-            "ngn"
+            i?.currencyCode
           ),
           nameObject: {
             name: i?.issuer,
@@ -256,6 +257,7 @@ export default function Individual() {
   const [getProducts, { data, isSuccess, isError, error, isLoading }] =
     useGetPostInvestmentMutation();
 
+
   const [
     getRequests,
     {
@@ -366,6 +368,7 @@ export default function Individual() {
       data,
       setHasMore,
       currencies,
+      tab,
     });
   }, [data, isSuccess, isError, query]);
   useEffect(
@@ -422,10 +425,11 @@ export default function Individual() {
             data={prodStatData}
             requests={requestStatData}
             handleChange={({ selected, activeType }) =>
-              handleChange(selected, activeType, setQuery, query, category)
+              handleChange(selected, activeType, setQuery, query, category, tab)
             }
             isLoading={requestStatLoading || prodStatLoading}
             Context={IndividualContext}
+            tab={tab}
           />
 
           <div className="bg-white px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16">

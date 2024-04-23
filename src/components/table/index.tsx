@@ -300,7 +300,7 @@ export const DropdownButton = ({ options, handleClick }: any) => {
 
 export const handleProductsDropdown = (
   statusType = "",
-  status: string,
+  status: any,
   isChecker,
   DropDownOptions,
   liquidation,
@@ -308,21 +308,32 @@ export const handleProductsDropdown = (
   created_By_Id,
   userId
 ): any => {
+  console.log("🚀 ~ status:", typeof status);
+  console.log("🚀 ~ statusType:", statusType);
   if (!status) return [];
   if (isChecker) {
-    return DropDownOptions[
-      statusType === StatusCategoryType.Investments
-        ? InvestmentBookingStatus[status].toLowerCase()
-        : status
-    ]?.filter((i: any) => i.text?.toLowerCase() === "view");
+    const dropdownStatus =
+      DropDownOptions[
+        statusType === StatusCategoryType.Investments
+          ? typeof status === "number"
+            ? InvestmentBookingStatus[status]?.toLowerCase()
+            : status?.toLowerCase()
+          : status
+      ];
+
+    return dropdownStatus?.filter(
+      (item: any) => item.text?.toLowerCase() === "view"
+    );
   } else {
     let options =
       DropDownOptions[
         statusType === StatusCategoryType.Investments
-          ? InvestmentBookingStatus[status]?.toLowerCase()
+          ? typeof status === "number"
+            ? InvestmentBookingStatus[status]?.toLowerCase()
+            : status?.toLowerCase()
           : status
       ];
-
+    console.log("🚀 ~ options:", options);
     if (!permissions?.includes("RE_OR_DEACTIVATE_INVESTMENT_PRODUCT")) {
       options = options?.filter(
         (i: any) =>
@@ -514,7 +525,6 @@ export default function TableComponent<TableProps>({
   handleRefresh = () => {},
   isOverviewDrillDown = false,
 }) {
-  console.log("table row:", tableRows);
   const { role, permissions, userId, isChecker, currencies } =
     useContext(AppContext);
 

@@ -15,6 +15,7 @@ import {
   CapitalizationOptions,
   interestComputationDaysOptions,
   intervalOptions,
+  productCategoryOptions,
 } from "@app/constants";
 import { AppContext } from "@app/utils";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
@@ -27,12 +28,15 @@ export const onProceed = (
   proceed,
   formData,
   setFormData,
-  preModifyRequest
+  preCreateInvestment
 ) => {
-  preModifyRequest({
+  preCreateInvestment({
     ...formData,
     facilityDetailsModel: { ...formData.facilityDetailsModel, ...data },
+    ...formData.facilityDetailsModel,
+    ...data,
     isDraft: true,
+    investmentType: "security-purchase",
   });
   setFormData({
     ...formData,
@@ -50,7 +54,7 @@ export default ({
   productDetail,
   setProductDetail,
   detailLoading,
-  preModifyRequest,
+  preCreateInvestment,
 }) => {
   const {
     register,
@@ -69,33 +73,14 @@ export default ({
   });
 
   const { currencies, defaultCurrency } = useContext(AppContext);
-  console.log("🚀 ~ errors:", errors);
+  // console.log("🚀 ~ errors:", errors);
   useEffect(() => {
     setValue("currencyCode", defaultCurrency?.abbreviation);
   }, [defaultCurrency]);
   const values = getValues();
-  console.log("🚀 ~ values:", values);
+  // console.log("🚀 ~ values:", values);
   const [calcTotal, { data, isSuccess, isLoading }] =
     useCalcTotalConsiderationMutation();
-
-  const productCategoryOptions = [
-    {
-      id: 1,
-      text: "Bonds",
-      value: 3,
-    },
-
-    {
-      id: 2,
-      text: "Commercial Paper",
-      value: 2,
-    },
-    {
-      id: 3,
-      text: "Treasury Bills",
-      value: 1,
-    },
-  ];
 
   useEffect(() => {
     setDisabled(!isValid);
@@ -113,6 +98,7 @@ export default ({
       discountRate: values.discountRate,
       faceValue: values.faceValue,
     };
+
     setTimeout(() => {
       calcTotal(data);
     }, 1200);
@@ -121,6 +107,7 @@ export default ({
   useEffect(() => {
     if (isSuccess) {
       setValue("totalConsideration", data.data);
+      trigger("totalConsideration");
     }
   }, [isSuccess, data, isLoading]);
   return (
@@ -128,7 +115,7 @@ export default ({
       id="facilityDetails"
       data-testid="submit-button"
       onSubmit={handleSubmit((d) => {
-        onProceed(d, proceed, formData, setFormData, preModifyRequest);
+        onProceed(d, proceed, formData, setFormData, preCreateInvestment);
       })}
     >
       <div
@@ -156,16 +143,20 @@ export default ({
           {values?.moneyMarketCategory && (
             <Fragment>
               <InputDivs label={"issuer"}>
-                <div className="relative flex items-center max-w-full">
+                <div className="relative">
                   <input
                     id="issuer"
                     data-testid="issuer"
-                    onChange={(e) => setValue("issuer", e.target.value)}
                     {...register("issuer")}
                     className={`placeholder-[#BCBBBB] ring-0 outline-none min-w-[300px] w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] placeholder:text-[#BCBBBB]`}
                     placeholder="Enter Name"
                     defaultValue={values.issuer}
                   />
+                  {errors?.issuer && (
+                    <span className="text-sm text-danger-500">
+                      {errors?.issuer?.message}
+                    </span>
+                  )}
                 </div>
               </InputDivs>
               <InputDivs label={"Description"}>
@@ -176,9 +167,7 @@ export default ({
                       data-testid="product-description"
                       placeholder="Enter description"
                       maxLength={250}
-                      {...register("description", {
-                        maxLength: 250,
-                      })}
+                      {...register("description")}
                       defaultValue={values?.description}
                       className={`min-h-[150px] w-full rounded-md border border-[#8F8F8F] focus:outline-none px-3 py-[11px] placeholder:text-[#BCBBBB] resize-none ${
                         errors?.description
@@ -204,7 +193,6 @@ export default ({
                   <FormDate
                     id="dealDate"
                     className="w-full min-w-[300px]"
-                    register={register}
                     inputName={"dealDate"}
                     errors={errors}
                     handleChange={(value) => {
@@ -214,6 +202,8 @@ export default ({
                     minDate={new Date()}
                     trigger={trigger}
                     clearErrors={clearErrors}
+                    dateFormat="MM/dd/yyyy"
+                    placeholder="mm/dd/yyyy"
                   />
                 </InputDiv>
               </InputDivs>
@@ -222,7 +212,6 @@ export default ({
                   <FormDate
                     id="maturityDate"
                     className="w-full min-w-[300px]"
-                    register={register}
                     inputName={"maturityDate"}
                     errors={errors}
                     handleChange={(value) => {
@@ -232,6 +221,8 @@ export default ({
                     minDate={values?.dealDate}
                     trigger={trigger}
                     clearErrors={clearErrors}
+                    dateFormat="MM/dd/yyyy"
+                    placeholder="mm/dd/yyyy"
                   />
                 </InputDiv>
               </InputDivs>
@@ -324,7 +315,6 @@ export default ({
                     setValue={setValue}
                     trigger={trigger}
                     clearErrors={clearErrors}
-                    isCurrency
                     disabled
                   />
                 </InputDiv>

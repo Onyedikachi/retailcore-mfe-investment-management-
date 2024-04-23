@@ -53,7 +53,8 @@ export default function EntriesAndEventsSearchResults({
   clearFields,
   formData,
   accountType,
-  showImpact = false
+  showImpact = false,
+  impact = "",
 }: any) {
   const [query, setQuery] = useState("");
   const [isOpen, setOpen] = useState(false);
@@ -62,6 +63,8 @@ export default function EntriesAndEventsSearchResults({
   const [ledgers, setLedgers] = useState([]);
   const [ledger, setLedger] = useState(null);
   const [toggleMenu, setMenus] = useState(null);
+  const [selectedLedgerClass, setSelectedLedgerClass] = useState(null);
+
   const { data, isLoading, isSuccess, isError } = useGetGlClassQuery();
   const {
     data: ledgerData,
@@ -79,7 +82,21 @@ export default function EntriesAndEventsSearchResults({
     },
     { skip: !classId }
   );
-
+  useEffect(() => {
+    if (glClass && ledger) {
+      console.log("abeg", ledger?.accountType?.toLowerCase());
+      ledger?.accountType?.toLowerCase() === "assets"
+        ? setSelectedLedgerClass(
+            glClass.find((i) => i.name?.toLowerCase() === "asset")
+          )
+        : setSelectedLedgerClass(
+            glClass.find(
+              (i) =>
+                i.name?.toLowerCase() === ledger?.accountType?.toLowerCase()
+            )
+          );
+    }
+  }, [glClass, ledger]);
   useEffect(() => {
     console.log(query);
   }, [query]);
@@ -161,11 +178,10 @@ export default function EntriesAndEventsSearchResults({
               <span className="flex gap-x-1 items-center">
                 <span>Balance impact:</span>
                 <span>
-                  {inputName === "debit" && (
-                    <FaCaretDown className="text-red-500 text-2xl drop-shadow-[0px_0px_8px_0px_#00000040]" />
-                  )}
-                  {inputName === "credit" && (
-                    <FaCaretUp className="text-green-500 text-2xl drop-shadow-[0px_0px_8px_0px_#00000040]" />
+                  {selectedLedgerClass?.[impact] === "DECREASE" ? (
+                    <FaCaretDown className="text-red-500" fontSize="36px" />
+                  ) : (
+                    <FaCaretUp className="text-green-500" fontSize="36px" />
                   )}
                 </span>
               </span>
@@ -207,6 +223,9 @@ export default function EntriesAndEventsSearchResults({
                   </div>
                 ))}
               </div>
+              {(ledgerIsLoading || isLoading) && (
+                <BottomBarLoader w="w-4" h="h-4" />
+              )}
               {classId && (
                 <div className="max-h-[233px] overflow-y-auto flex flex-col gap-4 py-2 pr-2">
                   {ledgers
@@ -230,9 +249,7 @@ export default function EntriesAndEventsSearchResults({
                     ))}
                 </div>
               )}
-              {(ledgerIsLoading || isLoading) && (
-                <BottomBarLoader w="w-4" h="h-4" />
-              )}
+
               {!ledgers?.length && !ledgerIsLoading && classId && (
                 <span className="text-center text-xs text-gray-400">
                   No ledger available

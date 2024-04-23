@@ -59,7 +59,7 @@ export default function MinMaxInput({
                 type={type}
                 disabled={disabled}
                 data-testid="min-max-input"
-                className={`placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] ${
+                className={`placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4 disabled:bg-white  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] ${
                   (errors && errors[inputName]) || error
                     ? "border-red-600"
                     : "border-[#8F8F8F]"

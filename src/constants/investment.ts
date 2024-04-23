@@ -65,6 +65,24 @@ export const StatusTypes = [
     color: "#AAAAAA",
   },
 ];
+
+export const SecurityStatusTypes = [
+  {
+    id: 0,
+    type: "all",
+    color: "#252C32",
+  },
+  {
+    id: 2,
+    type: "active",
+    color: "#2FB755",
+  },
+  {
+    id: 1,
+    type: "liquidated",
+    color: "#AAAAAA",
+  },
+];
 export const IndividualStatusTypes = [
   {
     id: 0,
@@ -415,14 +433,14 @@ export const securityPurchageFormSteps = [
   {
     id: 1,
     label: "Facility Details",
-    index: 1
+    index: 1,
   },
   {
     id: 2,
     label: "Accounting Entries",
-    index: 2
-  }
-]
+    index: 2,
+  },
+];
 export const BookInvestmentFormSteps = [
   {
     id: 1,
@@ -663,7 +681,7 @@ export const InvestmentBookingRequestType = {
 export const RequestStatus = {
   0: "Draft",
   1: "In-Review",
-  2: "Approved", 
+  2: "Approved",
   3: "In-Issue",
 };
 
@@ -1310,7 +1328,7 @@ export const StartDateOptions = [
   },
 ];
 
-export const  intervalOptions = [
+export const intervalOptions = [
   {
     id: 1,
     text: "Semi-Anually",
@@ -1331,5 +1349,24 @@ export const  intervalOptions = [
     id: 4,
     text: "Monthly",
     value: 4,
+  },
+];
+
+export const productCategoryOptions = [
+  {
+    id: 1,
+    text: "Bonds",
+    value: 3,
+  },
+
+  {
+    id: 2,
+    text: "Commercial Paper",
+    value: 2,
+  },
+  {
+    id: 3,
+    text: "Treasury Bills",
+    value: 1,
   },
 ];
