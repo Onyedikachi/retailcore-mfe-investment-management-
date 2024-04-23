@@ -21,7 +21,10 @@ export const actionHandler = ({
   setTopUpType,
   setTopUpOpen,
   navigate,
+  tab,
 }) => {
+  console.log("🚀 ~ action:", action)
+  console.log("🚀 ~ tab:", tab);
 
   setAction(action);
   setDetail(items);
@@ -98,7 +101,7 @@ export const actionHandler = ({
     return;
   }
 
-  if (action.toLowerCase() === Actions.TOPUP) {
+  if (action.toLowerCase() === Actions.TOPUP || action.toLowerCase() === Actions.SECURITY_PURCHASE_TOPUP) {
     // setTopUpType("security_purchase_topup");
     setTopUpType("topup");
     setTopUpOpen(true);
@@ -123,7 +126,7 @@ export const actionHandler = ({
   }
   if (action.toLowerCase() === Actions.CONTINUE_REQUEST) {
     if (specificCategory === SpecificCategory.individual) {
-      navigate(`/investment-management/continue/individual?id=${items.id}`);
+      navigate(`/investment-management/continue/${tab}?id=${items.id}`);
       return;
     } else {
       navigate(
@@ -136,7 +139,7 @@ export const actionHandler = ({
   }
   if (action.toLowerCase() === Actions.RESTRUCTURE) {
     navigate(
-      `/investment-management/${Actions.RESTRUCTURE}/individual?id=${items.id}`
+      `/investment-management/${Actions.RESTRUCTURE}/${tab}?id=${items.id}`
     );
     return;
   }
@@ -154,7 +157,7 @@ export const actionHandler = ({
       ? setIndividualDetailOpen(true)
       : specificCategory === SpecificCategory.individual
       ? navigate(
-          `/investment-management/${specificCategory}/process-summary/preview/${
+          `/investment-management/${tab}/process-summary/preview/${
             items.id
           }?process_type=${items.requestType}${
             items.investmentBookingId &&
@@ -177,7 +180,7 @@ export const actionHandler = ({
       ? setIndividualDetailOpen(true)
       : specificCategory === SpecificCategory.individual
       ? navigate(
-          `/investment-management/${specificCategory}/process-summary/verdict/${
+          `/investment-management/${tab}/process-summary/verdict/${
             items.id
           }?process_type=${items.requestType}${
             items.investmentBookingId &&

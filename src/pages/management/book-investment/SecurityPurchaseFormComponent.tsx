@@ -30,6 +30,7 @@ export default ({
               productDetail={productDetail}
               detailLoading={detailLoading}
               preCreateInvestment={preCreateInvestment}
+              preModifyRequest={preModifyRequest}
             />
           ) : (
             <AccountingEntries

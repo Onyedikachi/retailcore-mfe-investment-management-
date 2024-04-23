@@ -220,7 +220,7 @@ export const investmentApi: any = createApi({
     deleteProductRequest: builder.mutation<any, any>({
       query: (data) => {
         return {
-          url: `${urls.REQUESTS}/delete/${data}`,
+          url: `${urls.REQUESTS}/delete/${data.id}`,
           method: "delete",
         };
       },
@@ -544,7 +544,7 @@ export const investmentApi: any = createApi({
     deleteInvestmentRequest: builder.mutation<any, any>({
       query: (data) => {
         return {
-          url: `${urls.INVESTMENT_REQUEST}/delete/${data}`,
+          url: `${data?.investmentType === "security-purchase" ? urls.SECURITY_PURCHASE_REQUEST : urls.INVESTMENT_REQUEST}/delete/${data.id}`,
           method: "delete",
         };
       },

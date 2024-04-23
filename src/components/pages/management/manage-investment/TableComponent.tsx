@@ -495,7 +495,7 @@ export default function TableComponent({
               isOverviewDrillDown
             )
           }
-          placeholder={`Search by customer name${
+          placeholder={`Search by ${tab==="security-purchase"?"issuer":"customer"} name${
             category !== StatusCategoryType.Requests ? "/code" : ""
           }`}
           searchResults={searchResults}
@@ -578,6 +578,7 @@ export default function TableComponent({
         Context={IndividualContext}
         handleRefresh={handleRefresh}
         isOverviewDrillDown={isOverviewDrillDown}
+        tab={tab}
       />
     </section>
   );

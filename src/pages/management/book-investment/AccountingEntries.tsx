@@ -29,7 +29,7 @@ export const onProceed = (
     isDraft: true,
     investmentType: "security-purchase",
   });
-  
+
   setFormData({
     ...formData,
     ...formData.facilityDetailsModel,
@@ -67,7 +67,7 @@ export default ({
   });
 
   const { glClass } = useGetGlClassQuery();
-
+  const values = getValues();
   const [entries, setEntries] = useState(formData?.accountingEntries);
   const [entriesData, setEntriesData] = useState(null);
 
@@ -110,7 +110,7 @@ export default ({
         className="flex flex-col gap-4 px-[30px] py-5"
       >
         <div className="mb-6 flex flex-row gap-[15px]">
-          <div className="flex itemx-center gap-2 w-[300px]">
+          <div className="flex items-center gap-2 w-[300px]">
             {" "}
             <label
               htmlFor="debitLedger"
@@ -123,12 +123,19 @@ export default ({
               </span>
             </label>
           </div>
-          <AccountSelectInput
-            handleEntry={handleEntry}
-            entryValue={entries?.debitLedger}
+
+          <GlInput
+            handleClick={(key, ledgerInfo) => handleEntry(key, ledgerInfo)}
             inputName="debitLedger"
-            placeholder="Search by account number"
-            entryData={entriesData?.debitLedger}
+            defaultValue={values?.debitLedger}
+            register={register}
+            trigger={trigger}
+            errors={errors}
+            clearFields={undefined}
+            placeholder="Type to search and select"
+            formData={formData}
+            accountType={undefined}
+            showImpact={true}
             impact={"debit_impact_on_balance"}
             currencyCode={formData?.facilityDetailsModel?.currencyCode}
           />
@@ -153,12 +160,18 @@ export default ({
             </label>
           </div>
 
-          <AccountSelectInput
-            handleEntry={handleEntry}
-            entryValue={entries?.creditLedger}
+          <GlInput
+            handleClick={(key, ledgerInfo) => handleEntry(key, ledgerInfo)}
             inputName="creditLedger"
-            placeholder="Search by account number"
-            entryData={entriesData?.creditLedger}
+            defaultValue={values?.creditLedger}
+            register={register}
+            trigger={trigger}
+            errors={errors}
+            clearFields={undefined}
+            placeholder="Type to search and select"
+            formData={formData}
+            accountType={undefined}
+            showImpact={true}
             impact={"credit_impact_on_balance"}
             currencyCode={formData?.facilityDetailsModel?.currencyCode}
           />

@@ -615,6 +615,7 @@ export default function TableComponent<TableProps>({
   Context,
   handleRefresh = () => {},
   isOverviewDrillDown = false,
+  tab = "",
 }) {
   const { role, permissions, userId, isChecker, currencies } =
     useContext(AppContext);
@@ -649,6 +650,7 @@ export default function TableComponent<TableProps>({
   const [failedSubText, setFailedSubtext] = useState("");
   const [failedText, setFailedText] = useState("");
   const [productDetails, setProductDetails] = useState(null);
+
 
   const resetModals = () => {
     setFailed(false);
@@ -694,6 +696,7 @@ export default function TableComponent<TableProps>({
       setIndividualDetailOpen,
       navigate,
       selected,
+      tab
     });
   };
 
@@ -800,6 +803,7 @@ export default function TableComponent<TableProps>({
     id:
       detail?.investmentProductId ||
       (detail?.metaInfo && JSON.parse(detail?.metaInfo)?.investmentProductId),
+      investmentType:tab
   });
 
   const [
@@ -841,6 +845,7 @@ export default function TableComponent<TableProps>({
       setLiquidationType,
       setTopUpType,
       setTopUpOpen,
+      tab
     });
 
   useEffect(() => {
