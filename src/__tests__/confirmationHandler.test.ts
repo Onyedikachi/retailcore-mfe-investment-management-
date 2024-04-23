@@ -268,7 +268,7 @@ describe("confirmationHandler", () => {
     expect(mockedErrorToast).not.toHaveBeenCalled();
     expect(navigate).toHaveBeenCalledWith(
       `/product-factory/investment/${encodeURIComponent(
-        "term deposit"
+        "term-deposit"
       )}/modify/?id=${detail.id}&filter=${selected.value}`
     );
   });
@@ -316,7 +316,7 @@ describe("confirmationHandler", () => {
     expect(mockedErrorToast).not.toHaveBeenCalled();
     // expect(navigate).toHaveBeenCalledWith(
     //   `/product-factory/investment/${encodeURIComponent(
-    //     "term deposit"
+    //     "term-deposit"
     //   )}/withdraw_modify/?id=${detail.id}&filter=${selected.value}`
     // );
   });

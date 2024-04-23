@@ -72,7 +72,7 @@ export function handleNavigations(
 
 export function handleNewCreate({ pathname }) {
   if (!pathname.includes("management")) {
-    window.location.href = "/product-factory/investment/term deposit/create";
+    window.location.href = "/product-factory/investment/term-deposit/create";
     return;
   }
   if (pathname.includes("management") && pathname.includes("individual")) {
