@@ -142,14 +142,13 @@ export default function TopUp({
   }, [detail, bookingDetailsIsSuccess]);
 
   useEffect(() => {
-    if (
-      bookingDetails?.data &&
-      productDetails
-    ) {
+    if (bookingDetails?.data && productDetails) {
       const payload = {
         principal: bookingDetails?.data?.facilityDetailsModel?.principal,
-        [type === "topup" ? 'amounttoTopUp' : 'amounttoWithdraw']: parseInt(values?.amounttoTopUp),
-        [type === "topup" ? 'topUpUnit' : "withdrawalUnit"]: selection,
+        [type === "topup" ? "amounttoTopUp" : "amounttoWithdraw"]: parseInt(
+          values?.amounttoTopUp
+        ),
+        [type === "topup" ? "topUpUnit" : "withdrawalUnit"]: selection,
         investmentBookingId: !detail?.metaInfo
           ? detail?.id
           : detail?.investmentBookingId,
@@ -189,7 +188,7 @@ export default function TopUp({
 
   useEffect(() => {
     trigger("amounttoTopUp");
-  }, [selection])
+  }, [selection]);
 
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen} data-testid="Layout">
@@ -199,8 +198,9 @@ export default function TopUp({
             onProceed(
               {
                 ...d,
-                [type === "topup" ? 'amounttoTopUp' : 'amounttoWithdraw']: parseInt(values?.amounttoTopUp),
-                [type === "topup" ? 'topUpUnit' : "withdrawalUnit"]: selection,
+                [type === "topup" ? "amounttoTopUp" : "amounttoWithdraw"]:
+                  parseInt(values?.amounttoTopUp),
+                [type === "topup" ? "topUpUnit" : "withdrawalUnit"]: selection,
                 id: detail?.id,
               },
               onConfirm,
@@ -214,6 +214,8 @@ export default function TopUp({
               <h3 className="text-[#747373] font-bold text-xl uppercase">
                 {type === "topup"
                   ? "INVESTMENT TOP UP REQUEST"
+                  : type === "security_purchase_topup"
+                  ? "security PURCHASE Top up Request"
                   : "principal withdrawal request"}
               </h3>
               <button
@@ -241,7 +243,11 @@ export default function TopUp({
                     </label>
 
                     <div className="relative flex flex-1 items-start max-w-[642px] mb-[2px] py-2 px-3 bg-[#EEEEEE]">
-                      {currencyFormatter(parseInt(bookingDetails?.data?.facilityDetailsModel?.principal))}
+                      {currencyFormatter(
+                        parseInt(
+                          bookingDetails?.data?.facilityDetailsModel?.principal
+                        )
+                      )}
                     </div>
                   </div>
                 )}
@@ -250,7 +256,8 @@ export default function TopUp({
                     htmlFor="reason"
                     className="flex items-center text-[#333333] mb-2 gap-x-1"
                   >
-                    Amount to {type}{" "}
+                    Amount to{" "}
+                    {type === "security_purchase_topup" ? "top up" : type}{" "}
                     <span className="flex">
                       {" "}
                       <RedDot />
@@ -275,13 +282,14 @@ export default function TopUp({
                     <div className="overflow-hidden absolute right-0 text-[10px] text-[#8F8F8F] flex items-center   rounded-full shadow-[0px_0px_1px_0px_rgba(26,32,36,0.32),0px_1px_2px_0px_rgba(91,104,113,0.32)] border-[#E5E9EB]">
                       <span
                         role="button"
-                        onKeyDown={() => { }}
+                        onKeyDown={() => {}}
                         tabIndex={0}
                         onClick={() => {
                           setSelection(0);
                         }}
-                        className={`w-[55px] border-r border-[#E5E9EB] py-1 px-2 ${selection === 0 ? "bg-[#FFE9E9] " : ""
-                          }`}
+                        className={`w-[55px] border-r border-[#E5E9EB] py-1 px-2 ${
+                          selection === 0 ? "bg-[#FFE9E9] " : ""
+                        }`}
                       >
                         {" "}
                         NGN
@@ -290,12 +298,13 @@ export default function TopUp({
                       <span
                         role="button"
                         tabIndex={0}
-                        onKeyDown={() => { }}
+                        onKeyDown={() => {}}
                         onClick={() => {
                           setSelection(1);
                         }}
-                        className={`w-[55px] py-1 px-2 ${selection === 1 ? "bg-[#FFE9E9] " : ""
-                          }`}
+                        className={`w-[55px] py-1 px-2 ${
+                          selection === 1 ? "bg-[#FFE9E9] " : ""
+                        }`}
                       >
                         {" "}
                         Percent
@@ -312,6 +321,8 @@ export default function TopUp({
                     Provide justification for{" "}
                     {type === "topup"
                       ? "investment topup"
+                      : type === "security_purchase_topup"
+                      ? "security purchase top up"
                       : "principal withdrawal"}
                     <span className="flex">
                       {" "}
@@ -363,50 +374,52 @@ export default function TopUp({
                   />
                 </div>
 
-                <div className="mb-10 flex items-center gap-x-2">
-                  <div className="flex items-center gap-2 w-[350px]">
-                    <label
-                      htmlFor="upload"
-                      className="text-[#333333] mb-2 flex items-center"
-                    >
-                      Notify customer of{" "}
-                      {type === "topup"
-                        ? "investment topup"
-                        : "principal withdrawal"}
-                      <span className="flex">
-                        {" "}
-                        <RedDot />
-                      </span>
-                    </label>
-                    <FormToolTip tip="Hello" />
-                  </div>
-                  <Switch
-                    checked={isChecked}
-                    onChange={(data) => setChecked(data)}
-                    className={classNames(
-                      isChecked ? "bg-[#CF2A2A]" : "bg-transparent",
-                      "border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
-                    )}
-                  >
-                    <span
-                      data-testid="switch"
-                      aria-hidden="true"
+                {type !== "security_purchase_topup" && (
+                  <div className="mb-10 flex items-center gap-x-2">
+                    <div className="flex items-center gap-2 w-[350px]">
+                      <label
+                        htmlFor="upload"
+                        className="text-[#333333] mb-2 flex items-center"
+                      >
+                        Notify customer of{" "}
+                        {type === "topup"
+                          ? "investment topup"
+                          : "principal withdrawal"}
+                        <span className="flex">
+                          {" "}
+                          <RedDot />
+                        </span>
+                      </label>
+                      <FormToolTip tip="Hello" />
+                    </div>
+                    <Switch
+                      checked={isChecked}
+                      onChange={(data) => setChecked(data)}
                       className={classNames(
-                        isChecked
-                          ? "translate-x-[14px] bg-white"
-                          : "translate-x-0  bg-white ",
-                        "pointer-events-none inline-block h-[14px] w-[14px] transform rounded-full border border-[#CF2A2A] shadow ring-0 transition duration-200 ease-in-out"
+                        isChecked ? "bg-[#CF2A2A]" : "bg-transparent",
+                        "border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
+                      )}
+                    >
+                      <span
+                        data-testid="switch"
+                        aria-hidden="true"
+                        className={classNames(
+                          isChecked
+                            ? "translate-x-[14px] bg-white"
+                            : "translate-x-0  bg-white ",
+                          "pointer-events-none inline-block h-[14px] w-[14px] transform rounded-full border border-[#CF2A2A] shadow ring-0 transition duration-200 ease-in-out"
+                        )}
+                      />
+                    </Switch>
+                    <ErrorMessage
+                      errors={errors}
+                      name="notify"
+                      render={({ message }) => (
+                        <p className="text-red-600 text-xs">{message}</p>
                       )}
                     />
-                  </Switch>
-                  <ErrorMessage
-                    errors={errors}
-                    name="notify"
-                    render={({ message }) => (
-                      <p className="text-red-600 text-xs">{message}</p>
-                    )}
-                  />
-                </div>
+                  </div>
+                )}
 
                 {type === "withdraw" && (
                   <div className="mb-10 rounded-[10px] border border-[#EBEBEB] bg-[#AAAAAA12] py-6 px-5">
@@ -441,6 +454,8 @@ export default function TopUp({
                   <span className="text-sm text-[#747373] capitalize">
                     {type === "topup"
                       ? "investment topup"
+                      : type === "security_purchase_topup"
+                      ? "Security Purchase Top UP"
                       : "principal withdrawal"}{" "}
                     value:{" "}
                   </span>

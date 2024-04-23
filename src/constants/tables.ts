@@ -544,7 +544,7 @@ export const SecurityPurchaseDropDownOptions: any = {
       id: "",
       text: "Top Up Security",
       icon: "BiSolidEdit",
-      key: "investment topup",
+      key: "security purchase topup",
     },
 
   ],
