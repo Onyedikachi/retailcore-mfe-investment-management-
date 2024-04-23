@@ -601,6 +601,16 @@ export const investmentApi: any = createApi({
         };
       },
     }),
+    topUpCalculation: builder.mutation({
+      query: (data) => {
+        return {
+          ... data?.amounttoTopUp && {url: `${urls.INVESTMENT}/topup-amount`},
+          ... data?.amounttoWithdraw && {url: `${urls.INVESTMENT}/withdrawal-amount`},
+          method: "post",
+          body: data,
+        };
+      },
+    }),
 
     editEarlyLiquidate: builder.mutation<{ id: string }, { id: string }>({
       query: (data) => {
@@ -620,31 +630,21 @@ export const investmentApi: any = createApi({
         };
       },
     }),
-    getValues: builder.query<any, any>({
-      query: () => {
+    topUpInvestment: builder.mutation<{ id: string }, { id: string }>({
+      query: (data) => {
         return {
-          url: `/SecurityPurchaseRequest`,
-          method: "post",
-          body: cleanObject({
-            "filter_by": "",
-            // "status_In": [
-            //   1
-            // ],
-            // "requestType_In": [
-            //   1
-            // ],
-            // "initiator_In": [
-            //   "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-            // ],
-            // "approvers_In": [
-            //   "string"
-            // ],
-            // "search": "string",
-            // "start_Date": "2024-04-21T19:23:10.028Z",
-            // "end_Date": "2024-04-21T19:23:10.028Z",
-            // "page": 2147483647,
-            // "page_Size": 2147483647
-          }),
+          url: `${urls.INVESTMENT_TOPUP}`,
+          method: "put",
+          body: data,
+        };
+      },
+    }),
+    withdrawPrincipal: builder.mutation<{ id: string }, { id: string }>({
+      query: (data) => {
+        return {
+          url: `${urls.WITHDRAW_PRINCIPAL}`,
+          method: "put",
+          body: data,
         };
       },
     }),
@@ -652,7 +652,8 @@ export const investmentApi: any = createApi({
 });
 
 export const {
-  useGetValuesQuery,
+  useTopUpInvestmentMutation,
+  useWithdrawPrincipalMutation,
   useCreateProductMutation,
   useValidateNameMutation,
   useGetProductQuery,
@@ -697,6 +698,7 @@ export const {
   useEarlyLiquidateMutation,
   usePartLiquidateMutation,
   useLiquidationCalculationMutation,
+  useTopUpCalculationMutation,
   useEditEarlyLiquidateMutation,
   useEditPartLiquidateMutation,
   useGetInvestmentCertificateQuery,

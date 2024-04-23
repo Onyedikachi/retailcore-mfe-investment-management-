@@ -968,7 +968,7 @@ jest.mock("../../../../../api", () => ({
                                 "tax_id": "8942aa6d-0d49-4c55-9467-440fa8b830eb",
                                 "gl_class": "Liability",
                                 "ledger_id": "6de36ba1-b783-4971-8aa3-e0748ce09076",
-                                "ledger_name": "Sterling term deposit",
+                                "ledger_name": "Sterling term-deposit",
                                 "ledger_code": "LIAFDLPROD11000M033",
                                 "balance_impact": "High",
                                 "allocation": "100",

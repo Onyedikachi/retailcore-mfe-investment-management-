@@ -204,7 +204,7 @@ export default function ProductDetail({
 
                   <a
                     href={`/product-factory/investment/${encodeURIComponent(
-                      "term deposit"
+                      "term-deposit"
                     )}/process-summary/preview/${
                       productData?.data.id
                     }?category=product`}

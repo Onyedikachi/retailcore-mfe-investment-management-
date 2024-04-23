@@ -490,7 +490,7 @@ describe("actionHandler", () => {
     // Assert
     expect(navigate).toHaveBeenCalledWith(
       `/product-factory/investment/${encodeURIComponent(
-        "term deposit"
+        "term-deposit"
       )}/continue/?id=${items.id}&type=draft&filter=${selected.value}`
     );
   });
@@ -532,7 +532,7 @@ describe("actionHandler", () => {
     // Assert
     expect(navigate).toHaveBeenCalledWith(
       `/product-factory/investment/${encodeURIComponent(
-        "term deposit"
+        "term-deposit"
       )}/process-summary/preview/${items.id}?category=request&filter=${
         selected.value
       }`
@@ -703,7 +703,7 @@ describe("actionHandler", () => {
     expect(navigate).toHaveBeenCalled();
     expect(navigate).toHaveBeenCalledWith(
       `/product-factory/investment/${encodeURIComponent(
-        "term deposit"
+        "term-deposit"
       )}/continue/?id=${items.id}&type=draft&filter=${selected.value}`
     );
   });
@@ -876,7 +876,7 @@ describe("actionHandler", () => {
     expect(setDetailOpen).not.toHaveBeenCalled();
     expect(navigate).toHaveBeenCalledWith(
       `/product-factory/investment/${encodeURIComponent(
-        "term deposit"
+        "term-deposit"
       )}/process-summary/verdict/${items.id}?category=request&filter=${
         selected.value
       }`

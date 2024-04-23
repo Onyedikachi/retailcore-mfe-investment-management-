@@ -122,7 +122,7 @@ export const actionHandler = ({
     } else {
       navigate(
         `/product-factory/investment/${encodeURIComponent(
-          "term deposit"
+          "term-deposit"
         )}/continue/?id=${items.id}&type=draft&filter=${selected.value}`
       );
       return;
@@ -157,7 +157,7 @@ export const actionHandler = ({
         )
       : navigate(
           `/product-factory/investment/${encodeURIComponent(
-            "term deposit"
+            "term-deposit"
           )}/process-summary/preview/${items.id}?category=request&filter=${
             selected.value
           }`
@@ -180,7 +180,7 @@ export const actionHandler = ({
         )
       : navigate(
           `/product-factory/investment/${encodeURIComponent(
-            "term deposit"
+            "term-deposit"
           )}/process-summary/verdict/${items.id}?category=request&filter=${
             selected.value
           }`

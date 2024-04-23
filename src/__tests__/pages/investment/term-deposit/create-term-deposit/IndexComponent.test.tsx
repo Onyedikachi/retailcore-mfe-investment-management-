@@ -646,7 +646,7 @@ describe("handlePreviousData", () => {
           // interest computation method data
         },
         TermDepositLiabilityAccount: {
-          // term deposit liability account data
+          // term-deposit liability account data
         },
         InterestAccrualAccount: {
           // interest accrual account data
@@ -731,7 +731,7 @@ describe("handlePreviousData", () => {
           // interest computation method data
         },
         TermDepositLiabilityAccount: {
-          // term deposit liability account data
+          // term-deposit liability account data
         },
         InterestAccrualAccount: {
           // interest accrual account data

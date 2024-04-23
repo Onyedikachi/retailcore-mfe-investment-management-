@@ -45,6 +45,7 @@ export default function MessagesComponent({
   isTopUp,
   setTopUpOpen,
   topUpType,
+  handleTopUp = (data, type, metaInfo) => {},
 
   handleLiquidation = (data, type, metaInfo) => {},
   liquidationLoading,
@@ -128,7 +129,7 @@ export default function MessagesComponent({
           isOpen={isTopUp}
           setIsOpen={setTopUpOpen}
           onConfirm={(data, type, metaInfo) =>
-            handleLiquidation(data, type, metaInfo)
+            handleTopUp(data, type, metaInfo)
           }
           detail={detail}
           type={topUpType}
