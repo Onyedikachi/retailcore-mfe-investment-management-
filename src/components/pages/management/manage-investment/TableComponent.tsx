@@ -536,7 +536,6 @@ export default function TableComponent({
           </button>
         </div>
       </div>
-
       <Table
         headers={
           category === StatusCategoryType?.Investments || isOverviewDrillDown

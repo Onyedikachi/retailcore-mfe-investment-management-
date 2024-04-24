@@ -48,6 +48,7 @@ export default function Summary() {
     isError,
   } = useGetInvestmentDetailQuery({
     id: process_type === "booking" ? productId : booking_id || id,
+    investmentType:type
   });
 
   const { data: productDetail } = useGetProductDetailQuery(
@@ -56,6 +57,7 @@ export default function Summary() {
         investmentData?.data?.facilityDetailsModel?.investmentProductId ||
         detail?.facilityDetailsModel?.investmentProductId ||
         product_id,
+        investmentType:type
     },
     {
       skip:
@@ -68,14 +70,14 @@ export default function Summary() {
   // Fetch activity data based on the category
   const { data: activityData, isLoading: activityIsLoading } =
     useGetInvestmentActivityLogQuery(
-      { bookingId: id },
+      { bookingId: id, investmentType:type },
       { skip: category === "request" }
     );
 
   // Fetch activity request data based on the category
   const { data: activityRequestData, isLoading: activityRequestIsLoading } =
     useGetInvestmentRequestActivityLogQuery(
-      { bookingrequestId: id },
+      { bookingrequestId: id, investmentType:type },
       { skip: !id }
     );
 
@@ -85,6 +87,7 @@ export default function Summary() {
     isSuccess: requestDetailIsSuccess,
   } = useGetInvestmentRequestDetailQuery({
     id: request_id || id,
+    investmentType:type
   });
 
   useEffect(() => {
@@ -105,7 +108,7 @@ export default function Summary() {
     {
       id: 2,
       title: "Booking",
-      url: `/investment-management/${type}`,
+      url: `/investment-management/${type.replace("-", " ")}`,
     },
 
     {
@@ -121,7 +124,7 @@ export default function Summary() {
           Process summary
         </h1>
         <Breadcrumbs
-          links={links.map((i) => (i.id === 2 ? { ...i, title: type } : i))}
+          links={links.map((i) => (i.id === 2 ? { ...i, title: type.replace("-", " ") } : i))}
         />
       </div>{" "}
       {type !== "certificate" ? (
@@ -148,8 +151,8 @@ export default function Summary() {
               <Container>
                 {type === "security-purchase" ? (
                   <SecurityPurchaseDetail
-                    formData={productDetail}
-                    productDetail={productDetail}
+                    formData={investmentData?.data}
+                    productDetail={investmentData?.data}
                     previousData={null}
                   />
                 ) : (
