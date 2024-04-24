@@ -22,6 +22,7 @@ interface MinMaxProps {
   max?: number;
   min?: number;
   disablegroupseparators?: boolean;
+  percentSymbol?: boolean;
 }
 export default function MinMaxInput({
   label,

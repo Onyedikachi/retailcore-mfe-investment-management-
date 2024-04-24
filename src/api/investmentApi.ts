@@ -162,7 +162,10 @@ export const investmentApi: any = createApi({
       query: (data) => {
         const { investmentType } = data;
         return {
-          url: investmentType === "security-purchase" ? urls.SECURITY_PURCHASE_CREATE : urls.INVESTMENT_CREATE,
+          url:
+            investmentType === "security-purchase"
+              ? urls.SECURITY_PURCHASE_CREATE
+              : urls.INVESTMENT_CREATE,
           method: "post",
           body: data,
         };
@@ -182,7 +185,11 @@ export const investmentApi: any = createApi({
       query: (data) => {
         const { investmentType } = data;
         return {
-          url: `${investmentType === "security-purchase" ? urls.SECURITY_PURCHASE :urls.INVESTMENT}/edit`,
+          url: `${
+            investmentType === "security-purchase"
+              ? urls.SECURITY_PURCHASE
+              : urls.INVESTMENT
+          }/edit`,
           method: "put",
           body: data,
         };
@@ -199,9 +206,13 @@ export const investmentApi: any = createApi({
     }),
     modifyInvestmentRequest: builder.mutation<any, any>({
       query: (data) => {
-        const {investmentType} = data;
+        const { investmentType } = data;
         return {
-          url: `${investmentType === "security-purchase" ? urls.SECURITY_PURCHASE_REQUEST : urls.INVESTMENT_REQUEST}/edit/${data?.id}`,
+          url: `${
+            investmentType === "security-purchase"
+              ? urls.SECURITY_PURCHASE_REQUEST
+              : urls.INVESTMENT_REQUEST
+          }/edit/${data?.id}`,
           method: "put",
           body: data,
         };
@@ -426,22 +437,20 @@ export const investmentApi: any = createApi({
         };
       },
     }),
-    calcTotalConsideration: builder.mutation<
-    any,any
-  >({
-    query: (params) => {
-      return {
-        url:`${urls.SECURITY_PURCHASE}/calc-totalconsideration`,
-        method: "post",
-        body: cleanObject(params),
-      };
-    },
-  }),
+    calcTotalConsideration: builder.mutation<any, any>({
+      query: (params) => {
+        return {
+          url: `${urls.SECURITY_PURCHASE}/calc-totalconsideration`,
+          method: "post",
+          body: cleanObject(params),
+        };
+      },
+    }),
     getInvestmentActivityLog: builder.query<any, any>({
       query: (params) => {
         return {
           url: `${
-            params?.type === "security-purchase"
+            params?.investmentType === "security-purchase"
               ? urls.SECURITY_PURCHASE_ACTIVITY_LOG
               : urls.INVESTMENT_ACTIVITY_LOG
           }?${new URLSearchParams(cleanObject(params))}`,
@@ -454,7 +463,7 @@ export const investmentApi: any = createApi({
       query: (params) => {
         return {
           url: `${
-            params?.type === "security-purchase"
+            params?.investmentType === "security-purchase"
               ? urls.SECURITY_PURCHASE_REQUEST_ACTIVITY_LOG
               : urls.INVESTMENT_REQUEST_ACTIVITY_LOG
           }?${new URLSearchParams(cleanObject(params))}`,
@@ -477,9 +486,9 @@ export const investmentApi: any = createApi({
     getSecurityPurchaseRequestActivityLog: builder.query<any, any>({
       query: (params) => {
         return {
-          url: `${urls.SECURITY_PURCHASE_REQUEST_ACTIVITY_LOG}?${new URLSearchParams(
-            cleanObject(params)
-          )}`,
+          url: `${
+            urls.SECURITY_PURCHASE_REQUEST_ACTIVITY_LOG
+          }?${new URLSearchParams(cleanObject(params))}`,
           method: "get",
           params: cleanObject(params),
         };
@@ -526,7 +535,10 @@ export const investmentApi: any = createApi({
       query: (data) => {
         if (!data.id) return;
         return {
-          url: data?.investmentType === "security-purchase" ? `SecurityPurchase/details?id=${data.id}` : `${urls.INVESTMENT}/${data.id}`,
+          url:
+            data?.investmentType === "security-purchase"
+              ? `SecurityPurchase/details?id=${data.id}`
+              : `${urls.INVESTMENT}/${data.id}`,
           method: "get",
         };
       },
@@ -536,7 +548,11 @@ export const investmentApi: any = createApi({
       query: (data) => {
         if (!data.id) return;
         return {
-          url: `${data?.investmentType === "security-purchase" ? urls.SECURITY_PURCHASE_REQUEST : urls.INVESTMENT_REQUEST}/${data.id}`,
+          url: `${
+            data?.investmentType === "security-purchase"
+              ? urls.SECURITY_PURCHASE_REQUEST
+              : urls.INVESTMENT_REQUEST
+          }/${data.id}`,
           method: "get",
         };
       },
@@ -544,7 +560,11 @@ export const investmentApi: any = createApi({
     deleteInvestmentRequest: builder.mutation<any, any>({
       query: (data) => {
         return {
-          url: `${data?.investmentType === "security-purchase" ? urls.SECURITY_PURCHASE_REQUEST : urls.INVESTMENT_REQUEST}/delete/${data.id}`,
+          url: `${
+            data?.investmentType === "security-purchase"
+              ? urls.SECURITY_PURCHASE_REQUEST
+              : urls.INVESTMENT_REQUEST
+          }/delete/${data.id}`,
           method: "delete",
         };
       },
@@ -557,18 +577,32 @@ export const investmentApi: any = createApi({
         };
       },
     }),
-    approveInvestment: builder.mutation<{ id: string }, { id: string }>({
+    approveInvestment: builder.mutation<
+      { id: string; investmentType: string },
+      { id: string; investmentType: string }
+    >({
       query: (data) => {
         return {
-          url: `${urls.INVESTMENT_REQUEST}/approve/${data.id}`,
+          url: `${
+            data?.investmentType === "security-purchase"
+              ? urls.SECURITY_PURCHASE_REQUEST
+              : urls.INVESTMENT_REQUEST
+          }/approve/${data.id}`,
           method: "put",
         };
       },
     }),
-    rejectInvestment: builder.mutation<{ id: string }, { id: string }>({
+    rejectInvestment: builder.mutation<
+      { id: string; investmentType: string },
+      { id: string; investmentType: string }
+    >({
       query: (data) => {
         return {
-          url: `${urls.INVESTMENT_REQUEST}/reject/${data.id}`,
+          url: `${
+            data?.investmentType === "security-purchase"
+              ? urls.SECURITY_PURCHASE_REQUEST
+              : urls.INVESTMENT_REQUEST
+          }/reject/${data.id}`,
           method: "put",
           body: data,
         };
@@ -604,8 +638,12 @@ export const investmentApi: any = createApi({
     topUpCalculation: builder.mutation({
       query: (data) => {
         return {
-          ... data?.amounttoTopUp && {url: `${urls.INVESTMENT}/topup-amount`},
-          ... data?.amounttoWithdraw && {url: `${urls.INVESTMENT}/withdrawal-amount`},
+          ...(data?.amounttoTopUp && {
+            url: `${urls.INVESTMENT}/topup-amount`,
+          }),
+          ...(data?.amounttoWithdraw && {
+            url: `${urls.INVESTMENT}/withdrawal-amount`,
+          }),
           method: "post",
           body: data,
         };
@@ -702,5 +740,5 @@ export const {
   useEditEarlyLiquidateMutation,
   useEditPartLiquidateMutation,
   useGetInvestmentCertificateQuery,
-  useCalcTotalConsiderationMutation
+  useCalcTotalConsiderationMutation,
 } = investmentApi;

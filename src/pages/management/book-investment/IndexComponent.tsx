@@ -151,7 +151,7 @@ export default function IndexComponent() {
             description: "",
             dealDate: null,
             maturityDate: null,
-            currencyCode: defaultCurrency?.abbreviation,
+            currencyCode: defaultCurrency?.abbreviation || "NGN",
             discountRate: "",
             perAmount: "",
             faceValue: "",

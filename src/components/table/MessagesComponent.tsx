@@ -168,6 +168,7 @@ export default function MessagesComponent({
           setIsOpen={setIndividualDetailOpen}
           handleClick={handleAction}
           detail={detail}
+          setTopUpOpen={setTopUpOpen}
           // setReason={() => {}}
         />
       )}
