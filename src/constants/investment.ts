@@ -590,6 +590,7 @@ export const daysOptions = [
 export const CustomerCategory = {
   0: "Individual",
   1: "Corporate",
+  2: "security-purchase"
 };
 export const CustomerCategoryType = {
   individual: 0,
@@ -641,9 +642,9 @@ export const VaryOptions = [
 ];
 
 export const InterestComputationMethod = {
-  0: "E360",
-  1: "Actual360",
-  2: "Actual365",
+  0: "Actual/Actual",
+  1: "Actual/360",
+  2: "Actual/365",
 };
 
 export const RequestType = {

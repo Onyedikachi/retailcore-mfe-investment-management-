@@ -57,7 +57,7 @@ export default function BookingDetail({
       <div className="grid gap-y-[56px]">
         <div className="flex flex-col">
           <h4 className="text-[#636363] text-[16px] font-medium mb-[27px]">
-            Customer information
+            Customer information 
           </h4>
           <div className="grid grid-cols-1 gap-[25px] px-12">
             <div className=" flex gap-[54px]">
