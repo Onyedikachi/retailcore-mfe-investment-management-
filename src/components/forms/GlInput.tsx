@@ -28,7 +28,7 @@ const LedgerItem = ({
       onKeyDown={() => {}}
       onClick={() => {
         handleClick(inputName, menu);
-        setQuery(menu.accountName);
+        setQuery(menu.accountNo);
         setLedger(menu);
         setOpen(false);
         trigger(inputName);
@@ -55,6 +55,7 @@ export default function EntriesAndEventsSearchResults({
   accountType,
   showImpact = false,
   impact = "",
+  currencyCode = "NGN",
 }: any) {
   const [query, setQuery] = useState("");
   const [isOpen, setOpen] = useState(false);
@@ -72,19 +73,15 @@ export default function EntriesAndEventsSearchResults({
     isSuccess: ledgerIsSuccess,
     isError: ledgerIsError,
     refetch,
-  } = useGetAccountsQuery(
-    {
-      Q: query,
-      AccountType: [classId?.toUpperCase()],
-      currencyCode: formData?.productInfo?.currencyCode,
-      isAccountNumber: true,
-      AccountCategory: 1,
-    },
-    { skip: !classId }
-  );
+  } = useGetAccountsQuery({
+    Q: query,
+    AccountType: classId ? [classId?.toUpperCase()] : null,
+    currencyCode: currencyCode,
+    isAccountNumber: true,
+    AccountCategory: 1,
+  });
   useEffect(() => {
     if (glClass && ledger) {
-      console.log("abeg", ledger?.accountType?.toLowerCase());
       ledger?.accountType?.toLowerCase() === "assets"
         ? setSelectedLedgerClass(
             glClass.find((i) => i.name?.toLowerCase() === "asset")
@@ -97,9 +94,6 @@ export default function EntriesAndEventsSearchResults({
           );
     }
   }, [glClass, ledger]);
-  useEffect(() => {
-    console.log(query);
-  }, [query]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -121,18 +115,19 @@ export default function EntriesAndEventsSearchResults({
   useEffect(() => {
     if (ledgerIsSuccess) {
       setLedgers(ledgerData?.value?.items);
+      const singleData = ledgerData?.value?.items.find(
+        (i) => i.accountNo === defaultValue
+      );
+      singleData && setLedger(singleData);
     }
-  }, [ledgerIsSuccess, ledgerIsError, ledgerIsLoading]);
+  }, [ledgerIsSuccess, ledgerData, defaultValue]);
+
   useEffect(() => {
     if (classId) {
       refetch();
     }
   }, [classId]);
 
-  const togglemenu = (menuIndex) => {
-    //get the index of the menu on click
-    setMenus(menuIndex);
-  };
   useEffect(() => {
     if (defaultValue) {
       setQuery(defaultValue);
@@ -143,9 +138,15 @@ export default function EntriesAndEventsSearchResults({
     clearFields && setQuery("");
   }, [clearFields]);
 
+  // useEffect(() => {
+  //   if(!query?.length){
+  //     setLedger(null)
+  //   }
+  // }, [query]);
+
   return (
     <OutsideClickHandler onOutsideClick={() => closeDropdown(setOpen)}>
-      <div className="w-full" data-testid="gli">
+      <div className="w-full min-w-[350px]" data-testid="gli">
         <div className="relative bg-[#fff] w-full">
           <div
             onKeyDown={() => {}}
@@ -164,14 +165,16 @@ export default function EntriesAndEventsSearchResults({
               className="w-full  ring-0 outline-none bg-transparent"
               onChange={(event) => setQuery(event.target.value)}
               value={query}
+              type="search"
             />
-          </div>
-          {showImpact && accountType && (
-            <div className="flex gap-x-4 text-sm mb-1  mt-[10px]">
+          </div>{" "}
+        
+          {showImpact && ledger && (
+            <div className="flex gap-x-4 text-sm mb-1  mt-[10px] items-center">
               <span className="flex gap-x-1 items-center">
                 <span>GL Class:</span>
                 <span className="bg-[#6363632B] border-[#636363] border font-medium rounded-full text-xs px-[10px] py-[2px] uppercase">
-                  {accountType}
+                  {ledger?.accountType?.toUpperCase()}
                 </span>
               </span>
               <span>|</span>
@@ -229,10 +232,14 @@ export default function EntriesAndEventsSearchResults({
               {classId && (
                 <div className="max-h-[233px] overflow-y-auto flex flex-col gap-4 py-2 pr-2">
                   {ledgers
-                    ?.filter((i) =>
-                      i.accountName
-                        ?.toLowerCase()
-                        .includes(query?.toLowerCase())
+                    ?.filter(
+                      (i) =>
+                        i.accountName
+                          ?.toLowerCase()
+                          .includes(query?.toLowerCase()) ||
+                        i.accountNo
+                          ?.toLowerCase()
+                          .includes(query?.toLowerCase())
                     )
                     ?.map((menu, index) => (
                       <LedgerItem

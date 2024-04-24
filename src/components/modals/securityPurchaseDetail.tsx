@@ -19,6 +19,7 @@ import {
 import { AppContext } from "@app/utils";
 import PricingConfigurationComponent from "./PricingConfigurationComponent";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
+import { BiSolidEdit } from "react-icons/bi";
 
 interface Props {
   isOpen: boolean;
@@ -28,7 +29,7 @@ interface Props {
   detail: any;
 }
 
-export const BookingDetailLayout = ({
+export const SecurityPurchaseDetailLayout = ({
   detail,
   isOpen,
   setIsOpen,
@@ -40,7 +41,6 @@ export const BookingDetailLayout = ({
   setOpen,
   handleClick,
 }) => {
-
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
       <div
@@ -82,7 +82,7 @@ export const BookingDetailLayout = ({
                 <div className="p-6 flex flex-col gap-y-[35px] max-h-[463px] overflow-y-auto">
                   <div>
                     <span className="font-bold block mb-[15px]">
-                      Customer/ Account Number
+                      Issuer/ ID
                     </span>
                     <span className="font-normal block uppercase">
                       {`${investmentData?.data?.customerBookingInfoModel?.customerName}/ ${investmentData?.data?.customerBookingInfoModel?.customerAccount}`}
@@ -100,7 +100,9 @@ export const BookingDetailLayout = ({
                     </span>
                   </div>
                   <div>
-                    <span className="font-bold block mb-[15px]">Principal</span>
+                    <span className="font-bold block mb-[15px]">
+                      Consideration
+                    </span>
                     <span
                       data-testid="principal-value"
                       className="font-normal block"
@@ -108,7 +110,7 @@ export const BookingDetailLayout = ({
                       {detail?.principal}{" "}
                     </span>
                   </div>
-          
+
                   {detail?.investmentBookingStatus === 2 && (
                     <div>
                       <span className="font-bold block mb-[15px]">
@@ -125,7 +127,7 @@ export const BookingDetailLayout = ({
 
                   <div>
                     <span className="font-bold block mb-[15px]">
-                      Value at Maturity
+                      Face Value
                     </span>
                     <span className="font-normal block">
                       {currencyFormatter(
@@ -137,7 +139,7 @@ export const BookingDetailLayout = ({
 
                   <div>
                     <span className="font-bold block mb-[15px]">
-                      Product Life Cycle
+                      Clean Price
                     </span>
                     <span className="font-normal block">
                       {moment(productInfo?.data?.productInfo?.startDate).format(
@@ -152,14 +154,16 @@ export const BookingDetailLayout = ({
                     </span>
                   </div>
                   <div>
-                    <span className="font-bold block mb-[15px]">Currency</span>
+                    <span className="font-bold block mb-[15px]">
+                      Interest Capitalization Method
+                    </span>
                     <span className="font-normal block">
                       {productInfo?.data?.productInfo?.currencyCode}{" "}
                     </span>
                   </div>
                   <div>
                     <span className="font-bold block mb-[15px]">
-                      Investment Timeline
+                      Interest Computation days in a year
                     </span>
                     <span className="font-normal block">
                       {moment(detail?.approvedOn).format("DD MMM YYYY")} -{" "}
@@ -168,51 +172,19 @@ export const BookingDetailLayout = ({
                         .format("DD MMM YYYY")}
                     </span>
                   </div>
-                  <div>
-                    <span className="font-bold block mb-[15px]">Tenor</span>
-                    <span className="font-normal block">
-                      {detail?.tenor} {Interval[detail?.tenorUnit]}{" "}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-bold block mb-[15px]">
-                      Interest Rate Per Annum
-                    </span>
-                    <span className="font-normal block">
-                      {detail?.interestRate}%{" "}
-                    </span>
-                  </div>
                 </div>
                 <div className="border border-[#E5E9EB] rounded-lg py-[35px] px-[30px] flex justify-between items-center">
-                  {permissions?.includes("LIQUIDATE_INVESTMENT") &&
-                    detail?.investmentBookingStatus === 1 && (
-                      <div className="flex gap-x-6 items-center">
-                        {detail?.earlyLiquidation && (
-                          <button
-                            data-testid="modify"
-                            onClick={() =>
-                              handleClick("early liquidate", detail)
-                            }
-                            className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3`}
-                          >
-                            <FaRegTimesCircle className="text-[#444]" /> Early
-                            Liquidate
-                          </button>
-                        )}
-                        {detail?.partLiquidation && (
-                          <button
-                            data-testid="deactivate-btn"
-                            onClick={() =>
-                              handleClick("part liquidate", detail)
-                            }
-                            className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3 outline-none`}
-                          >
-                            <FaBan className="text-sterling-red-800" /> Part
-                            Liquidate
-                          </button>
-                        )}
-                      </div>
-                    )}
+                  {
+                    <div className="flex gap-x-6 items-center">
+                      <button
+                        data-testid="modify"
+                        onClick={() => handleClick("early liquidate", detail)}
+                        className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3`}
+                      >
+                        <BiSolidEdit className="text-[#444]" /> Security Top Up
+                      </button>
+                    </div>
+                  }
                   <Link
                     to={`/investment-management/${CustomerCategory[
                       productInfo?.data?.customerEligibility?.customerCategory
@@ -233,19 +205,9 @@ export const BookingDetailLayout = ({
 
               <div className="border border-[#E5E9EB] rounded-lg py-[25px] px-[30px] h-[593px]">
                 <div className="p-6 flex flex-col gap-y-[35px] max-h-[463px] overflow-y-auto">
-                  {detail?.reason && (
-                    <div>
-                      <span className="font-bold block mb-[15px]">
-                        Reason for Liquidation
-                      </span>
-                      <span className="font-normal block">
-                        {detail?.reason}
-                      </span>
-                    </div>
-                  )}
                   <div>
                     <span className="font-bold block mb-[15px]">
-                      Product Type
+                      Investment Category
                     </span>
                     <span className="font-normal block uppercase">
                       {ProductTypes.find(
@@ -255,27 +217,16 @@ export const BookingDetailLayout = ({
                   </div>
                   <div>
                     <span className="font-bold block mb-[15px]">
-                      Product Code
+                      Product Description
                     </span>
                     <span className="font-normal block uppercase">
                       {productInfo?.data?.productCode || "-"}
                     </span>
                   </div>
                   <div>
-                    <span className="font-bold block mb-[15px]">
-                      Product Slogan
-                    </span>
+                    <span className="font-bold block mb-[15px]">Currency</span>
                     <span className="font-normal block">
                       {productInfo?.data?.productInfo?.slogan || "-"}
-                    </span>
-                  </div>
-
-                  <div>
-                    <span className="font-bold block mb-[15px]">
-                      Product Description
-                    </span>
-                    <span className="font-normal block">
-                      {productInfo?.data?.productInfo?.description || "-"}{" "}
                     </span>
                   </div>
                 </div>
@@ -310,7 +261,7 @@ export const BookingDetailLayout = ({
   );
 };
 
-export default function BookingDetail({
+export default function SecurityPurchaseDetail({
   isOpen,
   setIsOpen,
   handleClick,
@@ -340,7 +291,7 @@ export default function BookingDetail({
   }, [isInvestmentLoading, isProductLoading]);
 
   return (
-    <BookingDetailLayout
+    <SecurityPurchaseDetailLayout
       {...{
         detail,
         isOpen,

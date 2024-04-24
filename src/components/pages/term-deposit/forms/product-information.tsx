@@ -281,7 +281,7 @@ export default function ProductInformation({
     setError: any,
     clearError: any
   ) => {
-    console.log("🚀 ~ handleInvestmentId ~ value:", value);
+  
     setShowInputs(true);
     return {};
   };

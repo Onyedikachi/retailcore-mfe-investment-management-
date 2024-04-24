@@ -6,6 +6,7 @@ import BookingDetail from "../modals/BookingDetail";
 import Loader from "../Loader";
 import Liquidation from "../modals/Liquidation";
 import TopUp from "../modals/TopUp";
+import SecurityPurchaseDetail from "../modals/securityPurchaseDetail";
 
 export default function MessagesComponent({
   productDetails,
@@ -38,9 +39,12 @@ export default function MessagesComponent({
   isIndividualDetailOpen,
   setIndividualDetailOpen,
 
+  
+
   isLiquidation,
   setLiquidationOpen,
   liquidationType,
+  isSecurityPurchase,
 
   isTopUp,
   setTopUpOpen,
@@ -149,8 +153,17 @@ export default function MessagesComponent({
           // setReason={() => {}}
         />
       )}
-      {isIndividualDetailOpen && (
+      {isIndividualDetailOpen && !isSecurityPurchase && (
         <BookingDetail
+          isOpen={isIndividualDetailOpen}
+          setIsOpen={setIndividualDetailOpen}
+          handleClick={handleAction}
+          detail={detail}
+          // setReason={() => {}}
+        />
+      )}
+      {isIndividualDetailOpen && isSecurityPurchase && (
+        <SecurityPurchaseDetail
           isOpen={isIndividualDetailOpen}
           setIsOpen={setIndividualDetailOpen}
           handleClick={handleAction}

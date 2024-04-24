@@ -20,13 +20,14 @@ export const confirmationHandler = ({
   setLiquidationType,
   setTopUpType,
   setTopUpOpen,
+  tab,
 }) => {
   if (action.toLowerCase().includes("delete")) {
     if (specificCategory === SpecificCategory.individual) {
-      deleteInvestmentRequest(detail.id);
+      deleteInvestmentRequest({ id: detail.id, investmentType: tab });
       return;
     } else {
-      deleteRequest(detail.id);
+      deleteRequest({ id: detail.id, investmentType: tab });
     }
   }
   if (action.toLowerCase() === Actions.DEACTIVATE) {
@@ -97,6 +98,7 @@ export const confirmationHandler = ({
     setTopUpType("topup");
     setTopUpOpen(true);
   }
+
   if (action.toLowerCase() === Actions.PRINCIPAL_WITHDRAWAL) {
     setTopUpType("withdraw");
     setTopUpOpen(true);

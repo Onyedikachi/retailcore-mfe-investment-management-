@@ -154,7 +154,7 @@ export default function ({
   productDetail,
   previousData = null,
 }: any) {
-  console.log("🚀 ~ formData:", formData);
+ 
   const { role, currencies } = useContext(AppContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -298,12 +298,12 @@ export default function ({
     {
       id: 2,
       title: "book new Investment",
-      url: "/investment-management/individual",
+      url: "#",
     },
     {
       id: 3,
       title: investmentType,
-      url: `/investment-management/${investmentType}`,
+      url: `#`,
     },
     {
       id: 4,

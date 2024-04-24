@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
+import { useParams } from "react-router-dom";
 import { RiErrorWarningFill } from "react-icons/ri";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -20,7 +21,6 @@ import { liquiditiesPenaltyStrings } from "@app/constants";
 import { currencyFormatter } from "@app/utils/formatCurrency";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 import { useLiquidationCalculationMutation } from "@app/api";
-// import {useEarlyLiquidateMutation} from '@app/api'
 
 interface TopUpProps {
   isOpen: boolean;
@@ -65,7 +65,7 @@ export default function TopUp({
   type,
   productDetails,
 }: TopUpProps): React.JSX.Element {
-  console.log("🚀 ~ type:", type);
+  const { tab } = useParams();
   const [metaInfo, setMetaInfo] = useState(null);
   const initialValues = {
     investementBookingId: detail?.id,
@@ -112,6 +112,7 @@ export default function TopUp({
   } = useGetInvestmentDetailQuery(
     {
       id: detail?.metaInfo ? detail?.investmentBookingId : detail?.id,
+      investmentType: tab,
     },
     { skip: !detail?.investmentBookingId && !detail?.id }
   );
@@ -142,14 +143,13 @@ export default function TopUp({
   }, [detail, bookingDetailsIsSuccess]);
 
   useEffect(() => {
-    if (
-      bookingDetails?.data &&
-      productDetails
-    ) {
+    if (bookingDetails?.data && productDetails) {
       const payload = {
         principal: bookingDetails?.data?.facilityDetailsModel?.principal,
-        [type === "topup" ? 'amounttoTopUp' : 'amounttoWithdraw']: parseInt(values?.amounttoTopUp),
-        [type === "topup" ? 'topUpUnit' : "withdrawalUnit"]: selection,
+        [type === "topup" ? "amounttoTopUp" : "amounttoWithdraw"]: parseInt(
+          values?.amounttoTopUp
+        ),
+        [type === "topup" ? "topUpUnit" : "withdrawalUnit"]: selection,
         investmentBookingId: !detail?.metaInfo
           ? detail?.id
           : detail?.investmentBookingId,
@@ -189,18 +189,19 @@ export default function TopUp({
 
   useEffect(() => {
     trigger("amounttoTopUp");
-  }, [selection])
+  }, [selection]);
 
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen} data-testid="Layout">
-      {productDetails && (
+      {(productDetails || bookingDetails) && (
         <form
           onSubmit={handleSubmit((d: any) =>
             onProceed(
               {
                 ...d,
-                [type === "topup" ? 'amounttoTopUp' : 'amounttoWithdraw']: parseInt(values?.amounttoTopUp),
-                [type === "topup" ? 'topUpUnit' : "withdrawalUnit"]: selection,
+                [type === "topup" ? "amounttoTopUp" : "amounttoWithdraw"]:
+                  parseInt(values?.amounttoTopUp),
+                [type === "topup" ? "topUpUnit" : "withdrawalUnit"]: selection,
                 id: detail?.id,
               },
               onConfirm,
@@ -213,7 +214,9 @@ export default function TopUp({
             <div className="flex justify-between items-center pb-4 mb-[42px] border-b border-[#CCCCCC]">
               <h3 className="text-[#747373] font-bold text-xl uppercase">
                 {type === "topup"
-                  ? "INVESTMENT TOP UP REQUEST"
+                  ? tab === "security-purchase"
+                    ? "security PURCHASE Top up Request"
+                    : "INVESTMENT TOP UP REQUEST"
                   : "principal withdrawal request"}
               </h3>
               <button
@@ -241,7 +244,12 @@ export default function TopUp({
                     </label>
 
                     <div className="relative flex flex-1 items-start max-w-[642px] mb-[2px] py-2 px-3 bg-[#EEEEEE]">
-                      {currencyFormatter(parseInt(bookingDetails?.data?.facilityDetailsModel?.principal))}
+                      {currencyFormatter(
+                        parseInt(
+                          bookingDetails?.data?.facilityDetailsModel?.principal
+                        ),
+                        bookingDetails?.data?.currencyCode
+                      )}
                     </div>
                   </div>
                 )}
@@ -250,7 +258,7 @@ export default function TopUp({
                     htmlFor="reason"
                     className="flex items-center text-[#333333] mb-2 gap-x-1"
                   >
-                    Amount to {type}{" "}
+                    Amount to {tab === "security-purchase" ? "top up" : type}{" "}
                     <span className="flex">
                       {" "}
                       <RedDot />
@@ -275,27 +283,30 @@ export default function TopUp({
                     <div className="overflow-hidden absolute right-0 text-[10px] text-[#8F8F8F] flex items-center   rounded-full shadow-[0px_0px_1px_0px_rgba(26,32,36,0.32),0px_1px_2px_0px_rgba(91,104,113,0.32)] border-[#E5E9EB]">
                       <span
                         role="button"
-                        onKeyDown={() => { }}
+                        onKeyDown={() => {}}
                         tabIndex={0}
                         onClick={() => {
                           setSelection(0);
                         }}
-                        className={`w-[55px] border-r border-[#E5E9EB] py-1 px-2 ${selection === 0 ? "bg-[#FFE9E9] " : ""
-                          }`}
+                        className={`w-[55px] border-r border-[#E5E9EB] py-1 px-2 ${
+                          selection === 0 ? "bg-[#FFE9E9] " : ""
+                        }`}
                       >
                         {" "}
-                        NGN
+                        {productDetails?.productInfo?.currencyCode ||
+                          bookingDetails?.data?.currencyCode}
                       </span>
 
                       <span
                         role="button"
                         tabIndex={0}
-                        onKeyDown={() => { }}
+                        onKeyDown={() => {}}
                         onClick={() => {
                           setSelection(1);
                         }}
-                        className={`w-[55px] py-1 px-2 ${selection === 1 ? "bg-[#FFE9E9] " : ""
-                          }`}
+                        className={`w-[55px] py-1 px-2 ${
+                          selection === 1 ? "bg-[#FFE9E9] " : ""
+                        }`}
                       >
                         {" "}
                         Percent
@@ -311,7 +322,9 @@ export default function TopUp({
                   >
                     Provide justification for{" "}
                     {type === "topup"
-                      ? "investment topup"
+                      ? tab === "security-purchase"
+                        ? "security purchase top up"
+                        : "investment topup"
                       : "principal withdrawal"}
                     <span className="flex">
                       {" "}
@@ -363,50 +376,52 @@ export default function TopUp({
                   />
                 </div>
 
-                <div className="mb-10 flex items-center gap-x-2">
-                  <div className="flex items-center gap-2 w-[350px]">
-                    <label
-                      htmlFor="upload"
-                      className="text-[#333333] mb-2 flex items-center"
-                    >
-                      Notify customer of{" "}
-                      {type === "topup"
-                        ? "investment topup"
-                        : "principal withdrawal"}
-                      <span className="flex">
-                        {" "}
-                        <RedDot />
-                      </span>
-                    </label>
-                    <FormToolTip tip="Hello" />
-                  </div>
-                  <Switch
-                    checked={isChecked}
-                    onChange={(data) => setChecked(data)}
-                    className={classNames(
-                      isChecked ? "bg-[#CF2A2A]" : "bg-transparent",
-                      "border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
-                    )}
-                  >
-                    <span
-                      data-testid="switch"
-                      aria-hidden="true"
+                {tab !== "security-purchase" && (
+                  <div className="mb-10 flex items-center gap-x-2">
+                    <div className="flex items-center gap-2 w-[350px]">
+                      <label
+                        htmlFor="upload"
+                        className="text-[#333333] mb-2 flex items-center"
+                      >
+                        Notify customer of{" "}
+                        {type === "topup"
+                          ? "investment topup"
+                          : "principal withdrawal"}
+                        <span className="flex">
+                          {" "}
+                          <RedDot />
+                        </span>
+                      </label>
+                      <FormToolTip tip="Hello" />
+                    </div>
+                    <Switch
+                      checked={isChecked}
+                      onChange={(data) => setChecked(data)}
                       className={classNames(
-                        isChecked
-                          ? "translate-x-[14px] bg-white"
-                          : "translate-x-0  bg-white ",
-                        "pointer-events-none inline-block h-[14px] w-[14px] transform rounded-full border border-[#CF2A2A] shadow ring-0 transition duration-200 ease-in-out"
+                        isChecked ? "bg-[#CF2A2A]" : "bg-transparent",
+                        "border-[#CF2A2A] relative inline-flex h-4 w-7 flex-shrink-0 cursor-pointer rounded-full border  transition-colors duration-200 ease-in-out focus:outline-none ring-0  "
+                      )}
+                    >
+                      <span
+                        data-testid="switch"
+                        aria-hidden="true"
+                        className={classNames(
+                          isChecked
+                            ? "translate-x-[14px] bg-white"
+                            : "translate-x-0  bg-white ",
+                          "pointer-events-none inline-block h-[14px] w-[14px] transform rounded-full border border-[#CF2A2A] shadow ring-0 transition duration-200 ease-in-out"
+                        )}
+                      />
+                    </Switch>
+                    <ErrorMessage
+                      errors={errors}
+                      name="notify"
+                      render={({ message }) => (
+                        <p className="text-red-600 text-xs">{message}</p>
                       )}
                     />
-                  </Switch>
-                  <ErrorMessage
-                    errors={errors}
-                    name="notify"
-                    render={({ message }) => (
-                      <p className="text-red-600 text-xs">{message}</p>
-                    )}
-                  />
-                </div>
+                  </div>
+                )}
 
                 {type === "withdraw" && (
                   <div className="mb-10 rounded-[10px] border border-[#EBEBEB] bg-[#AAAAAA12] py-6 px-5">
@@ -440,14 +455,17 @@ export default function TopUp({
                 <div className="flex items-center mb-10 rounded-[10px] border border-[#EBEBEB] bg-[#AAAAAA12] py-6 px-5 gap-x-1">
                   <span className="text-sm text-[#747373] capitalize">
                     {type === "topup"
-                      ? "investment topup"
-                      : "principal withdrawal"}{" "}
+                      ? tab === "security-purchase"
+                        ? "security purchase top up"
+                        : "investment topup"
+                      : "principal withdrawal"}
                     value:{" "}
                   </span>
                   <span className="text-sm text-[#747373] font-semibold">
                     {currencyFormatter(
                       liquidationValue,
-                      productDetails?.productInfo?.currencyCode
+                      productDetails?.productInfo?.currencyCode ||
+                        bookingDetails?.data?.currencyCode
                     )}
                   </span>
                 </div>

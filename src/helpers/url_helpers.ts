@@ -38,6 +38,7 @@ const urls = {
   //Security Purchase
   SECURITY_PURCHASE_CREATE: "/SecurityPurchase/add",
   SECURITY_PURCHASE: "/SecurityPurchase",
+  SECURITY_PURCHASE_DETAIL: "/SecurityPurchase/detail",
   SECURITY_PURCHASE_REQUEST: "/SecurityPurchaseRequest",
   SECURITY_PURCHASE_STATS: "/SecurityPurchase/stats",
   SECURITY_PURCHASE_REQUEST_STATS: "/SecurityPurchaseRequest/stats",
