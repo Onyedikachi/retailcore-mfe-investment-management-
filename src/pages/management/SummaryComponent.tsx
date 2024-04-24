@@ -48,7 +48,7 @@ export default function Summary() {
     isError,
   } = useGetInvestmentDetailQuery({
     id: process_type === "booking" ? productId : booking_id || id,
-    investmentType:type
+    investmentType: type,
   });
 
   const { data: productDetail } = useGetProductDetailQuery(
@@ -57,7 +57,7 @@ export default function Summary() {
         investmentData?.data?.facilityDetailsModel?.investmentProductId ||
         detail?.facilityDetailsModel?.investmentProductId ||
         product_id,
-        investmentType:type
+      investmentType: type,
     },
     {
       skip:
@@ -70,14 +70,14 @@ export default function Summary() {
   // Fetch activity data based on the category
   const { data: activityData, isLoading: activityIsLoading } =
     useGetInvestmentActivityLogQuery(
-      { bookingId: id, investmentType:type },
+      { bookingId: id, productId: id, investmentType: type },
       { skip: category === "request" }
     );
 
   // Fetch activity request data based on the category
   const { data: activityRequestData, isLoading: activityRequestIsLoading } =
     useGetInvestmentRequestActivityLogQuery(
-      { bookingrequestId: id, investmentType:type },
+      { bookingrequestId: id, productrequestId: id, investmentType: type },
       { skip: !id }
     );
 
@@ -87,7 +87,7 @@ export default function Summary() {
     isSuccess: requestDetailIsSuccess,
   } = useGetInvestmentRequestDetailQuery({
     id: request_id || id,
-    investmentType:type
+    investmentType: type,
   });
 
   useEffect(() => {
@@ -108,7 +108,7 @@ export default function Summary() {
     {
       id: 2,
       title: "Booking",
-      url: `/investment-management/${type.replace("-", " ")}`,
+      url: `/investment-management/${type}`,
     },
 
     {
@@ -124,7 +124,9 @@ export default function Summary() {
           Process summary
         </h1>
         <Breadcrumbs
-          links={links.map((i) => (i.id === 2 ? { ...i, title: type.replace("-", " ") } : i))}
+          links={links.map((i) =>
+            i.id === 2 ? { ...i, title: type.replace("-", " ") } : i
+          )}
         />
       </div>{" "}
       {type !== "certificate" ? (

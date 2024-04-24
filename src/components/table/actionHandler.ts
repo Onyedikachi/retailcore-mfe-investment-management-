@@ -23,7 +23,6 @@ export const actionHandler = ({
   navigate,
   tab,
 }) => {
- 
   setAction(action);
   setDetail(items);
   dropDownClick(action, items);
@@ -99,7 +98,10 @@ export const actionHandler = ({
     return;
   }
 
-  if (action.toLowerCase() === Actions.TOPUP || action.toLowerCase() === Actions.SECURITY_PURCHASE_TOPUP) {
+  if (
+    action.toLowerCase() === Actions.TOPUP ||
+    action.toLowerCase() === Actions.SECURITY_PURCHASE_TOPUP
+  ) {
     // setTopUpType("security_purchase_topup");
     setTopUpType("topup");
     setTopUpOpen(true);
@@ -155,12 +157,10 @@ export const actionHandler = ({
       ? setIndividualDetailOpen(true)
       : specificCategory === SpecificCategory.individual
       ? navigate(
-          `/investment-management/${tab}/process-summary/preview/${
-            items.id
-          }?process_type=${items.requestType}${
-            items.investmentBookingId &&
-            `&booking_id=${items.investmentBookingId}&request_id=${items?.id}`
-          }`
+          `/investment-management/${tab}/process-summary/preview/${items.id}?process_type=${items.requestType}` +
+            (items.investmentBookingId
+              ? `&booking_id=${items.investmentBookingId}&request_id=${items.id}`
+              : "")
         )
       : navigate(
           `/product-factory/investment/${encodeURIComponent(
@@ -178,12 +178,10 @@ export const actionHandler = ({
       ? setIndividualDetailOpen(true)
       : specificCategory === SpecificCategory.individual
       ? navigate(
-          `/investment-management/${tab}/process-summary/verdict/${
-            items.id
-          }?process_type=${items.requestType}${
-            items.investmentBookingId &&
-            `&booking_id=${items.investmentBookingId}`
-          }`
+          `/investment-management/${tab}/process-summary/verdict/${items.id}?process_type=${items.requestType}` +
+            (items.investmentBookingId
+              ? `&booking_id=${items.investmentBookingId}`
+              : "")
         )
       : navigate(
           `/product-factory/investment/${encodeURIComponent(

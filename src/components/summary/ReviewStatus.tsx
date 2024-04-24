@@ -15,6 +15,7 @@ export default function ReviewStatus({
   type,
   text,
 }: LastRequestReviewStatusProps) {
+  console.log("🚀 ~ status:", status);
   return (
     <div className="bg-[#ffffff]   border border-[#EEEEEE] rounded-[10px] px-[60px] pt-[40px] pb-[40px]">
       <div className="">
@@ -35,7 +36,9 @@ export default function ReviewStatus({
                 <FaClock className="text-[26px] text-[#636363]" />
               )}
             </div>
-            <span className="text-base text-[#636363">{text || "-"}</span>
+            <span className="text-base text-[#636363">
+              {text || (status === 1 && "Pending approval") || "-"}
+            </span>
           </div>
           {status === 3 && (
             <div className="flex gap-x-5">
@@ -43,7 +46,9 @@ export default function ReviewStatus({
                 Reason for rejection
               </span>
               {reason && (
-                <span className="text-[#636363] text-base">{reason || "-"}</span>
+                <span className="text-[#636363] text-base">
+                  {reason || "-"}
+                </span>
               )}
             </div>
           )}

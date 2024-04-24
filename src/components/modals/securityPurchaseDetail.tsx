@@ -200,8 +200,8 @@ export const SecurityPurchaseDetailLayout = ({
                       2
                     ]?.toLowerCase()}/process-summary/preview/${
                       detail?.id
-                    }?product_id=${detail?.investmentProductId}&request_id=${
-                      detail?.investmentBookingRequestId
+                    }?product_id=${detail?.id}&request_id=${
+                      detail?.securityPurchaseRequestId
                     }`}
                   >
                     <button

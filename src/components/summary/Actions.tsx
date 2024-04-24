@@ -27,7 +27,7 @@ import handleVerdict from "./handleVerdict";
 export const handlePrint = () => {
   window.print();
 };
-
+const allowed = ["individual", "corporate", "security-purchase"];
 const createProcesses = [
   "create",
   "modify",
@@ -50,8 +50,8 @@ export const handleConfirm = ({
   filter,
 }) => {
   if (action === "approve") {
-    if (type?.toLowerCase() === "individual") {
-      approveInvestment({ id });
+    if (allowed.includes(type.toLowerCase())) {
+      approveInvestment({ id, investmentType: type });
     } else {
       approveProduct({ id });
     }
@@ -60,8 +60,8 @@ export const handleConfirm = ({
     setRejection(true);
   }
   if (action === "cancel") {
-    if (type?.toLowerCase() === "individual") {
-      navigate(`/investment-management/individual`);
+    if (allowed.includes(type.toLowerCase())) {
+      navigate(`/investment-management/${type}?category=requests`);
     } else {
       navigate(
         `/product-factory/investment?category=requests${
@@ -73,7 +73,7 @@ export const handleConfirm = ({
 };
 
 export function handlePermissionType(type: string, process_type?: string) {
-  if (type === "individual") {
+  if (allowed.includes(type.toLowerCase())) {
     // return process_type === "booking"
     //   ? "BOOK_INVESTMENT"
     //   : "LIQUIDATE_INVESTMENT";
@@ -232,8 +232,8 @@ export default function Actions({
 
   const handleRejection = () => {
     setRejection(false);
-    if (type.toLowerCase() === "individual") {
-      rejectInvestment({ reason, id, routeTo });
+    if (allowed.includes(type.toLowerCase())) {
+      rejectInvestment({ reason, id, routeTo, investmentType: type });
     } else {
       rejectProduct({ reason, id, routeTo });
     }
@@ -272,18 +272,14 @@ export default function Actions({
   const factoryDashboard = `/product-factory/investment?${
     filter ? "&filter=" + filter : ""
   }`;
-  const individualDashboard = `/investment-management/individual?${
-    filter ? "&filter=" + filter : ""
-  }`;
-  const corporateDashboard = `/investment-management/corporate?${
+  const investmentDashboard = `/investment-management/${type}?${
     filter ? "&filter=" + filter : ""
   }`;
 
+
   const handleNavigation = () => {
     if (location.pathname.includes("management")) {
-      return location.pathname.includes("individual")
-        ? individualDashboard
-        : corporateDashboard;
+      return investmentDashboard;
     }
     if (!location.pathname.includes("management")) return factoryDashboard;
   };

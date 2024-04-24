@@ -24,9 +24,14 @@ interface SuccessProps {
 
 const factoryDashboard = "/product-factory/investment";
 const individualDashboard = "/investment-management/individual";
+const corporateDashboard = "/investment-management/corporate";
+const securityDashboard = "/investment-management/security-purchase";
 const factoryRequests = "/product-factory/investment?category=requests";
 const individualRequests =
   "/investment-management/individual?category=requests";
+const corporateRequests = "/investment-management/corporate?category=requests";
+const securityRequests =
+  "/investment-management/security-purchase?category=requests";
 
 const defaultPaths = [
   "/product-factory/investment",
@@ -42,8 +47,12 @@ export function handleNavigations(
   action = ""
 ) {
   const isIndividual =
-    pathname.includes("management") &&
-    (pathname.includes("individual") || pathname.includes("corporate") || pathname.includes("security-purchase"));
+    pathname.includes("management") && pathname.includes("individual");
+  const isCorporate =
+    pathname.includes("management") && pathname.includes("corporate");
+  const isSecurity =
+    pathname.includes("management") && pathname.includes("security-purchase");
+
   const isModifyOrContinueOrCreate =
     process === "create" ||
     process === "modify" ||
@@ -62,6 +71,16 @@ export function handleNavigations(
     return role === "superadmin" && action !== "draft"
       ? individualDashboard
       : individualRequests;
+  }
+  if (isCorporate) {
+    return role === "superadmin" && action !== "draft"
+      ? corporateDashboard
+      : corporateRequests;
+  }
+  if (isSecurity) {
+    return role === "superadmin" && action !== "draft"
+      ? securityDashboard
+      : securityRequests;
   }
 
   // Default case
@@ -83,7 +102,10 @@ export function handleNewCreate({ pathname }) {
     window.location.href = "/investment-management/create/corporate";
     return;
   }
-  if (pathname.includes("management") && pathname.includes("security-purchase")) {
+  if (
+    pathname.includes("management") &&
+    pathname.includes("security-purchase")
+  ) {
     window.location.href = "/investment-management/create/security-purchase";
     return;
   }
@@ -125,7 +147,8 @@ export function Success({
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="relative h-[400px] w-[606px] overflow-y-auto flex flex-col justify-between px-10 py-8 rounded-lg bg-white text-center items-center">
         <div className="flex justify-center items-center">
-          <HiCheckCircle onClick={handleRefresh}
+          <HiCheckCircle
+            onClick={handleRefresh}
             data-testid="check-circle-icon"
             className="text-[80px] text-[#2FB755]"
           />{" "}
