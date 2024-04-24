@@ -9,29 +9,7 @@ export default ({
 }) => {
     return (
         <Fragment>
-            <InputDivs
-                label={"Investment purpose"}
-                isCompulsory={false}
-                errors={errors}
-                name="investmentPurpose"
-                divClass={"!items-start"}
-            >
-                <div className="relative w-full">
-                    <textarea
-                        {...register("investmentPurpose", {
-                            maxLength: 360,
-                        })}
-                        defaultValue={
-                            formData?.facilityDetailsModel.investmentPurpose
-                        }
-                        id="investmentPurpose"
-                        data-testid="investmentPurpose"
-                        placeholder="Enter Investment Purpose"
-                        maxLength={250}
-                        className={`w-[360px]  min-h-[150px] rounded-md border border-[#8F8F8F] focus:outline-none px-3 py-[11px] placeholder:text-[#BCBBBB] resize-none `}
-                    />
-                </div>
-            </InputDivs>
+          
             <InputDivs label={"Tenor"}>
                 <div className="flex gap-[15px]">
                     <div className=" w-[360px]">

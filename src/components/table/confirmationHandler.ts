@@ -53,7 +53,7 @@ export const confirmationHandler = ({
     }
   }
 
-  if (action.toLowerCase() === Actions.WITHDARW_MODIFY) {
+  if (action.toLowerCase() === Actions.WITHDRAW_MODIFY) {
     if (
       (!permissions?.includes("CREATE_INVESTMENT_PRODUCT") &&
         specificCategory !== SpecificCategory.individual) ||
@@ -76,6 +76,7 @@ export const confirmationHandler = ({
             isDraft: true,
             id: detail.id,
             recentlyUpdatedMeta: null,
+            investmentType: tab
           });
         }
       } else {
@@ -89,6 +90,7 @@ export const confirmationHandler = ({
           isDraft: true,
           id: detail.id,
           recentlyUpdatedMeta: null,
+          investmentType: tab
         });
       }
     }

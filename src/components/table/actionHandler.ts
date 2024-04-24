@@ -64,7 +64,7 @@ export const actionHandler = ({
     setIsConfirmOpen(true);
     return;
   }
-  if (action.toLowerCase() === Actions.WITHDARW_MODIFY) {
+  if (action.toLowerCase() === Actions.WITHDRAW_MODIFY) {
     setConfirmText(Prompts.PRODUCT_WITHDRAW_MODIFY);
 
     if (
