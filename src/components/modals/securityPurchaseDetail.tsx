@@ -144,17 +144,19 @@ export const SecurityPurchaseDetailLayout = ({
                     </span>
                   </div>
 
-                  <div>
-                    <span className="font-bold block mb-[15px]">
-                      Clean Price
-                    </span>
-                    <span className="font-normal block">
-                      {detail?.currencyCode || ""}{" "}
-                      {Number(
-                        investmentData?.data?.cleanPrice ?? 0
-                      ).toLocaleString() || "-"}
-                    </span>
-                  </div>
+                  {investmentData?.data?.cleanPrice && (
+                    <div>
+                      <span className="font-bold block mb-[15px]">
+                        Clean Price
+                      </span>
+                      <span className="font-normal block">
+                        {detail?.currencyCode || ""}{" "}
+                        {Number(
+                          investmentData?.data?.cleanPrice ?? 0
+                        ).toLocaleString() || "-"}
+                      </span>
+                    </div>
+                  )}
                   <div>
                     <span className="font-bold block mb-[15px]">
                       Interest Capitalization Method
@@ -196,9 +198,7 @@ export const SecurityPurchaseDetailLayout = ({
                     </div>
                   )}
                   <Link
-                    to={`/investment-management/${CustomerCategory[
-                      2
-                    ]?.toLowerCase()}/process-summary/preview/${
+                    to={`/investment-management/${CustomerCategory[2]?.toLowerCase()}/process-summary/preview/${
                       detail?.id
                     }?product_id=${detail?.id}&request_id=${
                       detail?.securityPurchaseRequestId

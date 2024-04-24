@@ -174,8 +174,10 @@ export default function CustomerInformation({
 
   useEffect(() => {
     if (isSuccess) {
+
       setCustomersData(
-        data.data.map((i) => {
+        data?.data?.customers?.map((i) => {
+        
           return {
             id: i.customerId,
             name: i.customer_products[0]?.accountNumber,
@@ -228,7 +230,7 @@ export default function CustomerInformation({
   useEffect(() => {
     if (accountNumber && data) {
     
-      const foundObject = data?.data?.find((item) => {
+      const foundObject = data?.data?.customers?.find((item) => {
         return (
           item.customer_products &&
           item.customer_products.some(

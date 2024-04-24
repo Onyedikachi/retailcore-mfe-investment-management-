@@ -1,4 +1,10 @@
-import React, { Fragment, useCallback, useContext, useEffect, useState } from "react";
+import React, {
+  Fragment,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import MinMaxInput from "@app/components/forms/MinMaxInput";
@@ -57,12 +63,12 @@ const useYupValidationResolver = (validationSchema) =>
       try {
         const values = await validationSchema.validate(data, {
           abortEarly: false,
-        })
+        });
 
         return {
           values,
           errors: {},
-        }
+        };
       } catch (errors) {
         return {
           values: {},
@@ -76,11 +82,11 @@ const useYupValidationResolver = (validationSchema) =>
             }),
             {}
           ),
-        }
+        };
       }
     },
     [validationSchema]
-  )
+  );
 
 type FacilityDetailsProps = {
   formData?: any;
@@ -118,9 +124,9 @@ export const handleInterestRateValues = ({
       (i) => {
         if (
           values.tenor >=
-          convertDuration(i.tenorMin, i.tenorMinUnit, values.tenorUnit) &&
+            convertDuration(i.tenorMin, i.tenorMinUnit, values.tenorUnit) &&
           values.tenor <=
-          convertDuration(i.tenorMax, i.tenorMaxUnit, values.tenorUnit)
+            convertDuration(i.tenorMax, i.tenorMaxUnit, values.tenorUnit)
         ) {
           setValue("intMin", i.min);
           setValue("intMax", i.max);
@@ -177,7 +183,6 @@ export const handleProductDetails = ({
           values.tenorUnit
         )
       );
-
     }
 
     setValue(
@@ -396,7 +401,7 @@ export default function FacilityDetails({
   useEffect(() => {
     if (
       formData.customerBookingInfoModel?.balance <
-      productDetail?.pricingConfiguration?.applicablePrincipalMin ||
+        productDetail?.pricingConfiguration?.applicablePrincipalMin ||
       formData.customerBookingInfoModel?.balance === 0
     ) {
       setBalanceError(true);
@@ -423,9 +428,9 @@ export default function FacilityDetails({
     }
     if (
       formData?.customerBookingInfoModel?.currencyId !==
-      productDetail?.productInfo?.currency &&
+        productDetail?.productInfo?.currency &&
       formData?.customerBookingInfoModel?.currencyCode !==
-      productDetail?.productInfo?.currencyCode
+        productDetail?.productInfo?.currencyCode
     ) {
       setValidCurency(false);
       setShowError(true);
@@ -439,21 +444,21 @@ export default function FacilityDetails({
   ]);
 
   useEffect(() => {
-    const type = 
-    ProductTypes.find(
+    const type = ProductTypes.find(
       (n) => n.id === productDetail?.productType
-    )?.name
-    setValue(
-      "productType", type
-    )
+    )?.name;
+    setValue("productType", type);
 
-    setMySchema(type === "Bonds" ? BondsProductFacilityDetailsModelSchema : FacilityDetailsModelSchema)
+    setMySchema(
+      type === "Bonds"
+        ? BondsProductFacilityDetailsModelSchema
+        : FacilityDetailsModelSchema
+    );
     if (type === "Bonds") {
-      setValue("tenorUnitMin", 1)
-      setValue("tenorUnitMax", 3)
+      setValue("tenorUnitMin", 1);
+      setValue("tenorUnitMax", 3);
     }
-
-  }, [productDetail?.productType])
+  }, [productDetail?.productType]);
 
   return (
     <form
@@ -479,7 +484,7 @@ export default function FacilityDetails({
                 <SearchInput
                   setSearchTerm={debounce((e) => setQuery(e), 800)}
                   searchResults={productsData}
-                  setSearchResults={() => { }}
+                  setSearchResults={() => {}}
                   searchLoading={searchLoading}
                   handleSearch={(value, data) =>
                     handleSearch(
@@ -532,32 +537,63 @@ export default function FacilityDetails({
                   </div>
                 </div>
               </InputDivs>
-              {
-                ProductTypes.find(
-                  (n) => n.id === productDetail?.productType
-                )?.name === "Term Deposit" &&
+              <InputDivs
+                label={"Investment purpose"}
+                isCompulsory={false}
+                errors={errors}
+                name="investmentPurpose"
+                divClass={"!items-start"}
+              >
+                <div className="relative w-full">
+                  <textarea
+                    {...register("investmentPurpose", {
+                      maxLength: 360,
+                    })}
+                    defaultValue={
+                      formData?.facilityDetailsModel.investmentPurpose
+                    }
+                    id="investmentPurpose"
+                    data-testid="investmentPurpose"
+                    placeholder="Enter Investment Purpose"
+                    maxLength={250}
+                    className={`w-[360px]  min-h-[150px] rounded-md border border-[#8F8F8F] focus:outline-none px-3 py-[11px] placeholder:text-[#BCBBBB] resize-none `}
+                  />
+                </div>
+              </InputDivs>
+              {ProductTypes.find((n) => n.id === productDetail?.productType)
+                ?.name !== "Term Deposit" && (
                 <TermDepositFacilityDetails
                   {...{
-                    capMethodOptions, clearErrors,
-                    errors, formData, productDetail,
-                    register, setValue,
-                    trigger, values
+                    capMethodOptions,
+                    clearErrors,
+                    errors,
+                    formData,
+                    productDetail,
+                    register,
+                    setValue,
+                    trigger,
+                    values,
                   }}
                 />
-              }
-              {
-                ProductTypes.find(
-                  (n) => n.id === productDetail?.productType
-                )?.name === "Bonds" &&
+              )}
+              {ProductTypes.find((n) => n.id === productDetail?.productType)
+                ?.name !== "Bonds" && (
                 <BondsFacilityDetails
                   {...{
-                    capMethodOptions, clearErrors,
-                    errors, formData, productDetail,
-                    register, setValue,
-                    trigger, values
+                    capMethodOptions,
+                    clearErrors,
+                    errors,
+                    formData,
+                    productDetail,
+                    register,
+                    setValue,
+                    trigger,
+                    values,
+                    type:ProductTypes.find((n) => n.id === productDetail?.productType)
+                    ?.name?.toLowerCase()
                   }}
                 />
-              }
+              )}
             </div>
           )}
         </div>

@@ -334,10 +334,10 @@ describe("actionHandler", () => {
     expect(setIsConfirmOpen).toHaveBeenCalledWith(true);
   });
 
-  // if action is WITHDARW_MODIFY, setConfirmText and setIsConfirmOpen are called with expected values
-  it("should call setConfirmText and setIsConfirmOpen with expected values when action is WITHDARW_MODIFY", () => {
+  // if action is WITHDRAW_MODIFY, setConfirmText and setIsConfirmOpen are called with expected values
+  it("should call setConfirmText and setIsConfirmOpen with expected values when action is WITHDRAW_MODIFY", () => {
     // Arrange
-    const action = Actions.WITHDARW_MODIFY;
+    const action = Actions.WITHDRAW_MODIFY;
     const items = { productName: "Test Product" };
     const selected = { value: "all" };
     const category = StatusCategoryType.AllProducts;

@@ -296,8 +296,8 @@ describe("confirmationHandler", () => {
     expect(navigate).not.toHaveBeenCalled();
   });
 
-  it("should handle WITHDARW_MODIFY action with permission", () => {
-    const action = Actions.WITHDARW_MODIFY;
+  it("should handle WITHDRAW_MODIFY action with permission", () => {
+    const action = Actions.WITHDRAW_MODIFY;
     const mockedErrorToast = jest.fn();
 
     jest.mock("../components/Toast", () => ({
@@ -321,8 +321,8 @@ describe("confirmationHandler", () => {
     // );
   });
 
-  it("should handle WITHDARW_MODIFY action without permission", () => {
-    const action = Actions.WITHDARW_MODIFY;
+  it("should handle WITHDRAW_MODIFY action without permission", () => {
+    const action = Actions.WITHDRAW_MODIFY;
     const mockedErrorToast = jest.fn();
 
     jest.mock("../components/Toast", () => ({

@@ -2423,7 +2423,7 @@ Received has value: null
     <testCase name="actionHandler should call setConfirmText and setIsConfirmOpen with expected values when action is ACTIVATE" duration="15"/>
     <testCase name="actionHandler should call setConfirmText and setIsConfirmOpen with expected values when action is WITHDRAW_DELETE" duration="18"/>
     <testCase name="actionHandler should call setConfirmText and setIsConfirmOpen with expected values when action is DELETE_REQUESTS" duration="3"/>
-    <testCase name="actionHandler should call setConfirmText and setIsConfirmOpen with expected values when action is WITHDARW_MODIFY" duration="16"/>
+    <testCase name="actionHandler should call setConfirmText and setIsConfirmOpen with expected values when action is WITHDRAW_MODIFY" duration="16"/>
     <testCase name="actionHandler should call setConfirmText and setIsConfirmOpen with expected values when action is MODIFY" duration="4"/>
     <testCase name="actionHandler should call setConfirmText and setIsConfirmOpen with expected values when action is DELETE_DRAFT" duration="5"/>
     <testCase name="actionHandler should call navigate with expected values when action is CONTINUE_REQUEST" duration="16"/>
@@ -2757,8 +2757,8 @@ Received has value: null
     <testCase name="confirmationHandler should not call activateProduct function when action is not &quot;activate&quot;" duration="4"/>
     <testCase name="confirmationHandler should handle MODIFY action with permission" duration="60"/>
     <testCase name="confirmationHandler should handle MODIFY action without permission" duration="30"/>
-    <testCase name="confirmationHandler should handle WITHDARW_MODIFY action with permission" duration="34"/>
-    <testCase name="confirmationHandler should handle WITHDARW_MODIFY action without permission" duration="41"/>
+    <testCase name="confirmationHandler should handle WITHDRAW_MODIFY action with permission" duration="34"/>
+    <testCase name="confirmationHandler should handle WITHDRAW_MODIFY action without permission" duration="41"/>
   </file>
   <file path="/Users/work/Documents/retailcore-mfe-investment-management/src/__tests__/pages/management/book-investment/IndexComponent.test.tsx">
     <testCase name="IndexComponent should render the component without crashing" duration="461"/>

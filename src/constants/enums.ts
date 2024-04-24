@@ -170,7 +170,7 @@ export enum Actions {
   ACTIVATE = "activate",
   DEACTIVATE = "deactivate",
   DELETE_REQUESTS = "delete request",
-  WITHDARW_MODIFY = "withdraw & modify",
+  WITHDRAW_MODIFY = "withdraw & modify",
   MODIFY = "modify",
   CONTINUE_REQUEST = "continue request",
   EARLY_LIQUIDATE = "early liquidate",

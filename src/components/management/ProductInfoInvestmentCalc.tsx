@@ -1,5 +1,10 @@
 import { useBookingCalcMutation } from "@app/api";
-import { GlAccountTypes, Interval, liquidities } from "@app/constants";
+import {
+  GlAccountTypes,
+  Interval,
+  ProductTypes,
+  liquidities,
+} from "@app/constants";
 import { AppContext, capitalizeFirstLetter } from "@app/utils";
 import { currencyFormatter } from "@app/utils/formatCurrency";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
@@ -111,7 +116,10 @@ export default function ProductInfoInvestmentCalc({
   const { data: charges, isSuccess: chargeSuccess } =
     useGetApplicableChargesQuery();
   const { data: taxes, isSuccess: taxSuccess } = useGetApplicableTaxesQuery();
-
+  const type = ProductTypes.find(
+    (n) => n.id === productDetail?.productType
+  )?.name;
+  console.log("🚀 ~ type:", type);
   const toggleTab = (val) => {
     setActive((prevActive) => {
       if (prevActive.includes(val)) {
@@ -123,7 +131,133 @@ export default function ProductInfoInvestmentCalc({
   };
 
   useEffect(() => {
-    setProductDetailMap([
+    const pricingData = [
+      {
+        name: "Allowable principal",
+        text: ` ${currencyFormatter(
+          productDetail?.pricingConfiguration?.applicablePrincipalMin,
+          productDetail?.productInfo?.currencyCode
+        )}
+        -
+        ${currencyFormatter(
+          productDetail?.pricingConfiguration?.applicablePrincipalMax,
+
+          productDetail?.productInfo?.currencyCode
+        )}`,
+        isOpen: true,
+      },
+      {
+        name: "Allowable tenor",
+        text: (
+          <span>
+            {productDetail?.pricingConfiguration?.applicableTenorMin} -{" "}
+            {productDetail?.pricingConfiguration?.applicableTenorMax}{" "}
+            {
+              Interval[
+                productDetail?.pricingConfiguration?.applicableTenorMaxUnit
+              ]
+            }
+          </span>
+        ),
+        isOpen: true,
+      },
+      {
+        name: "Interest rate",
+        text: (
+          <span>
+            {" "}
+            {productDetail?.pricingConfiguration?.interestRateMin} -{" "}
+            {productDetail?.pricingConfiguration?.interestRateMax}% per annum
+          </span>
+        ),
+        isOpen:
+          productDetail?.pricingConfiguration?.interestRateRangeType === 2,
+      },
+      {
+        name: "Interest rates",
+        text: productDetail?.pricingConfiguration?.interestRateConfigModels?.map(
+          (i, idx) => (
+            <div key={idx}>
+              {productDetail?.pricingConfiguration?.interestRateRangeType ===
+              0 ? (
+                <span>
+                  {" "}
+                  {i?.min} - {i?.max}% for{" "}
+                  {currencyFormatter(
+                    i?.principalMin,
+                    productDetail?.productInfo?.currencyCode
+                  )}{" "}
+                  -
+                  {currencyFormatter(
+                    i?.principalMax,
+                    productDetail?.productInfo?.currencyCode
+                  )}
+                </span>
+              ) : (
+                <span>
+                  {" "}
+                  {i?.min} - {i?.max}% for {i?.tenorMin} - {i?.tenorMax}{" "}
+                  {Interval[i?.tenorMaxUnit]}
+                </span>
+              )}
+            </div>
+          )
+        ),
+        isOpen:
+          productDetail?.pricingConfiguration?.interestRateRangeType !== 2,
+      },
+
+      {
+        name: "Face value",
+        text: currencyFormatter(
+          productDetail?.pricingConfiguration?.faceValue,
+          productDetail?.productInfo?.currencyCode
+        ),
+        isOpen: true,
+      },
+      {
+        name: "Per amount",
+        text: currencyFormatter(
+          productDetail?.pricingConfiguration?.perAmount,
+          productDetail?.productInfo?.currencyCode
+        ),
+        isOpen: true,
+      },
+      {
+        name: "Discount rate",
+        text: `${productDetail?.pricingConfiguration?.discountRate}%`,
+        isOpen: true,
+      },
+      {
+        name: "Consideration",
+        text: currencyFormatter(
+          productDetail?.pricingConfiguration?.consideration,
+          productDetail?.productInfo?.currencyCode
+        ),
+        isOpen: true,
+      },
+    ];
+    const allowedTerms = [
+      "Interest rates",
+      "Allowable tenor",
+      "Allowable principal",
+      "Interest rate",
+    ];
+    const allowedSecurity = [
+      "Consideration",
+      "Discount rate",
+      "Per amount",
+      "Face value",
+      "Maturity date",
+      "Deal date",
+    ];
+    const termPricing = pricingData.filter((i) =>
+      allowedTerms.includes(i.name)
+    );
+    const securityPricing = pricingData.filter((i) =>
+      allowedSecurity.includes(i.name)
+    );
+    const tabs = [
       {
         name: "Product Information",
         data: [
@@ -179,83 +313,10 @@ export default function ProductInfoInvestmentCalc({
       },
       {
         name: "Pricing Configuration",
-        data: [
-          {
-            name: "Allowable principal",
-            text: ` ${currencyFormatter(
-              productDetail?.pricingConfiguration?.applicablePrincipalMin,
-              productDetail?.productInfo?.currencyCode
-            )}
-            -
-            ${currencyFormatter(
-              productDetail?.pricingConfiguration?.applicablePrincipalMax,
-
-              productDetail?.productInfo?.currencyCode
-            )}`,
-            isOpen: true,
-          },
-          {
-            name: "Allowable tenor",
-            text: (
-              <span>
-                {productDetail?.pricingConfiguration?.applicableTenorMin} -{" "}
-                {productDetail?.pricingConfiguration?.applicableTenorMax}{" "}
-                {
-                  Interval[
-                    productDetail?.pricingConfiguration?.applicableTenorMaxUnit
-                  ]
-                }
-              </span>
-            ),
-            isOpen: true,
-          },
-          {
-            name: "Interest rate",
-            text: (
-              <span>
-                {" "}
-                {productDetail?.pricingConfiguration?.interestRateMin} -{" "}
-                {productDetail?.pricingConfiguration?.interestRateMax}% per
-                annum
-              </span>
-            ),
-            isOpen:
-              productDetail?.pricingConfiguration?.interestRateRangeType === 2,
-          },
-          {
-            name: "Interest rates",
-            text: productDetail?.pricingConfiguration?.interestRateConfigModels?.map(
-              (i, idx) => (
-                <div key={idx}>
-                  {productDetail?.pricingConfiguration
-                    ?.interestRateRangeType === 0 ? (
-                    <span>
-                      {" "}
-                      {i?.min} - {i?.max}% for{" "}
-                      {currencyFormatter(
-                        i?.principalMin,
-                        productDetail?.productInfo?.currencyCode
-                      )}{" "}
-                      -
-                      {currencyFormatter(
-                        i?.principalMax,
-                        productDetail?.productInfo?.currencyCode
-                      )}
-                    </span>
-                  ) : (
-                    <span>
-                      {" "}
-                      {i?.min} - {i?.max}% for {i?.tenorMin} - {i?.tenorMax}{" "}
-                      {Interval[i?.tenorMaxUnit]}
-                    </span>
-                  )}
-                </div>
-              )
-            ),
-            isOpen:
-              productDetail?.pricingConfiguration?.interestRateRangeType !== 2,
-          },
-        ],
+        data:
+          type?.toLowerCase() === "term deposit"
+            ? termPricing
+            : securityPricing,
         isOpen: false,
         isItemArray: true,
       },
@@ -459,6 +520,55 @@ export default function ProductInfoInvestmentCalc({
         isItemArray: true,
       },
       {
+        name: "Product to GL Mapping",
+        data: [
+          {
+            name: "Issue to customers",
+            text: (
+              <div>
+                <span className="flex gap-x-1">
+                  <span>Debit ledger:</span>444
+                </span>
+                <span className="flex gap-x-1">
+                  <span>Credit ledger:</span>444
+                </span>
+              </div>
+            ),
+            isOpen: true,
+          },
+          {
+            name: "Upfront interest payment",
+            text: (
+              <div>
+                <span className="flex gap-x-1">
+                  <span>Debit ledger:</span>444
+                </span>
+                <span className="flex gap-x-1">
+                  <span>Credit ledger:</span>444
+                </span>
+              </div>
+            ),
+            isOpen: true,
+          },
+          {
+            name: "Redemption at maturity",
+            text: (
+              <div>
+                <span className="flex gap-x-1">
+                  <span>Debit ledger:</span>444
+                </span>
+                <span className="flex gap-x-1">
+                  <span>Credit ledger:</span>444
+                </span>
+              </div>
+            ),
+            isOpen: true,
+          },
+        ],
+        isOpen: false,
+        isItemArray: false,
+      },
+      {
         name: "Charges & Taxes Configuration",
         data: (
           <ChargesAndTaxes
@@ -470,8 +580,17 @@ export default function ProductInfoInvestmentCalc({
         isOpen: false,
         isItemArray: false,
       },
-    ]);
-  }, [productDetail, taxData, chargeData]);
+    ];
+    const termTab = tabs.filter((i) => i.name !== "Product to GL Mapping");
+    const securityTab = tabs.filter(
+      (i) =>
+        i.name !== "Customer Eligibility Criteria" &&
+        i.name !== "Liquidation Configuration"
+    );
+    setProductDetailMap(
+      type.toLowerCase() === "term deposit" ? termTab : securityTab
+    );
+  }, [productDetail, taxData, chargeData, type]);
 
   useEffect(() => {
     if (chargeSuccess) {
@@ -509,10 +628,10 @@ export default function ProductInfoInvestmentCalc({
             {productDetailMap?.map((item, index) => (
               <div key={index} className="">
                 <div
-
-                  role="button" tabIndex={0}
+                  role="button"
+                  tabIndex={0}
                   data-testid={`btn`}
-                  onKeyDown={() => { }}
+                  onKeyDown={() => {}}
                   onClick={() => toggleTab(item?.name)}
                   className="flex items-center gap-x-1 mb-1"
                 >
