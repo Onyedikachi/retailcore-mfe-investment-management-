@@ -31,6 +31,7 @@ import { summaryLinks } from "@app/constants";
 import { currencyFormatter } from "@app/utils/formatCurrency";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 import moment from "moment";
+import SecurityPurchaseDetail from "./SecurityPurchaseDetail";
 
 export function Container({ children }) {
   return (
@@ -154,7 +155,6 @@ export default function ({
   productDetail,
   previousData = null,
 }: any) {
- 
   const { role, currencies } = useContext(AppContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -243,7 +243,11 @@ export default function ({
     if (isSuccess || modifySuccess || modifyRequestSuccess) {
       let text;
       if (investmentType === "security-purchase") {
-        text = reqData?.message || modifyRes?.message || modifyRequestRes?.message || "";
+        text =
+          reqData?.message ||
+          modifyRes?.message ||
+          modifyRequestRes?.message ||
+          "";
       } else if (process === "create" && role === "superadmin") {
         text = `${currencyFormatter(
           formData?.principal,
@@ -333,199 +337,11 @@ export default function ({
             {process === "preview" && (
               <ReviewStatus status={"r"} reason={"r"} type={""} text="failed" />
             )}
-            <Container>
-              <div>
-                <h3 className="text-[#636363] text-[18px] font-semibold mb-[56px]">
-                  Security Purchase Details
-                </h3>
-                <div className="grid gap-y-[56px]">
-                  <div className="flex flex-col">
-                    <h4 className="text-[#636363] text-[16px] font-medium mb-[27px]">
-                      Facility Details
-                    </h4>
-                    <div className="grid grid-cols-1 gap-[25px] px-12">
-                      <div className=" flex gap-[54px]">
-                        <div className="w-[300px]   text-base font-medium text-[#636363]">
-                          Money Market Category
-                        </div>
-                        <div className="w-full text-base font-normal text-[#636363]">
-                          {
-                            productCategoryOptions.find(
-                              (i) =>
-                                i.value ===
-                                productDetail
-                                  ?.moneyMarketCategory
-                            )?.text
-                          }
-                        </div>
-                      </div>
-                      <div className=" flex gap-[54px]">
-                        <div className="w-[300px]   text-base font-medium text-[#636363]">
-                          Issuer
-                        </div>
-                        <div className="w-full text-base font-normal text-[#636363]">
-                          {productDetail?.issuer || " - "}
-                        </div>
-                      </div>
-                      <div className=" flex gap-[54px]">
-                        <div className="w-[300px]   text-base font-medium text-[#636363]">
-                          Description
-                        </div>
-                        <div className="w-full text-base font-normal text-[#636363]">
-                          <span className="">
-                            {productDetail?.description ||
-                              " - "}
-                          </span>
-                        </div>
-                      </div>
-                      <div className=" flex gap-[54px]">
-                        <div className="w-[300px]   text-base font-medium text-[#636363]">
-                          Deal Date
-                        </div>
-                        <div className="w-full text-base font-normal text-[#636363]">
-                          <span className="">
-                            {moment(
-                              productDetail?.dealDate
-                            ).format("DD MMM YYYY")}{" "}
-                          </span>
-                        </div>
-                      </div>
-                      <div className=" flex gap-[54px]">
-                        <div className="w-[300px]   text-base font-medium text-[#636363]">
-                          Maturity Date
-                        </div>
-                        <div className="w-full text-base font-normal text-[#636363]">
-                          <span className="">
-                            {moment(
-                              productDetail?.maturityDate
-                            ).format("DD MMM YYYY")}{" "}
-                          </span>
-                        </div>
-                      </div>
-                      <div className=" flex gap-[54px]">
-                        <div className="w-[300px]   text-base font-medium text-[#636363]">
-                          Currency
-                        </div>
-                        <div className="w-full text-base font-normal text-[#636363]">
-                          <span className="">
-                            {productDetail?.currencyCode}
-                          </span>
-                        </div>
-                      </div>
-                      <div className=" flex gap-[54px]">
-                        <div className="w-[300px]   text-base font-medium text-[#636363]">
-                          Discount Rate
-                        </div>
-                        <div className="w-full text-base font-normal text-[#636363]">
-                          <span className="">
-                            {productDetail?.discountRate ||
-                              "-"}
-                            {productDetail?.discountRate &&
-                              "%"}
-                          </span>
-                        </div>
-                      </div>
-                      <div className=" flex gap-[54px]">
-                        <div className="w-[300px]   text-base font-medium text-[#636363]">
-                          Face Value
-                        </div>
-                        <div className="w-full text-base font-normal text-[#636363]">
-                          <span className="">
-                            {currencyFormatter(
-                              productDetail?.faceValue ||
-                                0,
-                              productDetail?.currencyCode
-                            )}
-                          </span>
-                        </div>
-                      </div>
-                      <div className=" flex gap-[54px]">
-                        <div className="w-[300px]   text-base font-medium text-[#636363]">
-                          Total Consideration
-                        </div>
-                        <div className="w-full text-base font-normal text-[#636363]">
-                          <span className="">
-                            {currencyFormatter(
-                              productDetail
-                                ?.totalConsideration,
-                              productDetail?.currencyCode
-                            )}
-                          </span>
-                        </div>
-                      </div>
-                      <div className=" flex gap-[54px]">
-                        <div className="w-[300px]   text-base font-medium text-[#636363]">
-                          Interest Capitalization Method
-                        </div>
-                        <div className="w-full text-base font-normal text-[#636363]">
-                          <span className="">
-                            {
-                              CapitalizationOptions.find(
-                                (i) =>
-                                  i.value ===
-                                  productDetail
-                                    ?.capitalizationMethod
-                              )?.text
-                            }
-                          </span>
-                        </div>
-                      </div>
-                      {productDetail
-                        ?.securityPurchaseIntervals && (
-                        <div className=" flex gap-[54px]">
-                          <div className="w-[300px]   text-base font-medium text-[#636363]">
-                            Specify Interval
-                          </div>
-                          <div className="w-full text-base font-normal text-[#636363]">
-                            <span className="">
-                              {
-                                productDetail
-                                  ?.securityPurchaseIntervals
-                              }
-                              {
-                                intervalOptions.find(
-                                  (i) =>
-                                    i.id ===
-                                    productDetail
-                                      ?.securityPurchaseIntervals
-                                )?.text
-                              }
-                            </span>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                <div className="grid gap-y-[56px] mt-[56px]">
-                  <div className="flex flex-col">
-                    <h4 className="text-[#636363] text-[16px] font-medium mb-[27px]">
-                      Account Entries
-                    </h4>
-                    <div className="grid grid-cols-1 gap-[25px] px-12">
-                      <div className=" flex gap-[54px]">
-                        <div className="w-[300px]   text-base font-medium text-[#636363]">
-                          Credit Ledger
-                        </div>
-                        <div className="w-full text-base font-normal text-[#636363]">
-                          {productDetail?.creditLedger ||
-                            " - "}
-                        </div>
-                      </div>
-                      <div className=" flex gap-[54px]">
-                        <div className="w-[300px]   text-base font-medium text-[#636363]">
-                          DebitLedger
-                        </div>
-                        <div className="w-full text-base font-normal text-[#636363]">
-                          {productDetail?.debitLedger ||
-                            " - "}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Container>
+            <SecurityPurchaseDetail
+              formData={formData}
+              productDetail={productDetail}
+              previousData={previousData}
+            />
           </div>
           <Actions
             handleCancel={handleCancel}

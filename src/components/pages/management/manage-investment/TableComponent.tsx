@@ -532,7 +532,7 @@ export default function TableComponent({
             data-testid="download-btn"
             className="flex gap-x-2 items-center bg-transparent border-none text-[#636363] text-base"
           >
-            <HiDownload className="text-lg" /> Download security Table
+            <HiDownload className="text-lg" /> Download
           </button>
         </div>
       </div>

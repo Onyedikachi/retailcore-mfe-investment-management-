@@ -229,7 +229,7 @@ export default function EntriesAndEventsSearchResults({
               {(ledgerIsLoading || isLoading) && (
                 <BottomBarLoader w="w-4" h="h-4" />
               )}
-              {classId && (
+              {(classId && !ledgerIsLoading && !isLoading) && (
                 <div className="max-h-[233px] overflow-y-auto flex flex-col gap-4 py-2 pr-2">
                   {ledgers
                     ?.filter(

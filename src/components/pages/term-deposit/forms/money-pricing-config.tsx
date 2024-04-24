@@ -127,8 +127,8 @@ export default function MoneyPricingConfig({
   const watchApplicableTenorMax = watch("applicableTenorMax");
   const watchApplicableTenorMaxUnit = watch("applicableTenorMaxUnit");
 
-  function onProceed(d: any) {
-    setFormData({ ...d });
+  function onProceed() {
+    // setFormData({ ...d });
     proceed();
   }
 
@@ -178,19 +178,8 @@ export default function MoneyPricingConfig({
   const values = getValues();
 
   useEffect(() => {
-    if (
-      validateSlab(
-        values,
-        watchinterestRateRangeType,
-        watchApplicablePrincipalMax,
-        watchApplicableTenorMax
-      )
-    ) {
-      setDisabled(!isValid);
-    } else {
-      setDisabled(true);
-    }
-  }, [values]);
+    setDisabled(false);
+  }, []);
 
   useEffect(() => {
     if (formData) {
@@ -213,7 +202,7 @@ export default function MoneyPricingConfig({
     }
   }, [initiateDraft]);
   return (
-    <form id="customereligibilitycriteria" onSubmit={handleSubmit(onProceed)}>
+    <form id="customereligibilitycriteria" onSubmit={onProceed}>
       <div className="flex flex-col gap-10 max-w-[860px]">
         <div className="grid grid-cols-2 gap-x-[48px] gap-y-[36px] ">
           <div className="">

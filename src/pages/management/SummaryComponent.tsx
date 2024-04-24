@@ -18,6 +18,7 @@ import {
 } from "@app/api";
 import { rangeLabels, summaryLinks } from "@app/constants";
 import Certificate from "./book-investment/certificate/IndexComponent";
+import SecurityPurchaseDetail from "./book-investment/SecurityPurchaseDetail";
 export function Container({ children }) {
   return (
     <div
@@ -145,16 +146,24 @@ export default function Summary() {
                 />
               )}
               <Container>
-                <BookingDetail
-                  detail={
-                    process_type?.includes("liquidation")
-                      ? investmentData?.data
-                      : detail || investmentData?.data
-                  }
-                  oldData={null}
-                  type={type}
-                  productDetail={productDetail?.data}
-                />
+                {type === "security-purchase" ? (
+                  <SecurityPurchaseDetail
+                    formData={productDetail}
+                    productDetail={productDetail}
+                    previousData={null}
+                  />
+                ) : (
+                  <BookingDetail
+                    detail={
+                      process_type?.includes("liquidation")
+                        ? investmentData?.data
+                        : detail || investmentData?.data
+                    }
+                    oldData={null}
+                    type={type}
+                    productDetail={productDetail?.data}
+                  />
+                )}
               </Container>
             </div>
 
