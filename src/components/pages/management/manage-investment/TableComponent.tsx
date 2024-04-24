@@ -495,9 +495,9 @@ export default function TableComponent({
               isOverviewDrillDown
             )
           }
-          placeholder={`Search by ${tab==="security-purchase"?"issuer":"customer"} name${
-            category !== StatusCategoryType.Requests ? "/code" : ""
-          }`}
+          placeholder={`Search by ${
+            tab === "security-purchase" ? "issuer" : "customer"
+          } name${category !== StatusCategoryType.Requests ? "/code" : ""}`}
           searchResults={searchResults}
           setSearchResults={setSearchResults}
           searchLoading={searchLoading}

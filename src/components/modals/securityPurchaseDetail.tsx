@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { IoArrowUndo } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { FaBan, FaRegTimesCircle, FaPlayCircle, FaTimes } from "react-icons/fa";
 import moment from "moment";
 import ModalLayout from "./Layout";
 import BottomBarLoader from "../BottomBarLoader";
 import {
+  CapitalizationOptions,
   CustomerCategory,
+  InterestComputationMethod,
   Interval,
   ProductTypes,
   liquidities,
@@ -24,6 +26,7 @@ import { BiSolidEdit } from "react-icons/bi";
 interface Props {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  setTopUpOpen: (isOpen: boolean) => void;
   onCancel?: () => void;
   handleClick?: (e: any, detail: any) => void;
   detail: any;
@@ -37,10 +40,14 @@ export const SecurityPurchaseDetailLayout = ({
   investmentData,
   productInfo,
   permissions,
+  setTopUpOpen,
   open,
   setOpen,
   handleClick,
 }) => {
+  console.log("security purchase table", investmentData);
+  console.log("security purchase table details", detail);
+
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
       <div
@@ -55,18 +62,16 @@ export const SecurityPurchaseDetailLayout = ({
                   data-testid="product-name"
                   className="text-[#636363] font-bold text-2xl uppercase"
                 >
-                  {productInfo?.data?.productInfo?.productName || "-"}
+                  {investmentData?.data?.issuer || "-"}
                 </h1>
                 <span
                   className={`${
-                    detail?.investmentBookingStatus === 1
+                    detail?.state === "active"
                       ? "text-[#15692A] bg-[#D4F7DC]"
                       : "text-[#1E0A3C] bg-[#E5E5EA]"
                   } px-2 py-[1px] rounded font-medium capitalize`}
                 >
-                  {detail?.investmentBookingStatus === 1
-                    ? "Active"
-                    : "Liquidated"}
+                  {detail?.state === "active" ? "Active" : "Liquidated"}
                 </span>
               </div>
               <button
@@ -85,7 +90,9 @@ export const SecurityPurchaseDetailLayout = ({
                       Issuer/ ID
                     </span>
                     <span className="font-normal block uppercase">
-                      {`${investmentData?.data?.customerBookingInfoModel?.customerName}/ ${investmentData?.data?.customerBookingInfoModel?.customerAccount}`}
+                      {`${investmentData?.data?.issuer || "-"} / ${
+                        detail?.code || "-"
+                      }`}
                     </span>
                   </div>
                   <div>
@@ -96,7 +103,7 @@ export const SecurityPurchaseDetailLayout = ({
                       data-testid="id-value"
                       className="font-normal block uppercase"
                     >
-                      {detail?.investmentId || "-"}
+                      {detail?.code || "-"}
                     </span>
                   </div>
                   <div>
@@ -107,7 +114,7 @@ export const SecurityPurchaseDetailLayout = ({
                       data-testid="principal-value"
                       className="font-normal block"
                     >
-                      {detail?.principal}{" "}
+                      {detail?.totalConsideration || "-"}
                     </span>
                   </div>
 
@@ -130,10 +137,10 @@ export const SecurityPurchaseDetailLayout = ({
                       Face Value
                     </span>
                     <span className="font-normal block">
-                      {currencyFormatter(
-                        detail?.maturityValue,
-                        productInfo?.data?.productInfo?.currencyCode
-                      ) || "-"}{" "}
+                      {detail?.currencyCode || ""}{" "}
+                      {Number(
+                        investmentData?.data?.faceValue ?? 0
+                      ).toLocaleString() || "-"}
                     </span>
                   </div>
 
@@ -142,15 +149,10 @@ export const SecurityPurchaseDetailLayout = ({
                       Clean Price
                     </span>
                     <span className="font-normal block">
-                      {moment(productInfo?.data?.productInfo?.startDate).format(
-                        "DD MMM YYYY"
-                      )}{" "}
-                      -{" "}
-                      {productInfo?.data?.productInfo?.endDate
-                        ? moment(
-                            productInfo?.data?.productInfo?.endDate
-                          ).format("DD MMM YYYY")
-                        : "Unspecified"}
+                      {detail?.currencyCode || ""}{" "}
+                      {Number(
+                        investmentData?.data?.cleanPrice ?? 0
+                      ).toLocaleString() || "-"}
                     </span>
                   </div>
                   <div>
@@ -158,7 +160,11 @@ export const SecurityPurchaseDetailLayout = ({
                       Interest Capitalization Method
                     </span>
                     <span className="font-normal block">
-                      {productInfo?.data?.productInfo?.currencyCode}{" "}
+                      {
+                        CapitalizationOptions.find(
+                          (i) => i.value === detail?.capitalizationMethod
+                        )?.text
+                      }
                     </span>
                   </div>
                   <div>
@@ -166,28 +172,32 @@ export const SecurityPurchaseDetailLayout = ({
                       Interest Computation days in a year
                     </span>
                     <span className="font-normal block">
-                      {moment(detail?.approvedOn).format("DD MMM YYYY")} -{" "}
-                      {moment(detail?.approvedOn)
-                        .add(detail.tenor, Interval[detail.tenorUnit])
-                        .format("DD MMM YYYY")}
+                      {
+                        InterestComputationMethod[
+                          detail?.interestComputationMethod
+                        ]
+                      }
                     </span>
                   </div>
                 </div>
                 <div className="border border-[#E5E9EB] rounded-lg py-[35px] px-[30px] flex justify-between items-center">
-                  {
+                  {detail?.state === "active" && (
                     <div className="flex gap-x-6 items-center">
                       <button
-                        data-testid="modify"
-                        onClick={() => handleClick("early liquidate", detail)}
+                        data-testid="security-purchase-topup"
+                        onClick={() => {
+                          setIsOpen(false);
+                          setTopUpOpen(true);
+                        }}
                         className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3`}
                       >
                         <BiSolidEdit className="text-[#444]" /> Security Top Up
                       </button>
                     </div>
-                  }
+                  )}
                   <Link
                     to={`/investment-management/${CustomerCategory[
-                      productInfo?.data?.customerEligibility?.customerCategory
+                      2
                     ]?.toLowerCase()}/process-summary/preview/${
                       detail?.id
                     }?product_id=${detail?.investmentProductId}&request_id=${
@@ -205,14 +215,22 @@ export const SecurityPurchaseDetailLayout = ({
 
               <div className="border border-[#E5E9EB] rounded-lg py-[25px] px-[30px] h-[593px]">
                 <div className="p-6 flex flex-col gap-y-[35px] max-h-[463px] overflow-y-auto">
+                  {detail?.reasonForLiquidation && (
+                    <div>
+                      <span className="font-bold block mb-[15px]">
+                        Reason for Liquidation
+                      </span>
+                      <span className="font-normal block uppercase">
+                        {detail?.reasonForLiquidation || "-"}
+                      </span>
+                    </div>
+                  )}
                   <div>
                     <span className="font-bold block mb-[15px]">
                       Investment Category
                     </span>
                     <span className="font-normal block uppercase">
-                      {ProductTypes.find(
-                        (i) => i.id == productInfo?.data?.productType
-                      )?.name || "-"}
+                      {detail?.moneyMarketType || "-"}
                     </span>
                   </div>
                   <div>
@@ -220,13 +238,13 @@ export const SecurityPurchaseDetailLayout = ({
                       Product Description
                     </span>
                     <span className="font-normal block uppercase">
-                      {productInfo?.data?.productCode || "-"}
+                      {detail?.description || "-"}
                     </span>
                   </div>
                   <div>
                     <span className="font-bold block mb-[15px]">Currency</span>
                     <span className="font-normal block">
-                      {productInfo?.data?.productInfo?.slogan || "-"}
+                      {detail?.currencyCode || "-"}
                     </span>
                   </div>
                 </div>
@@ -266,13 +284,16 @@ export default function SecurityPurchaseDetail({
   setIsOpen,
   handleClick,
   detail,
+  setTopUpOpen,
 }: Props) {
+  const { tab } = useParams();
   const { permissions } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
 
   const { data: investmentData, isInvestmentLoading } =
     useGetInvestmentDetailQuery({
       id: detail?.id,
+      investmentType: tab,
     });
   const {
     data: productInfo,
@@ -280,6 +301,7 @@ export default function SecurityPurchaseDetail({
     isSuccess,
   } = useGetProductDetailQuery({
     id: detail?.investmentProductId,
+    investmentType: tab,
   });
 
   const [open, setOpen] = useState(false);
@@ -300,6 +322,7 @@ export default function SecurityPurchaseDetail({
         investmentData,
         productInfo,
         permissions,
+        setTopUpOpen,
         open,
         setOpen,
         handleClick,

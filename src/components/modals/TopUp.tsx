@@ -21,6 +21,7 @@ import { liquiditiesPenaltyStrings } from "@app/constants";
 import { currencyFormatter } from "@app/utils/formatCurrency";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 import { useLiquidationCalculationMutation } from "@app/api";
+import { AiOutlineConsoleSql } from "react-icons/ai";
 
 interface TopUpProps {
   isOpen: boolean;
@@ -67,6 +68,9 @@ export default function TopUp({
 }: TopUpProps): React.JSX.Element {
   const { tab } = useParams();
   const [metaInfo, setMetaInfo] = useState(null);
+
+  console.log("okay details kon", detail, tab);
+
   const initialValues = {
     investementBookingId: detail?.id,
     reason: "",
@@ -116,6 +120,7 @@ export default function TopUp({
     },
     { skip: !detail?.investmentBookingId && !detail?.id }
   );
+
   const [
     topUpCalculation,
     {
@@ -213,10 +218,10 @@ export default function TopUp({
           <div className="w-[700px] p-8 rounded-lg bg-white text-left shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]">
             <div className="flex justify-between items-center pb-4 mb-[42px] border-b border-[#CCCCCC]">
               <h3 className="text-[#747373] font-bold text-xl uppercase">
-                {type === "topup"
-                  ? tab === "security-purchase"
-                    ? "security PURCHASE Top up Request"
-                    : "INVESTMENT TOP UP REQUEST"
+                {tab === "security-purchase"
+                  ? "security PURCHASE Top up Request"
+                  : type === "topup"
+                  ? "INVESTMENT TOP UP REQUEST"
                   : "principal withdrawal request"}
               </h3>
               <button
@@ -321,10 +326,10 @@ export default function TopUp({
                     className="flex items-center text-[#333333] mb-2 gap-x-1"
                   >
                     Provide justification for{" "}
-                    {type === "topup"
-                      ? tab === "security-purchase"
-                        ? "security purchase top up"
-                        : "investment topup"
+                    {tab === "security-purchase"
+                      ? "security purchase top up"
+                      : type === "topup"
+                      ? "investment topup"
                       : "principal withdrawal"}
                     <span className="flex">
                       {" "}
@@ -454,11 +459,11 @@ export default function TopUp({
                 )}
                 <div className="flex items-center mb-10 rounded-[10px] border border-[#EBEBEB] bg-[#AAAAAA12] py-6 px-5 gap-x-1">
                   <span className="text-sm text-[#747373] capitalize">
-                    {type === "topup"
-                      ? tab === "security-purchase"
-                        ? "security purchase top up"
-                        : "investment topup"
-                      : "principal withdrawal"}
+                    {tab === "security-purchase"
+                      ? "security purchase top up"
+                      : type === "topup"
+                      ? "investment topup"
+                      : "principal withdrawal"}{" "}
                     value:{" "}
                   </span>
                   <span className="text-sm text-[#747373] font-semibold">
