@@ -28,6 +28,7 @@ import {
   ProductState,
   termDepositFormSteps,
   moneyMarketFormSteps,
+  ProductOptionTypes,
 } from "@app/constants";
 import Preview from "@app/components/pages/term-deposit/forms/preview";
 import { Messages } from "@app/constants/enums";
@@ -247,7 +248,7 @@ export default function CreateTermDeposit() {
   const refresh = searchParams.get("refresh");
   const activeId = useRef(null);
   const previousData = useRef({});
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(1);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [subText, setSubText] = useState("");
   const [successText, setSuccessText] = useState("");
@@ -263,7 +264,9 @@ export default function CreateTermDeposit() {
   const [productData, setProductData] = useState({
     id: id || null,
     productInfo: {
-      investmentId: "",
+      code:"",
+      securitPurchaseId: "",
+      type,
       productName: "",
       slogan: "",
       description: "",
@@ -350,13 +353,14 @@ export default function CreateTermDeposit() {
       withdrawalPenalty: 0,
     },
     productGlMappings: [],
+    moneyMarketProductGlMapping:[],
     interestComputationMethod: 2,
     TermDepositLiabilityAccount: "",
     InterestAccrualAccount: "",
     InterestExpenseAccount: "",
     PrepaidAssetLedger: "",
     isDraft: false,
-    productType: 0,
+    productType: ProductOptionTypes[type],
   });
 
   const [isDisabled, setDisabled] = useState<boolean>(true);

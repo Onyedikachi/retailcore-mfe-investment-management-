@@ -6,9 +6,10 @@ import {
   Interval,
   liquidities,
   ProductTypes,
+  MoneyMarketGlType,
 } from "@app/constants";
+import { useGetInvestmentDetailQuery } from "@app/api";
 import { currencyFormatter } from "@app/utils/formatCurrency";
-import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 import { AppContext } from "@app/utils";
 import {
   useLocation,
@@ -17,7 +18,7 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import PreviewChargesAndTaxes from "./PreviewChargesAndTaxes";
-
+import { InterestComputationMethod } from "@app/constants";
 export function DebitCreditTable({ dataTab }) {
   const location = useLocation();
   const headers = [
@@ -101,15 +102,6 @@ export function MoneyDebitCreditTable({ dataTab }) {
   const location = useLocation();
   const headers = [
     {
-      title: "S|N",
-      key: "S|N",
-    },
-    {
-      title: "event",
-      key: "event",
-    },
-
-    {
       title: "debit ledger",
       key: "debit ledger",
     },
@@ -120,70 +112,141 @@ export function MoneyDebitCreditTable({ dataTab }) {
   ];
 
   const accountTypes = ["Issue to customers", "Upfront interest", "Redemption"];
-
+  const dataObj = [
+    {
+      label: "Issue to customers",
+      moneyMarketGlType: 0,
+      ledgerEntryMappings: [
+        {
+          ledgerEntries: [
+            {
+              ledgerType: 0,
+              ledgerCode: "ASTRAI1002S012",
+              glClass: "ASSETS",
+            },
+          ],
+          errors: null,
+        },
+      ],
+    },
+    {
+      label: "Upfront interest payment",
+      moneyMarketGlType: 1,
+      ledgerEntryMappings: [
+        {
+          ledgerEntries: [
+            {
+              ledgerType: 0,
+              ledgerCode: "ASTRAI1002S012",
+              glClass: "ASSETS",
+            },
+          ],
+          errors: null,
+        },
+      ],
+    },
+    {
+      label: "Redemption at maturity",
+      moneyMarketGlType: 2,
+      ledgerEntryMappings: [
+        {
+          ledgerEntries: [
+            {
+              ledgerType: 0,
+              ledgerCode: "EQUVFR1004S012",
+              glClass: "EQUITY",
+            },
+          ],
+          errors: null,
+        },
+      ],
+    },
+  ];
   return (
-    <table className="w-full">
-      <thead>
-        <tr>
-          {headers?.map((i) => (
-            <th
-              className="relative uppercase font-bold text-sm text-[#AAAAAA] px-4 py-5 after:content-[''] text-left after:w-1 after:h-[18px] after:absolute after:border-r after:left-0 after:top-1/2 after:translate-y-[-50%] after:border-[#AAAAAA]/75 first-of-type:after:content-none last-of-type:after:content-none border-b border-[#C2C9D1]/30 whitespace-nowrap"
-              key={i.key}
-            >
-              {i.title}
-            </th>
-          ))}
-        </tr>
-      </thead>
+    <div>
+      {dataTab.map((d) => (
+        <div
+          key={d?.moneyMarketGlType}
+          className="border border-gray-100 rounded-lg flex gap-x-8"
+        >
+          <div className="pl-4 py-5 w-[240px] font-medium">
+            {" "}
+            {MoneyMarketGlType[d?.moneyMarketGlType]}
+          </div>
+          <table className="flex-1">
+            <thead>
+              <tr>
+                {headers?.map((i) => (
+                  <th
+                    className="relative uppercase font-bold text-sm text-[#AAAAAA] px-4 py-5 after:content-[''] text-left after:w-1 after:h-[18px] after:absolute after:border-r after:left-0 after:top-1/2 after:translate-y-[-50%] after:border-[#AAAAAA]/75 first-of-type:after:content-none last-of-type:after:content-none border-b border-[#C2C9D1]/30 whitespace-nowrap"
+                    key={i.key}
+                  >
+                    {i.title}
+                  </th>
+                ))}
+              </tr>
+            </thead>
 
-      <tbody>
-        {dataTab?.map((i, index) => (
-          <tr
-            key={i?.accountId}
-            className="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"
-          >
-            <td
-              data-testid="table-data"
-              className="text-sm font-medium text-[#636363] px-4 py-5 capitalize max-w-[290px] truncate relative text-left"
-            >
-              <span>
-                <span className="text-[#aaa] capitalize">{index + 1}</span>
-              </span>
-            </td>
-            <td className="text-sm font-medium text-[#AAAAAA] px-4 py-5 capitalize max-w-[290px] truncate relative text-left">
-              <span>
-                <span className="text-[#aaa] capitalize">
-                  {accountTypes[i.glAccountType]}
-                </span>
-              </span>
-            </td>
-            <td className="text-sm font-medium text-[#AAAAAA] px-4 py-5 capitalize max-w-[290px] truncate relative text-left">
-              <span>
-                <span className="text-[#aaa]">{i.accountName}</span>
-              </span>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+            <tbody>
+              {d?.ledgerEntryMappings?.map((i, index) => (
+                <tr
+                  key={`${index}+index`}
+                  className="bg-[#DB353905] border-b border-[#C2C9D1]/30 last-of-type:border-none"
+                >
+                  <td className="text-sm font-medium text-[#AAAAAA] px-4 py-5 capitalize max-w-[290px] truncate relative text-left">
+                    <span>
+                      {i?.ledgerEntries.filter((i) => i.ledgerType === 0).length
+                        ? i?.ledgerEntries
+                            ?.filter((i) => i.ledgerType === 0)
+                            .map((dt) => (
+                              <span className="text-[#aaa] capitalize block text-left">
+                                {dt.ledgerCode}
+                              </span>
+                            ))
+                        : "-"}
+                    </span>
+                  </td>
+                  <td className="text-sm font-medium text-[#AAAAAA] px-4 py-5 capitalize max-w-[290px] truncate relative text-left">
+                    <span>
+                      <span>
+                        {i?.ledgerEntries.filter((i) => i.ledgerType === 1)
+                          .length
+                          ? i?.ledgerEntries
+                              ?.filter((i) => i.ledgerType === 1)
+                              .map((dt) => (
+                                <span className="text-[#aaa] capitalize block text-left">
+                                  {dt.ledgerCode}
+                                </span>
+                              ))
+                          : "-"}
+                      </span>
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ))}
+    </div>
   );
 }
 export default function ProductDetail({ detail, previousData }: any) {
-  const { currencies } = useContext(AppContext);
+  console.log("🚀 ~ ProductDetail ~ detail:", detail);
   const { type } = useParams();
 
-  const chargeArray = [
+  const { data, isLoading } = useGetInvestmentDetailQuery(
     {
-      id: "79e00876-2244-4e21-9bbf-ccbd5cf62233",
-      name: "Fixed Charge",
-      amount: "100",
+      id: detail?.productInfo?.securitPurchaseId,
+      investmentType: "security-purchase",
     },
-  ];
+    { skip: !detail?.productInfo?.securitPurchaseId }
+  );
 
   return (
     <div>
-      <h3 className="text-[#636363] text-[18px] font-semibold mb-[56px]">
-        Term Deposit Product Details
+      <h3 className="text-[#636363] text-[18px] font-semibold mb-[56px] capitalize">
+        {type.replace("-", " ")} Product Details
       </h3>
       <div className="grid gap-y-[56px]">
         <div className="flex flex-col">
@@ -203,21 +266,12 @@ export default function ProductDetail({ detail, previousData }: any) {
                         detail?.productInfo?.investmentId && (
                         <span className="block  line-through mb-2 text-[#aaa]">
                           {" "}
-                          {previousData?.investmentId}
+                          {previousData?.code}
                         </span>
                       )}
-                    <span className="flex itmes-center">
+                    <span className="flex itmes-center capitalize">
                       {" "}
-                      {detail?.productInfo?.investmentId}{" "}
-                      {previousData &&
-                        previousData?.investmentId &&
-                        previousData?.investmentId !==
-                          detail?.productInfo?.investmentId && (
-                          <span className="block text-success-500 pl-[2px]">
-                            {" "}
-                            New
-                          </span>
-                        )}
+                      {detail?.productInfo?.code}{" "}
                     </span>
                   </div>
                 </div>
@@ -346,7 +400,7 @@ export default function ProductDetail({ detail, previousData }: any) {
                     detail?.productInfo?.currencyCode && (
                     <span className="block  line-through mb-2 text-[#aaa]">
                       {" "}
-                      {handleCurrencyName(previousData?.currency, currencies)}
+                      {previousData?.currencyCode}
                     </span>
                   )}
                 <span className="flex itmes-center">
@@ -391,7 +445,7 @@ export default function ProductDetail({ detail, previousData }: any) {
             {type !== "term-deposit" && (
               <div className=" flex gap-[54px]">
                 <div className="w-[300px]   text-base font-medium text-[#636363]">
-                Deal date
+                  Deal date
                 </div>
                 <div className="w-full text-base font-normal text-[#636363]">
                   <span className="flex itmes-center">
@@ -400,7 +454,6 @@ export default function ProductDetail({ detail, previousData }: any) {
                       {moment(detail?.productInfo?.startDate).format(
                         "DD MMM YYYY"
                       )}{" "}
-                    
                     </span>
                   </span>
                 </div>
@@ -409,16 +462,15 @@ export default function ProductDetail({ detail, previousData }: any) {
             {type !== "term-deposit" && (
               <div className=" flex gap-[54px]">
                 <div className="w-[300px]   text-base font-medium text-[#636363]">
-                 Maturity date
+                  Maturity date
                 </div>
                 <div className="w-full text-base font-normal text-[#636363]">
                   <span className="flex itmes-center">
                     {" "}
                     <span className="font-normal block">
-                      {moment(detail?.productInfo?.startDate).format(
+                      {moment(detail?.productInfo?.endDate).format(
                         "DD MMM YYYY"
                       )}{" "}
-                   
                     </span>
                   </span>
                 </div>
@@ -622,7 +674,12 @@ export default function ProductDetail({ detail, previousData }: any) {
                 </div>
                 <div className="w-full text-base font-normal text-[#636363]">
                   <span className="block  mb-2 text-[#636363]">
-                    <span className="font-normal block">9000</span>
+                    <span className="font-normal block">
+                      {currencyFormatter(
+                        data?.data?.faceValue,
+                        data?.data?.currencyCode
+                      )}
+                    </span>
                   </span>
                 </div>
               </div>
@@ -632,17 +689,24 @@ export default function ProductDetail({ detail, previousData }: any) {
                 </div>
                 <div className="w-full text-base font-normal text-[#636363]">
                   <span className="block  mb-2 text-[#636363]">
-                    <span className="font-normal block">9000</span>
+                    <span className="font-normal block">
+                      {currencyFormatter(
+                        data?.data?.totalConsideration,
+                        data?.data?.currencyCode
+                      )}
+                    </span>
                   </span>
                 </div>
               </div>
               <div className=" flex gap-[54px]">
                 <div className="w-[300px]   text-base font-medium text-[#636363]">
-                  Discoount rate
+                  Discount rate
                 </div>
                 <div className="w-full text-base font-normal text-[#636363]">
                   <span className="block  mb-2 text-[#636363]">
-                    <span className="font-normal block">9000</span>
+                    <span className="font-normal block">
+                      {data?.data?.discountRate}%
+                    </span>
                   </span>
                 </div>
               </div>
@@ -652,7 +716,12 @@ export default function ProductDetail({ detail, previousData }: any) {
                 </div>
                 <div className="w-full text-base font-normal text-[#636363]">
                   <span className="block  mb-2 text-[#636363]">
-                    <span className="font-normal block">9000</span>
+                    <span className="font-normal block">
+                      {currencyFormatter(
+                        data?.data?.perAmount,
+                        data?.data?.currencyCode
+                      )}
+                    </span>
                   </span>
                 </div>
               </div>
@@ -662,7 +731,13 @@ export default function ProductDetail({ detail, previousData }: any) {
                 </div>
                 <div className="w-full text-base font-normal text-[#636363]">
                   <span className="block  mb-2 text-[#636363]">
-                    <span className="font-normal block">9000</span>
+                    <span className="font-normal block">
+                      {
+                        InterestComputationMethod[
+                          data?.data?.interestComputationMethod
+                        ]
+                      }
+                    </span>
                   </span>
                 </div>
               </div>
@@ -857,62 +932,13 @@ export default function ProductDetail({ detail, previousData }: any) {
             </div>
           </div>
         )}
-        <div className="!hidden  flex-col">
-          <h4 className="text-[#636363] text-[16px] font-medium mb-[27px]">
-            Charges & Taxes
-          </h4>
-          <div className="grid grid-cols-1 gap-[25px] px-12">
-            <div className=" flex gap-[54px]">
-              <div className="w-[300px]   text-base font-medium text-[#636363]">
-                Prinicipal Deposit
-              </div>
-              <div className="w-full">
-                <div className="w-full text-base font-normal text-[#636363] mb-5">
-                  <span className="block  text-base mb-2 ">
-                    {" "}
-                    Applicable charges
-                  </span>
 
-                  <div className="flex gap-x-1 gap-y-1 flex-wrap">
-                    <span className="bg-[#E0E0E0] px-[15px] py-[6px] rounded-full flex items-center gap-x-4">
-                      <span className="flex flex-col items-center justify-center text-xs">
-                        <span className="font-medium text-[#16252A]">
-                          {" "}
-                          Deposit fee
-                        </span>
-                        <span>NGN 40000</span>
-                      </span>
-                      <FaEye />
-                    </span>
-                  </div>
-                </div>
-                <div className="w-full text-base font-normal text-[#636363]">
-                  <span className="block  text-base mb-2 ">
-                    {" "}
-                    Applicable Taxes
-                  </span>
-
-                  <div className="flex gap-x-1 gap-y-1 flex-wrap">
-                    <span className="bg-[#E0E0E0] px-[15px] py-[6px] rounded-full flex items-center gap-x-4">
-                      <span className="flex flex-col items-center justify-center text-xs">
-                        <span className="font-medium text-[#16252A]">
-                          {" "}
-                          Deposit fee
-                        </span>
-                        <span>NGN 40000</span>
-                      </span>
-                      <FaEye />
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <PreviewChargesAndTaxes detail={detail} />
+        <PreviewChargesAndTaxes detail={detail} type={type} />
         <div className="flex flex-col">
           <h4 className="text-[#636363] text-[16px] font-medium mb-[27px]">
-            Account Entries
+            {type === "term-deposit"
+              ? "Account Entries"
+              : "Product GL Mappings"}
           </h4>
           <div className="grid grid-cols-1 gap-[25px] px-12">
             <div className=" flex gap-[54px]">
@@ -920,7 +946,13 @@ export default function ProductDetail({ detail, previousData }: any) {
                 Principal Deposit
               </div> */}
               <div className="w-full text-base font-normal">
-                <DebitCreditTable dataTab={detail?.productGlMappings} />
+                {type === "term-deposit" ? (
+                  <DebitCreditTable dataTab={detail?.productGlMappings} />
+                ) : (
+                  <MoneyDebitCreditTable
+                    dataTab={detail?.moneyMarketProductGlMapping}
+                  />
+                )}
               </div>
             </div>
           </div>

@@ -38,7 +38,7 @@ const TaxItem = ({ tax }) => {
   );
 };
 
-export default ({ detail }) => {
+export default ({ detail, type }) => {
   const valueTypes = [
     {
       header: "Principal Deposit",
@@ -66,7 +66,6 @@ export default ({ detail }) => {
       header: "Redemption Charges & Taxes",
       key: "redemptionChargesAndTaxes",
     },
-  
   ];
 
   const { data: charges } = useGetApplicableChargesQuery();
@@ -78,7 +77,7 @@ export default ({ detail }) => {
         Charges And Taxes
       </h4>
       <div className="grid grid-cols-1 gap-[25px] px-12">
-        {valueTypes.map(
+        {(type === "term-deposit" ? valueTypes : valueTypes1).map(
           (item) =>
             detail &&
             (detail[item.key]?.applicableCharges.length > 0 ||
@@ -91,20 +90,24 @@ export default ({ detail }) => {
                   {detail[item.key]?.applicableCharges.length > 0 && (
                     <Fragment>
                       <span className="mb-2">Applicable Charges</span>
-                      <div className="flex flex-row flex-wrap mb-4">
-                        {detail[item.key]?.applicableCharges?.map((item, idx) => {
-                          const charge = charges?.data?.records.find(
-                            (i) => i.charge_id === item
-                          );
-                          return <ChargeItem key={`id-${idx}`} charge={charge} />;
-                        })}
+                      <div className="flex flex-row flex-wrap mb-4 gap-x-1">
+                        {detail[item.key]?.applicableCharges?.map(
+                          (item, idx) => {
+                            const charge = charges?.data?.records.find(
+                              (i) => i.charge_id === item
+                            );
+                            return (
+                              <ChargeItem key={`id-${idx}`} charge={charge} />
+                            );
+                          }
+                        )}
                       </div>
                     </Fragment>
                   )}
                   {detail[item.key]?.applicableTaxes.length > 0 && (
                     <Fragment>
                       <span className="mb-2">Applicable Taxes</span>
-                      <div className="flex flex-row flex-wrap mb-4">
+                      <div className="flex flex-row flex-wrap mb-4 gap-x-1">
                         {detail[item.key]?.applicableTaxes?.map((item, idx) => {
                           const tax = taxes?.data?.records.find(
                             (i) => i.tax_id === item

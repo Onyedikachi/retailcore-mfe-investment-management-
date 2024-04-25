@@ -306,7 +306,7 @@ export default function ({
                                 <RedDot />
                             </span>{" "}
                             <span className="ml-2">
-                                <FormToolTip tip={toolTips.investmentId} />
+                                <FormToolTip tip={toolTips.securitPurchaseId} />
                             </span>
                         </label>
                     </div>
@@ -315,15 +315,15 @@ export default function ({
                             <input
                                 id="investment"
                                 data-testid="investment-id"
-                                className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB] ${errors?.investmentId || error ? "border-red-500" : ""
+                                className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB] ${errors?.securitPurchaseId || error ? "border-red-500" : ""
                                     }`}
-                                {...register("investmentId")}
+                                {...register("securitPurchaseId")}
                                 onChange={(e) => {
                                     handleInvestmentId(e.target.value, clearErrors, setError);
                                 }}
                                 placeholder="Enter ID"
-                                defaultValue={formData?.investmentId}
-                                aria-invalid={errors?.investmentId ? "true" : "false"}
+                                defaultValue={formData?.securitPurchaseId}
+                                aria-invalid={errors?.securitPurchaseId ? "true" : "false"}
                             />
                         </div>
 

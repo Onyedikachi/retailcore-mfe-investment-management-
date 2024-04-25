@@ -590,23 +590,33 @@ export const daysOptions = [
 export const CustomerCategory = {
   0: "Individual",
   1: "Corporate",
-  2: "security-purchase"
+  2: "security-purchase",
 };
 export const CustomerCategoryType = {
   individual: 0,
   corporate: 1,
   // Add other category types here
 };
-
+export const MoneyMarketGlType = {
+  0: "Issue To Customer",
+  1: "Upfront Interest Payment",
+  2: "Redemption At Maturity",
+};
 export const ProductType = {
   0: "Term Deposit",
-  1: "Treasure Bill",
+  1: "Treasury Bill",
   2: "Commercial Paper",
   3: "Bonds",
 };
+export const ProductOptionTypes = {
+  "term-deposit": 0,
+  "treasury-bill": 1,
+  "commercial-paper": 2,
+  bonds: 3,
+};
 export const MoneyMarketCategory = {
   0: "Term Deposit",
-  1: "Treasure Bill",
+  1: "Treasury Bill",
   2: "Commercial Paper",
   3: "Bonds",
 };

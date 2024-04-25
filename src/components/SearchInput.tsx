@@ -203,6 +203,7 @@ export default function SearchInput({
   return (
     <OutsideClickHandler
       onOutsideClick={() => closeBox(setSearchResults, setShowBox)}
+      className="w-100"
     >
       <div
         className={`border-b border-[#AAAAAA]  flex items-center relative bg-transparent shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] ${fullW ? "" : "max-w-[340px]"

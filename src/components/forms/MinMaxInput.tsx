@@ -85,13 +85,14 @@ export default function MinMaxInput({
                 placeholder={placeholder}
                 defaultValue={defaultValue}
                 decimalsLimit={2}
+                disabled={disabled}
                 disableGroupSeparators={disablegroupseparators}
                 onValueChange={(value, name) => {
                   clearErrors(inputName);
                   setValue(inputName, value);
                   trigger(inputName);
                 }}
-                className={`placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] ${
+                className={`placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pr-4 disabled:bg-white  border-b border-[#8F8F8F] placeholder:text-[#BCBBBB] ${
                   (errors && errors[inputName]) || error
                     ? "border-red-600"
                     : "border-[#8F8F8F]"

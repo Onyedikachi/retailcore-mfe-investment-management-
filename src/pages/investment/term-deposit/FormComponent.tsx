@@ -112,7 +112,7 @@ export default ({
     }
   }, [isSuccess]);
 
-  const [idQuery, setIdQuery] = useState("")
+  const [idQuery, setIdQuery] = useState("");
   const [showInputs, setShowInputs] = useState(false);
 
   const {
@@ -120,8 +120,9 @@ export default ({
     loading: securityDetailLoading,
     success: securityDetailSuccess,
   } = useGetInvestmentDetailQuery({
-    id: idQuery, investmentType: "security-purchase"
-  })
+    id: idQuery,
+    investmentType: "security-purchase",
+  });
 
   const loadSecurityDetailsData = (data) => {
     // console.log(currencies)
@@ -131,7 +132,8 @@ export default ({
         securitPurchaseId: idQuery,
         dealDate: data.dealDate,
         maturityDate: data.maturityDate,
-        currency: currencies.find(i => i.text === data.currencyCode)?.id || "",
+        currency:
+          currencies.find((i) => i.text === data.currencyCode)?.id || "",
         currencyCode: data?.currencyCode,
         issuer: data.issuer,
         startDate: new Date(),
@@ -141,60 +143,40 @@ export default ({
         perAmount: data.perAmount,
         discountRate: data.discountRate || 0,
         totalConsideration: data.totalConsideration,
-        interestComputationMethod: data.interestComputationMethod
+        interestComputationMethod: data.interestComputationMethod,
       },
-      "customerEligibility": {
-        "ageGroupMin": 0,
-        "ageGroupMax": 0,
-        "requireDocument": [],
-        "customerType": [],
-        "customerCategory": 0
+      customerEligibility: {
+        ageGroupMin: 0,
+        ageGroupMax: 0,
+        requireDocument: [],
+        customerType: [],
+        customerCategory: 0,
       },
-    }
-    setProductData({ ...productData, ...newForm })
-
-  }
+    };
+    setProductData({ ...productData, ...newForm });
+  };
 
   useEffect(() => {
-    if (securityDetailData && type !== 'term-deposit') {
-      console.log(securityDetailData)
+    if (securityDetailData && type !== "term-deposit") {
+      console.log(securityDetailData);
       loadSecurityDetailsData(securityDetailData?.data);
-      setShowInputs(true)
+      setShowInputs(true);
     }
-  }, [securityDetailData])
+  }, [securityDetailData]);
 
   return (
     <Fragment>
       {step === 1 && (
-        <>
-          {
-            type === "term-deposit" ?
-              <ProductInformation
-                proceed={handleNav}
-                formData={productData.productInfo}
-                setFormData={(productInfo) =>
-                  setProductData({ ...productData, productInfo: productInfo })
-                }
-                setDisabled={setDisabled}
-                initiateDraft={initiateDraft}
-                activeId={activeId}
-              /> :
-              <SecurityPurchaseProductInfo
-                proceed={handleNav}
-                formData={productData.productInfo}
-                idQuery={idQuery}
-                setIdQuery={setIdQuery}
-                setFormData={(productInfo) =>
-                  setProductData({ ...productData, productInfo: productInfo })
-                }
-                setDisabled={setDisabled}
-                initiateDraft={initiateDraft}
-                activeId={activeId}
-                showInputs={showInputs}
-                setShowInputs={setShowInputs}
-              />
+        <ProductInformation
+          proceed={handleNav}
+          formData={productData.productInfo}
+          setFormData={(productInfo) =>
+            setProductData({ ...productData, productInfo: productInfo })
           }
-        </>
+          setDisabled={setDisabled}
+          initiateDraft={initiateDraft}
+          activeId={activeId}
+        />
       )}
       {step === 2 && (
         <>
@@ -217,12 +199,7 @@ export default ({
           ) : (
             <MoneyPricingConfig
               formData={productData.pricingConfiguration}
-              setFormData={(pricingConfiguration) =>
-                setProductData({
-                  ...productData,
-                  pricingConfiguration: pricingConfiguration,
-                })
-              }
+              setFormData={undefined}
               productData={productData}
               proceed={handleNav}
               setDisabled={setDisabled}
@@ -251,10 +228,9 @@ export default ({
             <MoneyGlMapping
               proceed={handleNav}
               formData={productData}
-              setFormData={(data, mapOptions) =>
+              setFormData={(mapOptions) =>
                 setProductData({
                   ...productData,
-                  ...data,
                   moneyMarketProductGlMapping: mapOptions,
                 })
               }

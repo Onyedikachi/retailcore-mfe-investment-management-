@@ -1,6 +1,6 @@
 import { Checkbox, RedDot } from "@app/components/forms";
 import { GlInput } from "@app/components/forms";
-import { glMappingSchema, chargesAndTaxesSchema } from "@app/constants";
+import { glMappingSchema, MoneyMarketGlType } from "@app/constants";
 import { useForm, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ErrorMessage } from "@hookform/error-message";
@@ -148,8 +148,8 @@ export default ({
   const [activeTab, setActiveTab] = useState<any>([0]);
   const [filteredTabs, setFilteredTabs] = useState([]);
   const [nerrors, setNerrors] = useState(null);
-  function onProceed(val) {
-    // setFormData(val, mapOptions);
+  function onProceed(formFields) {
+    setFormData(formFields);
     proceed();
   }
 
@@ -248,7 +248,6 @@ export default ({
     }
   }
   useEffect(() => {
-    console.log("🚀 ~ formFields:", formFields);
 
     // Update error messages whenever formFields changes
     updateErrors();
@@ -279,7 +278,7 @@ export default ({
         id="pricingconfig"
         data-testid="submit-button"
         className="grid gap-y-8"
-        onSubmit={handleSubmit((val) => onProceed(val))}
+        onSubmit={handleSubmit(() => onProceed(formFields))}
       >
         <div className="grid gap-y-10">
           {formFields.map((tab, index) => (
@@ -299,7 +298,7 @@ export default ({
                       activeTab.includes(index) && "rotate-90"
                     }`}
                   />
-                  {tab.label} <RedDot />
+                   {MoneyMarketGlType[tab?.moneyMarketGlType]} <RedDot />
                 </span>
               </div>
               {activeTab.includes(index) && (

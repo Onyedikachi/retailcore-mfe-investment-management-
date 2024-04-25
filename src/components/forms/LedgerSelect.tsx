@@ -33,7 +33,7 @@ export const handleClick = ({
   setLedgerType,
 }) => {
   let data = {
-    ledgerType: key,
+    ledgerType: key === "debit" ? 0 : 1,
     ledgerCode: ledgerInfo?.accountNo,
     glClass: ledgerInfo?.accountType,
   };
@@ -135,7 +135,7 @@ export default ({
                     setLedgerType,
                   })
                 }
-                inputName={item.ledgerType.toString()}
+                inputName={TypeOptions[item.ledgerType]}
                 defaultValue={item?.ledgerCode}
                 register={register}
                 trigger={trigger}
@@ -172,9 +172,13 @@ export default ({
             <button
               key={type}
               type="button"
-              disabled={ledgerTypes.some((i) => parseInt(i.ledgerType,10) === type)}
+              disabled={ledgerTypes.some(
+                (i) => parseInt(i.ledgerType, 10) === type
+              )}
               className={`flex items-center gap-x-4 cursor-pointer text-[#636363] disabled:opacity-50 disabled:cursor-not-allowed text-xs ${
-                ledgerTypes.some((i) => parseInt(i.ledgerType,10) === type) ? "opacity-50" : ""
+                ledgerTypes.some((i) => parseInt(i.ledgerType, 10) === type)
+                  ? "opacity-50"
+                  : ""
               }`}
               onClick={() => addField(type)}
             >

@@ -8,8 +8,14 @@ import { ValidationError } from "yup";
 import { currencyFormatter } from "@app/utils/formatCurrency";
 
 export const ProductInformationFormSchema = yup.object({
-  investmentId: yup.string(),
-  issuer: yup.string(),
+  securitPurchaseId: yup.string(),
+  type: yup.string(),
+  code: yup.string(),
+  issuer: yup.string().when("type", {
+    is: (val) => val !== "term-deposit",
+    then: (schema) => schema.required("Issuer is required"),
+    otherwise: (schema) => schema.nullable(),
+  }),
   productName: yup
     .string()
     .required("Product name is required")
@@ -25,8 +31,12 @@ export const ProductInformationFormSchema = yup.object({
     .required("Product description is required")
     .min(4, "Minimum of 4 chars")
     .max(250, "Maximum of 250 chars"),
-  startDate: yup.date().nullable().required("Start date is required"),
-  endDate: yup.date().nullable(),
+  startDate: yup.date().nullable().required("Date is required"),
+  endDate: yup.date().when("type", {
+    is: (val) => val !== "term-deposit",
+    then: (schema) => schema.required("Maturity date is required"),
+    otherwise: (schema) => schema.nullable(),
+  }),
   currency: yup.string().required("Select a currency"),
   currencyCode: yup.string(),
 });
@@ -46,6 +56,17 @@ export const SecurityProductInformationFormSchema = yup.object({
     .required("Product description is required")
     .min(4, "Minimum of 4 chars")
     .max(250, "Maximum of 250 chars"),
+});
+export const SecurityPricingSchema = yup.object().shape({
+  discountRate: yup
+    .number()
+    .typeError("Invalid value")
+    .max(100, "Maximum value exceeded")
+    .required(),
+  perAmount: yup.number().required(),
+  faceValue: yup.number().required(),
+  totalConsideration: yup.mixed().required(),
+  interestComputationMethod: yup.number().integer().required(),
 });
 
 export const BookingCustomerInfoSchema = yup.object().shape({
@@ -156,7 +177,8 @@ export const FacilityDetailsModelSchema2 = yup.object().shape({
   discountRate: yup
     .number()
     .typeError("Invalid value")
-    .max(100, "Maximum value exceeded").required(),
+    .max(100, "Maximum value exceeded")
+    .required(),
   perAmount: yup.number().required(),
   faceValue: yup.number().required(),
   totalConsideration: yup.mixed().required(),
@@ -319,7 +341,7 @@ export const pricingConfigSchema = yup.object({
         value === undefined ||
         applicableTenorMin === undefined ||
         convertToDays(value, applicableTenorMaxUnit) >
-        convertToDays(applicableTenorMin, applicableTenorMinUnit)
+          convertToDays(applicableTenorMin, applicableTenorMinUnit)
       );
     }),
 
@@ -417,11 +439,12 @@ export const pricingConfigSchema = yup.object({
             const newerror = new ValidationError(
               "Invalid value",
               current,
-              `interestRateConfigModels[${i}].${current?.min === undefined ||
+              `interestRateConfigModels[${i}].${
+                current?.min === undefined ||
                 isNaN(current?.min) ||
                 current?.min === null
-                ? "min"
-                : "max"
+                  ? "min"
+                  : "max"
               }`
             );
 
@@ -464,11 +487,12 @@ export const pricingConfigSchema = yup.object({
               const newerror = new ValidationError(
                 "Invalid value",
                 current,
-                `interestRateConfigModels[${i}].${current?.principalMin === undefined ||
+                `interestRateConfigModels[${i}].${
+                  current?.principalMin === undefined ||
                   isNaN(current?.principalMin) ||
                   current?.principalMin === null
-                  ? "principalMin"
-                  : "principalMax"
+                    ? "principalMin"
+                    : "principalMax"
                 }`
               );
 
@@ -555,11 +579,12 @@ export const pricingConfigSchema = yup.object({
               const newerror = new ValidationError(
                 "Invalid value",
                 current,
-                `interestRateConfigModels[${i}].${current?.tenorMin === undefined ||
+                `interestRateConfigModels[${i}].${
+                  current?.tenorMin === undefined ||
                   isNaN(current?.tenorMin) ||
                   current?.tenorMin === null
-                  ? "tenorMin"
-                  : "tenorMax"
+                    ? "tenorMin"
+                    : "tenorMax"
                 }`
               );
 
@@ -570,7 +595,7 @@ export const pricingConfigSchema = yup.object({
               prev?.tenorMax !== undefined &&
               current?.tenorMin !== undefined &&
               convertToDays(current.tenorMin, current.tenorMinUnit) <=
-              convertToDays(prev.tenorMax, prev.tenorMaxUnit)
+                convertToDays(prev.tenorMax, prev.tenorMaxUnit)
             ) {
               errors.push(
                 new ValidationError(
@@ -585,7 +610,7 @@ export const pricingConfigSchema = yup.object({
               current?.tenorMin !== undefined &&
               current?.tenorMax !== undefined &&
               convertToDays(current.tenorMax, current.tenorMaxUnit) <=
-              convertToDays(current.tenorMin, current.tenorMinUnit)
+                convertToDays(current.tenorMin, current.tenorMinUnit)
             ) {
               errors.push(
                 new ValidationError(
@@ -600,11 +625,12 @@ export const pricingConfigSchema = yup.object({
               appTenorMax !== undefined &&
               last?.tenorMax !== undefined &&
               convertToDays(last.tenorMax, last.tenorMaxUnit) >
-              convertToDays(appTenorMax, appTenorMaxUnit)
+                convertToDays(appTenorMax, appTenorMaxUnit)
             ) {
               errors.push(
                 new ValidationError(
-                  `Max tenor  is ${appTenorMax} ${IntervalOptions[appTenorMaxUnit - 1].text
+                  `Max tenor  is ${appTenorMax} ${
+                    IntervalOptions[appTenorMaxUnit - 1].text
                   }`,
                   last,
                   `interestRateConfigModels[${value.length - 1}].tenorMax`
@@ -616,11 +642,12 @@ export const pricingConfigSchema = yup.object({
               appTenorMax !== undefined &&
               last?.tenorMin !== undefined &&
               convertToDays(last.tenorMin, last.tenorMinUnit) >=
-              convertToDays(appTenorMax, appTenorMaxUnit)
+                convertToDays(appTenorMax, appTenorMaxUnit)
             ) {
               errors.push(
                 new ValidationError(
-                  `Min tenor must be less than ${appTenorMax} ${IntervalOptions[appTenorMaxUnit - 1].text
+                  `Min tenor must be less than ${appTenorMax} ${
+                    IntervalOptions[appTenorMaxUnit - 1].text
                   }`,
                   last,
                   `interestRateConfigModels[${value.length - 1}].tenorMin`
@@ -632,11 +659,12 @@ export const pricingConfigSchema = yup.object({
               appTenorMin !== undefined &&
               first?.tenorMin !== undefined &&
               convertToDays(first.tenorMin, first.tenorMinUnit) !=
-              convertToDays(appTenorMin, appTenorMinUnit)
+                convertToDays(appTenorMin, appTenorMinUnit)
             ) {
               errors.push(
                 new ValidationError(
-                  `Min tenor must be ${appTenorMin} ${IntervalOptions[appTenorMinUnit - 1].text
+                  `Min tenor must be ${appTenorMin} ${
+                    IntervalOptions[appTenorMinUnit - 1].text
                   }`,
                   first,
                   `interestRateConfigModels[${0}].tenorMin`
@@ -973,5 +1001,9 @@ export const toolTips = {
     "Allows customers to access their investment funds without fully cashing out their investments",
   description: "Enter a description for this loan product",
   issuer: "",
-  investmentId: "",
+  securitPurchaseId: "",
+  faceValue: "",
+  totalConsideration: "",
+  discountRate: "",
+  perAmount: "",
 };
