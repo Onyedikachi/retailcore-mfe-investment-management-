@@ -105,7 +105,7 @@ export const submitForm = (
   }
   if (
     process !== "modify" &&
-    (process === "withdraw_modify" || process === "continue" || id)
+    ((process === "withdraw_modify" || process === "continue") && id)
   ) {
     modifyRequest({
       ...formData,
@@ -115,7 +115,7 @@ export const submitForm = (
     });
   }
 
-  if ((process === "create" || process === "clone") && !id) {
+  if ((process === "create" || process === "clone")) {
     createProduct({ ...formData, isDraft: false });
   }
 

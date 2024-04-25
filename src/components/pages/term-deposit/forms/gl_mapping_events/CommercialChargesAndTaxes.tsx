@@ -105,6 +105,7 @@ export default ({
     isSuccess: chargesSuccess,
   } = useGetApplicableChargesQuery();
 
+
   const {
     data: taxes,
     isLoading: taxesLoading,
@@ -125,6 +126,13 @@ export default ({
   useEffect(() => {
     setDisabled(false);
   }, []);
+
+  useEffect(() => {
+    // console.log(values, formData);
+    setFormData(values)
+  }, [values])
+
+  useEffect(() => console.log(formData), [formData])
 
   const taxChargeData = [
     "issuanceChargesAndTaxes",
