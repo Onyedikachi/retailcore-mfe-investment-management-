@@ -128,7 +128,7 @@ export default function CustomerInformation({
     data: usersData,
     isSuccess: isUsersSuccess,
     isLoading: isUsersLoading,
-  } = useGetUsersQuery(usersQuery);
+  } = useGetUsersQuery(usersQuery, {skip: usersQuery.search.length < 2});
 
   const {
     data: profileData,

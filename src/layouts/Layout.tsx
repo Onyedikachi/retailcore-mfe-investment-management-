@@ -70,6 +70,12 @@ const Layout = () => {
   const [defaultCurrency, setDefaultCurrency] = useState<any>("");
 
   const userId = useRef(null);
+  const {
+    data: currencyData,
+    isSuccess: currencyIsSuccess,
+    isLoading: isLoadingCurrencies,
+  } = useGetCurrenciesQuery({ page_size: 1000 });
+
   const value = useMemo(
     () => ({
       role,
@@ -78,10 +84,11 @@ const Layout = () => {
       currencies,
       defaultCurrency,
       setCurrencies,
+      isLoadingCurrencies,
       userId: userId.current,
       isChecker,
       setIsChecker,
-      userData
+      userData,
     }),
 
     [
@@ -91,36 +98,37 @@ const Layout = () => {
       currencies,
       defaultCurrency,
       setCurrencies,
+      isLoadingCurrencies,
       userId.current,
       isChecker,
       setIsChecker,
-      userData
+      userData,
     ]
   );
   useEffect(() => {
     auth$?.subscribe((value) => {
-      setUserData(value.user)
+      setUserData(value.user);
       checkPermissions({ value, setRole, setPermissions, userId, handleRole });
     });
   }, []);
-  const { data: currencyData, isSuccess: currencyIsSuccess } =
-    useGetCurrenciesQuery({ page_size: 1000 });
+
   // const { data: defaultCurrencyData, isSuccess: defaultCurrencyIsSuccess } =
   //   useGetDefaultCurrencyQuery();
 
   useEffect(() => {
     if (currencyIsSuccess) {
-     
       setCurrencies(
-        currencyData?.data?.results?.map((i) => {       
+        currencyData?.data?.results?.map((i) => {
           return {
             id: i.id,
             text: i.abbreviation,
-            value: i.id,
+            value: i.abbreviation,
           };
         })
       );
-      setDefaultCurrency(currencyData?.data?.results?.find(i=> i?.is_default))
+      setDefaultCurrency(
+        currencyData?.data?.results?.find((i) => i?.is_default)
+      );
     }
   }, [currencyIsSuccess]);
 

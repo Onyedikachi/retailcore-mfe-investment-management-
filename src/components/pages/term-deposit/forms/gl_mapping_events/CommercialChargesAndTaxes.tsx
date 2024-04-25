@@ -12,8 +12,6 @@ import {
   useGetApplicableTaxesQuery,
 } from "@app/api";
 
-
-
 export function InputDivs({
   children,
   label,
@@ -72,15 +70,14 @@ export default ({
   setDisabled,
   initiateDraft,
 }) => {
-
-  const [activeTab, setActiveTab] = useState<any>([1, 2]);
+  const [activeTab, setActiveTab] = useState<any>(["issuanceChargesAndTaxes"]);
   const [filteredTabs, setFilteredTabs] = useState([]);
   function onProceed() {
     // setFormData(val, mapOptions);
-  
+
     proceed();
   }
- 
+
   const {
     register,
     handleSubmit,
@@ -105,7 +102,6 @@ export default ({
     isSuccess: chargesSuccess,
   } = useGetApplicableChargesQuery();
 
-
   const {
     data: taxes,
     isLoading: taxesLoading,
@@ -126,13 +122,37 @@ export default ({
   useEffect(() => {
     setDisabled(false);
   }, []);
+  const prepValues = () => {
+    const vals = getValues();
+    const v2 = {
+      issuanceChargesAndTaxes: vals.issuanceChargesAndTaxes,
+      redemptionChargesAndTaxes: vals.redemptionChargesAndTaxes,
+    };
+    taxChargeDataOptions.filter((i) => {
+
+    });
+
+    setActiveTab(
+      taxChargeDataOptions
+        .filter(
+          (i) =>
+            vals[i.key]?.applicableTaxes?.length ||
+            vals[i.key]?.applicableCharges?.length
+        )
+        .map((i) => i.key)
+    );
+    return vals;
+  };
 
   useEffect(() => {
+    setValues(prepValues);
+  }, []);
+  useEffect(() => {
     // console.log(values, formData);
-    setFormData(values)
-  }, [values])
+    setFormData(values);
+  }, [values]);
 
-  useEffect(() => console.log(formData), [formData])
+  useEffect(() => console.log(formData), [formData]);
 
   const taxChargeData = [
     "issuanceChargesAndTaxes",
@@ -175,7 +195,7 @@ export default ({
             setActiveTab={setActiveTab}
             values={values}
             setValues={setValues}
-            tab={index + 2}
+            tab={item.key}
             header={item.header}
             event={item.key}
             productData={formData}

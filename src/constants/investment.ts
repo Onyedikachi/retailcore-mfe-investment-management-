@@ -590,11 +590,12 @@ export const daysOptions = [
 export const CustomerCategory = {
   0: "Individual",
   1: "Corporate",
-  2: "security-purchase",
+  2: "security purchase",
 };
 export const CustomerCategoryType = {
   individual: 0,
   corporate: 1,
+  "security purchase": 2,
   // Add other category types here
 };
 export const MoneyMarketGlType = {
@@ -613,6 +614,12 @@ export const ProductOptionTypes = {
   "treasury-bill": 1,
   "commercial-paper": 2,
   bonds: 3,
+};
+export const AProductOptionTypes = {
+  0: "term-deposit",
+  1: "treasury-bill",
+  2: "commercial-paper",
+  3: "bonds",
 };
 export const MoneyMarketCategory = {
   0: "Term Deposit",

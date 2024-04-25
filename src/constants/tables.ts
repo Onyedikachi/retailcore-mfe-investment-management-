@@ -769,6 +769,11 @@ export const customerCategoryFilterOptions: any[] = [
     name: "Corporate",
     value: 1,
   },
+  {
+    id: 2,
+    name: "Security purchase",
+    value: 2,
+  },
 ];
 
 export const DateFilterOptions: any[] = [

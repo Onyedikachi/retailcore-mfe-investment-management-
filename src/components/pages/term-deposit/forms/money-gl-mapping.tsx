@@ -135,7 +135,50 @@ export const handleClick = (
     );
   }
 };
-
+const defaultData = [
+  {
+    moneyMarketGlType: 0,
+    ledgerEntryMappings: [
+      {
+        ledgerEntries: [
+          {
+            ledgerType: 0,
+            ledgerCode: "",
+            glClass: "",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    moneyMarketGlType: 1,
+    ledgerEntryMappings: [
+      {
+        ledgerEntries: [
+          {
+            ledgerType: 0,
+            ledgerCode: "",
+            glClass: "",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    moneyMarketGlType: 2,
+    ledgerEntryMappings: [
+      {
+        ledgerEntries: [
+          {
+            ledgerType: 0,
+            ledgerCode: "",
+            glClass: "",
+          },
+        ],
+      },
+    ],
+  },
+];
 export default ({
   proceed,
   formData,
@@ -143,10 +186,9 @@ export default ({
   setDisabled,
   initiateDraft,
 }) => {
-  const [mapOptions, setMapOptions] = useState([]);
-  const [clearFields, setClearField] = useState(false);
+  // console.log("🚀 ~ formData:", formData);
   const [activeTab, setActiveTab] = useState<any>([0]);
-  const [filteredTabs, setFilteredTabs] = useState([]);
+  const [formFields, setFormFields] = useState<any>(defaultData);
   const [nerrors, setNerrors] = useState(null);
   function onProceed(formFields) {
     setFormData(formFields);
@@ -162,7 +204,7 @@ export default ({
     reset,
     trigger,
     setValue,
-    setError: assignError,
+    setError,
     getValues,
     formState: { errors, isValid },
   } = useForm({
@@ -184,44 +226,29 @@ export default ({
     setActiveTab([...activeTab, index]);
   }
 
-  const [formFields, setFormFields] = useState<any>([
-    {
-      label: "Issue to customers",
-      moneyMarketGlType: 0,
-      ledgerEntryMappings: [
-        {
-          ledgerEntries: null,
-          errors: null,
-        },
-      ],
-    },
-    {
-      label: "Upfront interest payment",
-      moneyMarketGlType: 1,
-      ledgerEntryMappings: [
-        {
-          ledgerEntries: null,
-          errors: null,
-        },
-      ],
-    },
-    {
-      label: "Redemption at maturity",
-      moneyMarketGlType: 2,
-      ledgerEntryMappings: [
-        {
-          ledgerEntries: null,
-          errors: null,
-        },
-      ],
-    },
-  ]);
-
   function addField(index) {
-    const updatedFormFields = [...formFields];
-    updatedFormFields[index].ledgerEntryMappings.push({
-      ledgerEntries: null,
-      errors: null,
+    const updatedFormFields = formFields.map((item, i) => {
+      if (i === index) {
+        // Create a shallow copy of the item
+        const updatedItem = { ...item };
+
+        // Create a new array with a shallow copy of the ledgerEntryMappings array
+        updatedItem.ledgerEntryMappings = [
+          ...updatedItem.ledgerEntryMappings,
+          {
+            ledgerEntries: [
+              {
+                ledgerType: 0,
+                ledgerCode: "",
+                glClass: "",
+              },
+            ],
+          },
+        ];
+
+        return updatedItem;
+      }
+      return item;
     });
 
     setFormFields(updatedFormFields);
@@ -232,23 +259,81 @@ export default ({
     updatedFormFields[itemIndex].ledgerEntryMappings.splice(fieldIndex, 1);
     setFormFields(updatedFormFields);
   }
-
-  function handleValue(field, ledgers, itemIndex, fieldIndex) {
-    const updatedFormFields = [...formFields];
-    const targetField =
-      updatedFormFields[itemIndex]?.ledgerEntryMappings?.[fieldIndex];
-    if (targetField) {
-      // Update the data property
-      targetField.ledgerEntries = [...ledgers];
-
-      // Update the state with the modified formFields
-      setFormFields(updatedFormFields);
-    } else {
-      console.error("Field does not exist at the specified indices");
+  function areArraysEqual(arr1, arr2) {
+    if (arr1.length !== arr2.length) {
+      return false;
     }
-  }
-  useEffect(() => {
 
+    for (let i = 0; i < arr1.length; i++) {
+      const obj1 = arr1[i];
+      const obj2 = arr2[i];
+
+      if (!isObjectEqual(obj1, obj2)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  function isObjectEqual(obj1, obj2) {
+    const keys1 = Object.keys(obj1);
+    const keys2 = Object.keys(obj2);
+
+    if (keys1.length !== keys2.length) {
+      return false;
+    }
+
+    for (const key of keys1) {
+      if (obj1[key] !== obj2[key]) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+  function handleValue(
+    field,
+    ledgers,
+    itemIndex,
+    fieldIndex,
+    moneyMarketGlType
+  ) {
+    const newLedgerData = formFields.map((item) => {
+      if (item.moneyMarketGlType === moneyMarketGlType) {
+        const updatedItem = { ...item }; // Create a shallow copy of the item
+
+        const updatedLedgerEntryMappings = [...updatedItem.ledgerEntryMappings]; // Create a shallow copy of the ledgerEntryMappings array
+        const updatedLedgerEntryMapping = {
+          ...updatedLedgerEntryMappings[fieldIndex],
+        }; // Create a shallow copy of the ledgerEntryMapping object
+
+        let newLedger = [...updatedLedgerEntryMapping.ledgerEntries]; // Create a shallow copy of the ledgerEntries array
+        const isEqual = areArraysEqual(newLedger, ledgers);
+        if (!isEqual) {
+          updatedLedgerEntryMapping.ledgerEntries = [...ledgers]; // Create a new array with the updated ledgerEntries
+          updatedLedgerEntryMappings[fieldIndex] = updatedLedgerEntryMapping; // Update the ledgerEntryMappings array with the modified ledgerEntryMapping
+        }
+
+        updatedItem.ledgerEntryMappings = updatedLedgerEntryMappings; // Update the item with the modified ledgerEntryMappings
+
+        return updatedItem;
+      }
+      return item;
+    });
+    setFormFields(newLedgerData);
+  }
+
+  useEffect(() => {
+    if (formData?.moneyMarketProductGlMapping.length) {
+      setFormFields(formData?.moneyMarketProductGlMapping);
+      setActiveTab(
+        formData?.moneyMarketProductGlMapping?.map((i) => i.moneyMarketGlType)
+      );
+    }
+  }, [formData?.moneyMarketProductGlMapping]);
+
+  useEffect(() => {
     // Update error messages whenever formFields changes
     updateErrors();
   }, [formFields]);
@@ -268,8 +353,6 @@ export default ({
         setDisabled(true);
       }
     });
-
-    // setFormFields(updatedFormFields);
   }
 
   return (
@@ -298,7 +381,7 @@ export default ({
                       activeTab.includes(index) && "rotate-90"
                     }`}
                   />
-                   {MoneyMarketGlType[tab?.moneyMarketGlType]} <RedDot />
+                  {MoneyMarketGlType[tab?.moneyMarketGlType]} <RedDot />
                 </span>
               </div>
               {activeTab.includes(index) && (
@@ -312,13 +395,20 @@ export default ({
                           trigger={trigger}
                           errors={nerrors}
                           handleValue={(ledgers) =>
-                            handleValue(field, ledgers, index, idx)
+                            handleValue(
+                              field,
+                              ledgers,
+                              index,
+                              idx,
+                              tab.moneyMarketGlType
+                            )
                           }
                           removeField={
                             tab?.ledgerEntryMappings.length === 1
                               ? null
                               : () => removeField(index, idx)
                           }
+                          ledgers={field}
                         />
                       </div>
                     ))}

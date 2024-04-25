@@ -37,8 +37,8 @@ export const ProductInformationFormSchema = yup.object({
     then: (schema) => schema.required("Maturity date is required"),
     otherwise: (schema) => schema.nullable(),
   }),
-  currency: yup.string().required("Select a currency"),
-  currencyCode: yup.string(),
+  currency: yup.string(),
+  currencyCode: yup.string().required("Select a currency"),
 });
 export const SecurityProductInformationFormSchema = yup.object({
   productName: yup

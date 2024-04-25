@@ -56,6 +56,7 @@ export default function EntriesAndEventsSearchResults({
   showImpact = false,
   impact = "",
   currencyCode = "NGN",
+  type,
 }: any) {
   const [query, setQuery] = useState("");
   const [isOpen, setOpen] = useState(false);
@@ -63,7 +64,7 @@ export default function EntriesAndEventsSearchResults({
   const [classId, setClassId] = useState(null);
   const [ledgers, setLedgers] = useState([]);
   const [ledger, setLedger] = useState(null);
-  const [toggleMenu, setMenus] = useState(null);
+  const [ledgerImpact, setLedgerImpact] = useState(null);
   const [selectedLedgerClass, setSelectedLedgerClass] = useState(null);
 
   const { data, isLoading, isSuccess, isError } = useGetGlClassQuery();
@@ -82,16 +83,15 @@ export default function EntriesAndEventsSearchResults({
   });
   useEffect(() => {
     if (glClass && ledger) {
-      ledger?.accountType?.toLowerCase() === "assets"
-        ? setSelectedLedgerClass(
-            glClass.find((i) => i.name?.toLowerCase() === "asset")
-          )
-        : setSelectedLedgerClass(
-            glClass.find(
-              (i) =>
-                i.name?.toLowerCase() === ledger?.accountType?.toLowerCase()
-            )
-          );
+    
+      const tempGlass = glClass.find(
+        (i) => i.name?.toLowerCase() === ledger?.accountType?.toLowerCase()
+      );
+      if(tempGlass){
+      setSelectedLedgerClass(tempGlass);
+      const keys = Object.keys(tempGlass);
+      const key = keys.find((i) => i.includes(type.toLowerCase()));
+      setLedgerImpact(tempGlass[key]);}
     }
   }, [glClass, ledger]);
 
@@ -168,7 +168,6 @@ export default function EntriesAndEventsSearchResults({
               type="search"
             />
           </div>{" "}
-        
           {showImpact && ledger && (
             <div className="flex gap-x-4 text-sm mb-1  mt-[10px] items-center">
               <span className="flex gap-x-1 items-center">
@@ -181,7 +180,7 @@ export default function EntriesAndEventsSearchResults({
               <span className="flex gap-x-1 items-center">
                 <span>Balance impact:</span>
                 <span>
-                  {selectedLedgerClass?.[impact] === "DECREASE" ? (
+                  {ledgerImpact === "DECREASE" ? (
                     <FaCaretDown className="text-red-500" fontSize="36px" />
                   ) : (
                     <FaCaretUp className="text-green-500" fontSize="36px" />
@@ -229,7 +228,7 @@ export default function EntriesAndEventsSearchResults({
               {(ledgerIsLoading || isLoading) && (
                 <BottomBarLoader w="w-4" h="h-4" />
               )}
-              {(classId && !ledgerIsLoading && !isLoading) && (
+              {classId && !ledgerIsLoading && !isLoading && (
                 <div className="max-h-[233px] overflow-y-auto flex flex-col gap-4 py-2 pr-2">
                   {ledgers
                     ?.filter(

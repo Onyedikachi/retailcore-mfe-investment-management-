@@ -210,11 +210,11 @@ export const handleMessage = ({
     setFailedText(Messages.PRODUCT_DRAFT_FAILED);
     setFailedSubtext(
       error?.message?.message ||
-      modifyError?.message?.message ||
-      modifyRequestError?.message?.message ||
-      error?.message?.Message ||
-      modifyError?.message?.Message ||
-      modifyRequestError?.message?.Message
+        modifyError?.message?.message ||
+        modifyRequestError?.message?.message ||
+        error?.message?.Message ||
+        modifyError?.message?.Message ||
+        modifyRequestError?.message?.Message
     );
     setFailed(true);
   }
@@ -229,16 +229,14 @@ export function handleNav({
   formStepOption,
   type,
 }) {
-
   step < formStepOption.length
     ? handleNext(step, setStep, formStepOption)
     : navigate(
-      `/product-factory/investment/${type}/${process}?${id ? `id=${id}&` : ""
-      }stage=summary`
-    );
+        `/product-factory/investment/${type}/${process}?${
+          id ? `id=${id}&` : ""
+        }stage=summary`
+      );
 }
-
-
 
 export default function CreateTermDeposit() {
   const { process, type } = useParams();
@@ -264,7 +262,7 @@ export default function CreateTermDeposit() {
   const [productData, setProductData] = useState({
     id: id || null,
     productInfo: {
-      code:"",
+      code: "",
       securitPurchaseId: "",
       type,
       productName: "",
@@ -280,7 +278,7 @@ export default function CreateTermDeposit() {
       ageGroupMax: null,
       requireDocument: [],
       customerType: [],
-      customerCategory: null,
+      customerCategory: type === "term-deposit" ? null : 2,
     },
     principalDepositChargesAndTaxes: {
       applicableCharges: [],
@@ -353,7 +351,7 @@ export default function CreateTermDeposit() {
       withdrawalPenalty: 0,
     },
     productGlMappings: [],
-    moneyMarketProductGlMapping:[],
+    moneyMarketProductGlMapping: [],
     interestComputationMethod: 2,
     TermDepositLiabilityAccount: "",
     InterestAccrualAccount: "",
@@ -391,8 +389,8 @@ export default function CreateTermDeposit() {
   ];
 
   useEffect(() => {
-    console.log(productData)
-  }, [productData])
+    console.log(productData);
+  }, [productData]);
 
   const [createProduct, { isLoading, isSuccess, isError, reset, error }] =
     useCreateProductMutation();
@@ -516,8 +514,8 @@ export default function CreateTermDeposit() {
     const extraLinks = [
       {
         id: 3,
-        title: "Term Deposit",
-        url: "/product-factory/investment",
+        title: type.replace("-", " "),
+        url: "#",
       },
       {
         id: 4,

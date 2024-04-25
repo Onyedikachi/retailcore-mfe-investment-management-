@@ -221,6 +221,7 @@ export default function SearchInput({
               handleInputChange(e, setInputValue, debouncedSetSearchTerm)
             }
             onKeyDown={() => setShowBox(true)}
+            onFocus={() => setShowBox(true)}
             value={inputValue}
             type={inputType}
             data-testid="search"

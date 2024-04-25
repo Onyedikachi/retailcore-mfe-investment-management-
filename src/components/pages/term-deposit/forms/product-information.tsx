@@ -15,6 +15,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 import {
   useGetPostInvestmentMutation,
   useValidateNameMutation,
+  useGetInvestmentDetailQuery,
 } from "@app/api";
 import moment from "moment";
 import { AppContext } from "@app/utils";
@@ -56,18 +57,21 @@ export const handleSearch = (
   setValue,
   setShowInputs,
   formData,
-  setFormData
+  setFormData,
+  trigger = null
 ) => {
   if (data) {
     setValue("code", data?.value?.code);
     setValue("securitPurchaseId", data?.id);
     setValue("issuer", data?.value?.issuer);
     setValue("currencyCode", data?.value?.currencyCode);
+    setValue("currency", data?.value?.currencyCode);
     setValue("startDate", moment(data?.value?.dealDate));
     setValue("endDate", moment(data?.value?.maturityDate));
     setFormData({
       ...formData,
       currencyCode: data?.value?.currencyCode,
+      currency: data?.value?.currencyCode,
       startDate: moment(data?.value?.dealDate).format("yyyy-MM-DD"),
       endDate: moment(data?.value?.maturityDate).format("yyyy-MM-DD"),
       issuer: data?.value?.issuer,
@@ -75,6 +79,7 @@ export const handleSearch = (
       code: data?.value?.code,
     });
     setShowInputs(true);
+    trigger && trigger();
   }
 };
 
@@ -172,9 +177,10 @@ export default function ProductInformation({
     defaultValues: formData,
     mode: "all",
   });
-
+  console.log("🚀 ~ errors:", errors);
   //useState
-  const { currencies, defaultCurrency } = useContext(AppContext);
+  const { currencies, defaultCurrency, isLoadingCurrencies } =
+    useContext(AppContext);
   const values = getValues();
   const [securityProducts, setSecurityProducts] = useState<any>([]);
   const [query, setQuery] = useState("");
@@ -199,11 +205,37 @@ export default function ProductInformation({
     },
   ] = useValidateNameMutation();
 
+  const {
+    data: prodData,
+    isLoading,
+    isSuccess: isProdSuccsess,
+  } = useGetInvestmentDetailQuery(
+    {
+      id: formData?.securitPurchaseId,
+      investmentType: "security-purchase",
+    },
+    { skip: !formData?.securitPurchaseId }
+  );
+
   useEffect(() => {
     if (type !== "term-deposit") {
       setShowInputs(false);
     }
   }, [type]);
+  useEffect(() => {
+    if (isProdSuccsess) {
+      setQuery(prodData?.data?.code);
+      handleSearch(
+        prodData?.data?.code,
+        { ...prodData?.data, value: prodData?.data },
+        setValue,
+        setShowInputs,
+        formData,
+        setFormData,
+        trigger
+      );
+    }
+  }, [prodData, isProdSuccsess, currencies]);
 
   useEffect(() => {
     handleValidatingName(
@@ -222,13 +254,13 @@ export default function ProductInformation({
     if (!formData.currency || !formData.currencyCode) {
       setFormData({
         ...formData,
-        currency: defaultCurrency?.id,
+        currency: defaultCurrency?.abbreviation,
         currencyCode: defaultCurrency?.abbreviation,
       });
     }
 
     if (!values.currency || !values.currencyCode) {
-      setValue("currency", defaultCurrency?.id);
+      setValue("currency", defaultCurrency?.abbreviation);
       setValue("currencyCode", defaultCurrency?.abbreviation);
     }
   }, [currencies, defaultCurrency]);
@@ -244,8 +276,12 @@ export default function ProductInformation({
     }
   }, [initiateDraft]);
   useEffect(() => {
-    setDisabled(!isValid || isNameOkay === false);
-  }, [values]);
+    if (!isLoadingCurrencies) {
+      setDisabled(!isValid || isNameOkay === false);
+    } else {
+      setDisabled(isLoadingCurrencies);
+    }
+  }, [values, isLoadingCurrencies]);
 
   useEffect(() => {
     if (formData) {
@@ -288,7 +324,7 @@ export default function ProductInformation({
   }, []);
   useEffect(() => {
     const currency = currencies?.find((i) => i.value === watchCurrency);
-    setValue("currency", currency?.id);
+    setValue("currency", currency?.text);
     setValue("currencyCode", currency?.text);
   }, [watchCurrency, currencies]);
 
@@ -712,19 +748,24 @@ export default function ProductInformation({
               {/* <InputDiv> */}
               <div className="w-[300px]">
                 <BorderlessSelect
-                  inputError={errors?.currency}
+                  inputError={errors?.currencyCode}
                   register={register}
                   errors={errors}
                   setValue={setValue}
-                  inputName={"currency"}
+                  inputName={"currencyCode"}
                   labelName={"Product Currency"}
-                  defaultValue={formData?.currency}
-                  placeholder="Select currency"
+                  defaultValue={formData?.currencyCode}
+                  placeholder={
+                    isLoadingCurrencies
+                      ? "Fetching currencies list.."
+                      : "Select currency"
+                  }
                   clearErrors={clearErrors}
                   requiredField={true}
                   tip={toolTips.currency}
                   options={currencies}
                   trigger={trigger}
+                  disabled={formData.type !== "term-deposit"}
                 />
               </div>
 

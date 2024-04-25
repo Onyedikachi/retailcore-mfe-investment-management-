@@ -54,6 +54,7 @@ export const AppContext = createContext<{
   permissions: string[];
   currencies?: any;
   setCurrencies?: (e: any) => void;
+  isLoadingCurrencies?: boolean;
   userId?: string;
   isChecker?: boolean;
   setIsChecker?: (e: any) => void;
@@ -65,6 +66,7 @@ export const AppContext = createContext<{
   permissions: [],
   currencies: [],
   setCurrencies: () => {},
+  isLoadingCurrencies:false,
   userId: "",
   isChecker: true,
   setIsChecker: () => {},
