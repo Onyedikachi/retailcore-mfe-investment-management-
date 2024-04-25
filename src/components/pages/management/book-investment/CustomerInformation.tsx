@@ -174,7 +174,6 @@ export default function CustomerInformation({
 
   useEffect(() => {
     if (isSuccess) {
- 
       setCustomersData(
         data?.data?.customers?.map((i) => {
         
