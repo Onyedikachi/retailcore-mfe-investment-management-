@@ -774,18 +774,23 @@ export const LiquidationSchema = yup.object({
   maxAmount: yup.number(),
 });
 export const TopUpSchema = yup.object({
+  type: yup.string(),
   investementBookingId: yup.string().required(),
   reason: yup.string().required("Provide a reason"),
   documentUrl: yup.string(),
   notify: yup.boolean().required(),
   topUpUnit: yup.number(),
-  amounttoTopUp: yup
+  amounttoTopUp: 
+  yup
     .number()
     .typeError("Invalid value")
     .integer()
     .positive()
-    .max(yup.ref("maxAmount"), "Exceeded max amount")
-    .nullable(),
+    .nullable()
+    .when("type", {
+      is: "withdraw",
+      then: (schema) => schema.max(yup.ref("maxAmount"), "Exceeded max amount")
+    }),
   maxAmount: yup.number(),
 });
 

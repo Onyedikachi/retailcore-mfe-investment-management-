@@ -68,17 +68,19 @@ export default function TopUp({
 }: TopUpProps): React.JSX.Element {
   const { tab } = useParams();
   const [metaInfo, setMetaInfo] = useState(null);
+  const [principaValue, setPrincipalValue] = useState(null);
 
-  console.log("okay details kon", detail, tab);
+  // console.log("okay details kon", detail, tab);
 
   const initialValues = {
+    type: "",
     investementBookingId: detail?.id,
     reason: "",
     documentUrl: "",
     topUpUnit: 2,
     notify: false,
     amounttoTopUp: null,
-    maxAmount: 100,
+    maxAmount: principaValue,
   };
   const {
     register,
@@ -147,6 +149,10 @@ export default function TopUp({
     }
   }, [detail, bookingDetailsIsSuccess]);
 
+  useEffect(() => console.log(values), [values])
+
+  useEffect(() => setValue("type", type));
+
   useEffect(() => {
     if (bookingDetails?.data && productDetails) {
       const payload = {
@@ -181,6 +187,14 @@ export default function TopUp({
   ]);
 
   useEffect(() => {
+    setPrincipalValue(parseInt(bookingDetails?.data?.facilityDetailsModel?.principal));
+  }, [bookingDetails?.data?.facilityDetailsModel?.principal])
+
+  useEffect(() => {
+    console.log("lq = ", (liquidationValue <= principaValue), values)
+  }, [liquidationValue, principaValue])
+
+  useEffect(() => {
     setValue("notify", isChecked);
   }, [isChecked]);
 
@@ -189,8 +203,8 @@ export default function TopUp({
   }
 
   useEffect(() => {
-    setValue("maxAmount", selection === 1 ? percentValue : amountValue);
-  }, [selection, percentValue, amountValue]);
+    setValue("maxAmount", selection === 1 ? percentValue : principaValue);
+  }, [selection, percentValue, amountValue, principaValue]);
 
   useEffect(() => {
     trigger("amounttoTopUp");
@@ -221,8 +235,8 @@ export default function TopUp({
                 {tab === "security-purchase"
                   ? "security PURCHASE Top up Request"
                   : type === "topup"
-                  ? "INVESTMENT TOP UP REQUEST"
-                  : "principal withdrawal request"}
+                    ? "INVESTMENT TOP UP REQUEST"
+                    : "principal withdrawal request"}
               </h3>
               <button
                 data-testid="cancel-btn"
@@ -288,14 +302,13 @@ export default function TopUp({
                     <div className="overflow-hidden absolute right-0 text-[10px] text-[#8F8F8F] flex items-center   rounded-full shadow-[0px_0px_1px_0px_rgba(26,32,36,0.32),0px_1px_2px_0px_rgba(91,104,113,0.32)] border-[#E5E9EB]">
                       <span
                         role="button"
-                        onKeyDown={() => {}}
+                        onKeyDown={() => { }}
                         tabIndex={0}
                         onClick={() => {
                           setSelection(0);
                         }}
-                        className={`w-[55px] border-r border-[#E5E9EB] py-1 px-2 ${
-                          selection === 0 ? "bg-[#FFE9E9] " : ""
-                        }`}
+                        className={`w-[55px] border-r border-[#E5E9EB] py-1 px-2 ${selection === 0 ? "bg-[#FFE9E9] " : ""
+                          }`}
                       >
                         {" "}
                         {productDetails?.productInfo?.currencyCode ||
@@ -305,13 +318,12 @@ export default function TopUp({
                       <span
                         role="button"
                         tabIndex={0}
-                        onKeyDown={() => {}}
+                        onKeyDown={() => { }}
                         onClick={() => {
                           setSelection(1);
                         }}
-                        className={`w-[55px] py-1 px-2 ${
-                          selection === 1 ? "bg-[#FFE9E9] " : ""
-                        }`}
+                        className={`w-[55px] py-1 px-2 ${selection === 1 ? "bg-[#FFE9E9] " : ""
+                          }`}
                       >
                         {" "}
                         Percent
@@ -329,8 +341,8 @@ export default function TopUp({
                     {tab === "security-purchase"
                       ? "security purchase top up"
                       : type === "topup"
-                      ? "investment topup"
-                      : "principal withdrawal"}
+                        ? "investment topup"
+                        : "principal withdrawal"}
                     <span className="flex">
                       {" "}
                       <RedDot />
@@ -462,15 +474,15 @@ export default function TopUp({
                     {tab === "security-purchase"
                       ? "security purchase top up"
                       : type === "topup"
-                      ? "investment topup"
-                      : "principal withdrawal"}{" "}
+                        ? "investment topup"
+                        : "principal withdrawal"}{" "}
                     value:{" "}
                   </span>
                   <span className="text-sm text-[#747373] font-semibold">
                     {currencyFormatter(
                       liquidationValue,
                       productDetails?.productInfo?.currencyCode ||
-                        bookingDetails?.data?.currencyCode
+                      bookingDetails?.data?.currencyCode
                     )}
                   </span>
                 </div>
