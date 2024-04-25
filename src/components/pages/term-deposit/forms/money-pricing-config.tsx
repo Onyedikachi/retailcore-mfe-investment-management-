@@ -218,13 +218,14 @@ export default function MoneyPricingConfig({
               label={""}
               currency={productData?.productInfo?.currencyCode}
               register={register}
-              inputName={"applicablePrincipalMin"}
-              defaultValue={formData?.applicablePrincipalMin}
+              inputName={"faceValue"}
+              defaultValue={formData?.faceValue}
               errors={errors}
               setValue={setValue}
               trigger={trigger}
               clearErrors={clearErrors}
               isCurrency
+              disabled
             />
           </div>{" "}
           <div className="">
@@ -241,12 +242,13 @@ export default function MoneyPricingConfig({
               currency={productData?.productInfo?.currencyCode}
               register={register}
               inputName={"applicablePrincipalMax"}
-              defaultValue={formData?.applicablePrincipalMax}
+              defaultValue={formData?.totalConsideration}
               errors={errors}
               setValue={setValue}
               trigger={trigger}
               clearErrors={clearErrors}
               isCurrency
+              disabled
             />
           </div>
           <div className="">
@@ -265,12 +267,13 @@ export default function MoneyPricingConfig({
               errors={errors}
               setValue={setValue}
               trigger={trigger}
-              defaultValue={formData?.interestRateMin}
+              defaultValue={formData?.discountRate}
               clearErrors={clearErrors}
               max={100}
               isPercent
               isCurrency
               disablegroupseparators
+              disabled
 
               // defaultValue={range.min}
             />
@@ -289,12 +292,13 @@ export default function MoneyPricingConfig({
               currency={productData?.productInfo?.currencyCode}
               register={register}
               inputName={"applicablePrincipalMax"}
-              defaultValue={formData?.applicablePrincipalMax}
+              defaultValue={formData?.perAmount}
               errors={errors}
               setValue={setValue}
               trigger={trigger}
               clearErrors={clearErrors}
               isCurrency
+              disabled
             />
           </div>
         </div>
@@ -348,6 +352,7 @@ export default function MoneyPricingConfig({
               trigger={trigger}
               clearErrors={clearErrors}
               setValue={() => {}}
+              disabled
             />
           </div>
         </div>

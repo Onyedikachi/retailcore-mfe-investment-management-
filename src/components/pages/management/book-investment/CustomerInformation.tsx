@@ -174,13 +174,12 @@ export default function CustomerInformation({
 
   useEffect(() => {
     if (isSuccess) {
-
       setCustomersData(
         data?.data?.customers?.map((i) => {
         
           return {
             id: i.customerId,
-            name: i.customer_products[0]?.accountNumber,
+            name: i.customer_products.find(v=>v.accountNumber === query?.search)?.accountNumber,
             code:
               investmentType === "individual"
                 ? `${capitalizeFirstLetter(

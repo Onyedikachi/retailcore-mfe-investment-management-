@@ -209,11 +209,11 @@ export const handleMessage = ({
     setFailedText(Messages.PRODUCT_DRAFT_FAILED);
     setFailedSubtext(
       error?.message?.message ||
-        modifyError?.message?.message ||
-        modifyRequestError?.message?.message ||
-        error?.message?.Message ||
-        modifyError?.message?.Message ||
-        modifyRequestError?.message?.Message
+      modifyError?.message?.message ||
+      modifyRequestError?.message?.message ||
+      error?.message?.Message ||
+      modifyError?.message?.Message ||
+      modifyRequestError?.message?.Message
     );
     setFailed(true);
   }
@@ -232,11 +232,12 @@ export function handleNav({
   step < formStepOption.length
     ? handleNext(step, setStep, formStepOption)
     : navigate(
-        `/product-factory/investment/${type}/${process}?${
-          id ? `id=${id}&` : ""
-        }stage=summary`
-      );
+      `/product-factory/investment/${type}/${process}?${id ? `id=${id}&` : ""
+      }stage=summary`
+    );
 }
+
+
 
 export default function CreateTermDeposit() {
   const { process, type } = useParams();
@@ -384,6 +385,10 @@ export default function CreateTermDeposit() {
       url: "#",
     },
   ];
+
+  useEffect(() => {
+    console.log(productData)
+  }, [productData])
 
   const [createProduct, { isLoading, isSuccess, isError, reset, error }] =
     useCreateProductMutation();
