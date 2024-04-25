@@ -197,6 +197,7 @@ export const statusHandler = ({
   }
 
   if (withdrawPrincipalSuccess) {
+    console.log("Withdraw")
     setSuccessText(
       role === "superadmin"
         ? Messages.WITHDRAWAL__SUCCESS

@@ -176,17 +176,17 @@ export default function CustomerInformation({
     if (isSuccess) {
       setCustomersData(
         data?.data?.customers?.map((i) => {
-        
+
           return {
             id: i.customerId,
-            name: i.customer_products.find(v=>v.accountNumber === query?.search)?.accountNumber,
+            name: i.customer_products.find(v => v.accountNumber === query?.search)?.accountNumber,
             code:
               investmentType === "individual"
                 ? `${capitalizeFirstLetter(
-                    i.customer_profiles[0].firstName
-                  )} ${capitalizeFirstLetter(
-                    i.customer_profiles[0].otherNames
-                  )} ${capitalizeFirstLetter(i.customer_profiles[0].surname)}`
+                  i.customer_profiles[0].firstName
+                )} ${capitalizeFirstLetter(
+                  i.customer_profiles[0].otherNames
+                )} ${capitalizeFirstLetter(i.customer_profiles[0].surname)}`
                 : i.customer_profiles[0]?.companyNameBusiness,
             value: i,
           };
@@ -228,7 +228,7 @@ export default function CustomerInformation({
 
   useEffect(() => {
     if (accountNumber && data) {
-    
+
       const foundObject = data?.data?.customers?.find((item) => {
         return (
           item.customer_products &&
@@ -347,7 +347,7 @@ export default function CustomerInformation({
                     500
                   )}
                   searchResults={customersData}
-                  setSearchResults={() => {}}
+                  setSearchResults={() => { }}
                   searchLoading={searchLoading}
                   handleSearch={(value) => {
                     handleSearch(value, setAccountNumber);
@@ -410,7 +410,7 @@ export default function CustomerInformation({
                   500
                 )}
                 searchResults={users}
-                setSearchResults={() => {}}
+                setSearchResults={() => { }}
                 searchLoading={isUsersLoading}
                 handleSearch={(value: any, data: any) => {
                   if (!data?.id && !data?.name) return;
