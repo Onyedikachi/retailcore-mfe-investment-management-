@@ -176,7 +176,7 @@ export default ({
           {values?.moneyMarketCategory && (
             <Fragment>
               <InputDivs label={"issuer"}>
-                <div className="relative">
+                <div className="relative flex flex-col ">
                   <input
                     id="issuer"
                     data-testid="issuer"

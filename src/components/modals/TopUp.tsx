@@ -277,7 +277,10 @@ export default function TopUp({
                     htmlFor="reason"
                     className="flex items-center text-[#333333] mb-2 gap-x-1"
                   >
-                    Amount to {tab === "security-purchase" ? "top up" : type}{" "}
+                    Amount to{" "}
+                    {tab === "security-purchase" || "individual"
+                      ? "top up"
+                      : type}{" "}
                     <span className="flex">
                       {" "}
                       <RedDot />
@@ -401,7 +404,7 @@ export default function TopUp({
                         className="text-[#333333] mb-2 flex items-center"
                       >
                         Notify customer of{" "}
-                        {type === "topup"
+                        {tab === "individual"
                           ? "investment topup"
                           : "principal withdrawal"}
                         <span className="flex">

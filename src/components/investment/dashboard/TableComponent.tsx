@@ -11,11 +11,7 @@ import {
 } from "@app/api";
 import SearchInput from "@app/components/SearchInput";
 import Table from "@app/components/table";
-import {
-  DropDownOptions,
-  productHeader,
-  requestHeader,
-} from "@app/constants";
+import { DropDownOptions, productHeader, requestHeader } from "@app/constants";
 import optionsDataHandler from "@app/utils/optionsDataHandler";
 import { handleProductDownloadSuccess } from "@app/utils/handleProductDownloadSuccess";
 interface RequestDataProps {
@@ -213,6 +209,7 @@ export default function TableComponent({
     getProducts,
     { data, isSuccess, isError, error, isLoading: searchLoading },
   ] = useGetPostProductsMutation();
+
   const [
     downloadProducts,
     { data: productDownloadData, isSuccess: productDownloadIsSuccess },
@@ -372,7 +369,7 @@ export default function TableComponent({
           <button
             onClick={() =>
               initiateDownload(
-                query = category === StatusCategoryType.Requests? {} : query,
+                (query = category === StatusCategoryType.Requests ? {} : query),
                 category,
                 downloadProducts,
                 downloadRequests,
