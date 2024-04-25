@@ -435,7 +435,7 @@ export default function Individual() {
             tab={tab}
           />
 
-          <div className="bg-white px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16">
+          <div className="bg-white px-[30px] py-4 border border-[#E5E9EB] rounded-lg flex-1 w-full pb-16 overflow-hidden">
             {" "}
             <TableComponent
               handleRefresh={() => {

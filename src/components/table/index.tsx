@@ -351,7 +351,6 @@ export const handleProductsDropdown = (
   created_By_Id,
   userId
 ): any => {
-
   if (!status) return [];
 
   if (isChecker) {
@@ -376,7 +375,7 @@ export const handleProductsDropdown = (
             : status?.toLowerCase()
           : status
       ];
- 
+
     if (!permissions?.includes("RE_OR_DEACTIVATE_INVESTMENT_PRODUCT")) {
       options = options?.filter(
         (i: any) =>
@@ -650,7 +649,6 @@ export default function TableComponent<TableProps>({
   const [failedText, setFailedText] = useState("");
   const [productDetails, setProductDetails] = useState(null);
 
-
   const resetModals = () => {
     setFailed(false);
     setIsSuccessOpen(false);
@@ -695,7 +693,7 @@ export default function TableComponent<TableProps>({
       setIndividualDetailOpen,
       navigate,
       selected,
-      tab
+      tab,
     });
   };
 
@@ -802,7 +800,7 @@ export default function TableComponent<TableProps>({
     id:
       detail?.investmentProductId ||
       (detail?.metaInfo && JSON.parse(detail?.metaInfo)?.investmentProductId),
-      investmentType:tab
+    investmentType: tab,
   });
 
   const [
@@ -844,7 +842,7 @@ export default function TableComponent<TableProps>({
       setLiquidationType,
       setTopUpType,
       setTopUpOpen,
-      tab
+      tab,
     });
 
   useEffect(() => {
@@ -935,7 +933,10 @@ export default function TableComponent<TableProps>({
   return (
     <div>
       {" "}
-      <div id="tableContainer" className="relative min-h-[400px]">
+      <div
+        id="tableContainer"
+        className="relative min-h-[400px] overflow-hidden"
+      >
         <InfiniteScroll
           dataLength={tableRows?.length}
           next={fetchMoreData}
@@ -951,7 +952,7 @@ export default function TableComponent<TableProps>({
           scrollableTarget="tableContainer"
           height="70vh"
         >
-          <table className="w-full relative">
+          <table className="w-full relative ">
             <thead
               className={`${
                 tableRows?.length > 0 ? "sticky" : "relative"

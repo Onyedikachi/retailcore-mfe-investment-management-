@@ -29,6 +29,7 @@ import {
 import { useProductList } from "@app/hooks";
 import optionsDataHandler from "@app/utils/optionsDataHandler";
 import { handleProductDownloadSuccess } from "@app/utils/handleProductDownloadSuccess";
+import { useParams } from "react-router-dom";
 
 interface RequestDataProps {
   request: string;
@@ -221,7 +222,8 @@ export const getSearchResult = (
   category,
   setSearchResults,
   selected,
-  isOverviewDrillDown
+  isOverviewDrillDown,
+  tab
 ) => {
   if (!value.length) {
     setSearchResults([]);
@@ -233,6 +235,7 @@ export const getSearchResult = (
       page: 1,
       page_Size: 25,
       filter_by: "created_system_wide",
+      type: tab,
     });
     return;
   }
@@ -242,6 +245,7 @@ export const getSearchResult = (
       page: 1,
       page_Size: 25,
       filter_by: selected?.value,
+      type: tab,
     });
   } else {
     getRequests({
@@ -249,6 +253,7 @@ export const getSearchResult = (
       page: 1,
       page_Size: 25,
       filter_by: selected?.value,
+      type: tab,
     });
   }
 };
@@ -390,8 +395,8 @@ export default function TableComponent({
         data.results.map((i) => {
           return {
             ...i,
-            name: i.productName,
-            code: i.productCode,
+            name: tab === "security-purchase" ? i?.issuer : i?.productName,
+            code: tab === "security-purchase" ? i?.code : i.productCode,
           };
         })
       );
@@ -492,7 +497,8 @@ export default function TableComponent({
               category,
               setSearchResults,
               selected,
-              isOverviewDrillDown
+              isOverviewDrillDown,
+              tab
             )
           }
           placeholder={`Search by ${
