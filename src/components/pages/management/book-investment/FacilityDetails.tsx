@@ -427,10 +427,8 @@ export default function FacilityDetails({
       setCapMethodOptions(CapitalizationOptions);
     }
     if (
-      formData?.customerBookingInfoModel?.currencyId !==
-        productDetail?.productInfo?.currency &&
       formData?.customerBookingInfoModel?.currencyCode !==
-        productDetail?.productInfo?.currencyCode
+      productDetail?.productInfo?.currencyCode
     ) {
       setValidCurency(false);
       setShowError(true);
@@ -561,7 +559,7 @@ export default function FacilityDetails({
                 </div>
               </InputDivs>
               {ProductTypes.find((n) => n.id === productDetail?.productType)
-                ?.name !== "Term Deposit" && (
+                ?.name === "Term Deposit" && (
                 <TermDepositFacilityDetails
                   {...{
                     capMethodOptions,
@@ -577,7 +575,7 @@ export default function FacilityDetails({
                 />
               )}
               {ProductTypes.find((n) => n.id === productDetail?.productType)
-                ?.name !== "Bonds" && (
+                ?.name !== "Term Deposit" && (
                 <BondsFacilityDetails
                   {...{
                     capMethodOptions,
@@ -589,8 +587,9 @@ export default function FacilityDetails({
                     setValue,
                     trigger,
                     values,
-                    type:ProductTypes.find((n) => n.id === productDetail?.productType)
-                    ?.name?.toLowerCase()
+                    type: ProductTypes.find(
+                      (n) => n.id === productDetail?.productType
+                    )?.name?.toLowerCase(),
                   }}
                 />
               )}

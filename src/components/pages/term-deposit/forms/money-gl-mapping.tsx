@@ -190,64 +190,38 @@ export default ({
       moneyMarketGlType: 0,
       ledgerEntryMappings: [
         {
-          title: "one",
-          data: null,
+          ledgerEntries: null,
           errors: null,
-          ledgerType: 0,
-          ledgerCode: "",
-          glClass: "",
         },
       ],
     },
     {
       label: "Upfront interest payment",
+      moneyMarketGlType: 1,
       ledgerEntryMappings: [
         {
-          title: "two",
-          data: null,
+          ledgerEntries: null,
           errors: null,
-          ledgerType: 0,
-          ledgerCode: "",
-          glClass: "",
         },
       ],
     },
     {
       label: "Redemption at maturity",
+      moneyMarketGlType: 2,
       ledgerEntryMappings: [
         {
-          title: "three",
-          data: null,
+          ledgerEntries: null,
           errors: null,
-          ledgerType: 0,
-          ledgerCode: "",
-          glClass: "",
-        },
-      ],
-    },
-    {
-      label: "Redemption at maturity",
-      ledgerEntryMappings: [
-        {
-          title: "four",
-          data: null,
-          errors: null,
-          ledgerType: 0,
-          ledgerCode: "",
-          glClass: "",
         },
       ],
     },
   ]);
+
   function addField(index) {
     const updatedFormFields = [...formFields];
     updatedFormFields[index].ledgerEntryMappings.push({
-      title: "four",
-      data: null,
+      ledgerEntries: null,
       errors: null,
-      ledgerType: 0,
-      ledgerCode: "",
-      glClass: "",
     });
 
     setFormFields(updatedFormFields);
@@ -260,24 +234,12 @@ export default ({
   }
 
   function handleValue(field, ledgers, itemIndex, fieldIndex) {
-   
-    console.log("🚀 ~ handleValue ~ ledgers:", ledgers);
-    console.log("🚀 ~ handleValue ~ field:", field);
-    let tempData = {
-      title: "four",
-      data: ledgers,
-      errors: null,
-      ledgerType: ledgers?.type === "debit" ? 0 : 1,
-      ledgerCode: ledgers?.type?.value?.accountId,
-      glClass: ledgers?.type?.value?.accountType,
-    };
-    console.log("🚀 ~ handleValue ~ tempData:", tempData)
     const updatedFormFields = [...formFields];
     const targetField =
       updatedFormFields[itemIndex]?.ledgerEntryMappings?.[fieldIndex];
     if (targetField) {
       // Update the data property
-      targetField.data = ledgers;
+      targetField.ledgerEntries = [...ledgers];
 
       // Update the state with the modified formFields
       setFormFields(updatedFormFields);
@@ -293,28 +255,22 @@ export default ({
   }, [formFields]);
 
   function updateErrors() {
-    const updatedFormFields = formFields.map((item) => ({
-      ...item,
-      ledgerEntryMappings: item.ledgerEntryMappings.map((field) => ({
-        ...field,
-        errors: calculateErrorForField(field), // Call a function to calculate error for each field
-      })),
-    }));
-
-    // setFormFields(updatedFormFields);
-  }
-  function calculateErrorForField(field: any) {
-    if (field.data && field.data.length) {
-      const checkValue = field.data.some((i) => !i.value);
-
-      if (!checkValue) {
-        setDisabled(false);
+    formFields.forEach((item: any) => {
+      if (item?.ledgerEntryMappings?.length) {
+        item?.ledgerEntryMappings.forEach((data) => {
+          if (data?.ledgerEntries?.length) {
+            const checkValue = data?.ledgerEntries.some((i) => !i.ledgerCode);
+            setDisabled(checkValue);
+          } else {
+            setDisabled(true);
+          }
+        });
       } else {
         setDisabled(true);
       }
-    } else {
-      setDisabled(true);
-    }
+    });
+
+    // setFormFields(updatedFormFields);
   }
 
   return (
@@ -350,7 +306,7 @@ export default ({
                 <div className="flex flex-col gap-4 px-[30px] py-5">
                   <div className="flex flex-col items-start gap-y-5 w-full">
                     {tab?.ledgerEntryMappings.map((field, idx) => (
-                      <div key={`${field.title} + ${idx}`} className="w-full">
+                      <div key={`index+${idx}`} className="w-full">
                         <LedgerSelect
                           formData={formData}
                           register={register}
