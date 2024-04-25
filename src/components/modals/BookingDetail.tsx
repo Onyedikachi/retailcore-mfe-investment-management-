@@ -19,9 +19,11 @@ import {
 import { AppContext } from "@app/utils";
 import PricingConfigurationComponent from "./PricingConfigurationComponent";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
+import { BiSolidEdit } from "react-icons/bi";
 
 interface Props {
   isOpen: boolean;
+  setTopUpOpen: (isOpen: boolean) => void;
   setIsOpen: (isOpen: boolean) => void;
   onCancel?: () => void;
   handleClick?: (e: any, detail: any) => void;
@@ -38,9 +40,10 @@ export const BookingDetailLayout = ({
   permissions,
   open,
   setOpen,
+  setTopUpOpen,
+
   handleClick,
 }) => {
-
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
       <div
@@ -108,7 +111,7 @@ export const BookingDetailLayout = ({
                       {detail?.principal}{" "}
                     </span>
                   </div>
-          
+
                   {detail?.investmentBookingStatus === 2 && (
                     <div>
                       <span className="font-bold block mb-[15px]">
@@ -184,6 +187,22 @@ export const BookingDetailLayout = ({
                   </div>
                 </div>
                 <div className="border border-[#E5E9EB] rounded-lg py-[35px] px-[30px] flex justify-between items-center">
+                  {detail?.investmentBookingStatus === 1 && (
+                    <div className="flex gap-x-6 items-center">
+                      <button
+                        data-testid="security-purchase-topup"
+                        onClick={() => {
+                          setIsOpen(false);
+                          setTopUpOpen(true);
+                        }}
+                        className={`group flex  items-center whitespace-nowrap  py-[1px] text-base text-[#636363] gap-x-3`}
+                      >
+                        <BiSolidEdit className="text-[#444]" /> Investment Top
+                        Up
+                      </button>
+                    </div>
+                  )}
+
                   {permissions?.includes("LIQUIDATE_INVESTMENT") &&
                     detail?.investmentBookingStatus === 1 && (
                       <div className="flex gap-x-6 items-center">
@@ -213,6 +232,7 @@ export const BookingDetailLayout = ({
                         )}
                       </div>
                     )}
+
                   <Link
                     to={`/investment-management/${CustomerCategory[
                       productInfo?.data?.customerEligibility?.customerCategory
@@ -315,6 +335,7 @@ export default function BookingDetail({
   setIsOpen,
   handleClick,
   detail,
+  setTopUpOpen,
 }: Props) {
   const { permissions } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
@@ -352,6 +373,7 @@ export default function BookingDetail({
         open,
         setOpen,
         handleClick,
+        setTopUpOpen,
       }}
     />
   );

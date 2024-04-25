@@ -220,7 +220,7 @@ export default function TopUp({
               <h3 className="text-[#747373] font-bold text-xl uppercase">
                 {tab === "security-purchase"
                   ? "security PURCHASE Top up Request"
-                  : type === "topup"
+                  : tab === "individual"
                   ? "INVESTMENT TOP UP REQUEST"
                   : "principal withdrawal request"}
               </h3>
@@ -263,7 +263,10 @@ export default function TopUp({
                     htmlFor="reason"
                     className="flex items-center text-[#333333] mb-2 gap-x-1"
                   >
-                    Amount to {tab === "security-purchase" ? "top up" : type}{" "}
+                    Amount to{" "}
+                    {tab === "security-purchase" || "individual"
+                      ? "top up"
+                      : type}{" "}
                     <span className="flex">
                       {" "}
                       <RedDot />
@@ -328,7 +331,7 @@ export default function TopUp({
                     Provide justification for{" "}
                     {tab === "security-purchase"
                       ? "security purchase top up"
-                      : type === "topup"
+                      : tab === "individual"
                       ? "investment topup"
                       : "principal withdrawal"}
                     <span className="flex">
@@ -389,7 +392,7 @@ export default function TopUp({
                         className="text-[#333333] mb-2 flex items-center"
                       >
                         Notify customer of{" "}
-                        {type === "topup"
+                        {tab === "individual"
                           ? "investment topup"
                           : "principal withdrawal"}
                         <span className="flex">
@@ -461,7 +464,7 @@ export default function TopUp({
                   <span className="text-sm text-[#747373] capitalize">
                     {tab === "security-purchase"
                       ? "security purchase top up"
-                      : type === "topup"
+                      : tab === "individual"
                       ? "investment topup"
                       : "principal withdrawal"}{" "}
                     value:{" "}
