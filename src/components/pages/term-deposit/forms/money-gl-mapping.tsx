@@ -172,15 +172,6 @@ export default ({
     // values,
   });
   const values = getValues();
-  const {
-    fields: interestRateConfigModels,
-    append,
-    remove,
-  } = useFieldArray({
-    control, // control props comes from useForm (optional: if you are using FormContext)
-    name: "interestRateConfigModels", // unique name for your Field Array
-  });
-
   useEffect(() => {
     setDisabled(false);
   }, []);
@@ -196,50 +187,41 @@ export default ({
   const [formFields, setFormFields] = useState<any>([
     {
       label: "Issue to customers",
-      fields: [
+      moneyMarketGlType: 0,
+      ledgerEntryMappings: [
         {
-          title: "one",
-          data: null,
+          ledgerEntries: null,
           errors: null,
         },
       ],
     },
     {
       label: "Upfront interest payment",
-      fields: [
+      moneyMarketGlType: 1,
+      ledgerEntryMappings: [
         {
-          title: "two",
-          data: null,
+          ledgerEntries: null,
           errors: null,
         },
       ],
     },
     {
       label: "Redemption at maturity",
-      fields: [
+      moneyMarketGlType: 2,
+      ledgerEntryMappings: [
         {
-          title: "three",
-          data: null,
-          errors: null,
-        },
-      ],
-    },
-    {
-      label: "Redemption at maturity",
-      fields: [
-        {
-          title: "four",
-          data: null,
+          ledgerEntries: null,
           errors: null,
         },
       ],
     },
   ]);
+
   function addField(index) {
     const updatedFormFields = [...formFields];
-    updatedFormFields[index].fields.push({
-      title: "new field",
-      data: null,
+    updatedFormFields[index].ledgerEntryMappings.push({
+      ledgerEntries: null,
+      errors: null,
     });
 
     setFormFields(updatedFormFields);
@@ -247,16 +229,18 @@ export default ({
 
   function removeField(itemIndex, fieldIndex) {
     const updatedFormFields = [...formFields];
-    updatedFormFields[itemIndex].fields.splice(fieldIndex, 1);
+    updatedFormFields[itemIndex].ledgerEntryMappings.splice(fieldIndex, 1);
     setFormFields(updatedFormFields);
   }
 
   function handleValue(field, ledgers, itemIndex, fieldIndex) {
     const updatedFormFields = [...formFields];
-    const targetField = updatedFormFields[itemIndex]?.fields?.[fieldIndex];
+    const targetField =
+      updatedFormFields[itemIndex]?.ledgerEntryMappings?.[fieldIndex];
     if (targetField) {
       // Update the data property
-      targetField.data = ledgers;
+      targetField.ledgerEntries = [...ledgers];
+
       // Update the state with the modified formFields
       setFormFields(updatedFormFields);
     } else {
@@ -264,33 +248,29 @@ export default ({
     }
   }
   useEffect(() => {
+    console.log("🚀 ~ formFields:", formFields);
+
     // Update error messages whenever formFields changes
     updateErrors();
   }, [formFields]);
 
   function updateErrors() {
-    const updatedFormFields = formFields.map((item) => ({
-      ...item,
-      fields: item.fields.map((field) => ({
-        ...field,
-        errors: calculateErrorForField(field), // Call a function to calculate error for each field
-      })),
-    }));
-
-    // setFormFields(updatedFormFields);
-  }
-  function calculateErrorForField(field: any) {
-    if (field.data && field.data.length) {
-      const checkValue = field.data.some((i) => !i.value);
-
-      if (!checkValue) {
-        setDisabled(false);
+    formFields.forEach((item: any) => {
+      if (item?.ledgerEntryMappings?.length) {
+        item?.ledgerEntryMappings.forEach((data) => {
+          if (data?.ledgerEntries?.length) {
+            const checkValue = data?.ledgerEntries.some((i) => !i.ledgerCode);
+            setDisabled(checkValue);
+          } else {
+            setDisabled(true);
+          }
+        });
       } else {
         setDisabled(true);
       }
-    } else {
-      setDisabled(true);
-    }
+    });
+
+    // setFormFields(updatedFormFields);
   }
 
   return (
@@ -325,8 +305,8 @@ export default ({
               {activeTab.includes(index) && (
                 <div className="flex flex-col gap-4 px-[30px] py-5">
                   <div className="flex flex-col items-start gap-y-5 w-full">
-                    {tab?.fields.map((field, idx) => (
-                      <div key={`${field.title} + ${idx}`} className="w-full">
+                    {tab?.ledgerEntryMappings.map((field, idx) => (
+                      <div key={`index+${idx}`} className="w-full">
                         <LedgerSelect
                           formData={formData}
                           register={register}
@@ -336,7 +316,7 @@ export default ({
                             handleValue(field, ledgers, index, idx)
                           }
                           removeField={
-                            tab?.fields.length === 1
+                            tab?.ledgerEntryMappings.length === 1
                               ? null
                               : () => removeField(index, idx)
                           }

@@ -28,27 +28,25 @@ export const handleClear = (
 export const handleClick = ({
   key,
   ledgerInfo,
-  ledgerType,
+  ledgerTypes,
   index,
   setLedgerType,
 }) => {
- 
   let data = {
-    accountName: ledgerInfo.accountName,
-    accountId: ledgerInfo?.accountNo,
-    accountType: ledgerInfo?.accountType,
+    ledgerType: key,
+    ledgerCode: ledgerInfo?.accountNo,
+    glClass: ledgerInfo?.accountType,
   };
   setLedgerType((prevLedgerType) => {
     const updatedLedgerType = [...prevLedgerType];
     updatedLedgerType[index] = {
       ...updatedLedgerType[index],
-      value: data,
+      ...data,
     };
 
     // Return the updated array
     return updatedLedgerType;
   });
- 
 };
 
 export default ({
@@ -59,15 +57,17 @@ export default ({
   errors,
   removeField,
 }) => {
+  const indexedLedgers = [0, 1];
   const [clearFields, setClearField] = useState(false);
-  const [ledgerType, setLedgerType] = useState<any>([
+  const [ledgerTypes, setLedgerType] = useState<any>([
     {
-      type: "debit",
-      value: null,
+      ledgerType: 0,
+      ledgerCode: "",
+      glClass: "",
     },
   ]);
   function handleSwitch() {
-    if (ledgerType.length === 2) {
+    if (ledgerTypes.length === 2) {
       setLedgerType((prevLedgerType) => {
         const [first, second] = prevLedgerType;
         const updatedFirst = { ...first, type: second?.type };
@@ -76,43 +76,47 @@ export default ({
       });
     } else {
       setLedgerType((prevLedgerType) => {
-      
         const [first] = prevLedgerType;
         const updatedFirst = {
           ...first,
-          type: first?.type === "credit" ? "debit" : "credit",
+          ledgerType: first?.ledgerType === 1 ? 0 : 1,
         };
-   
+
         return [updatedFirst];
       });
     }
   }
-  const ledgerTypes = ["debit", "credit"];
-  function addField(type: string) {
+
+  function addField(type: number) {
     setLedgerType([
-      ...ledgerType,
+      ...ledgerTypes,
       {
-        type,
-        value: null,
+        ledgerType: type,
+        ledgerCode: "",
+        glClass: "",
       },
     ]);
   }
-  function removeLedger(type: string) {
-    setLedgerType(ledgerType.filter((i) => i.type !== type));
+  function removeLedger(type: number) {
+    setLedgerType(ledgerTypes.filter((i) => i.ledgerType !== type));
   }
 
   useEffect(() => {
-    handleValue(ledgerType);
-  }, [ledgerType]);
+    handleValue(ledgerTypes);
+  }, [ledgerTypes]);
 
+  const TypeOptions = {
+    0: "debit",
+    1: "credit",
+  };
   return (
     <Fragment>
       <div className="flex justify-between items-center relative w-full border rounded-[10px] border-[#EEEEEE] px-4 py-[30px]">
         <div className="grid grid-cols-2 gap-x-[64px]">
-          {ledgerType.map((item, index) => (
-            <div className="w-[366px] flex-1" key={item.type}>
+          {ledgerTypes.map((item, index) => (
+            <div className="w-[366px] flex-1" key={item.ledgerType}>
               <div className="flex gap-x-3 items-center capitalize font-medium mb-1">
-                <span>{item.type} ledger</span>
+                <span>{TypeOptions[item.ledgerType]} ledger</span>
                 <button
                   type="button"
                   onClick={() => handleSwitch()}
@@ -126,32 +130,32 @@ export default ({
                   handleClick({
                     key,
                     ledgerInfo,
-                    ledgerType,
+                    ledgerTypes,
                     index,
                     setLedgerType,
                   })
                 }
-                inputName={item.type}
-                defaultValue={item?.value?.accountName}
+                inputName={item.ledgerType.toString()}
+                defaultValue={item?.ledgerCode}
                 register={register}
                 trigger={trigger}
                 errors={errors}
                 clearFields={clearFields}
                 placeholder="Type to search and select"
                 formData={formData}
-                accountType={item?.value?.accountType}
+                accountType={item?.glClass}
                 showImpact={true}
                 impact={
-                  item.type === "debit"
+                  item.ledgerType === 0
                     ? "debit_impact_on_balance"
                     : "credit_impact_on_balance"
                 }
               />
 
-              {index === 1 && ledgerType.length === 2 && (
+              {index === 1 && ledgerTypes.length === 2 && (
                 <button
                   type="button"
-                  onClick={() => removeLedger(item.type)}
+                  onClick={() => removeLedger(item.ledgerType)}
                   className="text-sm text-[#333] flex gap-x-1 max-w-max items-center mt-1"
                 >
                   <span className="text-red-500">
@@ -164,19 +168,20 @@ export default ({
           ))}
         </div>
         <div className="flex flex-col gap-y-1">
-          {ledgerTypes.map((type) => (
+          {indexedLedgers.map((type) => (
             <button
               key={type}
               type="button"
+              disabled={ledgerTypes.some((i) => parseInt(i.ledgerType,10) === type)}
               className={`flex items-center gap-x-4 cursor-pointer text-[#636363] disabled:opacity-50 disabled:cursor-not-allowed text-xs ${
-                ledgerType.map((i) => i.type).includes(type) ? "opacity-50" : ""
+                ledgerTypes.some((i) => parseInt(i.ledgerType,10) === type) ? "opacity-50" : ""
               }`}
               onClick={() => addField(type)}
             >
               <span className="text-[18px]">
                 <IoMdAddCircle />
               </span>{" "}
-              <span>{`Add ${type} entry`}</span>
+              <span>{`Add ${TypeOptions[type]} entry`}</span>
             </button>
           ))}
         </div>
