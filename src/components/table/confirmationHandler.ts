@@ -1,6 +1,6 @@
 import { Actions, Messages, Prompts } from "@app/constants/enums";
 import { errorToast } from "../Toast";
-import { SpecificCategory } from "@app/constants";
+import { AProductOptionTypes, SpecificCategory } from "@app/constants";
 
 export const confirmationHandler = ({
   specificCategory,
@@ -47,7 +47,7 @@ export const confirmationHandler = ({
     } else {
       navigate(
         `/product-factory/investment/${encodeURIComponent(
-          "term-deposit"
+          detail?.productType.toLowerCase().replace(" ", "-") || "term-deposit"
         )}/modify/?id=${detail.id}&filter=${selected.value}`
       );
     }
@@ -76,7 +76,7 @@ export const confirmationHandler = ({
             isDraft: true,
             id: detail.id,
             recentlyUpdatedMeta: null,
-            investmentType: tab
+            investmentType: tab,
           });
         }
       } else {
@@ -90,7 +90,7 @@ export const confirmationHandler = ({
           isDraft: true,
           id: detail.id,
           recentlyUpdatedMeta: null,
-          investmentType: tab
+          investmentType: tab,
         });
       }
     }

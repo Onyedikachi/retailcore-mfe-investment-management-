@@ -10,15 +10,17 @@ import {
   interestComputationDaysOptions,
   VaryOptions,
 } from "@app/constants";
+import { useGetInvestmentDetailQuery } from "@app/api";
 import { useForm, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { pricingConfigSchema } from "@app/constants";
+import { SecurityPricingSchema } from "@app/constants";
 import { FormToolTip } from "@app/components";
 import { toolTips } from "@app/constants";
 import { RedDot } from "@app/components/forms";
 import { useParams } from "react-router-dom";
 import { handleCurrencyName } from "@app/utils/handleCurrencyName";
 import { AppContext } from "@app/utils";
+import BottomBarLoader from "@app/components/BottomBarLoader";
 
 const labels = [
   "Applicable Tenor",
@@ -73,6 +75,7 @@ export default function MoneyPricingConfig({
   productData,
   initiateDraft,
 }) {
+
   const { currencies } = useContext(AppContext);
   const { process } = useParams();
   const {
@@ -86,277 +89,204 @@ export default function MoneyPricingConfig({
     getValues,
     trigger,
     resetField,
-    formState: { errors, isValid, touchedFields, dirtyFields },
+    formState: { errors },
   } = useForm({
-    resolver: yupResolver(pricingConfigSchema),
+    resolver: yupResolver(SecurityPricingSchema),
     defaultValues: formData,
   });
-
-  const {
-    fields: interestRateConfigModels,
-    append,
-    remove,
-  } = useFieldArray({
-    control, // control props comes from useForm (optional: if you are using FormContext)
-    name: "interestRateConfigModels", // unique name for your Field Array
-  });
-
-  const addField = () => {
-    append({
-      index: interestRateConfigModels.length,
-      min: 0,
-      max: null,
-      principalMin: 0,
-      principalMax: null,
-      tenorMin: 0,
-      tenorMinUnit: 1,
-      tenorMax: null,
-      tenorMaxUnit: 1,
-    });
-  };
-
-  const removeField = (index) => {
-    remove(index);
-  };
-
-  // Watch tenor
-  const watchinterestRateRangeType = watch("interestRateRangeType");
-
-  const watchApplicableTenorMin = watch("applicableTenorMin");
-  const watchApplicableTenorMinUnit = watch("applicableTenorMinUnit");
-  const watchApplicableTenorMax = watch("applicableTenorMax");
-  const watchApplicableTenorMaxUnit = watch("applicableTenorMaxUnit");
 
   function onProceed() {
     // setFormData({ ...d });
     proceed();
   }
 
-  useEffect(() => {
-    if (watchApplicableTenorMax > 0) {
-      trigger("applicableTenorMin");
-      trigger("applicableTenorMax");
-    }
-  }, [
-    watchApplicableTenorMin,
-    watchApplicableTenorMinUnit,
-    watchApplicableTenorMax,
-    watchApplicableTenorMaxUnit,
-  ]);
-
-  // watch principal
-  const watchApplicablePrincipalMin = watch("applicablePrincipalMin");
-  const watchApplicablePrincipalMax = watch("applicablePrincipalMax");
-
-  useEffect(() => {
-    if (watchApplicablePrincipalMax > 0) {
-      trigger("applicablePrincipalMin");
-      trigger("applicablePrincipalMax");
-    }
-  }, [watchApplicablePrincipalMax, watchApplicablePrincipalMin]);
-
-  // watch interest rate
-  const watchInterestRateMin = watch("interestRateMin");
-  const watchInterestRateMax = watch("interestRateMax");
-  useEffect(() => {
-    if (
-      watchInterestRateMin > 0 &&
-      parseInt(watchinterestRateRangeType, 10) === 2
-    ) {
-      trigger("interestRateMax");
-      trigger("interestRateMin");
-    }
-  }, [watchInterestRateMax, watchInterestRateMin]);
-
-  useEffect(() => {
-    register("interestRateMax");
-    register("interestRateMin");
-    resetField("interestRateMax", { keepError: false });
-    resetField("interestRateMin", { keepError: false });
-  }, [watchinterestRateRangeType]);
-
   const values = getValues();
 
   useEffect(() => {
-    setDisabled(false);
+    setDisabled(true);
   }, []);
 
+  const { data, isLoading } = useGetInvestmentDetailQuery(
+    {
+      id:productData?.productInfo?.securitPurchaseId,
+      investmentType: "security-purchase",
+    },
+    { skip: !productData?.productInfo?.securitPurchaseId }
+  );
   useEffect(() => {
-    if (formData) {
-      Object.entries(formData).forEach(([name, value]) =>
-        setValue(name, value)
-      );
-      if (
-        process === "continue" ||
-        process === "modify" ||
-        process === "withdraw_modify" ||
-        process === "clone"
-      ) {
-        trigger();
-      }
-    }
-  }, [setValue, formData]);
-  useEffect(() => {
-    if (initiateDraft) {
-      setFormData({ ...values });
-    }
-  }, [initiateDraft]);
+
+    // setValue("faceValue",data?.data?.faceValue)
+    // setValue("totalConsideration",data?.data?.totalConsideration)
+    // setValue("perAmount", data?.data?.perAmount)
+    // setValue("discountRate", data?.data?.discountRate)
+    // setValue("interestComputationMethod", data?.data?.interestComputationMethod)
+    setDisabled(false);
+  }, [data]);
+
   return (
     <form id="customereligibilitycriteria" onSubmit={onProceed}>
-      <div className="flex flex-col gap-10 max-w-[860px]">
-        <div className="grid grid-cols-2 gap-x-[48px] gap-y-[36px] ">
-          <div className="">
-            <div className="capitalize min-w-[360px] flex items-center gap-[5px] text-[##636363] text-base font-medium mb-2">
-              <span>
-                {" "}
-                Applicable Face Value <RedDot />
-              </span>
-              <FormToolTip tip={toolTips.interestComputation} />
-            </div>
-            <MinMaxInput
-              className="w-[360px]"
-              label={""}
-              currency={productData?.productInfo?.currencyCode}
-              register={register}
-              inputName={"faceValue"}
-              defaultValue={formData?.faceValue}
-              errors={errors}
-              setValue={setValue}
-              trigger={trigger}
-              clearErrors={clearErrors}
-              isCurrency
-              disabled
-            />
-          </div>{" "}
-          <div className="">
-            <div className="capitalize min-w-[360px] flex items-center gap-[5px] text-[##636363] text-base font-medium mb-2">
-              <span>
-                {" "}
-                Consideration <RedDot />
-              </span>
-              <FormToolTip tip={toolTips.interestComputation} />
-            </div>
-            <MinMaxInput
-              className="w-[360px]"
-              label={""}
-              currency={productData?.productInfo?.currencyCode}
-              register={register}
-              inputName={"applicablePrincipalMax"}
-              defaultValue={formData?.totalConsideration}
-              errors={errors}
-              setValue={setValue}
-              trigger={trigger}
-              clearErrors={clearErrors}
-              isCurrency
-              disabled
-            />
-          </div>
-          <div className="">
-            <div className="capitalize min-w-[360px] flex items-center gap-[5px] text-[##636363] text-base font-medium mb-2">
-              <span>
-                {" "}
-                Discount rate <RedDot />
-              </span>
-              <FormToolTip tip={toolTips.interestComputation} />
-            </div>
-            <MinMaxInput
-              className="w-[360px]"
-              label={""}
-              register={register}
-              inputName={`interestRateMin`}
-              errors={errors}
-              setValue={setValue}
-              trigger={trigger}
-              defaultValue={formData?.discountRate}
-              clearErrors={clearErrors}
-              max={100}
-              isPercent
-              isCurrency
-              disablegroupseparators
-              disabled
-
-              // defaultValue={range.min}
-            />
-          </div>{" "}
-          <div className="">
-            <div className="capitalize min-w-[360px] flex items-center gap-[5px] text-[##636363] text-base font-medium mb-2">
-              <span>
-                {" "}
-                Per amount <RedDot />
-              </span>
-              <FormToolTip tip={toolTips.interestComputation} />
-            </div>
-            <MinMaxInput
-              className="w-[360px]"
-              label={""}
-              currency={productData?.productInfo?.currencyCode}
-              register={register}
-              inputName={"applicablePrincipalMax"}
-              defaultValue={formData?.perAmount}
-              errors={errors}
-              setValue={setValue}
-              trigger={trigger}
-              clearErrors={clearErrors}
-              isCurrency
-              disabled
-            />
-          </div>
-        </div>
-
-        <div className="">
-          <div className="capitalize min-w-[360px] flex items-center gap-[5px] text-[##636363] text-base font-medium mb-2">
-            <span>
-              {" "}
-              Interest Computation Days in Year Method <RedDot />
-            </span>
-            {/* <FormToolTip tip={toolTips.interestComputation} /> */}
-            <Tooltip
-              theme="light"
-              distance={20}
-              size="small"
-              arrow
-              className="bg-white max-w-[320px]"
-              html={
-                <div className="text-left text-xs  max-w-[320px]">
-                  <p>
-                    <span className="font-semibold">30E/360:</span> Counts the
-                    days from the calendar, but also introduces some changes on
-                    the months with 31 and 28 days.
-                  </p>
-                  <p>
-                    <span className="font-semibold"> Actual/360:</span> Computes
-                    the interest daily by counting the number of days in the
-                    calendar, but using a fixed 360-day year length.
-                  </p>
-                  <p>
-                    <span className="font-semibold"> Actual/365:</span>{" "}
-                    Calculates the interest daily by counting the number of days
-                    in the calendar and using a fixed 365-day year length
-                  </p>
-                </div>
-              }
-            >
-              <div className="w-[18px] h-[18px] text-[#636363]">
-                <ImInfo />
+      {!isLoading ? (
+        <div className="flex flex-col gap-10 max-w-[860px]">
+          <div className="grid grid-cols-2 gap-x-[48px] gap-y-[36px] ">
+            <div className="">
+              <div className="capitalize min-w-[360px] flex items-center gap-[5px] text-[##636363] text-base font-medium mb-2">
+                <span>
+                  {" "}
+                  Applicable Face Value <RedDot />
+                </span>
+                <FormToolTip tip={toolTips.faceValue} />
               </div>
-            </Tooltip>
+
+              <MinMaxInput
+                className="w-[360px]"
+                label={""}
+                currency={data?.data?.currencyCode}
+                register={register}
+                inputName={"faceValue"}
+                defaultValue={data?.data?.faceValue}
+                errors={errors}
+                setValue={setValue}
+                trigger={trigger}
+                clearErrors={clearErrors}
+                isCurrency
+                type="number"
+                disabled
+              />
+            </div>{" "}
+            <div className="">
+              <div className="capitalize min-w-[360px] flex items-center gap-[5px] text-[##636363] text-base font-medium mb-2">
+                <span>
+                  {" "}
+                  Consideration <RedDot />
+                </span>
+                <FormToolTip tip={toolTips.totalConsideration} />
+              </div>
+              <MinMaxInput
+                className="w-[360px]"
+                label={""}
+                currency={data?.data?.currencyCode}
+                register={register}
+                inputName={"totalConsideration"}
+                defaultValue={data?.data?.totalConsideration}
+                errors={errors}
+                setValue={setValue}
+                trigger={trigger}
+                clearErrors={clearErrors}
+                isCurrency
+                disabled
+              />
+            </div>
+            <div className="">
+              <div className="capitalize min-w-[360px] flex items-center gap-[5px] text-[##636363] text-base font-medium mb-2">
+                <span>
+                  {" "}
+                  Discount rate <RedDot />
+                </span>
+                <FormToolTip tip={toolTips.discountRate} />
+              </div>
+              <MinMaxInput
+                className="w-[360px]"
+                label={""}
+                register={register}
+                inputName={`discountRate`}
+                errors={errors}
+                setValue={setValue}
+                trigger={trigger}
+                defaultValue={data?.data?.discountRate}
+                clearErrors={clearErrors}
+                max={100}
+                isPercent
+                isCurrency
+                disablegroupseparators
+                disabled
+
+                // defaultValue={range.min}
+              />
+            </div>{" "}
+            <div className="">
+              <div className="capitalize min-w-[360px] flex items-center gap-[5px] text-[##636363] text-base font-medium mb-2">
+                <span>
+                  {" "}
+                  Per amount <RedDot />
+                </span>
+                <FormToolTip tip={toolTips.perAmount} />
+              </div>
+              <MinMaxInput
+                className="w-[360px]"
+                label={""}
+                currency={data?.data?.currencyCode}
+                register={register}
+                inputName={"perAmount"}
+                defaultValue={data?.data?.perAmount}
+                errors={errors}
+                setValue={setValue}
+                trigger={trigger}
+                clearErrors={clearErrors}
+                isCurrency
+                disabled
+              />
+            </div>
           </div>
 
-          <div className="w-[360px]">
-            <BorderlessSelect
-              inputError={errors?.interestComputationMethod}
-              inputName={"interestComputationMethod"}
-              options={interestComputationDaysOptions}
-              defaultValue={formData?.interestComputationMethod}
-              errors={errors}
-              trigger={trigger}
-              clearErrors={clearErrors}
-              setValue={() => {}}
-              disabled
-            />
+          <div className="">
+            <div className="capitalize min-w-[360px] flex items-center gap-[5px] text-[##636363] text-base font-medium mb-2">
+              <span>
+                {" "}
+                Interest Computation Days in Year Method <RedDot />
+              </span>
+              {/* <FormToolTip tip={toolTips.interestComputation} /> */}
+              <Tooltip
+                theme="light"
+                distance={20}
+                size="small"
+                arrow
+                className="bg-white max-w-[320px]"
+                html={
+                  <div className="text-left text-xs  max-w-[320px]">
+                    <p>
+                      <span className="font-semibold">30E/360:</span> Counts the
+                      days from the calendar, but also introduces some changes
+                      on the months with 31 and 28 days.
+                    </p>
+                    <p>
+                      <span className="font-semibold"> Actual/360:</span>{" "}
+                      Computes the interest daily by counting the number of days
+                      in the calendar, but using a fixed 360-day year length.
+                    </p>
+                    <p>
+                      <span className="font-semibold"> Actual/365:</span>{" "}
+                      Calculates the interest daily by counting the number of
+                      days in the calendar and using a fixed 365-day year length
+                    </p>
+                  </div>
+                }
+              >
+                <div className="w-[18px] h-[18px] text-[#636363]">
+                  <ImInfo />
+                </div>
+              </Tooltip>
+            </div>
+
+            <div className="w-[360px]">
+              <BorderlessSelect
+                inputError={errors?.interestComputationMethod}
+                inputName={"interestComputationMethod"}
+                options={interestComputationDaysOptions}
+                defaultValue={data?.data?.interestComputationMethod}
+                errors={errors}
+                trigger={trigger}
+                clearErrors={clearErrors}
+                setValue={() => {}}
+                disabled
+              />
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="p-20">
+          <BottomBarLoader />
+        </div>
+      )}
     </form>
   );
 }

@@ -45,9 +45,6 @@ export const SecurityPurchaseDetailLayout = ({
   setOpen,
   handleClick,
 }) => {
-  console.log("security purchase table", investmentData);
-  console.log("security purchase table details", detail);
-
   return (
     <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
       <div

@@ -33,7 +33,7 @@ export const handleClick = ({
   setLedgerType,
 }) => {
   let data = {
-    ledgerType: key,
+    ledgerType: key === "debit" ? 0 : 1,
     ledgerCode: ledgerInfo?.accountNo,
     glClass: ledgerInfo?.accountType,
   };
@@ -56,7 +56,9 @@ export default ({
   trigger,
   errors,
   removeField,
+  ledgers,
 }) => {
+ 
   const indexedLedgers = [0, 1];
   const [clearFields, setClearField] = useState(false);
   const [ledgerTypes, setLedgerType] = useState<any>([
@@ -66,12 +68,19 @@ export default ({
       glClass: "",
     },
   ]);
+
+  useEffect(() => {
+    if (ledgers?.ledgerEntries?.length) {
+      setLedgerType(ledgers?.ledgerEntries);
+    }
+  }, [ledgers]);
+
   function handleSwitch() {
     if (ledgerTypes.length === 2) {
       setLedgerType((prevLedgerType) => {
         const [first, second] = prevLedgerType;
-        const updatedFirst = { ...first, type: second?.type };
-        const updatedSecond = { ...second, type: first?.type };
+        const updatedFirst = { ...first, ledgerType: second?.ledgerType };
+        const updatedSecond = { ...second, ledgerType: first?.ledgerType };
         return [updatedFirst, updatedSecond];
       });
     } else {
@@ -102,6 +111,7 @@ export default ({
   }
 
   useEffect(() => {
+    if (ledgerTypes?.find((i) => !i.ledgerCode)) return;
     handleValue(ledgerTypes);
   }, [ledgerTypes]);
 
@@ -113,7 +123,7 @@ export default ({
     <Fragment>
       <div className="flex justify-between items-center relative w-full border rounded-[10px] border-[#EEEEEE] px-4 py-[30px]">
         <div className="grid grid-cols-2 gap-x-[64px]">
-          {ledgerTypes.map((item, index) => (
+          {ledgerTypes?.map((item, index) => (
             <div className="w-[366px] flex-1" key={item.ledgerType}>
               <div className="flex gap-x-3 items-center capitalize font-medium mb-1">
                 <span>{TypeOptions[item.ledgerType]} ledger</span>
@@ -125,6 +135,7 @@ export default ({
                   Switch Entry
                 </button>
               </div>
+
               <GlInput
                 handleClick={(key, ledgerInfo) =>
                   handleClick({
@@ -135,7 +146,7 @@ export default ({
                     setLedgerType,
                   })
                 }
-                inputName={item.ledgerType.toString()}
+                inputName={TypeOptions[item.ledgerType]}
                 defaultValue={item?.ledgerCode}
                 register={register}
                 trigger={trigger}
@@ -150,6 +161,7 @@ export default ({
                     ? "debit_impact_on_balance"
                     : "credit_impact_on_balance"
                 }
+                type={TypeOptions[item.ledgerType]}
               />
 
               {index === 1 && ledgerTypes.length === 2 && (
@@ -172,9 +184,13 @@ export default ({
             <button
               key={type}
               type="button"
-              disabled={ledgerTypes.some((i) => parseInt(i.ledgerType,10) === type)}
+              disabled={ledgerTypes.some(
+                (i) => parseInt(i.ledgerType, 10) === type
+              )}
               className={`flex items-center gap-x-4 cursor-pointer text-[#636363] disabled:opacity-50 disabled:cursor-not-allowed text-xs ${
-                ledgerTypes.some((i) => parseInt(i.ledgerType,10) === type) ? "opacity-50" : ""
+                ledgerTypes.some((i) => parseInt(i.ledgerType, 10) === type)
+                  ? "opacity-50"
+                  : ""
               }`}
               onClick={() => addField(type)}
             >

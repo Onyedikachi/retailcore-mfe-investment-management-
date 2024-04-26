@@ -17,25 +17,25 @@ const GlMappingOptions = [
     id: 0,
     text: "Term Deposit Liability Ledger",
     key: "TermDepositLiabilityLedger",
-    sub:""
+    sub: "",
   },
   {
     id: 1,
     text: "Interest accural ledger",
     key: "InterestAccrualLedger",
-    sub:""
+    sub: "",
   },
   {
     id: 2,
     text: "Interest expense ledger",
     key: "InterestExpenseLedger",
-    sub:""
+    sub: "",
   },
   {
     id: 3,
     text: "Prepaid asset ledger",
     key: "PrepaidAssetLedger",
-    sub:"Applies when the interest is immediately paid upon booking"
+    sub: "Applies when the interest is immediately paid upon booking",
   },
 ];
 
@@ -77,7 +77,8 @@ export function InputDivs({
             data-testid="input-div"
             className="flex items-start justify-start gap-x-[1px] text-[#636363] text-base font-medium mb-1"
           >
-           {label}{isCompulsory && <RedDot />}
+            {label}
+            {isCompulsory && <RedDot />}
           </span>
           <span className="flex items-start gap-x-[1px] text-[#AAAAAA] text-sm font-normal max-w-[260px]">
             {subLabel}
@@ -108,7 +109,6 @@ export const handleClick = (
   setMapOptions,
   GlMappingOptions
 ) => {
-
   const data = {
     accountName: submenu.accountName,
     accountId: submenu?.accountNo,
@@ -123,7 +123,11 @@ export const handleClick = (
     setMapOptions((prevMapOptions) =>
       prevMapOptions.map((i) =>
         i.glAccountType === data.glAccountType
-          ? { ...i, accountName: submenu.accountName, accountId: data.accountId }
+          ? {
+              ...i,
+              accountName: submenu.accountName,
+              accountId: data.accountId,
+            }
           : i
       )
     );
@@ -139,7 +143,9 @@ export default ({
 }) => {
   const [mapOptions, setMapOptions] = useState([]);
   const [clearFields, setClearField] = useState(false);
-  const [activeTab, setActiveTab] = useState<any>([1, 2, 3, 4, 5]);
+  const [activeTab, setActiveTab] = useState<any>([
+    "TermDepositLiabilityLedger",
+  ]);
   const [filteredTabs, setFilteredTabs] = useState([]);
   function onProceed(val) {
     // setFormData(val, mapOptions);
@@ -204,6 +210,15 @@ export default ({
       investmentLiquidationChargesAndTaxes:
         vals.investmentLiquidationChargesAndTaxes,
     };
+    setActiveTab(
+      taxChargeDataOptions
+        .filter(
+          (i) =>
+            vals[i.key]?.applicableTaxes?.length ||
+            vals[i.key]?.applicableCharges?.length
+        )
+        .map((i) => i.key)
+    );
     return vals;
   };
 
@@ -312,14 +327,16 @@ export default ({
         <div>
           <div className="bg-[#fff] border border-[#EEEEEE] rounded-[6px]">
             <div className="border-b border-[#EEEEEE] flex justify-between items-center px-6 py-[14px]">
-              <span onKeyDown={() => { }}
+              <span
+                onKeyDown={() => {}}
                 onClick={() => handleTab()}
                 className="text-[18px] flex  gap-[1px] text-[#636363] font-semibold flex-row items-center"
               >
                 <Icon
                   icon="ph:caret-right-fill"
-                  className={`text-danger-500 text-sm mr-4 ${activeTab.includes(1) && "rotate-90"
-                    }`}
+                  className={`text-danger-500 text-sm mr-4 ${
+                    activeTab.includes(1) && "rotate-90"
+                  }`}
                 />
                 Product to GL Mapping <RedDot />
               </span>
@@ -328,7 +345,11 @@ export default ({
               <div className="flex flex-col gap-4 px-[30px] py-5">
                 <div className="flex flex-col items-start gap-y-5">
                   {GlMappingOptions.map((type) => (
-                    <InputDivs key={type.text} label={type.text} subLabel={type?.sub}>
+                    <InputDivs
+                      key={type.text}
+                      label={type.text}
+                      subLabel={type?.sub}
+                    >
                       <div>
                         <div className="w-[360px] relative">
                           <div className=" ">
@@ -376,7 +397,7 @@ export default ({
             setActiveTab={setActiveTab}
             values={values}
             setValues={setValues}
-            tab={index + 2}
+            tab={item.key}
             header={item.header}
             event={item.key}
             productData={formData}

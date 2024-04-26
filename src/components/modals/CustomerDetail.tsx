@@ -1,10 +1,10 @@
 import React, { useContext, useRef, useState, useEffect } from "react";
 import { IoArrowUndo } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { FaTimes, FaCaretRight, FaCaretDown } from "react-icons/fa";
 import moment from "moment";
 import ModalLayout from "./Layout";
-import { detailData } from "@app/constants/investment";
+import { corporateDetailData, detailData } from "@app/constants/investment";
 import { downloadUsingFetch } from "@app/utils/downloadFile";
 import { capitalizeFirstLetter } from "@app/utils";
 
@@ -82,6 +82,7 @@ export const TabContent = ({ title, content, detail }) => {
 };
 
 export const CustomerDetail = ({ isOpen, setIsOpen, detail, id }: Props) => {
+  const { investmentType } = useParams();
   const [active, setActive] = useState([]);
   const toggleTab = (val) => {
     setActive((prevActive) => {
@@ -150,7 +151,7 @@ export const CustomerDetail = ({ isOpen, setIsOpen, detail, id }: Props) => {
           </div>
 
           <div className="py-2 max-h-[450px] overflow-y-auto grid gap-y-[27px]">
-            {detailData.map((item) => (
+            {(investmentType === "corporate" ? corporateDetailData : detailData).map((item) => (
               <div key={item.title}>
                 <div
                   onKeyDown={() => {}}

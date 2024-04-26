@@ -17,6 +17,7 @@ interface FormDateProps {
   placeholder?: string;
   id?: string;
   dateFormat?: string;
+  disabled?: boolean
 }
 
 const FormDate: React.FC<FormDateProps> = ({
@@ -32,6 +33,7 @@ const FormDate: React.FC<FormDateProps> = ({
   placeholder = "yyyy/mm/dd",
   dateFormat  = "dd/MM/yyyy",
   id,
+  disabled
 }: FormDateProps) => {
   const [date, setDate] = useState<Date | null>(
     defaultValue ? new Date(defaultValue) : null
@@ -85,8 +87,9 @@ const FormDate: React.FC<FormDateProps> = ({
           calendarContainer={MyContainer}
           minDate={minDate}
           maxDate={maxDate}
+          disabled={disabled}
           placeholderText={placeholder}
-          className={`placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-0 pr-4 border-b ${className} placeholder:text-[#BCBBBB] ${
+          className={`placeholder-[#BCBBBB] ring-0 outline-none w-full py-1 pl-0 pr-4 border-b ${className} disabled:bg-white placeholder:text-[#BCBBBB] ${
             errors && errors[inputName] ? "border-red-600" : "border-[#8F8F8F]"
           }`}
         />

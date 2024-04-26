@@ -590,23 +590,40 @@ export const daysOptions = [
 export const CustomerCategory = {
   0: "Individual",
   1: "Corporate",
-  2: "security-purchase"
+  2: "security purchase",
 };
 export const CustomerCategoryType = {
   individual: 0,
   corporate: 1,
+  "security purchase": 2,
   // Add other category types here
 };
-
+export const MoneyMarketGlType = {
+  0: "Issue To Customer",
+  1: "Upfront Interest Payment",
+  2: "Redemption At Maturity",
+};
 export const ProductType = {
   0: "Term Deposit",
-  1: "Treasure Bill",
+  1: "Treasury Bill",
   2: "Commercial Paper",
   3: "Bonds",
 };
+export const ProductOptionTypes = {
+  "term-deposit": 0,
+  "treasury-bill": 1,
+  "commercial-paper": 2,
+  bonds: 3,
+};
+export const AProductOptionTypes = {
+  0: "term-deposit",
+  1: "treasury-bill",
+  2: "commercial-paper",
+  3: "bonds",
+};
 export const MoneyMarketCategory = {
   0: "Term Deposit",
-  1: "Treasure Bill",
+  1: "Treasury Bill",
   2: "Commercial Paper",
   3: "Bonds",
 };
@@ -1267,6 +1284,106 @@ export const detailData = [
     data: documentation,
   },
 ];
+
+export const companyDetails = [
+  {
+    label: "Category of Business",
+    key: "categoryOfBusiness",
+    type: "",
+  },
+  {
+    label: "CompanyName/Business",
+    key: "companyNameBusiness",
+    type: "",
+  },
+  {
+    label: "Certificate Of Incorporation",
+    key: "certificateOfIncorporation",
+    type: "",
+  },
+  {
+    // ?
+    label: "Jurisdiction of Incorporation/Registration",
+    key: "jurisdictionOfIncorporation",
+    type: "date",
+  },
+  {
+    label: "Nature Of Business",
+    key: "natureOfBusiness",
+    type: "",
+  },
+  {
+    // ?
+    label: "Sector/Industry",
+    key: "sector",
+    type: "",
+  },
+  {
+    label: "Tax Identification Number",
+    key: "taxIdentificationNumber",
+    type: "",
+  },
+]
+
+export const companyAddress = [
+  {
+    label: "Operating Business Address 1",
+    key: "operatingBusinessAddress1",
+    type: "",
+  },
+  {
+    label: "Detailed description of address",
+    key: "detailedDescriptionOfAddress",
+    type: "",
+  },
+  {
+    label: "Operating Business Address 2",
+    key: "operatingBusinessAddress2",
+    type: "",
+  },
+  {
+    label: "Detailed description of address 2",
+    key: "detailedDescriptionOfAddress2",
+    type: "",
+  },
+  {
+    label: "Corporate Business Address",
+    key: "corporateBusinessAddress",
+    type: "",
+  },
+  {
+    label: "Address/Registered Office (If different from Above",
+    key: "detailedAddressOfResidentialAddress",
+    type: "",
+  },
+  {
+    label: "Mobile Number",
+    key: "mobileNumber",
+    type: "",
+  },
+  {
+    label: "Alternate Phone Number",
+    key: "alternateMobileNumber",
+    type: "",
+  },
+]
+
+export const accountSignatory = []
+
+export const corporateDetailData = [
+  {
+    title: "Company Details",
+    data: companyDetails
+  },
+  {
+    title: "Company Address",
+    data: companyAddress
+  },
+  {
+    title: "Account Signatory",
+    data: accountSignatory
+  },
+]
 
 export const CapitalizationOptions = [
   {

@@ -28,6 +28,7 @@ import {
   ProductState,
   termDepositFormSteps,
   moneyMarketFormSteps,
+  ProductOptionTypes,
 } from "@app/constants";
 import Preview from "@app/components/pages/term-deposit/forms/preview";
 import { Messages } from "@app/constants/enums";
@@ -209,11 +210,11 @@ export const handleMessage = ({
     setFailedText(Messages.PRODUCT_DRAFT_FAILED);
     setFailedSubtext(
       error?.message?.message ||
-      modifyError?.message?.message ||
-      modifyRequestError?.message?.message ||
-      error?.message?.Message ||
-      modifyError?.message?.Message ||
-      modifyRequestError?.message?.Message
+        modifyError?.message?.message ||
+        modifyRequestError?.message?.message ||
+        error?.message?.Message ||
+        modifyError?.message?.Message ||
+        modifyRequestError?.message?.Message
     );
     setFailed(true);
   }
@@ -228,16 +229,14 @@ export function handleNav({
   formStepOption,
   type,
 }) {
-
   step < formStepOption.length
     ? handleNext(step, setStep, formStepOption)
     : navigate(
-      `/product-factory/investment/${type}/${process}?${id ? `id=${id}&` : ""
-      }stage=summary`
-    );
+        `/product-factory/investment/${type}/${process}?${
+          id ? `id=${id}&` : ""
+        }stage=summary`
+      );
 }
-
-
 
 export default function CreateTermDeposit() {
   const { process, type } = useParams();
@@ -247,7 +246,7 @@ export default function CreateTermDeposit() {
   const refresh = searchParams.get("refresh");
   const activeId = useRef(null);
   const previousData = useRef({});
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(1);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [subText, setSubText] = useState("");
   const [successText, setSuccessText] = useState("");
@@ -263,7 +262,9 @@ export default function CreateTermDeposit() {
   const [productData, setProductData] = useState({
     id: id || null,
     productInfo: {
-      investmentId: "",
+      code: "",
+      securitPurchaseId: "",
+      type,
       productName: "",
       slogan: "",
       description: "",
@@ -277,7 +278,7 @@ export default function CreateTermDeposit() {
       ageGroupMax: null,
       requireDocument: [],
       customerType: [],
-      customerCategory: null,
+      customerCategory: type === "term-deposit" ? null : 2,
     },
     principalDepositChargesAndTaxes: {
       applicableCharges: [],
@@ -350,13 +351,14 @@ export default function CreateTermDeposit() {
       withdrawalPenalty: 0,
     },
     productGlMappings: [],
+    moneyMarketProductGlMapping: [],
     interestComputationMethod: 2,
     TermDepositLiabilityAccount: "",
     InterestAccrualAccount: "",
     InterestExpenseAccount: "",
     PrepaidAssetLedger: "",
     isDraft: false,
-    productType: 0,
+    productType: ProductOptionTypes[type],
   });
 
   const [isDisabled, setDisabled] = useState<boolean>(true);
@@ -387,8 +389,8 @@ export default function CreateTermDeposit() {
   ];
 
   useEffect(() => {
-    console.log(productData)
-  }, [productData])
+    console.log(productData);
+  }, [productData]);
 
   const [createProduct, { isLoading, isSuccess, isError, reset, error }] =
     useCreateProductMutation();
@@ -512,8 +514,8 @@ export default function CreateTermDeposit() {
     const extraLinks = [
       {
         id: 3,
-        title: "Term Deposit",
-        url: "/product-factory/investment",
+        title: type.replace("-", " "),
+        url: "#",
       },
       {
         id: 4,

@@ -28,10 +28,10 @@ export function SearchValues({
 }) {
   const handleClick = () => {
     if (type === "investments") {
-      setInputValue(item?.customerName);
-      setSearchTerm(item?.customerName);
+      setInputValue(item.customerName ?? item.issuer);
+      setSearchTerm(item.customerName ?? item.issuer);
       setShowBox(false);
-      handleSearch(item?.customerName, item);
+      handleSearch(item.customerName ?? item.issuer, item);
     } else {
       setInputValue(item?.name);
       setSearchTerm(item?.name);
@@ -42,8 +42,9 @@ export function SearchValues({
 
   return (
     <div
-      role="button" tabIndex={0}
-      onKeyUp={() => { }}
+      role="button"
+      tabIndex={0}
+      onKeyUp={() => {}}
       onClick={handleClick}
       className="flex gap-x-2 cursor-pointer hover:bg-[#F9E5E5] py-1 px-2"
     >
@@ -54,11 +55,13 @@ export function SearchValues({
         <span className="block max-w-max truncate text-[#636363] capitalize">
           {type?.toLowerCase() === "investments" ? (
             <span className="flex flex-col gap-[1px]">
-              <span>{item.customerName}</span>
+              <span>{item.customerName ?? item.issuer ?? "-"}</span>
               <span className="">
-                <span className="relative font-medium text-sm text-[#aaaaaa] uppercase">
-                  {item?.investmentId || "-"}
-                </span>
+                {item?.investmentId && (
+                  <span className="relative font-medium text-sm text-[#aaaaaa] uppercase">
+                    {item?.investmentId ?? "-"}
+                  </span>
+                )}
               </span>
             </span>
           ) : (
@@ -70,7 +73,9 @@ export function SearchValues({
             {item?.slogan}
           </span>
         )}
-        <span className="block text-xs text-[#aaa]">{item?.code}</span>
+        <span className="block text-xs text-[#aaa] uppercase">
+          {item?.code}
+        </span>
       </span>
     </div>
   );
@@ -187,6 +192,8 @@ export default function SearchInput({
 
   const debouncedSetSearchTerm = debounce((value) => setSearchTerm(value), 500);
 
+  console.log(searchResults);
+
   useEffect(() => {
     if (!inputValue?.length && handleSearch) {
       handleSearch("");
@@ -203,13 +210,16 @@ export default function SearchInput({
   return (
     <OutsideClickHandler
       onOutsideClick={() => closeBox(setSearchResults, setShowBox)}
+      className="w-100"
     >
       <div
-        className={`border-b border-[#AAAAAA]  flex items-center relative bg-transparent shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] ${fullW ? "" : "max-w-[340px]"
-          } ${hideBorder
+        className={`border-b border-[#AAAAAA]  flex items-center relative bg-transparent shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)] ${
+          fullW ? "" : "max-w-[340px]"
+        } ${
+          hideBorder
             ? ""
             : "after:content-[''] after:w-1 after:h-[80%] after:absolute after:border-r after:right-[-15px] after:top-1/2 after:translate-y-[-50%] after:border-[#E5E9EB]"
-          } ${customClass}`}
+        } ${customClass}`}
       >
         <button className="w-8 h-8 p-1 flex items-center justify-center">
           <FaSearch className="text-[#48535B]" />
@@ -220,14 +230,16 @@ export default function SearchInput({
               handleInputChange(e, setInputValue, debouncedSetSearchTerm)
             }
             onKeyDown={() => setShowBox(true)}
+            onFocus={() => setShowBox(true)}
             value={inputValue}
             type={inputType}
             data-testid="search"
             placeholder={placeholder}
-            className={`bg-transparent peer placeholder:text-base h-8 py-2 pl-1 pr-4 placeholder:text-[#AAAAAA] outline-none appearance-none ${isTruncated
+            className={`bg-transparent peer placeholder:text-base h-8 py-2 pl-1 pr-4 placeholder:text-[#AAAAAA] outline-none appearance-none ${
+              isTruncated
                 ? "text-transparent group-hover:text-[#48535B] focus:text-[#48535B] hover:appearance-none"
                 : "text-[#48535B]"
-              } ${fullW ? "w-full" : "w-[280px]"}`}
+            } ${fullW ? "w-full" : "w-[280px]"}`}
           />
           {isTruncated && (
             <span className="peer-focus:text-transparent group-hover:text-transparent text-[#48535B] block max-w-[180px] truncate absolute top-1 left-1">
@@ -237,7 +249,7 @@ export default function SearchInput({
         </div>
 
         {showSearchbox && showBox && (
-          <div className="w-[352px] z-[2] right-0 max-h-[386px] overflow-y-auto bg-white absolute top-[100%] mt-2 rounded-lg py-[22px] px-[10px] shadow-[0px_0px_6px_0px_rgba(0,0,0,0.25)] ">
+          <div className="w-[352px] z-[20] right-0 max-h-[386px] overflow-y-auto bg-white absolute top-[100%] mt-2 rounded-lg py-[22px] px-[10px] shadow-[0px_0px_6px_0px_rgba(0,0,0,0.25)] ">
             {!searchLoading ? (
               <div>
                 <div>

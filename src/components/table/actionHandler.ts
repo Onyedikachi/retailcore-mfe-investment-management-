@@ -1,6 +1,6 @@
 import { Actions, Messages, Prompts } from "@app/constants/enums";
 import { StatusCategoryType } from "@app/types";
-import { SpecificCategory } from "@app/constants";
+import { SpecificCategory, AProductOptionTypes } from "@app/constants";
 export const actionHandler = ({
   specificCategory,
   action,
@@ -129,9 +129,14 @@ export const actionHandler = ({
       navigate(`/investment-management/continue/${tab}?id=${items.id}`);
       return;
     } else {
+     
+      const prodType = items?.metaInfo
+        ? AProductOptionTypes[JSON.parse(items?.metaInfo)?.productType]
+        : null;
+   
       navigate(
         `/product-factory/investment/${encodeURIComponent(
-          "term-deposit"
+          prodType || "term-deposit"
         )}/continue/?id=${items.id}&type=draft&filter=${selected.value}`
       );
       return;

@@ -138,6 +138,7 @@ export default ({
             showImpact={true}
             impact={"debit_impact_on_balance"}
             currencyCode={formData?.facilityDetailsModel?.currencyCode}
+            type="debit"
           />
         </div>
       </div>
@@ -173,6 +174,7 @@ export default ({
             accountType={undefined}
             showImpact={true}
             impact={"credit_impact_on_balance"}
+            type="credit"
             currencyCode={formData?.facilityDetailsModel?.currencyCode}
           />
         </div>

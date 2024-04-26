@@ -12,9 +12,14 @@ import { RedDot } from "@app/components/forms";
 import { ProductInformationFormSchema, toolTips } from "@app/constants";
 import { debounce } from "lodash";
 import { useParams, useSearchParams } from "react-router-dom";
-import { useValidateNameMutation } from "@app/api";
+import {
+  useGetPostInvestmentMutation,
+  useValidateNameMutation,
+  useGetInvestmentDetailQuery,
+} from "@app/api";
 import moment from "moment";
 import { AppContext } from "@app/utils";
+import SearchInput from "@app/components/SearchInput";
 // Import debounce function if not already available
 
 const defaultLength = 50;
@@ -45,6 +50,38 @@ export function handleValidatingName(
     setIsNameOkay(true);
   }
 }
+
+export const handleSearch = (
+  value,
+  data,
+  setValue,
+  setShowInputs,
+  formData,
+  setFormData,
+  trigger = null
+) => {
+  if (data) {
+    setValue("code", data?.value?.code);
+    setValue("securitPurchaseId", data?.id);
+    setValue("issuer", data?.value?.issuer);
+    setValue("currencyCode", data?.value?.currencyCode);
+    setValue("currency", data?.value?.currencyCode);
+    setValue("startDate", moment(data?.value?.dealDate));
+    setValue("endDate", moment(data?.value?.maturityDate));
+    setFormData({
+      ...formData,
+      currencyCode: data?.value?.currencyCode,
+      currency: data?.value?.currencyCode,
+      startDate: moment(data?.value?.dealDate).format("yyyy-MM-DD"),
+      endDate: moment(data?.value?.maturityDate).format("yyyy-MM-DD"),
+      issuer: data?.value?.issuer,
+      securitPurchaseId: data?.id,
+      code: data?.value?.code,
+    });
+    setShowInputs(true);
+    trigger && trigger();
+  }
+};
 
 export function InputDiv({ children, customClass = "" }) {
   return (
@@ -140,11 +177,13 @@ export default function ProductInformation({
     defaultValues: formData,
     mode: "all",
   });
-
+  console.log("🚀 ~ errors:", errors);
   //useState
-  const { currencies, defaultCurrency } = useContext(AppContext);
+  const { currencies, defaultCurrency, isLoadingCurrencies } =
+    useContext(AppContext);
   const values = getValues();
-
+  const [securityProducts, setSecurityProducts] = useState<any>([]);
+  const [query, setQuery] = useState("");
   const productFormRef = useRef();
   const [error, setError] = useState<string>("");
   const [charLeft, setCharLeft] = useState<number>(50);
@@ -166,11 +205,37 @@ export default function ProductInformation({
     },
   ] = useValidateNameMutation();
 
+  const {
+    data: prodData,
+    isLoading,
+    isSuccess: isProdSuccsess,
+  } = useGetInvestmentDetailQuery(
+    {
+      id: formData?.securitPurchaseId,
+      investmentType: "security-purchase",
+    },
+    { skip: !formData?.securitPurchaseId }
+  );
+
   useEffect(() => {
     if (type !== "term-deposit") {
       setShowInputs(false);
     }
   }, [type]);
+  useEffect(() => {
+    if (isProdSuccsess) {
+      setQuery(prodData?.data?.code);
+      handleSearch(
+        prodData?.data?.code,
+        { ...prodData?.data, value: prodData?.data },
+        setValue,
+        setShowInputs,
+        formData,
+        setFormData,
+        trigger
+      );
+    }
+  }, [prodData, isProdSuccsess, currencies]);
 
   useEffect(() => {
     handleValidatingName(
@@ -189,13 +254,13 @@ export default function ProductInformation({
     if (!formData.currency || !formData.currencyCode) {
       setFormData({
         ...formData,
-        currency: defaultCurrency?.id,
+        currency: defaultCurrency?.abbreviation,
         currencyCode: defaultCurrency?.abbreviation,
       });
     }
 
     if (!values.currency || !values.currencyCode) {
-      setValue("currency", defaultCurrency?.id);
+      setValue("currency", defaultCurrency?.abbreviation);
       setValue("currencyCode", defaultCurrency?.abbreviation);
     }
   }, [currencies, defaultCurrency]);
@@ -211,8 +276,12 @@ export default function ProductInformation({
     }
   }, [initiateDraft]);
   useEffect(() => {
-    setDisabled(!isValid || isNameOkay === false);
-  }, [values]);
+    if (!isLoadingCurrencies) {
+      setDisabled(!isValid || isNameOkay === false);
+    } else {
+      setDisabled(isLoadingCurrencies);
+    }
+  }, [values, isLoadingCurrencies]);
 
   useEffect(() => {
     if (formData) {
@@ -255,7 +324,7 @@ export default function ProductInformation({
   }, []);
   useEffect(() => {
     const currency = currencies?.find((i) => i.value === watchCurrency);
-    setValue("currency", currency?.id);
+    setValue("currency", currency?.text);
     setValue("currencyCode", currency?.text);
   }, [watchCurrency, currencies]);
 
@@ -281,10 +350,38 @@ export default function ProductInformation({
     setError: any,
     clearError: any
   ) => {
-  
     setShowInputs(true);
     return {};
   };
+  // handle security search
+  const [getSecurityProducts, { data, isSuccess, isLoading: searchLoading }] =
+    useGetPostInvestmentMutation();
+  // Search product
+  useEffect(() => {
+    if (query.length) {
+      getSecurityProducts({
+        filter_by: "created_by_anyone",
+        search: query,
+        page_Size: 10000,
+        status_In: [2],
+        type: "security-purchase",
+      });
+    }
+  }, [query]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      setSecurityProducts(
+        data.results.map((i) => {
+          return {
+            id: i.id,
+            name: i.code.toUpperCase(),
+            value: i,
+          };
+        })
+      );
+    }
+  }, [isSuccess, searchLoading, data]);
   return (
     <form
       id="productform"
@@ -293,7 +390,7 @@ export default function ProductInformation({
     >
       {type !== "term-deposit" && (
         <div className="mb-6 flex flex-col gap-[1px] max-w-[600px]">
-          <div className="flex items-center gap-x-2">
+          <div className="flex items-center gap-x-2 mb-1">
             <label
               htmlFor="investment"
               className="w-[300px] pt-[10px]  text-base font-semibold text-[#636363] capitalize flex items-start"
@@ -304,25 +401,31 @@ export default function ProductInformation({
                 <RedDot />
               </span>{" "}
               <span className="ml-2">
-                <FormToolTip tip={toolTips.investmentId} />
+                <FormToolTip tip={toolTips.securitPurchaseId} />
               </span>
             </label>
           </div>
           <InputDiv>
             <div className="relative flex items-center">
-              <input
-                id="investment"
-                data-testid="investment-id"
-                className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB] ${
-                  errors?.investmentId || error ? "border-red-500" : ""
-                }`}
-                {...register("investmentId")}
-                onChange={(e) => {
-                  handleInvestmentId(e.target.value, clearErrors, setError);
-                }}
-                placeholder="Enter ID"
-                defaultValue={formData?.investmentId}
-                aria-invalid={errors?.investmentId ? "true" : "false"}
+              <SearchInput
+                setSearchTerm={debounce((e) => setQuery(e), 800)}
+                searchResults={securityProducts}
+                setSearchResults={() => {}}
+                searchLoading={searchLoading}
+                handleSearch={(value, data) =>
+                  handleSearch(
+                    value,
+                    data,
+                    setValue,
+                    setShowInputs,
+                    formData,
+                    setFormData
+                  )
+                }
+                placeholder={""}
+                customClass="shadow-none w-[350px]"
+                hideBorder
+                defaultValue={query}
               />
             </div>
 
@@ -354,13 +457,14 @@ export default function ProductInformation({
                   <input
                     id="issuer"
                     data-testid="issuer"
-                    className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] placeholder:text-[#BCBBBB] ${
+                    className={`placeholder-[#BCBBBB] ring-0 outline-none w-full pt-[10px] pb-[16px] border-b border-[#8F8F8F] pr-[74px] disabled:bg-white placeholder:text-[#BCBBBB] ${
                       errors?.issuer || error ? "border-red-500" : ""
                     }`}
                     {...register("issuer")}
                     placeholder="Enter issuer"
                     defaultValue={formData?.issuer}
                     aria-invalid={errors?.issuer ? "true" : "false"}
+                    disabled
                   />
                 </div>
 
@@ -589,7 +693,6 @@ export default function ProductInformation({
                   </label>
                   <FormToolTip tip={toolTips.lifeCycle} />
                 </div>
-
                 <FormDate
                   id="productLifeCycle"
                   register={register}
@@ -602,6 +705,7 @@ export default function ProductInformation({
                   minDate={new Date()}
                   trigger={trigger}
                   clearErrors={clearErrors}
+                  disabled={formData.type !== "term-deposit"}
                 />
               </div>
               {type !== "term-deposit" ? " " : "-"}
@@ -635,6 +739,7 @@ export default function ProductInformation({
                   defaultValue={formData?.endDate}
                   clearErrors={clearErrors}
                   placeholder="Unspecified"
+                  disabled={formData.type !== "term-deposit"}
                 />
               </div>
             </div>
@@ -643,19 +748,24 @@ export default function ProductInformation({
               {/* <InputDiv> */}
               <div className="w-[300px]">
                 <BorderlessSelect
-                  inputError={errors?.currency}
+                  inputError={errors?.currencyCode}
                   register={register}
                   errors={errors}
                   setValue={setValue}
-                  inputName={"currency"}
+                  inputName={"currencyCode"}
                   labelName={"Product Currency"}
-                  defaultValue={formData?.currency}
-                  placeholder="Select currency"
+                  defaultValue={formData?.currencyCode}
+                  placeholder={
+                    isLoadingCurrencies
+                      ? "Fetching currencies list.."
+                      : "Select currency"
+                  }
                   clearErrors={clearErrors}
                   requiredField={true}
                   tip={toolTips.currency}
                   options={currencies}
                   trigger={trigger}
+                  disabled={formData.type !== "term-deposit"}
                 />
               </div>
 
